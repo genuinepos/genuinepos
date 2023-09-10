@@ -27,57 +27,54 @@
                                     <div class="element-body">
                                         <form action="" method="get">
                                             <div class="form-group row">
-                                                @if ($generalSettings['addons__branches'] == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-md-2">
-                                                            <label><strong>@lang('menu.business_location') </strong></label>
-                                                            <select name="branch_id"
-                                                                class="form-control submit_able select2" id="branch_id">
-                                                                <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}(@lang('menu.head_office'))</option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
+                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                    <div class="col-md-2">
+                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                        <select name="branch_id"
+                                                            class="form-control select2" id="branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('. $branch->area_name .')' : '';
+                                                                        $branchCode = '-(' . $branch->branch_code.')';
+                                                                    @endphp
+                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.supplier') </strong></label>
-                                                    <select name="supplier_id"
-                                                        class="form-control selectpicker submit_able select2"
-                                                        id="supplier_id">
+                                                    <label><strong>{{ __("Supplier") }}</strong></label>
+                                                    <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        @foreach ($suppliers as $supplier)
-                                                            <option value="{{ $supplier->id }}">{{ $supplier->name .' ('.$supplier->phone.')' }}</option>
+                                                        @foreach ($supplierAccounts as $supplierAccount)
+                                                            <option data-supplier_account_name="{{ $supplierAccount->name.'/'.$supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.from_date') </strong></label>
+                                                    <label><strong>{{ __("From Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="datepicker"
-                                                            class="form-control from_date"
-                                                            autocomplete="off">
+                                                        <input type="text" name="from_date" id="from_date" class="form-control from_date" autocomplete="off">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>@lang('menu.to_date') </strong></label>
+                                                    <label><strong>{{ __("To Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i
-                                                                    class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="datepicker2" class="form-control to_date" autocomplete="off">
+                                                        <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,7 +236,7 @@
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
-                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'voucher_no',name: 'voucher_no'},
                 {data: 'parent_invoice_id',name: 'parent_invoice_id'},
                 {data: 'supplier', name: 'supplier'},
                 {data: 'location',name: 'branches.name'},
@@ -259,43 +256,6 @@
                 $('#purchase_return_details').html(data);
                 $('.data_preloader').hide();
                 $('#detailsModal').modal('show');
-            });
-        });
-
-        $(document).on('click', '#add_return_payment', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url,  function(data) {
-                $('#paymentModal').html(data);
-                $('#paymentModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        //Show payment view modal with data
-        $(document).on('click', '#view_return_payment', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-            var url = $(this).attr('href');
-            $.get(url, function(data) {
-                $('#payment_list_modal_body').html(data);
-                $('#paymentViewModal').modal('show');
-                $('.data_preloader').hide();
-            });
-        });
-
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Confirmation',
-                'content': 'Are you sure, you want to delete?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
             });
         });
 
@@ -319,51 +279,15 @@
             });
         });
 
-        //Submit filter form by select input changing
-        $(document).on('change', '.submit_able', function () {
-            table.ajax.reload();
-        });
-
         $(document).on('input', '.from_date', function () {
             table.ajax.reload();
-        });
-
-        $(document).on('input', '.to_date', function () {
-            if ($('.from_date').val()) {
-                table.ajax.reload();
-            }
-        });
-
-        //Submit filter form by date-range field blur
-        $(document).on('click', '.day-item', function () {
-            if ($('.from_date').val()) {
-                setTimeout(function() {
-                    table.ajax.reload();
-                }, 500);
-            }
-        });
-
-        // Make print
-        $(document).on('click', '.print_btn', function (e) {
-        e.preventDefault();
-            var body = $('.purchase_return_print_template').html();
-            var header = $('.heading_area').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                removeInline: false,
-                printDelay: 100,
-                header: null,
-            });
         });
     </script>
 
     <script type="text/javascript">
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker'),
+            element: document.getElementById('from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -382,7 +306,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker2'),
+            element: document.getElementById('to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

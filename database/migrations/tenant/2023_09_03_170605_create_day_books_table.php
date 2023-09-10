@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('day_books', function (Blueprint $table) {
             $table->id();
             $table->timestamp('date_ts')->nullable();
+            $table->tinyInteger('voucher_type')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('sale_id')->nullable();
             $table->unsignedBigInteger('sale_return_id')->nullable();
@@ -24,6 +26,7 @@ return new class extends Migration
             $table->string('amount_type', 20)->nullable();
             $table->timestamps();
 
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
             $table->foreign('sale_return_id')->references('id')->on('sale_returns')->onDelete('cascade');

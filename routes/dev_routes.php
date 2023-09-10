@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Account;
-use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Arr;
+use App\Models\Accounts\AccountGroup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('my-test', function () {
@@ -22,19 +22,19 @@ Route::get('my-test', function () {
     // $str = 'DifferentShop';
     // return $str = preg_replace("/[A-Z]/", ' ' . "$0", $str);
 
-    return $accountGroups = Account::query()
-        ->with([
-            'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
-        ])
-        ->where('branch_id', auth()->user()->branch_id)
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        
-        ->whereIn('account_groups.sub_sub_group_number', [2])
-        ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-        ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-        ->get();
+    // return $accountGroups = Account::query()
+    //     ->with([
+    //         'bank:id,name',
+    //         'group:id,sorting_number,sub_sub_group_number',
+    //         'bankAccessBranch'
+    //     ])
+    //     ->where('branch_id', auth()->user()->branch_id)
+    //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+
+    //     ->whereIn('account_groups.sub_sub_group_number', [2])
+    //     ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+    //     ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+    //     ->get();
 });
 
 Route::get('t-id', function () {

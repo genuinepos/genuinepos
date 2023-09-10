@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounting_voucher_description_references');
+        Schema::dropIfExists('voucher_description_references');
     }
 };

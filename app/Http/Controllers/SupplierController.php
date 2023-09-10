@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Setups\PaymentMethod;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
-use App\Models\PurchaseReturn;
+use App\Models\Purchases\PurchaseReturn;
 use App\Models\Supplier;
 use App\Models\SupplierOpeningBalance;
 use App\Models\SupplierPayment;
@@ -240,7 +240,7 @@ class SupplierController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $deleteSupplier = Supplier::with(['supplier_ledgers'])->where('id', $supplierId)->first();
 
         if (count($deleteSupplier->supplier_ledgers) > 1) {

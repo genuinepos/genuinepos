@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\PurchaseReturnProduct;
+use App\Models\Purchases\PurchaseReturnProduct;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +28,7 @@ final class PurchaseReturnProductFactory extends Factory
             'purchase_return_id' => \App\Models\PurchaseReturn::factory(),
             'purchase_product_id' => \App\Models\PurchaseProduct::factory(),
             'product_id' => \App\Models\Product::factory(),
-            'product_variant_id' => \App\Models\ProductVariant::factory(),
+            'variant_id' => \App\Models\ProductVariant::factory(),
             'unit_cost' => $this->faker->randomFloat(),
             'return_qty' => $this->faker->randomFloat(),
             'unit' => $this->faker->word,

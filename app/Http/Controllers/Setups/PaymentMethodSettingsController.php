@@ -27,6 +27,7 @@ class PaymentMethodSettingsController extends Controller
             'group:id,sorting_number,sub_sub_group_number',
             'bankAccessBranch'
         ])
+        
         ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
         ->where('branch_id', auth()->user()->branch_id)
         ->whereIn('account_groups.sub_sub_group_number', [2])

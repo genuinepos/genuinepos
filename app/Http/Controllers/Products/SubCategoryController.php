@@ -124,6 +124,11 @@ class SubCategoryController extends Controller
         return response()->json(__("Subcategory updated Successfully"));
     }
 
+    function subcategoriesByCategoryId($categoryId) {
+
+        return $this->subCategoryService->subcategories()->where('parent_category_id', $categoryId)->get();
+    }
+
     public function delete(Request $request, $id)
     {
         if (!auth()->user()->can('categories')) {

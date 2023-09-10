@@ -102,6 +102,18 @@ class SubCategoryService
         return $deleteSubcategory;
     }
 
+    public function subcategories(array $with = null)
+    {
+        $query = Category::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleSubcategory(int $id, array $with = null)
     {
         $query = Category::query();

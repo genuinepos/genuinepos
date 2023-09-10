@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\PurchaseReturn;
+use App\Models\Purchases\PurchaseReturn;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

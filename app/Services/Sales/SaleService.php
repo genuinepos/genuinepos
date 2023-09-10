@@ -6,10 +6,10 @@ class SaleService
 {
     public function adjustSaleInvoiceAmounts($sale)
     {
-        $totalSaleReceived = DB::table('accounting_voucher_description_references')
-            ->where('accounting_voucher_description_references.sale_id', $sale->id)
-            ->select(DB::raw('sum(accounting_voucher_description_references.amount) as total_received'))
-            ->groupBy('accounting_voucher_description_references.sale_id')
+        $totalSaleReceived = DB::table('voucher_description_references')
+            ->where('voucher_description_references.sale_id', $sale->id)
+            ->select(DB::raw('sum(voucher_description_references.amount) as total_received'))
+            ->groupBy('voucher_description_references.sale_id')
             ->get();
 
         $totalReturn = DB::table('sale_returns')

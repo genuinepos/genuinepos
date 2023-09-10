@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class GeneralProductSearchService
 {
-    public function getProductByKeyword($product, $keyWord, $priceGroupId, $isShowNotForSaleItem)
+    public function getProductByKeyword($product, $keyWord, $priceGroupId, $isShowNotForSaleItem, $branchId = null)
     {
         if ($product) {
 
@@ -51,7 +51,7 @@ class GeneralProductSearchService
                     'variant_price',
                 ])->first();
 
-            if ($variantProduct && $variantProduct?->product?->productAccessBranch) {
+            if ($variantProduct && $variantProduct?->product?->productAccessBranch($branchId)) {
 
                 if ($isShowNotForSaleItem == 0 && $variantProduct->product->is_for_sale == 0) {
 
@@ -67,7 +67,7 @@ class GeneralProductSearchService
             }
         }
 
-        return $this->nameSearching($keyWord, $isShowNotForSaleItem);
+        return $this->nameSearching($keyWord, $isShowNotForSaleItem, $branchId);
     }
 
     private function productDiscount($productId, $priceGroupId, $brandId, $categoryId)
@@ -182,25 +182,26 @@ class GeneralProductSearchService
         ]);
     }
 
-    public function singleProductBranchStock($productId)
+    public function singleProductBranchStock($productId, $branchId)
     {
-        $product = DB::table('products')->where('id', $productId)->select('id', 'is_manage_stock', 'quantity')->first();
+        $product = DB::table('products')->where('id', $productId)
+            ->select('id', 'is_manage_stock', 'quantity')->first();
 
         if ($product->is_manage_stock == 0) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
 
-        $productBranch = DB::table('product_branches')
-            ->where('product_id', $productId)
+        $productStock = DB::table('product_stocks')
+            ->where('product_id', $productId)->where('branch_id', $branchId)->where('warehouse_id', null)
             ->first();
 
-        if ($productBranch) {
+        if ($productStock) {
 
-            return response()->json(['stock' => $productBranch->product_quantity, 'all_stock' => $product->quantity]);
+            return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This item is not available in the Company.']);
+            return response()->json(['errorMsg' => 'This product is not available in this Shop/Business.']);
         }
     }
 
@@ -215,21 +216,22 @@ class GeneralProductSearchService
             return response()->json(['stock' => PHP_INT_MAX]);
         }
 
-        $productWarehouse = DB::table('product_warehouses')->where('product_id', $productId)->where('warehouse_id', $warehouseId)->first();
+        $productStock = DB::table('product_stocks')->where('product_id', $productId)->where('warehouse_id', $warehouseId)->first();
 
-        if ($productWarehouse) {
+        if ($productStock) {
 
-            return response()->json(['stock' => $productWarehouse->product_quantity, 'all_stock' => $product->quantity]);
+            return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'The Item is not available in selected warehouse.']);
+            return response()->json(['errorMsg' => 'The Product is not available in selected warehouse.']);
         }
     }
 
-    public function variantProductBranchStock($productId, $variantId)
+    public function variantProductBranchStock($productId, $variantId, $branchId)
     {
         $product = DB::table('products')
-            ->where('id', $productId)->select('id', 'is_manage_stock', 'brand_id', 'category_id', 'quantity')
+            ->where('id', $productId)
+            ->select('id', 'is_manage_stock', 'brand_id', 'category_id', 'quantity')
             ->first();
 
         if ($product->is_manage_stock == 0) {
@@ -237,25 +239,16 @@ class GeneralProductSearchService
             return response()->json(['stock' => PHP_INT_MAX]);
         }
 
-        $productBranch = DB::table('product_branches')->where('product_id', $productId)->first();
+        $productStock = DB::table('product_stocks')->where('product_id', $productId)
+        ->where('variant_id', $variantId)->where('branch_id', $branchId)->where('warehouse_id', null)
+        ->first();
 
-        if ($productBranch) {
+        if ($productStock) {
 
-            $productBranchVariant = DB::table('product_branch_variants')
-                ->where('product_branch_id', $productBranch->id)
-                ->where('product_id', $productId)
-                ->where('product_variant_id', $variantId)->first();
-
-            if ($productBranchVariant) {
-
-                return response()->json(['stock' => $productBranchVariant->variant_quantity, 'all_stock' => $product->quantity]);
-            } else {
-
-                return response()->json(['errorMsg' => 'This variant is not available in the Company.']);
-            }
+            return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This item is not available in the Company.']);
+            return response()->json(['errorMsg' => 'This variant is not available in this Shop/Business.']);
         }
     }
 
@@ -270,26 +263,16 @@ class GeneralProductSearchService
             return response()->json(['stock' => PHP_INT_MAX]);
         }
 
-        $productWarehouse = DB::table('product_warehouses')->where('warehouse_id', $warehouseId)->where('product_id', $productId)->first();
+        $productStock = DB::table('product_stocks')->where('warehouse_id', $warehouseId)->where('product_id', $productId)->first();
 
-        if ($productWarehouse) {
+        if ($productStock) {
 
-            $productWarehouseVariant = DB::table('product_warehouse_variants')
-                ->where('product_warehouse_id', $productWarehouse->id)
-                ->where('product_id', $productId)
-                ->where('product_variant_id', $variantId)->first();
-
-            if ($productWarehouseVariant) {
-
-                return response()->json(['stock' => $productWarehouseVariant->variant_quantity, 'all_stock' => $product->quantity]);
-            } else {
-
-                return response()->json(['errorMsg' => 'This variant is not available in the selected warehouse..']);
-            }
+            return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This item is not available in selected warehouse.']);
+            return response()->json(['errorMsg' => 'This variant is not available in the selected warehouse..']);
         }
+
     }
 
     public function getAvailableStock($productId, $variantId)
@@ -333,7 +316,7 @@ class GeneralProductSearchService
         return $stock;
     }
 
-    public function nameSearching($keyword, $isShowNotForSaleItem = 1)
+    public function nameSearching($keyword, $isShowNotForSaleItem = 1, $branchId = null)
     {
         $namedProducts = '';
 

@@ -57,7 +57,6 @@ class DayBookService
         $add = new DayBook();
         $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $add->account_id = $accountId ? $accountId : null;
-        $add->product_id = $productId ? $productId : null;
         $add->voucher_type = $voucherTypeId;
         $add->{$voucherType['id']} = $transId;
         $add->amount = $amount;
@@ -84,7 +83,6 @@ class DayBookService
             $previousTime = date(' H:i:s', strtotime($update->date));
             $update->date_ts = date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $update->account_id = $accountId ? $accountId : null;
-            $update->product_id = $productId ? $productId : null;
             $update->amount = $amount;
             $update->amount_type = $amountType;
             $update->save();

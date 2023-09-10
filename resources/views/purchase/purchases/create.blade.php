@@ -29,13 +29,13 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
+        
         <div class="p-1">
             <form id="add_purchase_form" action="{{ route('purchases.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <section>
                     <div class="form_element rounded mt-0 mb-2">
-
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
@@ -44,7 +44,7 @@
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
-                                                    <option value="">@lang('menu.select_supplier')</option>
+                                                    <option value="">{{ __("Select Supplier") }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
                                                         <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                     @endforeach
@@ -114,7 +114,7 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class=" col-4"><b>{{ __("Pay-Term") }}</b> </label>
+                                        <label class=" col-4"><b>{{ __("Pay-Term") }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <input type="text" name="pay_term_number" class="form-control"
@@ -184,11 +184,11 @@
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
-                                        <label class="fw-bold">@lang('menu.quantity')</label>
+                                        <label class="fw-bold">{{ __("Quantity") }}</label>
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_unit_id" class="form-control w-40">
-                                                <option value="">@lang('menu.unit')</option>
+                                                <option value="">{{ __("Unit") }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -279,17 +279,17 @@
                                         <table class="display data__table table-striped">
                                             <thead class="staky">
                                                 <tr>
-                                                    <th>@lang('menu.product')</th>
-                                                    <th>@lang('menu.quantity')</th>
-                                                    <th>@lang('menu.unit_cost_exc_tax')</th>
-                                                    <th>@lang('menu.discount')</th>
-                                                    <th>@lang('menu.unit_tax')</th>
+                                                    <th>{{ __("Product") }}</th>
+                                                    <th>{{ __("Quantity") }}</th>
+                                                    <th>{{ __("Unit Cost(Exc. Tax)") }}</th>
+                                                    <th>{{ __("Unit Discount") }}</th>
+                                                    <th>{{ __("Unit Tax") }}</th>
                                                     <th>{{ __('Net Unit Cost (Inc. Tax)') }}</th>
-                                                    <th>@lang('menu.line_total')</th>
+                                                    <th>{{ __("Line-Total") }}</th>
 
                                                     @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
-                                                        <th>@lang('menu.x_margin')(%)</th>
-                                                        <th>@lang('menu.selling_price_exc_tax')</th>
+                                                        <th>{{ __("Profit Margine") }}</th>
+                                                        <th>{{ __("Selling Price(Exc. Tax)") }}</th>
                                                     @endif
                                                     <th><i class="fas fa-trash-alt"></i></th>
                                                 </tr>
@@ -313,7 +313,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_item')</b></label>
+                                                        <label class="col-4"><b>{{ __("Total Item") }}</b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control fw-bold" id="total_item" value="0.00" tabindex="-1">
                                                         </div>
@@ -322,7 +322,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_quantity')</b></label>
+                                                        <label class="col-4"><b>{{ __("Total Quantity") }}</b></label>
                                                         <div class="col-8">
                                                             <input readonly name="total_qty" type="number" step="any" class="form-control fw-bold" id="total_qty" value="0.00" tabindex="-1">
                                                         </div>
@@ -346,7 +346,7 @@
                                                                     <option value="2">{{ __("Percentage") }}(%)</option>
                                                                 </select>
 
-                                                                <input name="order_discount" type="number" class="form-control fw-bold" id="order_discount" value="0.00" data-next="purchase_tax">
+                                                                <input name="order_discount" type="number" class="form-control fw-bold" id="order_discount" value="0.00" data-next="purchase_tax_ac_id">
 
                                                                 <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                                             </div>
@@ -371,16 +371,16 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.shipment_cost') </b></label>
+                                                        <label class="col-4"><b>{{ __("Shipment Charge") }}</b></label>
                                                         <div class="col-8">
                                                             <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" value="0.00" data-next="shipment_details">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.shipment_details') </b></label>
+                                                        <label class="col-4"><b>{{ __("Shipment Details") }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" placeholder="@lang('menu.shipment_details')">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="paying_amount" placeholder="{{ __("Shipment Details") }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -409,7 +409,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.paying_amount') </b> <strong>>></strong></label>
+                                                        <label class="col-4"><b>{{ __("Paying Amount") }}</b> <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>
@@ -421,10 +421,8 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method ->id }}">
-                                                                        {{ $method->name }}
+                                                                    <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}"
+                                                                        value="{{ $method ->id }}">{{ $method->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -468,7 +466,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>@lang('menu.payment_note') </b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="save_and_print" placeholder="@lang('menu.payment_note')" autocomplete="off">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="purchase_note" placeholder="@lang('menu.payment_note')" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -502,9 +500,9 @@
                 <div class="row justify-content-center">
                     <div class="col-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>@lang('menu.loading')...</span> </button>
-                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">@lang('menu.save_print')</button>
-                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
+                            <button type="submit" id="save_and_print" value="1" class="btn btn-sm btn-success submit_button">{{ __("Save And Print") }}</button>
+                            <button type="submit" id="save" value="2" class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>

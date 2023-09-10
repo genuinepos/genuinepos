@@ -1,6 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Purchases;
+
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Accounts\Account;
+use App\Models\Setups\Warehouse;
+use App\Models\Purchases\Purchase;
+use App\Models\Purchases\PurchaseReturnProduct;
 
 class PurchaseReturn extends BaseModel
 {
@@ -25,11 +32,11 @@ class PurchaseReturn extends BaseModel
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id');
+        return $this->belongsTo(Account::class, 'supplier_account_id');
     }
 
-    public function purchase_return_products()
+    public function purchaseReturnProducts()
     {
-        return $this->hasMany(PurchaseReturnProduct::class);
+        return $this->hasMany(PurchaseReturnProduct::class, 'purchase_return_id');
     }
 }

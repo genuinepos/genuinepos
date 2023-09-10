@@ -38,6 +38,7 @@ return new class extends Migration
             $table->boolean('is_cash_flow')->default(false);
             $table->timestamps();
 
+            $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
             $table->foreign('purchase_product_id')->references('id')->on('purchase_products')->onDelete('cascade');
             $table->foreign('purchase_return_product_id')->references('id')->on('purchase_return_products')->onDelete('cascade');
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 class AccountingVoucherDescriptionService
@@ -9,7 +10,7 @@ class AccountingVoucherDescriptionService
     public function addAccountingVoucherDescription(
         int $accountingVoucherId,
         int $accountId,
-        int $paymentMethodId,
+        ?int $paymentMethodId,
         string $amountType,
         float $amount,
         ?string $transactionNo = null,

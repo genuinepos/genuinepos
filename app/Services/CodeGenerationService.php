@@ -7,9 +7,9 @@ use DB;
 
 class CodeGenerationService implements CodeGenerationServiceInterface
 {
-    public function generate(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    public function generate(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = ''): string
     {
-        $entryRaw = DB::connection($connection)->table($table)->whereNotNull($column)->orderBy($column, 'desc')->first(["$column"]);
+        $entryRaw = DB::table($table)->whereNotNull($column)->orderBy($column, 'desc')->first(["$column"]);
 
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
         $dateTimeStrPrefix = date('ymd');
@@ -41,10 +41,9 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null, ?string $connection = 'mysql'): string
+    public function generateMonthWise(string $table, string $column = 'code', string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null): string
     {
-        $entryRaw = DB::connection($connection)
-            ->table($table)
+        $entryRaw = DB::table($table)
             ->where('branch_id', $branchId)
             ->whereNotNull($column)
             ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
@@ -84,7 +83,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null, ?string $connection = 'mysql'): string
+    public function generateMonthAndTypeWise(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 4, int $size = 13, string $splitter = '-', string $suffixSeparator = '', $branchId = null): string
     {
         $entryRaw = DB::table($table)
             ->whereNotNull($column)
@@ -126,7 +125,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         return $finalStr;
     }
 
-    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?string $connection = 'mysql'): string
+    public function generateAndTypeWiseWithoutYearMonth(string $table, string $column, string $typeColName, string $typeValue = null, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = ''): string
     {
         $entryRaw = DB::table($table)
             ->whereNotNull($column)

@@ -21,12 +21,25 @@
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
             <div class="col-4">
                 @if ($purchase->branch)
-                    @if ($purchase->branch->logo != 'default.png')
 
-                        <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
+                    @if ($purchase?->branch?->parent_branch_id)
+
+                        @if ($purchase->branch?->parentBranch?->logo != 'default.png')
+
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch?->parentBranch?->logo) }}">
+                        @else
+
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch?->parentBranch?->name }}</span>
+                        @endif
                     @else
 
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
+                        @if ($purchase->branch?->logo != 'default.png')
+
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch?->logo) }}">
+                        @else
+
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch?->name }}</span>
+                        @endif
                     @endif
                 @else
                     @if ($generalSettings['business__business_logo'] != null)
@@ -40,11 +53,16 @@
             </div>
 
             <div class="col-8 text-end">
-                <p style="text-transform: uppercase;">
+                <p style="text-transform: uppercase;" class="p-0 m-0">
                     <strong>
-                        @if ($purchase->branch)
+                        @if ($purchase?->branch)
+                            @if ($purchase?->branch?->parent_branch_id)
 
-                            {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
+                                {{ $purchase?->branch?->parentBranch?->name }}
+                            @else
+
+                                {{ $purchase?->branch?->name }}
+                            @endif
                         @else
 
                             {{ $generalSettings['business__shop_name'] }}
@@ -55,7 +73,7 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        {{  $sale->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
+                        {{ $purchase->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
                     @else
 
                         {{ $generalSettings['business__address'] }}
@@ -78,28 +96,28 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>@lang('menu.purchase_invoice')</strong></h4>
+                <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Invoice") }}</strong></h4>
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>@lang('menu.supplier') : </strong><b>{{ $purchase->supplier->name }}</b></li>
-                    <li style="font-size:11px!important;"><strong>@lang('menu.address') : </strong><b>{{ $purchase->supplier->address }}</b></li>
-                    <li style="font-size:11px!important;"><strong>@lang('menu.phone') : </strong><b>{{ $purchase->supplier->phone }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : </strong><b>{{ $purchase->supplier->name }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong><b>{{ $purchase->supplier->address }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong><b>{{ $purchase->supplier->phone }}</b></li>
                 </ul>
             </div>
 
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>@lang('menu.date') : </strong>
+                    <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
                         <b>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}</b>
                     </li>
 
-                    <li style="font-size:11px!important;"><strong>@lang('menu.p_invoice_id') : </strong><b>{{ $purchase->invoice_id }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Invoice ID") }} : </strong><b>{{ $purchase->invoice_id }}</b></li>
 
-                    <li style="font-size:11px!important;"><strong>@lang('menu.payment_status') : </strong>
+                    <li style="font-size:11px!important;"><strong>{{ __("Payment Status") }} : </strong>
                         @php
                             $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                         @endphp
@@ -112,7 +130,7 @@
                         @endif
                     </li>
 
-                    <li style="font-size:11px!important;"><strong>@lang('menu.created_by') : </strong>
+                    <li style="font-size:11px!important;"><strong>{{ __("Created By") }} : </strong>
                         <b>{{ $purchase?->admin?->prefix.' '.$purchase?->admin?->name.' '.$purchase?->admin?->last_name }}</b>
                     </li>
                 </ul>
@@ -123,18 +141,18 @@
             <table class="table modal-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.description')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.quantity')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_cost')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.unit_discount')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.tax')(%)</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Description") }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Quantity") }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Unit Cost (Exc. Tax)") }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Unit Discount") }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Tax") }}</th>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Net Unit Cost') }}</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.lot_number')</th>
-                        <th class="fw-bold text-start" style="font-size:11px!important;">@lang('menu.subtotal')</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Lot Number") }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Subtotal") }}</th>
                     </tr>
                 </thead>
                 <tbody class="purchase_print_product_list">
-                    @foreach ($purchase->purchase_products as $purchaseProduct)
+                    @foreach ($purchase->purchaseProducts as $purchaseProduct)
                         <tr>
                             @php
                                 $variant = $purchaseProduct->variant ? ' - '.$purchaseProduct->variant->variant_name : '';
@@ -144,15 +162,15 @@
                                 <p>{{ Str::limit($purchaseProduct->product->name, 25).' '. $variant }}</p>
                                 <small class="d-block text-muted">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted"><strong>@lang('menu.batch_no') :</strong>  {{ $purchaseProduct->batch_number }}, <strong>@lang('menu.expire_date') :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                    <small class="d-block text-muted"><strong>{{ __("Batch No") }} :</strong>  {{ $purchaseProduct->batch_number }}, <strong>{{ __("Expire Date") }} :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
                             <td class="text-start" style="font-size:11px!important;">
-                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost) }}
+                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost_exc_tax) }}
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_discount) }} </td>
-                            <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->unit_tax.'('.$purchaseProduct->unit_tax_percent.'%)' }}</td>
+                            <td class="text-start" style="font-size:11px!important;">{{ '('.$purchaseProduct->unit_tax_percent.'%)='.$purchaseProduct->unit_tax_amount }}</td>
                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->net_unit_cost) }}</td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->lot_no ? $purchaseProduct->lot_no : '' }}</td>
                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->line_total) }}</td>
@@ -167,35 +185,35 @@
                 <table class="table modal-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.purchase_discount') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Purchase Discount") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($purchase->order_discount_type == 1)
 
-                                    <b>(@lang('menu.fixed')) {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}</b>
+                                    <b>({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}</b>
                                 @else
 
-                                    <b>({{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}%)
+                                    <b>({{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}%=)
                                     {{ App\Utils\Converter::format_in_bdt($purchase->order_discount_amount) }}</b>
                                 @endif
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.purchase_tax') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Purchase Tax") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ '('.$purchase->purchase_tax_percent.'%)'. $purchase->purchase_tax_amount }}</b>
+                                <b>{{ '('.$purchase->purchase_tax_percent.'%)='. $purchase->purchase_tax_amount }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Shipment Charge") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}</b>
                             </td>
@@ -209,16 +227,23 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.paid') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Paid") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->paid) }}</b>
+                                <b>{{ App\Utils\Converter::format_in_bdt($payingAmount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">@lang('menu.due') : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Due (On Invoice)") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</b>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <td class="text-end" style="font-size:11px!important;">
+                                <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
                             </td>
                         </tr>
                     </thead>
@@ -229,15 +254,21 @@
         <br/><br/>
         <div class="row">
             <div class="col-4 text-start">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.prepared_by')</p>
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __("Prepared By") }}
+                </p>
             </div>
 
             <div class="col-4 text-center">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.checked_by')</p>
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __("Checked By") }}
+                </p>
             </div>
 
             <div class="col-4 text-end">
-                <p style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">@lang('menu.authorized_by')</p>
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __("Authorized By") }}
+                </p>
             </div>
         </div>
         <br>
@@ -252,17 +283,17 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">@lang('menu.powered_by') <strong>@lang('menu.speedDigit_software_solution').</strong></small>
+                        <small class="d-block" style="font-size: 9px!important;">{{ __("Powered By") }} <strong>SpeedDigit Software Solution.</strong></small>
                     @endif
                 </div>
 
                 <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">@lang('menu.print_time') : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">{{ __("Print Time") }} : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

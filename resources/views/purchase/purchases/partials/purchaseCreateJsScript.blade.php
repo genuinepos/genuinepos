@@ -67,10 +67,12 @@
         //Update Net Total Amount
         var netTotalAmount = 0;
         var productTotalTaxAmount = 0;
+        var i = 0;
         linetotals.forEach(function(linetotal){
 
             netTotalAmount += parseFloat(linetotal.value);
             productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
+            i++;
         });
 
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
@@ -110,11 +112,10 @@
         var purchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
         $('#purchase_due').val(parseFloat(purchaseDue).toFixed(2));
 
-        var purchaseLedgerAmount = parseFloat(netTotalAmount) +
-            parseFloat(shipmentCharge) -
-            parseFloat(orderDiscountAmount) -
-            parseFloat(productTotalTaxAmount) -
-            parseFloat(purchaseTaxAmount);
+        var purchaseLedgerAmount = parseFloat(netTotalAmount)
+        + parseFloat(shipmentCharge)
+        - parseFloat(orderDiscountAmount)
+        - parseFloat(productTotalTaxAmount);
 
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
     }
@@ -1062,13 +1063,15 @@
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
 
-                    $("#supplier_id").select2("destroy");
-                    $("#supplier_id").select2();
+                    $("#supplier_account_id").select2("destroy");
+                    $("#supplier_account_id").select2();
                 }else{
 
-                    toastr.success('Successfully Purchase Created.');
+                    toastr.success("{{ __('Purchase created successfully.') }}");
                     $('#add_purchase_form')[0].reset();
                     $('#purchase_list').empty();
+                    $("#supplier_account_id").select2("destroy");
+                    $("#supplier_account_id").select2();
 
                     $(data).printThis({
                         debug: false,
@@ -1089,15 +1092,15 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                     return;
                 } else if(err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                     return;
                 }
 
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
@@ -1315,4 +1318,13 @@
             return false;
         }
     }
+
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
 </script>

@@ -15,9 +15,10 @@ class GeneralProductSearchController extends Controller
     ) {
     }
 
-    public function commonSearch($keyWord, $isShowNotForSaleItem = 1, $priceGroupId = null, $type = null)
+    public function commonSearch($keyWord, $isShowNotForSaleItem = 1, $priceGroupId = null, $branchId = null)
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        $__ownBranchIdOrParentBranchId = $branchId ? $branchId : $ownBranchIdOrParentBranchId;
 
         $keyWord = (string) $keyWord;
         $__keyWord = str_replace('~', '/', $keyWord);
@@ -37,7 +38,7 @@ class GeneralProductSearchController extends Controller
         $query->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id');
 
         $query->where('products.product_code', $__keyWord);
-        $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
+        $query->where('product_access_branches.branch_id', $__ownBranchIdOrParentBranchId);
 
         $query->select([
             'products.id',
@@ -73,30 +74,46 @@ class GeneralProductSearchController extends Controller
         return $this->generalProductSearchService->getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId);
     }
 
-    public function singleProductStock($productId, $warehouseId = null)
+    public function singleProductStock($productId, $warehouseId = null, $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
+
         if ($warehouseId) {
 
-            return $this->generalProductSearchService->singleProductWarehouseStock($productId, $warehouseId);
+            return $this->generalProductSearchService->singleProductWarehouseStock($productId, $warehouseId, $__branchId);
         } else {
 
-            return $this->generalProductSearchService->singleProductBranchStock($productId);
+            return $this->generalProductSearchService->singleProductBranchStock($productId, $__branchId);
         }
     }
 
-    public function variantProductStock($productId, $variantId, $warehouseId = null)
+    public function variantProductStock($productId, $variantId, $warehouseId = null, $branchId = null)
     {
+        $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
+
         if ($warehouseId) {
 
-            return $this->generalProductSearchService->variantProductWarehouseStock($productId, $variantId, $warehouseId);
+            return $this->generalProductSearchService->variantProductWarehouseStock($productId, $variantId, $warehouseId, $__branchId);
         } else {
 
-            return $this->generalProductSearchService->variantProductBranchStock($productId, $variantId);
+            return $this->generalProductSearchService->variantProductBranchStock($productId, $variantId, $__branchId);
         }
     }
 
     public function productUnitAndMultiplierUnit($productId)
     {
         return $this->generalProductSearchService->getProductUnitAndMultiplierUnit($productId);
+    }
+
+    function productSearchByOnlyName($keyWord, $branchId = null) {
+
+        $keyWord = (string) $keyWord;
+        $__keyWord = str_replace('~', '/', $keyWord);
+
+        $products = $this->generalProductSearchService->nameSearching(keyword: $keyWord, branchId: $branchId);
+
+        return view('search_results_view.product_search_result_for_report_filter', [
+            'products' => $products->getData()
+        ]);
     }
 }

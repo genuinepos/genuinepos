@@ -60,8 +60,10 @@
                                                                         {{ $method->name }}
                                                                         <input type="hidden" name="payment_method_ids[]" value="{{ $method->id }}">
                                                                     </td>
+                                                                    
                                                                     <td class="text-start">
                                                                         <select name="account_ids[]" class="form-control">
+                                                                            <option value="">{{ __("None") }}</option>
                                                                             @foreach ($accounts as $ac)
                                                                                 @php
                                                                                     $methodSetting = $method?->paymentMethodSetting;

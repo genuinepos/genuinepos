@@ -41,7 +41,6 @@ return new class extends Migration
             $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
             $table->foreign('purchase_product_id')->references('id')->on('purchase_products')->onDelete('cascade');
             $table->foreign('purchase_return_product_id')->references('id')->on('purchase_return_products')->onDelete('cascade');
-
             $table->foreign(['account_id'])->references(['id'])->on('accounts')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['adjustment_id'])->references(['id'])->on('stock_adjustments')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
@@ -53,7 +52,6 @@ return new class extends Migration
             $table->foreign(['purchase_return_id'])->references(['id'])->on('purchase_returns')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['sale_id'])->references(['id'])->on('sales')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['sale_return_id'])->references(['id'])->on('sale_returns')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['voucher_description_id'])->references(['id'])->on('accounting_voucher_descriptions')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

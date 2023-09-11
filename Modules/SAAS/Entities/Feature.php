@@ -15,4 +15,9 @@ class Feature extends Model
     {
         return $this->belongsToMany(Plan::class, 'plan_features', 'feature_id', 'plan_id');
     }
+
+    public function getDisplayNameAttribute()
+    {
+        return str($this->name)->headline();
+    }
 }

@@ -21,4 +21,15 @@ class Plan extends Model
         return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
             ->withPivot(['capacity']);
     }
+
+    public function getPeriodTypeAttribute()
+    {
+        return match ($this->period_month) {
+            1 => __('Monthly'),
+            3 => __('Quarterly'),
+            6 => __('Half Yearly'),
+            12 => __('Yearly'),
+            default => __('Per') . ' ' . $this->period_month . ' ' .  __('Month'),
+        };
+    }
 }

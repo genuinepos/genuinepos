@@ -14,4 +14,11 @@ class PlanSelectController extends Controller
             'plans' => Plan::where('status', 1)->paginate(),
         ]);
     }
+
+    public function show(Plan $plan)
+    {
+        return view('saas::guest.plan-detail', [
+            'plan' => $plan,
+        ]);
+    }
 }

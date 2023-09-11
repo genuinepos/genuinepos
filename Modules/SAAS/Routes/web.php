@@ -43,5 +43,6 @@ Route::prefix('saas')->group(function () {
     });
 
     // All (Auth + Guest) Users
-    Route::get('select-plan', [PlanSelectController::class, 'index'])->name('select-plan');
+    Route::get('select-plan', [PlanSelectController::class, 'index'])->name('select-plan.index');
+    Route::get('select-plan/{plan}', [PlanSelectController::class, 'show'])->name('select-plan.show');
 });

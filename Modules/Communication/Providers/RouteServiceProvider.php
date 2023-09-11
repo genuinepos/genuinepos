@@ -2,8 +2,10 @@
 
 namespace Modules\Communication\Providers;
 
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -47,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web', 'auth'])
+        Route::middleware(['web', 'auth', InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])
             ->namespace($this->moduleNamespace)
             ->group(module_path('Communication', '/Routes/web.php'));
     }
@@ -61,8 +63,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-            ->middleware('api')
+        Route::middleware(['api', 'auth', InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])
+            ->prefix('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Communication', '/Routes/api.php'));
     }

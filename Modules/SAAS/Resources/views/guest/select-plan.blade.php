@@ -1,8 +1,8 @@
 <x-saas::guest title="Welcome">
     <div class="container mt-3">
-        <div class="card mb-5">
+        <div class="card pb-5">
             <div class="card-header">
-                <h5>{{ __('Plans') }}</h5>
+                <h5>{{ __('Select Your Plan') }}</h5>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -12,10 +12,11 @@
                                 <div class="card-header">{{ $plan->name }}</div>
                                 <div class="card-body text-dark">
                                     <h5 class="card-title">Type: {{ $plan->periodType }}</h5>
-                                    <p class="card-text" style="min-height: 80px;">{!! Str::limit($plan->description, 100, '...') !!}</p>
+                                    <p class="card-text" style="height: 80px;">
+                                        {!! strip_tags(Str::limit($plan->description, 120, '...')) !!}</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ route('saas.select-plan.show', $plan->id) }}"
+                                    <a href="{{ route('saas.select-plan.show', $plan->slug) }}"
                                         class="btn btn-primary btn-sm">{{ __('Details') }}</a>
                                 </div>
                             </div>

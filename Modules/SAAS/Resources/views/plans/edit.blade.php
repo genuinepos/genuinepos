@@ -19,6 +19,11 @@
                                     <input type="text" class="form-control" name="name"
                                         placeholder="Enter Plan Name" required value="{{ $plan->name }}">
                                 </div>
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">{{ __('URL Slug') }} ({{ __("Keep empty to get auto-generated slug") }})</label>
+                                    <input type="text" class="form-control" name="slug"
+                                        placeholder="{{ __("Enter URL Slug") }}" value="{{ $plan->slug }}">
+                                </div>
                                 <div class="mb-2">
                                     <label for="period_month" class="form-label">{{ __('Period Month') }}</label>
                                     <input type="number" class="form-control" name="period_month"

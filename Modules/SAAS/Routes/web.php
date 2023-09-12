@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\PlanController;
-use Modules\SAAS\Http\Controllers\ProfileController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\RoleController;
-use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\UserController;
+use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -21,16 +21,20 @@ Route::prefix('saas')->group(function () {
         Route::get('login', [LoginController::class, 'showForm'])->name('login.showForm');
         Route::post('login', [LoginController::class, 'login'])->name('login');
     });
+    Route::middleware(['is_guest', 'verified'])->group(function () {
+    });
 
     // Authenticated Users
-    Route::middleware('is_auth')->group(function () {
+    Route::middleware(['is_auth', 'verified'])->group(function () {
         Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
+
         Route::prefix('dashboard')->group(function () {
             Route::controller(DashboardController::class)->group(function () {
                 Route::get('/', 'index')->name('dashboard');
             });
             Route::resource('tenants', TenantController::class);
         });
+
         Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
         Route::resource('plans', PlanController::class);
@@ -44,5 +48,5 @@ Route::prefix('saas')->group(function () {
 
     // All (Auth + Guest) Users
     Route::get('select-plan', [PlanSelectController::class, 'index'])->name('select-plan.index');
-    Route::get('select-plan/{plan}', [PlanSelectController::class, 'show'])->name('select-plan.show');
+    Route::get('select-plan/{slug}', [PlanSelectController::class, 'show'])->name('select-plan.show');
 });

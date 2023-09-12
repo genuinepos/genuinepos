@@ -2,11 +2,12 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Modules\SAAS\Entities\Plan;
 use Illuminate\Routing\Controller;
 use Modules\SAAS\Entities\Feature;
-use Modules\SAAS\Entities\Plan;
+use Illuminate\Contracts\Support\Renderable;
 
 class PlanController extends Controller
 {
@@ -48,6 +49,7 @@ class PlanController extends Controller
         abort_unless(auth()->user()->can('plans_store'), 403);
         $plan = Plan::create([
             'name' => $request->name,
+            'slug' => $request->slug ?? Str::slug($request->slug),
             'price' => $request->price,
             'description' => $request->description,
             'period_month' => $request->period_month,
@@ -66,7 +68,6 @@ class PlanController extends Controller
     public function show($id)
     {
         abort_unless(auth()->user()->can('plans_show'), 403);
-
         return view('saas::plans.show');
     }
 
@@ -95,12 +96,12 @@ class PlanController extends Controller
         $plan = Plan::find($id);
         $plan->update([
             'name' => $request->name,
+            'slug' => $request->slug ?? Str::slug($request->slug),
             'price' => $request->price,
             'description' => $request->description,
             'period_month' => $request->period_month,
         ]);
         $plan->features()->sync($request->feature_id);
-
         return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');
     }
 
@@ -114,7 +115,6 @@ class PlanController extends Controller
     {
         $plan = Plan::find($id);
         $plan->delete();
-
         return redirect(route('saas.plans.index'))->with('success', 'Plan deleted successfully!');
     }
 }

@@ -16,22 +16,27 @@
                                 <div class="mb-4">
                                     <label for="name" class="form-label">{{ __('Plan Name') }}</label>
                                     <input type="text" class="form-control" name="name"
-                                        placeholder="Enter Plan Name" required>
+                                        placeholder="{{ __("Enter Plan Name") }}" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">{{ __('URL Slug') }} ({{ __("Keep empty to get auto-generated slug") }})</label>
+                                    <input type="text" class="form-control" name="slug"
+                                        placeholder="{{ __("Enter URL Slug") }}">
                                 </div>
                                 <div class="mb-4">
                                     <label for="period_month" class="form-label">{{ __('Period Month') }}</label>
                                     <input type="number" class="form-control" name="period_month"
-                                        placeholder="Enter Period Month. i.e.; 1 for Monthly and 12 for Yearly Plan"
+                                        placeholder="{{ __("Enter Period Month. i.e.; 1 for Monthly and 12 for Yearly Plan") }}"
                                         required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="price" class="form-label">{{ __('Price') }}</label>
                                     <input type="number" min="1" step="0.000001" class="form-control"
-                                        name="price" placeholder="Enter Price" required>
+                                        name="price" placeholder="{{ __("Enter Price") }}" required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="description" class="form-label">{{ __('Description') }}</label>
-                                    <textarea class="form-control editor" name="description" placeholder="Enter Description" rows="4"></textarea>
+                                    <textarea class="form-control editor" name="description" placeholder="{{ __("Enter Description") }}" rows="4"></textarea>
                                 </div>
                                 <div class="">
                                     <h6>{{ __('Assign Features') }}</h6>

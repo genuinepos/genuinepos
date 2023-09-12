@@ -36,7 +36,6 @@ class LoginController extends Controller
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect()->to(route('saas.welcome-page'))->with('error', 'Logged out!');
+        return redirect()->to(route('saas.welcome-page'));
     }
 }

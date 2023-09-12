@@ -85,7 +85,7 @@
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
                                                         <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                            <i class="fas fa-funnel-dollar"></i> @lang('menu.filter')
+                                                            <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -144,7 +144,7 @@
                                 </div>
                             </div>
 
-                            <form id="deleted_form" action="" method="post">
+                            <form id="delete_form" action="" method="post">
                                 @method('DELETE')
                                 @csrf
                             </form>
@@ -231,8 +231,8 @@
             return sum;
         }
 
-         //Submit filter form by select input changing
-         $(document).on('submit', '#filter_form', function (e) {
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -268,22 +268,24 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e){
+
             e.preventDefault();
+
             var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
+            $('#delete_form').attr('action', url);
             $.confirm({
                 'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() { $('#delete_form').submit(); }},
                     'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
                 }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form', function(e) {
+        $(document).on('submit', '#delete_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();

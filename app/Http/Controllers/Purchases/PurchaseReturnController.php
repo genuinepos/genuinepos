@@ -78,6 +78,33 @@ class PurchaseReturnController extends Controller
         return view('purchase.purchase_return.index', compact('branches', 'supplierAccounts'));
     }
 
+    public function show($id)
+    {
+        $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
+            'supplier:id,name,phone,address',
+            'createdBy:id,prefix,name,last_name',
+            'purchaseReturnProducts',
+            'purchaseReturnProducts.product',
+            'purchaseReturnProducts.variant',
+            'purchaseReturnProducts.branch:id,name,branch_code,area_name,parent_branch_id',
+            'purchaseReturnProducts.branch.parentBranch:id,name,branch_code,area_name',
+            'purchaseReturnProducts.warehouse:id,warehouse_name,warehouse_code',
+            'purchaseReturnProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
+
+            'references:id,voucher_description_id,purchase_return_id,amount',
+            'references.voucherDescription:id,accounting_voucher_id',
+            'references.voucherDescription.accountingVoucher:id,voucher_no,date,voucher_type',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions:id,accounting_voucher_id,account_id,payment_method_id',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.paymentMethod:id,name',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account:id,name,account_number,account_group_id,bank_id,bank_branch',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.bank:id,name',
+            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
+        ]);
+
+        return view('purchase.purchase_return.ajax_view.show', compact('return'));
+    }
+
     // create purchase return view
     public function create()
     {
@@ -151,11 +178,6 @@ class PurchaseReturnController extends Controller
             'supplier_account_id.required' => __("Supplier is required."),
         ]);
 
-        if (isset($request->warehouse_count)) {
-
-            $this->validate($request, ['warehouse_id' => 'required']);
-        }
-
         try {
 
             DB::beginTransaction();
@@ -216,7 +238,7 @@ class PurchaseReturnController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
 
                 // Add Credit Account Accounting voucher Description
-                $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount);
+                $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->received_amount);
 
                 // Add Accounting VoucherDescription References
                 $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$addReturn->id]);
@@ -240,6 +262,12 @@ class PurchaseReturnController extends Controller
                 }
 
                 $__index++;
+            }
+
+            if ($request->purchase_id) {
+
+                $purchase = $this->purchaseService->singlePurchase(id: $request->purchase_id);
+                $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
             }
 
             DB::commit();
@@ -269,89 +297,265 @@ class PurchaseReturnController extends Controller
         }
     }
 
-    // Show purchase return details
-    // public function show($returnId)
-    // {
-    //     $return = PurchaseReturn::with([
-    //         'purchase',
-    //         'warehouse',
-    //         'branch',
-    //         'supplier',
-    //         'purchase_return_products',
-    //         'purchase_return_products.product',
-    //         'purchase_return_products.variant',
-    //         'purchase_return_products.purchase_product',
-    //     ])->where('id', $returnId)->first();
+    public function edit($id)
+    {
+        $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
+            'supplier:id,name,phone,address',
+            'createdBy:id,prefix,name,last_name',
+            'purchaseReturnProducts',
+            'purchaseReturnProducts.purchaseProduct',
+            'purchaseReturnProducts.product',
+            'purchaseReturnProducts.variant',
+            'purchaseReturnProducts.branch:id,name,branch_code,area_name,parent_branch_id',
+            'purchaseReturnProducts.branch.parentBranch:id,name,branch_code,area_name',
+            'purchaseReturnProducts.warehouse:id,warehouse_name,warehouse_code',
+            'purchaseReturnProducts.product.unit:id,name,code_name',
+            'purchaseReturnProducts.product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseReturnProducts.unit:id,name,code_name,base_unit_multiplier',
+        ]);
 
-    //     return view('purchases.purchase_return.ajax_view.show', compact('return'));
-    // }
+        $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;
+
+        $generalSettings = config('generalSettings');
+        $branchName = $generalSettings['business__shop_name'];
+        if ($return?->branch?->branch) {
+
+            if ($return?->branch?->branch->parentBranch) {
+
+                $branchName = $return?->branch?->branch->parentBranch?->name . '(' . $return?->branch?->branch->parentBranch?->area_name . ')';
+            } else {
+
+                $branchName = $return?->branch?->branch?->name . '(' . $return?->branch?->branch?->area_name . ')';
+            }
+        }
+
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', $return->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
+
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
+
+        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+
+        $purchaseAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 12)
+            ->where('accounts.branch_id', $return->branch_id)
+            ->get(['accounts.id', 'accounts.name']);
+
+        $warehouses = $this->warehouseService->warehouses()->where('branch_id', $return->branch_id)
+            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->where('accounts.branch_id', $return->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('purchase.purchase_return.edit', compact('return', 'accounts', 'methods', 'purchaseAccounts', 'warehouses', 'taxAccounts', 'supplierAccounts', 'branchName'));
+    }
+
+    public function update($id, Request $request, CodeGenerationService $codeGenerator)
+    {
+        $this->validate($request, [
+            'supplier_account_id' => 'required',
+            'date' => 'required|date',
+            'payment_method_id' => 'required',
+            'purchase_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'purchase_account_id.required' => __("Purchase A/c is required."),
+            'account_id.required' => __("Credit field must not be is empty."),
+            'payment_method_id.required' => __("Payment method field is required."),
+            'supplier_account_id.required' => __("Supplier is required."),
+        ]);
+
+        $restrictions = $this->purchaseReturnService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseReturnId: $id);
+        if ($restrictions['pass'] == false) {
+
+            return response()->json(['errorMsg' => $restrictions['msg']]);
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $generalSettings = config('generalSettings');
+            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+
+            $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: ['purchaseReturnProducts']);
+
+            $storedCurrParentPurchaseId = $return->purchase_id;
+            $storedCurrPurchaseAccountId = $return->purchase_account_id;
+            $storedCurrSupplierAccountId = $return->supplier_account_id;
+            $storedCurrReturnTaxAccountId = $return->return_tax_ac_id;
+
+            $updateReturn = $this->purchaseReturnService->updatePurchaseReturn(request: $request, updatePurchaseReturn: $return);
+
+            // Update Day Book entry for Purchase
+            $this->dayBookService->updateDayBook(voucherTypeId: 6, date: $request->date, accountId: $request->supplier_account_id, transId: $updateReturn->id, amount: $request->total_return_amount, amountType: 'debit');
+
+            // Update supplier A/c ledger Entry For Purchase
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, account_id: $request->supplier_account_id, date: $request->date, trans_id: $updateReturn->id, amount: $request->total_return_amount, amount_type: 'debit', branch_id: $updateReturn->branch_id);
+
+            // Update Purchase A/c Ledger Entry
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, date: $request->date, account_id: $request->purchase_account_id, trans_id: $updateReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
+
+            if ($request->return_tax_ac_id) {
+
+                // Update Tax A/c ledger Entry For Purchase
+                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $updateReturn->id, amount: $request->return_tax_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
+            } else {
+
+                $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 4, transId: $updateReturn->id, accountId: $storedCurrReturnTaxAccountId);
+            }
+
+            $index = 0;
+            foreach ($request->product_ids as $productId) {
+
+                $updatePurchaseReturnProduct = $this->purchaseReturnProductService->updatePurchaseReturnProduct(request: $request, purchaseReturnId: $updateReturn->id, index: $index);
+
+                // Update Product Ledger Entry
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $updatePurchaseReturnProduct->id, rate: $updatePurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $updatePurchaseReturnProduct->return_qty, subtotal: $updatePurchaseReturnProduct->return_subtotal, variantId: $updatePurchaseReturnProduct->variant_id, warehouseId: ($updatePurchaseReturnProduct->warehouse_id ? $updatePurchaseReturnProduct->warehouse_id : null), branchId: $updateReturn->branch_id);
+
+                if ($updatePurchaseReturnProduct->tax_ac_id) {
+
+                    // Update Tax A/c ledger Entry
+                    $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 19, date: $request->date, account_id: $updatePurchaseReturnProduct->tax_ac_id, trans_id: $updatePurchaseReturnProduct->id, amount: ($updatePurchaseReturnProduct->unit_tax_amount * $updatePurchaseReturnProduct->return_qty), amount_type: 'credit', branch_id: $updateReturn->branch_id);
+                } else {
+
+                    $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 19, transId: $updatePurchaseReturnProduct->id, accountId: $updatePurchaseReturnProduct->current_tax_ac_id);
+                }
+
+                $index++;
+            }
+
+            if ($request->received_amount > 0) {
+
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->receipt_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, purchaseReturnRefId: $updateReturn->id);
+
+                // Add Accounting Voucher Description Credit Entry
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'dr', amount: $request->received_amount, note: null);
+
+                //Add debit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+
+                // Add Credit Account Accounting voucher Description
+                $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->received_amount);
+
+                // Add Accounting VoucherDescription References
+                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$updateReturn->id]);
+
+                //Add Credit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
+            }
+
+            $__index = 0;
+            foreach ($request->product_ids as $productId) {
+
+                $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
+                $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
+
+                if (isset($request->warehouse_ids[$__index])) {
+
+                    $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
+                } else {
+
+                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: $updateReturn->branch_id);
+                }
+
+                $__index++;
+            }
+
+            $deletedUnusedPurchaseReturnProducts = $this->purchaseReturnProductService->purchaseReturnProducts()->where('purchase_return_id', $updateReturn->id)->where('is_delete_in_update', 1)->get();
+            if (count($deletedUnusedPurchaseReturnProducts) > 0) {
+
+                foreach ($deletedUnusedPurchaseReturnProducts as $deletedUnusedPurchaseReturnProduct) {
+
+                    $deletedUnusedPurchaseReturnProduct->delete();
+
+                    // Adjust deleted product stock
+                    $this->productStockService->adjustMainProductAndVariantStock($deletedUnusedPurchaseReturnProduct->product_id, $deletedUnusedPurchaseReturnProduct->variant_id);
+
+                    if (isset($deletedUnusedPurchaseReturnProduct->warehouse_id)) {
+
+                        $this->productStockService->adjustWarehouseStock($deletedUnusedPurchaseReturnProduct->product_id, $deletedUnusedPurchaseReturnProduct->variant_id, $deletedUnusedPurchaseReturnProduct->warehouse_id);
+                    } else {
+
+                        $this->productStockService->adjustBranchStock($deletedUnusedPurchaseReturnProduct->product_id, $deletedUnusedPurchaseReturnProduct->variant_id, $updateReturn->branch_id);
+                    }
+                }
+            }
+
+            if ($request->purchase_id) {
+
+                $purchase = $this->purchaseService->singlePurchase(id: $request->purchase_id);
+                $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
+            }
+
+            if ($storedCurrParentPurchaseId) {
+
+                $purchase = $this->purchaseService->singlePurchase(id: $storedCurrParentPurchaseId);
+                $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__("Purchase return updated Successfully."));
+    }
 
     //Deleted purchase return
-    // public function delete($purchaseReturnId)
-    // {
-    //     $purchaseReturn = PurchaseReturn::with(['purchase', 'purchase.supplier', 'supplier', 'purchase_return_products'])->where('id', $purchaseReturnId)->first();
-    //     $storeReturnProducts = $purchaseReturn->purchase_return_products;
-    //     $storePurchase = $purchaseReturn->purchase;
-    //     $storedReturnType = $purchaseReturn->return_type;
-    //     $storedBranchId = $purchaseReturn->branch_id;
-    //     $storedWarehouseId = $purchaseReturn->warehouse_id;
-    //     $storePurchaseReturnAccountId = $purchaseReturn->purchase_return_account_id;
-    //     $storeSupplierId = $purchaseReturn->purchase ? $purchaseReturn->purchase->supplier_id : $purchaseReturn->supplier_id;
+    public function delete($id)
+    {
+        try {
 
-    //     if ($purchaseReturn->return_type == 1) {
+            DB::beginTransaction();
 
-    //         $purchaseReturn->purchase->is_return_available = 0;
+            $deletePurchaseReturn = $this->purchaseReturnService->deletePurchaseReturn(id: $id);
 
-    //         if ($purchaseReturn->total_return_due_received > 0) {
+            if (isset($deletePurchaseReturn['pass']) && $deletePurchaseReturn['pass'] == false) {
 
-    //             return response()->json(['errorMsg' => 'You can not delete this, cause your have received some or full amount on this return.']);
-    //         }
-    //     } else {
+                return response()->json(['errorMsg' => $deletePurchaseReturn['msg']]);
+            }
 
-    //         if ($purchaseReturn->total_return_due_received > 0) {
+            foreach ($deletePurchaseReturn->purchaseReturnProducts as $returnProduct) {
 
-    //             return response()->json(['errorMsg' => 'You can not delete this, cause your have received some or full amount on this return.']);
-    //         }
-    //     }
-    //     $purchaseReturn->delete();
+                $this->productStockService->adjustMainProductAndVariantStock($returnProduct->product_id, $variantId);
 
-    //     foreach ($storeReturnProducts as $return_product) {
+                if ($deletePurchase->warehouse_id) {
 
-    //         $this->productStockUtil->adjustMainProductAndVariantStock($return_product->product_id, $return_product->product_variant_id);
+                    $this->productStockService->adjustWarehouseStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->warehouse_id);
+                } else {
 
-    //         if ($storedReturnType == 1) {
+                    $this->productStockService->adjustBranchStock($returnProduct->product_id, $variantId, $deletePurchaseReturn->branch_id);
+                }
+            }
 
-    //             if ($storePurchase->warehouse_id) {
+            if ($deletePurchaseReturn->purchase) {
 
-    //                 $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->warehouse_id);
-    //             } else {
+                $this->purchaseService->adjustPurchaseInvoiceAmounts($deletePurchaseReturn->purchase);
+            }
 
-    //                 $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storePurchase->branch_id);
-    //             }
-    //         } else {
+            DB::commit();
+        } catch (Exception $e) {
 
-    //             if ($storedWarehouseId) {
+            DB::rollBack();
+        }
 
-    //                 $this->productStockUtil->adjustWarehouseStock($return_product->product_id, $return_product->product_variant_id, $storedWarehouseId);
-    //             } else {
-
-    //                 $this->productStockUtil->adjustBranchStock($return_product->product_id, $return_product->product_variant_id, $storedBranchId);
-    //             }
-    //         }
-    //     }
-
-    //     if ($storePurchase) {
-
-    //         $this->purchaseUtil->adjustPurchaseInvoiceAmounts($storePurchase);
-    //     }
-
-    //     if ($storePurchaseReturnAccountId) {
-
-    //         $this->accountUtil->adjustAccountBalance('credit', $storePurchaseReturnAccountId);
-    //     }
-
-    //     $this->supplierUtil->adjustSupplierForPurchasePaymentDue($storeSupplierId);
-
-    //     return response()->json('Successfully purchase return is deleted');
-    // }
+        return response()->json('Purchase return deleted successfully');
+    }
 }

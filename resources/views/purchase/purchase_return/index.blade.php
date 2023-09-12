@@ -12,20 +12,20 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-undo-alt"></span>
-                                <h5>@lang('menu.purchase_return')</h5>
+                                <h5>{{ __("Purchase Returns") }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                                    class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                                    class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Bank") }}</a>
                         </div>
 
                     </div>
 
-                    <div class="p-3">
+                    <div class="p-1">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form_element rounded mt-0 mb-3">
+                                <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body">
-                                        <form action="" method="get">
+                                        <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-2">
@@ -77,6 +77,15 @@
                                                         <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-2">
+                                                    <label><strong></strong></label>
+                                                    <div class="input-group">
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
+                                                            <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -87,11 +96,11 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>{{ __('All Purchase Returns') }}</h6>
+                                    <h6>{{ __('List Of Purchase Returns') }}</h6>
                                 </div>
                                 @if(auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.returns.supplier.return') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add_return')</a>
+                                        <a href="{{ route('purchase.returns.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add New") }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -102,19 +111,24 @@
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     {{-- <table class="display data_tbl data__table"> --}}
-                                    <table class="display data_tbl modal-table table-sm table-striped">
+                                    <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>@lang('menu.action')</th>
-                                                <th>@lang('menu.date')</th>
-                                                <th>@lang('menu.return_invoice_id')</th>
-                                                <th>@lang('menu.parent_purchase')</th>
-                                                <th>@lang('menu.supplier_name')</th>
-                                                <th>@lang('menu.location')</th>
-                                                <th>@lang('menu.return_from')</th>
-                                                <th>@lang('menu.payment_status')</th>
-                                                <th>@lang('menu.return_amount')</th>
-                                                <th>@lang('menu.payment_due')</th>
+                                                <th class="fw-bold">{{ __("Action") }}</th>
+                                                <th>{{ __("Date") }}</th>
+                                                <th>{{ __("Voucher No") }}</th>
+                                                <th>{{ __("Parent Purchase") }}</th>
+                                                <th>{{ __("Supplier") }}</th>
+                                                <th>{{ __("Branch") }}</th>
+                                                <th>{{ __("Payment Status") }}</th>
+                                                <th>{{ __("Total Qty") }}</th>
+                                                <th>{{ __("Net Total Amount") }}</th>
+                                                <th>{{ __("Return Discount") }}</th>
+                                                <th>{{ __("Return Tax") }}</th>
+                                                <th>{{ __("Total Returned Amount") }}</th>
+                                                <th>{{ __("Received Amount") }}</th>
+                                                <th>{{ __("Due") }}</th>
+                                                <th>{{ __("Created By") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -122,7 +136,7 @@
                                 </div>
                             </div>
 
-                            <form id="deleted_form" action="" method="post">
+                            <form id="delete_form" action="" method="post">
                                 @method('DELETE')
                                 @csrf
                             </form>
@@ -133,69 +147,8 @@
         </div>
     </div>
 
-    <div id="purchase_return_details">
-
-    </div>
-
-    @if(auth()->user()->can('purchase_payment'))
-    <!--Payment list modal-->
-    <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_list_modal_body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Payment list modal-->
-
-    <!--Add Payment modal-->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-
-    </div>
-    <!--Add Payment modal-->
-
-    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content payment_details_contant">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details') (<span
-                            class="payment_invoice"></span>)</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="payment_details_area">
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                <li class="mt-1" id="payment_attachment"></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <ul class="list-unstyled">
-                                <li class="mt-1">
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange">@lang('menu.close')</button>
-                                    <button type="submit" id="print_payment" class="c-btn me-0 button-success">@lang('menu.print')</button>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
+    <div id="details"></div>
+    <div id="extra_details"></div>
 @endsection
 @push('scripts')
 <script type="text/javascript" src="{{ asset('assets/plugins/custom/moment/moment.min.js') }}"></script>
@@ -207,7 +160,7 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        var table = $('.data_tbl').DataTable({
+        var purchaseReturnsTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
@@ -220,47 +173,107 @@
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('purchases.returns.index') }}",
+                "url": "{{ route('purchase.returns.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
-                    d.supplier_id = $('#supplier_id').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                    d.supplier_account_id = $('#supplier_account_id').val();
+                    d.from_date = $('#from_date').val();
+                    d.to_date = $('#to_date').val();
                 }
             },
-            columnDefs: [{
-                "targets": [2, 3, 4, 5, 6, 9],
-                "orderable": false,
-                "searchable": false
-            }],
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
-                {data: 'voucher_no',name: 'voucher_no'},
-                {data: 'parent_invoice_id',name: 'parent_invoice_id'},
-                {data: 'supplier', name: 'supplier'},
-                {data: 'location',name: 'branches.name'},
-                {data: 'return_from',name: 'warehouses.name'},
-                {data: 'payment_status',name: 'payment_status'},
-                {data: 'total_return_amount',name: 'total_return_amount', className: 'text-end'},
-                {data: 'total_return_due',name: 'total_return_due', className: 'text-end'},
+                {data: 'voucher',name: 'voucher_no', className: 'fw-bold'},
+                {data: 'parent_invoice_id',name: 'parent_invoice_id', className: 'fw-bold'},
+                {data: 'supplier_name', name: 'suppliers.name'},
+                {data: 'branch',name: 'branches.name'},
+                {data: 'payment_status', name: 'parentBranch.name'},
+                {data: 'total_qty', name: 'voucher_no', className: 'text-end fw-bold'},
+                {data: 'net_total_amount', name: 'voucher_no', className: 'text-end fw-bold'},
+                {data: 'return_discount', name: 'net_total_amount', className: 'text-end fw-bold'},
+                {data: 'return_tax_amount', name: 'total_return_due', className: 'text-end fw-bold'},
+                {data: 'total_return_amount', name: 'total_return_due', className: 'text-end fw-bold'},
+                {data: 'received', name: 'total_return_due', className: 'text-end fw-bold'},
+                {data: 'due', name: 'total_return_due', className: 'text-end fw-bold'},
+                {data: 'createdBy', name: 'createdBy.name', className: 'text-end fw-bold'},
+            ],fnDrawCallback: function() {
 
-            ],
+                $('.data_preloader').hide();
+            }
         });
 
-        $(document).on('click', '.details_button', function(e) {
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
-            var url = $(this).attr('href');
+
             $('.data_preloader').show();
-            $.get(url, function(data) {
-                $('#purchase_return_details').html(data);
-                $('.data_preloader').hide();
-                $('#detailsModal').modal('show');
+            purchaseReturnsTable.ajax.reload();
+        });
+
+        // Show details modal with data
+        $(document).on('click', '#details_btn', function(e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#details').html(data);
+                    $('#detailsModal').modal('show');
+                    $('.data_preloader').hide();
+                },error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
+            e.preventDefault();
+
+            var body = $('.print_modal_details').html();
+
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
+            });
+        });
+
+        $(document).on('click', '#delete', function(e){
+
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            $('#delete_form').attr('action', url);
+            $.confirm({
+                'title': 'Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() { $('#delete_form').submit(); }},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#delete_form',function(e){
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
@@ -272,15 +285,11 @@
                     if (!$.isEmptyObject(data.errorMsg)) {
                         toastr.error(data.errorMsg);
                     }else{
-                        table.ajax.reload();
+                        purchaseReturnsTable.ajax.reload();
                         toastr.error(data);
                     }
                 }
             });
-        });
-
-        $(document).on('input', '.from_date', function () {
-            table.ajax.reload();
         });
     </script>
 

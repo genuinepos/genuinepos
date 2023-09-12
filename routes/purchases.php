@@ -28,6 +28,8 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::get('create', 'create')->name('purchase.returns.create');
         Route::post('store', 'store')->name('purchase.returns.store');
         Route::get('edit/{id}', 'edit')->name('purchase.returns.edit');
+        Route::post('update/{id}', 'update')->name('purchase.returns.update');
+        Route::delete('delete/{id}', 'delete')->name('purchase.returns.delete');
     });
 
 

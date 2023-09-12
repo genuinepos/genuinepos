@@ -2,17 +2,19 @@
 
 namespace App\Models\Purchases;
 
+use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Setups\Warehouse;
 use App\Models\Purchases\Purchase;
+use App\Models\Accounts\AccountingVoucher;
 use App\Models\Purchases\PurchaseReturnProduct;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class PurchaseReturn extends BaseModel
 {
     protected $guarded = [];
-
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase()
@@ -38,5 +40,20 @@ class PurchaseReturn extends BaseModel
     public function purchaseReturnProducts()
     {
         return $this->hasMany(PurchaseReturnProduct::class, 'purchase_return_id');
+    }
+
+    public function references()
+    {
+        return $this->hasMany(AccountingVoucherDescriptionReference::class, 'purchase_return_id');
+    }
+
+    public function accountingVouchers()
+    {
+        return $this->hasMany(AccountingVoucher::class, 'purchase_return_ref_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 }

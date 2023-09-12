@@ -92,7 +92,6 @@
                                         {{ $generalSettings['business__shop_name'] }}
                                     @endif
                                 @endif
-
                             </li>
                         </ul>
                     </div>
@@ -160,12 +159,12 @@
                  </div>
 
                  <div class="row">
-                     <div class="col-md-7">
-                        <p class="fw-bold">{{ __("Payments Against Purchase") }}</p>
-                        @include('purchase.purchases.ajax_view.partials.purchase_details_payment_list')
-                     </div>
+                    <div class="col-md-7">
+                    <p class="fw-bold">{{ __("Payments Against Purchase") }}</p>
+                    @include('purchase.purchases.ajax_view.partials.purchase_details_payment_list')
+                    </div>
 
-                     <div class="col-md-5">
+                    <div class="col-md-5">
                          <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>

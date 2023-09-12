@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->double('price');
+            $table->double('price', 10, 2);
             $table->integer('period_month');
             $table->boolean('status')->default(true);
             $table->softDeletes();

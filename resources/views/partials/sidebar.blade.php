@@ -876,7 +876,7 @@
                                     @if (auth()->user()->can('purchase_return'))
                                         <div class="sub-menu-row">
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.order.create') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchase.orders.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-plus-circle"></i></span>
@@ -887,13 +887,13 @@
                                             </div>
 
                                             <div class="sub-menu-col">
-                                                <a href="{{ route('purchases.order.index') }}" class="switch-bar-wrap">
+                                                <a href="{{ route('purchase.orders.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
                                                             <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">@lang('menu.po_list')</p>
+                                                    <p class="switch_text">{{ __("P/o List") }}</p>
                                                 </a>
                                             </div>
                                         </div>

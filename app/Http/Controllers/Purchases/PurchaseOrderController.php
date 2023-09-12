@@ -1,35 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Purchases;
 
-use App\Models\Setups\PaymentMethod;
-use App\Models\Purchase;
-use App\Utils\AccountUtil;
-use App\Utils\InvoiceVoucherRefIdUtil;
-use App\Utils\ProductUtil;
-use App\Utils\PurchaseOrderProductUtil;
-use App\Utils\PurchaseOrderUtil;
-use App\Utils\PurchaseUtil;
-use App\Utils\SupplierPaymentUtil;
-use App\Utils\SupplierUtil;
-use App\Utils\UserActivityLogUtil;
-use App\Utils\Util;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\CodeGenerationService;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Setups\BranchSettingService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Purchases\PurchaseOrderService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Purchases\PurchaseOrderProductService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseOrderController extends Controller
 {
     public function __construct(
-        private PurchaseUtil $purchaseUtil,
-        private PurchaseOrderUtil $purchaseOrderUtil,
-        private PurchaseOrderProductUtil $purchaseOrderProductUtil,
-        private Util $util,
-        private SupplierUtil $supplierUtil,
-        private SupplierPaymentUtil $supplierPaymentUtil,
-        private ProductUtil $productUtil,
-        private AccountUtil $accountUtil,
-        private InvoiceVoucherRefIdUtil $invoiceVoucherRefIdUtil,
-        private UserActivityLogUtil $userActivityLogUtil
+        private PurchaseOrderService $purchaseOrderService,
+        private PurchaseOrderProductService $purchaseOrderProductService,
+        private AccountService $accountService,
+        private AccountFilterService $accountFilterService,
+        private BranchSettingService $branchSettingService,
+        private PaymentMethodService $paymentMethodService,
+        private DayBookService $dayBookService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
+        private AccountLedgerService $accountLedgerService,
+        private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
 
@@ -85,40 +89,44 @@ class PurchaseOrderController extends Controller
 
     public function create()
     {
-        $methods = PaymentMethod::with(['methodAccount'])->select('id', 'name')->get();
-        $accounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
-            ->whereIn('accounts.account_type', [1, 2])
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->orderBy('accounts.account_type', 'asc')
-            ->select(
-                'accounts.id',
-                'accounts.name',
-                'accounts.account_number',
-                'accounts.account_type',
-                'accounts.balance',
-                'banks.name as bank'
-            )->get();
+        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        $purchaseAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 3)
+        $accounts = $this->accountService->accounts(with: [
+            'bank:id,name',
+            'group:id,sorting_number,sub_sub_group_number',
+            'bankAccessBranch'
+        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
+
+        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
+
+        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+
+        $purchaseAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 12)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $taxes = DB::table('taxes')->select('id', 'tax_name', 'tax_percent')->get();
-        $units = DB::table('units')->select('id', 'name')->get();
-        $suppliers = DB::table('suppliers')->select('id', 'name', 'phone', 'pay_term', 'pay_term_number')->get();
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        return view('purchases.orders.create', compact('methods', 'accounts', 'purchaseAccounts', 'taxes', 'units', 'suppliers'));
+        $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        return view('purchase.orders.create', compact('methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
-            'supplier_id' => 'required',
-            'invoice_id' => 'sometimes|unique:purchases,invoice_id',
+            'supplier_account_id' => 'required',
             'date' => 'required|date',
             'delivery_date' => 'required|date',
             'payment_method_id' => 'required',
@@ -131,17 +139,10 @@ class PurchaseOrderController extends Controller
             'supplier_id.required' => 'Supplier is required.',
         ]);
 
-        if (isset($request->warehouse_count)) {
+        $restrictions = $this->purchaseOrderService->restrictions($request);
+        if ($restrictions['pass'] == false) {
 
-            $this->validate($request, ['warehouse_id' => 'required']);
-        }
-
-        if (! isset($request->product_ids)) {
-
-            return response()->json(['errorMsg' => 'Product table is empty.']);
-        } elseif (count($request->product_ids) > 60) {
-
-            return response()->json(['errorMsg' => 'Purchase invoice items must be less than 60 or equal.']);
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
         try {
@@ -149,51 +150,45 @@ class PurchaseOrderController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
-            $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
+            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_order_prefix ? $branchSetting?->purchase_order_prefix : 'PO';
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
 
-            $__purchaseOrderIdPrefix = 'PO';
-            $addOrder = $this->purchaseOrderUtil->addPurchaseOrder(request: $request, invoiceVoucherRefIdUtil: $this->invoiceVoucherRefIdUtil, purchaseOrderIdPrefix: $__purchaseOrderIdPrefix);
+            $addPurchaseOrder = $this->purchaseOrderService->addPurchaseOrder(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
 
-            $this->purchaseOrderProductUtil->addPurchaseOrderProduct(request: $request, orderId: $addOrder->id, isEditProductPrice: $isEditProductPrice);
+            // Add Day Book entry for Purchase
+            $this->dayBookService->addDayBook(voucherTypeId: 5, date: $request->date, accountId: $request->supplier_account_id, transId: $addPurchaseOrder->id, amount: $request->total_ordered_amount, amountType: 'credit');
+
+            $index = 0;
+            foreach ($request->product_ids as $productId) {
+
+                $addPurchaseOrderProduct = $this->purchaseOrderProductService->addPurchaseOrderProduct(request: $request, purchaseOrderId: $addPurchaseOrder->id, index: $index);
+
+                $index++;
+            }
 
             if ($request->paying_amount > 0) {
 
-                // Add payment
-                $addPurchasePaymentGetId = $this->purchaseUtil->addPurchasePaymentGetId(
-                    invoicePrefix: $paymentInvoicePrefix,
-                    request: $request,
-                    payingAmount: $request->paying_amount,
-                    invoiceId: str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT),
-                    purchase: $addOrder,
-                    supplier_payment_id: null
-                );
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: null, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, purchaseRefId: $addPurchase->id);
 
-                // Add Bank/Cash-In-Hand A/C Ledger
-                $this->accountUtil->addAccountLedger(
-                    voucher_type_id: 11,
-                    date: $request->date,
-                    account_id: $request->account_id,
-                    trans_id: $addPurchasePaymentGetId,
-                    amount: $request->paying_amount,
-                    balance_type: 'debit'
-                );
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
 
-                // Add supplier ledger for payment
-                $this->supplierUtil->addSupplierLedger(
-                    voucher_type_id: 3,
-                    supplier_id: $request->supplier_id,
-                    branch_id: auth()->user()->branch_id,
-                    date: $request->date,
-                    trans_id: $addPurchasePaymentGetId,
-                    amount: $request->paying_amount,
-                );
+                // Add Accounting VoucherDescription References
+                $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->supplier_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: [$addPurchase->id]);
+
+                //Add Debit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
+
+                //Add Credit Ledger Entry
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
             }
 
-            $adjustedPurchase = $this->purchaseUtil->adjustPurchaseInvoiceAmounts($addOrder);
-
             // Add user Log
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 5, data_obj: $addOrder);
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 5, data_obj: $addPurchaseOrder);
 
             DB::commit();
         } catch (Exception $e) {

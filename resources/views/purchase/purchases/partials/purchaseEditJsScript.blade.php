@@ -780,6 +780,7 @@
             }
         }
     });
+    
     // Change tax percent and clculate row amount
     $(document).on('change keypress click', '#e_tax_type', function(e) {
 

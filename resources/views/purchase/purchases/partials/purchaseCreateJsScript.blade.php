@@ -24,18 +24,18 @@
             $('#pay_term_number').val('');
         }
 
-        var url = "{{ route('contacts.supplier.amounts.branch.wise', [':supplier_id']) }}";
-        var route = url.replace(':supplier_id', supplier_account_id);
+        // var url = "{{ route('contacts.supplier.amounts.branch.wise', [':supplier_id']) }}";
+        // var route = url.replace(':supplier_id', supplier_account_id);
 
-        $.ajax({
-            url: route,
-            dataType: 'json',
-            success:function(supplier){
+        // $.ajax({
+        //     url: route,
+        //     dataType: 'json',
+        //     success:function(supplier){
 
-                $('#closing_balance').val(supplier.total_purchase_due);
-                calculateTotalAmount();
-            }
-        });
+        //         $('#closing_balance').val(supplier.total_purchase_due);
+        //         calculateTotalAmount();
+        //     }
+        // });
     });
 
     $('#addSupplier').on('click', function () {
@@ -179,8 +179,6 @@
                             var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
                             var unique_id = product.id+'noid';
 
-                            var tax_percent = product.tax != null ? product.tax.tax_percent : parseFloat(0).toFixed(2);
-
                             $('#search_product').val(name);
                             $('#e_unique_id').val(unique_id);
                             $('#e_item_name').val(name);
@@ -192,7 +190,7 @@
                             $('#e_discount_type').val(1);
                             $('#e_discount_amount').val(parseFloat(0).toFixed(2));
                             $('#e_tax_type').val(product.tax_type);
-                            $('#e_tax_percent').val(tax_percent);
+                            $('#e_tax_ac_id').val(product.tax_ac_id);
                             $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
                             $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
                             $('#e_lot_number').val('');
@@ -273,10 +271,7 @@
                         $('.select_area').hide();
 
                         var variant = product.variant_product;
-                        var tax_percent = variant.product.tax != null ? variant.product.tax_percent : parseFloat(0).toFixed(2);
-
                         var name = variant.product.name.length > 35 ? product.name.substring(0, 35) + '...' : variant.product.name;
-
                         var unique_id = variant.product.id+variant.id;
 
                         $('#e_unique_id').val(unique_id);
@@ -290,7 +285,7 @@
                         $('#e_showing_discount').val(parseFloat(0).toFixed(2));
                         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
                         $('#e_tax_type').val(variant.product.tax_type);
-                        $('#e_tax_percent').val(tax_percent);
+                        $('#e_tax_ac_id').val(variant.product.tax_ac_id);
                         $('#e_profit_margin').val(parseFloat(variant.variant_profit).toFixed(2));
                         $('#e_selling_price').val(parseFloat(variant.variant_price).toFixed(2));
                         $('#e_lot_number').val('');
@@ -342,7 +337,6 @@
         var variant_id = e.getAttribute('data-v_id');
         var product_name = e.getAttribute('data-p_name');
         var variant_name = e.getAttribute('data-v_name');
-        var unit_name = e.getAttribute('data-unit_name');
         var tax_ac_id = e.getAttribute('data-p_tax_ac_id');
         var tax_type = e.getAttribute('data-tax_type');
         var product_code = e.getAttribute('data-p_code');
@@ -719,7 +713,7 @@
         $('#e_discount_amount').val(parseFloat(0).toFixed(2));
         $('#e_tax_ac_id').val('');
         $('#e_tax_type').val(1);
-        $('#e_showing_tax_amount').val(0);
+        $('#e_tax_amount').val(0);
         $('#e_unit_cost_with_discount').val(parseFloat(0).toFixed(2));
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(parseFloat(0).toFixed(2));

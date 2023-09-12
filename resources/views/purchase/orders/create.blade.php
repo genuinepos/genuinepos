@@ -1,19 +1,33 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
-        .input-group-text {font-size: 12px !important;}
-        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute; width: 94%;z-index: 9999999;padding: 0;left: 3%;display: none;border: 1px solid #7e0d3d;margin-top: 1px;border-radius: 0px;}
-        .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px; padding: 4px 3px;display: block;}
-        .select_area ul li a:hover {background-color: #999396;color: #fff;}
-        .selectProduct{background-color: #746e70; color: #fff!important;}
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
-        h6.collapse_table:hover {background: lightgray; padding: 3px; cursor: pointer;}
-        .c-delete:focus {border: 1px solid gray;padding: 2px;}
-        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
-        .checkbox_input_wrap {text-align: right;}
+        .input-group-text { font-size: 12px !important; }
+
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px;}
+
+        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
+
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
+
+        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+
+        .selectProduct { background-color: #746e70; color: #fff !important; }
+
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+
+        h6.collapse_table:hover { background: lightgray;padding: 3px; cursor: pointer; }
+
+        .c-delete:focus { border: 1px solid gray; padding: 2px; }
+
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 { text-align: right; padding-right: 10px; }
+
+        .checkbox_input_wrap { text-align: right; }
     </style>
 @endpush
 
@@ -23,19 +37,18 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-shopping-cart"></span>
-                    <h6>@lang('menu.add_purchase_order')</h6>
+                    <h6>{{ __('Add Purchase Order') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-lg-3 p-1">
-            <form id="add_purchase_order_form" action="{{ route('purchases.order.store') }}" enctype="multipart/form-data" method="POST">
+        <div class="p-1">
+            <form id="add_purchase_order_form" action="{{ route('purchase.orders.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
                 <section>
-                    <div class="form_element rounded mt-0 mb-lg-3 mb-1">
-
+                    <div class="form_element rounded mt-0 mb-lg-1">
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
@@ -43,10 +56,10 @@
                                         <label class="col-4"><b>{{ __('Supplier') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
-                                                <select required name="supplier_id" class="form-control select2" id="supplier_id" data-next="pay_term_number">
+                                                <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="pay_term_number">
                                                     <option value="">{{ __('Select Supplier') }}</option>
-                                                    @foreach ($suppliers as $supplier)
-                                                        <option data-pay_term="{{ $supplier->pay_term }}" data-pay_term_number="{{ $supplier->pay_term_number }}" value="{{ $supplier->id }}">{{ $supplier->name.'/'.$supplier->phone }}</option>
+                                                    @foreach ($supplierAccounts as $supplierAccount)
+                                                        <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -69,7 +82,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('P/o ID.') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="order_id" id="order_id" class="form-control" data-next="warehouse_id" placeholder="@lang('menu.purchase_order_id')" autocomplete="off">
+                                            <input readonly type="text" name="order_id" id="order_id" class="form-control" data-next="pay_term_number" placeholder="{{ __("Purchase Order Id") }}" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -77,8 +90,7 @@
                                         <label class=" col-4"><b>{{ __('Pay Term') }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
-                                                <input type="text" name="pay_term_number" class="form-control"
-                                                id="pay_term_number" data-next="pay_term" placeholder="Number">
+                                                <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" placeholder="Number">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
                                                     <option value="">@lang('menu.pay_term')</option>
                                                     <option value="1">@lang('menu.days')</option>
@@ -93,8 +105,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control"
-                                             id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="delivery_date" placeholder="dd-mm-yyyy" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="delivery_date" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -102,8 +113,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Delivery Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="delivery_date" class="form-control"
-                                             id="delivery_date" data-next="purchase_account_id" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
+                                            <input required type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="purchase_account_id" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -130,7 +140,7 @@
                 </section>
 
                 <section>
-                    <div class="card ps-1 pb-1 pe-1">
+                    <div class="card ps-2 pb-1 pe-2">
                         <div class="row mb-1">
                             <div class="col-md-12">
                                 <div class="row align-items-end">
@@ -147,7 +157,7 @@
                                         <div class="searching_area" style="position: relative;">
                                             <label class="fw-bold">{{ __('Search Product') }}</label>
                                             <div class="input-group">
-                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Serach Product') }}" autofocus>
+                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Serach Product') }}">
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">
@@ -166,10 +176,8 @@
                                         <label class="fw-bold">{{ __('Quantity') }}</label>
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
-                                            <select id="e_unit" class="form-control w-40">
-                                                @foreach ($units as $unit)
-                                                    <option value="{{ $unit->name }}">{{ $unit->name }}</option>
-                                                @endforeach
+                                            <select id="e_unit_id" class="form-control w-40">
+                                                <option value="">Unit</option>
                                             </select>
                                         </div>
                                     </div>
@@ -192,27 +200,27 @@
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
-                                        <label class="fw-bold">{{ __('Tax') }}</label>
+                                        <label class="fw-bold">{{ __('Vat/Tax') }}</label>
                                         <div class="input-group">
-                                            <select id="e_tax_percent" class="form-control w-50">
-                                                <option value="0.00">@lang('menu.no_tax')</option>
-                                                @foreach ($taxes as $tax)
-                                                    <option value="{{ $tax->tax_percent }}">
-                                                        {{ $tax->tax_name }}
+                                            <select id="e_tax_ac_id" class="form-control w-50">
+                                                <option data-product_tax_percent="0.00" value="">{{ __('NoVat/Tax') }}</option>
+                                                @foreach ($taxAccounts as $taxAccount)
+                                                    <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                        {{ $taxAccount->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
 
                                             <select id="e_tax_type" class="form-control w-50">
-                                                <option value="1">@lang('menu.exclusive')</option>
-                                                <option value="2">@lang('menu.inclusive')</option>
+                                                <option value="1">{{ __('Exclusive') }}</option>
+                                                <option value="2">{{ __('Inclusive') }}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
                                         <label class="fw-bold">{{ __('Short Description') }}</label>
-                                        <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="@lang('menu.short_description')" autocomplete="off">
+                                        <input type="text" step="any" class="form-control fw-bold" id="e_description" placeholder="{{ __('Short Description') }}" autocomplete="off">
                                     </div>
 
                                     @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
@@ -270,7 +278,7 @@
                 </section>
 
                 <section>
-                    <div class="row g-3 py-3">
+                    <div class="row g-3 py-1">
                         <div class="col-md-6">
                             <div class="form_element rounded m-0">
                                 <div class="element-body">
@@ -310,13 +318,13 @@
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <select name="order_discount_type" class="form-control" id="order_discount_type" data-next="order_discount">
-                                                                        <option value="1">@lang('menu.fixed')(0.00)</option>
-                                                                        <option value="2">@lang('menu.percentage')(%)</option>
+                                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                                                        <option value="2">{{ __("Percentage") }}(%)</option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="col-md-6">
-                                                                    <input name="order_discount" type="number" class="form-control fw-bold" id="order_discount" value="0.00" data-next="order_tax_percent">
+                                                                    <input name="order_discount" type="number" class="form-control fw-bold" id="order_discount" value="0.00" data-next="purchase_tax_ac_id">
                                                                 </div>
                                                             </div>
                                                             <input name="order_discount_amount" type="number" step="any" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
@@ -326,13 +334,15 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Order Tax') }}</b></label>
                                                         <div class="col-8">
-                                                            <select name="order_tax_percent" class="form-control" id="order_tax_percent" data-next="shipment_charge">
-                                                                <option value="0.00">@lang('menu.no_tax')</option>
-                                                                @foreach ($taxes as $tax)
-                                                                    <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                            <select name="purchase_tax_ac_id" class="form-control" id="purchase_tax_ac_id" data-next="shipment_charge">
+                                                                <option data-purchase_tax_percent="0.00" value="">@lang('menu.no_tax')</option>
+                                                                @foreach ($taxAccounts as $taxAccount)
+                                                                    <option data-purchase_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                                        {{ $taxAccount->name }}
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
-                                                            <input name="order_tax_amount" type="number" step="any" class="d-hide" id="order_tax_amount" value="0.00" tabindex="-1">
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -341,7 +351,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Shipment Charge') }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="0.00" data-next="shipment_details">
+                                                            <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" data-next="shipment_details" value="0.00">
                                                         </div>
                                                     </div>
 
@@ -383,15 +393,11 @@
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Pay Method') }}<span
-                                                            class="text-danger">*</span></b> </label>
+                                                        <label class="col-4"><b>{{ __('Payment Method') }}<span class="text-danger">*</span></b> </label>
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method ->id }}">
-                                                                        {{ $method->name }}
+                                                                    <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">{{ $method->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -402,18 +408,20 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Credit A/c') }}</b> <span class="text-danger">*</span></label>
+                                                        <label class="col-4"><b>{{ __('Credit A/c') }} <span class="text-danger">*</span></b></label>
                                                         <div class="col-8">
                                                             <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
-                                                                @foreach ($accounts as $account)
-                                                                    <option value="{{ $account->id }}">
+                                                                @foreach ($accounts as $ac)
+                                                                    @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
+                                                                        @continue
+                                                                    @endif
+
+                                                                    <option value="{{ $ac->id }}">
                                                                         @php
-                                                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                            $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                                                            $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                                            $balance = ', BL : '.$account->balance;
+                                                                            $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
+                                                                            $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
                                                                         @endphp
-                                                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                                                        {{ $ac->name . $acNo . $bank }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -474,8 +482,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Supplier') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_supplier_modal_body"></div>
             </div>
@@ -488,18 +495,20 @@
     @endif
 @endsection
 @push('scripts')
-    @include('purchases.orders.js_partials.purchaseOrderCreateJsScript')
+    @include('purchase.orders.js_partials.purchaseOrderCreateJsScript')
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2();
 
-        $('select').on('select2:close', function (e) {
+        var itemUnitsArray = [];
+
+        $('select').on('select2:close', function(e) {
 
             var nextId = $(this).data('next');
 
-            setTimeout(function () {
+            setTimeout(function() {
 
-                $('#'+nextId).focus();
+                $('#' + nextId).focus();
             }, 100);
         });
 
@@ -509,11 +518,11 @@
 
             if (e.which == 0) {
 
-                $('#'+nextId).focus().select();
+                $('#' + nextId).focus().select();
             }
         });
 
-        $(document).on('change keypress', 'input', function(e){
+        $(document).on('change keypress', 'input', function(e) {
 
             var nextId = $(this).data('next');
 
@@ -525,14 +534,20 @@
                     return;
                 }
 
-                if ($(this).attr('id') == 'paying_amount' && ($('#paying_amount').val() == 0 ||  $('#paying_amount').val() == '' )) {
+                if ($(this).attr('id') == 'paying_amount' && ($('#paying_amount').val() == 0 || $('#paying_amount').val() == '')) {
 
                     $('#save_and_print').focus().select();
                     return;
                 }
 
-                $('#'+nextId).focus().select();
+                $('#' + nextId).focus().select();
             }
         });
+
+        // $('#supplier_account_id').select2('focus');
+        setTimeout(function() {
+
+            $('#supplier_account_id').focus().select();
+        }, 500);
     </script>
 @endpush

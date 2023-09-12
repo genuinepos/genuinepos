@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
+use App\Http\Controllers\Purchases\PurchaseOrderController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
@@ -32,11 +33,19 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::delete('delete/{id}', 'delete')->name('purchase.returns.delete');
     });
 
-
-    Route::controller(PurchaseSettingController::class)->prefix('purchase-settings')->group(function () {
+    Route::controller(PurchaseSettingController::class)->prefix('settings')->group(function () {
 
         Route::get('/', 'index')->name('purchase.settings.index');
         Route::post('update', 'update')->name('purchase.settings.update');
+    });
+
+    Route::controller(PurchaseOrderController::class)->prefix('orders')->group(function () {
+        Route::get('/', 'index')->name('purchase.orders.index');
+        Route::get('create', 'create')->name('purchase.orders.create');
+        Route::post('store', 'store')->name('purchase.orders.store');
+        Route::get('show/{id}', 'show')->name('purchase.orders.show');
+        Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
+        Route::post('update/{id}', 'update')->name('purchase.orders.update');
     });
 });
 

@@ -270,6 +270,8 @@ class PurchaseReturnController extends Controller
                 $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
             }
 
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 6, data_obj: $addReturn);
+
             DB::commit();
         } catch (Exception $e) {
 

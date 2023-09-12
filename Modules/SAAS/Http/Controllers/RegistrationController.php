@@ -2,10 +2,9 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Modules\SAAS\Events\TenantRegistered;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
 use Modules\SAAS\Http\Requests\RegistrationRequest;
 
 class RegistrationController extends Controller
@@ -24,8 +23,9 @@ class RegistrationController extends Controller
             'password' => bcrypt($userRequest['password']),
         ]);
 
-        // Auth::guard()->login($user);
-        // event(new TenantRegistered($user));
-        return redirect()->to(route('saas.login'))->with('success', 'Successfully Registered. You can login!');
+        event(new Registered($user));
+        // event(new CustomerRegisteredEvent($user));
+        // return redirect()->to(route('saas.login'))->with('success', 'Successfully registered. Check your email and verify your account.');
+        return back()->with('success', 'Successfully registered. Check your email and verify your account.');
     }
 }

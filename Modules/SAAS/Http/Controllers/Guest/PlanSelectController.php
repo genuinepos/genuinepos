@@ -15,10 +15,10 @@ class PlanSelectController extends Controller
         ]);
     }
 
-    public function show(Plan $plan)
+    public function show(string $slug)
     {
         return view('saas::guest.plan-detail', [
-            'plan' => $plan,
+            'plan' => Plan::whereSlug($slug)->first(),
         ]);
     }
 }

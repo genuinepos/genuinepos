@@ -1,6 +1,6 @@
 <x-saas::guest title="{{ __('Welcome') }}">
-    <div class="container mt-3">
-        <div class="card mb-5">
+    <div class="container mt-3 pb-5">
+        <div class="card mb-3">
             <div class="card-header">
                 <h5>{{ __('Plan Name') }}: {{ $plan->name }}</h5>
             </div>

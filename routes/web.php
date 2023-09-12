@@ -1,11 +1,11 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use App\Providers\RouteServiceProvider;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use Illuminate\Http\Request;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])->group(function () {
     // Guest User
-    Auth::routes();
+    Auth::routes(['register' => false]);
     Route::view('pin_login', 'auth.pin_login');
 
     // Authenticated User
@@ -35,14 +35,12 @@ Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAc
 
 /*
 |--------------------------------------------------------------------------
-| Common welcome/home URI ("/" route) for main platform and all tenants
+| Redirects '/' to '/welcome' for landlord, and '/home' for all tenants
 |--------------------------------------------------------------------------
 */
 Route::get('/', function (Request $request) {
     $isTenant = tenant();
-    if (isset($isTenant)) {
-        return redirect(RouteServiceProvider::HOME);
-    } else {
-        return redirect('/welcome');
-    }
+    return isset($isTenant) ?
+        redirect(RouteServiceProvider::HOME) :
+        redirect()->route('saas.welcome-page');
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

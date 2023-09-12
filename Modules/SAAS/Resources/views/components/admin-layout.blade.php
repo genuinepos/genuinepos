@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
     {{-- <link rel="stylesheet" id="rtlStyle" href="" type="text/css"> --}}
     <style>
         .toast-success {

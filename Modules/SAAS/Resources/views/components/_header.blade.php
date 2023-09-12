@@ -5,7 +5,8 @@
             <div class="main-logo d-lg-block d-none">
                 <div class="logo-big">
                     <a href="/">
-                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}">
+                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}"
+                            style="max-width: 110px;">
                     </a>
                 </div>
                 <div class="logo-small">
@@ -19,7 +20,7 @@
             </div>
             <a href="#" target="_blank" class="btn btn-sm btn-primary site-view-btn">
                 <i class="fa-light fa-globe me-1"></i>
-                <span>{{ __("Business List") }}</span>
+                <span>{{ __('Business List') }}</span>
             </a>
         </div>
         <div class="col-4 d-lg-none">
@@ -34,7 +35,7 @@
                 <div class="header-collapse-group">
                     <div class="header-right-btns d-flex justify-content-end align-items-center p-0">
                         <form class="header-form">
-                            <input type="search" name="search" placeholder="{{ __("Search...") }}" required>
+                            <input type="search" name="search" placeholder="{{ __('Search...') }}" required>
                             <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                         <div class="header-right-btns d-flex justify-content-end align-items-center p-0">
@@ -101,7 +102,8 @@
 
                             {{-- Notification --}}
                             <div class="header-btn-box">
-                                <button class="header-btn" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="header-btn" id="notificationDropdown" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                     <i class="fa-light fa-bell"></i>
                                     <span class="badge bg-danger">0</span>
                                 </button>
@@ -122,19 +124,21 @@
                                     <li>
                                         <a href="#" class="d-flex align-items-center">
                                             <div class="notification-txt">
-                                                {{ __("Empty notifications") }}
+                                                {{ __('Empty notifications') }}
                                             </div>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
 
-                            <button class="header-btn fullscreen-btn" id="btnFullscreen"><i class="fa-light fa-expand"></i></button>
+                            <button class="header-btn fullscreen-btn" id="btnFullscreen"><i
+                                    class="fa-light fa-expand"></i></button>
                             <button class="header-btn theme-color-btn"><i class="fa-light fa-sun-bright"></i></button>
                         </div>
                     </div>
                 </div>
-                <button class="header-btn header-collapse-group-btn d-lg-none"><i class="fa-light fa-ellipsis-vertical"></i></button>
+                <button class="header-btn header-collapse-group-btn d-lg-none"><i
+                        class="fa-light fa-ellipsis-vertical"></i></button>
                 {{-- <button class="header-btn theme-settings-btn"><i class="fa-light fa-gear"></i></button> --}}
 
                 <div class="header-btn-box">
@@ -153,22 +157,27 @@
                             </div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id ) }}">
+                            <a class="dropdown-item" href="{{ route('saas.profile.edit', auth()->user()->id) }}">
                                 <span class="dropdown-icon"><i class="fa-regular fa-circle-user"></i></span>
-                                {{ __("Profile") }}
+                                {{ __('Profile') }}
                             </a>
                         </li>
                         {{-- <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a></li>
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li> --}}
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> {{ __("Help") }}</a></li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-gear"></i></span> {{ __("Settings") }}</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                        class="fa-regular fa-circle-question"></i></span> {{ __('Help') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                        class="fa-regular fa-gear"></i></span> {{ __('Settings') }}</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             {{-- <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();alert('hi')"> --}}
-                            <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();document.getElementById('logoutForm').submit()">
+                            <a class="dropdown-item" href="#" role="button"
+                                onclick="event.preventDefault();document.getElementById('logoutForm').submit()">
                                 <span class="dropdown-icon">
                                     <i class="fa-regular fa-arrow-right-from-bracket"></i>
-                                </span> {{ __("Logout") }}
+                                </span> {{ __('Logout') }}
                             </a>
                         </li>
                     </ul>

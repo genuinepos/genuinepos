@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
 use Illuminate\Console\Scheduling\Schedule;
+use Modules\SAAS\Providers\EventServiceProvider;
+use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
+use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -56,6 +59,7 @@ class SAASServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
+        app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);
     }
 
     /**

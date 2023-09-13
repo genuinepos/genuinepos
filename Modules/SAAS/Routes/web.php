@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\PlanController;
 use Modules\SAAS\Http\Controllers\RoleController;
 use Modules\SAAS\Http\Controllers\UserController;
@@ -10,6 +12,7 @@ use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
+
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -21,11 +24,13 @@ Route::prefix('saas')->group(function () {
         Route::get('login', [LoginController::class, 'showForm'])->name('login.showForm');
         Route::post('login', [LoginController::class, 'login'])->name('login');
     });
-    Route::middleware(['is_guest', 'verified'])->group(function () {
+
+    Route::middleware('is_auth')->group(function() {
+        Route::get('/email/verify', [VerificationController::class,'show'])->name('verification.notice');
     });
 
     // Authenticated Users
-    Route::middleware(['is_auth', 'verified'])->group(function () {
+    Route::middleware(['is_verified'])->group(function () {
         Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 
         Route::prefix('dashboard')->group(function () {

@@ -2,7 +2,11 @@
 <nav class="navbar navbar-expand-lg px-5 navbar-light bg-light" style="border-bottom: 2px solid #9fa8da">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ config('app.url') }}">
-            <img src="{{ asset('assets/images/logo_black.png') }}" alt="{{ config('app.name') }}" style="max-width: 80px;">
+            @env('beta')
+                <img src="{{ asset('assets/images/beta_logo.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
+            @else
+                <img src="{{ asset('assets/images/logo_black.png') }}" alt="{{ config('app.name') }}" style="max-width: 150px;">
+            @endif
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

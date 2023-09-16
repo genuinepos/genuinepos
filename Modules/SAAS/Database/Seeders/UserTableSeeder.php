@@ -17,7 +17,6 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         User::factory([
-            'user_type' => UserType::Admin->value,
             'name' => 'Mr. Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
@@ -28,6 +27,5 @@ class UserTableSeeder extends Seeder
             'language' => 'en',
             'currency' => 'USD',
         ])->create();
-        User::factory(10)->create();
     }
 }

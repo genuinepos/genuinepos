@@ -15,7 +15,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 Route::middleware(['web', InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])->group(function () {
     // Guest User
-    Auth::routes(['register' => false]);
+    Auth::routes(['register' => false, 'verify' => true]);
     Route::view('pin_login', 'auth.pin_login');
 
     // Authenticated User

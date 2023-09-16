@@ -109,8 +109,6 @@
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
 
         var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-        var purchaseDue = parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
-        $('#purchase_due').val(parseFloat(purchaseDue).toFixed(2));
 
         var purchaseLedgerAmount = parseFloat(netTotalAmount)
         + parseFloat(shipmentCharge)
@@ -963,6 +961,8 @@
     // // chane purchase tax and clculate total amount
     $(document).on('change', '#purchase_tax_ac_id', function(){
         calculateTotalAmount();
+        var purchaseTaxPercent = $(this).find('option:selected').data('purchase_tax_percent') ? $(this).find('option:selected').data('purchase_tax_percent') : 0;
+        $('#purchase_tax_percent').val(parseFloat(purchaseTaxPercent).toFixed(2));
     });
 
     // Input paying amount and clculate due amount

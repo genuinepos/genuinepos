@@ -31,6 +31,7 @@
     </style>
 @endpush
 
+@section('title', 'Add Purchase Order - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -92,9 +93,9 @@
                                             <div class="input-group">
                                                 <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" placeholder="Number">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
-                                                    <option value="">@lang('menu.pay_term')</option>
-                                                    <option value="1">@lang('menu.days')</option>
-                                                    <option value="2">@lang('menu.months')</option>
+                                                    <option value="">{{ __("Pay-Term") }}</option>
+                                                    <option value="1">{{ __("Days") }}</option>
+                                                    <option value="2">{{ __("Months") }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -177,7 +178,7 @@
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_unit_id" class="form-control w-40">
-                                                <option value="">Unit</option>
+                                                <option value="">{{ __("Unit") }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -342,6 +343,7 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            <input type="number" step="any" name="purchase_tax_percent" class="d-none" id="purchase_tax_percent" value="0.00">
                                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
@@ -351,14 +353,14 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Shipment Charge') }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_charge" type="number" class="form-control" id="shipment_charge" data-next="shipment_details" value="0.00">
+                                                            <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" data-next="shipment_details" value="0.00">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Shipment Details') }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" placeholder="@lang('menu.shipment_details')">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="paying_amount" placeholder="@lang('menu.shipment_details')">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -428,13 +430,6 @@
                                                             <span class="error error_account_id"></span>
                                                         </div>
                                                     </div>
-
-                                                    <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Due') }}</b></label>
-                                                        <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="order_due" id="order_due" value="0.00" tabindex="-1">
-                                                        </div>
-                                                    </div>
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -451,6 +446,15 @@
                                                         <label class="col-4"><b>{{ __('Order Note') }}</b></label>
                                                         <div class="col-8">
                                                             <input type="text" name="order_note" id="order_note" class="form-control" data-next="save_and_print" placeholder="{{ __('Order Note') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class=" col-4"><b>{{ __('Current_balance') }}</b></label>
+                                                        <div class="col-8">
+                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -548,6 +552,6 @@
         setTimeout(function() {
 
             $('#supplier_account_id').focus().select();
-        }, 500);
+        }, 1000);
     </script>
 @endpush

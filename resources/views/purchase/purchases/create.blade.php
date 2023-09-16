@@ -374,6 +374,7 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
+                                                            <input type="number" step="any" name="purchase_tax_percent" class="d-none" id="purchase_tax_percent" value="0.00">
                                                             <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>

@@ -18,11 +18,11 @@
             </thead>
             <tbody id="p_details_payment_list">
                 @php
-                    $totalReceivedAmount = 0;
+                    $totalPaidAmount = 0;
                 @endphp
-                @if (count($purchase->references) > 0)
+                @if (count($order->references) > 0)
 
-                   @foreach ($purchase->references as $reference)
+                   @foreach ($order->references as $reference)
 
                         @php
                             $voucherType = '';
@@ -62,7 +62,7 @@
 
                             <td class="fw-bold">{{ App\Utils\Converter::format_in_bdt($reference?->amount) }}</td>
                             @php
-                                $totalReceivedAmount += $reference?->amount ? $reference?->amount : 0;
+                                $totalPaidAmount += $reference?->amount ? $reference?->amount : 0;
                             @endphp
 
                             <td class="action_hideable">
@@ -86,7 +86,7 @@
             <tfoot>
                 <tr>
                     <th colspan="5" class="text-end">{{ __("Total Paid") }} : </th>
-                    <th>{{ App\Utils\Converter::format_in_bdt($totalReceivedAmount) }}</th>
+                    <th>{{ App\Utils\Converter::format_in_bdt($totalPaidAmount) }}</th>
                     <th></th>
                 </tr>
             </tfoot>

@@ -6,6 +6,10 @@ use App\Http\Controllers\Purchases\PurchaseOrderController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -46,6 +50,43 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::get('show/{id}', 'show')->name('purchase.orders.show');
         Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
         Route::post('update/{id}', 'update')->name('purchase.orders.update');
+        Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
+        Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+
+        Route::controller(PurchaseReportController::class)->prefix('purchases')->group(function () {
+            Route::get('/', 'index')->name('reports.purchases.index');
+            Route::get('print', 'print')->name('reports.purchases.print');
+        });
+
+        Route::controller(PurchaseProductReportController::class)->prefix('purchased-products')->group(function () {
+            Route::get('/', 'index')->name('reports.purchased.products.index');
+            Route::get('print', 'print')->name('reports.purchased.products.print');
+        });
+
+        Route::controller(PurchaseOrderReportController::class)->prefix('purchase-order')->group(function () {
+            Route::get('/', 'index')->name('reports.purchase.orders.index');
+            Route::get('print', 'print')->name('reports.purchase.orders.print');
+        });
+
+        Route::controller(PurchaseOrderProductReportController::class)->prefix('purchase-ordered-products')->group(function () {
+            Route::get('/', 'index')->name('reports.purchase.ordered.products.index');
+            Route::get('print', 'print')->name('reports.purchase.ordered.products.print');
+        });
+
+        Route::group(['prefix' => 'purchase/payments'], function () {
+            Route::get('/', [PurchasePaymentReportController::class, 'index'])->name('reports.purchase.payments.index');
+            Route::get('print', [PurchasePaymentReportController::class, 'print'])->name('reports.purchase.payments.print');
+        });
+
+        Route::group(['prefix' => 'sales/purchase'], function () {
+            Route::get('/', [SalePurchaseReportController::class, 'index'])->name('reports.sales.purchases.index');
+            Route::get('sale/purchase/amounts', [SalePurchaseReportController::class, 'salePurchaseAmounts'])->name('reports.profit.sales.purchases.amounts');
+            Route::get('filter/sale/purchase/amounts', [SalePurchaseReportController::class, 'filterSalePurchaseAmounts'])->name('reports.profit.sales.filter.purchases.amounts');
+            Route::get('print', [SalePurchaseReportController::class, 'printSalePurchase'])->name('reports.sales.purchases.print');
+        });
     });
 });
 

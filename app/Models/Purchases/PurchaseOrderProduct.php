@@ -3,6 +3,7 @@
 namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
+use App\Models\Products\Unit;
 use App\Models\ProductVariant;
 use App\Models\Products\Product;
 use App\Models\Purchases\Purchase;
@@ -26,6 +27,11 @@ class PurchaseOrderProduct extends BaseModel
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function receives()

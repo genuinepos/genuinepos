@@ -78,7 +78,7 @@ class PurchaseService
             'created_by.prefix as created_prefix',
             'created_by.name as created_name',
             'created_by.last_name as created_last_name',
-        )->where('is_purchased', 1)->orderBy('purchases.report_date', 'desc');
+        )->where('purchases.purchase_status', PurchaseStatus::Purchase->value)->orderBy('purchases.report_date', 'desc');
 
         return DataTables::of($purchases)
             ->addColumn('action', fn ($row) => $this->createPurchaseAction($row))

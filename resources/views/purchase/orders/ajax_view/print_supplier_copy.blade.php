@@ -1,9 +1,8 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
-
- <style>
+<style>
     @media print
     {
         table { page-break-after:auto }
@@ -13,120 +12,143 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 20px;margin-right: 20px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed;top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
+    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
     <!-- Purchase Order print templete-->
     <div class="purchase_print_template">
         <div class="details_area">
-            <div class="heading_area">
-                <div class="row">
-                    <div class="col-md-4 col-sm-4 col-lg-4">
-                        @if ($purchase->branch)
-                            @if ($purchase->branch->logo != 'default.png')
-                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
+            <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
+                <div class="col-4">
+                    @if ($order->branch)
+
+                        @if ($order?->branch?->parent_branch_id)
+
+                            @if ($order->branch?->parentBranch?->logo != 'default.png')
+
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->parentBranch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
+
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->parentBranch?->name }}</span>
                             @endif
                         @else
-                            @if ($generalSettings['business__business_logo'] != null)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+
+                            @if ($order->branch?->logo != 'default.png')
+
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $order->branch?->logo) }}">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $order->branch?->name }}</span>
                             @endif
                         @endif
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
-                        <div class="heading text-center">
-                            <h4 class="bill_name">{{ __('Purchase Order Bill') }}</h4>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-lg-4">
+                    @else
+                        @if ($generalSettings['business__business_logo'] != null)
 
-                    </div>
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @else
+
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="col-8 text-end">
+                    <p style="text-transform: uppercase;" class="p-0 m-0">
+                        <strong>
+                            @if ($order?->branch)
+                                @if ($order?->branch?->parent_branch_id)
+
+                                    {{ $order?->branch?->parentBranch?->name }}
+                                @else
+
+                                    {{ $order?->branch?->name }}
+                                @endif
+                            @else
+
+                                {{ $generalSettings['business__shop_name'] }}
+                            @endif
+                        </strong>
+                    </p>
+
+                    <p>
+                        @if ($order?->branch)
+
+                            {{ $order->branch->city . ', ' . $order->branch->state. ', ' . $order->branch->zip_code. ', ' . $order->branch->country }}
+                        @else
+
+                            {{ $generalSettings['business__address'] }}
+                        @endif
+                    </p>
+
+                    <p>
+                        @if ($order?->branch)
+
+                            <strong>@lang('menu.email') : </strong>{{ $order?->branch?->email }},
+                            <strong>@lang('menu.phone') : </strong>{{ $order?->branch?->phone }}
+                        @else
+
+                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }},
+                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}
+                        @endif
+                    </p>
                 </div>
             </div>
 
-            <div class="purchase_and_deal_info pt-3">
-                <div class="row">
-                    <div class="col-4">
-                        <ul class="list-unstyled">
-                            <li><strong>@lang('menu.supplier') : - </strong></li>
-                            <li><strong>@lang('menu.name') : </strong>{{ $purchase->supplier->name }}</li>
-                            <li><strong>@lang('menu.address') : </strong>{{ $purchase->supplier->address }}</li>
-                            <li><strong>@lang('menu.tax_number') : </strong> {{ $purchase->supplier->tax_number }}</li>
-                            <li><strong>@lang('menu.phone') : </strong> {{ $purchase->supplier->phone }}</li>
-                        </ul>
-                    </div>
-                    <div class="col-4">
-                        <ul class="list-unstyled">
-                            <li><strong>@lang('menu.ordered_from') : </strong></li>
-                            <li>
-                                <strong>@lang('menu.business_location') : </strong>
-                                @if ($purchase->branch)
-                                    {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
-                                @else
-                                    {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
-                                @endif
-                            </li>
-                            <li><strong>{{ __('Ordered Location') }} </strong>
-                                @if($purchase->branch_id)
-                                    {{ $purchase->branch->city }}, {{ $purchase->branch->state }},
-                                    {{ $purchase->branch->zip_code }}, {{ $purchase->branch->country }}
-                                @else
-                                    {{ $generalSettings['business__address'] }}
-                                @endif
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-4">
-                        <ul class="list-unstyled">
-                            <li><strong>@lang('menu.po_invoice_id') : </strong> {{ $purchase->invoice_id }}</li>
-                            <li><strong>@lang('menu.purchase_date') : </strong>
-                                {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
-                            </li>
-
-                            <li><strong>@lang('menu.delivery_date') : </strong>
-                                {{ $purchase->delivery_date ? date($generalSettings['business__date_format'], strtotime($purchase->delivery_date)) : '' }}
-                            </li>
-
-                            <li><strong>@lang('menu.purchases_status') : </strong>@lang('menu.ordered')</li>
-                            <li><strong>@lang('menu.created_by') : </strong>
-                                {{ $purchase->admin->prefix.' '.$purchase->admin->name.' '.$purchase->admin->last_name }}
-                            </li>
-                        </ul>
-                    </div>
+            <div class="row mt-2">
+                <div class="col-12 text-center">
+                    <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Order") }}</strong></h4>
                 </div>
             </div>
 
-            <div class="purchase_product_table pt-3 pb-3">
+            <div class="row mt-2">
+                <div class="col-4">
+                    <ul class="list-unstyled">
+                        <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : </strong>{{ $order?->supplier?->name }}</li>
+                        <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong>{{ $order?->supplier?->address }}</li>
+                        <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong>{{ $order?->supplier?->phone }}</li>
+                    </ul>
+                </div>
+
+                <div class="col-4">
+                    <ul class="list-unstyled">
+                        <li style="font-size:11px!important;"><strong>{{ __("P/o ID") }} : </strong> {{ $order->invoice_id }}</li>
+                        <li style="font-size:11px!important;"><strong>{{ __('P/o Date') }} : </strong>{{ date($generalSettings['business__date_format'], strtotime($order->date))}}</li>
+                        <li style="font-size:11px!important;"><strong>{{ __("Created By") }} : </strong>
+                            {{ $order?->admin?->prefix.' '.$order?->admin?->name.' '.$order?->admin?->last_name }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-4">
+                    <ul class="list-unstyled">
+                        <li style="font-size:11px!important;"><strong>{{ __("Delivery Date") }} : </strong>{{ $order->delivery_date ? date($generalSettings['business__date_format'], strtotime($order->delivery_date)) : '' }}</li>
+                        <li style="font-size:11px!important;"><strong>{{ __("Receiving Status") }} : </strong>{{ $order->po_receiving_status }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="purchase_product_table mt-2">
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">@lang('menu.description')</th>
-                            <th scope="col">@lang('menu.ordered_quantity')</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("S/L") }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Description") }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Ordered Quantity") }}</th>
                         </tr>
                     </thead>
                     <tbody class="purchase_print_product_list">
                         @php $index = 0; @endphp
-                        @foreach ($purchase->purchase_order_products as $product)
+                        @foreach ($order->purchaseOrderProducts as $orderProduct)
                             <tr>
                                 @php
-                                    $variant = $product->variant ? ' ('.$product->variant->variant_name.')' : '';
+                                    $variant = $orderProduct?->variant ? ' ('.$orderProduct?->variant?->variant_name.')' : '';
                                 @endphp
-                                <td class="text-start">{{ $index + 1 }}</td>
-                                <td class="text-start">
-                                    {{ Str::limit($product->product->name, 25).' '.$variant }}
-                                    <small>{!! $product->description ? '<br/>'.$product->description : '' !!}</small>
+                                <td class="text-start" style="font-size:11px!important;">{{ $index + 1 }}</td>
+                                <td class="text-start" style="font-size:11px!important;">
+                                    {{ Str::limit($orderProduct->product->name, 25).' '.$variant }}
+                                    <small>{!! $orderProduct->description ? '<br/>'.$orderProduct->description : '' !!}</small>
                                 </td>
-                                <td>{{ $product->order_quantity }}</td>
+                                <td class="text-start" style="font-size:11px!important;">{{ $orderProduct->ordered_quantity }}</td>
                             </tr>
                             @php $index++; @endphp
                         @endforeach
@@ -134,36 +156,45 @@
                 </table>
             </div>
 
-            <br>
+            <br/><br/>
             <div class="row">
-                <div class="col-md-6">
-                    <h6>@lang('menu.perceived_by') : </h6>
+                <div class="col-4 text-start">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">{{ __("Prepared By") }}</p>
                 </div>
 
-                <div class="col-md-6 text-end">
-                    <h6>@lang('menu.authorized_by') : </h6>
+                <div class="col-4 text-center">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">Checked By</p>
+                </div>
+
+                <div class="col-4 text-end">
+                    <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">Authorized By</p>
                 </div>
             </div>
+            <br>
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($purchase->invoice_id, $generator::TYPE_CODE_128)) }}">
-                    <p>{{$purchase->invoice_id}}</p>
+                    <img style="width: 170px; height:25px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($order->invoice_id, $generator::TYPE_CODE_128)) }}">
+                    <p>{{ $order->invoice_id }}</p>
                 </div>
             </div>
 
-            @if (env('PRINT_SD_PURCHASE') == true)
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <small>@lang('menu.software_by') <b>@lang('menu.speedDigit_pvt_ltd').</b></small>
+            <div id="footer">
+                <div class="row mt-1">
+                    <div class="col-4 text-start">
+                        <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        @if (config('company.print_on_company'))
+                            <small class="d-block" style="font-size: 9px!important;">{{ __("Powered By") }} <strong>{{ __("Speed Digit Software Solution") }}.</strong></small>
+                        @endif
+                    </div>
+
+                    <div class="col-4 text-end">
+                        <small style="font-size: 9px!important;">{{ __("Print Time") }} : {{ date($timeFormat) }}</small>
                     </div>
                 </div>
-            @endif
-
-            <div style="position:fixed;bottom:0px;left:0px;width:100%;color: #000;" class="footer">
-                <small style="font-size: 5px; float: right;" class="text-end">
-                    @lang('menu.print_date'): {{ date('d-m-Y , h:iA') }}
-                </small>
             </div>
         </div>
     </div>

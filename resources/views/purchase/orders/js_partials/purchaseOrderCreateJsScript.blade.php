@@ -24,7 +24,7 @@
     });
 
     $('#addSupplier').on('click', function () {
-        
+
         $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
 
             $('#add_supplier_modal_body').html(data);
@@ -73,7 +73,7 @@
         // Update total purchase amount
         var netTotalWithDiscount = parseFloat(netTotalAmount) - orderDiscountAmount;
 
-        var purchaseTaxPercent = $('#purchase_tax_percent').val() ? $('#purchase_tax_percent').val() : 0;
+        var purchaseTaxPercent = $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') ? $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') : 0;
         var purchaseTaxAmount = parseFloat(netTotalWithDiscount) / 100 * parseFloat(purchaseTaxPercent);
 
         $('#purchase_tax_amount').val(parseFloat(purchaseTaxAmount).toFixed(2));
@@ -369,8 +369,9 @@
         var e_discount = $('#e_discount').val() ? $('#e_discount').val() : 0;
         var e_discount_type = $('#e_discount_type').val();
         var e_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0;
+        var e_tax_ac_id = $('#e_tax_ac_id').val();
         var e_tax_type = $('#e_tax_type').val();
-        var e_tax_percent = $('#e_tax_percent').val() ? $('#e_tax_percent').val() : 0;
+        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0;
         var e_tax_amount = $('#e_tax_amount').val() ? $('#e_tax_amount').val() : 0;
         var e_unit_cost_with_discount = $('#e_unit_cost_with_discount').val() ? $('#e_unit_cost_with_discount').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
@@ -431,6 +432,7 @@
 
             tr += '<td>';
             tr += '<span id="span_tax_percent" class="fw-bold">'+e_tax_percent+'%'+'</span>';
+            tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="'+e_tax_ac_id+'">';
             tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="'+e_tax_type+'">';
             tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="'+e_tax_percent+'">';
             tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="'+parseFloat(e_tax_amount).toFixed(2)+'">';
@@ -486,12 +488,14 @@
             tr.find('#span_discount_amount').html(parseFloat(e_discount_amount).toFixed(2));
             tr.find('#unit_cost_with_discount').val(parseFloat(e_unit_cost_with_discount).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
+            tr.find('#tax_ac_id').val(e_tax_ac_id);
             tr.find('#tax_type').val(e_tax_type);
             tr.find('#span_tax_percent').html(parseFloat(e_tax_percent).toFixed(2)+'%');
             tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
             tr.find('#unit_tax_amount').val(parseFloat(e_tax_amount).toFixed(2));
             tr.find('#unit_cost_inc_tax').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#net_unit_cost').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
+            tr.find('#span_unit_cost_inc_tax').html(parseFloat(e_unit_cost_inc_tax).toFixed(2));
             tr.find('#linetotal').val(parseFloat(e_linetotal).toFixed(2));
             tr.find('#span_linetotal').html(parseFloat(e_linetotal).toFixed(2));
             tr.find('#profit').val(parseFloat(e_profit_margin).toFixed(2));
@@ -741,8 +745,10 @@
     });
 
     // // chane purchase tax and clculate total amount
-    $(document).on('change', '#order_tax_percent', function(){
+    $(document).on('change', '#purchase_tax_ac_id', function(){
         calculateTotalAmount();
+        var purchaseTaxPercent = $(this).find('option:selected').data('purchase_tax_percent') ? $(this).find('option:selected').data('purchase_tax_percent') : 0;
+        $('#purchase_tax_percent').val(parseFloat(purchaseTaxPercent).toFixed(2));
     });
 
     // Input paying amount and clculate due amount

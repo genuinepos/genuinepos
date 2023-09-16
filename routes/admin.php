@@ -304,7 +304,6 @@ Route::group(['prefix' => 'contacts'], function () {
 // Purchase route group
 Route::group(['prefix' => 'purchases'], function () {
 
-    Route::get('order/print/supplier/copy/{purchaseId}', [PurchaseController::class, 'printSupplierCopy'])->name('purchases.order.supplier.copy.print');
     Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
     Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::get('get/all/supplier', [PurchaseController::class, 'getAllSupplier'])->name('purchases.get.all.supplier');
@@ -332,60 +331,6 @@ Route::group(['prefix' => 'purchases'], function () {
     Route::group(['prefix' => '/'], function () {
         Route::get('po/process/receive/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceive'])->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceiveStore'])->name('purchases.po.receive.process.store');
-    });
-
-    // Purchase Order route
-    Route::group(['prefix' => 'order'], function () {
-        Route::get('/', [PurchaseOrderController::class, 'index'])->name('purchases.order.index');
-        Route::get('create', [PurchaseOrderController::class, 'create'])->name('purchases.order.create');
-        Route::post('store', [PurchaseOrderController::class, 'store'])->name('purchases.order.store');
-        Route::get('show/{id}', [PurchaseOrderController::class, 'show'])->name('purchases.order.show');
-        Route::get('edit/{id}', [PurchaseOrderController::class, 'edit'])->name('purchases.order.edit');
-        Route::post('update/{id}', [PurchaseOrderController::class, 'update'])->name('purchases.order.update');
-    });
-
-    // Purchase Return route
-    // Route::group(['prefix' => 'returns'], function () {
-    //     Route::get('/', [PurchaseReturnController::class, 'index'])->name('purchases.returns.index');
-    //     Route::get('show/{returnId}', [PurchaseReturnController::class, 'show'])->name('purchases.returns.show');
-    //     Route::get('add/{purchaseId}', [PurchaseReturnController::class, 'create'])->name('purchases.returns.create');
-    //     Route::get('get/purchase/{purchaseId}', [PurchaseReturnController::class, 'getPurchase'])->name('purchases.returns.get.purchase');
-    //     Route::post('store/{purchaseId}', [PurchaseReturnController::class, 'store'])->name('purchases.returns.store');
-    //     Route::delete('delete/{purchaseReturnId}', [PurchaseReturnController::class, 'delete'])->name('purchases.returns.delete');
-    //     Route::get('create', [PurchaseReturnController::class, 'supplierReturn'])->name('purchases.returns.supplier.return');
-    //     Route::get('search/product/{productCode}/{warehouseId}', [PurchaseReturnController::class, 'searchProduct']);
-    //     Route::get('check/single/product/stock/{product_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkSingleProductStock']);
-    //     Route::get('check/variant/product/stock/{product_id}/{variant_id}/{warehouse_id}', [PurchaseReturnController::class, 'checkVariantProductStock']);
-    //     Route::post('supplier/return/store', [PurchaseReturnController::class, 'supplierReturnStore'])->name('purchases.returns.supplier.return.store');
-    //     Route::get('supplier/return/edit/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnEdit'])->name('purchases.returns.supplier.return.edit');
-    //     Route::get('get/editable/supplierReturn/{purchaseReturnId}', [PurchaseReturnController::class, 'getEditableSupplierReturn'])->name('purchases.return.get.editable.supplier.return');
-    //     Route::post('supplier/return/update/{purchaseReturnId}', [PurchaseReturnController::class, 'supplierReturnUpdate'])->name('purchases.returns.supplier.return.update');
-    //     Route::post('return/payments/{returnId}', [PurchaseReturnController::class, 'returnPaymentList'])->name('purchases.returns.purchase.return.payment.list');
-    // });
-
-    Route::group(['prefix' => 'reports'], function () {
-
-        Route::group(['prefix' => 'purchase/statements'], function () {
-            Route::get('/', [PurchaseStatementController::class, 'index'])->name('reports.purchases.statement.index');
-            Route::get('print', [PurchaseStatementController::class, 'print'])->name('reports.purchases.statement.print');
-        });
-
-        Route::group(['prefix' => 'product/purchases'], function () {
-            Route::get('/', [ProductPurchaseReportController::class, 'index'])->name('reports.product.purchases.index');
-            Route::get('print', [ProductPurchaseReportController::class, 'print'])->name('reports.product.purchases.print');
-        });
-
-        Route::group(['prefix' => 'purchase/payments'], function () {
-            Route::get('/', [PurchasePaymentReportController::class, 'index'])->name('reports.purchase.payments.index');
-            Route::get('print', [PurchasePaymentReportController::class, 'print'])->name('reports.purchase.payments.print');
-        });
-
-        Route::group(['prefix' => 'sales/purchase'], function () {
-            Route::get('/', [SalePurchaseReportController::class, 'index'])->name('reports.sales.purchases.index');
-            Route::get('sale/purchase/amounts', [SalePurchaseReportController::class, 'salePurchaseAmounts'])->name('reports.profit.sales.purchases.amounts');
-            Route::get('filter/sale/purchase/amounts', [SalePurchaseReportController::class, 'filterSalePurchaseAmounts'])->name('reports.profit.sales.filter.purchases.amounts');
-            Route::get('print', [SalePurchaseReportController::class, 'printSalePurchase'])->name('reports.sales.purchases.print');
-        });
     });
 });
 

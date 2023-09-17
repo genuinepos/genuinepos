@@ -6,6 +6,8 @@ use App\Http\Controllers\Purchases\PurchaseOrderController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
+use App\Http\Controllers\Report\SalePurchaseReportController;
+use App\Http\Controllers\Report\PurchasePaymentReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;

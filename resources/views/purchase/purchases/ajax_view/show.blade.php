@@ -92,7 +92,6 @@
                                         {{ $generalSettings['business__shop_name'] }}
                                     @endif
                                 @endif
-
                             </li>
                         </ul>
                     </div>
@@ -101,17 +100,17 @@
                  <div class="row">
                      <div class="col-md-12">
                          <div class="table-responsive">
-                             <table id="" class="table modal-table table-sm table-striped">
+                             <table id="" class="table modal-table table-sm">
                                  <thead>
                                      <tr class="bg-secondary">
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Product") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Quantity") }}</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost Before Discount") }}</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost (Before Discount)") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Discount") }}</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost Before Tax") }}</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Subtotal Before Tax") }}</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Tax") }}</th>
-                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost After Tax") }}</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost (Before Tax)") }}</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Subtotal (Before Tax)") }}</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Vat/Tax") }}</th>
+                                         <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost (After Tax)") }}</th>
 
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Line-Total") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Lot No") }}</th>
@@ -160,12 +159,12 @@
                  </div>
 
                  <div class="row">
-                     <div class="col-md-7">
+                    <div class="col-md-7">
                         <p class="fw-bold">{{ __("Payments Against Purchase") }}</p>
                         @include('purchase.purchases.ajax_view.partials.purchase_details_payment_list')
-                     </div>
+                    </div>
 
-                     <div class="col-md-5">
+                    <div class="col-md-5">
                          <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
@@ -246,8 +245,8 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                             <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __("Print") }}</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                         </div>
                     </div>
                 </div>
@@ -331,7 +330,7 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        {{ $sale->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
+                        {{ $purchase->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
                     @else
 
                         {{ $generalSettings['business__address'] }}

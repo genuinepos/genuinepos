@@ -122,11 +122,11 @@
                             $payable = $purchase->total_purchase_amount - $purchase->total_return_amount;
                         @endphp
                         @if ($purchase->due <= 0)
-                            @lang('menu.paid')
+                            {{ __("Paid") }}
                         @elseif($purchase->due > 0 && $purchase->due < $payable)
-                            @lang('menu.partial')
+                            {{ __("Partial") }}
                         @elseif($payable == $purchase->due)
-                            @lang('menu.due')
+                            {{ __("Due") }}
                         @endif
                     </li>
 

@@ -99,7 +99,7 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
 
-        var branchId = "{{ route('ownBranchIdOrParentBranchId') }}";
+        var branchId = "{{ $ownBranchIdOrParentBranchId }}";
 
         var isShowNotForSaleItem = 1;
         var url = "{{ route('general.product.search.common', [':keyWord', ':isShowNotForSaleItem', ':branchId']) }}";
@@ -780,6 +780,7 @@
             }
         }
     });
+
     // Change tax percent and clculate row amount
     $(document).on('change keypress click', '#e_tax_type', function(e) {
 
@@ -920,6 +921,8 @@
     // // chane purchase tax and clculate total amount
     $(document).on('change', '#purchase_tax_ac_id', function() {
         calculateTotalAmount();
+        var purchaseTaxPercent = $(this).find('option:selected').data('purchase_tax_percent') ? $(this).find('option:selected').data('purchase_tax_percent') : 0;
+        $('#purchase_tax_percent').val(parseFloat(purchaseTaxPercent).toFixed(2));
     });
 
     // Remove product form purchase product list (Table)

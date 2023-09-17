@@ -6,8 +6,9 @@ use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
-use App\Models\Accounts\AccountingVoucher;
 use App\Models\Setups\Warehouse;
+use App\Models\Accounts\AccountingVoucher;
+use App\Models\Purchases\PurchaseOrderProduct;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class Purchase extends BaseModel

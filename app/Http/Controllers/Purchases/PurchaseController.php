@@ -9,7 +9,6 @@ use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
@@ -19,12 +18,10 @@ use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountGroupService;
 use App\Services\Products\ProductStockService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
-use App\Services\GeneralSettingServiceInterface;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Accounts\AccountingVoucherService;
 use Modules\Communication\Interface\EmailServiceInterface;
@@ -40,14 +37,12 @@ class PurchaseController extends Controller
         private UserActivityLogUtil $userActivityLogUtil,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
-        private AccountGroupService $accountGroupService,
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
         private BranchSettingService $branchSettingService,
         private ProductService $productService,
         private ProductStockService $productStockService,
-        private UnitService $unitService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
         private ProductLedgerService $productLedgerService,
@@ -250,7 +245,7 @@ class PurchaseController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
 
                 // Add Payment Description Credit Entry
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
 
                 //Add Credit Ledger Entry
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
@@ -499,7 +494,7 @@ class PurchaseController extends Controller
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->account_id);
 
                 // Add Payment Description Credit Entry
-                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
+                $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, note: $request->payment_note);
 
                 //Add Credit Ledger Entry
                 $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 9, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'credit');
@@ -582,7 +577,7 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Purchase is update Successfully."));
+        return response()->json(__("Purchase updated Successfully."));
     }
 
     // delete purchase method

@@ -16,11 +16,11 @@ class AccountLedgerService
             4 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchases.returns.show'],
             5 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'expense_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
             7 => ['name' => 'Stock Adjustment', 'id' => 'adjustment_id', 'voucher_no' => 'stock_adjustment_voucher', 'details_id' => 'adjustment_id', 'link' => 'stock.adjustments.show'],
-            8 => ['name' => 'Receipt', 'id' => 'voucher_description_id', 'voucher_no' => 'receipt_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
-            9 => ['name' => 'Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'payment_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
-            12 => ['name' => 'Contra', 'id' => 'voucher_description_id', 'voucher_no' => 'contra_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
-            13 => ['name' => 'Journal', 'id' => 'voucher_description_id', 'voucher_no' => 'journal_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
-            15 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'income_voucher', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
+            8 => ['name' => 'Receipt', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
+            9 => ['name' => 'Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
+            12 => ['name' => 'Contra', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
+            13 => ['name' => 'Journal', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
+            15 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'accounting.vouchers.show'],
             16 => ['name' => 'Sales', 'id' => 'sale_product_id', 'voucher_no' => 'product_sale_voucher', 'details_id' => 'product_sale_id', 'link' => 'sales.show'],
             17 => ['name' => 'Purchase', 'id' => 'purchase_product_id', 'voucher_no' => 'product_purchase_voucher', 'details_id' => 'product_purchase_id', 'link' => 'purchases.show'],
             18 => ['name' => 'Sales Return', 'id' => 'sale_return_product_id', 'voucher_no' => 'product_sale_return_voucher', 'details_id' => 'product_sale_return_id', 'link' => 'sales.returns.show'],
@@ -37,8 +37,10 @@ class AccountLedgerService
         $trans_id,
         $amount,
         $amount_type,
-        $cash_bank_account_id = null
+        $cash_bank_account_id = null,
+        $branch_id = null,
     ) {
+        $branchId = $branch_id ? $branch_id : auth()->user()->branch_id;
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
         $time = $voucher_type_id == 0 ? ' 01:00:00' : date(' H:i:s');
@@ -49,7 +51,7 @@ class AccountLedgerService
         $add->{$amount_type} = $amount;
         $add->amount_type = $amount_type;
         $add->is_cash_flow = isset($cash_bank_account_id) ? 1 : 0;
-        $add->branch_id = auth()->user()->branch_id;
+        $add->branch_id = $branchId;
         $add->save();
     }
 
@@ -97,7 +99,8 @@ class AccountLedgerService
                 $trans_id,
                 $amount,
                 $amount_type,
-                $cash_bank_account_id
+                $cash_bank_account_id,
+                $branch_id,
             );
         }
     }

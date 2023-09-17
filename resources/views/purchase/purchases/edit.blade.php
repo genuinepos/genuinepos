@@ -439,8 +439,8 @@
                                                         <div class="col-8">
                                                             <div class="input-group">
                                                                 <select name="order_discount_type" class="form-control" id="order_discount_type" data-next="order_discount">
-                                                                    <option {{ $purchase->order_discount_type == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.fixed')(0.00)</option>
-                                                                    <option {{ $purchase->order_discount_type == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.percentage')(%)</option>
+                                                                    <option {{ $purchase->order_discount_type == 1 ? 'SELECTED' : '' }} value="1">{{ __("Fixed") }}(0.00)</option>
+                                                                    <option {{ $purchase->order_discount_type == 2 ? 'SELECTED' : '' }} value="2">{{ __("Percentage") }}(%)</option>
                                                                 </select>
 
                                                                 <input name="order_discount" type="number" class="form-control fw-bold" id="order_discount" data-next="purchase_tax_ac_id" value="{{ $purchase->order_discount }}">
@@ -458,12 +458,13 @@
                                                             <select name="purchase_tax_ac_id" class="form-control" id="purchase_tax_ac_id" data-next="shipment_charge">
                                                                 <option data-purchase_tax_percent="0.00" value="">@lang('menu.no_tax')</option>
                                                                 @foreach ($taxAccounts as $taxAccount)
-                                                                    <option data-purchase_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                                    <option {{ $taxAccount->id == $purchase->purchase_tax_ac_id ? 'SELECTED' : '' }} data-purchase_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                                         {{ $taxAccount->name }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="0.00" tabindex="-1">
+                                                            <input type="number" step="any" name="purchase_tax_percent" class="d-none" id="purchase_tax_percent" value="{{ $purchase->purchase_tax_percent }}">
+                                                            <input name="purchase_tax_amount" type="number" step="any" class="d-hide" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -555,9 +556,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.payment_note') </b> </label>
+                                                        <label class=" col-4"><b>{{ __("Payment Note") }}</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="purchase_note" placeholder="@lang('menu.payment_note')" autocomplete="off">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="purchase_note" placeholder="{{ __("Payment Note") }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -566,7 +567,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="save_and_print" placeholder="{{ __('Purchase Note') }}">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="save_and_print" value="{{ $purchase->purchase_note }}" placeholder="{{ __('Purchase Note') }}">
                                                         </div>
                                                     </div>
                                                 </div>

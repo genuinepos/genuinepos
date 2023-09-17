@@ -18,6 +18,7 @@
             <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $purchaseProduct->unit_discount }}">
             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $purchaseProduct->unit_discount_amount }}">
             <input type="hidden" name="purchase_product_ids[]" value="{{ $purchaseProduct->id }}">
+            <input type="hidden" name="purchase_return_product_ids[]">
             <input type="hidden" class="unique_id" id="{{ $purchaseProduct->product_id . $variantId.$purchaseProduct?->purchase?->warehouse_id }}" value="{{ $purchaseProduct->product_id . $variantId . $purchaseProduct?->purchase?->warehouse_id }}">
         </td>
 

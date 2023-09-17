@@ -28,17 +28,18 @@ class DayBookService
     {
         $data = [
             1 => ['name' => 'Sales', 'id' => 'sale_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => 'sales.show'],
-            2 => ['name' => 'Sales Order', 'id' => 'sale_id', 'voucher_no' => 'sales_order_voucher', 'details_id' => 'sale_id', 'link' => 'sales.order.show'],
+            2 => ['name' => 'Sales Order', 'id' => 'sale_id', 'voucher_no' => 'sales_order_voucher', 'details_id' => 'sale_id', 'link' => 'sales.orders.show'],
             3 => ['name' => 'Sales Return', 'id' => 'sale_return_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
             4 => ['name' => 'Purchase', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show'],
-            5 => ['name' => 'Purchase Order', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show.order'],
-            6 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchases.returns.show'],
+            5 => ['name' => 'Purchase Order', 'id' => 'purchase_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchase.orders.show'],
+            6 => ['name' => 'Purchase Return', 'id' => 'purchase_return_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchase.returns.show'],
             7 => ['name' => 'Stock Adjustment', 'id' => 'stock_adjustment_id', 'voucher_no' => 'stock_adjustment_voucher', 'details_id' => 'stock_adjustment_id', 'link' => 'stock.adjustments.show'],
-            // 7 => ['name' => 'Receipt', 'id' => 'payment_id', 'voucher_no' => 'payment_voucher', 'details_id' => 'payment_id', 'link' => 'vouchers.receipts.show'],
-            // 9 => ['name' => 'Payment', 'id' => 'payment_id', 'voucher_no' => 'payment_voucher', 'details_id' => 'payment_id', 'link' => 'vouchers.payments.show'],
-            // 10 => ['name' => 'Contra', 'id' => 'contra_id', 'voucher_no' => 'contra_voucher', 'details_id' => 'contra_id', 'link' => 'vouchers.contras.show'],
-            //  11 => ['name' => 'Expenses', 'id' => 'expense_id', 'voucher_no' => 'expense_voucher', 'details_id' => 'expense_id', 'link' => 'vouchers.expenses.show'],
-            //  12 => ['name' => 'Incomes', 'id' => 'expense_id', 'voucher_no' => 'expense_voucher', 'details_id' => 'expense_id', 'link' => 'vouchers.expenses.show'],
+
+            8 => ['name' => 'Receipt', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            9 => ['name' => 'Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            10 => ['name' => 'Contra', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            11 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            11 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
         ];
 
         return $data[$voucherTypeId];

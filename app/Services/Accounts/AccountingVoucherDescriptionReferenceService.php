@@ -54,7 +54,7 @@ class AccountingVoucherDescriptionReferenceService
 
         $receivedOrPaidAmount = $amount;
         $dueSpecificInvoices = $this->dueSpecificInvoices(accountId: $accountId, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);
-        
+
         // dd($dueSpecificInvoices);
 
         // $dueInvoices = Sale::where('customer_id', $customerId)
@@ -536,6 +536,7 @@ class AccountingVoucherDescriptionReferenceService
             return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->where('due', '>', 0)
+                ->where('purchase_status', 1)
                 ->orderBy('report_date', 'asc')
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
@@ -549,6 +550,7 @@ class AccountingVoucherDescriptionReferenceService
             return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->where('due', '>', 0)
+                ->where('status', 1)
                 ->orderBy('report_date', 'asc')
                 ->get();
         } elseif ($refIdColName == 'sale_return_id') {

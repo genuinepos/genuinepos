@@ -10,7 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnService
 {
-    function purchaseReturnsTable(): object
+    function purchaseReturnsTable(object $request): object
     {
         $returns = '';
         $generalSettings = config('generalSettings');
@@ -19,8 +19,8 @@ class PurchaseReturnService
             ->leftJoin('purchases', 'purchase_returns.purchase_id', 'purchases.id')
             ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('account_suppliers', 'purchase_returns.supplier_account_id', 'suppliers.id')
-            ->leftJoin('users as createdBy', 'purchases.created_by_id', 'createdBy.id');;
+            ->leftJoin('accounts as suppliers', 'purchase_returns.supplier_account_id', 'suppliers.id')
+            ->leftJoin('users as createdBy', 'purchase_returns.created_by_id', 'createdBy.id');;
 
         if ($request->branch_id) {
 
@@ -56,7 +56,6 @@ class PurchaseReturnService
             'purchase_returns.*',
             'purchases.invoice_id as parent_invoice_id',
             'branches.name as branch_name',
-            'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
@@ -90,7 +89,7 @@ class PurchaseReturnService
 
                 if (auth()->user()->can('purchase_return')) {
 
-                    $html .= '<a href="' . route('purchases.returns.delete', $row->id) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    $html .= '<a href="' . route('purchase.returns.delete', $row->id) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -103,6 +102,20 @@ class PurchaseReturnService
                 $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
                 return date($__date_format, strtotime($row->date));
             })
+
+            ->editColumn('voucher', function ($row) use ($generalSettings) {
+
+                return '<a href="' . route('purchase.returns.show', $row->id) . '" id="details_btn">' . $row->voucher_no . '</a>';
+            })
+
+            ->editColumn('parent_invoice_id', function ($row) use ($generalSettings) {
+
+                if ($row->purchase_id) {
+
+                    return '<a href="' . route('purchases.show', [$row->purchase_id]) . '" id="details_btn">' . $row->parent_invoice_id . '</a>';
+                }
+            })
+
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -135,42 +148,55 @@ class PurchaseReturnService
                 }
             })
 
-            ->editColumn('total_qty', fn ($row) => App\Utils\Converter::format_in_bdt($row->total_qty))
-            ->editColumn('net_total_amount', fn ($row) => App\Utils\Converter::format_in_bdt($row->net_total_amount))
-            ->editColumn('return_discount', fn ($row) => App\Utils\Converter::format_in_bdt($row->return_discount))
-            ->editColumn('return_tax_amount', fn ($row) => App\Utils\Converter::format_in_bdt($row->return_tax_amount))
-            ->editColumn('total_return_amount', fn ($row) => App\Utils\Converter::format_in_bdt($row->total_return_amount))
-            ->editColumn('received', fn ($row) => App\Utils\Converter::format_in_bdt($row->received_amount))
-            ->editColumn('due', fn ($row) => App\Utils\Converter::format_in_bdt($row->due))
+            ->editColumn('total_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_qty))
+            ->editColumn('net_total_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_total_amount))
+            ->editColumn('return_discount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_discount))
+            ->editColumn('return_tax_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_tax_amount))
+            ->editColumn('total_return_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_return_amount))
+            ->editColumn('received', fn ($row) => \App\Utils\Converter::format_in_bdt($row->received_amount))
+            ->editColumn('due', fn ($row) => \App\Utils\Converter::format_in_bdt($row->due))
 
             ->editColumn('createdBy', function ($row) {
 
                 return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
-            ->rawColumns(['action', 'date', 'branch', 'payment_status', 'total_qty', 'net_total_amount', 'return_discount', 'return_tax_amount', 'total_return_amount', 'received', 'due', 'createdBy'])
+            ->rawColumns(['action', 'date', 'voucher', 'parent_invoice_id', 'branch', 'payment_status', 'total_qty', 'net_total_amount', 'return_discount', 'return_tax_amount', 'total_return_amount', 'received', 'due', 'createdBy'])
             ->make(true);
     }
 
-    public function restrictions(object $request): array
+    public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, ?int $purchaseReturnId = null): array
     {
         if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __("Product table is empty.")];
         } elseif (count($request->product_ids) > 60) {
 
-            return ['pass' => false, 'msg' => __("Purchase invoice products must be less than 60 or equal.")];
+            return ['pass' => false, 'msg' => __("Purchase Return products must be less than 60 or equal.")];
         }
 
         if ($request->total_qty == 0) {
 
-            return ['pass' => false, 'msg' => 'All product`s quantity is 0.'];
+            return ['pass' => false, 'msg' => __("All product`s quantity is 0.")];
+        }
+
+        if ($checkSupplierChangeRestriction == true) {
+
+            $purchaseReturn = $this->singlePurchaseReturn(id: $purchaseReturnId, with: ['references']);
+
+            if (count($purchaseReturn->references)) {
+
+                if ($purchaseReturn->supplier_account_id != $request->supplier_account_id) {
+
+                    return ['pass' => false, 'msg' => __("Supplier can not be changed. One or more receipts is exists against this purchase return voucher.")];
+                }
+            }
         }
 
         return ['pass' => true];
     }
 
-    function addPurchaseReturn(object $request, object $codeGenerator, ?string $voucherPrefix = null): object
+    public function addPurchaseReturn(object $request, object $codeGenerator, ?string $voucherPrefix = null): object
     {
         // generate invoice ID
         $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
@@ -201,6 +227,59 @@ class PurchaseReturnService
         return $addPurchaseReturn;
     }
 
+    public function updatePurchaseReturn($request, $updatePurchaseReturn): object
+    {
+        foreach ($updatePurchaseReturn->purchaseReturnProducts as $purchaseReturnProduct) {
+
+            $purchaseReturnProduct->is_delete_in_update = 1;
+            $purchaseReturnProduct->save();
+        }
+
+        $updatePurchaseReturn->purchase_id = $request->purchase_id;
+        $updatePurchaseReturn->supplier_account_id = $request->supplier_account_id;
+        $updatePurchaseReturn->purchase_account_id = $request->purchase_account_id;
+        $updatePurchaseReturn->total_item = $request->total_item;
+        $updatePurchaseReturn->total_qty = $request->total_qty;
+        $updatePurchaseReturn->net_total_amount = $request->net_total_amount;
+        $updatePurchaseReturn->return_discount = $request->return_discount ? $request->return_discount : 0;
+        $updatePurchaseReturn->return_discount_type = $request->return_discount_type;
+        $updatePurchaseReturn->return_discount_amount = $request->return_discount_amount ? $request->return_discount_amount : 0;
+        $updatePurchaseReturn->return_tax_ac_id = $request->return_tax_ac_id;
+        $updatePurchaseReturn->return_tax_percent = $request->return_tax_percent ? $request->return_tax_percent : 0;
+        $updatePurchaseReturn->return_tax_amount = $request->return_tax_amount ? $request->return_tax_amount : 0;
+        $updatePurchaseReturn->total_return_amount = $request->total_return_amount;
+        $updatePurchaseReturn->date = $request->date;
+        $time = date(' H:i:s', strtotime($updatePurchaseReturn->date_ts));
+        $updatePurchaseReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updatePurchaseReturn->note = $request->note;
+        $updatePurchaseReturn->save();
+
+        $this->adjustPurchaseReturnVoucherAmounts($updatePurchaseReturn);
+
+        return $updatePurchaseReturn;
+    }
+
+    public function deletePurchaseReturn(int $id): array|object
+    {
+        // get deleting purchase row
+        $deletePurchaseReturn = $this->singlePurchaseReturn(id: $id, with: [
+            'purchase',
+            'accountingVouchers',
+            'purchaseReturnProducts',
+            'purchaseReturnProducts.product',
+            'purchaseReturnProducts.variant',
+        ]);
+
+        if (count($deletePurchaseReturn->accountingVouchers) > 0) {
+
+            return ['pass' => false, 'msg' =>__("Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.")];
+        }
+
+        $deletePurchaseReturn->delete();
+
+        return $deletePurchaseReturn;
+    }
+
     public function singlePurchaseReturn(int $id, ?array $with = null): ?object
     {
         $query = PurchaseReturn::query();
@@ -220,13 +299,6 @@ class PurchaseReturnService
             ->select(DB::raw('sum(voucher_description_references.amount) as total_received'))
             ->groupBy('voucher_description_references.purchase_return_id')
             ->get();
-
-        // $totalReturnPaid = DB::table('purchase_payments')
-        //     ->where('purchase_payments.purchase_id', $purchaseReturn->purchase_id)
-        //     ->where('purchase_payments.payment_type', 2)
-        //     ->select(DB::raw('sum(paid_amount) as total_paid'))
-        //     ->groupBy('purchase_payments.purchase_id')
-        //     ->get();
 
         $due = $purchaseReturn->total_return_amount - $totalReceived->sum('total_received');
         $purchaseReturn->received_amount = $totalReceived->sum('total_received');

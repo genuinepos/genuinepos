@@ -8,6 +8,8 @@ use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
 use App\Models\Purchases\PurchaseReturn;
 use App\Models\Purchases\PurchaseProduct;
+use App\Models\Setups\Branch;
+use App\Models\Setups\Warehouse;
 
 class PurchaseReturnProduct extends BaseModel
 {
@@ -38,5 +40,15 @@ class PurchaseReturnProduct extends BaseModel
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
 }

@@ -4,7 +4,7 @@
 </style>
 <div class="modal_payments_or_receipts_list_table">
     <div class="table-responsive">
-        <table class="table modal-table table-striped table-sm">
+        <table class="table modal-table table-sm">
             <thead>
                 <tr class="bg-primary text-white">
                     <th>{{ __("Voucher Type") }}</th>

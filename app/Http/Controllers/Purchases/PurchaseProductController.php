@@ -40,7 +40,7 @@ class PurchaseProductController extends Controller
 
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get();
 
-        return view('purchase.purchases.purchase_product_list', compact('branches', 'supplierAccounts', 'categories', 'ownBranchIdOrParentBranchId'));
+        return view('purchase.purchases.purchase_products.index', compact('branches', 'supplierAccounts', 'categories', 'ownBranchIdOrParentBranchId'));
     }
 
     public function purchaseProductsForPurchaseReturn($purchaseId)

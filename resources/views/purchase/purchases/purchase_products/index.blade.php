@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Search Product area style */
-        .selectProduct { background-color: #ab1c59; color: #fff !important; }
+        .selectProduct { background-color: #5f555a; color: #fff !important; }
 
         .search_area { position: relative; }
 
@@ -11,10 +11,9 @@
 
         .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
 
-        .search_result ul li a { color: #6b6262; font-size: 12px; display: block; padding: 3px; }
+        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
 
-        .search_result ul li a:hover { color: white; background-color: #ab1c59; }
-
+        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
         /* Search Product area style end */
     </style>
 @endpush
@@ -301,7 +300,7 @@
             var categoryId = $(this).val();
 
             if (categoryId == '') {
-                
+
                 $('#sub_category_id').empty();
                 $('#sub_category_id').append('<option value="">'+"{{ __('Select Category First') }}"+'</option>');
             }

@@ -20,7 +20,7 @@ class PurchaseReturnService
             ->leftJoin('branches', 'purchase_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('accounts as suppliers', 'purchase_returns.supplier_account_id', 'suppliers.id')
-            ->leftJoin('users as createdBy', 'purchase_returns.created_by_id', 'createdBy.id');;
+            ->leftJoin('users as createdBy', 'purchase_returns.created_by_id', 'createdBy.id');
 
         if ($request->branch_id) {
 

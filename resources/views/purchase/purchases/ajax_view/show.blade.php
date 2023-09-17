@@ -7,9 +7,9 @@
      <div class="modal-dialog modal-xl">
          <div class="modal-content">
              <div class="modal-header">
-                 <h5 class="modal-title" id="exampleModalLabel">
+                 <h6 class="modal-title" id="exampleModalLabel">
                     {{ __("Purchase Details") }} ({{ __("Invoice ID") }} : <strong>{{ $purchase->invoice_id }}</strong>)
-                 </h5>
+                 </h6>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
              <div class="modal-body">
@@ -111,7 +111,6 @@
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Subtotal (Before Tax)") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Vat/Tax") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Unit Cost (After Tax)") }}</th>
-
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Line-Total") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Lot No") }}</th>
                                          <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __("Selling Price") }}</th>

@@ -824,7 +824,7 @@
                                                 <a href="{{ route('purchases.create') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-shopping-cart"></i></span>
+                                                            <span><i class="fas fa-plus-circle"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">@lang('menu.add_purchase')</p>
@@ -919,7 +919,7 @@
                                                 <a href="{{ route('purchase.returns.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-undo"></i></span>
+                                                            <span><i class="fas fa-list"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __("Purchase Return List") }}</p>
@@ -963,7 +963,7 @@
                                                     <a href="{{ route('reports.purchases.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-tasks"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Report") }}</p>
@@ -976,7 +976,7 @@
                                                     <a href="{{ route('reports.purchased.products.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchased Products Report") }}</p>
@@ -989,7 +989,7 @@
                                                     <a href="{{ route('reports.purchase.orders.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Order Report") }}</p>
@@ -1002,7 +1002,7 @@
                                                     <a href="{{ route('reports.purchase.ordered.products.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Ordered Products Report") }}</p>
@@ -1012,10 +1012,10 @@
 
                                             @if (auth()->user()->can('purchase_return'))
                                                 <div class="sub-menu-col">
-                                                    <a href="#" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.purchase.returns.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Return Report") }}</p>
@@ -1025,10 +1025,10 @@
 
                                             @if (auth()->user()->can('purchase_return'))
                                                 <div class="sub-menu-col">
-                                                    <a href="#" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.purchase.returned.products.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-shopping-cart"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Returned Products Report") }}</p>
@@ -1036,15 +1036,12 @@
                                                 </div>
                                             @endif
 
-                                            @if (
-                                                auth()->user()->can('purchase_payment_report') &&
-                                                auth()->user()->can('purchase_payment_report')
-                                            )
+                                            @if (auth()->user()->can('purchase_payment_report'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('reports.purchase.payments.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="fas fa-money-check-alt"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Purchase Payments") }}</p>
@@ -1052,15 +1049,12 @@
                                                 </div>
                                             @endif
 
-                                            @if (
-                                                auth()->user()->can('purchase_sale_report') &&
-                                                auth()->user()->can('purchase_sale_report')
-                                            )
+                                            @if (auth()->user()->can('purchase_sale_report'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('reports.sales.purchases.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
-                                                                <span><i class="far fa-chart-bar"></i></span>
+                                                                <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
                                                         <p class="switch_text">{{ __("Sale Vs Purchase") }}</p>

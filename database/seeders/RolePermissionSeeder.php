@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -17,10 +18,10 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $this->truncateRolePermissionDataButKeepOldData();
-        \Artisan::call('optimize:clear');
+        Artisan::call('optimize:clear');
 
         $this->createRolePermission();
-        \Artisan::call('optimize:clear');
+        Artisan::call('optimize:clear');
 
         $this->syncRolesPermissions();
 

@@ -19,7 +19,7 @@ class Plan extends Model
     public function features()
     {
         return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
-            ->withPivot(['capacity']);
+            ->withPivot('capacity');
     }
 
     public function getPeriodTypeAttribute()

@@ -1,18 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Sales\AddSalesController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
-use App\Http\Controllers\Sales\SalesController;
-use Illuminate\Support\Facades\Route;
 
-Route::controller(SalesController::class)->prefix('sales')->group(function () {
+Route::prefix('sales')->group(function () {
 
-    Route::get('/', 'index')->name('sales.index');
-    Route::get('create', 'create')->name('sales.create');
-    Route::post('store', 'store')->name('sales.store');
-    Route::get('edit/{id}', 'edit')->name('sales.edit');
-    Route::post('update/{id}', 'update')->name('sales.update');
-    Route::delete('delete/{id}', 'delete')->name('sales.delete');
+    Route::controller(AddSalesController::class)->prefix('add-sale')->group(function () {
+        Route::get('/', 'index')->name('sales.index');
+        Route::get('create', 'create')->name('sales.create');
+        Route::post('store', 'store')->name('sales.store');
+        Route::get('edit/{id}', 'edit')->name('sales.edit');
+        Route::post('update/{id}', 'update')->name('sales.update');
+        Route::delete('delete/{id}', 'delete')->name('sales.delete');
+    });
 
     Route::controller(AddSaleSettingController::class)->prefix('add-sales-settings')->group(function () {
 

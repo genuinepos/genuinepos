@@ -87,7 +87,9 @@
     }
 
     .sub-menu-width .switch_text {
-        font-size: 13px !important;
+        /* font-size: 13px !important; */
+        font-size: 11px !important;
+        line-height: 13px;
     }
 
     body {

@@ -6,8 +6,7 @@
         /* Search Product area style */
         .selectProduct {background-color: #746e70;color: #fff !important;}
         .search_area{position: relative;}
-        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px;
-            margin-top: 1px;}
+        .search_result {position: absolute;width: 100%;border: 1px solid #E4E6EF;background: white;z-index: 1;padding: 8px; margin-top: 1px;}
         .search_result ul li {width: 100%;border: 1px solid lightgray;margin-top: 3px;}
         .search_result ul li a {color: #6b6262;font-size: 12px;display: block;padding: 3px;}
         .search_result ul li a:hover {color: white;background-color: #999396;}

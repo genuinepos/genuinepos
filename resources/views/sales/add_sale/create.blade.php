@@ -1,109 +1,111 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
-        .input-group-text {font-size: 12px !important;}
-        .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 88.3%;z-index: 9999999;padding: 0;left: 6%;display: none;border: 1px solid #706a6d;margin-top: 1px;border-radius: 0px;}
-        .select_area ul {list-style: none;margin-bottom: 0;padding: 0px 2px;}
-        .select_area ul li a {color: #000000;text-decoration: none;font-size: 11px;padding: 2px 2px;display: block;border: 1px solid lightgray; margin: 2px 0px;}
-        .select_area ul li a:hover {background-color: #999396;color: #fff;}
-        .selectProduct {background-color: #746e70!important;color: #fff !important;}
-        .input-group-text-sale {font-size: 7px !important;}
-        b{font-weight: 500; font-family: Arial, Helvetica, sans-serif;}
-        .border_red { border: 1px solid red!important; }
-        #display_pre_due{font-weight: 600;}
+        .input-group-text {
+            font-size: 12px !important;
+        }
+
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 88.3%; z-index: 9999999; padding: 0; left: 6%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+
+        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
+
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
+
+        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+
+        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
+
+        .input-group-text-sale { font-size: 7px !important; }
+
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+
+        .border_red { border: 1px solid red !important; }
+
+        #display_pre_due { font-weight: 600; }
+
         input[type=number]#quantity::-webkit-inner-spin-button,
-        input[type=number]#quantity::-webkit-outer-spin-button {opacity: 1;margin: 0;}
-        .select2-container .select2-selection--single .select2-selection__rendered {display: inline-block;width: 143px;}
+        input[type=number]#quantity::-webkit-outer-spin-button { opacity: 1; margin: 0; }
+
+        .select2-container .select2-selection--single .select2-selection__rendered { display: inline-block; width: 143px; }
+
         /*.select2-selection:focus {
-             box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-        } */
-        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
-        .checkbox_input_wrap {text-align: right;}
-        .select2-selection:focus {
-            box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-            color: #212529;
-            background-color: #fff;
-            border-color: #86b7fe;
-            outline: 0;
-        }
+                 box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+            } */
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 { text-align: right; padding-right: 10px; }
 
-        .btn-sale {
-            width: calc(50% - 4px);
-            padding-left: 0;
-            padding-right: 0;
-        }
+        .checkbox_input_wrap { text-align: right; }
 
-        .sale-item-sec {
-            height: 237px;
-        }
+        .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
+
+        .btn-sale { width: calc(50% - 4px); padding-left: 0; padding-right: 0; }
+
+        .sale-item-sec { height: 200px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
 @endpush
+@section('title', 'Add Sale - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cart-plus"></span>
-                    <h6>@lang('menu.add_sale')</h6>
+                    <h6>{{ __('Add Sale') }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="add_sale_form" action="{{ route('sales.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-                <section>
-                </section>
 
                 <section>
                     <div class="sale-content">
                         <div class="row g-3">
                             <div class="col-md-9">
-                                <div class="form_element rounded mt-0 mb-3">
+                                <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body p-1">
                                         <div class="row g-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.customer') </b> </label>
+                                                    <label class="col-4"><b>{{ __('Customer') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
-                                                            <select name="customer_id" class="form-control select2" id="customer_id">
-                                                                <option value="">{{ __('Walk-In-Customer') }}</option>
-                                                                @foreach ($customers as $customer)
-                                                                    <option data-customer_name="{{ $customer->name }}" data-customer_phone="{{ $customer->phone }}" value="{{ $customer->id }}">{{ $customer->name.' ('.$customer->phone.')' }}</option>
+                                                            <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="invoice_id">
+                                                                <option value="">{{ __('Select Supplier') }}</option>
+                                                                @foreach ($customerAccounts as $customerAccount)
+                                                                    <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                                 @endforeach
                                                             </select>
-
-                                                            <div>
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text add_button" id="addCustomer">
-                                                                        <i class="fas fa-plus-square text-dark"></i>
-                                                                    </span>
-                                                                </div>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
+                                                        <span class="error error_customer_account_id"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.invoice_id') </b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="If you keep this field empty, The invoice ID will be generated automatically." class="fas fa-info-circle tp"></i></label>
+                                                    <label class="col-4"><b>{{ __("Invoice ID") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Invoice ID" autocomplete="off">
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="{{ __("Invoice ID") }}" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.sales_account')  <span
-                                                        class="text-danger">*</span></b></label>
+                                                    <label class="col-4"><b>{{ __("Sales Account") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <select name="sale_account_id" class="form-control" id="sale_account_id">
                                                             @foreach ($saleAccounts as $saleAccount)
@@ -119,9 +121,9 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.previous_due') </b></label>
+                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="number" step="any" class="form-control text-danger" id="display_pre_due" value="0.00" tabindex="-1">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -129,8 +131,7 @@
                                             {{-- Inv Schema --}}
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.date') <span
-                                                        class="text-danger">*</span></b></label>
+                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
@@ -140,22 +141,12 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.attachment') <i data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice related any file.Ex: Scanned cheque, payment prove file etc. Max Attachment Size 2MB." class="fas fa-info-circle tp"></i></b></label>
+                                                    <label class="col-4"><b>{{ __("Price Group") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="file" name="attachment" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.price_group') </b></label>
-                                                    <div class="col-8">
-                                                        <select name="price_group_id" class="form-control"
-                                                            id="price_group_id">
-                                                            <option value="">@lang('menu.default_selling_price')</option>
-                                                            @foreach ($price_groups as $pg)
-                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $pg->id ? 'SELECTED' : '' }} value="{{ $pg->id }}">{{ $pg->name }}</option>
+                                                        <select name="price_group_id" class="form-control" id="price_group_id">
+                                                            <option value="">{{ __("Default Selling Price Group") }}</option>
+                                                            @foreach ($priceGroups as $priceGroup)
+                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -164,55 +155,33 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>@lang('menu.warehouse') </b> </label>
+                                                    <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
-                                                        <input type="hidden" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" id="branch_name">
-                                                        <input type="hidden" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}" id="branch_id">
-                                                        <select name="warehouse_id" class="form-control" id="warehouse_id">
-                                                            <option value="">@lang('menu.select_warehouse')</option>
-                                                            @foreach ($warehouses as $warehouse)
-                                                                <option data-w_name="{{ $warehouse->name.'/'.$warehouse->code }}" value="{{ $warehouse->id }}">
-                                                                    {{ $warehouse->name.'/'.$warehouse->code }}
-                                                                </option>
+                                                        <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
+                                                            <option value="">{{ __('Select Warehouse') }}</option>
+                                                            @foreach ($warehouses as $w)
+                                                                @php
+                                                                    $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                                @endphp
+                                                                <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error error_warehouse_id"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
-                                                <div class="row g-1">
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <label class="col-4"> <b>@lang('menu.status')<span class="text-danger">*</span></b></label>
-                                                            <div class="col-8">
-                                                                <select name="status" class="form-control add_input" data-name="Status"
-                                                                    id="status">
-                                                                    <option value="">@lang('menu.select_status')</option>
-                                                                    @foreach (App\Utils\SaleUtil::saleStatus() as $key => $status)
-                                                                        <option value="{{ $key }}">{{ $status }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <span class="error error_status"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <label class="col-4"><b>{{ __('I.Sch') }} </b></label>
-                                                            <div class="col-8">
-                                                                <select name="invoice_schema" class="form-control"
-                                                                    id="invoice_schema">
-                                                                    <option value="">@lang('menu.none')</option>
-                                                                    @foreach ($invoice_schemas as $inv_schema)
-                                                                        <option value="{{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}">
-                                                                            {{$inv_schema->format == 2 ? date('Y') . '/' . $inv_schema->start_from : $inv_schema->prefix . $inv_schema->start_from }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <select name="status" class="form-control" id="status">
+                                                            <option value="">{{ __('Select Sale Status') }}</option>
+                                                            @foreach (\App\Enums\SaleStatus::cases() as $saleStatus)
+                                                                <option value="{{ $saleStatus->value }}">{{ $saleStatus->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="error error_status"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -220,12 +189,12 @@
                                     </div>
                                 </div>
 
-                                <div class="form_element rounded mt-0 mb-3">
-                                    <div class="element-body">
-                                        <div class="row">
+                                <div class="form_element rounded mt-0 mb-1">
+                                    <div class="element-body py-0">
+                                        {{-- <div class="row">
                                             <div class="col-md-9">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label class="col-form-label">@lang('menu.item_search')</label>
+                                                    <label class="fw-bold">{{ __("Search Product") }}</label>
                                                     <div class="input-group ">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -233,8 +202,8 @@
                                                             </span>
                                                         </div>
 
-                                                        <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="Search Product by product code(SKU) / Scan bar code" autocomplete="off" autofocus>
-                                                        @if(auth()->user()->can('product_add'))
+                                                        <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="{{ __("Product Search By Name/Code") }}" autocomplete="off" autofocus>
+                                                        @if (auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
                                                                 <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
@@ -253,10 +222,105 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text add_button p-1 m-0">@lang('menu.stock')</span>
                                                     </div>
-                                                    <input type="text" readonly class="form-control text-success stock_quantity"
-                                                        autocomplete="off" id="stock_quantity"
-                                                        placeholder="Stock Quantity" tabindex="-1">
+                                                    <input type="text" readonly class="form-control text-success stock_quantity" autocomplete="off" id="stock_quantity" placeholder="Stock Quantity" tabindex="-1">
                                                 </div>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="row g-2 align-items-end">
+                                            <div class="col-md-4">
+                                                <div class="searching_area" style="position: relative;">
+                                                    <label class="fw-bold">{{ __('Search Product') }}</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
+                                                        @if (auth()->user()->can('product_add'))
+                                                            <div class="input-group-prepend">
+                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    <div class="select_area">
+                                                        <ul id="list" class="variant_list_area"></ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="hidden_fields d-none">
+                                                <input type="hidden" id="e_unique_id">
+                                                <input type="hidden" id="e_unit_cost_inc_tax">
+                                                <input type="hidden" id="e_item_name">
+                                                <input type="hidden" id="e_product_id">
+                                                <input type="hidden" id="e_variant_id">
+                                                <input type="hidden" id="e_tax_amount">
+                                                <input type="hidden" id="e_is_show_emi_on_pos">
+                                                <input type="hidden" id="e_price_inc_tax">
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('Quantity') }}</label>
+                                                <div class="input-group">
+                                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                                    <select id="e_unit_id" class="form-control w-40">
+                                                        <option value="">{{ __('Unit') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
+                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}" value="0.00">
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('Discount') }}</label>
+                                                <div class="input-group">
+                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
+
+                                                    <select id="e_discount_type" class="form-control">
+                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                                        <option value="2">{{ __("Percentage") }}(%)</option>
+                                                    </select>
+
+                                                    <input type="hidden" id="e_discount_amount">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('Vat/Tax') }}</label>
+                                                <div class="input-group">
+                                                    <select id="e_tax_ac_id" class="form-control">
+                                                        <option data-product_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
+                                                        {{-- @foreach ($taxAccounts as $taxAccount)
+                                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                                {{ $taxAccount->name }}
+                                                            </option>
+                                                        @endforeach --}}
+                                                    </select>
+
+                                                    <select id="e_tax_type" class="form-control" tabindex="-1">
+                                                        <option value="1">{{ __('Exclusive') }}</option>
+                                                        <option value="2">{{ __('Inclusive') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 align-items-end">
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6">
+                                                <label class="fw-bold">{{ __('Subtotal') }}</label>
+                                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                                            </div>
+
+                                            <div class="col-xl-3">
+
+                                                <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
+                                                <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
                                             </div>
                                         </div>
 
@@ -267,13 +331,13 @@
                                                         <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th class="text-start">@lang('menu.product')</th>
-                                                                    <th class="text-start">@lang('menu.stock_location')</th>
-                                                                    <th class="text-center">@lang('menu.quantity')</th>
-                                                                    <th>@lang('menu.unit')</th>
-                                                                    <th class="text-center">@lang('menu.price_inc_tax')</th>
-                                                                    <th>@lang('menu.sub_total')</th>
-                                                                    <th><i class="fas fa-minus text-dark"></i></th>
+                                                                    <th class="text-start">{{ __("Product") }}</th>
+                                                                    <th class="text-start">{{ __("Stock Location") }}</th>
+                                                                    <th class="text-start">{{ __("Quantity") }}</th>
+                                                                    <th class="text-start">{{ __("Unit") }}</th>
+                                                                    <th class="text-start">{{ __("Price Inc. Tax") }}</th>
+                                                                    <th class="text-start">{{ __("Subtotal") }}</th>
+                                                                    <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="sale_list"></tbody>
@@ -285,12 +349,11 @@
                                     </div>
                                 </div>
 
-                                <div class="card mb-3">
+                                <div class="card mb-1">
                                     <div class="card-body p-1">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <button type="button" class="btn btn-sm btn-success text-white show_stock">@lang('menu.show_stock')</button>
                                             <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">{{ __('Recent Transaction') }}</button>
-                                            <button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">@lang('menu.draft')</button>
+                                            <button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">{{ __("Draft") }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -300,29 +363,29 @@
                                         <div class="row gx-2 gy-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Details') }} </b></label>
+                                                    <label class="col-4"><b>{{ __('Ship. Details') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="@lang('menu.shipment_details')">
+                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="{{ __("Shipment Details") }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Address') }} </b></label>
+                                                    <label class="col-4"><b>{{ __('Ship. Address') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="Shipment Address">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="{{ __("Shipment Address") }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Ship Status') }} </b></label>
+                                                    <label class="col-4"><b>{{ __('Ship. Status') }} </b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status">
-                                                            <option value="">@lang('menu.shipment_status')</option>
-                                                            <option value="1">@lang('menu.ordered')</option>
+                                                            <option value="">{{ __("Shipment Status") }}</option>
+                                                            <option value="1">{{ __("Ordered") }}</option>
                                                             <option value="2">{{ __('Packed') }}</option>
                                                             <option value="3">{{ __('Shipped') }}</option>
                                                             <option value="4">{{ __('Delivered') }}</option>
@@ -334,7 +397,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __('Delivered To') }} </b></label>
+                                                    <label class="col-4"><b>{{ __('Delivered To') }} </b></label>
                                                     <div class="col-8">
                                                         <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="{{ __('Delivered To') }}">
                                                     </div>
@@ -343,18 +406,18 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.sale_note')</b></label>
+                                                    <label class="col-4"><b>{{ __("Sales Note") }}</b></label>
                                                     <div class="col-8">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="@lang('menu.sale_note')">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="{{ __("Sales Note") }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>@lang('menu.payment_note') </b></label>
+                                                    <label class="col-4"><b>{{ __("Payment Note") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="@lang('menu.payment_note')">
+                                                        <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="{{ __("Payment Note") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,107 +430,99 @@
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
                                         <div class="row gx-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_item') </label>
-                                            <div class="col-sm-7">
+                                            <label class="col-md-5 text-end"><b>{{ __("Total Item") }}</b></label>
+                                            <div class="col-md-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control fw-bold" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
+                                        <div class="row gx-2">
+                                            <label class="col-md-5 text-end"><b>{{ __("Total Qty") }}</b></label>
+                                            <div class="col-md-7">
+                                                <input readonly type="number" step="any" name="total_qty" id="total_qty" class="form-control fw-bold" value="0.00" tabindex="-1">
+                                            </div>
+                                        </div>
+
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.net_total') </label>
-                                            <div class="col-sm-7">
+                                            <label class="col-md-5 text-end"><b>{{ __("Net Total Amount") }}</b></label>
+                                            <div class="col-md-7">
                                                 <input readonly type="number" step="any" class="form-control fw-bold" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.discount')</label>
-                                            <div class="col-sm-3 col-6">
-                                                <select name="order_discount_type" class="form-control" id="order_discount_type">
-                                                    <option value="1">@lang('menu.fixed')</option>
-                                                    <option value="2">@lang('menu.percentage')</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-sm-4 col-6">
-                                                <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" value="0.00">
-                                                <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
+                                            <label class="col-md-5 text-end"><b>{{ __("Order Discount") }}</b></label>
+                                            <div class="col-md-7">
+                                                <div class="input-group">
+                                                    <select name="order_discount_type" class="form-control" id="order_discount_type">
+                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                                        <option value="2">{{ __("Percentage") }}(%)</option>
+                                                    </select>
+                                                    <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" value="0.00">
+                                                    <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.order_tax') </label>
-                                            <div class="col-sm-7">
+                                            <label class="col-md-5 text-end"><b>{{ __("Order Tax") }}</b></label>
+                                            <div class="col-md-7">
                                                 <select name="order_tax" class="form-control" id="order_tax"></select>
                                                 <input type="number" step="any" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.shipment_cost')</label>
-                                            <div class="col-sm-7">
+                                            <label class="col-md-5 text-end"><b>{{ __("Shipment Charge") }}</b></label>
+                                            <div class="col-md-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.previous_due') </label>
-                                            <div class="col-sm-7">
-                                                <input readonly class="form-control fw-bold text-danger" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
-                                            </div>
-                                        </div>
-
-                                        <div class="row g-2">
-                                            <label class="col-sm-5 col-form-label">@lang('menu.total_receivable')</label>
-                                            <div class="col-sm-7">
-                                                <input readonly class="form-control fw-bold" type="number" step="any" name="total_receivable_amount" id="total_receivable_amount" value="0.00" tabindex="-1">
-                                                <input class="d-hide" type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" value="0.00" tabindex="-1">
+                                            <label class="col-md-5 text-end"><b>{{ __("Total Invoice Amt.") }}</b></label>
+                                            <div class="col-md-7">
+                                                <input type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="payment_body">
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.cash_receive') >></label>
-                                                <div class="col-sm-7">
+                                                <label class="col-md-5 text-end"><b>{{ __("Received Amt.") }} >></b></label>
+                                                <div class="col-md-7">
                                                     <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.change') </label>
-                                                <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" name="change_amount" class="form-control fw-bold" id="change_amount" value="0.00" tabindex="-1">
-                                                </div>
-                                            </div>
-
-                                            <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.paid_by') </label>
-                                                <div class="col-sm-7">
-                                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                                <label class="col-md-5 text-end"><b>{{ __("Payment Method") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                                         @foreach ($methods as $method)
-                                                            <option
-                                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                value="{{ $method->id }}">
+                                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
                                                                 {{ $method->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="error error_payment_method_id"></span>
                                                 </div>
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.debit') A/C <span
-                                                    class="text-danger">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <select name="account_id" class="form-control" id="account_id" data-name="@lang('menu.debit') A/C">
-                                                        @foreach ($accounts as $account)
-                                                            <option value="{{ $account->id }}">
+                                                <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
+                                                <div class="col-md-7">
+                                                    <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
+                                                        @foreach ($accounts as $ac)
+                                                            @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
+                                                                @continue
+                                                            @endif
+
+                                                            <option value="{{ $ac->id }}">
                                                                 @php
-                                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
+                                                                    $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
+                                                                    $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
                                                                 @endphp
-                                                                {{ $account->name.$accountType.$bank.$ac_no }}
+                                                                {{ $ac->name . $acNo . $bank }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -476,9 +531,9 @@
                                             </div>
 
                                             <div class="row g-2">
-                                                <label class="col-sm-5 col-form-label">@lang('menu.due') </label>
-                                                <div class="col-sm-7">
-                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="total_due" id="total_due" value="0.00" tabindex="-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -510,8 +565,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
@@ -519,73 +573,18 @@
     </div>
     <!--Add Customer Modal-->
 
-    <!--Add Customer Opening Balance Modal-->
-    <div class="modal fade" id="addCustomerOpeingBalanceModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true"
-    aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer_opening_balance')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <form id="add_customer_opening_balance" action="{{ route('contacts.customer.add.opening.balance') }}" method="POST">
-                        @csrf
-                        <input type="hidden" id="op_branch_id" name="branch_id">
-                        <input type="hidden" id="op_customer_id" name="customer_id">
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <p><strong>@lang('menu.customer') </strong> <span class="op_customer_name"></span></p>
-                                <p><strong>@lang('menu.phone_no') </strong> <span class="op_customer_phone"></span></p>
-                            </div>
-
-                            <div class="col-md-6">
-                                <p><strong>@lang('menu.business_location') </strong> <span class="op_branch_name"></span></p>
-                            </div>
-
-                            <div class="col-md-12 mt-2">
-                                <label><b>@lang('menu.opening_balance') </b> </label>
-                                <input type="number" step="any" name="opening_balance" class="form-control" placeholder="@lang('menu.opening_balance')">
-                            </div>
-
-                            <div class="col-12 mt-2">
-                                <div class="row">
-                                    <p class="checkbox_input_wrap">
-                                        <input type="checkbox" name="never_show_again" id="never_show_again" class="is_show_again">&nbsp;<b>@lang('menu.never_show_again')</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <div class="btn-loading">
-                                    <button type="button" class="btn op_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                    <button name="action" value="save" type="submit" class="btn btn-sm btn-success">@lang('menu.save')</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Add Customer Opening Balance Modal End-->
-
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <form id="update_selling_product" action="">
-                        @if(auth()->user()->can('view_product_cost_is_sale_screed'))
+                        @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ $generalSettings['business__currency'] }}</span>
@@ -597,17 +596,17 @@
 
                         <div class="form-group">
                             <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" readonly class="form-control edit_input fw-bold" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1"/>
+                            <input type="number" step="any" readonly class="form-control edit_input fw-bold" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1" />
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
                             <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" {{ auth()->user()->can('edit_price_sale_screen') ? '' : 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
+                            <input type="number" step="any" {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
-                        @if(auth()->user()->can('edit_discount_sale_screen'))
+                        @if (auth()->user()->can('edit_discount_sale_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
                                     <label><strong>@lang('menu.discount_type')</strong> </label>
@@ -619,8 +618,8 @@
 
                                 <div class="col-md-6">
                                     <label><strong>@lang('menu.discount')</strong> </label>
-                                    <input type="number" step="any" class="form-control fw-bold" id="e_unit_discount" value="0.00"/>
-                                    <input type="hidden" id="e_discount_amount"/>
+                                    <input type="number" step="any" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
+                                    <input type="hidden" id="e_discount_amount" />
                                 </div>
                             </div>
                         @endif
@@ -641,7 +640,7 @@
                         </div>
 
                         <div class="form-group mt-1">
-                            <label><strong >@lang('menu.sale_unit')</strong> </label>
+                            <label><strong>@lang('menu.sale_unit')</strong> </label>
                             <select class="form-control" id="e_unit"></select>
                         </div>
 
@@ -661,8 +660,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_product_body"></div>
             </div>
@@ -676,18 +674,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">{{ __('Recent Transactions') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
                     <div class="tab_list_area">
                         <div class="btn-group">
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn tab_active" href="{{url('common/ajax/call/recent/sales/1')}}"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn tab_active" href="{{ url('common/ajax/call/recent/sales/1') }}"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{url('common/ajax/call/recent/quotations/1')}}"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{ url('common/ajax/call/recent/quotations/1') }}"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{url('common/ajax/call/recent/drafts/1')}}"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{ url('common/ajax/call/recent/drafts/1') }}"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
                         </div>
                     </div>
 
@@ -736,8 +733,7 @@
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
             </div>
@@ -748,5 +744,3 @@
 @push('scripts')
     @include('sales.partials.addSaleCreateJsScript')
 @endpush
-
-

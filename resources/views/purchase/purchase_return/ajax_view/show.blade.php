@@ -7,9 +7,9 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                    @lang('menu.purchase_return') ({{ __('Purchase Return Invoice ID') }} : <strong>{{ $return->invoice_id }}</strong>)
-                </h5>
+                <h6 class="modal-title" id="exampleModalLabel">
+                    {{ __('Purchase Return Details') }} | ({{ __('Voucher No') }}  : <strong>{{ $return->voucher_no }}</strong>)
+                </h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
 

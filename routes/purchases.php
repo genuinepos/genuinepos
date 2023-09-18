@@ -10,8 +10,10 @@ use App\Http\Controllers\Report\SalePurchaseReportController;
 use App\Http\Controllers\Report\PurchasePaymentReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -76,6 +78,16 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::controller(PurchaseOrderProductReportController::class)->prefix('purchase-ordered-products')->group(function () {
             Route::get('/', 'index')->name('reports.purchase.ordered.products.index');
             Route::get('print', 'print')->name('reports.purchase.ordered.products.print');
+        });
+
+        Route::controller(PurchaseReturnReportController::class)->prefix('purchase-returns')->group(function () {
+            Route::get('/', 'index')->name('reports.purchase.returns.index');
+            Route::get('print', 'print')->name('reports.purchase.returns.print');
+        });
+
+        Route::controller(PurchaseReturnProductReportController::class)->prefix('purchase-returned-products')->group(function () {
+            Route::get('/', 'index')->name('reports.purchase.returned.products.index');
+            Route::get('print', 'print')->name('reports.purchase.returned.products.print');
         });
 
         Route::group(['prefix' => 'purchase/payments'], function () {

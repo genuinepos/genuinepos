@@ -1555,7 +1555,10 @@
 
         setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
 
-        document.getElementById('supplier_account_id').focus();
+        setTimeout(function() {
+
+            $('#supplier_account_id').focus().select();
+        }, 1000);
     </script>
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>
 @endpush

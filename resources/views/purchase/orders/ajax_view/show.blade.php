@@ -7,9 +7,9 @@
      <div class="modal-dialog modal-xl">
          <div class="modal-content">
              <div class="modal-header">
-                 <h5 class="modal-title" id="exampleModalLabel">
+                 <h6 class="modal-title" id="exampleModalLabel">
                     {{ __("P/o Details") }} | ({{ __("P/o ID") }} : <strong>{{ $order->invoice_id }}</strong>)
-                 </h5>
+                 </h6>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
              <div class="modal-body">

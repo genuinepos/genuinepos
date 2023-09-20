@@ -126,6 +126,7 @@ class ProductStockService
                 $addProductStock->product_id = $productId;
                 $addProductStock->variant_id = $variantId;
                 $addProductStock->warehouse_id = $warehouseId;
+                $addProductStock->branch_id = auth()->user()->branch_id;
                 $addProductStock->save();
             }
         }

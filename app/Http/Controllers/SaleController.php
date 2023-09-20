@@ -698,20 +698,7 @@ class SaleController extends Controller
             }
         } else {
 
-            if ($request->status == 1) {
-                session()->flash('successMsg', 'Sale created successfully');
-
-                return response()->json(['finalMsg' => 'Sale created successfully']);
-            } elseif ($request->status == 2) {
-
-                session()->flash('successMsg', 'Sale draft created successfully');
-
-                return response()->json(['draftMsg' => 'Sale draft created successfully']);
-            } elseif ($request->status == 4) {
-                session()->flash('successMsg', 'Sale quotation created successfully');
-
-                return response()->json(['quotationMsg' => 'Sale quotation created successfully']);
-            }
+            return response()->json(['saleFinalMsg' => 'Sale created successfully']);
         }
     }
 

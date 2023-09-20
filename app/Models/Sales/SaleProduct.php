@@ -1,6 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sales;
+
+use App\Models\BaseModel;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
 
 class SaleProduct extends BaseModel
 {
@@ -10,12 +14,12 @@ class SaleProduct extends BaseModel
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function variant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id', 'id');
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 
     public function purchaseSaleProductChains()
@@ -30,11 +34,11 @@ class SaleProduct extends BaseModel
 
     public function branch()
     {
-        return $this->belongsTo(Branch::class, 'stock_branch_id')->select('id', 'name', 'branch_code');
+        return $this->belongsTo(Branch::class, 'branch_id')->select('id', 'name', 'branch_code');
     }
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'stock_warehouse_id')->select('id', 'warehouse_name', 'warehouse_code');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id')->select('id', 'warehouse_name', 'warehouse_code');
     }
 }

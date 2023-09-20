@@ -1,5 +1,6 @@
 @php
-    $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
+    $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
+    $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
 @if ($defaultLayout->layout_design == 1)
     <div class="sale_print_template">
@@ -9,151 +10,176 @@
         </style>
         <div class="details_area">
             @if ($defaultLayout->is_header_less == 0)
-                <div id="header">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="header_text text-center">
-                                <p>{{ $defaultLayout->header_text }}</p>
-                                <p>{{ $defaultLayout->sub_heading_1 }}</p>
-                                <p>{{ $defaultLayout->sub_heading_2 }}</p>
-                                <p>{{ $defaultLayout->sub_heading_3 }}</p>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p>{{ $defaultLayout->header_text }}</p>
+                        <p>{{ $defaultLayout->sub_heading_1 }}</p>
+                        <p>{{ $defaultLayout->sub_heading_2 }}</p>
+                        <p>{{ $defaultLayout->sub_heading_3 }}</p>
                     </div>
+                </div>
 
-                    <div class="row" style="border-bottom: 1px solid #000;">
-                        <div class="col-4">
-                            @if ($defaultLayout->show_shop_logo == 1)
-                                @if ($sale->branch)
-                                    @if ($sale->branch->logo != 'default.png')
-                                        <img style="height: 40px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
-                                    @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $sale->branch->name }}</span>
-                                    @endif
+                <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
+                    <div class="col-4">
+                        @if ($sale->branch)
+
+                            @if ($sale?->branch?->parent_branch_id)
+
+                                @if ($sale->branch?->parentBranch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+
+                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->parentBranch?->logo) }}">
                                 @else
-                                    @if ($generalSettings['business__business_logo'] != null)
-                                        <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                                    @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
-                                    @endif
+
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->parentBranch?->name }}</span>
+                                @endif
+                            @else
+
+                                @if ($sale->branch?->logo != 'default.png' && $invoiceLayout->show_shop_logo == 1)
+
+                                    <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch?->logo) }}">
+                                @else
+
+                                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $sale->branch?->name }}</span>
                                 @endif
                             @endif
-                        </div>
+                        @else
+                            @if ($generalSettings['business__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
 
-                        <div class="col-8 text-end">
-                            <p class="company_name" style="text-transform: uppercase;">
-                                <strong>{{ $generalSettings['business__shop_name'] }}</strong>
-                            </p>
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                            @else
 
-                            <p class="company_address">
-                                {{ $generalSettings['business__address'] }}
-                            </p>
-
-                            <p>
-                                @if ($defaultLayout->branch_email && $generalSettings['business__email'])
-                                    <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
-                                @endif
-
-                                @if ($defaultLayout->branch_phone)
-                                    <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
-                                @endif
-                            </p>
-                        </div>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                            @endif
+                        @endif
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-12 text-center">
-                            <h5 style="text-transform: uppercase;">{{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}</h5>
-                            <h6>
+                    <div class="col-8 text-end">
+                        <p style="text-transform: uppercase;" class="p-0 m-0">
+                            <strong>
+                                @if ($sale?->branch)
+                                    @if ($sale?->branch?->parent_branch_id)
+
+                                        {{ $sale?->branch?->parentBranch?->name }}
+                                    @else
+
+                                        {{ $sale?->branch?->name }}
+                                    @endif
+                                @else
+
+                                    {{ $generalSettings['business__shop_name'] }}
+                                @endif
+                            </strong>
+                        </p>
+
+                        <p>
+                            @if ($sale?->branch)
+
+                                {{ $invoiceLayout->branch_city == 1 ? $sale->branch->city . ', ' : '' }}
+                                {{ $invoiceLayout->branch_state == 1 ? $sale->branch->state. ', ' : '' }}
+                                {{ $invoiceLayout->branch_zipcode == 1 ? $sale->branch->zip_code. ', ' : '' }}
+                                {{ $invoiceLayout->branch_country == 1 ? $sale->branch->country : '' }}
+                            @else
+
+                                {{ $generalSettings['business__address'] }}
+                            @endif
+                        </p>
+
+                        <p>
+                            @php
+                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business__email'];
+                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business__phone'];
+                            @endphp
+
+                            @if ($invoiceLayout->branch_email)
+                                <strong>{{ __("Email") }} : </strong> <b>{{ $email }}</b>,
+                            @endif
+
+                            @if ($invoiceLayout->branch_phone)
+                                <strong>{{ __("Phone") }} : </strong> <b>{{ $phone }}</b>
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            @endif
+
+            @if ($invoiceLayout->is_header_less == 0)
+                <div class="row mt-2">
+                    <div class="col-12 text-center">
+                        <h5 style="text-transform: uppercase;"><strong>{{ $invoiceLayout->invoice_heading }}</strong></h5>
+                    </div>
+                </div>
+            @endif
+
+            @if ($invoiceLayout->is_header_less == 1)
+                @for ($i = 0; $i < $invoiceLayout->gap_from_top; $i++)
+                    <br/>
+                @endfor
+            @endif
+
+            <div class="row mt-2">
+                <div class="col-4">
+                    <ul class="list-unstyled">
+                        @if ($invoiceLayout->customer_name)
+                            <li style="font-size:11px!important;"><strong>{{ __("Customer") }} : </strong>
+                                {{ $sale?->customer?->name }}
+                            </li>
+                        @endif
+
+                        @if ($invoiceLayout->customer_address)
+                            <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong>
+                                {{ $sale?->customer?->address }}
+                            </li>
+                        @endif
+
+                        @if ($invoiceLayout->customer_tax_no)
+                            <li style="font-size:11px!important;"><strong>{{ __("Tax Number") }} : </strong>
+                                {{ $sale?->customer?->tax_number}}
+                            </li>
+                        @endif
+
+                        @if ($invoiceLayout->customer_phone)
+                            <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong> {{ $sale?->customer?->phone  }}</li>
+                        @endif
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    @if ($invoiceLayout->is_header_less == 1)
+                        <div class="middle_header_text text-center">
+                            <h5 style="text-transform: uppercase;">{{ $invoiceLayout->invoice_heading }}</h5>
+                            {{-- <h6>
                                 @php
                                     $payable = $sale->total_payable_amount - $sale->sale_return_amount;
                                 @endphp
 
                                 @if ($sale->due <= 0)
-
                                     @lang('menu.paid')
                                 @elseif ($sale->due > 0 && $sale->due < $payable)
-
                                     @lang('menu.partial')
-                                @elseif($payable==$sale->due)
-
+                                @elseif($payable == $sale->due)
                                     @lang('menu.due')
                                 @endif
-                            </h6>
+                            </h6> --}}
                         </div>
-                    </div>
+                    @endif
+
+                    <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
                 </div>
-            @endif
 
-            @if ($defaultLayout->is_header_less == 1)
-                @for ($i = 0; $i < $defaultLayout->gap_from_top; $i++)
-                    <br/>
-                @endfor
-            @endif
+                <div class="col-lg-4">
+                    <ul class="list-unstyled">
+                        <li style="font-size:11px!important;">
+                            <strong>{{ __("Invoice ID") }} : </strong> {{ $sale->invoice_id }}
+                        </li>
 
-            <div class="purchase_and_deal_info pt-3">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <ul class="list-unstyled">
-                            <li><strong>@lang('menu.customer') : </strong>
-                                {{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}
-                            </li>
-                            @if ($defaultLayout->customer_address)
-                                <li><strong>@lang('menu.address') : </strong>
-                                    {{ $sale->customer ? $sale->customer->address : '' }}
-                                </li>
-                            @endif
+                        <li style="font-size:11px!important;">
+                            <strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
+                        </li>
 
-                            @if ($defaultLayout->customer_tax_no)
-                                <li><strong>@lang('menu.tax_number') : </strong>
-                                    {{ $sale->customer ? $sale->customer->tax_number : '' }}
-                                </li>
-                            @endif
-
-                            @if ($defaultLayout->customer_phone)
-                                <li><strong>@lang('menu.phone') : </strong> {{ $sale->customer ? $sale->customer->phone : '' }}</li>
-                            @endif
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 text-center">
-                        @if ($defaultLayout->is_header_less == 1)
-                            <div class="middle_header_text text-center">
-                                <h5 style="text-transform: uppercase;">
-                                    {{ $sale->status == 1 ? $defaultLayout->invoice_heading : 'SALE ORDER' }}
-                                </h5>
-                                <h6>
-                                    @php
-                                        $payable = $sale->total_payable_amount - $sale->sale_return_amount;
-                                    @endphp
-
-                                    @if ($sale->due <= 0)
-                                        @lang('menu.paid')
-                                    @elseif ($sale->due > 0 && $sale->due < $payable)
-                                        @lang('menu.partial')
-                                    @elseif($payable == $sale->due)
-                                        @lang('menu.due')
-                                    @endif
-                                </h6>
-                            </div>
-                        @endif
-
-                        <img style="width: 170px; height:35px; margin-top:3px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($sale->invoice_id, $generator::TYPE_CODE_128)) }}">
-                    </div>
-                    <div class="col-lg-4">
-                        <ul class="list-unstyled">
-                            <li>
-                                <strong> {{ $sale->status == 1 ? 'Invoice No' : 'Order No' }}  </strong> {{ $sale->invoice_id }}
-                            </li>
-
-                            <li>
-                                <strong>@lang('menu.date')</strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
-                            </li>
-
-                            <li>
-                                <strong> @lang('menu.entered_by') : </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }}
-                            </li>
-                        </ul>
-                    </div>
+                        <li style="font-size:11px!important;">
+                            <strong>{{ __("Created By") }} : </strong> {{ $sale?->createdBy?->prefix . ' ' . $sale?->createdBy?->name . ' ' . $sale?->createdBy?->last_name }}
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -161,72 +187,72 @@
                 <table class="table modal-table table-sm table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-start">@lang('menu.sl')</th>
-                            <th class="text-start">@lang('menu.department')</th>
-                            <th class="text-start">{{ __('Sold Price') }}</th>
-                            @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
-                                <th class="text-start">@lang('menu.warranty')</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("S/L") }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Description") }}</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price (Exc. Tax)') }}</th>
+                            @if ($invoiceLayout->product_w_type || $invoiceLayout->product_w_duration || $invoiceLayout->product_w_discription)
+                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Warranty") }}</th>
                             @endif
 
-                            <th class="text-end">@lang('menu.price')</th>
-
                             @if ($defaultLayout->product_discount)
-                                <th class="text-end">@lang('menu.discount')</th>
+                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Discount") }}</th>
                             @endif
 
                             @if ($defaultLayout->product_tax)
-                                <th class="text-end">@lang('menu.tax')</th>
+                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Vat/Tax") }}</th>
                             @endif
 
-                            <th class="text-end">@lang('menu.sub_total')</th>
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Price (Inc. Tax)') }}</th>
+
+                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Subtotal") }}</th>
                         </tr>
                     </thead>
                     <tbody class="sale_print_product_list">
-                        @foreach ($customerCopySaleProducts as $sale_product)
+                        @foreach ($customerCopySaleProducts as $saleProduct)
                             <tr>
                                 <td class="text-start">{{ $loop->index + 1 }}</td>
                                 <td class="text-start">
-                                    {{ $sale_product->p_name }}
+                                    {{ $saleProduct->p_name }}
 
-                                    @if ($sale_product->product_variant_id)
+                                    @if ($saleProduct->product_variant_id)
 
-                                        -{{ $sale_product->variant_name }}
+                                        -{{ $saleProduct->variant_name }}
                                     @endif
-                                    {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $sale_product->description . '</small>' : '' !!}
+                                    {!! $defaultLayout->product_imei == 1 ? '<br><small class="text-muted">' . $saleProduct->description . '</small>' : '' !!}
                                 </td>
 
-                                <td class="text-start">{{ $sale_product->quantity }}({{ $sale_product->unit }}) : </td>
+                                <td class="text-start">{{ $saleProduct->quantity }}({{ $saleProduct->unit }}) : </td>
 
                                 @if ($defaultLayout->product_w_type || $defaultLayout->product_w_duration || $defaultLayout->product_w_discription)
                                     <td class="text-start">
-                                        @if ($sale_product->warranty_id)
-                                            {{ $sale_product->w_duration . ' ' . $sale_product->w_duration_type }}
-                                            {{ $sale_product->w_type == 1 ? 'Warranty' : 'Guaranty' }}
-                                            {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $sale_product->w_description . '</small>' : '' !!}
+                                        @if ($saleProduct->warranty_id)
+                                            {{ $saleProduct->w_duration . ' ' . $saleProduct->w_duration_type }}
+                                            {{ $saleProduct->w_type == 1 ? 'Warranty' : 'Guaranty' }}
+                                            {!! $defaultLayout->product_w_discription ? '<br><small class="text-muted">' . $saleProduct->w_description . '</small>' : '' !!}
                                         @else
                                             <strong>No</strong>
                                         @endif
                                     </td>
                                 @endif
 
-                                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($sale_product->unit_price_inc_tax) }} </td>
+                                <td class="text-end">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }} </td>
 
                                 @if ($defaultLayout->product_discount)
 
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt($sale_product->unit_discount_amount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}
                                     </td>
                                 @endif
 
                                 @if ($defaultLayout->product_tax)
 
                                     <td class="text-end">
-                                        {{ $sale_product->unit_tax_percent }}%
+                                        {{ $saleProduct->unit_tax_percent }}%
                                     </td>
                                 @endif
 
                                 <td class="text-end">
-                                    {{ App\Utils\Converter::format_in_bdt($sale_product->subtotal) }}
+                                    {{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}
                                 </td>
                             </tr>
                         @endforeach

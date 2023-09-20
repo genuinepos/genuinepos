@@ -486,9 +486,10 @@
                         @if($key % 8 == 0)
                             </div>
                             <div class="col-md-3">
-                                <li>{{ $feature->displayName }}</li>
+                                <li>{{ $feature->displayName . ' ' . $feature->pivot->capacity }}</li>
+
                         @else
-                            <li>{{ $feature->displayName }}</li>
+                            <li>{{ $feature->displayName . ' ' . $feature->pivot->capacity }}</li>
                         @endif
 
                         @if($loop->last)

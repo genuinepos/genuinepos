@@ -14,6 +14,7 @@ use App\Models\Products\Category;
 use App\Models\Products\Warranty;
 use App\Models\PurchaseOrderProduct;
 use App\Models\Manufacturing\Process;
+use App\Models\Products\ProductStock;
 use App\Models\Products\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Manufacturing\Production;
@@ -150,8 +151,10 @@ class Product extends Model
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
+
             $ordering = 'asc';
         } else {
+
             $ordering = 'desc';
         }
 
@@ -159,10 +162,10 @@ class Product extends Model
             ->orderBy('created_at', $ordering)->select('product_id', 'net_unit_cost');
     }
 
-    public function stockLimit()
+    public function productBranchStock()
     {
-        return $this->hasOne(ProductBranch::class)->where('branch_id', auth()->user()->branch_id)
-            ->select('id', 'branch_id', 'product_id', 'product_quantity');
+        return $this->hasOne(ProductStock::class, 'product_id')->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'branch_id', 'product_id', 'variant_id', 'stock');
     }
 
     public function productAccessBranches()

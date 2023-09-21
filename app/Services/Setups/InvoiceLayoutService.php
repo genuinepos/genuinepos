@@ -198,7 +198,7 @@ class InvoiceLayoutService
 
     public function setDefaultInvoiceLayout(int $id): void
     {
-        $defaultLayout = InvoiceLayout::where('is_default', 1)->first();
+        $defaultLayout = InvoiceLayout::where('branch_id', auth()->user()->branch_id)->where('is_default', 1)->first();
         if ($defaultLayout) {
 
             $defaultLayout->is_default = 0;

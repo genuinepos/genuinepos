@@ -18,12 +18,11 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="edit_layout_form" action="{{ route('invoices.layouts.update', $invoiceLayout->id) }}" method="POST">
                 @csrf
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
-
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-4">
@@ -78,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>@lang('menu.header_option')</b></p>
                         </div>
@@ -139,7 +138,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __("Paper Main Heading") }}</b></p>
                         </div>
@@ -191,7 +190,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __("Field For Shop Address") }}</b></p>
                         </div>
@@ -275,7 +274,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __("Field For Customer") }}</b></p>
                         </div>
@@ -334,7 +333,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>@lang('menu.field_for_product')</b></p>
                         </div>
@@ -395,7 +394,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __("Bank Details") }}</b></p>
                         </div>
@@ -443,7 +442,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-2">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __("Footer Text") }}</b></p>
                         </div>

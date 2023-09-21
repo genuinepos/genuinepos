@@ -34,7 +34,12 @@ class AccountService
             $query = $query->where('accounts.account_group_id', $request->account_group_id);
         }
 
-        $query->select(
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('accounts.branch_id', auth()->user()->branch_id);
+        }
+
+        $accounts = $query->select(
             'accounts.id',
             'accounts.name',
             'accounts.account_number',
@@ -45,14 +50,8 @@ class AccountService
             'account_groups.sub_sub_group_number',
             'branches.name as branch_name',
             'branches.branch_code',
-        );
-
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-            $query->where('accounts.branch_id', auth()->user()->branch_id);
-        }
-
-        $accounts = $query->orWhere('accounts.is_global', 1)->orderBy('account_groups.sorting_number', 'asc')
+        )->orWhere('accounts.is_global', 1)
+            ->orderBy('account_groups.sorting_number', 'asc')
             ->orderBy('accounts.name', 'asc')->get();
 
         return DataTables::of($accounts)
@@ -142,7 +141,6 @@ class AccountService
 
     public function deleteAccount($id)
     {
-
         $deleteAccount = Account::with('accountLedgersWithOutOpeningBalances', 'contact')->where('id', $id)->first();
 
         if ($deleteAccount->is_fixed == 1) {
@@ -208,21 +206,22 @@ class AccountService
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
             ->where('account_groups.sub_sub_group_number', 6);
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-        }
+        //     $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+        // }
 
-        $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term');
+        $customerAccounts = $query->select('accounts.id', 'is_walk_in_customer', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term');
 
         return $results = Account::query()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
             ->where('account_groups.sub_sub_group_number', 10)
-            ->select('accounts.id', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term')
-            ->union(
-                $customerAccounts
-            )
+            ->select('accounts.id', 'is_walk_in_customer', 'accounts.name', 'accounts.phone', 'contacts.pay_term_number', 'contacts.pay_term')
+            ->union($customerAccounts)
+            // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+            ->orderBy('is_walk_in_customer', 'desc')
             ->orderBy('name', 'asc')
             ->get();
     }

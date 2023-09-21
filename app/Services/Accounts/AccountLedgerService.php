@@ -2,7 +2,7 @@
 
 namespace App\Services\Accounts;
 
-use App\Models\AccountLedger;
+use App\Models\Accounts\AccountLedger;
 
 class AccountLedgerService
 {

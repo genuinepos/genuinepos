@@ -214,8 +214,8 @@
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_discount" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_discount_type" class="form-control w-40">
-                                                <option value="1">@lang('menu.fixed')(0.00)</option>
-                                                <option value="2">@lang('menu.percentage')(%)</option>
+                                                <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                                <option value="2">{{ __("Percentage") }}(%)</option>
                                             </select>
                                             <input type="hidden" id="e_discount_amount">
                                         </div>

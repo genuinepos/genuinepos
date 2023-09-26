@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
 use Illuminate\Console\Scheduling\Schedule;
+use Modules\SAAS\Console\RolePermissionSync;
 use Modules\SAAS\Providers\EventServiceProvider;
 use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
@@ -38,6 +39,7 @@ class SAASServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
         $this->commands([
             BackupCommand::class,
+            RolePermissionSync::class,
         ]);
 
         $this->app->booted(function () {
@@ -45,6 +47,7 @@ class SAASServiceProvider extends ServiceProvider
             $schedule->command('inspire')->everyMinute();
         });
 
+        // $this->app['events']->listen(Modules\SAAS\Events\CustomerRegisteredEvent::class, Modules\SAAS\Listener\CustomerRegisteredListener::class);
         Paginator::useBootstrapFive();
     }
 
@@ -57,6 +60,7 @@ class SAASServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
+        
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);

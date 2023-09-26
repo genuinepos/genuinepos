@@ -18,7 +18,7 @@ class CustomerRegisteredEvent
     public function __construct(
         public User $user,
     ) {
-        // dd($user);
+    //    dd($this->user);
     }
 
     /**

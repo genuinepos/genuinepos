@@ -24,7 +24,7 @@ class RolePermissionTableSeeder extends Seeder
         $adminUser->assignRole($adminRole);
     }
 
-    private function rolesArray(): array
+    public function rolesArray(): array
     {
         return [
             'admin',
@@ -33,7 +33,7 @@ class RolePermissionTableSeeder extends Seeder
         ];
     }
 
-    private function permissionsArray(): array
+    public function permissionsArray(): array
     {
         return [
             // Business or Tenant
@@ -50,6 +50,8 @@ class RolePermissionTableSeeder extends Seeder
             'users_show',
             'users_update',
             'users_destroy',
+            'users_trash',
+            'users_restore',
             // Plan
             'plans_index',
             'plans_create',

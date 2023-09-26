@@ -9,16 +9,14 @@ use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Emails\CustomerRegistrationConfirmationMail;
 use Modules\SAAS\Events\CustomerRegisteredEvent;
 
-class CustomerRegisteredListener implements ShouldQueue
+class CustomerRegisteredListener
+// class CustomerRegisteredListener implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
+    // public function __construct(public CustomerRegisteredEvent $event)
+    // {
+    //     dd($event->user);
+    // }
 
     /**
      * Handle the event.
@@ -26,8 +24,12 @@ class CustomerRegisteredListener implements ShouldQueue
      * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(object $event) : void
     {
-        Mail::to($event->user->email)->send(new CustomerRegistrationConfirmationMail($event->user));
+        // Mail::to($event->user->email)->send(new CustomerRegistrationConfirmationMail($event->user));
+        dd($event->user instanceof MustVerifyEmail,$event->user->hasVerifiedEmail());
+        if ($event->user instanceof MustVerifyEmail && ! $event->user->hasVerifiedEmail()) {
+            $event->user->sendEmailVerificationNotification();
+        }
     }
 }

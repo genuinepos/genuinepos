@@ -223,7 +223,7 @@
                 $('#total_qty').text(bdFormat(total_qty));
 
                 var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-                $('#total_invoice_amount').text(bdFormat(due));
+                $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
 
                 var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
                 $('#received_amount').text(bdFormat(received_amount));
@@ -332,24 +332,6 @@
                 removeInline: false,
                 printDelay: 500,
                 header: null,
-            });
-        });
-
-        $(document).on('click', '.print_challan_btn',function (e) {
-           e.preventDefault();
-
-            var body = $('.challan_print_template').html();
-            var header = $('.heading_area').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                removeInline: false,
-                printDelay: 800,
-                header: null,
-                footer: null,
             });
         });
 

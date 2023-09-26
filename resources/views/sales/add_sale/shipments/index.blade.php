@@ -224,7 +224,7 @@
                 $('#total_qty').text(bdFormat(total_qty));
 
                 var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-                $('#total_invoice_amount').text(bdFormat(due));
+                $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
 
                 var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
                 $('#received_amount').text(bdFormat(received_amount));

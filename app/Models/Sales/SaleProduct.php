@@ -3,8 +3,13 @@
 namespace App\Models\Sales;
 
 use App\Models\BaseModel;
+use App\Models\Sales\Sale;
+use App\Models\Products\Unit;
+use App\Models\Setups\Branch;
 use App\Models\Products\Product;
+use App\Models\Setups\Warehouse;
 use App\Models\Products\ProductVariant;
+use App\Models\Purchases\PurchaseSaleProductChain;
 
 class SaleProduct extends BaseModel
 {
@@ -25,6 +30,11 @@ class SaleProduct extends BaseModel
     public function purchaseSaleProductChains()
     {
         return $this->hasMany(PurchaseSaleProductChain::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     public function sale()

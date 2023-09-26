@@ -2,22 +2,188 @@
 
 namespace App\Services\Sales;
 
+use App\Enums\SaleScreenType;
+use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use Illuminate\Support\Str;
 use App\Models\Sales\SaleProduct;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class SaleProductService
 {
+    public function soldProductListTable($request)
+    {
+        $generalSettings = config('generalSettings');
+        $saleProducts = '';
+        $query = DB::table('sale_products')
+            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('products', 'sale_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
+            ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
+            ->leftJoin('units', 'sale_products.unit_id', 'units.id')
+            ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id');
+
+        if ($request->product_id) {
+
+            $query->where('sale_products.product_id', $request->product_id);
+        }
+
+        if ($request->variant_id) {
+
+            $query->where('sale_products.variant_id', $request->variant_id);
+        }
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('sales.branch_id', null);
+            } else {
+
+                $query->where('sales.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->customer_account_id) {
+
+            $query->where('sales.customer_account_id', $request->customer_account_id);
+        }
+
+        if ($request->sale_screen) {
+
+            $query->where('sales.sale_screen', $request->sale_screen);
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('sales.sale_date_ts', $date_range); // Final
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('sales.status', SaleStatus::Final->value)->where('sales.branch_id', auth()->user()->branch_id);
+        }
+
+        $saleProducts = $query->select(
+            'sale_products.sale_id',
+            'sale_products.product_id',
+            'sale_products.variant_id',
+            'sale_products.quantity',
+            'sale_products.unit_discount_amount',
+            'sale_products.unit_tax_percent',
+            'sale_products.unit_tax_amount',
+            'sale_products.unit_cost_inc_tax',
+            'sale_products.unit_price_exc_tax',
+            'sale_products.unit_price_inc_tax',
+            'sale_products.subtotal',
+            'units.code_name as unit_code',
+            'sales.id',
+            'sales.branch_id',
+            'sales.customer_account_id',
+            'sales.date',
+            'sales.invoice_id',
+            'sales.sale_screen',
+            'products.name',
+            'products.product_code',
+            'products.product_price',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_price',
+            'customers.name as customer_name',
+            'branches.name as branch_name',
+            'branches.area_name as branch_area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+            'warehouses.warehouse_name',
+            'warehouses.warehouse_code',
+        )->orderBy('sales.sale_date_ts', 'desc');
+
+        return DataTables::of($saleProducts)
+            ->editColumn('product', function ($row) {
+
+                $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
+                return Str::limit($row->name, 35, '') . $variant;
+            })
+            ->editColumn('date', function ($row) {
+
+                return date('d/m/Y', strtotime($row->date));
+            })
+            ->editColumn('branch', function ($row) use ($generalSettings) {
+
+                if ($row->branch_id) {
+
+                    if ($row->parent_branch_name) {
+
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                    } else {
+
+                        return $row->branch_name . '(' . $row->area_name . ')';
+                    }
+                } else {
+
+                    return $generalSettings['business__shop_name'];
+                }
+            })
+
+            ->editColumn('stock_location', function ($row) use ($generalSettings) {
+
+                if ($row->warehouse_name) {
+
+                    return $row->warehouse_name . '-(' . $row->warehouse_code . ')';
+                } else {
+
+                    if ($row->branch_id) {
+
+                        if ($row->parent_branch_name) {
+
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        } else {
+
+                            return $row->branch_name . '(' . $row->area_name . ')';
+                        }
+                    } else {
+
+                        return $generalSettings['business__shop_name'];
+                    }
+                }
+            })
+
+            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
+
+            ->editColumn('sale_screen', fn ($row) => '<span class="text-info fw-bold">' . SaleScreenType::tryFrom($row->sale_screen)->name . '</span>')
+
+            ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_code . '</span>')
+
+            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="' . $row->unit_price_exc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax) . '</span>')
+
+            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="' . $row->unit_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->unit_discount_amount) . '</span>')
+
+            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="' . $row->unit_tax_amount . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount) . '</span>')
+
+            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) . '</span>')
+
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
+
+            ->rawColumns(['product', 'product_code', 'date', 'invoice_id', 'branch', 'stock_location', 'sale_screen', 'quantity', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
+            ->make(true);
+    }
+
     public function addSaleProduct(object $request, object $sale, int $index): object
     {
-        $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-        $warehouse_id = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
+        $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+        $warehouseId = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
         $addSaleProduct = new SaleProduct();
         $addSaleProduct->sale_id = $sale->id;
-        $addSaleProduct->warehouse_id = $warehouse_id;
+        $addSaleProduct->warehouse_id = $warehouseId;
         $addSaleProduct->branch_id = $sale->branch_id;
-        $addSaleProduct->product_id = $product_id;
-        $addSaleProduct->variant_id = $variant_id;
+        $addSaleProduct->product_id = $request->product_ids[$index];
+        $addSaleProduct->variant_id = $variantId;
         $addSaleProduct->quantity = $request->quantities[$index];
         $addSaleProduct->ordered_quantity = $sale->status == SaleStatus::Order->value ? $request->quantities[$index] : 0;
         $addSaleProduct->left_quantity = $sale->status == SaleStatus::Order->value ? $request->quantities[$index] : 0;
@@ -30,7 +196,7 @@ class SaleProductService
         $addSaleProduct->unit_id = $request->unit_ids[$index];
         $addSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
         $addSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
-        $addSaleProduct->unit_price_inc_tax = $request->unit_prices[$index];
+        $addSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$index];
         $addSaleProduct->subtotal = $request->subtotals[$index];
         $addSaleProduct->description = $request->descriptions[$index] ? $request->descriptions[$index] : null;
         $addSaleProduct->save();
@@ -45,14 +211,16 @@ class SaleProductService
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
             ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
             ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
-            ->leftJoin('units', 'sale_products.id_id', 'units.id')
+            ->leftJoin('units', 'sale_products.unit_id', 'units.id')
             ->select(
                 'sale_products.product_id',
-                'sale_products.product_variant_id',
+                'sale_products.variant_id',
                 'sale_products.description',
+                'sale_products.unit_price_exc_tax',
                 'sale_products.unit_price_inc_tax',
                 'sale_products.unit_discount_amount',
                 'sale_products.unit_tax_percent',
+                'sale_products.unit_tax_amount',
                 'sale_products.subtotal',
                 'products.name as p_name',
                 'products.product_code',
@@ -63,15 +231,17 @@ class SaleProductService
                 'warranties.duration_type as w_duration_type',
                 'warranties.description as w_description',
                 'warranties.type as w_type',
-                'units.code_name as unit_name',
+                'units.code_name as unit_code_name',
                 DB::raw('SUM(sale_products.quantity) as quantity')
             )
             ->groupBy('sale_products.product_id')
             ->groupBy('sale_products.variant_id')
             ->groupBy('sale_products.description')
+            ->groupBy('sale_products.unit_price_exc_tax')
             ->groupBy('sale_products.unit_price_inc_tax')
             ->groupBy('sale_products.unit_discount_amount')
             ->groupBy('sale_products.unit_tax_percent')
+            ->groupBy('sale_products.unit_tax_amount')
             ->groupBy('sale_products.subtotal')
             ->groupBy('products.warranty_id')
             ->groupBy('products.name')

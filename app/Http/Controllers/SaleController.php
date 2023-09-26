@@ -1134,6 +1134,7 @@ class SaleController extends Controller
     public function updateShipment(Request $request, $saleId)
     {
         if (! auth()->user()->can('shipment_access')) {
+
             return response()->json('Access Denied');
         }
 
@@ -1144,11 +1145,7 @@ class SaleController extends Controller
         $sale->delivered_to = $request->delivered_to;
         $sale->save();
 
-        $this->userActivityLogUtil->addLog(
-            action: 2,
-            subject_type: $sale->status == 1 ? 7 : 8,
-            data_obj: $sale
-        );
+        $this->userActivityLogUtil->addLog( action: 2, subject_type: $sale->status == 1 ? 7 : 8, data_obj: $sale);
 
         return response()->json('Successfully shipment is updated.');
     }

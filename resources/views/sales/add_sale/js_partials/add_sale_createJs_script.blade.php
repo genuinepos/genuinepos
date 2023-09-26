@@ -1065,11 +1065,11 @@
 
         if(e.ctrlKey && e.which == 13) {
 
-            $('#save_and_print').click();
+            $('#final_and_print').click();
             return false;
         }else if (e.shiftKey && e.which == 13) {
 
-            $('#save').click();
+            $('#final').click();
             return false;
         }else if (e.ctrlKey && e.which == 81) {
 

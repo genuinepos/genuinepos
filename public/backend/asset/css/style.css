@@ -2267,6 +2267,14 @@ table.display tbody tr:hover {
 .select2-container--default .select2-selection--single {
     border-radius: 0px !important;
 }
+
+.modal-table td {
+    line-height: 1;
+}
+
+.modal-table th {
+    line-height: 1;
+}
 /* label right code start */
 /* label.col-2,
 label.col-3,

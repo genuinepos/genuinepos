@@ -35,6 +35,8 @@ Route::get('my-test', function () {
     //     ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
     //     ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
     //     ->get();
+
+   return App\Utils\Converter::format_in_bdt(100.40, 0);
 });
 
 Route::get('t-id', function () {

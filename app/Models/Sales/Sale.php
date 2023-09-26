@@ -4,10 +4,11 @@ namespace App\Models\Sales;
 
 use App\Models\User;
 use App\Models\BaseModel;
-use App\Models\SaleReturn;
-use App\Models\SaleProduct;
 use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
+use App\Models\Sales\SaleProduct;
+use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class Sale extends BaseModel
 {
@@ -31,8 +32,19 @@ class Sale extends BaseModel
         return $this->hasOne(SaleReturn::class, 'sale_id');
     }
 
+    public function references()
+    {
+        return $this->hasMany(AccountingVoucherDescriptionReference::class, 'sale_id');
+    }
+
+    public function accountingVouchers()
+    {
+        return $this->hasMany(AccountingVoucher::class, 'sale_ref_id');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
 }
+

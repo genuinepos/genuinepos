@@ -2,8 +2,12 @@
 
 namespace App\Models\Products;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\SaleProduct;
+use App\Models\Products\Product;
+use App\Models\Products\ProductStock;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchases\PurchaseProduct;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductVariant extends Model
 {
@@ -66,5 +70,11 @@ class ProductVariant extends Model
 
         return $this->hasOne(PurchaseProduct::class, 'product_variant_id')->where('left_qty', '>', '0')
             ->orderBy('created_at', $ordering)->select('product_variant_id', 'net_unit_cost');
+    }
+
+    public function variantBranchStock()
+    {
+        return $this->hasOne(ProductStock::class, 'variant_id')->where('branch_id', auth()->user()->branch_id)
+            ->select('id', 'branch_id', 'product_id', 'variant_id', 'stock');
     }
 }

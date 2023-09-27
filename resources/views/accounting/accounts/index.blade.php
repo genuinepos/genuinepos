@@ -136,22 +136,26 @@
                 "url": "{{ route('accounts.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#f_branch_id').val();
-                    d.account_type = $('#f_account_group_id').val();
+                    d.account_group_id = $('#f_account_group_id').val();
                 }
             },
+            columnDefs: [
+                {targets:[5,6,7, 8, 9], orderable:false}
+            ],
             columns: [
                 {data: 'group', name: 'account_groups.name'},
                 {data: 'name', name: 'accounts.name'},
                 {data: 'ac_number', name: 'accounts.account_number'},
                 {data: 'bank', name: 'banks.name'},
                 {data: 'branch', name: 'branches.name', className: 'fw-bold'},
-                {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end fw-bold'},
-                {data: 'debit', name: 'accounts.opening_balance', className: 'text-end fw-bold'},
-                {data: 'credit', name: 'accounts.opening_balance', className: 'text-end fw-bold'},
-                {data: 'balance', name: 'banks.name', className: 'text-end fw-bold'},
+                {data: 'opening_balance', className: 'text-end fw-bold'},
+                {data: 'debit', className: 'text-end fw-bold'},
+                {data: 'credit', className: 'text-end fw-bold'},
+                {data: 'balance', className: 'text-end fw-bold'},
                 {data: 'action'},
 
             ],fnDrawCallback: function() {
+
                 $('.data_preloader').hide();
             }
         });

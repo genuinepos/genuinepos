@@ -18,12 +18,11 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="add_layout_form" action="{{ route('invoices.layouts.store') }}" method="POST">
                 @csrf
                 <section>
                     <div class="form_element rounded mt-0 mb-3">
-
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-4">

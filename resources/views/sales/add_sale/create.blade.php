@@ -6,7 +6,7 @@
             font-size: 12px !important;
         }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 88.3%; z-index: 9999999; padding: 0; left: 6%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
 
         .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
 
@@ -44,7 +44,7 @@
 
         .btn-sale { width: calc(50% - 4px); padding-left: 0; padding-right: 0; }
 
-        .sale-item-sec { height: 200px; }
+        .sale-item-sec { height: 215px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
@@ -59,7 +59,7 @@
                     <h6>{{ __('Add Sale') }}</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
         <div class="p-1">
@@ -76,12 +76,12 @@
                                         <div class="row g-1">
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Customer') }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="col-4"><b>{{ __('Customer') }}</b></label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
-                                                            <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="invoice_id">
-                                                                <option value="">{{ __('Select Supplier') }}</option>
+                                                            <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
+
                                                                     <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                                 @endforeach
                                                             </select>
@@ -98,7 +98,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Invoice ID") }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="{{ __("Invoice ID") }}" autocomplete="off">
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="{{ __("Invoice ID") }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Sales Account") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <select name="sale_account_id" class="form-control" id="sale_account_id">
+                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="price_group_id">
                                                             @foreach ($saleAccounts as $saleAccount)
                                                                 <option value="{{ $saleAccount->id }}">
                                                                     {{ $saleAccount->name }}
@@ -133,7 +133,7 @@
                                                 <div class="input-group">
                                                     <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}" autocomplete="off" id="date">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format']) }}" data-next="sale_account_id" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
                                                     </div>
                                                 </div>
@@ -143,7 +143,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Price Group") }}</b></label>
                                                     <div class="col-8">
-                                                        <select name="price_group_id" class="form-control" id="price_group_id">
+                                                        <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
                                                             <option value="">{{ __("Default Selling Price Group") }}</option>
                                                             @foreach ($priceGroups as $priceGroup)
                                                                 <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
@@ -155,29 +155,14 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
-                                                            <option value="">{{ __('Select Warehouse') }}</option>
-                                                            @foreach ($warehouses as $w)
-                                                                @php
-                                                                    $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                                @endphp
-                                                                <option value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_warehouse_id"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
-                                                        <select name="status" class="form-control" id="status">
+                                                        <select name="status" class="form-control" id="status" data-next="date">
                                                             <option value="">{{ __('Select Sale Status') }}</option>
-                                                            @foreach (\App\Enums\SaleStatus::cases() as $saleStatus)
+                                                            @php
+                                                                $saleStatus = array_slice(\App\Enums\SaleStatus::cases(), 0, 4)
+                                                            @endphp
+                                                            @foreach ($saleStatus as $saleStatus)
                                                                 <option value="{{ $saleStatus->value }}">{{ $saleStatus->name }}</option>
                                                             @endforeach
                                                         </select>
@@ -191,42 +176,6 @@
 
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body py-0">
-                                        {{-- <div class="row">
-                                            <div class="col-md-9">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <label class="fw-bold">{{ __("Search Product") }}</label>
-                                                    <div class="input-group ">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input type="text" name="search_product" class="form-control scanable" id="search_product" placeholder="{{ __("Product Search By Name/Code") }}" autocomplete="off" autofocus>
-                                                        @if (auth()->user()->can('product_add'))
-                                                            <div class="input-group-prepend">
-                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label class="col-form-label"></label>
-                                                <div class="input-group ">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text add_button p-1 m-0">@lang('menu.stock')</span>
-                                                    </div>
-                                                    <input type="text" readonly class="form-control text-success stock_quantity" autocomplete="off" id="stock_quantity" placeholder="Stock Quantity" tabindex="-1">
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
                                         <div class="row g-2 align-items-end">
                                             <div class="col-md-4">
                                                 <div class="searching_area" style="position: relative;">
@@ -289,16 +238,16 @@
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Vat/Tax') }}</label>
                                                 <div class="input-group">
-                                                    <select id="e_tax_ac_id" class="form-control">
-                                                        <option data-product_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
-                                                        {{-- @foreach ($taxAccounts as $taxAccount)
+                                                    <select id="e_tax_ac_id" class="form-control w-50">
+                                                        <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
+                                                        @foreach ($taxAccounts as $taxAccount)
                                                             <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                                 {{ $taxAccount->name }}
                                                             </option>
-                                                        @endforeach --}}
+                                                        @endforeach
                                                     </select>
 
-                                                    <select id="e_tax_type" class="form-control" tabindex="-1">
+                                                    <select id="e_tax_type" class="form-control w-50" tabindex="-1">
                                                         <option value="1">{{ __('Exclusive') }}</option>
                                                         <option value="2">{{ __('Inclusive') }}</option>
                                                     </select>
@@ -312,15 +261,37 @@
                                                 <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
                                             </div>
 
+                                            <div class="col-xl-2 col-md-6 warehouse_field">
+                                                <label class="fw-bold">{{ __('Warehouse') }}</label>
+                                                <select class="form-control" name="warehouse_id" id="warehouse_id">
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
+                                                    @foreach ($warehouses as $w)
+                                                        @php
+                                                            $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                        @endphp
+                                                        <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Subtotal') }}</label>
                                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                                             </div>
 
-                                            <div class="col-xl-3">
-
+                                            <div class="col-xl-2 col-md-6">
                                                 <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
                                                 <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-6 offset-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text add_button p-1 m-0">{{ __('Stock') }}</span>
+                                                    </div>
+
+                                                    <input type="text" readonly class="form-control text-success fw-bold" autocomplete="off" id="stock_quantity" placeholder="{{ __('Stock Quantity') }}" tabindex="-1">
+                                                </div>
                                             </div>
                                         </div>
 
@@ -340,7 +311,7 @@
                                                                     <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody id="sale_list"></tbody>
+                                                            <tbody id="sale_product_list"></tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -349,14 +320,14 @@
                                     </div>
                                 </div>
 
-                                <div class="card mb-1">
+                                {{-- <div class="card mb-1">
                                     <div class="card-body p-1">
                                         <div class="d-flex justify-content-end gap-2">
                                             <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">{{ __('Recent Transaction') }}</button>
-                                            <button value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">{{ __("Draft") }}</button>
+                                            <button id="draft" value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">{{ __("Draft") }}</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
@@ -365,7 +336,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Ship. Details') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_details" type="text" class="form-control" id="shipment_details" placeholder="{{ __("Shipment Details") }}">
+                                                        <input type="text" name="shipment_details" class="form-control" id="shipment_details" data-next="shipment_address" placeholder="{{ __("Shipment Details") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,7 +345,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Ship. Address') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" placeholder="{{ __("Shipment Address") }}">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" data-next="shipment_status" placeholder="{{ __("Shipment Address") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -383,13 +354,11 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Ship. Status') }} </b></label>
                                                     <div class="col-8">
-                                                        <select name="shipment_status" class="form-control" id="shipment_status">
+                                                        <select name="shipment_status" class="form-control" id="shipment_status" data-next="delivered_to">
                                                             <option value="">{{ __("Shipment Status") }}</option>
-                                                            <option value="1">{{ __("Ordered") }}</option>
-                                                            <option value="2">{{ __('Packed') }}</option>
-                                                            <option value="3">{{ __('Shipped') }}</option>
-                                                            <option value="4">{{ __('Delivered') }}</option>
-                                                            <option value="5">{{ __('Cancelled') }}</option>
+                                                            @foreach (\App\Enums\ShipmentStatus::cases() as $shipmentStatus)
+                                                                <option value="{{ $shipmentStatus->value }}">{{ $shipmentStatus->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -399,7 +368,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Delivered To') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" placeholder="{{ __('Delivered To') }}">
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" data-next="sale_note" placeholder="{{ __('Delivered To') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,7 +377,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Sales Note") }}</b></label>
                                                     <div class="col-8">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" placeholder="{{ __("Sales Note") }}">
+                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" data-next="payment_note" placeholder="{{ __("Sales Note") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -417,7 +386,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Payment Note") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="payment_note" class="form-control" id="payment_note" placeholder="{{ __("Payment Note") }}">
+                                                        <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="order_discount" placeholder="{{ __("Payment Note") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -427,6 +396,10 @@
                             </div>
 
                             <div class="col-md-3">
+                                <div class="form_element rounded m-0 mb-1 p-1 text-end">
+                                    <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">{{ __('Recent Transaction') }}</button>
+                                </div>
+
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
                                         <div class="row gx-2">
@@ -451,31 +424,40 @@
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-md-5 text-end"><b>{{ __("Order Discount") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __("Sale Discount") }}</b></label>
                                             <div class="col-md-7">
                                                 <div class="input-group">
-                                                    <select name="order_discount_type" class="form-control" id="order_discount_type">
+                                                    <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" data-next="order_discount_type" value="0.00">
+                                                    <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
+
+                                                    <select name="order_discount_type" class="form-control" id="order_discount_type" data-next="sale_tax_ac_id">
                                                         <option value="1">{{ __("Fixed") }}(0.00)</option>
                                                         <option value="2">{{ __("Percentage") }}(%)</option>
                                                     </select>
-                                                    <input name="order_discount" type="number" step="any" class="form-control fw-bold" id="order_discount" value="0.00">
-                                                    <input name="order_discount_amount" step="any" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
-                                            <label class="col-md-5 text-end"><b>{{ __("Order Tax") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __("Sale Tax") }}</b></label>
                                             <div class="col-md-7">
-                                                <select name="order_tax" class="form-control" id="order_tax"></select>
-                                                <input type="number" step="any" class="d-hide" name="order_tax_amount" id="order_tax_amount" value="0.00">
+                                                <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
+                                                    <option data-order_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
+                                                    @foreach ($taxAccounts as $taxAccount)
+                                                        <option {{ $generalSettings['sale__default_tax_id'] == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                            {{ $taxAccount->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <input type="number" step="any" class="d-none" name="order_tax_percent" id="order_tax_percent" value="0.00">
+                                                <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                             </div>
                                         </div>
 
                                         <div class="row g-2">
                                             <label class="col-md-5 text-end"><b>{{ __("Shipment Charge") }}</b></label>
                                             <div class="col-md-7">
-                                                <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" value="0.00">
+                                                <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" data-next="received_amount" value="0.00">
                                             </div>
                                         </div>
 
@@ -483,6 +465,7 @@
                                             <label class="col-md-5 text-end"><b>{{ __("Total Invoice Amt.") }}</b></label>
                                             <div class="col-md-7">
                                                 <input type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
+                                                <input type="number" step="any" name="sales_ledger_amount" id="sales_ledger_amount" class="d-none" value="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -490,7 +473,7 @@
                                             <div class="row g-2">
                                                 <label class="col-md-5 text-end"><b>{{ __("Received Amt.") }} >></b></label>
                                                 <div class="col-md-7">
-                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" value="0.00" autocomplete="off">
+                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" data-next="payment_method_id" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -511,7 +494,7 @@
                                             <div class="row g-2">
                                                 <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-md-7">
-                                                    <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
+                                                    <select name="account_id" class="form-control" id="account_id" data-next="final">
                                                         @foreach ($accounts as $ac)
                                                             @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
                                                                 @continue
@@ -542,10 +525,11 @@
                                             <div class="col-12 d-flex justify-content-end pt-3">
                                                 <div class="btn-loading d-flex flex-wrap gap-2 w-100">
                                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                                    <button type="submit" id="quotation" class="btn btn-sale btn-info text-white submit_button" data-status="4" value="save_and_print">@lang('menu.quotation')</button>
+                                                    <button type="submit" id="final_and_print" class="btn btn-sale btn-success submit_button" data-status="1" value="save_and_print">{{ __('Final & Print') }}</button>
+                                                    <button type="submit" id="final" class="btn btn-sale btn-success submit_button" data-status="1" value="final">{{ __("Final") }}</button>
+                                                    <button type="submit" id="quotation" class="btn btn-sale btn-info text-white submit_button" data-status="4" value="save_and_print">{{ __("Quotation") }}</button>
                                                     <button type="submit" id="order" class="btn btn-sale btn-secondary text-white submit_button" data-status="3" value="save_and_print">{{ __('Order') }}</button>
-                                                    <button type="submit" id="save_and_print" class="btn btn-sale btn-success submit_button" data-status="1" value="save_and_print">{{ __('Final & Print') }}</button>
-                                                    <button type="submit" id="save" class="btn btn-sale btn-success submit_button" data-status="1" value="save">@lang('menu.final')</button>
+                                                    <button id="draft" value="save_and_print" class="btn btn-sale btn-primary text-white submit_button" data-status="2">{{ __("Draft") }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -572,87 +556,6 @@
         </div>
     </div>
     <!--Add Customer Modal-->
-
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <form id="update_selling_product" action="">
-                        @if (auth()->user()->can('view_product_cost_is_sale_screed'))
-                            <p>
-                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business__currency'] }}</span>
-                                    <span id="unit_cost">1,200.00</span>
-                                </span>
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>
-                            </p>
-                        @endif
-
-                        <div class="form-group">
-                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" readonly class="form-control edit_input fw-bold" data-name="Quantity" id="e_quantity" placeholder="Quantity" tabindex="-1" />
-                            <span class="error error_e_quantity"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" step="any" {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} step="any" class="form-control edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" />
-                            <span class="error error_e_unit_price"></span>
-                        </div>
-
-                        @if (auth()->user()->can('edit_discount_sale_screen'))
-                            <div class="form-group row mt-1">
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong> </label>
-                                    <select class="form-control " id="e_unit_discount_type">
-                                        <option value="2">@lang('menu.percentage')</option>
-                                        <option value="1">@lang('menu.fixed')</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong> </label>
-                                    <input type="number" step="any" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
-                                    <input type="hidden" id="e_discount_amount" />
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.tax')</strong> </label>
-                                <select class="form-control" id="e_unit_tax"></select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> </label>
-                                <select class="form-control" id="e_tax_type">
-                                    <option value="1">@lang('menu.exclusive')</option>
-                                    <option value="2">@lang('menu.exclusive')</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label><strong>@lang('menu.sale_unit')</strong> </label>
-                            <select class="form-control" id="e_unit"></select>
-                        </div>
-
-                        <div class="form-group text-end mt-3">
-                            <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit selling product modal End-->
 
     <!--Add Product Modal-->
     <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
@@ -723,24 +626,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Show stock modal-->
-    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="stock_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Show stock modal end-->
 @endsection
 @push('scripts')
-    @include('sales.partials.addSaleCreateJsScript')
+    @include('sales.add_sale.js_partials.add_sale_createJs_script')
 @endpush

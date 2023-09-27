@@ -6,7 +6,7 @@ use App\Models\Accounts\AccountingVoucher;
 
 class AccountingVoucherService
 {
-    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null): ?object
+    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null, ?int $branchId = null): ?object
     {
         $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $voucherType, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-');
 

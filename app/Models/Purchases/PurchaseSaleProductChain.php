@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Purchases;
+
+use App\Models\BaseModel;
+use App\Models\Purchases\PurchaseProduct;
 
 class PurchaseSaleProductChain extends BaseModel
 {

@@ -3,6 +3,7 @@
 namespace App\Models\Accounts;
 
 use App\Models\BaseModel;
+use App\Models\Accounts\AccountLedger;
 use App\Models\Accounts\Bank;
 use App\Models\Contacts\Contact;
 use App\Models\Accounts\AccountGroup;

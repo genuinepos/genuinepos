@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable()->index('accounts_branch_id_foreign');
             $table->unsignedBigInteger('account_group_id')->nullable();
-            $table->integer('account_type')->default(2);
+            $table->boolean('is_walk_in_customer')->default(0);
             $table->string('name');
             $table->string('phone', 255)->nullable();
             $table->unsignedBigInteger('contact_id')->nullable();

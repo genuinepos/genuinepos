@@ -3,7 +3,7 @@
 namespace App\Services\GeneralSearch;
 
 use App\Models\Product;
-use App\Models\ProductVariant;
+use App\Models\Products\ProductVariant;
 use Illuminate\Support\Facades\DB;
 
 class GeneralProductSearchService
@@ -38,6 +38,7 @@ class GeneralProductSearchService
                 'product.tax:id,name,tax_percent',
                 'product.unit:id,name,code_name',
                 'product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'variantBranchStock',
             )->where('variant_code', $keyWord)
                 ->select([
                     'id',

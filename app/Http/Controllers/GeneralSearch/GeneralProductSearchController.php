@@ -25,7 +25,6 @@ class GeneralProductSearchController extends Controller
         $__priceGroupId = ($priceGroupId && $priceGroupId != 'no_id') ? $priceGroupId : null;
 
         $product = '';
-
         $query = $this->productService->productByAnyCondition(with: [
             'variants',
             'variants.updateVariantCost',
@@ -33,14 +32,16 @@ class GeneralProductSearchController extends Controller
             'unit:id,name,code_name',
             'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
             'updateProductCost',
+            'productBranchStock',
         ]);
 
         $query->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id');
 
         $query->where('products.product_code', $__keyWord);
+
         $query->where('product_access_branches.branch_id', $__ownBranchIdOrParentBranchId);
 
-        $query->select([
+        $product = $query->select([
             'products.id',
             'products.name',
             'products.type',

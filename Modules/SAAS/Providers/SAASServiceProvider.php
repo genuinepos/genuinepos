@@ -13,6 +13,7 @@ use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
+use Modules\SAAS\Http\Middleware\SubscriptionMiddleware;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -60,7 +61,8 @@ class SAASServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        
+
+        app()->make('router')->aliasMiddleware('subscription', SubscriptionMiddleware::class);
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);

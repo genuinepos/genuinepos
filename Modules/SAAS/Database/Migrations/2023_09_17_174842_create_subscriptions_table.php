@@ -18,9 +18,10 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Plan::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Payment::class)->constrained()->onDelete('cascade');
+            $table->string('tenant_id');
+            $table->foreignIdFor(User::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(Plan::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(Payment::class)->nullable()->constrained()->nullOnDelete();
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->timestamps();

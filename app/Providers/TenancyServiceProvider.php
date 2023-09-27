@@ -104,9 +104,7 @@ class TenancyServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootEvents();
-        $this->mapRoutes();
         $this->makeTenancyMiddlewareHighestPriority();
-
     }
 
     protected function bootEvents()
@@ -119,11 +117,6 @@ class TenancyServiceProvider extends ServiceProvider
                 Event::listen($event, $listener);
             }
         }
-    }
-
-    protected function mapRoutes()
-    {
-        Route::namespace(static::$controllerNamespace)->group(base_path('routes/web.php'));
     }
 
     protected function makeTenancyMiddlewareHighestPriority()

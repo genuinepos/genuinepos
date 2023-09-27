@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    // By default, no namespace is used to support the callable array syntax.
+    public static string $controllerNamespace = '';
     /**
      * The path to the "home" route for your application.
      *
@@ -42,11 +45,16 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         // Use "routes/web.php" file to register new web route files.
+        Route::namespace(static::$controllerNamespace)->group(base_path('routes/web.php'));
     }
 
     protected function mapApiRoutes()
     {
         // Use "routes/api.php" file to register new api route files.
+        Route::namespace(static::$controllerNamespace)
+            ->middleware('api')
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
     }
 
     /**

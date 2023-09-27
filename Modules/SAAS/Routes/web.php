@@ -12,7 +12,7 @@ use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-
+use Modules\SAAS\Http\Controllers\Guest\SubscriptionController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -54,4 +54,5 @@ Route::prefix('saas')->group(function () {
     // All (Auth + Guest) Users
     Route::get('select-plan', [PlanSelectController::class, 'index'])->name('select-plan.index');
     Route::get('select-plan/{slug}', [PlanSelectController::class, 'show'])->name('select-plan.show');
+    Route::get('subscriptions/{plan}/subcribe', [SubscriptionController::class, 'subscribe'])->name('subscriptions.subscribe');
 });

@@ -14,8 +14,8 @@ class PlanTableSeeder extends Seeder
      */
     public function run()
     {
-        Plan::factory()->create(['name' => 'Gold','slug' => 'gold', 'price' => '1000', 'period_month' => '1']);
-        Plan::factory()->create(['name' => 'Diamond','slug' => 'diamond', 'price' => '2000', 'period_month' => '1']);
-        Plan::factory()->create(['name' => 'Platinum','slug' => 'platinm', 'price' => '5000', 'period_month' => '1']);
+        Plan::factory()->create(['name' => 'Gold','slug' => 'gold', 'price' => '1000', 'period_unit' => 'month', 'period_value' => '1']);
+        Plan::factory()->create(['name' => 'Diamond','slug' => 'diamond', 'price' => '2000', 'period_unit' => 'month', 'period_value' => '1']);
+        Plan::factory()->create(['name' => 'Platinum','slug' => 'platinm', 'price' => '5000', 'period_unit' => 'month', 'period_value' => '1']);
     }
 }

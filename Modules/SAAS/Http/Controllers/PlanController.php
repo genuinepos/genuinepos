@@ -52,7 +52,8 @@ class PlanController extends Controller
             'slug' => $request->slug ?? Str::slug($request->slug),
             'price' => $request->price,
             'description' => $request->description,
-            'period_month' => $request->period_month,
+            'period_unit' => 'month',
+            'period_value' => $request->period_month,
         ]);
         $plan->features()->sync($request->feature_id);
 

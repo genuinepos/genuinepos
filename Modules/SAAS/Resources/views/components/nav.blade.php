@@ -17,7 +17,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page"
-                        href="{{ route('saas.select-plan.index') }}">{{ __('Plans') }}</a>
+                        href="{{ route('saas.plan.all') }}">{{ __('Plans') }}</a>
                 </li>
                 {{-- @auth
                 <li class="nav-item dropdown  float-end">

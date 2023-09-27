@@ -17,7 +17,11 @@ class SubscriptionController extends Controller
             // 'payment_id' => $request->payment_id,
             // 'domain' => null,
             'start_time' => now(),
-            'end_time' => now()->addMonths($plan->period_month),
+            'end_time' => match($plan->preiod_unit) {
+                'day' => now()->addDays($plan->period_value),
+                'year' => now()->addYears($plan->period_value),
+                default => now()->addMonths($plan->period_value),
+            },
         ]);
 
         if(isset($subscription)) {

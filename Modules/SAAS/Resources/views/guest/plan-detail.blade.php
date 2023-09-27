@@ -466,7 +466,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5>{{ __('Plan Name') }}: {{ $plan->name }}</h5>
                 <div>
-                    <x-back-button href="{{ route('saas.select-plan.index') }}"></x-back-button>
+                    <x-back-button href="{{ route('saas.plan.all') }}"></x-back-button>
                 </div>
             </div>
             <div class="card-body">
@@ -499,7 +499,7 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-4">
-                        <button class="btn btn-sm btn-primary">Subscribe</button>
+                        <a class="btn btn-sm btn-primary" href="{{ route('saas.plan.subscribe', ['plan' => $plan]) }}">Subscribe To This Plan</a>
                     </div>
                 </div>
             </div>

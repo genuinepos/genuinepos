@@ -16,7 +16,7 @@
                                         {!! strip_tags(Str::limit($plan->description, 120, '...')) !!}</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ route('saas.select-plan.show', $plan->slug) }}"
+                                    <a href="{{ route('saas.plan.detail', $plan->slug) }}"
                                         class="btn btn-primary btn-sm">{{ __('Details') }}</a>
                                 </div>
                             </div>

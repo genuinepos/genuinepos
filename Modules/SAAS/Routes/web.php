@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\PlanController;
@@ -10,6 +9,7 @@ use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\Guest\PaymentController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Guest\SubscriptionController;
@@ -17,19 +17,19 @@ use Modules\SAAS\Http\Controllers\Guest\SubscriptionController;
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
 Route::prefix('saas')->group(function () {
-    // Guest Users
+    // Guest User Only
     Route::middleware('is_guest')->group(function () {
         Route::get('register', [RegistrationController::class, 'showForm'])->name('register.showForm');
         Route::post('register', [RegistrationController::class, 'register'])->name('register');
         Route::get('login', [LoginController::class, 'showForm'])->name('login.showForm');
         Route::post('login', [LoginController::class, 'login'])->name('login');
     });
-
+    // Authenticated but Not Verified Yet
     Route::middleware('is_auth')->group(function() {
         Route::get('/email/verify', [VerificationController::class,'show'])->name('verification.notice');
     });
 
-    // Authenticated Users
+    // Authenticated and Verified User
     Route::middleware(['is_verified'])->group(function () {
         Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -51,8 +51,9 @@ Route::prefix('saas')->group(function () {
         Route::resource('roles', RoleController::class);
     });
 
-    // All (Auth + Guest) Users
-    Route::get('select-plan', [PlanSelectController::class, 'index'])->name('select-plan.index');
-    Route::get('select-plan/{slug}', [PlanSelectController::class, 'show'])->name('select-plan.show');
-    Route::get('subscriptions/{plan}/subcribe', [SubscriptionController::class, 'subscribe'])->name('subscriptions.subscribe');
+    // For All Types of Users
+    Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
+    Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
+    Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
+    Route::post('subscriptions/{plan}', [SubscriptionController::class, 'store'])->name('subscriptions.store');
 });

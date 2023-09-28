@@ -2,22 +2,46 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
 use App\Services\Sales\SalesOrderService;
 use App\Services\Sales\SaleProductService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Setups\BranchSettingService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Sales\SalesOrderProductService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class SalesOrderController extends Controller
 {
     public function __construct(
+        private SaleService $saleService,
         private SalesOrderService $salesOrderService,
         private SaleProductService $saleProductService,
+        private SalesOrderProductService $salesOrderProductService,
+        private DayBookService $dayBookService,
         private AccountService $accountService,
+        private AccountLedgerService $accountLedgerService,
+        private AccountFilterService $accountFilterService,
+        private PaymentMethodService $paymentMethodService,
         private BranchService $branchService,
+        private BranchSettingService $branchSettingService,
+        private PriceGroupService $priceGroupService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
@@ -44,32 +68,79 @@ class SalesOrderController extends Controller
         return view('sales.add_sale.orders.index', compact('branches', 'customerAccounts'));
     }
 
-    public function show($id)
+    public function show($id, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
     {
-        $order = $this->salesOrderService->singleSalesOrder(id: $id, with: [
-            'customer:id,name,phone,address',
-            'createdBy:id,prefix,name,last_name',
-            'saleProducts',
-            'saleProducts.product',
-            'saleProducts.variant',
-            'saleProducts.branch:id,name,branch_code,area_name,parent_branch_id',
-            'saleProducts.branch.parentBranch:id,name,branch_code,area_name',
-            'saleProducts.warehouse:id,warehouse_name,warehouse_code',
-            'saleProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
-            'saleProducts.unit.baseUnit:id,base_unit_id,code_name',
+        $showMethodContainer = $salesOrderControllerMethodContainersInterface->showMethodContainer(
+            id: $id,
+            salesOrderService: $this->salesOrderService,
+            saleProductService: $this->saleProductService
+        );
 
-            'references:id,voucher_description_id,sale_id,amount',
-            'references.voucherDescription:id,accounting_voucher_id',
-            'references.voucherDescription.accountingVoucher:id,voucher_no,date,voucher_type',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions:id,accounting_voucher_id,account_id,payment_method_id',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.paymentMethod:id,name',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account:id,name,account_number,account_group_id,bank_id,bank_branch',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.bank:id,name',
-            'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
-        ]);
-
-        $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $order->id);
+        extract($showMethodContainer);
 
         return view('sales.add_sale.orders.ajax_views.show', compact('order', 'customerCopySaleProducts'));
+    }
+
+    function edit($id, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
+    {
+        $editMethodContainer = $salesOrderControllerMethodContainersInterface->editMethodContainer(
+            id: $id,
+            salesOrderService: $this->salesOrderService,
+            accountService: $this->accountService,
+            accountFilterService: $this->accountFilterService,
+            paymentMethodService: $this->paymentMethodService,
+            priceGroupService: $this->priceGroupService
+        );
+
+        extract($editMethodContainer);
+
+        return view('sales.add_sale.orders.edit', compact('order', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups'));
+    }
+
+    function update($id, Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    {
+        $this->validate($request, [
+            'status' => 'required',
+            'date' => 'required|date',
+            'sale_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'sale_account_id.required' => 'Sales A/c is required',
+            'account_id.required' => 'Debit A/c is required',
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            $updateMethodContainer = $salesOrderControllerMethodContainersInterface->updateMethodContainer(
+                id: $id,
+                request: $request,
+                branchSettingService: $this->branchSettingService,
+                saleService: $this->saleService,
+                salesOrderService: $this->salesOrderService,
+                salesOrderProductService: $this->salesOrderProductService,
+                dayBookService: $this->dayBookService,
+                accountService: $this->accountService,
+                accountLedgerService: $this->accountLedgerService,
+                accountingVoucherService: $this->accountingVoucherService,
+                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
+                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
+                userActivityLogUtil: $this->userActivityLogUtil,
+                codeGenerator: $codeGenerator,
+            );
+
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__("Sales Order updated Successfully."));
     }
 }

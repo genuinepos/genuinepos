@@ -145,7 +145,6 @@ class Product extends Model
 
     public function updateProductCost()
     {
-
         $generalSettings = config('generalSettings');
 
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];

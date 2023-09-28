@@ -70,9 +70,9 @@ class GeneralProductSearchController extends Controller
         return $this->generalProductSearchService->getProductDiscountById($productId, $priceGroupId);
     }
 
-    public function checkProductDiscountWithStock($productId, $variantId, $priceGroupId)
+    public function checkProductDiscountWithStock($productId, $variantId = null, $priceGroupId = null, $branchId = null)
     {
-        return $this->generalProductSearchService->getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId);
+        return $this->generalProductSearchService->getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId, $branchId);
     }
 
     public function singleProductStock($productId, $warehouseId = null, $branchId = null)

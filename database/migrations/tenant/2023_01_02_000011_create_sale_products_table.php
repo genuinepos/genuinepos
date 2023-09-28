@@ -29,6 +29,7 @@ return new class extends Migration
             $table->decimal('unit_discount', 22, 2)->default(0);
             $table->decimal('unit_discount_amount', 22, 2)->default(0);
             $table->unsignedBigInteger('tax_ac_id')->nullable();
+            $table->tinyInteger('tax_type')->default(1);
             $table->decimal('unit_tax_percent', 22, 2)->default(0);
             $table->decimal('unit_tax_amount', 22, 2)->default(0);
             $table->decimal('unit_cost_inc_tax', 22, 2)->default(0)->comment('this_col_for_invoice_profit_report');

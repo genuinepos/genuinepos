@@ -82,29 +82,29 @@ class SaleService
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") .'</a>';
+                $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('edit_add_sale')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __("Edit") .'</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __("Edit") . '</a>';
                     }
                 }
 
                 if (auth()->user()->can('delete_add_sale')) {
 
-                    $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") .'</a>';
+                    $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="'. route('sale.shipments.edit', [$row->id]) .'">' . __("Edit Shipment Details") .'</a>';
+                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __("Edit Shipment Details") . '</a>';
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a href="'.route('sale.shipments.print.packing.slip', [$row->id]).'" class="dropdown-item" id="printPackingSlipBtn">' . __("Print Packing Slip") .'</a>';
+                    $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __("Print Packing Slip") . '</a>';
                 }
 
                 $html .= '</div>';
@@ -124,7 +124,7 @@ class SaleService
                 $html .= $row->invoice_id;
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
 
-                return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">'.$html.'</a>';
+                return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -236,7 +236,7 @@ class SaleService
         $addSale->shipment_address = $request->shipment_address;
         $addSale->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
         $addSale->delivered_to = $request->delivered_to;
-        $addSale->note = $request->sale_note;
+        $addSale->note = $request->note;
         $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
@@ -245,7 +245,45 @@ class SaleService
         return $addSale;
     }
 
-    public function adjustSaleInvoiceAmounts($sale)
+    public function updateSale(object $request, object $updateSale): object
+    {
+        foreach ($updateSale->saleProducts as $saleProduct) {
+
+            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->save();
+        }
+
+        $updateSale->sale_account_id = $request->sale_account_id;
+        $updateSale->customer_account_id = $request->customer_account_id;
+        $updateSale->pay_term = $request->pay_term;
+        $updateSale->pay_term_number = $request->pay_term_number;
+        $updateSale->date = $request->date;
+        $time = date(' H:i:s', strtotime($updateSale->date_ts));
+        $updateSale->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSale->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSale->total_item = $request->total_item;
+        $updateSale->total_qty = $request->total_qty;
+        $updateSale->total_sold_qty = $request->total_qty;
+        $updateSale->net_total_amount = $request->net_total_amount;
+        $updateSale->order_discount_type = $request->order_discount_type;
+        $updateSale->order_discount = $request->order_discount;
+        $updateSale->order_discount_amount = $request->order_discount_amount;
+        $updateSale->sale_tax_ac_id = $request->sale_tax_ac_id;
+        $updateSale->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
+        $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+        $updateSale->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
+        $updateSale->shipment_details = $request->shipment_details;
+        $updateSale->shipment_address = $request->shipment_address;
+        $updateSale->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
+        $updateSale->delivered_to = $request->delivered_to;
+        $updateSale->note = $request->note;
+        $updateSale->total_invoice_amount = $request->total_invoice_amount;
+        $updateSale->save();
+
+        return $updateSale;
+    }
+
+    public function adjustSaleInvoiceAmounts(object $sale): object
     {
         $totalSaleReceived = DB::table('voucher_description_references')
             ->where('voucher_description_references.sale_id', $sale->id)
@@ -283,8 +321,26 @@ class SaleService
         return $query->where('id', $id)->first();
     }
 
-    public function restrictions(object $request, object $accountService): ?array
+    public function restrictions(object $request, object $accountService, $checkCustomerChangeRestriction = false, ?int $saleId = null): ?array
     {
+        if (!isset($request->product_ids)) {
+
+            return ['pass' => false, 'msg' => __('Products table must not be empty.')];
+        }
+
+        if ($checkCustomerChangeRestriction == true) {
+
+            $sale = $this->singleSale(id: $saleId, with: ['references']);
+
+            if (count($sale->references) > 0) {
+
+                if ($sale->customer_account_id != $request->customer_account_id) {
+
+                    return ['pass' => false, 'msg' => __("Customer can not be changed. One or more receipts is exists against this sales.")];
+                }
+            }
+        }
+
         if (($request->status == SaleStatus::Order->value || $request->status == SaleStatus::Quotation->value) && !$request->customer_account_id) {
 
             return ['pass' => false, 'msg' => __('Listed customer is required for sales order and quotation.')];

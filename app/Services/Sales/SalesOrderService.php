@@ -5,6 +5,7 @@ namespace App\Services\Sales;
 use Carbon\Carbon;
 use App\Models\Sales\Sale;
 use App\Enums\PaymentStatus;
+use App\Enums\OrderDeliveryStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -23,24 +24,6 @@ class SalesOrderService
             ->where('sales.order_status', 1);
 
         $this->filteredQuery($request, $query);
-
-        // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-        //     $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)
-        //         ->where('sales.created_by', 1)
-        //         ->orderBy('sales.report_date', 'desc');
-        // } else {
-
-        //     if (auth()->user()->can('view_own_sale')) {
-
-        //         $query->where('sales.admin_id', auth()->user()->id);
-        //     }
-
-        //     $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)
-        //         ->where('sales.status', 1)
-        //         ->where('created_by', 1)
-        //         ->orderBy('sales.report_date', 'desc');
-        // }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
@@ -167,6 +150,88 @@ class SalesOrderService
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'order_id', 'branch', 'customer', 'due', 'payment_status', 'created_by'])
             ->make(true);
+    }
+
+    public function updateSalesOrder(object $request, object $updateSalesOrder): object
+    {
+        foreach ($updateSalesOrder->saleProducts as $saleProduct) {
+
+            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->save();
+        }
+
+        $updateSalesOrder->sale_account_id = $request->sale_account_id;
+        $updateSalesOrder->customer_account_id = $request->customer_account_id;
+        $updateSalesOrder->pay_term = $request->pay_term;
+        $updateSalesOrder->pay_term_number = $request->pay_term_number;
+        $updateSalesOrder->date = $request->date;
+        $time = date(' H:i:s', strtotime($updateSalesOrder->date_ts));
+        $updateSalesOrder->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSalesOrder->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSalesOrder->total_item = $request->total_item;
+        $updateSalesOrder->total_qty = $request->total_qty;
+        $updateSalesOrder->total_ordered_qty = $request->total_qty;
+        $updateSalesOrder->net_total_amount = $request->net_total_amount;
+        $updateSalesOrder->order_discount_type = $request->order_discount_type;
+        $updateSalesOrder->order_discount = $request->order_discount;
+        $updateSalesOrder->order_discount_amount = $request->order_discount_amount;
+        $updateSalesOrder->sale_tax_ac_id = $request->sale_tax_ac_id;
+        $updateSalesOrder->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
+        $updateSalesOrder->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+        $updateSalesOrder->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
+        $updateSalesOrder->shipment_details = $request->shipment_details;
+        $updateSalesOrder->shipment_address = $request->shipment_address;
+        $updateSalesOrder->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
+        $updateSalesOrder->delivered_to = $request->delivered_to;
+        $updateSalesOrder->note = $request->note;
+        $updateSalesOrder->total_invoice_amount = $request->total_invoice_amount;
+        $updateSalesOrder->save();
+
+        return $updateSalesOrder;
+    }
+
+    public function calculateDeliveryLeftQty($order)
+    {
+        $totalDeliveredQty = DB::table('sale_products')
+            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+            ->where('sales.sales_order_id', $order->id)
+            ->select(DB::raw('SUM(quantity) as total_delivered_qty'))
+            ->groupBy('sales.sales_order_id')->get();
+
+        $order->total_delivered_qty = $totalDeliveredQty->sum('total_delivered_qty');
+        $totalLeftQty = $order->total_do_qty - $order->total_delivered_qty;
+        $order->total_left_qty = $totalLeftQty;
+        $order->save();
+
+        foreach ($order->saleProducts as $saleProduct) {
+
+            $soldProducts = DB::table('sale_products')
+                ->where('product_id', $saleProduct->product_id)
+                ->where('variant_id', $saleProduct->variant_id)
+                ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
+                ->where('sales.sales_order_id', $order->id)
+                ->select(DB::raw('sum(sale_products.quantity) as delivered_qty'))
+                ->groupBy('sales.sales_order_id')->get();
+
+            $saleProduct->ordered_quantity = $saleProduct->ordered_quantity;
+            $saleProduct->delivered_quantity = $soldProducts->sum('delivered_qty');
+            $leftQty = $saleProduct->ordered_quantity - $soldProducts->sum('delivered_qty');
+            $saleProduct->left_quantity = $leftQty;
+            $saleProduct->save();
+        }
+
+        if ($order->total_delivered_qty <= 0) {
+
+            $order->order_delivery_status = OrderDeliveryStatus::Pending->value; // Pending
+        } elseif ($order->total_delivered_qty > 0 && $order->total_delivered_qty < $order->total_ordered_qty) {
+
+            $order->order_delivery_status = OrderDeliveryStatus::Partial->value; // Partial
+        } elseif ($order->total_delivered_qty >= $order->total_ordered_qty) {
+
+            $order->order_delivery_status = OrderDeliveryStatus::Completed->value; // Completed
+        }
+
+        $order->save();
     }
 
     private function filteredQuery($request, $query)

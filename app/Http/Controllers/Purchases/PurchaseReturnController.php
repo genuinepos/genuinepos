@@ -322,12 +322,12 @@ class PurchaseReturnController extends Controller
         $branchName = $generalSettings['business__shop_name'];
         if ($return?->branch?->branch) {
 
-            if ($return?->branch?->branch->parentBranch) {
+            if ($return?->branch?->parentBranch) {
 
-                $branchName = $return?->branch?->branch->parentBranch?->name . '(' . $return?->branch?->branch->parentBranch?->area_name . ')';
+                $branchName = $return?->branch?->parentBranch?->name . '(' . $return?->branch->parentBranch?->area_name . ')';
             } else {
 
-                $branchName = $return?->branch?->branch?->name . '(' . $return?->branch?->branch?->area_name . ')';
+                $branchName = $return?->branch?->name . '(' . $return?->branch?->area_name . ')';
             }
         }
 
@@ -428,7 +428,7 @@ class PurchaseReturnController extends Controller
                 $updatePurchaseReturnProduct = $this->purchaseReturnProductService->updatePurchaseReturnProduct(request: $request, purchaseReturnId: $updateReturn->id, index: $index);
 
                 // Update Product Ledger Entry
-                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $updatePurchaseReturnProduct->id, rate: $updatePurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $updatePurchaseReturnProduct->return_qty, subtotal: $updatePurchaseReturnProduct->return_subtotal, variantId: $updatePurchaseReturnProduct->variant_id, warehouseId: ($updatePurchaseReturnProduct->warehouse_id ? $updatePurchaseReturnProduct->warehouse_id : null), branchId: $updateReturn->branch_id);
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $updatePurchaseReturnProduct->id, rate: $updatePurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $updatePurchaseReturnProduct->return_qty, subtotal: $updatePurchaseReturnProduct->return_subtotal, variantId: $updatePurchaseReturnProduct->variant_id, warehouseId: ($updatePurchaseReturnProduct->warehouse_id ? $updatePurchaseReturnProduct->warehouse_id : null), currentWarehouseId: $updatePurchaseReturnProduct->current_warehouse_id, branchId: $updateReturn->branch_id);
 
                 if ($updatePurchaseReturnProduct->tax_ac_id) {
 

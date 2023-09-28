@@ -241,7 +241,9 @@
         function sum_table_col(table, class_name) {
             var sum = 0;
             table.find('tbody').find('tr').each(function() {
+
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    
                     sum += parseFloat(
                         $(this).find('.' + class_name).data('value')
                     );

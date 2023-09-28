@@ -204,6 +204,52 @@ class SaleProductService
         return $addSaleProduct;
     }
 
+    public function updateSaleProduct(object $request, object $sale, int $index): object
+    {
+        $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+        $warehouseId = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
+        
+        $saleProduct = $this->singleSaleProduct(id: $request->sale_product_ids[$index]);
+
+        $currentTaxAcId = $saleProduct ? $saleProduct->tax_ac_id : null;
+        $currentWarehouseId = $saleProduct ? $saleProduct->warehouse_id : null;
+
+        $addOrUpdateSaleProduct = '';
+        if ($saleProduct) {
+
+            $addOrUpdateSaleProduct = $saleProduct;
+        } else {
+
+            $addOrUpdateSaleProduct = new SaleProduct();
+        }
+
+        $addOrUpdateSaleProduct->sale_id = $sale->id;
+        $addOrUpdateSaleProduct->warehouse_id = $warehouseId;
+        $addOrUpdateSaleProduct->branch_id = $sale->branch_id;
+        $addOrUpdateSaleProduct->product_id = $request->product_ids[$index];
+        $addOrUpdateSaleProduct->variant_id = $variantId;
+        $addOrUpdateSaleProduct->quantity = $request->quantities[$index];
+        $addOrUpdateSaleProduct->unit_discount_type = $request->unit_discount_types[$index];
+        $addOrUpdateSaleProduct->unit_discount = $request->unit_discounts[$index];
+        $addOrUpdateSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
+        $addOrUpdateSaleProduct->tax_ac_id = $request->tax_ac_ids[$index];
+        $addOrUpdateSaleProduct->unit_tax_percent = $request->unit_tax_percents[$index];
+        $addOrUpdateSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
+        $addOrUpdateSaleProduct->unit_id = $request->unit_ids[$index];
+        $addOrUpdateSaleProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+        $addOrUpdateSaleProduct->unit_price_exc_tax = $request->unit_prices_exc_tax[$index];
+        $addOrUpdateSaleProduct->unit_price_inc_tax = $request->unit_prices_inc_tax[$index];
+        $addOrUpdateSaleProduct->subtotal = $request->subtotals[$index];
+        $addOrUpdateSaleProduct->description = $request->descriptions[$index] ? $request->descriptions[$index] : null;
+        $addOrUpdateSaleProduct->is_delete_in_update = 0;
+        $addOrUpdateSaleProduct->save();
+
+        $addOrUpdateSaleProduct->current_tax_ac_id = $currentTaxAcId;
+        $addOrUpdateSaleProduct->current_warehouse_id = $currentWarehouseId;
+
+        return $addOrUpdateSaleProduct;
+    }
+
     public function customerCopySaleProducts($saleId)
     {
         return DB::table('sale_products')
@@ -254,5 +300,30 @@ class SaleProductService
             ->groupBy('product_variants.variant_code')
             ->groupBy('units.code_name')
             ->get();
+    }
+
+    function saleProducts(?array $with = null): ?object
+    {
+        $query = SaleProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
+    function singleSaleProduct(?int $id, array $with = null): ?object
+    {
+
+        $query = SaleProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 }

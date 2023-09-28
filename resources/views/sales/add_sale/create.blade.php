@@ -2,9 +2,7 @@
 @push('stylesheets')
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
-        .input-group-text {
-            font-size: 12px !important;
-        }
+        .input-group-text { font-size: 12px !important; }
 
         .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
 
@@ -98,7 +96,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Invoice ID") }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="{{ __("Invoice ID") }}" autocomplete="off" tabindex="-1">
+                                                        <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" placeholder="{{ __("Invoice ID") }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +261,7 @@
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
                                                 <label class="fw-bold">{{ __('Warehouse') }}</label>
-                                                <select class="form-control" name="warehouse_id" id="warehouse_id">
+                                                <select class="form-control" id="e_warehouse_id">
                                                     <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($warehouses as $w)
                                                         @php
@@ -368,7 +366,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Delivered To') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" data-next="sale_note" placeholder="{{ __('Delivered To') }}">
+                                                        <input name="delivered_to" type="text" class="form-control" id="delivered_to" data-next="note" placeholder="{{ __('Delivered To') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -377,7 +375,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Sales Note") }}</b></label>
                                                     <div class="col-8">
-                                                        <input name="sale_note" type="text" class="form-control" id="sale_note" data-next="payment_note" placeholder="{{ __("Sales Note") }}">
+                                                        <input name="note" type="text" class="form-control" id="note" data-next="payment_note" placeholder="{{ __("Sales Note") }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -572,60 +570,7 @@
     <!--Add Product Modal End-->
 
     <!-- Recent transection list modal-->
-    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Recent Transactions') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <div class="tab_list_area">
-                        <div class="btn-group">
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn tab_active" href="{{ url('common/ajax/call/recent/sales/1') }}"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{ url('common/ajax/call/recent/quotations/1') }}"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-primary tab_btn" href="{{ url('common/ajax/call/recent/drafts/1') }}"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
-                        </div>
-                    </div>
-
-                    <div class="tab_contant">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table_area">
-                                    <div class="data_preloader" id="recent_trans_preloader">
-                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table modal-table table-sm table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start">@lang('menu.sl')</th>
-                                                    <th class="text-start">@lang('menu.invoice_id')</th>
-                                                    <th class="text-start">@lang('menu.customer')</th>
-                                                    <th class="text-start">@lang('menu.total')</th>
-                                                    <th class="text-start">@lang('menu.action')</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="data-list" id="transection_list"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     @include('sales.add_sale.js_partials.add_sale_createJs_script')

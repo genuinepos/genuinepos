@@ -149,6 +149,44 @@ class QuotationService
             ->make(true);
     }
 
+    public function updateSalesOrder(object $request, object $updateQuotation): object
+    {
+        foreach ($updateQuotation->saleProducts as $saleProduct) {
+
+            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->save();
+        }
+
+        $updateQuotation->sale_account_id = $request->sale_account_id;
+        $updateQuotation->customer_account_id = $request->customer_account_id;
+        $updateQuotation->pay_term = $request->pay_term;
+        $updateQuotation->pay_term_number = $request->pay_term_number;
+        $updateQuotation->date = $request->date;
+        $time = date(' H:i:s', strtotime($updateQuotation->date_ts));
+        $updateQuotation->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateQuotation->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateQuotation->total_item = $request->total_item;
+        $updateQuotation->total_qty = $request->total_qty;
+        $updateQuotation->total_ordered_qty = $request->total_qty;
+        $updateQuotation->net_total_amount = $request->net_total_amount;
+        $updateQuotation->order_discount_type = $request->order_discount_type;
+        $updateQuotation->order_discount = $request->order_discount;
+        $updateQuotation->order_discount_amount = $request->order_discount_amount;
+        $updateQuotation->sale_tax_ac_id = $request->sale_tax_ac_id;
+        $updateQuotation->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
+        $updateQuotation->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+        $updateQuotation->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
+        $updateQuotation->shipment_details = $request->shipment_details;
+        $updateQuotation->shipment_address = $request->shipment_address;
+        $updateQuotation->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
+        $updateQuotation->delivered_to = $request->delivered_to;
+        $updateQuotation->note = $request->note;
+        $updateQuotation->total_invoice_amount = $request->total_invoice_amount;
+        $updateQuotation->save();
+
+        return $updateQuotation;
+    }
+
     function updateQuotationStatus(object $request, int $id, object $codeGenerator, ?string $salesOrderPrefix = null): array
     {
         $quotation = $this->singleQuotation(id: $id);

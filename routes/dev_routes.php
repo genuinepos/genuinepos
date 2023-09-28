@@ -36,7 +36,10 @@ Route::get('my-test', function () {
     //     ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
     //     ->get();
 
-   return App\Utils\Converter::format_in_bdt(100.40, 0);
+    $my_array = extract(array("variable" => "Cat", "b" => "Dog", "c" => "Horse"));
+
+    return $variable;
+    // extract($my_array, EXTR_PREFIX_SAME, "dup");
 });
 
 Route::get('t-id', function () {

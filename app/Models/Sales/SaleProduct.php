@@ -29,7 +29,7 @@ class SaleProduct extends BaseModel
 
     public function purchaseSaleProductChains()
     {
-        return $this->hasMany(PurchaseSaleProductChain::class);
+        return $this->hasMany(PurchaseSaleProductChain::class, 'sale_product_id');
     }
 
     public function unit()

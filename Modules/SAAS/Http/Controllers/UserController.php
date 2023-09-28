@@ -6,10 +6,9 @@ use Modules\SAAS\Entities\User;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Role;
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Modules\SAAS\Http\Requests\UserStoreRequest;
 use Modules\SAAS\Http\Requests\UserUpdateRequest;
@@ -18,6 +17,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('users_index');
+
         $users = User::query();
         if ($request->ajax()) {
             return DataTables::of($users)
@@ -45,6 +46,7 @@ class UserController extends Controller
 
     public function create()
     {
+        $this->authorize('users_create');
         return view('saas::users.create', [
             'roles' => Role::all(),
         ]);
@@ -53,6 +55,7 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request, FileUploader $fileUploader)
     {
+        $this->authorize('users_store');
         $photo = null;
         if ($request->hasFile('photo')) {
             $photo = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
@@ -71,11 +74,13 @@ class UserController extends Controller
 
     public function show($id)
     {
+        $this->authorize('users_show');
         // return view('saas::show');
     }
 
     public function edit(User $user)
     {
+        $this->authorize('users_edit');
         return view('saas::users.edit', [
             'user' => $user,
             'roles' => Role::all(),
@@ -85,6 +90,7 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user, FileUploader $fileUploader)
     {
+        $this->authorize('users_update');
         $userUpdateAttributes = $request->validated();
 
         if ($request->hasFile('photo')) {
@@ -114,16 +120,19 @@ class UserController extends Controller
 
     public function trash(User $user)
     {
+        $this->authorize('users_trash');
         $user->update(['status' => false]);
         return redirect()->route('saas.users.index')->with('success', 'User Deactivated!');
     }
     public function restore(User $user)
     {
+        $this->authorize('users_restore');
         $user->update(['status' => true]);
         return redirect()->route('saas.users.index')->with('success', 'User Successfully Activated!');
     }
     public function destroy(User $user)
     {
+        $this->authorize('users_destroy');
         $user->delete();
         return redirect()->route('saas.users.index')->with('success', 'User Deleted Permanently!');
     }

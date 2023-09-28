@@ -35,14 +35,13 @@
                             <span class="sidebar-txt">{{ __('Billing') }}</span>
                         </a>
                         <ul class="sidebar-dropdown-menu" id="billingDropdown">
+                            @canany(['transactions'])
                             <li class="sidebar-dropdown-item">
                                 <a href="#" class="sidebar-link">
                                     {{ __('Transaction') }}
                                 </a>
                             </li>
-                            <li class="sidebar-dropdown-item">
-                                <a href="#" class="sidebar-link">{{ __('Manage Plan') }}</a>
-                            </li>
+                            @endcanany
                         </ul>
                     </li>
                 </ul>
@@ -53,9 +52,11 @@
                             <span class="sidebar-txt">{{ __('Manage Plans') }}</span>
                         </a>
                         <ul class="sidebar-dropdown-menu" id="planManagementDropdown">
+                            @can('plans_index')
                             <li class="sidebar-dropdown-item">
                                 <a href="{{ route('saas.plans.index') }}" class="sidebar-link">{{ __('Plans') }}</a>
                             </li>
+                            @endcan
                         </ul>
                     </li>
                 </ul>
@@ -66,12 +67,16 @@
                             <span class="sidebar-txt">{{ __('User Management') }}</span>
                         </a>
                         <ul class="sidebar-dropdown-menu" id="userManagementDropdown">
+                            @can('users_index')
                             <li class="sidebar-dropdown-item">
                                 <a href="{{ route('saas.users.index') }}" class="sidebar-link">{{ __('Users') }}</a>
                             </li>
+                            @endcan
+                            @can('roles_index')
                             <li class="sidebar-dropdown-item">
                                 <a href="{{ route('saas.roles.index') }}" class="sidebar-link">{{ __('Roles') }}</a>
                             </li>
+                            @endcan
                         </ul>
                     </li>
                 </ul>

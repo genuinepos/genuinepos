@@ -2,9 +2,9 @@
 
 namespace Modules\SAAS\Http\Controllers\Guest;
 
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Modules\SAAS\Entities\Plan;
+use Illuminate\Routing\Controller;
 
 class PlanSelectController extends Controller
 {
@@ -15,10 +15,17 @@ class PlanSelectController extends Controller
         ]);
     }
 
-    public function show(string $slug)
+    public function show(Plan $plan)
     {
         return view('saas::guest.plan-detail', [
-            'plan' => Plan::whereSlug($slug)->first(),
+            'plan' => $plan,
+        ]);
+    }
+
+    public function subscribe(Request $request, Plan $plan)
+    {
+        return view('saas::guest.subscribe', [
+            'plan' => $plan,
         ]);
     }
 }

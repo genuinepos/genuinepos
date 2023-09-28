@@ -10,8 +10,8 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['api', InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])->prefix('api')->group(function () {
+Route::middleware([InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class])->group(function () {
     Route::get('me', function () {
-        return tenant()->id;
+        // TODO:
     });
 });

@@ -9,7 +9,7 @@ class Plan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'price', 'period_month', 'status'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status'];
 
     protected static function newFactory()
     {
@@ -24,12 +24,27 @@ class Plan extends Model
 
     public function getPeriodTypeAttribute()
     {
-        return match ($this->period_month) {
-            1 => __('Monthly'),
-            3 => __('Quarterly'),
-            6 => __('Half Yearly'),
-            12 => __('Yearly'),
-            default => __('Per') . ' ' . $this->period_month . ' ' .  __('Month'),
-        };
+        $periodType = '';
+        if($this->period_unit === 'month') {
+            $periodType = match ($this->period_value) {
+                1 => __('Monthly'),
+                3 => __('Quarterly'),
+                6 => __('Half Yearly'),
+                12 => __('Yearly'),
+                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Month'),
+            };
+        }
+        if($this->period_unit === 'year') {
+            $periodType = match ($this->period_value) {
+                1 => __('Yearly'),
+                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Year'),
+            };
+        }
+        if($this->period_unit === 'day') {
+            $periodType = match ($this->period_value) {
+                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Day'),
+            };
+        }
+        return $periodType;
     }
 }

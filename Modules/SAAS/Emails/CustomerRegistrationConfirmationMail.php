@@ -34,12 +34,10 @@ class CustomerRegistrationConfirmationMail extends Mailable
     public function build()
     {
         $res = ($this->generateVerificationLink($this->user));
-        \Log::debug("VL = " . $res);
 
-        return $this->view('saas::mail.customer-`registration`-confirmation', [
+        return $this->view('saas::mail.customer-registration-confirmation', [
             'user' => $this->user,
             'verifyLink' => $this->generateVerificationLink($this->user),
-            'hello' => 'HELLO',
         ]);
     }
 

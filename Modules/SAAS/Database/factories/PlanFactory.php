@@ -24,7 +24,8 @@ class PlanFactory extends Factory
             'name' => $this->faker->name,
             'description' => $this->faker->paragraph(1),
             'price' => $this->faker->randomFloat(),
-            'period_month' => $this->faker->randomElement([1, 6, 12, 24]),
+            'period_unit' => 'month', // Accept day and year as well
+            'period_value' => $this->faker->randomElement([1, 6, 12, 24]),
             'status' => 1,
         ];
     }

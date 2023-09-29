@@ -337,10 +337,10 @@ Route::group(['prefix' => 'purchases'], function () {
 // Sale route group sales/recent/sales
 Route::group(['prefix' => 'sales'], function () {
 
-    Route::get('v2', [SaleController::class, 'index2'])->name('sales.index2');
+    // Route::get('v2', [SaleController::class, 'index2'])->name('sales.index2');
     Route::get('pos/list', [SaleController::class, 'posList'])->name('sales.pos.list');
     Route::get('product/list', [SaleController::class, 'soldProductList'])->name('sales.product.list');
-    Route::get('show/{saleId}', [SaleController::class, 'show'])->name('sales.show');
+    // Route::get('show/{saleId}', [SaleController::class, 'show'])->name('sales.show');
     Route::get('pos/show/{saleId}', [SaleController::class, 'posShow'])->name('sales.pos.show');
     Route::get('print/{saleId}', [SaleController::class, 'print'])->name('sales.print');
     Route::get('packing/Slip/{saleId}', [SaleController::class, 'packingSlip'])->name('sales.packing.slip');

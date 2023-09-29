@@ -321,7 +321,19 @@
                                                                                 $stockLocationName = $returnProduct->warehouse->warehouse_name;
                                                                             } else {
 
-                                                                                $stockLocationName = json_decode($generalSettings->business, true)['shop_name'];
+                                                                                if ($sale?->branch) {
+
+                                                                                    if ($sale?->branch?->parentBranch) {
+
+                                                                                        $stockLocationName = $sale?->branch?->parentBranch->name.'('.$sale?->branch?->area_name
+                                                                                    }else{
+
+                                                                                        $stockLocationName = $sale?->branch?->name.'('.$sale?->branch?->area_name
+                                                                                    }
+                                                                                }else {
+
+                                                                                    $stockLocationName = json_decode($generalSettings->business, true)['shop_name'];
+                                                                                }
                                                                             }
                                                                         @endphp
 
@@ -1048,6 +1060,7 @@
 
                             tr += '<td class="text-start">';
                             tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + warehouse_id + '">';
+                            tr += '<input type="hidden" id="current_warehouse_id" value="' + warehouse_id + '">';
                             tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
                             tr += '</td>';
 
@@ -1100,6 +1113,7 @@
                             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
                             tr.find('.unique_id').val(e_product_id + e_variant_id + warehouse_id);
                             tr.find('.unique_id').attr('id', e_product_id + e_variant_id + warehouse_id);
+                            tr.find('#current_warehouse_id').val(warehouse_id);
                             tr.find('#warehouse_id').val(warehouse_id);
                             tr.find('#stock_location_name').html(stock_location_name);
 
@@ -1155,8 +1169,10 @@
             $('#e_product_id').val(product_id);
             $('#e_variant_id').val(variant_id);
             $('#e_return_quantity').val(parseFloat(return_quantity).toFixed(2)).focus().select();
+            $('#e_current_return_qty').val(current_return_qty);
             $('#e_unique_id').val(unique_id);
             $('#warehouse_id').val(warehouse_id);
+            $('#e_current_warehouse_id').val(current_warehouse_id);
             $('#e_unit_cost_exc_tax').val(unit_cost_exc_tax);
             $('#e_discount').val(unit_discount);
             $('#e_discount_type').val(unit_discount_type);
@@ -1167,8 +1183,6 @@
             $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
             $('#e_base_unit_cost_exc_tax').val(unit_cost_exc_tax);
             $('#e_subtotal').val(subtotal);
-            $('#e_current_return_qty').val(current_return_qty);
-            $('#e_current_warehouse_id').val(current_warehouse_id);
             $('#add_item').html('Edit');
         });
 
@@ -1463,7 +1477,8 @@
             $('#e_item_name').val('');
             $('#e_product_id').val('');
             $('#e_variant_id').val('');
-            $('#e_return_quantity').val(0.00);
+            $('#e_return_quantity').val(0);
+            $('#e_current_return_qty').val(0);
             $('#e_discount').val(parseFloat(0).toFixed(2));
             $('#e_discount_type').val(1);
             $('#e_discount_amount').val(parseFloat(0).toFixed(2));
@@ -1473,8 +1488,8 @@
             $('#e_unit_cost_exc_tax').val(parseFloat(0).toFixed(2));
             $('#e_unit_cost_inc_tax').val(parseFloat(0).toFixed(2));
             $('#e_subtotal').val(parseFloat(0).toFixed(2));
-            $('#e_current_return_qty').val(0);
             $('#e_current_warehouse_id').val('');
+            $('#e_warehouse_id').val('');
         }
 
         // Automatic remove searching product is found signal

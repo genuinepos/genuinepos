@@ -373,7 +373,7 @@
         var is_show_emi_on_pos = e.getAttribute('data-is_show_emi_on_pos');
         $('#search_product').val('');
 
-        var url = "{{ route('general.product.search.check.product.discount.with.stock', [':product_id', ':variant_id', ':price_group_id']) }}"
+        var url = "{{ route('general.product.search.check.product.discount.with.stock', ['productId' => ':product_id', 'variantId' => ':variant_id', 'priceGroupId' => ':price_group_id', 'branchId' => auth()->user()->branch_id]) }}"
         var route = url.replace(':product_id', product_id);
         route = route.replace(':variant_id', variant_id);
         route = route.replace(':price_group_id', price_group_id);
@@ -492,11 +492,11 @@
         var e_descriptions = $('#e_descriptions').val();
         var stock_quantity = $('#stock_quantity').val();
 
-        var warehouse_id = $('#warehouse_id').val();
-        var warehouse_name = $('#warehouse_id').find('option:selected').data('w_name');
+        var e_warehouse_id = $('#e_warehouse_id').val();
+        var warehouse_name = $('#e_warehouse_id').find('option:selected').data('w_name');
 
         var stock_location_name = '';
-        if (warehouse_id) {
+        if (e_warehouse_id) {
 
             stock_location_name = warehouse_name;
         } else {
@@ -519,15 +519,15 @@
         var route = '';
         if (e_variant_id != 'noid') {
 
-            var url = "{{ route('general.product.search.variant.product.stock', [':e_product_id', ':e_variant_id', ':warehouse_id']) }}";
-            route = url.replace(':e_product_id', e_product_id);
-            route = route.replace(':e_variant_id', e_variant_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            var url = "{{ route('general.product.search.variant.product.stock', [':product_id', ':variant_id', ':warehouse_id']) }}";
+            route = url.replace(':product_id', e_product_id);
+            route = route.replace(':variant_id', e_variant_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         } else {
 
-            var url = "{{ route('general.product.search.single.product.stock', [':e_product_id', ':warehouse_id']) }}";
-            route = url.replace(':e_product_id', e_product_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            var url = "{{ route('general.product.search.single.product.stock', [':product_id', ':warehouse_id']) }}";
+            route = url.replace(':product_id', e_product_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         }
 
         $.ajax({
@@ -542,7 +542,7 @@
 
                     if (status == 1 || status == '') {
 
-                       var stockLocationMessage = warehouse_id ? ' in selected warehouse' : ' in the Shop';
+                       var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop';
                         if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
                             toastr.error('Current stock is ' + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);
@@ -550,7 +550,7 @@
                         }
                     }
 
-                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + warehouse_id;
+                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + e_warehouse_id;
                     var uniqueIdValue = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).val();
 
                     if (uniqueIdValue == undefined) {
@@ -574,11 +574,11 @@
                         tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
                         tr += '<input type="hidden" id="current_stock" value="' + stock_quantity + '">';
                         tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' +e_unit_name+ '" id="stock_limit" value="' + data.stock + '">';
-                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + warehouse_id + '" value="' + e_product_id + e_variant_id + warehouse_id + '">';
+                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + warehouse_id + '">';
+                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + e_warehouse_id + '">';
                         tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
                         tr += '</td>';
 
@@ -639,9 +639,9 @@
                         tr.find('#descriptions').val(e_descriptions);
                         tr.find('#stock_limit').val(data.stock);
                         tr.find('#stock_limit').data('unit_name', e_unit_name);
-                        tr.find('.unique_id').val(e_product_id + e_variant_id + warehouse_id);
-                        tr.find('.unique_id').attr('id', e_product_id + e_variant_id + warehouse_id);
-                        tr.find('#warehouse_id').val(warehouse_id);
+                        tr.find('.unique_id').val(e_product_id + e_variant_id + e_warehouse_id);
+                        tr.find('.unique_id').attr('id', e_product_id + e_variant_id + e_warehouse_id);
+                        tr.find('#warehouse_id').val(e_warehouse_id);
                         tr.find('#stock_location_name').html(stock_location_name);
 
                         clearEditItemFileds();
@@ -705,7 +705,7 @@
 
         $('#search_product').val(item_name);
         $('#e_unique_id').val(unique_id);
-        $('#warehouse_id').val(warehouse_id);
+        $('#e_warehouse_id').val(warehouse_id);
         $('#e_stock_location_name').val(stock_location_name);
         $('#e_item_name').val(item_name);
         $('#e_product_id').val(product_id);
@@ -812,7 +812,7 @@
 
                     if (status == 1 || status == '') {
 
-                        $('#warehouse_id').focus();
+                        $('#e_warehouse_id').focus();
                     } else {
 
                         $('#add_item').focus();
@@ -837,7 +837,7 @@
 
                 if (status == 1 || status == '') {
 
-                    $('#warehouse_id').focus();
+                    $('#e_warehouse_id').focus();
                 } else {
 
                     $('#add_item').focus();
@@ -855,7 +855,7 @@
 
             if (status == 1 || status == '') {
 
-                $('#warehouse_id').focus();
+                $('#e_warehouse_id').focus();
             } else {
 
                 $('#add_item').focus();
@@ -863,7 +863,7 @@
         }
     });
 
-    $('#warehouse_id').on('change keypress click', function(e) {
+    $('#e_warehouse_id').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
 
@@ -1004,6 +1004,7 @@
         $('#e_unit_cost_inc_tax').val(0);
         $('#e_is_show_discription').val('');
         $('#stock_quantity').val(parseFloat(0).toFixed(2));
+        $('#e_warehouse_id').val('');
         $('#add_item').html('Add');
     }
 
@@ -1065,11 +1066,11 @@
 
         if(e.ctrlKey && e.which == 13) {
 
-            $('#save_and_print').click();
+            $('#final_and_print').click();
             return false;
         }else if (e.shiftKey && e.which == 13) {
 
-            $('#save').click();
+            $('#final').click();
             return false;
         }else if (e.ctrlKey && e.which == 81) {
 
@@ -1372,7 +1373,7 @@
         $('#draft').show();
         $('.payment_body').show();
         $('.warehouse_field').show();
-        $('#warehouse_id').val('');
+        $('#e_warehouse_id').val('');
 
         if (status == 1) {
 

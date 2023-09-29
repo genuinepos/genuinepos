@@ -2,10 +2,12 @@
 
 namespace App\Services\Accounts;
 
-use App\Models\Sale;
-use App\Models\Purchases\PurchaseReturn;
+use App\Enums\SaleStatus;
+use App\Models\Sales\Sale;
+use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
+use App\Models\Purchases\PurchaseReturn;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class AccountingVoucherDescriptionReferenceService
@@ -42,7 +44,7 @@ class AccountingVoucherDescriptionReferenceService
     private function specificAccountingVoucherDescriptionReferences(
         int $accountingVoucherDescriptionId,
         int $accountId,
-        int $amount,
+        float $amount,
         string $refIdColName,
         array $refIds,
         ?int $branchId = null
@@ -267,7 +269,7 @@ class AccountingVoucherDescriptionReferenceService
     private function randomAccountingVoucherDescriptionReferences(
         int $accountingVoucherDescriptionId,
         int $accountId,
-        int $amount,
+        float $amount,
         string $refIdColName,
         ?int $branchId = null
     ) {
@@ -290,10 +292,10 @@ class AccountingVoucherDescriptionReferenceService
                     $isOrderInvoice = 0;
                     if ($refIdColName == 'sale_id') {
 
-                        $isOrderInvoice = $dueInvoice->status != 1 ? 1 : 0;
+                        $isOrderInvoice = $dueInvoice->status != SaleStatus::Final->value ? 1 : 0;
                     } elseif ($refIdColName == 'purchase_id') {
 
-                        $isOrderInvoice = $dueInvoice->purchase_status != 1 ? 1 : 0;
+                        $isOrderInvoice = $dueInvoice->purchase_status != PurchaseStatus::Purchase->value ? 1 : 0;
                     }
 
                     if ($dueInvoice->due > $receivedOrPaidAmount) {
@@ -516,7 +518,7 @@ class AccountingVoucherDescriptionReferenceService
             return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('report_date', 'asc')
+                ->orderBy('date_ts', 'asc')
                 ->get();
         } elseif ($refIdColName == 'sale_return_id') {
 
@@ -536,7 +538,7 @@ class AccountingVoucherDescriptionReferenceService
             return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->where('due', '>', 0)
-                ->where('purchase_status', 1)
+                ->where('purchase_status', PurchaseStatus::Purchase->value)
                 ->orderBy('report_date', 'asc')
                 ->get();
         } elseif ($refIdColName == 'purchase_return_id') {
@@ -550,8 +552,8 @@ class AccountingVoucherDescriptionReferenceService
             return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->where('due', '>', 0)
-                ->where('status', 1)
-                ->orderBy('report_date', 'asc')
+                ->where('status', SaleStatus::Final->value)
+                ->orderBy('date_ts', 'asc')
                 ->get();
         } elseif ($refIdColName == 'sale_return_id') {
 

@@ -170,7 +170,7 @@ class GeneralProductSearchService
         ]);
     }
 
-    public function getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId)
+    public function getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId, $branchId)
     {
         $product = Product::with(['unit:id,name,code_name', 'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier'])
             ->where('id', $productId)
@@ -178,7 +178,7 @@ class GeneralProductSearchService
 
         return response()->json([
             'discount' => $this->productDiscount($productId, $priceGroupId, $product->brand_id, $product->category_id),
-            'stock' => $this->getAvailableStock($productId, $variantId),
+            'stock' => $this->getAvailableStock($productId, $variantId, $branchId),
             'unit' => $product?->unit,
         ]);
     }
@@ -241,8 +241,8 @@ class GeneralProductSearchService
         }
 
         $productStock = DB::table('product_stocks')->where('product_id', $productId)
-        ->where('variant_id', $variantId)->where('branch_id', $branchId)->where('warehouse_id', null)
-        ->first();
+            ->where('variant_id', $variantId)->where('branch_id', $branchId)->where('warehouse_id', null)
+            ->first();
 
         if ($productStock) {
 
@@ -273,45 +273,33 @@ class GeneralProductSearchService
 
             return response()->json(['errorMsg' => 'This variant is not available in the selected warehouse..']);
         }
-
     }
 
-    public function getAvailableStock($productId, $variantId)
+    public function getAvailableStock($productId, $variantId, $branchId)
     {
         $variantId = $variantId != 'noid' ? $variantId : null;
 
         $stock = 0;
         if ($variantId) {
 
-            $branchVariant = DB::table('product_branch_variants')
-                ->leftJoin('product_branches', 'product_branch_variants.product_branch_id', 'product_branches.id')
-                ->where('product_branch_variants.product_variant_id', $variantId)
-                ->select('variant_quantity')->first();
+            $variantStock = DB::table('product_stocks')->where('product_id', $productId)
+                ->where('variant_id', $variantId)
+                ->where('branch_id', $branchId)
+                ->select(DB::raw('SUM(stock) as stock'))
+                ->groupBy('branch_id', 'product_id', 'variant_id')
+                ->get();
 
-            $stock += $branchVariant ? $branchVariant->variant_quantity : 0;
-
-            $warehouseVariant = DB::table('product_warehouse_variants')
-                ->leftJoin('product_warehouses', 'product_warehouse_variants.product_warehouse_id', 'product_warehouses.id')
-                ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-                ->where('product_warehouse_variants.product_variant_id', $variantId)
-                ->select(DB::raw('IFNULL(SUM(product_warehouse_variants.variant_quantity), 0) as variant_quantity'))
-                ->groupBy('product_warehouse_variants.product_variant_id')->get();
-
-            $stock += $warehouseVariant->sum('variant_quantity');
+            $stock = $variantStock->sum('stock');
         } else {
 
-            $branchProduct = DB::table('product_branches')
-                ->where('product_branches.product_id', $productId)->select('product_quantity')->first();
+            $productStock = DB::table('product_stocks')
+                ->where('product_id', $productId)
+                ->where('branch_id', $branchId)
+                ->select(DB::raw('SUM(stock) as stock'))
+                ->groupBy('branch_id', 'product_id', 'variant_id')
+                ->get();
 
-            $stock += $branchProduct ? $branchProduct->product_quantity : 0;
-
-            $warehouseVariant = DB::table('product_warehouses')
-                ->leftJoin('warehouses', 'product_warehouses.warehouse_id', 'warehouses.id')
-                ->where('product_warehouses.product_id', $productId)
-                ->select(DB::raw('IFNULL(SUM(product_warehouses.product_quantity), 0) as product_quantity'))
-                ->groupBy('product_warehouses.product_id')->get();
-
-            $stock += $warehouseVariant->sum('product_quantity');
+            $stock = $productStock->sum('stock');
         }
 
         return $stock;

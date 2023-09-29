@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('voucher_type', 50)->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('sale_id')->nullable();
+            $table->unsignedBigInteger('sale_product_id')->nullable();
             $table->unsignedBigInteger('sale_return_id')->nullable();
             $table->unsignedBigInteger('purchase_id')->nullable();
             $table->unsignedBigInteger('purchase_product_id')->nullable();
@@ -51,6 +52,7 @@ return new class extends Migration
             $table->foreign(['purchase_id'])->references(['id'])->on('purchases')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['purchase_return_id'])->references(['id'])->on('purchase_returns')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['sale_id'])->references(['id'])->on('sales')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['sale_product_id'])->references(['id'])->on('sale_products')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['sale_return_id'])->references(['id'])->on('sale_returns')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }

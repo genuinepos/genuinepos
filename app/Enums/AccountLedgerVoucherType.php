@@ -16,8 +16,8 @@ enum AccountLedgerVoucherType: int
     case Contra = 12;
     case Journal = 13;
     case Incomes = 15;
-    case SaleTax = 16;
-    case PurchaseTax = 17;
-    case SalesReturnTax = 18;
-    case PurchaseReturnTax = 19;
+    case SaleProductTax = 16;
+    case PurchaseProductTax = 17;
+    case SalesReturnProductTax = 18;
+    case PurchaseReturnProductTax = 19;
 }

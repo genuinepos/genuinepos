@@ -568,6 +568,8 @@ class PurchaseController extends Controller
                 $loop++;
             }
 
+            $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
+
             // Add user Log
             $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::PurchaseOrder->value == 2 ? 5 : 4, data_obj: $purchase);
 

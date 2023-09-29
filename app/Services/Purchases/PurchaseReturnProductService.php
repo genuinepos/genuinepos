@@ -42,6 +42,7 @@ class PurchaseReturnProductService
     {
         $returnProduct = PurchaseReturnProduct::where('id', $request->purchase_return_product_ids[$index])->first();
         $currentUnitTaxAcId = $returnProduct ? $returnProduct->tax_ac_id : null;
+        $currentWarehouseId = $returnProduct ? $returnProduct->warehouse_id : null;
         $addOrEditPurchaseReturnProduct = '';
         if($returnProduct){
 
@@ -73,6 +74,7 @@ class PurchaseReturnProductService
         $addOrEditPurchaseReturnProduct->save();
 
         $addOrEditPurchaseReturnProduct->current_tax_ac_id = $currentUnitTaxAcId;
+        $addOrEditPurchaseReturnProduct->current_warehouse_id = $currentWarehouseId;
 
         return $addOrEditPurchaseReturnProduct;
     }

@@ -155,4 +155,16 @@ class ProductStockService
             }
         }
     }
+
+    public function getAllStockUnderTheBranch(int $productId, ?int $variantId = null, ?int $branchId = null): float
+    {
+        $product = DB::table('products')
+            ->where('id', $productId)->select('id', 'is_manage_stock')
+            ->first();
+
+        $productStock = ProductStock::where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->where('branch_id', $branchId)
+            ->where('warehouse_id', null)->first();
+    }
 }

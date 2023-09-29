@@ -60,13 +60,11 @@ class UserActivityLogUtil
                     'name',
                     'phone',
                     'contact_id',
-                    'total_sale_due',
                 ],
                 'texts' => [
                     'Name : ',
                     'Phone : ',
                     'Customer ID : ',
-                    'Balance Due : ',
                 ],
             ],
             2 => [ // Suppliers
@@ -74,13 +72,11 @@ class UserActivityLogUtil
                     'name',
                     'phone',
                     'contact_id',
-                    'total_sale_due',
                 ],
                 'texts' => [
                     'Name : ',
                     'Phone : ',
                     'Supplier ID : ',
-                    'Balance Due : ',
                 ],
             ],
             3 => [ // Users

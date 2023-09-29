@@ -2,14 +2,20 @@
 
 namespace App\Providers;
 
-use App\Interfaces\CodeGenerationServiceInterface;
 use App\Models\GeneralSetting;
 use App\Services\CacheService;
 use App\Services\CacheServiceInterface;
 use App\Services\CodeGenerationService;
 use App\Services\GeneralSettingService;
-use App\Services\GeneralSettingServiceInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Services\GeneralSettingServiceInterface;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
+use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
+use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
+use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
+use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
             return new GeneralSetting();
         });
 
+        $this->app->bind(AddSaleControllerMethodContainersInterface::class, AddSaleControllerMethodContainersService::class);
+        $this->app->bind(SalesOrderControllerMethodContainersInterface::class, SalesOrderControllerMethodContainersService::class);
+        $this->app->bind(QuotationControllerMethodContainersInterface::class, QuotationControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

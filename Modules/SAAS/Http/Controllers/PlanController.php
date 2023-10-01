@@ -52,9 +52,11 @@ class PlanController extends Controller
             'slug' => $request->slug ?? Str::slug($request->slug),
             'price' => $request->price,
             'description' => $request->description,
-            'period_unit' => 'month',
-            'period_value' => $request->period_month,
+            'period_unit' => $request->period_unit,
+            'period_value' => $request->period_value,
+            'status' => $request->status,
         ]);
+
         $plan->features()->sync($request->feature_id);
 
         return redirect(route('saas.plans.index'))->with('success', 'Plan created successfully!');
@@ -100,7 +102,9 @@ class PlanController extends Controller
             'slug' => $request->slug ?? Str::slug($request->slug),
             'price' => $request->price,
             'description' => $request->description,
-            'period_month' => $request->period_month,
+            'period_unit' => $request->period_unit,
+            'period_value' => $request->period_value,
+            'status' => $request->status,
         ]);
         $plan->features()->sync($request->feature_id);
         return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');

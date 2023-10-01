@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->double('price', 10, 2);
-            $table->string('period_unit', 10)->comment('day,month,year');
+            $table->string('period_unit', 10); // ->comment('day,month,year');
             $table->integer('period_value');
             $table->boolean('status')->default(true);
             $table->softDeletes();

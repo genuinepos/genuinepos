@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Sales;
 
 use App\Models\Discount;
 use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\Products\BrandService;
 use App\Services\Sales\DiscountService;
-use Yajra\DataTables\Facades\DataTables;
 use App\Services\Products\ProductService;
 use App\Services\Products\CategoryService;
 use App\Services\Products\PriceGroupService;
@@ -24,9 +21,7 @@ class DiscountController extends Controller
         private ProductService $productService,
         private BrandService $brandService,
         private CategoryService $categoryService,
-        private BranchService $branchService,
         private PriceGroupService $priceGroupService,
-        private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
 
@@ -42,7 +37,6 @@ class DiscountController extends Controller
 
     public function create()
     {
-
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $brands = $this->brandService->brands()->select('id', 'name')->get();
@@ -69,7 +63,6 @@ class DiscountController extends Controller
             DB::beginTransaction();
 
             $restrictions = $this->discountService->restrictions($request);
-
             if ($restrictions['pass'] == false) {
 
                 return response()->json(['errorMsg' => $restrictions['msg']]);
@@ -91,97 +84,48 @@ class DiscountController extends Controller
         return response()->json(__('Discount created successfully'));
     }
 
-    public function edit($discountId)
+    public function edit($id)
     {
-        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+        $discount = $this->discountService->singleDiscount(id: $id, with: ['discountProducts']);
 
-        $discount = $this->discountService->singleDiscount(id: $id);
+        $ownBranchIdOrParentBranchId = $discount?->branch?->parent_branch_id ? $discount?->branch?->parent_branch_id : $discount->branch_id;
 
         $brands = $this->brandService->brands()->select('id', 'name')->get();
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->select('id', 'name')->get();
         $products = $this->productService->branchProducts(branchId: $ownBranchIdOrParentBranchId);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
-        return view('sales.discounts.ajax_view.edit', compact('brands', 'categories', 'products', 'priceGroups'));
+        return view('sales.discounts.ajax_view.edit', compact('discount', 'brands', 'categories', 'products', 'priceGroups'));
     }
 
-    public function update(Request $request, $discountId)
+    public function update($id, Request $request)
     {
-        $updateDiscount = Discount::with('discountProducts')->where('id', $discountId)->first();
+        try {
 
-        foreach ($updateDiscount->discountProducts as $discountProduct) {
+            DB::beginTransaction();
 
-            $discountProduct->is_delete_in_update = 1;
-            $discountProduct->save();
-        }
+            $restrictions = $this->discountService->restrictions($request);
+            if ($restrictions['pass'] == false) {
 
-        $updateDiscount->branch_id = auth()->user()->branch_id;
-        $updateDiscount->name = $request->name;
-        $updateDiscount->priority = $request->priority;
-        $updateDiscount->start_at = date('Y-m-d', strtotime($request->start_at));
-        $updateDiscount->end_at = date('Y-m-d', strtotime($request->end_at));
-        $updateDiscount->discount_type = $request->discount_type;
-        $updateDiscount->discount_amount = $request->discount_amount;
-        $updateDiscount->price_group_id = $request->price_group_id;
-        $updateDiscount->is_active = isset($request->is_active) ? 1 : 0;
-        $updateDiscount->apply_in_customer_group = isset($request->apply_in_customer_group) ? 1 : 0;
-        $updateDiscount->save();
-
-        if (isset($request->product_ids) && count($request->product_ids) > 0) {
-
-            $updateDiscount->brand_id = null;
-            $updateDiscount->category_id = null;
-
-            foreach ($request->product_ids as $product_id) {
-
-                $discountProduct = DiscountProduct::where('discount_id', $updateDiscount->id)
-                    ->where('product_id', $product_id)->first();
-
-                if ($discountProduct) {
-
-                    $discountProduct->is_delete_in_update = 0;
-                    $discountProduct->save();
-                } else {
-
-                    $addDiscountProduct = new DiscountProduct();
-                    $addDiscountProduct->discount_id = $updateDiscount->id;
-                    $addDiscountProduct->product_id = $product_id;
-                    $addDiscountProduct->save();
-                }
-            }
-        } else {
-
-            foreach ($updateDiscount->discountProducts as $discountProduct) {
-
-                $discountProduct->delete();
+                return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            $updateDiscount->brand_id = $request->brand_id;
-            $updateDiscount->category_id = $request->category_id;
-            $updateDiscount->save();
+            $updateDiscount = $this->discountService->updateDiscount(request: $request, id: $id);
+            $this->discountProductService->updateDiscountProducts(request: $request, discount: $updateDiscount);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        // Unused discount product
-        $deleteDiscountProducts = DiscountProduct::where('discount_id', $updateDiscount->id)->where('is_delete_in_update', 1)->get();
-
-        foreach ($deleteDiscountProducts as $deleteDiscountProduct) {
-
-            $deleteDiscountProduct->delete();
-        }
-
-        return response()->json('Offer updated successfully');
+        return response()->json(__('Discount updated successfully'));
     }
 
-    public function delete($discountId)
+    public function delete($id)
     {
-        $deleteDiscount = Discount::where('id', $discountId)->first();
-
-        if (!is_null($deleteDiscount)) {
-
-            $deleteDiscount->delete();
-        }
-
-        return response()->json('Offer deleted successfully');
+        $this->discountService->deleteDiscount(discountId: $id);
+        return response()->json(__('Discount deleted successfully'));
     }
 
     public function changeStatus($id)

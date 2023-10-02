@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('photo')->default('default.png');
             $table->boolean('status')->default(true);
             $table->timestamps();
+
+            $table->foreign(['parent_category_id'])->references(['id'])->on('categories')->onDelete('CASCADE');
         });
     }
 

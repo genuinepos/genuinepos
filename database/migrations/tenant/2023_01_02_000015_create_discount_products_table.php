@@ -17,8 +17,11 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('discount_id')->nullable()->index('discount_products_discount_id_foreign');
             $table->unsignedBigInteger('product_id')->nullable()->index('discount_products_product_id_foreign');
-            $table->boolean('is_delete_in_update')->default(false);
+            $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
+
+            $table->foreign(['discount_id'])->references(['id'])->on('discounts')->onDelete('CASCADE');
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
         });
     }
 

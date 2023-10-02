@@ -85,7 +85,7 @@
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
+            // aaSorting: [[0, 'asc']],
             ajax: "{{ route('sales.discounts.index') }}",
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],

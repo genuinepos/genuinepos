@@ -57,7 +57,7 @@
                         <select required name="brand_id" class="form-control" id="discount_brand_id" data-next="discount_category_id">
                             <option value="">{{ __("Select Brand") }}</option>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                <option {{ $discount->brand_id == $brand->id ? 'SELECTED' : '' }} value="{{ $brand->id }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -67,7 +67,7 @@
                         <select required name="category_id" class="form-control" id="discount_category_id" data-next="discount_discount_type">
                             <option value="">{{ __("Select Category") }}</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option {{ $discount->category_id == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -143,18 +143,24 @@
 
     $('#discount_product_ids').on('change', function () {
 
-        if ($(this).val().length > 0) {
+        checkDiscountProducts();
+    });
+
+    function checkDiscountProducts() {
+
+        if ($('#discount_product_ids').val().length > 0) {
 
             $('#brand_category_area').hide();
             $('#discount_category_id').prop('required', false);
             $('#discount_brand_id').prop('required', false);
-        }else{
+        } else {
 
             $('#brand_category_area').show();
             $('#discount_category_id').prop('required', true);
             $('#discount_brand_id').prop('required', true);
         }
-    });
+    }
+    checkDiscountProducts();
 
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 

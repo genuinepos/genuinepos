@@ -14,7 +14,6 @@ class DiscountService
     function discountListTable(object $request): ?object
     {
         $generalSettings = config('generalSettings');
-
         $discounts = DB::table('discounts')->where('branch_id', auth()->user()->branch_id)
             ->leftJoin('brands', 'discounts.brand_id', 'brands.id')
             ->leftJoin('categories', 'discounts.category_id', 'categories.id')
@@ -28,8 +27,7 @@ class DiscountService
                 'branches.branch_code',
                 'branches.area_name',
                 'parentBranch.name as parent_branch_name',
-            )
-            ->get();
+            )->orderBy('id', 'desc')->get();
 
         return DataTables::of($discounts)
             ->addIndexColumn()
@@ -114,8 +112,7 @@ class DiscountService
 
             ->editColumn('discount_amount', function ($row) {
                 $discountType = $row->discount_type == DiscountType::Fixed->value ? '(Fixed)' : '%';
-                return \App\Utils\Converter::format_in_bdt($row->discount_amount).$discountType;
-
+                return \App\Utils\Converter::format_in_bdt($row->discount_amount) . $discountType;
             })
             ->rawColumns(['action', 'start_at', 'end_at', 'branch', 'discount_type', 'is_active', 'status', 'products'])
             ->make(true);
@@ -123,7 +120,6 @@ class DiscountService
 
     public function addDiscount(object $request): object
     {
-
         $addDiscount = new Discount();
         $addDiscount->branch_id = auth()->user()->branch_id;
         $addDiscount->name = $request->name;
@@ -142,8 +138,45 @@ class DiscountService
         return $addDiscount;
     }
 
-    public function changeDiscountStatus(int $id) : void {
+    public function updateDiscount(object $request, int $id): object
+    {
+        $updateDiscount = $this->singleDiscount(id: $id,  with: ['discountProducts']);
 
+        foreach ($updateDiscount->discountProducts as $discountProduct) {
+
+            $discountProduct->is_delete_in_update = 1;
+            $discountProduct->save();
+        }
+
+        $updateDiscount->branch_id = auth()->user()->branch_id;
+        $updateDiscount->name = $request->name;
+        $updateDiscount->priority = $request->priority;
+        $updateDiscount->start_at = date('Y-m-d', strtotime($request->start_at));
+        $updateDiscount->end_at = date('Y-m-d', strtotime($request->end_at));
+        $updateDiscount->discount_type = $request->discount_type;
+        $updateDiscount->discount_amount = $request->discount_amount;
+        $updateDiscount->price_group_id = $request->price_group_id;
+        $updateDiscount->is_active = isset($request->is_active) ? 1 : 0;
+        $updateDiscount->apply_in_customer_group = isset($request->apply_in_customer_group) ? 1 : 0;
+        $updateDiscount->brand_id = !isset($request->product_ids) ? $request->brand_id : null;
+        $updateDiscount->category_id = !isset($request->product_ids) ? $request->category_id : null;
+        $updateDiscount->save();
+
+        return $updateDiscount;
+    }
+
+    function deleteDiscount(int $discountId): void
+    {
+        $deleteDiscount = $this->singleDiscount(id: $discountId);
+
+        if (!is_null($deleteDiscount)) {
+
+            $deleteDiscount->delete();
+        }
+    }
+
+    public function changeDiscountStatus(int $id): void
+    {
         $discount = $this->singleDiscount(id: $id);
 
         if ($discount->is_active == 1) {

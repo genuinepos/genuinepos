@@ -28,6 +28,11 @@ return new class extends Migration
             $table->boolean('apply_in_customer_group')->default(false);
             $table->boolean('is_active')->default(false);
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['brand_id'])->references(['id'])->on('brands')->onDelete('CASCADE');
+            $table->foreign(['category_id'])->references(['id'])->on('categories')->onDelete('CASCADE');
+            $table->foreign(['price_group_id'])->references(['id'])->on('price_groups')->onDelete('SET NULL');
         });
     }
 

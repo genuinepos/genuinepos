@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="price" class="form-label">{{ __('Period Price') }}</label>
-                                    <input type="number" min="1" step="0.000001" class="form-control"
+                                    <input type="number" min="0" step="0.000001" class="form-control"
                                         name="price" placeholder="Enter Price" required value="{{ $plan->price }}">
                                 </div>
                                 <div class="mb-4">

@@ -1,7 +1,7 @@
 <x-saas::admin-layout title="Create tenant">
     @push('css')
     <style>
-        
+
     </style>
     @endpush
     <div class="panel">
@@ -33,9 +33,12 @@
                                         <td>{{ $tenant->name }}</td>
                                         <td>{{ $domain }}</td>
                                         <td class="">
-                                            <a href="{{ $domain }}" target="_blank" role="button" class="">
-                                                {{ __('Open App') }}
+                                            <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-primary btn-sm text-white">
+                                                {{ __('Open Business') }}
                                             </a>
+                                            {{-- <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-danger btn-sm text-white">
+                                                {{ __('Delete Business') }}
+                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

@@ -6,7 +6,7 @@
     @endpush
     <div class="panel">
         <div class="panel-header">
-            <h5>{{ __('Manage Plan') }}</h5>
+            <h5>{{ __('Manage Plans') }}</h5>
             <div>
                 <a href="{{ route('saas.plans.create') }}" class="btn btn-primary">{{ __('Create Plan') }}</a>
             </div>
@@ -20,8 +20,10 @@
                                 <tr>
                                     <th>{{ __("SL No.") }}</th>
                                     <th>{{ __("Plan Name") }}</th>
-                                    <th>{{ __("Price") }}</th>
-                                    <th>{{ __("Period Month") }}</th>
+                                    <th>{{ __("Period Value") }}</th>
+                                    <th>{{ __("Period Unit") }}</th>
+                                    <th>{{ __("Period Price") }}</th>
+                                    <th>{{ __("Plan Status") }}</th>
                                     <th>{{ __("Action") }}</th>
                                 </tr>
                             </thead>
@@ -30,8 +32,10 @@
                                     <tr class="">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $plan->name }}</td>
+                                        <td>{{ $plan->period_value }}</td>
+                                        <td>{{ $plan->period_unit }}</td>
                                         <td>{{ $plan->price }}</td>
-                                        <td>{{ $plan->periodType }}</td>
+                                        <td>{!! $plan->statusLabel !!}</td>
                                         <td class="">
                                             <a href="{{route('saas.plans.edit', $plan->id)}}" class="">
                                                 {{ __('Edit Plan') }}

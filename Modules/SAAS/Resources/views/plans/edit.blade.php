@@ -14,7 +14,7 @@
                         @method('PATCH')
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-2">
+                                <div class="mb-4">
                                     <label for="name" class="form-label">{{ __('Plan Name') }}</label>
                                     <input type="text" class="form-control" name="name"
                                         placeholder="Enter Plan Name" required value="{{ $plan->name }}">
@@ -24,13 +24,22 @@
                                     <input type="text" class="form-control" name="slug"
                                         placeholder="{{ __("Enter URL Slug") }}" value="{{ $plan->slug }}">
                                 </div>
-                                <div class="mb-2">
-                                    <label for="period_month" class="form-label">{{ __('Period Month') }}</label>
-                                    <input type="number" class="form-control" name="period_month"
-                                        placeholder="Enter Period Month" required value="{{ $plan->period_month }}">
+                                <div class="mb-4">
+                                    <label for="period_unit" class="form-label">{{ __('Plan Period Unit') }}</label>
+                                    <select name="period_unit" id="period_unit" class="form-select" required>
+                                        <option value="">{{ __('Select Plan Period Unit') }}</option>
+                                        @foreach(\Modules\SAAS\Enums\PlanPeriod::cases() as $period)
+                                        <option value="{{ $period->value }}" @selected($plan->period_unit == $period->value)>{{ $period->value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="mb-2">
-                                    <label for="price" class="form-label">{{ __('Price') }}</label>
+                                <div class="mb-4">
+                                    <label for="period_value" class="form-label">{{ __('Plan Period Value') }}</label>
+                                    <input type="number" class="form-control" name="period_value"
+                                        placeholder="Period Value" required value="{{ $plan->period_value }}" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="price" class="form-label">{{ __('Period Price') }}</label>
                                     <input type="number" min="1" step="0.000001" class="form-control"
                                         name="price" placeholder="Enter Price" required value="{{ $plan->price }}">
                                 </div>
@@ -41,7 +50,7 @@
                                 <div class="">
                                     <h6>{{ __('Assign Features') }}</h6>
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-4">
                                     <div class="py-2">
                                         <input type="checkbox" class="form-check-input" name="select_all"
                                             id="select_all">
@@ -64,9 +73,17 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <input type="submit" class="btn btn-sm btn-primary" value="{{ __('Update') }}" />
+                                <div class="mb-4 p-3" style="border: 1px solid red;">
+                                    <label for="status" class="form-label"><span class="text-danger">*</span>{{ __('Plan Status') }}</label>
+                                    <select name="status" id="status" class="form-select" required>
+                                        <option value="1" @selected($plan->status == 1)>Active</option>
+                                        <option value="0" @selected($plan->status != 1)>In-Active</option>
+                                    </select>
+                                </div>
+
+                                <input type="submit" class="btn btn-sm btn-primary" value="{{ __('Update Plan') }}" />
                                 <a href="{{ route('saas.plans.index') }}" class="btn btn-sm btn-secondary">
-                                    {{ __('Cancel') }}
+                                    {{ __('Cancel Edit') }}
                                 </a>
                             </div>
                         </div>

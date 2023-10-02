@@ -4,12 +4,19 @@ namespace Modules\SAAS\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\SAAS\Scope\IsActive;
 
 class Plan extends Model
 {
     use HasFactory;
+    use IsActive;
 
     protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status'];
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 
     protected static function newFactory()
     {
@@ -46,5 +53,10 @@ class Plan extends Model
             };
         }
         return $periodType;
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return $this->status == 1 ? '<span class="text-success">Active</span>' : '<span class="text-danger">In-Active</span>';
     }
 }

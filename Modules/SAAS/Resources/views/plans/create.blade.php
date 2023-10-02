@@ -24,14 +24,22 @@
                                         placeholder="{{ __("Enter URL Slug") }}">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="period_month" class="form-label">{{ __('Period Month') }}</label>
-                                    <input type="number" class="form-control" name="period_month"
-                                        placeholder="{{ __("Enter Period Month. i.e.; 1 for Monthly and 12 for Yearly Plan") }}"
-                                        required>
+                                    <label for="period_unit" class="form-label">{{ __('Plan Period Unit') }}</label>
+                                    <select name="period_unit" id="period_unit" class="form-select" required>
+                                        <option value="">{{ __('Select Plan Period Unit') }}</option>
+                                        @foreach(\Modules\SAAS\Enums\PlanPeriod::cases() as $period)
+                                        <option value="{{ $period->value }}">{{ $period->value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="price" class="form-label">{{ __('Price') }}</label>
-                                    <input type="number" min="1" step="0.000001" class="form-control"
+                                    <label for="period_value" class="form-label">{{ __('Plan Period Value') }}</label>
+                                    <input type="number" class="form-control" name="period_value"
+                                        placeholder="Period Value" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="price" class="form-label">{{ __('Period Price') }}</label>
+                                    <input type="number" min="0" step="0.0001" class="form-control"
                                         name="price" placeholder="{{ __("Enter Price") }}" required>
                                 </div>
                                 <div class="mb-4">
@@ -59,6 +67,14 @@
                                         </div>
                                     @endforeach
                                 </div>
+                                <div class="mb-4 p-3" style="border: 1px solid red;">
+                                    <label for="status" class="form-label"><span class="text-danger">*</span>{{ __('Plan Status') }}</label>
+                                    <select name="status" id="status" class="form-select" required>
+                                        <option value="1">Active</option>
+                                        <option value="0">In-Active</option>
+                                    </select>
+                                </div>
+
                                 <input type="submit" class="btn btn-sm btn-primary" value="{{ __('Create') }}" />
                                 <a href="{{ route('saas.plans.index') }}" class="btn btn-sm btn-secondary">
                                     {{ __('Cancel') }}

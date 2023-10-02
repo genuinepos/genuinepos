@@ -2,7 +2,6 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
-
     $invoiceLayout = $draft?->branch?->branchSetting?->addSaleInvoiceLayout ? $draft?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
  <!-- Details Modal -->
@@ -104,7 +103,7 @@
                                             <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
-                                                {{ $draftProduct->product->name.' '.$variant }}
+                                                {{ $draftProduct->product->name . ' ' . $variant }}
                                                 <small>{{ $draftProduct->description }}</small>
                                             </td>
 

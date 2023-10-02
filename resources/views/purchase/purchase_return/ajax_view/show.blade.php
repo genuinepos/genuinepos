@@ -63,27 +63,6 @@
                                    {{ $generalSettings['business__phone'] }}
                                @endif
                            </li>
-
-                           <li style="font-size:11px!important;"><strong>{{ __("Stored Location") }} : </strong>
-                               @if ($return?->warehouse)
-
-                                   {{ $return?->warehouse?->warehouse_name . '/' . $return?->warehouse?->warehouse_code.'-(WH)' }}
-                               @else
-                                   @if ($return->branch_id)
-
-                                       @if($return?->branch?->parentBranch)
-
-                                           {{ $return?->branch?->parentBranch?->name . '(' . $return?->branch?->area_name . ')'.'-('.$return?->branch?->branch_code.')' }}
-                                       @else
-
-                                           {{ $return?->branch?->name . '(' . $return?->branch?->area_name . ')'.'-('.$return?->branch?->branch_code.')' }}
-                                       @endif
-                                   @else
-
-                                       {{ $generalSettings['business__shop_name'] }}
-                                   @endif
-                               @endif
-                           </li>
                        </ul>
                    </div>
                 </div>
@@ -153,7 +132,7 @@
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
-                                            {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_exc_tax) }}
+                                            {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_inc_tax) }}
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
@@ -185,21 +164,21 @@
                                 <tr>
                                     <th class="text-end">{{ __("Return Discount") }} : {{ $generalSettings['business__currency'] }} </th>
                                     <td class="text-end">
-                                        {{ $return->order_discount }} {{ $return->order_discount_type == 1 ? '(Fixed)' : '%' }}
+                                        {{ $return->return_discount_type == 1 ? '(Fixed)=' : '%=' }} {{ $return->return_discount_amount }}
                                    </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __("Return Tax") }} : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
-                                        {{ $return->return_tax_amount.' ('.$return->return_tax_percent.'%)' }}
+                                        {{ '('.$return->return_tax_percent.'%)=' . $return->return_tax_amount }}
                                    </td>
                                 </tr>
 
                                 <tr>
                                     <th class="text-end">{{ __("Total Returned Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
-                                           {{ App\Utils\Converter::format_in_bdt($return->total_purchase_amount) }}
+                                           {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                    </td>
                                 </tr>
 
@@ -230,8 +209,8 @@
             </div>
             <div class="modal-footer">
                 <a href="{{ route('purchase.returns.edit', $return->id) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
-                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                 <button type="submit" class="btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __("Print") }}</button>
+                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
             </div>
         </div>
     </div>
@@ -399,7 +378,7 @@
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_exc_tax) }}
+                                    {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_inc_tax) }}
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">

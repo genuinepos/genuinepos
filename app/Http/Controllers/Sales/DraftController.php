@@ -4,19 +4,27 @@ namespace App\Http\Controllers\Sales;
 
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Sales\DraftService;
 use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\SaleProductService;
+use App\Services\Sales\DraftProductService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Accounts\AccountFilterService;
+use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 
 class DraftController extends Controller
 {
     public function __construct(
         private DraftService $draftService,
+        private DraftProductService $draftProductService,
         private SaleProductService $saleProductService,
         private AccountService $accountService,
+        private AccountFilterService $accountFilterService,
         private BranchService $branchService,
+        private PriceGroupService $priceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
@@ -43,28 +51,68 @@ class DraftController extends Controller
         return view('sales.add_sale.drafts.index', compact('branches', 'customerAccounts'));
     }
 
-    public function show($id)
+    public function show($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
         if (!auth()->user()->can('sale_draft')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $draft = $this->draftService->singleDraft(id: $id, with: [
-            'customer:id,name,phone,address',
-            'createdBy:id,prefix,name,last_name',
-            'saleProducts',
-            'saleProducts.product',
-            'saleProducts.variant',
-            'saleProducts.branch:id,name,branch_code,area_name,parent_branch_id',
-            'saleProducts.branch.parentBranch:id,name,branch_code,area_name',
-            'saleProducts.warehouse:id,warehouse_name,warehouse_code',
-            'saleProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
-            'saleProducts.unit.baseUnit:id,base_unit_id,code_name',
-        ]);
+        $showMethodContainer = $draftControllerMethodContainersInterface->showMethodContainer(
+            id: $id,
+            quotationService: $this->draftService,
+            saleProductService: $this->saleProductService
+        );
 
-        $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $draft->id);
+        extract($showMethodContainer);
 
         return view('sales.add_sale.drafts.ajax_views.show', compact('draft', 'customerCopySaleProducts'));
+    }
+
+    public function edit($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface){
+
+        $editMethodContainer = $draftControllerMethodContainersInterface->editMethodContainer(
+            id: $id,
+            draftService: $this->draftService,
+            accountService: $this->accountService,
+            accountFilterService: $this->accountFilterService,
+            priceGroupService: $this->priceGroupService
+        );
+
+        extract($editMethodContainer);
+
+        return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups'));
+    }
+
+    function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    {
+        $this->validate($request, [
+            'status' => 'required',
+            'date' => 'required|date',
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            $updateMethodContainer = $draftControllerMethodContainersInterface->updateMethodContainer(
+                id: $id,
+                request: $request,
+                draftService: $this->draftService,
+                draftProductService: $this->draftProductService,
+            );
+
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__("Draft updated Successfully."));
     }
 }

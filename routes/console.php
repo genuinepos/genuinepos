@@ -21,9 +21,4 @@ Artisan::command('dev:m', function () {
 
     //     $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
     // });
-
-    Schema::table('sale_products', function (Blueprint $table) {
-        $table->dropForeign(['sale_product_id']);
-        $table->dropColumn('sale_product_id');
-    });
 });

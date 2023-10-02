@@ -16,7 +16,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         int $id,
         object $saleService,
         object $saleProductService,
-    ): array {
+    ): ?array {
+
         $data = [];
         $sale = $saleService->singleSale(id: $id, with: [
             'customer:id,name,phone,address',
@@ -482,5 +483,49 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $userActivityLogUtil->addLog(action: 2, subject_type: 7, data_obj: $sale);
 
         return null;
+    }
+
+    public function deleteMethodContainer(
+        int $id,
+        object $saleService,
+        object $productStockService,
+        object $purchaseProductService,
+        object $userActivityLogUtil,
+    ): array|object {
+
+        $deleteSale = $this->saleService->deleteSale($id);
+
+        if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $deleteSale['msg']];
+        }
+
+        if ($deleteSale->status == SaleStatus::Final->value) {
+
+            foreach ($deleteSale->saleProducts as $saleProduct) {
+
+                $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
+
+                if ($saleProduct->warehouse_id) {
+
+                    $productStockService->adjustWarehouseStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->warehouse_id);
+                } else {
+
+                    $productStockService->adjustBranchStock($saleProduct->product_id, $saleProduct->variant_id, $saleProduct->branch_id);
+                }
+
+                foreach ($saleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
+
+                    if ($purchaseSaleProductChain->purchaseProduct) {
+
+                        $purchaseProductService->adjustPurchaseProductSaleLeftQty($purchaseSaleProductChain->purchaseProduct);
+                    }
+                }
+            }
+        }
+
+        $userActivityLogUtil->addLog(action: 3, subject_type: $deleteSale->status == SaleStatus::Final->value ? 7 : 8, data_obj: $deleteSale);
+
+        return $deleteSale;
     }
 }

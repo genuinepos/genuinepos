@@ -1066,7 +1066,7 @@
                                             <a href="{{ route('sales.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cart-plus"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text"> {{ __("Add Sale") }}</p>
@@ -1080,7 +1080,7 @@
                                             <a href="{{ route('sales.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __("Manage Add Sales") }}</p>
@@ -1112,10 +1112,10 @@
                                             <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cash-register"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.pos')</p>
+                                                <p class="switch_text">{{ __("POS") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1126,10 +1126,10 @@
                                             <a href="{{ route('sales.pos.list') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.pos_sale_list')</p>
+                                                <p class="switch_text">{{ __("POS Sale List") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1154,7 +1154,7 @@
                                     <a href="{{ route('sale.orders.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
-                                                <span><i class="fa fa-file-alt"></i></span>
+                                                <span><i class="fas fa-list"></i></span>
                                             </div>
                                         </div>
                                         <p class="switch_text">{{ __("Sales Order List") }}</p>
@@ -1166,7 +1166,7 @@
                                         <a href="{{ route('sale.quotations.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-quote-right"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Quotation List") }}</p>
@@ -1179,7 +1179,7 @@
                                         <a href="{{ route('sale.drafts.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-drafting-compass"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Draft List") }}</p>
@@ -1192,7 +1192,7 @@
                                         <a href="{{ route('sale.products.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-tasks"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Sold Product List") }}</p>
@@ -1218,13 +1218,13 @@
                                 @if (auth()->user()->can('return_access'))
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('sale.return.random.create') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('sales.returns.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-undo"></i></span>
+                                                    <span><i class="fas fa-plus-circle"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.add_sale_return')</p>
+                                            <p class="switch_text">{{ __("Add Sales Return") }}</p>
                                         </a>
                                     </div>
 
@@ -1232,10 +1232,10 @@
                                         <a href="{{ route('sales.returns.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-undo"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.sale_return_list')</p>
+                                            <p class="switch_text">{{ __("Sales Return List") }}</p>
                                         </a>
                                     </div>
                                 @endif

@@ -283,11 +283,11 @@
                             </div>
                         </div>
 
-                        <div class="row p-1">
+                        <div class="row mt-1">
                             <div class="sale-item-sec">
                                 <div class="sale-item-inner">
                                     <div class="table-responsive">
-                                        <table class="display data__table table-striped">
+                                        <table class="display data__table table sale-product-table">
                                             <thead class="staky">
                                                 <tr>
                                                     <th>{{ __('Product') }}</th>

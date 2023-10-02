@@ -48,7 +48,7 @@
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __("Customer") }}</strong></label>
-                                                    <select name="customer_account_id" class="form-control select2" id="supplier_account_id" autofocus>
+                                                    <select name="customer_account_id" class="form-control select2" id="customer_account_id" autofocus>
                                                         <option value="">{{ __("All") }}</option>
                                                         @foreach ($customerAccounts as $customerAccount)
                                                             <option data-customer_account_name="{{ $customerAccount->name.'/'.$customerAccount->phone }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name.'/'.$customerAccount->phone }}</option>
@@ -189,7 +189,7 @@
                 "url": "{{ route('sale.products.index') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
-                    d.customer_id = $('#customer_account_id').val();
+                    d.customer_account_id = $('#customer_account_id').val();
                     d.sale_screen = $('#sale_screen').val();
                     d.user_id = $('#user_id').val();
                     d.from_date = $('#from_date').val();

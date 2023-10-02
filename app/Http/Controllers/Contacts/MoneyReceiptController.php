@@ -91,6 +91,7 @@ class MoneyReceiptController extends Controller
             DB::beginTransaction();
 
             $this->moneyReceiptService->deleteMoneyReceipt($receiptId);
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -103,7 +104,6 @@ class MoneyReceiptController extends Controller
     public function print($receiptId)
     {
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
-
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 }

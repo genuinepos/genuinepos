@@ -87,30 +87,19 @@
                                         </div>
                                     </div>
 
-                                    @if (count($warehouses) > 0)
-
-                                        <input name="warehouse_count" value="YES" type="hidden" />
-                                        <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __("Warehouse") }}</b></label>
-                                            <div class="col-8">
-                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="purchase_account_id">
-                                                    <option value="">@lang('menu.select_warehouse')</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
-                                                            {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <span class="error error_warehouse_id"></span>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __("Warehouse") }}</b></label>
+                                        <div class="col-8">
+                                            <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="purchase_account_id">
+                                                <option value="">{{ __("Select Warehouse") }}</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
+                                                        {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_warehouse_id"></span>
                                         </div>
-                                    @else
-                                        <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __("Stock Location") }}</b></label>
-                                            <div class="col-8">
-                                                <input readonly type="text" class="form-control changeable" value="{{ json_decode($generalSettings->business, true)['shop_name'] }}" />
-                                            </div>
-                                        </div>
-                                    @endif
+                                    </div>
                                 </div>
 
                                 <div class="col-xl-3 col-md-6">

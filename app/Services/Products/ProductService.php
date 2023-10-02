@@ -498,6 +498,15 @@ class ProductService
         return $query;
     }
 
+    public function branchProducts(?int $branchId): ?object
+    {
+        return DB::table('products')
+            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+            ->where('product_access_branches.branch_id', $branchId)
+            ->select('products.*')
+            ->get();
+    }
+
     public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object
     {
         $query = Product::query();

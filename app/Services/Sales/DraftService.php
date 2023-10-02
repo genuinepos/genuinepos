@@ -72,7 +72,7 @@ class DraftService
 
                     if (auth()->user()->can('sale_draft')) {
 
-                        $html .= '<a href="' . route('sale.drafts.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
                     }
                 }
 
@@ -122,6 +122,44 @@ class DraftService
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'draft_id', 'branch', 'customer', 'created_by'])
             ->make(true);
+    }
+
+    public function updateDraft(object $request, object $updateDraft): object
+    {
+        foreach ($updateDraft->saleProducts as $saleProduct) {
+
+            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->save();
+        }
+
+        $updateDraft->sale_account_id = $request->sale_account_id;
+        $updateDraft->customer_account_id = $request->customer_account_id;
+        $updateDraft->pay_term = $request->pay_term;
+        $updateDraft->pay_term_number = $request->pay_term_number;
+        $updateDraft->date = $request->date;
+        $time = date(' H:i:s', strtotime($updateDraft->date_ts));
+        $updateDraft->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateDraft->draft_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateDraft->total_item = $request->total_item;
+        $updateDraft->total_qty = $request->total_qty;
+        $updateDraft->net_total_amount = $request->net_total_amount;
+        $updateDraft->order_discount_type = $request->order_discount_type;
+        $updateDraft->order_discount = $request->order_discount;
+        $updateDraft->order_discount_amount = $request->order_discount_amount;
+        $updateDraft->sale_tax_ac_id = $request->sale_tax_ac_id;
+        $updateDraft->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
+        $updateDraft->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+        $updateDraft->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
+        $updateDraft->shipment_details = $request->shipment_details;
+        $updateDraft->shipment_address = $request->shipment_address;
+        $updateDraft->shipment_status = $request->shipment_status ? $request->shipment_status : 0;
+        $updateDraft->delivered_to = $request->delivered_to;
+        $updateDraft->note = $request->note;
+        $updateDraft->total_invoice_amount = $request->total_invoice_amount;
+        $updateDraft->due = $request->total_invoice_amount;
+        $updateDraft->save();
+
+        return $updateDraft;
     }
 
     private function filteredQuery(object $request, object $query): object

@@ -204,6 +204,53 @@ class PurchaseProductService
         return $addPurchaseProduct;
     }
 
+    public function addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
+        string $transColName,
+        int $transId,
+        ?int $branchId,
+        int $productId,
+        ?int $variantId,
+        float $quantity,
+        float $unitCostIncTax,
+        float $sellingPrice,
+        float $subTotal,
+        string $createdAt,
+        float $xMargin = 0
+    ) {
+
+        $purchaseProduct = PurchaseProduct::where($transColName, $transId)
+            ->where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->first();
+
+        if ($purchaseProduct) {
+
+            $purchaseProduct->net_unit_cost = $unitCostIncTax;
+            $purchaseProduct->quantity = $quantity;
+            $purchaseProduct->line_total = $subTotal;
+            $purchaseProduct->profit_margin = $xMargin;
+            $purchaseProduct->selling_price = $sellingPrice;
+            $purchaseProduct->created_at = $createdAt;
+            $purchaseProduct->save();
+            $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+        } else {
+
+            $addRowInPurchaseProductTable = new PurchaseProduct();
+            $addRowInPurchaseProductTable->branch_id = $branchId;
+            $addRowInPurchaseProductTable->{$transColName} = $transId;
+            $addRowInPurchaseProductTable->product_id = $productId;
+            $addRowInPurchaseProductTable->variant_id = $variantId;
+            $addRowInPurchaseProductTable->net_unit_cost = $unitCostIncTax;
+            $addRowInPurchaseProductTable->quantity = $quantity;
+            $addRowInPurchaseProductTable->left_qty = $quantity;
+            $addRowInPurchaseProductTable->line_total = $subTotal;
+            $addRowInPurchaseProductTable->profit_margin = $xMargin;
+            $addRowInPurchaseProductTable->selling_price = $sellingPrice;
+            $addRowInPurchaseProductTable->created_at = $createdAt;
+            $addRowInPurchaseProductTable->save();
+        }
+    }
+
     public function updatePurchaseProduct($request, $purchaseId, $isEditProductPrice, $index)
     {
         $filterVariantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;

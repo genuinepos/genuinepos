@@ -13,7 +13,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
 <!-- purchase print templete-->
 <div class="purchase_return_print_template">
@@ -164,7 +164,7 @@
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_exc_tax) }}
+                                    {{ App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_cost_inc_tax) }}
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">

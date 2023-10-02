@@ -339,75 +339,75 @@ Route::group(['prefix' => 'sales'], function () {
 
     // Route::get('v2', [SaleController::class, 'index2'])->name('sales.index2');
     Route::get('pos/list', [SaleController::class, 'posList'])->name('sales.pos.list');
-    Route::get('product/list', [SaleController::class, 'soldProductList'])->name('sales.product.list');
-    // Route::get('show/{saleId}', [SaleController::class, 'show'])->name('sales.show');
-    Route::get('pos/show/{saleId}', [SaleController::class, 'posShow'])->name('sales.pos.show');
-    Route::get('print/{saleId}', [SaleController::class, 'print'])->name('sales.print');
-    Route::get('packing/Slip/{saleId}', [SaleController::class, 'packingSlip'])->name('sales.packing.slip');
-    Route::get('drafts', [SaleController::class, 'drafts'])->name('sales.drafts');
-    Route::get('draft/details/{draftId}', [SaleController::class, 'draftDetails'])->name('sales.drafts.details');
-    Route::get('sales/order/list', [SaleController::class, 'salesOrderList'])->name('sales.order.list');
-    Route::get('quotations', [SaleController::class, 'quotations'])->name('sales.quotations');
-    Route::get('quotation/details/{quotationId}', [SaleController::class, 'quotationDetails'])->name('sales.quotations.details');
-    Route::get('create', [SaleController::class, 'create'])->name('sales.create');
-    Route::post('store', [SaleController::class, 'store'])->name('sales.store');
-    Route::get('edit/{saleId}', [SaleController::class, 'edit'])->name('sales.edit');
-    Route::post('update/{saleId}', [SaleController::class, 'update'])->name('sales.update');
-    Route::get('get/all/customer', [SaleController::class, 'getAllCustomer'])->name('sales.get.all.customer');
-    Route::get('get/all/users', [SaleController::class, 'getAllUser'])->name('sales.get.all.users');
-    Route::get('get/all/unit', [SaleController::class, 'getAllUnit'])->name('sales.get.all.unites');
-    Route::get('get/all/tax', [SaleController::class, 'getAllTax'])->name('sales.get.all.taxes');
-    Route::get('search/product/{status}/{product_code}/{price_group_id}/{warehouse_id}', [SaleController::class, 'searchProduct']);
-    Route::delete('delete/{saleId}', [SaleController::class, 'delete'])->name('sales.delete');
-    Route::get('edit/shipment/{saleId}', [SaleController::class, 'editShipment'])->name('sales.shipment.edit');
-    Route::post('update/shipment/{saleId}', [SaleController::class, 'updateShipment'])->name('sales.shipment.update');
-    Route::post('change/status/{saleId}', [SaleController::class, 'changeStatus'])->name('sales.change.status');
-    Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}/{price_group_id}/{warehouse_id}', [SaleController::class, 'checkVariantProductStock']);
-    Route::get('check/single/product/stock/{status}/{product_id}/{price_group_id}/{warehouse_id}', [SaleController::class, 'checkSingleProductStock']);
+    // Route::get('product/list', [SaleController::class, 'soldProductList'])->name('sales.product.list');
+    // // Route::get('show/{saleId}', [SaleController::class, 'show'])->name('sales.show');
+    // Route::get('pos/show/{saleId}', [SaleController::class, 'posShow'])->name('sales.pos.show');
+    // Route::get('print/{saleId}', [SaleController::class, 'print'])->name('sales.print');
+    // Route::get('packing/Slip/{saleId}', [SaleController::class, 'packingSlip'])->name('sales.packing.slip');
+    // Route::get('drafts', [SaleController::class, 'drafts'])->name('sales.drafts');
+    // Route::get('draft/details/{draftId}', [SaleController::class, 'draftDetails'])->name('sales.drafts.details');
+    // Route::get('sales/order/list', [SaleController::class, 'salesOrderList'])->name('sales.order.list');
+    // Route::get('quotations', [SaleController::class, 'quotations'])->name('sales.quotations');
+    // Route::get('quotation/details/{quotationId}', [SaleController::class, 'quotationDetails'])->name('sales.quotations.details');
+    // Route::get('create', [SaleController::class, 'create'])->name('sales.create');
+    // Route::post('store', [SaleController::class, 'store'])->name('sales.store');
+    // Route::get('edit/{saleId}', [SaleController::class, 'edit'])->name('sales.edit');
+    // Route::post('update/{saleId}', [SaleController::class, 'update'])->name('sales.update');
+    // Route::get('get/all/customer', [SaleController::class, 'getAllCustomer'])->name('sales.get.all.customer');
+    // Route::get('get/all/users', [SaleController::class, 'getAllUser'])->name('sales.get.all.users');
+    // Route::get('get/all/unit', [SaleController::class, 'getAllUnit'])->name('sales.get.all.unites');
+    // Route::get('get/all/tax', [SaleController::class, 'getAllTax'])->name('sales.get.all.taxes');
+    // Route::get('search/product/{status}/{product_code}/{price_group_id}/{warehouse_id}', [SaleController::class, 'searchProduct']);
+    // Route::delete('delete/{saleId}', [SaleController::class, 'delete'])->name('sales.delete');
+    // Route::get('edit/shipment/{saleId}', [SaleController::class, 'editShipment'])->name('sales.shipment.edit');
+    // Route::post('update/shipment/{saleId}', [SaleController::class, 'updateShipment'])->name('sales.shipment.update');
+    // Route::post('change/status/{saleId}', [SaleController::class, 'changeStatus'])->name('sales.change.status');
+    // Route::get('check/branch/variant/qty/{status}/{product_id}/{variant_id}/{price_group_id}/{warehouse_id}', [SaleController::class, 'checkVariantProductStock']);
+    // Route::get('check/single/product/stock/{status}/{product_id}/{price_group_id}/{warehouse_id}', [SaleController::class, 'checkSingleProductStock']);
 
-    Route::get('shipments', [SaleController::class, 'shipments'])->name('sales.shipments');
+    // Route::get('shipments', [SaleController::class, 'shipments'])->name('sales.shipments');
 
     // Sale payment route
-    Route::get('payment/{saleId}', [SaleController::class, 'paymentModal'])->name('sales.payment.modal');
-    Route::post('payment/add/{saleId}', [SaleController::class, 'paymentAdd'])->name('sales.payment.add');
+    // Route::get('payment/{saleId}', [SaleController::class, 'paymentModal'])->name('sales.payment.modal');
+    // Route::post('payment/add/{saleId}', [SaleController::class, 'paymentAdd'])->name('sales.payment.add');
 
-    Route::get('payment/view/{saleId}', [SaleController::class, 'viewPayment'])->name('sales.payment.view');
-    Route::get('payment/edit/{paymentId}', [SaleController::class, 'paymentEdit'])->name('sales.payment.edit');
-    Route::post('payment/update/{paymentId}', [SaleController::class, 'paymentUpdate'])->name('sales.payment.update');
-    Route::get('payment/details/{paymentId}', [SaleController::class, 'paymentDetails'])->name('sales.payment.details');
+    // Route::get('payment/view/{saleId}', [SaleController::class, 'viewPayment'])->name('sales.payment.view');
+    // Route::get('payment/edit/{paymentId}', [SaleController::class, 'paymentEdit'])->name('sales.payment.edit');
+    // Route::post('payment/update/{paymentId}', [SaleController::class, 'paymentUpdate'])->name('sales.payment.update');
+    // Route::get('payment/details/{paymentId}', [SaleController::class, 'paymentDetails'])->name('sales.payment.details');
 
-    Route::delete('payment/delete/{paymentId}', [SaleController::class, 'paymentDelete'])->name('sales.payment.delete');
+    // Route::delete('payment/delete/{paymentId}', [SaleController::class, 'paymentDelete'])->name('sales.payment.delete');
 
-    Route::get('return/payment/{saleId}', [SaleController::class, 'returnPaymentModal'])->name('sales.return.payment.modal');
-    Route::post('return/payment/add/{saleId}', [SaleController::class, 'returnPaymentAdd'])->name('sales.return.payment.add');
-    Route::get('return/payment/edit/{paymentId}', [SaleController::class, 'returnPaymentEdit'])->name('sales.return.payment.edit');
-    Route::post('return/payment/update/{paymentId}', [SaleController::class, 'returnPaymentUpdate'])->name('sales.return.payment.update');
+    // Route::get('return/payment/{saleId}', [SaleController::class, 'returnPaymentModal'])->name('sales.return.payment.modal');
+    // Route::post('return/payment/add/{saleId}', [SaleController::class, 'returnPaymentAdd'])->name('sales.return.payment.add');
+    // Route::get('return/payment/edit/{paymentId}', [SaleController::class, 'returnPaymentEdit'])->name('sales.return.payment.edit');
+    // Route::post('return/payment/update/{paymentId}', [SaleController::class, 'returnPaymentUpdate'])->name('sales.return.payment.update');
 
-    Route::get('add/product/modal/view', [SaleController::class, 'addProductModalView'])->name('sales.add.product.modal.view');
-    Route::post('add/product', [SaleController::class, 'addProduct'])->name('sales.add.product');
-    Route::get('get/recent/product/{product_id}', [SaleController::class, 'getRecentProduct']);
-    Route::get('get/product/price/group', [SaleController::class, 'getProductPriceGroup'])->name('sales.product.price.groups');
+    // Route::get('add/product/modal/view', [SaleController::class, 'addProductModalView'])->name('sales.add.product.modal.view');
+    // Route::post('add/product', [SaleController::class, 'addProduct'])->name('sales.add.product');
+    // Route::get('get/recent/product/{product_id}', [SaleController::class, 'getRecentProduct']);
+    // Route::get('get/product/price/group', [SaleController::class, 'getProductPriceGroup'])->name('sales.product.price.groups');
 
-    Route::get('notification/form/{saleId}', [SaleController::class, 'getNotificationForm'])->name('sales.notification.form');
+    // Route::get('notification/form/{saleId}', [SaleController::class, 'getNotificationForm'])->name('sales.notification.form');
 
     // Sale return route
-    Route::group(['prefix' => 'returns'], function () {
+    // Route::group(['prefix' => 'returns'], function () {
 
-        Route::get('/', [SaleReturnController::class, 'index'])->name('sales.returns.index');
-        Route::get('show/{returnId}', [SaleReturnController::class, 'show'])->name('sales.returns.show');
+    //     Route::get('/', [SaleReturnController::class, 'index'])->name('sales.returns.index');
+    //     Route::get('show/{returnId}', [SaleReturnController::class, 'show'])->name('sales.returns.show');
 
-        Route::delete('delete/{saleReturnId}', [SaleReturnController::class, 'delete'])->name('sales.returns.delete');
-        Route::get('payment/list/{returnId}', [SaleReturnController::class, 'returnPaymentList'])->name('sales.returns.payment.list');
+    //     Route::delete('delete/{saleReturnId}', [SaleReturnController::class, 'delete'])->name('sales.returns.delete');
+    //     Route::get('payment/list/{returnId}', [SaleReturnController::class, 'returnPaymentList'])->name('sales.returns.payment.list');
 
-        Route::group(['prefix' => 'random'], function () {
+    //     Route::group(['prefix' => 'random'], function () {
 
-            Route::get('create', [RandomSaleReturnController::class, 'create'])->name('sale.return.random.create');
-            Route::post('store', [RandomSaleReturnController::class, 'store'])->name('sale.return.random.store');
-            Route::get('edit/{returnId}', [RandomSaleReturnController::class, 'edit'])->name('sale.return.random.edit');
-            Route::post('update/{returnId}', [RandomSaleReturnController::class, 'update'])->name('sale.return.random.update');
-            Route::get('search/product/{product_code}', [RandomSaleReturnController::class, 'searchProduct']);
-        });
-    });
+    //         Route::get('create', [RandomSaleReturnController::class, 'create'])->name('sale.return.random.create');
+    //         Route::post('store', [RandomSaleReturnController::class, 'store'])->name('sale.return.random.store');
+    //         Route::get('edit/{returnId}', [RandomSaleReturnController::class, 'edit'])->name('sale.return.random.edit');
+    //         Route::post('update/{returnId}', [RandomSaleReturnController::class, 'update'])->name('sale.return.random.update');
+    //         Route::get('search/product/{product_code}', [RandomSaleReturnController::class, 'searchProduct']);
+    //     });
+    // });
 
     //Pos cash register routes
     Route::group(['prefix' => 'cash/register'], function () {
@@ -438,17 +438,6 @@ Route::group(['prefix' => 'sales'], function () {
         Route::get('search/exchangeable/invoice', [POSController::class, 'searchExchangeableInv'])->name('sales.pos.search.exchange.invoice');
         Route::post('prepare/exchange', [POSController::class, 'prepareExchange'])->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', [POSController::class, 'exchangeConfirm'])->name('sales.pos.exchange.confirm');
-    });
-
-    //Sale discount routes
-    Route::group(['prefix' => 'discounts'], function () {
-
-        Route::get('/', [DiscountController::class, 'index'])->name('sales.discounts.index');
-        Route::post('store', [DiscountController::class, 'store'])->name('sales.discounts.store');
-        Route::get('edit/{discountId}', [DiscountController::class, 'edit'])->name('sales.discounts.edit');
-        Route::post('update/{discountId}', [DiscountController::class, 'update'])->name('sales.discounts.update');
-        Route::get('change/status/{discountId}', [DiscountController::class, 'changeStatus'])->name('sales.discounts.change.status');
-        Route::delete('delete/{discountId}', [DiscountController::class, 'delete'])->name('sales.discounts.delete');
     });
 
     Route::group(['prefix' => 'reports'], function () {

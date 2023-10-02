@@ -38,4 +38,9 @@ class ManagePriceGroupService
             $index++;
         }
     }
+
+    function priceGroupProducts(int $productId = null, ?int $variantId = null, ?int $branchId = null)
+    {
+        return DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
+    }
 }

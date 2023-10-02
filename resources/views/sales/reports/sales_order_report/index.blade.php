@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Sales Report - ')
+@section('title', 'Sales Order Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>{{ __('Sales Report') }}</h5>
+                                <h5>{{ __('Sales Order Report') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
@@ -115,14 +115,14 @@
                                         <thead>
                                             <tr>
                                                 <th>{{ __("Date") }}</th>
-                                                <th>{{ __('Invoice ID') }}</th>
+                                                <th>{{ __('Order ID') }}</th>
                                                 <th>{{ __("Shop/Business") }}</th>
                                                 <th>{{ __("Customer") }}</th>
                                                 <th>{{ __("Total Qty") }}</th>
                                                 <th>{{ __('Net total Amt') }}.</th>
-                                                <th>{{ __("Sale Discount") }}</th>
+                                                <th>{{ __("Order Discount") }}</th>
                                                 <th>{{ __("Shipment Charge") }}</th>
-                                                <th>{{ __("Sale Tax") }}</th>
+                                                <th>{{ __("Order Tax") }}</th>
                                                 <th>{{ __("Total Invoice Amount") }}</th>
                                                 <th>{{ __("Received") }}</th>
                                                 <th>{{ __("Return") }}</th>
@@ -186,7 +186,7 @@
                 }
             },
             columns: [{ data: 'date', name: 'date' },
-                { data: 'invoice_id', name: 'sales.invoice_id', className: 'fw-bold' },
+                { data: 'order_id', name: 'sales.order_id', className: 'fw-bold' },
                 { data: 'branch', name: 'branches.name' },
                 { data: 'customer_name', name: 'customers.name' },
                 { data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold' },
@@ -254,7 +254,7 @@
         $(document).on('click', '#print_report', function(e) {
             e.preventDefault();
 
-            var url = "{{ route('reports.sales.report.print') }}";
+            var url = "{{ route('reports.sales.order.report.print') }}";
 
             var branch_id = $('#branch_id').val();
             var branch_name = $('#branch_id').find('option:selected').data('branch_name');

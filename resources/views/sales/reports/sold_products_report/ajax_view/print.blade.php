@@ -9,7 +9,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px;margin-right: 5px;}
-    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 
     .print_table th { font-size:11px!important; font-weight: 550!important; line-height: 12px!important}
     .print_table tr td{color: black; font-size:10px!important; line-height: 12px!important}
@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Purchased Products Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Sold Products Report") }}</strong></h6>
         </div>
     </div>
 
@@ -138,7 +138,7 @@
         </div>
 
         <div class="col-4">
-            <p><strong>{{ __("Supplier") }} : </strong> {{ $filteredSupplierName }} </p>
+            <p><strong>{{ __("Customer") }} : </strong> {{ $filteredCustomerName }} </p>
         </div>
     </div>
 
@@ -147,7 +147,7 @@
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
         $totalQty = 0;
-        $totalLineTotal = 0;
+        $totalSubtotal = 0;
     @endphp
 
     <div class="row mt-1">
@@ -157,24 +157,25 @@
                     <tr>
                         <th class="text-start">{{ __("Product") }}</th>
                         <th class="text-start">{{ __("P. Code(SKU)") }}</th>
-                        <th class="text-start">{{ __("Shop/Business") }}</th>
-                        <th class="text-start">{{ __("Supplier") }}</th>
-                        <th class="text-start">{{ __("P.Invoice ID") }}</th>
-                        <th class="text-start">{{ __("Quantity") }}</th>
-                        <th class="text-end">{{ __("Unit Cost Exc. Tax") }}</th>
+                        <th class="text-start">{{ __("Shop") }}</th>
+                        <th class="text-start">{{ __("Stock Location") }}</th>
+                        <th class="text-start">{{ __("Customer") }}</th>
+                        <th class="text-start">{{ __("Invoice ID") }}</th>
+                        <th class="text-end">{{ __("Quantity") }}</th>
+                        <th class="text-end">{{ __("Unit Price Exc. Tax") }}</th>
                         <th class="text-end">{{ __("Unit Discount") }}</th>
                         <th class="text-end">{{ __("Vat/Tax") }}</th>
-                        <th class="text-end">{{ __("Unit Cost Inc. Tax") }}</th>
-                        <th class="text-end">{{ __("Line-Total") }}</th>
+                        <th class="text-end">{{ __("Unit Price Inc. Tax") }}</th>
+                        <th class="text-end">{{ __("Subtotal") }}</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
                     @php
                         $previousDate = '';
                     @endphp
-                    @foreach ($purchaseProducts as $purchaseProduct)
+                    @foreach ($saleProducts as $saleProduct)
                         @php
-                           $date = date($__date_format, strtotime($purchaseProduct->report_date))
+                           $date = date($__date_format, strtotime($saleProduct->date))
                         @endphp
                         @if ($previousDate != $date)
 
@@ -183,44 +184,65 @@
                             @endphp
 
                             <tr>
-                                <th class="text-start" colspan="11">{{ $date }}</th>
+                                <th class="text-start" colspan="12">{{ $date }}</th>
                             </tr>
                         @endif
 
                         <tr>
                             <td class="text-start">
                                 @php
-                                    $variant = $purchaseProduct->variant_name ? ' - ' . $purchaseProduct->variant_name : '';
-                                    $totalQty += $purchaseProduct->quantity;
-                                    $totalLineTotal += $purchaseProduct->line_total;
+                                    $variant = $saleProduct->variant_name ? ' - ' . $saleProduct->variant_name : '';
+                                    $totalQty += $saleProduct->quantity;
+                                    $totalSubtotal += $saleProduct->subtotal;
                                 @endphp
-                               {{ $purchaseProduct->name . $variant }}
+                               {{ $saleProduct->name . $variant }}
                             </td>
 
-                            <td class="text-start">{{ $purchaseProduct->variant_code ? $purchaseProduct->variant_code : $purchaseProduct->product_code}}</td>
+                            <td class="text-start">{{ $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code}}</td>
                             <td class="text-start">
-                                @if ($purchaseProduct->branch_id)
+                                @if ($saleProduct->branch_id)
 
-                                    @if ($purchaseProduct->parent_branch_name)
+                                    @if ($saleProduct->parent_branch_name)
 
-                                        {{ $purchaseProduct->parent_branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}
+                                        {{ $saleProduct->parent_branch_name . '(' . $purchase->branch_area_name . ')' }}
                                     @else
 
-                                        {{ $purchaseProduct->branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}
+                                        {{ $saleProduct->branch_name . '(' . $saleProduct->branch_area_name . ')' }}
                                     @endif
                                 @else
 
                                     {{$generalSettings['business__shop_name']}}
                                 @endif
                             </td>
-                            <td class="text-start">{{ $purchaseProduct->supplier_name }}</td>
-                            <td class="text-start">{{ $purchaseProduct->invoice_id }}</td>
-                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($purchaseProduct->quantity)  .'/'.$purchaseProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost_exc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_discount_amount) }}</td>
-                            <td class="text-end fw-bold">{{ '('.$purchaseProduct->unit_tax_percent.'%)='.App\Utils\Converter::format_in_bdt($purchaseProduct->unit_tax_amount) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->net_unit_cost) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->line_total) }}</td>
+
+                            <td class="text-start">
+                                @if ($saleProduct->warehouse_name)
+
+                                    {{ $saleProduct->warehouse_name . '-(' . $saleProduct->warehouse_code . ')' }}
+                                @else
+                                    @if ($saleProduct->branch_id)
+
+                                        @if ($saleProduct->parent_branch_name)
+
+                                            {{ $saleProduct->parent_branch_name . '(' . $saleProduct->branch_area_name . ')' }}
+                                        @else
+
+                                            {{ $saleProduct->branch_name . '(' . $saleProduct->branch_area_name . ')' }}
+                                        @endif
+                                    @else
+
+                                        {{$generalSettings['business__shop_name']}}
+                                    @endif
+                                @endif
+                            </td>
+                            <td class="text-start">{{ $saleProduct->customer_name }}</td>
+                            <td class="text-start">{{ $saleProduct->invoice_id }}</td>
+                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($saleProduct->quantity)  .'/'.$saleProduct->unit_code !!}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}</td>
+                            <td class="text-end fw-bold">{{ '('.$saleProduct->unit_tax_percent.'%)='.App\Utils\Converter::format_in_bdt($saleProduct->unit_tax_amount) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -228,9 +250,7 @@
         </div>
     </div>
 
-    {{-- <div style="page-break-after: {{ count($sales) > 30 ? 'always' : '' }};"></div> --}}
     <div class="row">
-        {{-- <div class="col-6"></div> --}}
         <div class="col-6 offset-6">
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
@@ -244,7 +264,7 @@
                     <tr>
                         <th class="text-end">{{ __("Net Total Amount") }} : </th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalLineTotal) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalSubtotal) }}
                         </td>
                     </tr>
                 </thead>

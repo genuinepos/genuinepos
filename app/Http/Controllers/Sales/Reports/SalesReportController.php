@@ -121,7 +121,7 @@ class SalesReportController extends Controller
 
                 ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="' . $row->shipment_charge . '">' . \App\Utils\Converter::format_in_bdt($row->shipment_charge) . '</span>')
 
-                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . $row->order_tax_amount . '">' . '(' . $row->order_tax_amount . '%)=' . \App\Utils\Converter::format_in_bdt($row->order_tax_amount) . '</span>')
+                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . $row->order_tax_amount . '">' . '(' . $row->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->order_tax_amount) . '</span>')
 
                 ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 

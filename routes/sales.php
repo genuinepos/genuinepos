@@ -12,6 +12,8 @@ use App\Http\Controllers\Sales\SoldProductController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
+use App\Http\Controllers\Sales\Reports\SalesOrderReportController;
+use App\Http\Controllers\Sales\Reports\SoldProductReportController;
 
 Route::prefix('sales')->group(function () {
 
@@ -108,6 +110,18 @@ Route::prefix('sales')->group(function () {
 
             Route::get('/', 'index')->name('reports.sales.report.index');
             Route::get('print', 'print')->name('reports.sales.report.print');
+        });
+
+        Route::controller(SoldProductReportController::class)->prefix('sold-products')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sold.products.report.index');
+            Route::get('print', 'print')->name('reports.sold.products.report.print');
+        });
+
+        Route::controller(SalesOrderReportController::class)->prefix('sales-order')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sale.order.report.index');
+            Route::get('print', 'print')->name('reports.sale.order.report.print');
         });
     });
 });

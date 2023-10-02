@@ -1240,10 +1240,7 @@
                                     </div>
                                 @endif
 
-                                @if (
-                                    auth()->user()->can('discounts') &&
-                                    auth()->user()->can('discounts')
-                                )
+                                @if (auth()->user()->can('discounts'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('sales.discounts.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1252,6 +1249,21 @@
                                                 </div>
                                             </div>
                                             <p class="switch_text">@lang('menu.discounts')</p>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="sub-menu-row">
+                                @if (auth()->user()->can('create_add_sale'))
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-plus-circle"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Sales Order To Invoice") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -1289,7 +1301,7 @@
 
                                     @if (auth()->user()->can('pro_sale_report'))
                                         <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sold.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-list"></i></span>

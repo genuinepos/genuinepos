@@ -11,6 +11,7 @@ use App\Http\Controllers\Sales\SalesReturnController;
 use App\Http\Controllers\Sales\SoldProductController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
+use App\Http\Controllers\Sales\Reports\SalesReportController;
 
 Route::prefix('sales')->group(function () {
 
@@ -99,5 +100,14 @@ Route::prefix('sales')->group(function () {
 
         Route::get('edit', 'edit')->name('pos.sales.settings.edit');
         Route::post('update', 'update')->name('pos.sales.settings.update');
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+
+        Route::controller(SalesReportController::class)->prefix('sales')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sales.report.index');
+            Route::get('print', 'print')->name('reports.sales.report.print');
+        });
     });
 });

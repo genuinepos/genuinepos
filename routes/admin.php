@@ -440,46 +440,46 @@ Route::group(['prefix' => 'sales'], function () {
         Route::post('exchange/confirm', [POSController::class, 'exchangeConfirm'])->name('sales.pos.exchange.confirm');
     });
 
-    Route::group(['prefix' => 'reports'], function () {
+    // Route::group(['prefix' => 'reports'], function () {
 
-        Route::group(['prefix' => 'sold/products'], function () {
+    //     Route::group(['prefix' => 'sold/products'], function () {
 
-            Route::get('/', [ProductSaleReportController::class, 'index'])->name('reports.product.sales.index');
-            Route::get('print', [ProductSaleReportController::class, 'print'])->name('reports.product.sales.print');
-        });
+    //         Route::get('/', [ProductSaleReportController::class, 'index'])->name('reports.product.sales.index');
+    //         Route::get('print', [ProductSaleReportController::class, 'print'])->name('reports.product.sales.print');
+    //     });
 
-        Route::group(['prefix' => 'received/payments'], function () {
+    //     Route::group(['prefix' => 'received/payments'], function () {
 
-            Route::get('/', [SalePaymentReportController::class, 'index'])->name('reports.sale.payments.index');
-            Route::get('print', [SalePaymentReportController::class, 'print'])->name('reports.sale.payments.print');
-        });
+    //         Route::get('/', [SalePaymentReportController::class, 'index'])->name('reports.sale.payments.index');
+    //         Route::get('print', [SalePaymentReportController::class, 'print'])->name('reports.sale.payments.print');
+    //     });
 
-        Route::group(['prefix' => 'cash/registers'], function () {
+    //     Route::group(['prefix' => 'cash/registers'], function () {
 
-            Route::get('/', [CashRegisterReportController::class, 'index'])->name('reports.cash.registers.index');
-            Route::get('get', [CashRegisterReportController::class, 'getCashRegisterReport'])->name('reports.get.cash.registers');
-            Route::get('details/{cashRegisterId}', [CashRegisterReportController::class, 'detailsCashRegister'])->name('reports.get.cash.register.details');
-            Route::get('report/print', [CashRegisterReportController::class, 'reportPrint'])->name('reports.get.cash.register.report.print');
-        });
+    //         Route::get('/', [CashRegisterReportController::class, 'index'])->name('reports.cash.registers.index');
+    //         Route::get('get', [CashRegisterReportController::class, 'getCashRegisterReport'])->name('reports.get.cash.registers');
+    //         Route::get('details/{cashRegisterId}', [CashRegisterReportController::class, 'detailsCashRegister'])->name('reports.get.cash.register.details');
+    //         Route::get('report/print', [CashRegisterReportController::class, 'reportPrint'])->name('reports.get.cash.register.report.print');
+    //     });
 
-        Route::group(['prefix' => 'sale/representative'], function () {
+    //     Route::group(['prefix' => 'sale/representative'], function () {
 
-            Route::get('/', [SaleRepresentativeReportController::class, 'index'])->name('reports.sale.representative.index');
-            Route::get('expenses', [SaleRepresentativeReportController::class, 'SaleRepresentativeExpenseReport'])->name('reports.sale.representative.expenses');
-        });
+    //         Route::get('/', [SaleRepresentativeReportController::class, 'index'])->name('reports.sale.representative.index');
+    //         Route::get('expenses', [SaleRepresentativeReportController::class, 'SaleRepresentativeExpenseReport'])->name('reports.sale.representative.expenses');
+    //     });
 
-        Route::group(['prefix' => 'sale/statements'], function () {
+    //     Route::group(['prefix' => 'sale/statements'], function () {
 
-            Route::get('/', [SaleStatementController::class, 'index'])->name('reports.sale.statement.index');
-            Route::get('print', [SaleStatementController::class, 'print'])->name('reports.sale.statement.print');
-        });
+    //         Route::get('/', [SaleStatementController::class, 'index'])->name('reports.sale.statement.index');
+    //         Route::get('print', [SaleStatementController::class, 'print'])->name('reports.sale.statement.print');
+    //     });
 
-        Route::group(['prefix' => 'return/statements'], function () {
+    //     Route::group(['prefix' => 'return/statements'], function () {
 
-            Route::get('/', [SaleReturnStatementController::class, 'index'])->name('reports.sale.return.statement.index');
-            Route::get('print', [SaleReturnStatementController::class, 'print'])->name('reports.sale.return.statement.print');
-        });
-    });
+    //         Route::get('/', [SaleReturnStatementController::class, 'index'])->name('reports.sale.return.statement.index');
+    //         Route::get('print', [SaleReturnStatementController::class, 'print'])->name('reports.sale.return.statement.print');
+    //     });
+    // });
 });
 
 //Transfer stock to branch all route

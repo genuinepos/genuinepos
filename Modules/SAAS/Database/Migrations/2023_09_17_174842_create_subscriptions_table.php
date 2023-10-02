@@ -16,16 +16,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->string('tenant_id');
-            $table->foreignIdFor(User::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(Plan::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(Payment::class)->nullable()->constrained()->nullOnDelete();
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
-            $table->timestamps();
-        });
+        // Schema::create('subscriptions', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('tenant_id');
+        //     $table->foreignIdFor(User::class)->constrained()->nullOnDelete();
+        //     $table->foreignIdFor(Plan::class)->constrained()->nullOnDelete();
+        //     $table->foreignIdFor(Payment::class)->nullable()->constrained()->nullOnDelete();
+        //     $table->timestamp('start_time');
+        //     $table->timestamp('end_time');
+        //     $table->timestamps();
+        // });
     }
 
     /**

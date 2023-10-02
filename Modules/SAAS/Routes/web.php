@@ -54,6 +54,6 @@ Route::prefix('saas')->group(function () {
     // For All Types of Users
     Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
     Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
-    Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
     Route::post('subscriptions/{plan}', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe')->middleware('is_auth');
 });

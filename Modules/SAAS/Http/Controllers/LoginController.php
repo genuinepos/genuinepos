@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Modules\SAAS\Http\Requests\LoginRequest;
 
@@ -27,8 +28,7 @@ class LoginController extends Controller
             ]);
         }
         Auth::guard()->login($user);
-
-        return redirect()->to(route('saas.dashboard'))->with('success', 'Logged in!');
+        return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
     }
 
     public function logout(Request $request)

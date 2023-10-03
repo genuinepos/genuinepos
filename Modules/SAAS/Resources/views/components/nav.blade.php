@@ -36,7 +36,7 @@
                     <button class="btn btn-success" type="submit">{{ __('Search') }}</button>
                 </form> --}}
 
-            <ul class="navbar-nav  mb-2 mb-lg-0">
+            <ul class="navbar-nav mb-lg-0">
                 @auth
                     <li class="nav-item dropdown  float-end">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSetting" role="button"

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Sales\Reports;
 
 use Carbon\Carbon;
-use App\Enums\SaleStatus;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 
-class SoldProductReportController extends Controller
+class SalesReturnedProductReportController extends Controller
 {
     public function __construct(
         private AccountService $accountService,
@@ -25,52 +24,51 @@ class SoldProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (!auth()->user()->can('pro_sale_report')) {
+        if (!auth()->user()->can('sale_return_statements')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             $generalSettings = config('generalSettings');
-            $saleProducts = '';
-            $query = DB::table('sale_products')
-                ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-                ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            $salesReturnProducts = '';
+            $query = DB::table('sale_return_products')
+                ->leftJoin('sale_returns', 'sale_return_products.sale_return_id', 'sale_returns.id')
+                ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
+                ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
                 ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-                ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id')
-                ->leftJoin('products', 'sale_products.product_id', 'products.id')
-                ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
-                ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
-                ->leftJoin('units', 'sale_products.unit_id', 'units.id')
-                ->leftJoin('categories', 'products.category_id', 'categories.id')
-                ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
-                ->where('sales.status', SaleStatus::Final->value);
+                ->leftJoin('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
+                ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
+                ->leftJoin('product_variants', 'sale_return_products.variant_id', 'product_variants.id')
+                ->leftJoin('accounts as customers', 'sale_returns.customer_account_id', 'customers.id')
+                ->leftJoin('units', 'sale_return_products.unit_id', 'units.id');
 
             $this->filter(request: $request, query: $query);
 
-            $saleProducts = $query->select(
-                'sale_products.sale_id',
-                'sale_products.product_id',
-                'sale_products.variant_id',
-                'sale_products.unit_price_exc_tax',
-                'sale_products.unit_discount_amount',
-                'sale_products.unit_tax_percent',
-                'sale_products.unit_tax_amount',
-                'sale_products.unit_price_inc_tax',
-                'sale_products.quantity',
-                'sale_products.subtotal',
+            $salesReturnProducts = $query->select(
+                'sale_return_products.sale_return_id',
+                'sale_return_products.product_id',
+                'sale_return_products.variant_id',
+                'sale_return_products.unit_price_exc_tax',
+                'sale_return_products.unit_discount_amount',
+                'sale_return_products.unit_tax_percent',
+                'sale_return_products.unit_tax_amount',
+                'sale_return_products.unit_price_inc_tax',
+                'sale_return_products.return_qty',
+                'sale_return_products.return_subtotal',
                 'units.code_name as unit_code',
-                'sales.id',
-                'sales.branch_id',
-                'sales.customer_account_id',
-                'sales.date',
-                'sales.invoice_id',
+                'sale_returns.voucher_no as sales_return_voucher',
+                'sale_returns.branch_id',
+                'sale_returns.warehouse_id',
+                'sale_returns.date',
+                'sale_returns.date_ts',
+                'sales.id as sale_id',
+                'sales.invoice_id as sale_invoice_id',
                 'products.name',
                 'products.product_code',
-                'products.product_price',
-                'product_variants.variant_name',
                 'product_variants.variant_code',
-                'product_variants.variant_price',
+                'product_variants.variant_name',
                 'customers.name as customer_name',
                 'branches.name as branch_name',
                 'branches.area_name as branch_area_name',
@@ -78,9 +76,9 @@ class SoldProductReportController extends Controller
                 'parentBranch.name as parent_branch_name',
                 'warehouses.warehouse_name',
                 'warehouses.warehouse_code',
-            )->orderBy('sales.sale_date_ts', 'desc');
+            )->orderBy('sale_returns.date_ts', 'desc');
 
-            return DataTables::of($saleProducts)
+            return DataTables::of($salesReturnProducts)
                 ->editColumn('product', function ($row) {
 
                     $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
@@ -106,7 +104,7 @@ class SoldProductReportController extends Controller
                         return $generalSettings['business__shop_name'];
                     }
                 })
-                ->editColumn('stock_location', function ($row) use ($generalSettings) {
+                ->editColumn('stored_location', function ($row) use ($generalSettings) {
 
                     if ($row->warehouse_name) {
 
@@ -128,20 +126,24 @@ class SoldProductReportController extends Controller
                         }
                     }
                 })
-                ->editColumn('quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
+                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('sales.returns.show', [$row->sale_return_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->sales_return_voucher . '</a>')
+
+                ->editColumn('sales_invoice_id', function ($row) {
+
+                    if ($row->sale_id) {
+
+                        return '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details_btn">' . $row->sale_invoice_id . '</a>';
+                    }
                 })
-                ->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
+                ->editColumn('return_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_qty) . '/<span class="return_qty" data-value="' . $row->return_qty . '">' . $row->unit_code . '</span>')
                 ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
                 ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
                 ->editColumn('unit_price_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax))
-
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
-
-                ->rawColumns(['product', 'product_code', 'date', 'branch', 'stock_location', 'quantity', 'invoice_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
+                ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . $row->return_subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->return_subtotal) . '</span>')
+                ->rawColumns(['product', 'date', 'branch', 'stored_location', 'return_qty', 'voucher_no', 'sales_invoice_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'return_subtotal'])
                 ->make(true);
         }
 
@@ -152,7 +154,7 @@ class SoldProductReportController extends Controller
 
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        return view('sales.reports.sold_products_report.index', compact('branches', 'customerAccounts', 'ownBranchIdOrParentBranchId'));
+        return view('sales.reports.sales_returned_products_report.index', compact('branches', 'customerAccounts', 'ownBranchIdOrParentBranchId'));
     }
 
     public function print(Request $request)
@@ -171,49 +173,46 @@ class SoldProductReportController extends Controller
 
         $filteredBranchName = $request->branch_name;
         $filteredCustomerName = $request->customer_name;
-        $filteredProductName = $request->search_product;
         $fromDate = $request->from_date;
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 
-        $saleProducts = '';
-        $query = DB::table('sale_products')
-            ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
-            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+        $salesReturnProducts = '';
+        $query = DB::table('sale_return_products')
+            ->leftJoin('sale_returns', 'sale_return_products.sale_return_id', 'sale_returns.id')
+            ->leftJoin('sales', 'sale_returns.sale_id', 'sales.id')
+            ->leftJoin('branches', 'sale_returns.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id')
-            ->leftJoin('products', 'sale_products.product_id', 'products.id')
-            ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
-            ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
-            ->leftJoin('units', 'sale_products.unit_id', 'units.id')
-            ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
-            ->where('sales.status', SaleStatus::Final->value);
+            ->leftJoin('warehouses', 'sale_returns.warehouse_id', 'warehouses.id')
+            ->leftJoin('products', 'sale_return_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'sale_return_products.variant_id', 'product_variants.id')
+            ->leftJoin('accounts as customers', 'sale_returns.customer_account_id', 'customers.id')
+            ->leftJoin('units', 'sale_return_products.unit_id', 'units.id');
 
         $this->filter(request: $request, query: $query);
 
-        $saleProducts = $query->select(
-            'sale_products.sale_id',
-            'sale_products.product_id',
-            'sale_products.variant_id',
-            'sale_products.unit_price_exc_tax',
-            'sale_products.unit_discount_amount',
-            'sale_products.unit_tax_percent',
-            'sale_products.unit_tax_amount',
-            'sale_products.unit_price_inc_tax',
-            'sale_products.quantity',
-            'sale_products.subtotal',
+        $salesReturnProducts = $query->select(
+            'sale_return_products.sale_return_id',
+            'sale_return_products.product_id',
+            'sale_return_products.variant_id',
+            'sale_return_products.unit_price_exc_tax',
+            'sale_return_products.unit_discount_amount',
+            'sale_return_products.unit_tax_percent',
+            'sale_return_products.unit_tax_amount',
+            'sale_return_products.unit_price_inc_tax',
+            'sale_return_products.return_qty',
+            'sale_return_products.return_subtotal',
             'units.code_name as unit_code',
-            'sales.id',
-            'sales.branch_id',
-            'sales.customer_account_id',
-            'sales.date',
-            'sales.invoice_id',
+            'sale_returns.voucher_no as sales_return_voucher',
+            'sale_returns.branch_id',
+            'sale_returns.warehouse_id',
+            'sale_returns.date',
+            'sale_returns.date_ts',
+            'sales.id as sale_id',
+            'sales.invoice_id as sale_invoice_id',
             'products.name',
             'products.product_code',
-            'products.product_price',
-            'product_variants.variant_name',
             'product_variants.variant_code',
-            'product_variants.variant_price',
+            'product_variants.variant_name',
             'customers.name as customer_name',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
@@ -221,49 +220,49 @@ class SoldProductReportController extends Controller
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',
             'warehouses.warehouse_code',
-        )->orderBy('sales.sale_date_ts', 'desc')->get();
+        )->orderBy('sale_returns.date_ts', 'desc')->get();
 
-        return view('sales.reports.sold_products_report.ajax_view.print', compact('saleProducts', 'fromDate', 'toDate', 'filteredBranchName', 'filteredCustomerName', 'filteredProductName', 'ownOrParentBranch'));
+        return view('sales.reports.sales_returned_products_report.ajax_view.print', compact('salesReturnProducts', 'ownOrParentBranch', 'filteredBranchName', 'filteredCustomerName', 'fromDate', 'toDate'));
     }
 
     function filter($request, $query)
     {
         if ($request->product_id) {
 
-            $query->where('sale_products.product_id', $request->product_id);
+            $query->where('sale_return_products.product_id', $request->product_id);
         }
 
         if ($request->variant_id) {
 
-            $query->where('sale_products.variant_id', $request->variant_id);
+            $query->where('sale_return_products.variant_id', $request->variant_id);
         }
 
         if ($request->branch_id) {
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('sales.branch_id', null);
+                $query->where('sale_returns.branch_id', null);
             } else {
 
-                $query->where('sales.branch_id', $request->branch_id);
+                $query->where('sale_returns.branch_id', $request->branch_id);
             }
         }
 
         if ($request->customer_account_id) {
 
-            $query->where('sales.customer_account_id', $request->customer_account_id);
+            $query->where('sale_returns.customer_account_id', $request->customer_account_id);
         }
 
         if ($request->from_date) {
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
-            $query->whereBetween('sales.sale_date_ts', $date_range);
+            $query->whereBetween('sale_returns.date_ts', $date_range);
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $query->where('sales.branch_id', auth()->user()->branch_id);
+            $query->where('sale_returns.branch_id', auth()->user()->branch_id);
         }
     }
 }

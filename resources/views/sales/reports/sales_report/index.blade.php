@@ -279,7 +279,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 500,
                         header: "",

@@ -13,7 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountFilterService;
 
-class SoldProductReportController extends Controller
+class SalesOrderedProductReportController extends Controller
 {
     public function __construct(
         private AccountService $accountService,
@@ -25,30 +25,29 @@ class SoldProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (!auth()->user()->can('pro_sale_report')) {
+        if (!auth()->user()->can('sale_statements')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
             $generalSettings = config('generalSettings');
-            $saleProducts = '';
+            $orderProducts = '';
             $query = DB::table('sale_products')
                 ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
                 ->leftJoin('branches', 'sales.branch_id', 'branches.id')
                 ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-                ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id')
                 ->leftJoin('products', 'sale_products.product_id', 'products.id')
                 ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
                 ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
                 ->leftJoin('units', 'sale_products.unit_id', 'units.id')
                 ->leftJoin('categories', 'products.category_id', 'categories.id')
                 ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
-                ->where('sales.status', SaleStatus::Final->value);
+                ->where('sales.status', SaleStatus::Order->value);
 
             $this->filter(request: $request, query: $query);
 
-            $saleProducts = $query->select(
+            $orderProducts = $query->select(
                 'sale_products.sale_id',
                 'sale_products.product_id',
                 'sale_products.variant_id',
@@ -57,14 +56,14 @@ class SoldProductReportController extends Controller
                 'sale_products.unit_tax_percent',
                 'sale_products.unit_tax_amount',
                 'sale_products.unit_price_inc_tax',
-                'sale_products.quantity',
+                'sale_products.ordered_quantity',
                 'sale_products.subtotal',
                 'units.code_name as unit_code',
                 'sales.id',
                 'sales.branch_id',
                 'sales.customer_account_id',
                 'sales.date',
-                'sales.invoice_id',
+                'sales.order_id',
                 'products.name',
                 'products.product_code',
                 'products.product_price',
@@ -76,11 +75,9 @@ class SoldProductReportController extends Controller
                 'branches.area_name as branch_area_name',
                 'branches.branch_code',
                 'parentBranch.name as parent_branch_name',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-            )->orderBy('sales.sale_date_ts', 'desc');
+            )->orderBy('sales.order_date_ts', 'desc');
 
-            return DataTables::of($saleProducts)
+            return DataTables::of($orderProducts)
                 ->editColumn('product', function ($row) {
 
                     $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
@@ -106,33 +103,12 @@ class SoldProductReportController extends Controller
                         return $generalSettings['business__shop_name'];
                     }
                 })
-                ->editColumn('stock_location', function ($row) use ($generalSettings) {
 
-                    if ($row->warehouse_name) {
+                ->editColumn('ordered_quantity', function ($row) {
 
-                        return $row->warehouse_name . '(' . $row->warehouse_code . ')';
-                    } else {
-
-                        if ($row->branch_id) {
-
-                            if ($row->parent_branch_name) {
-
-                                return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
-                            } else {
-
-                                return $row->branch_name . '(' . $row->branch_area_name . ')';
-                            }
-                        } else {
-
-                            return $generalSettings['business__shop_name'];
-                        }
-                    }
+                    return \App\Utils\Converter::format_in_bdt($row->ordered_quantity) . '/<span class="quantity" data-value="' . $row->ordered_quantity . '">' . $row->unit_code . '</span>';
                 })
-                ->editColumn('quantity', function ($row) {
-
-                    return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
-                })
-                ->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
+                ->editColumn('order_id', fn ($row) => '<a href="' . route('sale.orders.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->order_id . '</a>')
 
                 ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
@@ -141,7 +117,7 @@ class SoldProductReportController extends Controller
 
                 ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
 
-                ->rawColumns(['product', 'product_code', 'date', 'branch', 'stock_location', 'quantity', 'invoice_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
+                ->rawColumns(['product', 'product_code', 'date', 'branch', 'stock_location', 'ordered_quantity', 'order_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
                 ->make(true);
         }
 
@@ -152,7 +128,7 @@ class SoldProductReportController extends Controller
 
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        return view('sales.reports.sold_products_report.index', compact('branches', 'customerAccounts', 'ownBranchIdOrParentBranchId'));
+        return view('sales.reports.sales_ordered_products_report.index', compact('branches', 'customerAccounts', 'ownBranchIdOrParentBranchId'));
     }
 
     public function print(Request $request)
@@ -175,23 +151,22 @@ class SoldProductReportController extends Controller
         $fromDate = $request->from_date;
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 
-        $saleProducts = '';
+        $orderProducts = '';
         $query = DB::table('sale_products')
             ->leftJoin('sales', 'sale_products.sale_id', 'sales.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id')
             ->leftJoin('products', 'sale_products.product_id', 'products.id')
             ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('units', 'sale_products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
-            ->where('sales.status', SaleStatus::Final->value);
+            ->where('sales.status', SaleStatus::Order->value);
 
         $this->filter(request: $request, query: $query);
 
-        $saleProducts = $query->select(
+        $orderProducts = $query->select(
             'sale_products.sale_id',
             'sale_products.product_id',
             'sale_products.variant_id',
@@ -200,14 +175,14 @@ class SoldProductReportController extends Controller
             'sale_products.unit_tax_percent',
             'sale_products.unit_tax_amount',
             'sale_products.unit_price_inc_tax',
-            'sale_products.quantity',
+            'sale_products.ordered_quantity',
             'sale_products.subtotal',
             'units.code_name as unit_code',
             'sales.id',
             'sales.branch_id',
             'sales.customer_account_id',
             'sales.date',
-            'sales.invoice_id',
+            'sales.order_id',
             'products.name',
             'products.product_code',
             'products.product_price',
@@ -219,11 +194,9 @@ class SoldProductReportController extends Controller
             'branches.area_name as branch_area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
-            'warehouses.warehouse_name',
-            'warehouses.warehouse_code',
-        )->orderBy('sales.sale_date_ts', 'desc')->get();
+        )->orderBy('sales.order_date_ts', 'desc')->get();
 
-        return view('sales.reports.sold_products_report.ajax_view.print', compact('saleProducts', 'fromDate', 'toDate', 'filteredBranchName', 'filteredCustomerName', 'filteredProductName', 'ownOrParentBranch'));
+        return view('sales.reports.sales_ordered_products_report.ajax_view.print', compact('orderProducts', 'fromDate', 'toDate', 'filteredBranchName', 'filteredCustomerName', 'filteredProductName', 'ownOrParentBranch'));
     }
 
     function filter($request, $query)
@@ -258,7 +231,7 @@ class SoldProductReportController extends Controller
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             $date_range = [Carbon::parse($fromDate), Carbon::parse($toDate)->endOfDay()];
-            $query->whereBetween('sales.sale_date_ts', $date_range);
+            $query->whereBetween('sales.order_date_ts', $date_range);
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

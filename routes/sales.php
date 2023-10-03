@@ -13,7 +13,10 @@ use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
 use App\Http\Controllers\Sales\Reports\SalesOrderReportController;
+use App\Http\Controllers\Sales\Reports\SalesReturnReportController;
 use App\Http\Controllers\Sales\Reports\SoldProductReportController;
+use App\Http\Controllers\Sales\Reports\SalesOrderedProductReportController;
+use App\Http\Controllers\Sales\Reports\SalesReturnedProductReportController;
 
 Route::prefix('sales')->group(function () {
 
@@ -120,8 +123,26 @@ Route::prefix('sales')->group(function () {
 
         Route::controller(SalesOrderReportController::class)->prefix('sales-order')->group(function () {
 
-            Route::get('/', 'index')->name('reports.sale.order.report.index');
-            Route::get('print', 'print')->name('reports.sale.order.report.print');
+            Route::get('/', 'index')->name('reports.sales.order.report.index');
+            Route::get('print', 'print')->name('reports.sales.order.report.print');
+        });
+
+        Route::controller(SalesOrderedProductReportController::class)->prefix('sales-ordered_products')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sales.ordered.products.report.index');
+            Route::get('print', 'print')->name('reports.sales.ordered.products.report.print');
+        });
+
+        Route::controller(SalesReturnReportController::class)->prefix('sales-return')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sales.return.report.index');
+            Route::get('print', 'print')->name('reports.sales.return.report.print');
+        });
+
+        Route::controller(SalesReturnedProductReportController::class)->prefix('sales-returned-products')->group(function () {
+
+            Route::get('/', 'index')->name('reports.sales.returned.products.report.index');
+            Route::get('print', 'print')->name('reports.sales.returned.products.report.print');
         });
     });
 });

@@ -14,7 +14,7 @@
     /* Search Product area style end */
 </style>
 @endpush
-@section('title', 'Sold Products Report - ')
+@section('title', 'Sales Ordered Products Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -24,7 +24,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>{{ __("Sold Products Report") }}</h5>
+                                <h5>{{ __("Sale Ordered Products Report") }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                                 <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
@@ -131,10 +131,9 @@
                                                 <th>{{ __("Product") }}</th>
                                                 <th>{{ __("P. Code(SKU)") }}</th>
                                                 <th>{{ __("Shop") }}</th>
-                                                <th>{{ __("Stock Location") }}</th>
                                                 <th>{{ __("Customer") }}</th>
-                                                <th>{{ __('Invoice ID') }}</th>
-                                                <th>{{ __("Quantity") }}</th>
+                                                <th>{{ __('Order ID') }}</th>
+                                                <th>{{ __("Ordered Qty") }}</th>
                                                 <th>{{ __("Unit Price Exc. Tax") }}</th>
                                                 <th>{{ __("Unit Discount") }}</th>
                                                 <th>{{ __("Vat/Tax") }}</th>
@@ -145,8 +144,8 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="7" class="text-end text-white">{{ __("Total") }} : </th>
-                                                <th class="text-start text-white">(<span id="quantity"></span>)</th>
+                                                <th colspan="6" class="text-end text-white">{{ __("Total") }} : </th>
+                                                <th class="text-start text-white">(<span id="ordered_quantity"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white">---</th>
@@ -182,7 +181,7 @@
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
-            "url": "{{ route('reports.sold.products.report.index') }}",
+            "url": "{{ route('reports.sales.ordered.products.report.index') }}",
             "data": function(d) {
                 d.product_id = $('#product_id').val();
                 d.variant_id = $('#variant_id').val();
@@ -197,10 +196,9 @@
             {data: 'product', name: 'products.name'},
             {data: 'product_code', name: 'products.name'},
             {data: 'branch', name: 'branches.name'},
-            {data: 'stock_location', name: 'warehouses.name'},
             {data: 'customer_name', name: 'sales.name'},
-            {data: 'invoice_id', name: 'sales.invoice_id'},
-            {data: 'quantity', name: 'parentBranch.name', className: 'text-end fw-bold'},
+            {data: 'order_id', name: 'sales.order_id'},
+            {data: 'ordered_quantity', name: 'parentBranch.name', className: 'text-end fw-bold'},
             {data: 'unit_price_exc_tax', name: 'sale_products.unit_price_exc_tax', className: 'text-end fw-bold'},
             {data: 'unit_discount_amount', name: 'sale_products.unit_discount_amount', className: 'text-end fw-bold'},
             {data: 'unit_tax_amount', name: 'sale_products.unit_tax_amount', className: 'text-end fw-bold'},
@@ -208,8 +206,8 @@
             {data: 'subtotal', name: 'sale_products.subtotal', className: 'text-end fw-bold'},
         ],
         fnDrawCallback: function() {
-            var quantity = sum_table_col($('.data_tbl'), 'quantity');
-            $('#quantity').text(bdFormat(quantity));
+            var ordered_quantity = sum_table_col($('.data_tbl'), 'ordered_quantity');
+            $('#ordered_quantity').text(bdFormat(ordered_quantity));
 
             var subtotal = sum_table_col($('.data_tbl'), 'subtotal');
             $('#subtotal').text(bdFormat(subtotal));
@@ -318,7 +316,7 @@
     //Print purchase report
     $(document).on('click', '#print_report', function (e) {
         e.preventDefault();
-        var url = "{{ route('reports.sold.products.report.print') }}";
+        var url = "{{ route('reports.sales.ordered.products.report.print') }}";
         var search_product = $('#search_product').val();
         var branch_id = $('#branch_id').val();
         var branch_name = $('#branch_id').find('option:selected').data('branch_name');
@@ -389,78 +387,6 @@
             removeInline: false,
             printDelay: 500,
             header: null,
-        });
-    });
-
-    // Print Packing slip
-    $(document).on('click', '#PrintChallanBtn', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-
-        var url = $(this).attr('href');
-
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-
-                $('.data_preloader').hide();
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            },error: function(err) {
-
-                $('.data_preloader').hide();
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                }else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                }
-            }
-        });
-    });
-
-    // Print Packing slip
-    $(document).on('click', '#printPackingSlipBtn', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-
-        var url = $(this).attr('href');
-
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-
-                $('.data_preloader').hide();
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            },error: function(err) {
-
-                $('.data_preloader').hide();
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                }else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                }
-            }
         });
     });
 </script>

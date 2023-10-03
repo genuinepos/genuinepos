@@ -23,6 +23,11 @@ class SalesReportController extends Controller
 
     function index(Request $request)
     {
+        if (!auth()->user()->can('sale_statements')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');

@@ -9,7 +9,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px;margin-right: 5px;}
-    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {position:fixed;bottom:24px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 
     .print_table th { font-size:11px!important; font-weight: 550!important; line-height: 12px!important}
     .print_table tr td{color: black; font-size:10px!important; line-height: 12px!important}
@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Sales Order Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Sales Return Report") }}</strong></h6>
         </div>
     </div>
 
@@ -144,12 +144,10 @@
 
         $TotalQty = 0;
         $TotalNetTotal = 0;
-        $TotalOrderDiscount = 0;
-        $TotalShipmentCharge = 0;
-        $TotalOrderTax = 0;
-        $totalOrderdAmount = 0;
-        $TotalReceived = 0;
-        $TotalReturn = 0;
+        $TotalReturnDiscount = 0;
+        $TotalReturnTax = 0;
+        $TotalReturnAmount = 0;
+        $TotalPaid = 0;
         $TotalDue = 0;
     @endphp
 
@@ -158,16 +156,16 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-start">{{ __("Order ID") }}</th>
+                        <th class="text-start">{{ __("Voucher") }}</th>
+                        <th class="text-start">{{ __("Parent Sale") }}</th>
                         <th class="text-start">{{ __("Shop/Business") }}</th>
                         <th class="text-start">{{ __("Customer") }}</th>
                         <th class="text-end">{{ __("Total Qty") }}</th>
                         <th class="text-end">{{ __("Net Total Amt.") }}</th>
-                        <th class="text-end">{{ __("Order Discount") }}</th>
-                        <th class="text-end">{{ __("Shipment Charge") }}</th>
-                        <th class="text-end">{{ __("Order Tax") }}</th>
-                        <th class="text-end">{{ __("Total Ordered Amt.") }}</th>
-                        <th class="text-end">{{ __("Received") }}</th>
+                        <th class="text-end">{{ __("Return Discount") }}</th>
+                        <th class="text-end">{{ __("Return Tax") }}</th>
+                        <th class="text-end">{{ __("Total Return Amt.") }}</th>
+                        <th class="text-end">{{ __("Paid") }}</th>
                         <th class="text-end">{{ __("Due") }}</th>
                     </tr>
                 </thead>
@@ -176,29 +174,30 @@
                         $previousDate = '';
                     @endphp
 
-                    @foreach ($orders as $order)
-                        @if ($previousDate != $order->date)
+                    @foreach ($returns as $return)
+                        @if ($previousDate != $return->date)
 
                             @php
-                                $previousDate = $order->date;
+                                $previousDate = $return->date;
                             @endphp
 
                             <tr>
-                                <th class="text-start" colspan="12">{{ date($__date_format, strtotime($order->date)) }}</th>
+                                <th class="text-start" colspan="12">{{ date($__date_format, strtotime($return->date)) }}</th>
                             </tr>
                         @endif
 
                         <tr>
-                            <td class="text-start">{{ $order->order_id }}</td>
+                            <td class="text-start">{{ $return->voucher_no }}</td>
+                            <td class="text-start">{{ $return->invoice_id }}</td>
                             <td class="text-start">
-                                @if ($order->branch_id)
+                                @if ($return->branch_id)
 
-                                    @if ($order->parent_branch_name)
+                                    @if ($return->parent_branch_name)
 
-                                        {{ $order->parent_branch_name . '(' . $order->branch_area_name . ')' }}
+                                        {{ $return->parent_branch_name . '(' . $return->branch_area_name . ')' }}
                                     @else
 
-                                        {{ $order->branch_name . '(' . $order->branch_area_name . ')' }}
+                                        {{ $return->branch_name . '(' . $return->branch_area_name . ')' }}
                                     @endif
                                 @else
 
@@ -207,62 +206,55 @@
                             </td>
 
                             <td class="text-start">
-                                {{ $order->customer_name }}
+                                {{ $return->customer_name }}
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->total_qty) }}
+                                {{ App\Utils\Converter::format_in_bdt($return->total_qty) }}
                                 @php
-                                    $TotalQty += $order->total_qty;
+                                    $TotalQty += $return->total_qty;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
+                                {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                                 @php
-                                    $TotalNetTotal += $order->net_total_amount;
+                                    $TotalNetTotal += $return->net_total_amount;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->order_discount_amount) }}
+                                {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
                                 @php
-                                    $TotalOrderDiscount += $order->order_discount_amount;
+                                    $TotalReturnDiscount += $return->return_discount_amount;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
+                                {{ '('.$return->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($return->return_tax_amount)}}
                                 @php
-                                    $TotalShipmentCharge += $order->shipment_charge;
+                                    $TotalReturnTax += $return->return_tax_amount;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ '('.$order->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($order->order_tax_amount)}}
+                                {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                 @php
-                                    $TotalOrderTax += $order->order_tax_amount;
+                                    $TotalReturnAmount += $return->total_return_amount;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->total_invoice_amount) }}
+                                {{ App\Utils\Converter::format_in_bdt($return->paid) }}
                                 @php
-                                    $totalOrderdAmount += $order->total_invoice_amount;
+                                    $TotalPaid += $return->paid;
                                 @endphp
                             </td>
 
                             <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->received_amount) }}
+                                {{ App\Utils\Converter::format_in_bdt($return->due) }}
                                 @php
-                                    $TotalReceived += $order->received_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->due) }}
-                                @php
-                                    $TotalDue += $order->due;
+                                    $TotalDue += $return->due;
                                 @endphp
                             </td>
                         </tr>
@@ -291,37 +283,30 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Total Order Discount") }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __("Total Returned Discount") }} : {{ $generalSettings['business__currency'] }}</th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalOrderDiscount) }}
+                            {{ App\Utils\Converter::format_in_bdt($TotalReturnDiscount) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Total Shipment Charge") }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __("Total Return Tax") }} : {{ $generalSettings['business__currency'] }}</th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalShipmentCharge) }}
+                            {{ App\Utils\Converter::format_in_bdt($TotalReturnTax) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Total Order Tax") }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __("Total Return Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalOrderTax) }}
+                            {{ App\Utils\Converter::format_in_bdt($TotalReturnAmount) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Total Ordered Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __("Total Paid") }} : {{ $generalSettings['business__currency'] }}</th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalOrderdAmount) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Received") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalReceived) }}
+                            {{ App\Utils\Converter::format_in_bdt($TotalPaid) }}
                         </td>
                     </tr>
 

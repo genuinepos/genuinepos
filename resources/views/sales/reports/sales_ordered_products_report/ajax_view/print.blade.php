@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Sales Order Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Sales Ordered Products Report") }}</strong></h6>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
     </div>
 
     <div class="row mt-2">
-        <div class="col-6">
+        <div class="col-4">
             @php
                 $ownOrParentbranchName = $generalSettings['business__shop_name'];
                 if (auth()->user()?->branch) {
@@ -133,7 +133,11 @@
             <p><strong>{{ __("Shop/Business") }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
-        <div class="col-6">
+        <div class="col-4">
+            <p><strong>{{ __("Product") }} : </strong> {{ $filteredProductName ? $filteredProductName : __("All") }} </p>
+        </div>
+
+        <div class="col-4">
             <p><strong>{{ __("Customer") }} : </strong> {{ $filteredCustomerName }} </p>
         </div>
     </div>
@@ -142,15 +146,8 @@
         $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
-        $TotalQty = 0;
-        $TotalNetTotal = 0;
-        $TotalOrderDiscount = 0;
-        $TotalShipmentCharge = 0;
-        $TotalOrderTax = 0;
-        $totalOrderdAmount = 0;
-        $TotalReceived = 0;
-        $TotalReturn = 0;
-        $TotalDue = 0;
+        $totalQty = 0;
+        $totalSubtotal = 0;
     @endphp
 
     <div class="row mt-1">
@@ -158,47 +155,58 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-start">{{ __("Order ID") }}</th>
-                        <th class="text-start">{{ __("Shop/Business") }}</th>
+                        <th class="text-start">{{ __("Product") }}</th>
+                        <th class="text-start">{{ __("P.Code(SKU)") }}</th>
+                        <th class="text-start">{{ __("Shop") }}</th>
                         <th class="text-start">{{ __("Customer") }}</th>
-                        <th class="text-end">{{ __("Total Qty") }}</th>
-                        <th class="text-end">{{ __("Net Total Amt.") }}</th>
-                        <th class="text-end">{{ __("Order Discount") }}</th>
-                        <th class="text-end">{{ __("Shipment Charge") }}</th>
-                        <th class="text-end">{{ __("Order Tax") }}</th>
-                        <th class="text-end">{{ __("Total Ordered Amt.") }}</th>
-                        <th class="text-end">{{ __("Received") }}</th>
-                        <th class="text-end">{{ __("Due") }}</th>
+                        <th class="text-start">{{ __("Order ID") }}</th>
+                        <th class="text-end">{{ __("Quantity") }}</th>
+                        <th class="text-end">{{ __("Unit Price Exc. Tax") }}</th>
+                        <th class="text-end">{{ __("Unit Discount") }}</th>
+                        <th class="text-end">{{ __("Vat/Tax") }}</th>
+                        <th class="text-end">{{ __("Unit Price Inc. Tax") }}</th>
+                        <th class="text-end">{{ __("Subtotal") }}</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
                     @php
                         $previousDate = '';
                     @endphp
-
-                    @foreach ($orders as $order)
-                        @if ($previousDate != $order->date)
+                    @foreach ($orderProducts as $orderProduct)
+                        @php
+                           $date = date($__date_format, strtotime($orderProduct->date))
+                        @endphp
+                        @if ($previousDate != $date)
 
                             @php
-                                $previousDate = $order->date;
+                                $previousDate = $date;
                             @endphp
 
                             <tr>
-                                <th class="text-start" colspan="12">{{ date($__date_format, strtotime($order->date)) }}</th>
+                                <th class="text-start" colspan="12">{{ $date }}</th>
                             </tr>
                         @endif
 
                         <tr>
-                            <td class="text-start">{{ $order->order_id }}</td>
                             <td class="text-start">
-                                @if ($order->branch_id)
+                                @php
+                                    $variant = $orderProduct->variant_name ? ' - ' . $orderProduct->variant_name : '';
+                                    $totalQty += $orderProduct->ordered_quantity;
+                                    $totalSubtotal += $orderProduct->subtotal;
+                                @endphp
+                               {{ $orderProduct->name . $variant }}
+                            </td>
 
-                                    @if ($order->parent_branch_name)
+                            <td class="text-start">{{ $orderProduct->variant_code ? $orderProduct->variant_code : $orderProduct->product_code}}</td>
+                            <td class="text-start">
+                                @if ($orderProduct->branch_id)
 
-                                        {{ $order->parent_branch_name . '(' . $order->branch_area_name . ')' }}
+                                    @if ($orderProduct->parent_branch_name)
+
+                                        {{ $orderProduct->parent_branch_name . '(' . $purchase->branch_area_name . ')' }}
                                     @else
 
-                                        {{ $order->branch_name . '(' . $order->branch_area_name . ')' }}
+                                        {{ $orderProduct->branch_name . '(' . $orderProduct->branch_area_name . ')' }}
                                     @endif
                                 @else
 
@@ -206,65 +214,14 @@
                                 @endif
                             </td>
 
-                            <td class="text-start">
-                                {{ $order->customer_name }}
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->total_qty) }}
-                                @php
-                                    $TotalQty += $order->total_qty;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}
-                                @php
-                                    $TotalNetTotal += $order->net_total_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->order_discount_amount) }}
-                                @php
-                                    $TotalOrderDiscount += $order->order_discount_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
-                                @php
-                                    $TotalShipmentCharge += $order->shipment_charge;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ '('.$order->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($order->order_tax_amount)}}
-                                @php
-                                    $TotalOrderTax += $order->order_tax_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->total_invoice_amount) }}
-                                @php
-                                    $totalOrderdAmount += $order->total_invoice_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->received_amount) }}
-                                @php
-                                    $TotalReceived += $order->received_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($order->due) }}
-                                @php
-                                    $TotalDue += $order->due;
-                                @endphp
-                            </td>
+                            <td class="text-start">{{ $orderProduct->customer_name }}</td>
+                            <td class="text-start">{{ $orderProduct->order_id }}</td>
+                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($orderProduct->ordered_quantity)  .'/'.$orderProduct->unit_code !!}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_exc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_discount_amount) }}</td>
+                            <td class="text-end fw-bold">{{ '('.$orderProduct->unit_tax_percent.'%)='.App\Utils\Converter::format_in_bdt($orderProduct->unit_tax_amount) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->unit_price_inc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($orderProduct->subtotal) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -279,56 +236,14 @@
                     <tr>
                         <th class="text-end">{{ __("Total Qty") }} : </th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalQty) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalQty) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Total Net Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __("Net Total Amount") }} : </th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalNetTotal) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Order Discount") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalOrderDiscount) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Shipment Charge") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalShipmentCharge) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Order Tax") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalOrderTax) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Ordered Amount") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalOrderdAmount) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Received") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalReceived) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Total Due") }} : {{ $generalSettings['business__currency'] }}</th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($TotalDue) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalSubtotal) }}
                         </td>
                     </tr>
                 </thead>

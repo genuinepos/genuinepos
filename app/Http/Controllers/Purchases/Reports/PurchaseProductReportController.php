@@ -212,7 +212,7 @@ class PurchaseProductReportController extends Controller
         }
 
         if ($request->variant_id) {
-            $query->where('purchase_products.product_variant_id', $request->variant_id);
+            $query->where('purchase_products.variant_id', $request->variant_id);
         }
 
         if ($request->branch_id) {

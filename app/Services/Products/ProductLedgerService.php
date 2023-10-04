@@ -24,7 +24,7 @@ class ProductLedgerService
         $data = [
             0 => ['name' => 'Opening Stock', 'id' => 'opening_stock_product_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'opening_stock_id', 'link' => null],
             1 => ['name' => 'Sales', 'id' => 'sale_product_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => 'sales.show'],
-            2 => ['name' => 'Sales Return', 'id' => 'sale_return_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
+            2 => ['name' => 'Sales Return', 'id' => 'sale_return_product_id', 'voucher_no' => 'sale_return_voucher', 'details_id' => 'sale_return_id', 'link' => 'sales.returns.show'],
             3 => ['name' => 'Purchase', 'id' => 'purchase_product_id', 'voucher_no' => 'purchase_voucher', 'details_id' => 'purchase_id', 'link' => 'purchases.show'],
             4 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'purchase_return_voucher', 'details_id' => 'purchase_return_id', 'link' => 'purchases.returns.show'],
             5 => ['name' => 'Stock Adjustment', 'id' => 'stock_adjustment_product_id', 'voucher_no' => 'stock_adjustment_voucher', 'details_id' => 'stock_adjustment_id', 'link' => 'stock.adjustments.show'],

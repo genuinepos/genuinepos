@@ -128,29 +128,30 @@ class UserActivityLogUtil
             6 => [ // Purchase Return
                 'fields' => [
                     'date',
-                    'invoice_id',
+                    'voucher_no',
                     'total_return_amount',
-                    'total_return_due_received',
+                    'received_amount',
                 ],
                 'texts' => [
                     'Date : ',
                     'Return Invoice ID : ',
                     'Total Returned Amt : ',
-                    'Refunded Amt : ',
+                    'Received Amt. : ',
+                    'Due : ',
                 ],
             ],
             7 => [ // Sales
                 'fields' => [
                     'date',
                     'invoice_id',
-                    'total_payable_amount',
+                    'total_invoice_amount',
                     'paid',
                     'due',
                 ],
                 'texts' => [
                     'Date : ',
                     'Invoice ID : ',
-                    'Total Payable Amount : ',
+                    'Total Invoice Amount : ',
                     'Paid : ',
                     'Due : ',
                 ],
@@ -158,15 +159,15 @@ class UserActivityLogUtil
             8 => [ // Sales Order
                 'fields' => [
                     'date',
-                    'invoice_id',
-                    'total_payable_amount',
+                    'order_id',
+                    'total_invoice_amount',
                     'paid',
                     'due',
                 ],
                 'texts' => [
                     'Date : ',
                     'Order ID : ',
-                    'Total Payable Amt',
+                    'Total Ordered Amt',
                     'Paid',
                     'Due',
                 ],
@@ -174,15 +175,17 @@ class UserActivityLogUtil
             9 => [ // Sales Return
                 'fields' => [
                     'date',
-                    'invoice_id',
+                    'voucher_no',
                     'total_return_amount',
-                    'total_return_due_pay',
+                    'paid',
+                    'due',
                 ],
                 'texts' => [
                     'Date : ',
-                    'Return Invoice ID : ',
+                    'Return Voucher No : ',
                     'Total Returned Amt. : ',
-                    'Refunded Amt. : ',
+                    'Paid : ',
+                    'Due : ',
                 ],
             ],
             10 => [ // Transfer B.Location To Warehouse

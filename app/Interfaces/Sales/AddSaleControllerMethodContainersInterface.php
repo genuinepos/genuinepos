@@ -8,10 +8,12 @@ interface AddSaleControllerMethodContainersInterface
      * @return \App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService
      */
 
-    public function showMethodContainer(
-        int $id,
-        object $saleService,
-        object $saleProductService
+    public function createMethodContainer(
+        object $accountService,
+        object $accountFilterService,
+        object $paymentMethodService,
+        object $warehouseService,
+        object $priceGroupService
     ): ?array;
 
     public function storeMethodContainer(
@@ -32,12 +34,10 @@ interface AddSaleControllerMethodContainersInterface
         object $codeGenerator
     ): ?array;
 
-    public function createMethodContainer(
-        object $accountService,
-        object $accountFilterService,
-        object $paymentMethodService,
-        object $warehouseService,
-        object $priceGroupService
+    public function showMethodContainer(
+        int $id,
+        object $saleService,
+        object $saleProductService
     ): ?array;
 
     function editMethodContainer(
@@ -68,4 +68,12 @@ interface AddSaleControllerMethodContainersInterface
         object $userActivityLogUtil,
         object $codeGenerator
     ): ?array;
+
+    function deleteMethodContainer(
+        int $id,
+        object $saleService,
+        object $productStockService,
+        object $purchaseProductService,
+        object $userActivityLogUtil,
+    ): array|object;
 }

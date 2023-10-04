@@ -30,12 +30,7 @@ interface QuotationControllerMethodContainersInterface
         object $quotationService,
         object $salesOrderService,
         object $quotationProductService,
-        object $dayBookService,
         object $accountService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
         object $userActivityLogUtil,
         object $codeGenerator,
     ): ?array;

@@ -81,6 +81,9 @@ class PurchaseReturnController extends Controller
     public function show($id)
     {
         $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
+            'purchase',
+            'branch',
+            'branch.parentBranch',
             'supplier:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'purchaseReturnProducts',

@@ -4,21 +4,28 @@ namespace App\Http\Controllers\Sales;
 
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\CodeGenerationService;
 use App\Services\Sales\QuotationService;
 use App\Services\Accounts\AccountService;
+use App\Services\Sales\SalesOrderService;
 use App\Services\Sales\SaleProductService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Sales\QuotationProductService;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
-use App\Services\Products\PriceGroupService;
 
 class QuotationController extends Controller
 {
     public function __construct(
         private QuotationService $quotationService,
+        private QuotationProductService $quotationProductService,
+        private SaleService $saleService,
+        private SalesOrderService $salesOrderService,
         private SaleProductService $saleProductService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
@@ -89,11 +96,6 @@ class QuotationController extends Controller
         $this->validate($request, [
             'status' => 'required',
             'date' => 'required|date',
-            'sale_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'sale_account_id.required' => __('Sales A/c is required'),
-            'account_id.required' => __('Debit A/c is required'),
         ]);
 
         try {
@@ -108,12 +110,7 @@ class QuotationController extends Controller
                 quotationService: $this->quotationService,
                 salesOrderService: $this->salesOrderService,
                 quotationProductService: $this->quotationProductService,
-                dayBookService: $this->dayBookService,
                 accountService: $this->accountService,
-                accountLedgerService: $this->accountLedgerService,
-                accountingVoucherService: $this->accountingVoucherService,
-                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
-                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
                 userActivityLogUtil: $this->userActivityLogUtil,
                 codeGenerator: $codeGenerator,
             );

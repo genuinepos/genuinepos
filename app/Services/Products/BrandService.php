@@ -91,6 +91,18 @@ class BrandService
         return $deleteBrand;
     }
 
+    public function brands(array $with = null): ?object
+    {
+        $query = Brand::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleBrand(int $id, array $with = null): ?object
     {
         $query = Brand::query();

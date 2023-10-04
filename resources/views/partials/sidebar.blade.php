@@ -1066,7 +1066,7 @@
                                             <a href="{{ route('sales.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cart-plus"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text"> {{ __("Add Sale") }}</p>
@@ -1080,7 +1080,7 @@
                                             <a href="{{ route('sales.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __("Manage Add Sales") }}</p>
@@ -1112,10 +1112,10 @@
                                             <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cash-register"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.pos')</p>
+                                                <p class="switch_text">{{ __("POS") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1126,10 +1126,10 @@
                                             <a href="{{ route('sales.pos.list') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.pos_sale_list')</p>
+                                                <p class="switch_text">{{ __("POS Sale List") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1154,7 +1154,7 @@
                                     <a href="{{ route('sale.orders.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
-                                                <span><i class="fa fa-file-alt"></i></span>
+                                                <span><i class="fas fa-list"></i></span>
                                             </div>
                                         </div>
                                         <p class="switch_text">{{ __("Sales Order List") }}</p>
@@ -1166,7 +1166,7 @@
                                         <a href="{{ route('sale.quotations.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-quote-right"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Quotation List") }}</p>
@@ -1179,7 +1179,7 @@
                                         <a href="{{ route('sale.drafts.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-drafting-compass"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Draft List") }}</p>
@@ -1192,7 +1192,7 @@
                                         <a href="{{ route('sale.products.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-tasks"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
                                             <p class="switch_text">{{ __("Sold Product List") }}</p>
@@ -1218,13 +1218,13 @@
                                 @if (auth()->user()->can('return_access'))
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('sale.return.random.create') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('sales.returns.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-undo"></i></span>
+                                                    <span><i class="fas fa-plus-circle"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.add_sale_return')</p>
+                                            <p class="switch_text">{{ __("Add Sales Return") }}</p>
                                         </a>
                                     </div>
 
@@ -1232,18 +1232,15 @@
                                         <a href="{{ route('sales.returns.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-undo"></i></span>
+                                                    <span><i class="fas fa-list"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.sale_return_list')</p>
+                                            <p class="switch_text">{{ __("Sales Return List") }}</p>
                                         </a>
                                     </div>
                                 @endif
 
-                                @if (
-                                    auth()->user()->can('discounts') &&
-                                    auth()->user()->can('discounts')
-                                )
+                                @if (auth()->user()->can('discounts'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('sales.discounts.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1256,25 +1253,28 @@
                                     </div>
                                 @endif
                             </div>
+
+                            <div class="sub-menu-row">
+                                @if (auth()->user()->can('create_add_sale'))
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-plus-circle"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Sales Order To Invoice") }}</p>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
 
                         @if (
-                            (
-                                auth()->user()->can('pro_sale_report') &&
-                                auth()->user()->can('pro_sale_report')
-                            ) ||
-                            (
-                                auth()->user()->can('sale_payment_report') &&
-                                auth()->user()->can('sale_payment_report')
-                            ) ||
-                            (
-                                auth()->user()->can('c_register_report') &&
-                                auth()->user()->can('c_register_report')
-                            ) ||
-                            (
-                                auth()->user()->can('sale_representative_report') &&
-                                auth()->user()->can('sale_representative_report')
-                            )
+                            auth()->user()->can('pro_sale_report') ||
+                            auth()->user()->can('sale_payment_report') ||
+                            auth()->user()->can('c_register_report') ||
+                            auth()->user()->can('sale_representative_report')
                         )
                             {{-- <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
@@ -1286,98 +1286,106 @@
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __("Sale Reports") }}</p>
                                 <div class="sub-menu-row">
-                                    @if (
-                                        auth()->user()->can('sale_statements') &&
-                                        auth()->user()->can('sale_statements')
-                                    )
+                                    @if (auth()->user()->can('sale_statements'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.sale.statement.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sales.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.sale_statement')</p>
+                                                <p class="switch_text">{{ __("Sales Report") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('sale_return_statements') &&
-                                        auth()->user()->can('sale_return_statements')
-                                    )
+                                    @if (auth()->user()->can('pro_sale_report'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.sale.return.statement.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sold.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-tasks"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.return_statement')</p>
+                                                <p class="switch_text">{{ __("Sold Products Report") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('pro_sale_report') &&
-                                        auth()->user()->can('pro_sale_report')
-                                    )
+                                    @if (auth()->user()->can('sale_statements'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.product.sales.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sales.order.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cart-arrow-down"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.product_sale_report')</p>
+                                                <p class="switch_text">{{ __("Sales Order Report") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('sale_payment_report') &&
-                                        auth()->user()->can('sale_payment_report')
-                                    )
+                                    @if (auth()->user()->can('sale_statements'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.sale.payments.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sales.ordered.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-hand-holding-usd"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.sale_payment_report')</p>
+                                                <p class="switch_text">{{ __("Sales Ordered Products Report") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('c_register_report') &&
-                                        auth()->user()->can('c_register_report')
-                                    )
+                                    @if (auth()->user()->can('sale_return_statements'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.cash.registers.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sales.return.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-cash-register"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.register_report')</p>
+                                                <p class="switch_text">{{ __("Sales Return Report") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (
-                                        auth()->user()->can('sale_representative_report') &&
-                                        auth()->user()->can('sale_representative_report')
-                                    )
+                                    @if (auth()->user()->can('sale_return_statements'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.sale.representative.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.sales.returned.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-user-tie"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.sales_representative_report')</p>
+                                                <p class="switch_text">{{ __("Sales Returned Products Report") }}</p>
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (auth()->user()->can('sale_payment_report'))
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Received Against Sales Report") }}</p>
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (auth()->user()->can('c_register_report'))
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Cash Register Report") }}</p>
                                             </a>
                                         </div>
                                     @endif

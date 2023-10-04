@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Purchased Product Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Purchased Products Report") }}</strong></h6>
         </div>
     </div>
 
@@ -203,7 +203,7 @@
 
                                     @if ($purchaseProduct->parent_branch_name)
 
-                                        {{ $purchaseProduct->parent_branch_name . '(' . $purchase->branch_area_name . ')' }}
+                                        {{ $purchaseProduct->parent_branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}
                                     @else
 
                                         {{ $purchaseProduct->branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}

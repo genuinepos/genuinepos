@@ -263,4 +263,52 @@ class AddSalesController extends Controller
 
         return response()->json(__("Sale updated Successfully."));
     }
+
+    public function delete($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $deleteMethodContainer = $addSaleControllerMethodContainersInterface->deleteMethodContainer(
+                id: $id,
+                saleService: $this->saleService,
+                productStockService: $this->productStockService,
+                purchaseProductService: $this->purchaseProductService,
+                userActivityLogUtil: $this->userActivityLogUtil,
+            );
+
+            if (isset($deleteMethodContainer['pass']) && $deleteMethodContainer['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteMethodContainer['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        $voucherName = SaleStatus::tryFrom($deleteMethodContainer->status)->name;
+        $__voucherName = $voucherName == 'Final' ? 'Sale' : $voucherName;
+
+        return response()->json(__("${$__voucherName} deleted Successfully."));
+    }
+
+    function searchByInvoiceId($keyWord)
+    {
+        $sales = DB::table('sales')
+            ->where('sales.invoice_id', 'like', "%{$keyWord}%")
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.status', 1)
+            ->select('sales.id as sale_id', 'sales.invoice_id', 'sales.customer_account_id')->limit(35)->get();
+
+        if (count($sales) > 0) {
+
+            return view('search_results_view.sale_invoice_search_result_list', compact('sales'));
+        } else {
+
+            return response()->json(['noResult' => 'no result']);
+        }
+    }
 }

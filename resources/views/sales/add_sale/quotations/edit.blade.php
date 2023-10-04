@@ -5,19 +5,12 @@
         .input-group-text { font-size: 12px !important; }
 
         .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
-
         .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
-
         .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
-
         .select_area ul li a:hover { background-color: #999396; color: #fff; }
-
         .selectProduct { background-color: #746e70 !important; color: #fff !important; }
-
         .input-group-text-sale { font-size: 7px !important; }
-
         b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
-
         .border_red { border: 1px solid red !important; }
 
         #display_pre_due { font-weight: 600; }
@@ -37,21 +30,15 @@
         label.col-6 { text-align: right; padding-right: 10px; }
 
         .checkbox_input_wrap { text-align: right; }
-
         .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
-
         .btn-sale { width: calc(50% - 4px); padding-left: 0; padding-right: 0; }
-
         .sale-item-sec { height: 215px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
 @endpush
-@section('title', 'Edit Add Sale - ')
+@section('title', 'Edit Quotation - ')
 @section('content')
-    @php
-       $generalProductSearchService = new App\Services\GeneralSearch\GeneralProductSearchService();
-    @endphp
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">

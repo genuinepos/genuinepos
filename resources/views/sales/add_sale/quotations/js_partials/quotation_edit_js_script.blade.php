@@ -59,7 +59,6 @@
                     toastr.error(product.errorMsg);
                     $('#search_product').val("");
                     $('.select_area').hide();
-                    $('#stock_quantity').val(parseFloat(0).toFixed(2));
                     return;
                 }
 
@@ -81,11 +80,6 @@
 
                             $('.select_area').hide();
                             $('#search_product').val('');
-
-                            if (product.is_manage_stock == 1) {
-
-                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.stock).toFixed(2));
-                            }
 
                             var price = 0;
                             var __price = priceGroups.filter(function(value) {
@@ -180,11 +174,6 @@
                         $('#search_product').val('');
 
                         var variant = product.variant_product;
-
-                        if (variant.product.is_manage_stock == 1) {
-
-                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.stock).toFixed(2));
-                        }
 
                         var price = 0;
                         var __price = priceGroups.filter(function(value) {
@@ -480,7 +469,6 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
         var e_descriptions = $('#e_descriptions').val();
-        var stock_quantity = $('#stock_quantity').val();
 
         if (e_quantity == '') {
 
@@ -576,8 +564,8 @@
             tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
             tr.find('#is_show_emi_on_pos').val(e_is_show_emi_on_pos);
             tr.find('#descriptions').val(e_descriptions);
-            tr.find('.unique_id').val(e_product_id + e_variant_id + e_warehouse_id);
-            tr.find('.unique_id').attr('id', e_product_id + e_variant_id + e_warehouse_id);
+            tr.find('.unique_id').val(e_product_id + e_variant_id);
+            tr.find('.unique_id').attr('id', e_product_id + e_variant_id);
 
             clearEditItemFileds();
             calculateTotalAmount();
@@ -891,7 +879,6 @@
         $('#e_subtotal').val(parseFloat(0).toFixed(2));
         $('#e_unit_cost_inc_tax').val(0);
         $('#e_is_show_discription').val('');
-        $('#stock_quantity').val(parseFloat(0).toFixed(2));
         $('#add_item').html('Add');
     }
 

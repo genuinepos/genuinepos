@@ -75,7 +75,7 @@ class SalesOrderService
 
                     if (auth()->user()->can('delete_add_sale')) {
 
-                        $html .= '<a href="' . route('sale.orders.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
                     }
                 }
 

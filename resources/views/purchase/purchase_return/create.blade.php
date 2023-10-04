@@ -48,7 +48,7 @@
                 @csrf
                 <input type="hidden" name="action" id="action">
                 <section>
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-lg-3 col-md-6">
@@ -88,30 +88,19 @@
                                         </div>
                                     </div>
 
-                                    @if (count($warehouses) > 0)
-
-                                        <input name="warehouse_count" value="YES" type="hidden" />
-                                        <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __("Warehouse") }}</b></label>
-                                            <div class="col-8">
-                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="purchase_account_id">
-                                                    <option value="">@lang('menu.select_warehouse')</option>
-                                                    @foreach ($warehouses as $w)
-                                                        <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
-                                                            {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <span class="error error_warehouse_id"></span>
-                                            </div>
+                                    <div class="input-group mt-1">
+                                        <label class="col-4"><b>{{ __("Warehouse") }}</b></label>
+                                        <div class="col-8">
+                                            <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="purchase_account_id">
+                                                <option value="">{{ __("Select Warehouse") }}</option>
+                                                @foreach ($warehouses as $w)
+                                                    <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
+                                                        {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_warehouse_id"></span>
                                         </div>
-                                    @else
-                                        <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __("Stock Location") }}</b></label>
-                                            <div class="col-8">
-                                                <input readonly type="text" class="form-control changeable" value="{{ json_decode($generalSettings->business, true)['shop_name'] }}" />
-                                            </div>
-                                        </div>
-                                    @endif
+                                    </div>
                                 </div>
 
                                 <div class="col-xl-3 col-md-6">
@@ -150,101 +139,101 @@
                         </div>
                     </div>
 
-                    <div class="sale-content py-1">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="item-details-sec">
-                                    <div class="content-inner">
-                                        <div class="row g-xxl-4 g-3 align-items-end">
-                                            <div class="col-xl-6">
-                                                <div class="searching_area" style="position: relative;">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">
-                                                                <i class="fas fa-barcode text-dark input_f"></i>
-                                                            </span>
-                                                        </div>
-
-                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
+                    <section>
+                        <div class="card mb-1 p-2">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row g-xxl-4 align-items-end">
+                                        <div class="col-xl-6">
+                                            <div class="searching_area" style="position: relative;">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-barcode text-dark input_f"></i>
+                                                        </span>
                                                     </div>
 
-                                                    <div class="select_area">
-                                                        <ul id="list" class="variant_list_area"></ul>
-                                                    </div>
+                                                    <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
+                                                </div>
+
+                                                <div class="select_area">
+                                                    <ul id="list" class="variant_list_area"></ul>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <div class="row g-xxl-4 ge-1 align-items-end">
-                                            <div class="hidden_fields">
-                                                <input type="hidden" id="e_unique_id">
-                                                <input type="hidden" id="e_item_name">
-                                                <input type="hidden" id="e_product_id">
-                                                <input type="hidden" id="e_variant_id">
-                                                <input type="hidden" id="e_tax_amount">
-                                                <input type="hidden" id="e_unit_cost_inc_tax">
-                                            </div>
+                                    <div class="row g-xxl-4 align-items-end">
+                                        <div class="hidden_fields">
+                                            <input type="hidden" id="e_unique_id">
+                                            <input type="hidden" id="e_item_name">
+                                            <input type="hidden" id="e_product_id">
+                                            <input type="hidden" id="e_variant_id">
+                                            <input type="hidden" id="e_tax_amount">
+                                            <input type="hidden" id="e_unit_cost_inc_tax">
+                                        </div>
 
-                                            <div class="col-xl-2 col-md-6">
-                                                <label class="fw-bold">{{ __("Quantity") }}</label>
-                                                <div class="input-group">
-                                                    <input type="number" step="any" class="form-control w-60 fw-bold" id="e_return_quantity" placeholder="{{ __("Return Quantity") }}" value="0.00">
-                                                    <select id="e_unit_id" class="form-control w-40">
-                                                        <option value="">{{ __("Unit") }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-md-6">
-                                                <label class="fw-bold">{{ __("Unit Cost(Exc. Tax)") }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_exc_tax" placeholder="{{ __("Unit Cost(Exc. Tax)") }}" value="0.00">
-                                            </div>
-
-                                            <div class="col-xl-2 col-md-6">
-                                                <label class="fw-bold">{{ __("Discount (Per Unit)") }}</label>
-                                                <div class="input-group">
-                                                    <input type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __("Discount (Per Unit)") }}" value="0.00">
-                                                    <input type="hidden" id="e_discount" value="0.00">
-                                                    <select id="e_discount_type" class="form-control">
-                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
-                                                        <option value="2">{{ __("Percentage") }}(%)</option>
-                                                    </select>
-                                                    <input type="hidden" id="e_discount_amount">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-md-6">
-                                                <label class="fw-bold">{{ __("Vat/Tax") }}</label>
-                                                <div class="input-group">
-                                                    <select id="e_tax_ac_id" class="form-control">
-                                                        <option data-product_tax_percent="0.00" value="">{{ __("NoVat/Tax") }}</option>
-                                                        @foreach ($taxAccounts as $taxAccount)
-                                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
-                                                                {{ $taxAccount->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-
-                                                    <select id="e_tax_type" class="form-control" tabindex="-1">
-                                                        <option value="1">{{ __("Exclusive") }}</option>
-                                                        <option value="2">{{ __("Inclusive") }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-md-6">
-                                                <label class="fw-bold">@lang('menu.sub_total')</label>
-                                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
-                                            </div>
-
-                                            <div class="col-xl-1 col-md-6">
-                                                <div class="btn-box-2">
-                                                    <a href="#" class="btn btn-sm btn-success" id="add_item">@lang('menu.add')</a>
-                                                </div>
+                                        <div class="col-xl-2 col-md-6">
+                                            <label class="fw-bold">{{ __("Quantity") }}</label>
+                                            <div class="input-group">
+                                                <input type="number" step="any" class="form-control w-60 fw-bold" id="e_return_quantity" placeholder="{{ __("Return Quantity") }}" value="0.00">
+                                                <select id="e_unit_id" class="form-control w-40">
+                                                    <option value="">{{ __("Unit") }}</option>
+                                                </select>
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
+                                        <div class="col-xl-2 col-md-6">
+                                            <label class="fw-bold">{{ __("Unit Cost(Exc. Tax)") }}</label>
+                                            <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_exc_tax" placeholder="{{ __("Unit Cost(Exc. Tax)") }}" value="0.00">
+                                        </div>
+
+                                        <div class="col-xl-2 col-md-6">
+                                            <label class="fw-bold">{{ __("Discount (Per Unit)") }}</label>
+                                            <div class="input-group">
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __("Discount (Per Unit)") }}" value="0.00">
+                                                <input type="hidden" id="e_discount" value="0.00">
+                                                <select id="e_discount_type" class="form-control">
+                                                    <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                                    <option value="2">{{ __("Percentage") }}(%)</option>
+                                                </select>
+                                                <input type="hidden" id="e_discount_amount">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-md-6">
+                                            <label class="fw-bold">{{ __("Vat/Tax") }}</label>
+                                            <div class="input-group">
+                                                <select id="e_tax_ac_id" class="form-control">
+                                                    <option data-product_tax_percent="0.00" value="">{{ __("NoVat/Tax") }}</option>
+                                                    @foreach ($taxAccounts as $taxAccount)
+                                                        <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                            {{ $taxAccount->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                                <select id="e_tax_type" class="form-control" tabindex="-1">
+                                                    <option value="1">{{ __("Exclusive") }}</option>
+                                                    <option value="2">{{ __("Inclusive") }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-md-6">
+                                            <label class="fw-bold">@lang('menu.sub_total')</label>
+                                            <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                                        </div>
+
+                                        <div class="col-xl-1 col-md-6">
+                                            <div class="btn-box-2">
+                                                <a href="#" class="btn btn-sm btn-success" id="add_item">@lang('menu.add')</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-12">
                                             <div class="sale-item-sec">
                                                 <div class="sale-item-inner">
                                                     <div class="table-responsive">
@@ -271,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
                     <div class="row g-1">
                         <div class="col-md-6">
@@ -1082,10 +1071,10 @@
                 discount_amount = e_unit_discount;
             } else {
 
-                discount_amount = (roundOfValue(e_unit_cost_exc_tax) / 100) * roundOfValue(e_unit_discount);
+                discount_amount = (parseFloat(e_unit_cost_exc_tax) / 100) * parseFloat(e_unit_discount);
             }
 
-            var unitCostWithDiscount = roundOfValue(e_unit_cost_exc_tax) - roundOfValue(discount_amount);
+            var unitCostWithDiscount = parseFloat(e_unit_cost_exc_tax) - parseFloat(discount_amount);
             var taxAmount = parseFloat(unitCostWithDiscount) / 100 * parseFloat(e_tax_percent);
             var unitCostIncTax = parseFloat(unitCostWithDiscount) + parseFloat(taxAmount);
 
@@ -1094,12 +1083,12 @@
                 var inclusiveTax = 100 + parseFloat(e_tax_percent);
                 var calcTax = parseFloat(unitCostWithDiscount) / parseFloat(inclusiveTax) * 100;
                 taxAmount =  parseFloat(unitCostWithDiscount) - parseFloat(calcTax);
-                unitCostIncTax = roundOfValue(unitCostWithDiscount) + roundOfValue(taxAmount);
+                unitCostIncTax = parseFloat(unitCostWithDiscount) + parseFloat(taxAmount);
             }
 
             $('#e_tax_amount').val(parseFloat(taxAmount).toFixed(2));
-            $('#e_discount_amount').val(parseFloat(roundOfValue(discount_amount)).toFixed(2));
-            $('#e_unit_cost_inc_tax').val(parseFloat(roundOfValue(unitCostIncTax)).toFixed(2));
+            $('#e_discount_amount').val(parseFloat(discount_amount).toFixed(2));
+            $('#e_unit_cost_inc_tax').val(parseFloat(unitCostIncTax).toFixed(2));
 
             var subtotal = parseFloat(unitCostIncTax) * parseFloat(e_return_quantity);
             $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
@@ -1530,11 +1519,6 @@
             },
             format: _expectedDateFormat,
         });
-
-        function roundOfValue(val) {
-
-            return ((parseFloat(val) * 1000) / 1000);
-        }
 
         $('#payment_method_id').on('change', function () {
 

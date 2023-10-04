@@ -92,9 +92,12 @@ class SaleService
                     }
                 }
 
-                if (auth()->user()->can('delete_add_sale')) {
+                if (auth()->user()->branch_id == $row->branch_id) {
+                    
+                    if (auth()->user()->can('delete_add_sale')) {
 
-                    $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                    }
                 }
 
                 if (auth()->user()->can('shipment_access')) {
@@ -281,6 +284,30 @@ class SaleService
         $updateSale->save();
 
         return $updateSale;
+    }
+
+    public function deleteSale(int $id): array|object
+    {
+        $deleteSale = $this->singleSale(id: $id, with: [
+            'references',
+            'saleProducts',
+            'saleProducts.product',
+            'saleProducts.variant',
+            'saleProducts.purchaseSaleChains',
+            'saleProducts.purchaseSaleChains.purchaseProduct',
+        ]);
+
+        $voucherName = SaleStatus::tryFrom($deleteSale->status)->name;
+        $__voucherName = $voucherName == 'Final' ? 'Sale' : $voucherName;
+
+        if (count($deleteSale->references) > 0) {
+
+            return ['pass' => false, 'msg' => __("Sale can not be deleted. There is one or more receipt which is against this ${$__voucherName}.")];
+        }
+
+        $deleteSale->delete();
+
+        return $deleteSale;
     }
 
     public function adjustSaleInvoiceAmounts(object $sale): object

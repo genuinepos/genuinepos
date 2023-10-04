@@ -74,7 +74,7 @@ class QuotationService
 
                     if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a href="' . route('sale.quotations.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
                     }
                 }
 
@@ -149,7 +149,7 @@ class QuotationService
             ->make(true);
     }
 
-    public function updateSalesOrder(object $request, object $updateQuotation): object
+    public function updateQuotation(object $request, object $updateQuotation): object
     {
         foreach ($updateQuotation->saleProducts as $saleProduct) {
 

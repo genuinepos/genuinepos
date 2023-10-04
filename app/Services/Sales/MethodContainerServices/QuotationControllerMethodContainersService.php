@@ -98,12 +98,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         object $quotationService,
         object $salesOrderService,
         object $quotationProductService,
-        object $dayBookService,
         object $accountService,
-        object $accountLedgerService,
-        object $accountingVoucherService,
-        object $accountingVoucherDescriptionService,
-        object $accountingVoucherDescriptionReferenceService,
         object $userActivityLogUtil,
         object $codeGenerator,
     ): ?array {
@@ -115,16 +110,10 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
             return ['pass' => false, 'msg' => $restrictions['msg']];
         }
 
-        $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
         $quotation = $quotationService->singleQuotation(id: $id, with: ['saleProducts']);
-
-        $storedCurrSaleAccountId = $quotation->sale_account_id;
-        $storedCurrCustomerAccountId = $quotation->customer_account_id;
-        $storedCurrSaleTaxAccountId = $quotation->sale_tax_ac_id;
 
         $updateQuotation = $quotationService->updateQuotation(request: $request, updateQuotation: $quotation);
 
@@ -149,7 +138,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
 
         $saleService->adjustSaleInvoiceAmounts(sale: $quotation);
 
-        $updateQuotationStatus = $quotation->updateQuotationStatus(request: $request, id: $id, codeGenerator: $codeGenerator, salesOrderPrefix: $salesOrderPrefix);
+        $updateQuotationStatus = $quotationService->updateQuotationStatus(request: $request, id: $id, codeGenerator: $codeGenerator, salesOrderPrefix: $salesOrderPrefix);
 
         if ($updateQuotationStatus['pass'] == false) {
 

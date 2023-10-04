@@ -3,11 +3,12 @@
 namespace Modules\SAAS\Listeners;
 
 use App\Models\User;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
-use Modules\SAAS\Emails\CustomerRegistrationConfirmationMail;
 use Modules\SAAS\Events\CustomerRegisteredEvent;
+use Modules\SAAS\Emails\CustomerRegistrationConfirmationMail;
 
 class CustomerRegisteredListener
 // class CustomerRegisteredListener implements ShouldQueue

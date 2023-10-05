@@ -434,7 +434,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.brand')</p>
+                                            <p class="switch_text">{{ __("Brands") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -447,14 +447,14 @@
                                                     <span><i class="fas fa-weight-hanging"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.units')</p>
+                                            <p class="switch_text">{{ __("Units") }}</p>
                                         </a>
                                     </div>
                                 @endif
 
                                 @if (auth()->user()->can('variant'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.variants.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('product.bulk.variants.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -462,7 +462,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.variants')</p>
+                                            <p class="switch_text">{{ __("Bulk Variants") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -477,7 +477,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.warranties')</p>
+                                            <p class="switch_text">{{ __("Warranties") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -494,7 +494,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.selling_price_group')</p>
+                                            <p class="switch_text">{{ __("Selling Price Groups") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -509,7 +509,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.generate_barcode')</p>
+                                            <p class="switch_text">{{ __("Generate Barcode") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -1570,20 +1570,7 @@
                                                         <span><i class="fas fa-plus-square"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.add_stock_adjustment_from_branch')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('adjustment_add_from_warehouse'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('stock.adjustments.create.from.warehouse') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-square"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.add_stock_adjustment_from_warehouse')</p>
+                                                <p class="switch_text">{{ __("Add Stock Adjustment") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1596,7 +1583,7 @@
                                                         <span><i class="fas fa-th-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.stock_adjustment_list')</p>
+                                                <p class="switch_text">{{ __("Stock Adjustmen List") }}</p>
                                             </a>
                                         </div>
                                     @endif

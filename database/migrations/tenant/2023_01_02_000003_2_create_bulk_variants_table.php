@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('bulk_variants', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('bulk_variant_name');
+            $table->string('name');
+            $table->unsignedBigInteger('created_by_id')->nullable();
             $table->timestamps();
+
+            $table->foreign(['created_by_id'])->references(['id'])->on('users')->onDelete('SET NULL');
         });
     }
 

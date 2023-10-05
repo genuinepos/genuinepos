@@ -38,11 +38,11 @@ class SubscriptionController extends Controller
         try {
             $user->createOrGetStripeCustomer();
             $user->updateDefaultPaymentMethod($paymentMethod);
-            $user->charge($plan->price, $paymentMethod);
+            $chargeResult = $user->charge($plan->price, $paymentMethod);
+
+            return back()->with('message', 'Successfully Subscribed!');
         } catch (\Exception $exception) {
             return back()->with('error', $exception->getMessage());
         }
-
-        return back()->with('message', 'Product purchased successfully!');
     }
 }

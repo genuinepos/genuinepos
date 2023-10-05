@@ -26,26 +26,46 @@
 
     <div class="container mt-3">
         <div class="card pb-5">
-            <div class="card-header">
-                <h5>{{ __('Subscribe to plan') }}</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>{{ __('Payment for subscription') }}</h5>
+                <div>
+                    <x-back-button href="{{ route('saas.plan.all') }}"></x-back-button>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
-                    {{  $plan->name }}
-                    <form method="POST" action="{{ route('saas.subscriptions.store', $plan->id) }}" class="card-form mt-3 mb-3">
-                        @csrf
-                        <input type="hidden" name="payment_method" class="payment-method">
-                        <input class="StripeElement mb-3" name="card_holder_name" placeholder="Card holder name" required>
-                        <div class="col-lg-4 col-md-6">
-                            <div id="card-element"></div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-10">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    Plan Name: {{  $plan->name }}
+                                </div>
+                                <div class="list-group-item">
+                                    Plan Price: ${{  $plan->price }}
+                                </div>
+                            </div>
                         </div>
-                        <div id="card-errors" role="alert"></div>
-                        <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-primary pay">
-                                Purchase
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+
+                    <div class="row">
+                        <form method="POST" action="{{ route('saas.subscriptions.store', $plan->id) }}" class="card-form mt-3 mb-3">
+                            @csrf
+                            <div class="col-lg-6 col-md-10 pe-2">
+                                <input type="hidden" name="payment_method" class="payment-method">
+                                <input class="StripeElement form-control mb-3" name="card_holder_name" placeholder="Card holder name" required>
+                            </div>
+                            <div class="col-lg-6 col-md-10 pe-2">
+                                <div id="card-element"></div>
+                            </div>
+                            <div id="card-errors" role="alert"></div>
+                            <div class="form-group mt-3">
+                                <button type="submit" class="btn btn-sm btn-primary pay">
+                                    Make Payment for Subscription
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

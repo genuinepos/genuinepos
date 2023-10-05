@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\PlanController;
 use Modules\SAAS\Http\Controllers\RoleController;
 use Modules\SAAS\Http\Controllers\UserController;
@@ -12,7 +11,8 @@ use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\Guest\PaymentController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-use Modules\SAAS\Http\Controllers\Guest\SubscriptionController;
+use Modules\SAAS\Http\Controllers\Auth\VerificationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -55,5 +55,5 @@ Route::prefix('saas')->group(function () {
     Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
     Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
     Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe')->middleware('is_auth');
-    Route::post('subscriptions/{plan}', [SubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
 });

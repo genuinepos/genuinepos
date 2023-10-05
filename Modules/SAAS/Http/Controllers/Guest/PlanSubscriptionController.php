@@ -5,13 +5,13 @@ namespace Modules\SAAS\Http\Controllers\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\SAAS\Entities\Plan;
-use Modules\SAAS\Entities\Subscription;
+use Modules\SAAS\Entities\PlanSubscription;
 
-class SubscriptionController extends Controller
+class PlanSubscriptionController extends Controller
 {
-    public function subscribe(Request $request, Plan $plan): ?Subscription
+    public function subscribe(Request $request, Plan $plan): ?PlanSubscription
     {
-        $subscription = Subscription::create([
+        $subscription = PlanSubscription::create([
             'plan_id' => $plan->id,
             'user_id' => auth()->user()->id,
             // 'payment_id' => $request->payment_id,

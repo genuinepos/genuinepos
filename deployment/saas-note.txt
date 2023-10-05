@@ -6,7 +6,7 @@ Plan
 - create (with features) -> Need to add these logics in application level
 - update/edit plan configuration
 
-Subscription
+PlanSubscription
 - Subscriber list
 - Transaction history
 
@@ -15,7 +15,7 @@ Notification
 
 Customer:
 --------------------
-Subscription process
+PlanSubscription process
 - Plan list
 - Plan select and checkout process
 - Payment processing

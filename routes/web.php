@@ -15,7 +15,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 Route::middleware([
     'web',
-    // 'subscription',
+    // 'plan_subscription',
     InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {

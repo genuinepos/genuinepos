@@ -20,6 +20,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $data = [];
         $sale = $saleService->singleSale(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'saleProducts',
@@ -188,7 +190,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         if (($request->status == SaleStatus::Final->value || $request->status == SaleStatus::Order->value) && $request->received_amount > 0) {
 
-            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $addSale->id);
+            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $addSale->id);
 
             // Add Debit Account Accounting voucher Description
             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);

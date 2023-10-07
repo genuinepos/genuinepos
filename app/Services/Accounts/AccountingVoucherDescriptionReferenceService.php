@@ -15,23 +15,23 @@ class AccountingVoucherDescriptionReferenceService
 {
     public function addAccountingVoucherDescriptionReferences(
         int $accountingVoucherDescriptionId,
-        int $accountId,
+        ?int $accountId,
         float $amount,
         string $refIdColName,
         ?array $refIds = null,
         ?int $branchId = null,
     ) {
-        // $index = 0;
-        // foreach ($refIds as $refId) {
 
-        //     $addPaymentDescriptionRef = new AccountingVoucherDescriptionReference();
-        //     $addPaymentDescriptionRef->payment_description_id = $accountingVoucherDescriptionId;
-        //     $addPaymentDescriptionRef->{$refIdColName} = $refId;
-        //     $addPaymentDescriptionRef->amount = $amounts[$index];
-        //     $addPaymentDescriptionRef->save();
+        if ($refIdColName == 'stock_adjustment_id' && count($refIds) > 0) {
 
-        //     $index++;
-        // }
+            $addPaymentDescriptionRef = new AccountingVoucherDescriptionReference();
+            $addPaymentDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+            $addPaymentDescriptionRef->{$refIdColName} = $refIds[0];
+            $addPaymentDescriptionRef->amount = $amount;
+            $addPaymentDescriptionRef->save();
+
+            return;
+        }
 
         if (isset($refIds)) {
 
@@ -74,10 +74,10 @@ class AccountingVoucherDescriptionReferenceService
                 $isOrderInvoice = 0;
                 if ($refIdColName == 'sale_id') {
 
-                    $isOrderInvoice = $dueInvoice->status != 1 ? 1 : 0;
+                    $isOrderInvoice = $dueInvoice->status != SaleStatus::Final->value ? 1 : 0;
                 } elseif ($refIdColName == 'purchase_id') {
 
-                    $isOrderInvoice = $dueInvoice->purchase_status != 1 ? 1 : 0;
+                    $isOrderInvoice = $dueInvoice->purchase_status != PurchaseStatus::Purchase->value ? 1 : 0;
                 }
 
                 if ($dueInvoice->due > $receivedOrPaidAmount) {
@@ -185,10 +185,10 @@ class AccountingVoucherDescriptionReferenceService
                     $isOrderInvoice = 0;
                     if ($refIdColName == 'sale_id') {
 
-                        $isOrderInvoice = $dueInvoice->status != 1 ? 1 : 0;
+                        $isOrderInvoice = $dueInvoice->status != SaleStatus::Final->value ? 1 : 0;
                     } elseif ($refIdColName == 'purchase_id') {
 
-                        $isOrderInvoice = $dueInvoice->purchase_status != 1 ? 1 : 0;
+                        $isOrderInvoice = $dueInvoice->purchase_status != PurchaseStatus::Purchase->value ? 1 : 0;
                     }
 
                     if ($dueInvoice->due > $receivedOrPaidAmount) {

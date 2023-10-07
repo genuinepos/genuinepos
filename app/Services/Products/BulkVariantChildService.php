@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\IsDeleteInUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Products\BulkVariantChild;
 
@@ -36,13 +37,13 @@ class BulkVariantChildService
 
             $addOrUpdateBulkVariantChild->bulk_variant_id = $bulkVariantId;
             $addOrUpdateBulkVariantChild->name = $request->variant_child[$index];
-            $addOrUpdateBulkVariantChild->is_delete_in_update = 0;
+            $addOrUpdateBulkVariantChild->is_delete_in_update = IsDeleteInUpdate::No->value;
             $addOrUpdateBulkVariantChild->save();
 
             $index++;
         }
 
-        $deleteBulkVariantChild = $this->bulkVariantChild()->where('bulk_variant_id', $bulkVariantId)->where('is_delete_in_update', 1)->get();
+        $deleteBulkVariantChild = $this->bulkVariantChild()->where('bulk_variant_id', $bulkVariantId)->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
         if ($deleteBulkVariantChild->count() > 0) {
 
             foreach ($deleteBulkVariantChild as $deleteBulkVariantChild) {

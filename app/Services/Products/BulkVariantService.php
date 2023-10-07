@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\IsDeleteInUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Products\BulkVariant;
 use Yajra\DataTables\Facades\DataTables;
@@ -79,7 +80,7 @@ class BulkVariantService
 
         foreach ($updateBulkVariant->bulkVariantChild as $bulkVariantChild) {
 
-            $bulkVariantChild->is_delete_in_update = 1;
+            $bulkVariantChild->is_delete_in_update = IsDeleteInUpdate::Yes->value;
             $bulkVariantChild->save();
         }
 

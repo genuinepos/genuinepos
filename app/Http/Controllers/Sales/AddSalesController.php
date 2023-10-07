@@ -189,7 +189,7 @@ class AddSalesController extends Controller
             }
         } else {
 
-            return response()->json(['saleFinalMsg' => 'Sale created successfully']);
+            return response()->json(['saleFinalMsg' => __("Sale created successfully")]);
         }
     }
 

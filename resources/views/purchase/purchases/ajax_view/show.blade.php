@@ -253,11 +253,7 @@
          </div>
      </div>
  </div>
- <!-- Details Modal End-->
- @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-@endphp
+
 <style>
     @media print
     {

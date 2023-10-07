@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\StockAdjustments\StockAdjustmentController;
+use App\Http\Controllers\StockAdjustments\Reports\StockAdjustmentReportController;
+use App\Http\Controllers\StockAdjustments\Reports\StockAdjustedProductReportController;
 
 Route::controller(StockAdjustmentController::class)->prefix('stock/adjustments')->group(function () {
 
@@ -21,8 +23,17 @@ Route::controller(StockAdjustmentController::class)->prefix('stock/adjustments')
 
     Route::group(['prefix' => 'reports'], function () {
 
-        Route::get('/', [StockAdjustmentReportController::class, 'index'])->name('reports.stock.adjustments.index');
-        Route::get('all/adjustments', [StockAdjustmentReportController::class, 'allAdjustments'])->name('reports.stock.adjustments.all');
-        Route::get('print', [StockAdjustmentReportController::class, 'print'])->name('reports.stock.adjustments.print');
+        Route::controller(StockAdjustmentReportController::class)->prefix('stock-adjustments')->group(function () {
+
+            Route::get('/', 'index')->name('reports.stock.adjustments.report.index');
+            Route::get('all/amount', 'allAmounts')->name('reports.stock.adjustments.report.all.amount');
+            Route::get('print', 'print')->name('reports.stock.adjustments.report.print');
+        });
+
+        Route::controller(StockAdjustedProductReportController::class)->prefix('stock-adjusted-products')->group(function () {
+
+            Route::get('/', 'index')->name('reports.stock.adjusted.products.report.index');
+            Route::get('print', 'print')->name('reports.stock.adjusted.products.report.print');
+        });
     });
 });

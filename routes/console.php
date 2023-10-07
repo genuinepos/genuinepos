@@ -21,12 +21,4 @@ Artisan::command('dev:m', function () {
 
     //     $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
     // });
-
-    Schema::table('bulk_variants', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('created_by_id')->after('name')->nullable();
-        $table->foreign(['created_by_id'])->references(['id'])->on('users')->onDelete('SET NULL');
-    });
-
-
 });

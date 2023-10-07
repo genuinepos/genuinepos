@@ -1567,7 +1567,7 @@
                                             <a href="{{ route('stock.adjustments.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-plus-square"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __("Add Stock Adjustment") }}</p>
@@ -1580,7 +1580,7 @@
                                             <a href="{{ route('stock.adjustments.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-th-list"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __("Stock Adjustmen List") }}</p>
@@ -1590,30 +1590,29 @@
                                 </div>
                             </div>
 
-                            @if (
-                                (
-                                    auth()->user()->can('stock_adjustment_report') &&
-                                    auth()->user()->can('stock_adjustment_report')
-                                )
-                            )
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>{{ __('Stock Adjustment Reports') }}</strong></p>
-                                        <hr class="p-0 m-0 mb-3">
-                                    </div>
-                                </div> --}}
-
+                            @if (auth()->user()->can('stock_adjustment_report'))
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Stock Adjustment Reports') }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.stock.adjustments.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.stock.adjustments.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-sliders-h"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.stock_adjustment_report')</p>
+                                                <p class="switch_text">{{ __("Stock Adjustment Report") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('reports.stock.adjusted.products.report.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Stock Adjusted Products Report") }}</p>
                                             </a>
                                         </div>
                                     </div>

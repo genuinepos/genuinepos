@@ -6,7 +6,9 @@ use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
 use App\Models\Setups\Warehouse;
+use App\Models\Accounts\AccountingVoucher;
 use App\Models\StockAdjustments\StockAdjustmentProduct;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class StockAdjustment extends BaseModel
 {
@@ -25,6 +27,16 @@ class StockAdjustment extends BaseModel
 
     public function adjustmentProducts()
     {
-        return $this->hasMany(StockAdjustmentProduct::class);
+        return $this->hasMany(StockAdjustmentProduct::class, 'stock_adjustment_id');
+    }
+
+    public function references()
+    {
+        return $this->hasMany(AccountingVoucherDescriptionReference::class, 'stock_adjustment_id');
+    }
+
+    public function accountingVouchers()
+    {
+        return $this->hasMany(AccountingVoucher::class, 'stock_adjustment_ref_id');
     }
 }

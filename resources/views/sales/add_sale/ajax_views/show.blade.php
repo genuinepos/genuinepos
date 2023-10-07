@@ -131,8 +131,7 @@
                                                 $variant = $saleProduct->variant ? ' - '.$saleProduct->variant->variant_name : '';
                                             @endphp
 
-                                            <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}
-                                            </td>
+                                            <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
 
                                             <td class="text-start" style="font-size:11px!important;">
                                                 {{ $saleProduct->product->name.' '.$variant }}

@@ -15,23 +15,23 @@ return new class extends Migration
     {
         Schema::create('stock_adjustments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('stock_adjustment_account_id')->nullable()->index('stock_adjustments_stock_adjustment_account_id_foreign');
-            $table->unsignedBigInteger('warehouse_id')->nullable()->index('stock_adjustments_warehouse_id_foreign');
+            $table->unsignedBigInteger('expense_account_id')->nullable()->index('stock_adjustments_expense_account_id_foreign');
             $table->unsignedBigInteger('branch_id')->nullable()->index('stock_adjustments_branch_id_foreign');
-            $table->string('invoice_id')->nullable();
+            $table->string('voucher_no')->nullable();
             $table->bigInteger('total_item')->default(0);
             $table->decimal('total_qty', 22)->default(0);
             $table->decimal('net_total_amount', 22)->default(0);
             $table->decimal('recovered_amount', 22)->default(0);
             $table->tinyInteger('type')->default(0);
             $table->string('date')->nullable();
-            $table->string('time', 50)->nullable();
-            $table->string('month')->nullable();
-            $table->string('year')->nullable();
-            $table->string('reason')->nullable();
-            $table->timestamp('report_date_ts')->nullable();
-            $table->unsignedBigInteger('admin_id')->nullable()->index('stock_adjustments_admin_id_foreign');
+            $table->timestamp('date_ts')->nullable();
+            $table->text('reason')->nullable();
+            $table->unsignedBigInteger('created_by_id')->nullable()->index('stock_adjustments_created_by_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['created_by_id'])->references(['id'])->on('users')->onDelete('SET NULL');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['expense_account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
         });
     }
 

@@ -19,7 +19,8 @@ interface DraftControllerMethodContainersInterface
         object $draftService,
         object $accountService,
         object $accountFilterService,
-        object $priceGroupService
+        object $priceGroupService,
+        object $managePriceGroupService,
     ): array;
 
     function updateMethodContainer(

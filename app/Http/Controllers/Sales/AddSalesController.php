@@ -22,6 +22,7 @@ use App\Services\Products\ProductStockService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Accounts\AccountingVoucherService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
@@ -35,6 +36,7 @@ class AddSalesController extends Controller
         private SaleProductService $saleProductService,
         private PurchaseProductService $purchaseProductService,
         private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
         private PaymentMethodService $paymentMethodService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
@@ -107,16 +109,18 @@ class AddSalesController extends Controller
         }
 
         $createMethodContainer = $addSaleControllerMethodContainersInterface->createMethodContainer(
+            branchService: $this->branchService,
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,
             paymentMethodService: $this->paymentMethodService,
             warehouseService: $this->warehouseService,
             priceGroupService: $this->priceGroupService,
+            managePriceGroupService: $this->managePriceGroupService,
         );
 
         extract($createMethodContainer);
 
-        return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'warehouses', 'branchName'));
+        return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName'));
     }
 
     public function store(Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
@@ -202,6 +206,7 @@ class AddSalesController extends Controller
 
         $data = $addSaleControllerMethodContainersInterface->editMethodContainer(
             id: $id,
+            branchService: $this->branchService,
             saleService: $this->saleService,
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,

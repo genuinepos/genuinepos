@@ -44,6 +44,7 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         object $accountService,
         object $accountFilterService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $draft = $draftService->singleDraft(id: $id, with: [
@@ -85,6 +86,7 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
         $data['draft'] = $draft;
 
         return $data;

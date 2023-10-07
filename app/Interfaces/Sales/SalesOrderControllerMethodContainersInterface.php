@@ -20,7 +20,8 @@ interface SalesOrderControllerMethodContainersInterface
         object $accountService,
         object $accountFilterService,
         object $paymentMethodService,
-        object $priceGroupService
+        object $priceGroupService,
+        object $managePriceGroupService,
     ): array;
 
     function updateMethodContainer(

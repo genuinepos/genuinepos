@@ -334,18 +334,34 @@ class BranchService
         $addUser->save();
     }
 
-    function branchName(): string
+    function branchName(?object $transObject = null): string
     {
         $generalSettings = config('generalSettings');
         $branchName = $generalSettings['business__shop_name'];
-        if (auth()->user()?->branch) {
 
-            if (auth()->user()?->branch->parentBranch) {
+        if (isset($transObject)) {
 
-                $branchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
-            } else {
+            if ($transObject?->branch?->branch) {
 
-                $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
+                if ($transObject?->branch->parentBranch) {
+
+                    $branchName = $transObject?->branch?->parentBranch?->name . '(' . $transObject?->branch?->parentBranch?->area_name . ')';
+                } else {
+
+                    $branchName = $transObject?->branch?->name . '(' . $transObject?->branch?->area_name . ')';
+                }
+            }
+        }else {
+
+            if (auth()->user()?->branch) {
+
+                if (auth()->user()?->branch->parentBranch) {
+
+                    $branchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
+                } else {
+
+                    $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
+                }
             }
         }
 

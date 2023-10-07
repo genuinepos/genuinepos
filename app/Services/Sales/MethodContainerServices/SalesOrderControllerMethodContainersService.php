@@ -54,6 +54,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         object $accountFilterService,
         object $paymentMethodService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $order = $salesOrderService->singleSalesOrder(id: $id, with: [
@@ -97,6 +98,9 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
+        
         $data['order'] = $order;
 
         return $data;

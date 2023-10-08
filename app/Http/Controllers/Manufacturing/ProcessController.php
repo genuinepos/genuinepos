@@ -8,11 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
 use App\Services\Manufacturing\ProcessService;
+use App\Services\Manufacturing\ProcessProductService;
 
 class ProcessController extends Controller
 {
     public function __construct(
         private ProcessService $processService,
+        private ProcessProductService $processProductService,
         private AccountService $accountService,
         private ProductService $productService,
     ) {
@@ -26,18 +28,12 @@ class ProcessController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        // if ($request->ajax()) {
+        if ($request->ajax()) {
 
-        // return $this->processUtil->processTable($request);
-        // }
+            return $this->processService->processTable($request);
+        }
 
         return view('manufacturing.process.index');
-    }
-
-    function selectProductModal()
-    {
-        $products = $this->productService->branchProducts(branchId: auth()->user()->branch_id, withVariant: true);
-        return view('manufacturing.process.ajax_view.process_select_product_modal', compact('products'));
     }
 
     // public function show($processId)
@@ -58,6 +54,12 @@ class ProcessController extends Controller
 
     //     return view('manufacturing.process.ajax_view.show', compact('process'));
     // }
+
+    function selectProductModal()
+    {
+        $products = $this->productService->branchProducts(branchId: auth()->user()->branch_id, withVariant: true);
+        return view('manufacturing.process.ajax_view.process_select_product_modal', compact('products'));
+    }
 
     public function create(Request $request)
     {
@@ -87,87 +89,86 @@ class ProcessController extends Controller
         return view('manufacturing.process.create', compact('product', 'taxAccounts'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     if (! auth()->user()->can('process_add')) {
-    //         return response()->json('Access Denied.');
-    //     }
+    public function store(Request $request)
+    {
+        if (!auth()->user()->can('process_add')) {
 
-    //     $this->validate($request, [
-    //         'total_output_qty' => 'required',
-    //         'unit_id' => 'required',
-    //         'total_cost' => 'required',
-    //     ]);
+            return response()->json('Access Denied.');
+        }
 
-    //     $addProcess = new Process();
-    //     $addProcess->branch_id = auth()->user()->branch_id;
-    //     $addProcess->product_id = $request->product_id;
-    //     $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
-    //     $addProcess->total_ingredient_cost = $request->total_ingredient_cost;
-    //     $addProcess->total_output_qty = $request->total_output_qty;
-    //     $addProcess->unit_id = $request->unit_id;
-    //     $addProcess->production_cost = $request->production_cost;
-    //     $addProcess->total_cost = $request->total_cost;
-    //     $addProcess->save();
+        $this->validate($request, [
+            'total_output_qty' => 'required',
+            'unit_id' => 'required',
+            'net_cost' => 'required',
+        ]);
 
-    //     if (isset($request->product_ids)) {
+        try {
 
-    //         $index = 0;
-    //         foreach ($request->product_ids as $product_id) {
+            DB::beginTransaction();
+            $addProcess = $this->processService->addProcess(request: $request);
 
-    //             $addProcessIngredient = new ProcessIngredient();
-    //             $addProcessIngredient->process_id = $addProcess->id;
-    //             $addProcessIngredient->product_id = $product_id;
-    //             $addProcessIngredient->variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-    //             $addProcessIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
-    //             $addProcessIngredient->final_qty = $request->final_quantities[$index];
-    //             $addProcessIngredient->unit_id = $request->unit_ids[$index];
-    //             $addProcessIngredient->subtotal = $request->subtotals[$index];
-    //             $addProcessIngredient->save();
-    //             $index++;
-    //         }
-    //     }
+            if (isset($request->product_ids)) {
 
-    //     return response()->json('Manufacturing Process created successfully');
-    // }
+                $this->processProductService->addProcessProducts(request: $request, processId: $addProcess->id);
+            }
 
-    // public function edit($processId)
-    // {
-    //     if (! auth()->user()->can('process_edit')) {
-    //         abort(403, 'Access Forbidden.');
-    //     }
+            DB::commit();
+        } catch (Exception $e) {
 
-    //     $process = DB::table('processes')->where('processes.id', $processId)
-    //         ->leftJoin('products', 'processes.product_id', 'products.id')
-    //         ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
-    //         ->select(
-    //             'processes.*',
-    //             'products.id as p_id',
-    //             'products.name as p_name',
-    //             'products.product_code as p_code',
-    //             'product_variants.id as v_id',
-    //             'product_variants.variant_name as v_name',
-    //             'product_variants.variant_code as v_code',
-    //         )->first();
+            DB::rollBack();
+        }
 
-    //     $units = DB::table('units')->select('id', 'name')->get();
+        return response()->json(__('Manufacturing Process created successfully'));
+    }
 
-    //     $processIngredients = DB::table('process_ingredients')
-    //         ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
-    //         ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
-    //         ->where('process_id', $processId)
-    //         ->select(
-    //             'process_ingredients.*',
-    //             'products.id as p_id',
-    //             'products.name as p_name',
-    //             'products.product_code as p_code',
-    //             'product_variants.id as v_id',
-    //             'product_variants.variant_name as v_name',
-    //             'product_variants.variant_code as v_code',
-    //         )->get();
+    public function edit($id)
+    {
+        if (!auth()->user()->can('process_edit')) {
 
-    //     return view('manufacturing.process.edit', compact('process', 'units', 'processIngredients'));
-    // }
+            abort(403, 'Access Forbidden.');
+        }
+
+        // $process = DB::table('processes')->where('processes.id', $processId)
+        //     ->leftJoin('products', 'processes.product_id', 'products.id')
+        //     ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
+        //     ->select(
+        //         'processes.*',
+        //         'products.id as p_id',
+        //         'products.name as p_name',
+        //         'products.product_code as p_code',
+        //         'product_variants.id as v_id',
+        //         'product_variants.variant_name as v_name',
+        //         'product_variants.variant_code as v_code',
+        //     )->first();
+
+        // $units = DB::table('units')->select('id', 'name')->get();
+
+        // $processIngredients = DB::table('process_ingredients')
+        //     ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
+        //     ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
+        //     ->where('process_id', $processId)
+        //     ->select(
+        //         'process_ingredients.*',
+        //         'products.id as p_id',
+        //         'products.name as p_name',
+        //         'products.product_code as p_code',
+        //         'product_variants.id as v_id',
+        //         'product_variants.variant_name as v_name',
+        //         'product_variants.variant_code as v_code',
+        //     )->get();
+
+        $process = $this->processService->process(with: [
+            'product',
+            'variant',
+            'unit',
+            'ingredients',
+            'ingredients.product',
+            'ingredients.variant',
+            'ingredients.unit',
+        ])->where('id', $id)->first();
+
+        return view('manufacturing.process.edit', compact('process'));
+    }
 
     // public function update(Request $request, $processId)
     // {

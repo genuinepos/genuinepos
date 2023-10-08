@@ -3,9 +3,10 @@
 namespace App\Models\Manufacturing;
 
 use App\Models\BaseModel;
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\Unit;
+use App\Models\Products\Unit;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
+use App\Models\Manufacturing\ProcessIngredient;
 
 class Process extends BaseModel
 {

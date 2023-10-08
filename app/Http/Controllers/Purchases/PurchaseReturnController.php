@@ -342,7 +342,7 @@ class PurchaseReturnController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', $return->branch_id)
+            // ->where('accounts.branch_id', $return->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);

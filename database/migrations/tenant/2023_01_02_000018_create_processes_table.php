@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('wastage_amount', 22, 2)->default(0);
             $table->decimal('total_output_qty', 22, 2)->default(0);
             $table->unsignedBigInteger('unit_id')->nullable()->index('processes_unit_id_foreign');
-            $table->decimal('production_cost', 22, 2)->default(0);
+            $table->decimal('additional_production_cost', 22, 2)->default(0);
             $table->decimal('net_cost', 22, 2)->default(0);
             $table->text('process_instruction')->nullable();
             $table->timestamps();

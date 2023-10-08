@@ -9,17 +9,7 @@
     var branch_name = "{{ $branchName }}";
 
     // Get all price group
-    var priceGroups = '';
-    function getPriceGroupProducts(){
-
-        $.ajax({
-            url:"{{route('sales.product.price.groups')}}",
-            success:function(data) {
-                priceGroups = data;
-            }
-        });
-    }
-    getPriceGroupProducts();
+    var priceGroups = @json($priceGroupProducts);
 
     var delay = (function() {
         var timer = 0;

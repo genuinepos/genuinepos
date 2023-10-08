@@ -7,6 +7,7 @@ use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
 use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\ProductSettingsController;
 use App\Http\Controllers\Products\PriceGroupManageController;
@@ -48,6 +49,16 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::get('edit/{id}', 'edit')->name('units.edit');
         Route::post('update/{id}', 'update')->name('units.update');
         Route::delete('delete/{id}', 'delete')->name('units.delete');
+    });
+
+    Route::controller(BulkVariantController::class)->prefix('bulk-variants')->group(function () {
+
+        Route::get('/', 'index')->name('product.bulk.variants.index');
+        Route::get('create', 'create')->name('product.bulk.variants.create');
+        Route::post('store', 'store')->name('product.bulk.variants.store');
+        Route::get('edit/{id}', 'edit')->name('product.bulk.variants.edit');
+        Route::post('update/{id}', 'update')->name('product.bulk.variants.update');
+        Route::delete('delete/{id}', 'delete')->name('product.bulk.variants.delete');
     });
 
     Route::controller(BrandController::class)->prefix('brands')->group(function () {

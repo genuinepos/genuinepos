@@ -3,6 +3,7 @@
 namespace App\Models\Products;
 
 use App\Models\BaseModel;
+use App\Models\Products\Category;
 
 class Category extends BaseModel
 {
@@ -10,12 +11,12 @@ class Category extends BaseModel
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function Subcategories()
+    public function subcategories()
     {
         return $this->hasMany(Category::class, 'parent_category_id');
     }
 
-    public function parent_category()
+    public function parentCategory()
     {
         return $this->belongsTo(Category::class);
     }

@@ -19,7 +19,8 @@ interface QuotationControllerMethodContainersInterface
         object $quotationService,
         object $accountService,
         object $accountFilterService,
-        object $priceGroupService
+        object $priceGroupService,
+        object $managePriceGroupService
     ): array;
 
     function updateMethodContainer(

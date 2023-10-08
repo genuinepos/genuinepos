@@ -5,18 +5,8 @@
     $('.select2').select2();
 
     var itemUnitsArray = @json($itemUnitsArray);
-    // Get all price group
-    var priceGroups = '';
-    function getPriceGroupProducts(){
 
-        $.ajax({
-            url:"{{route('sales.product.price.groups')}}",
-            success:function(data) {
-                priceGroups = data;
-            }
-        });
-    }
-    getPriceGroupProducts();
+    var priceGroups = @json($priceGroupProducts);
 
     var delay = (function() {
         var timer = 0;
@@ -1053,7 +1043,7 @@
         $('#add_product').on('click', function () {
 
             $.ajax({
-                url:"{{route('sales.add.product.modal.view')}}",
+                url:"#",
                 type:'get',
                 success:function(data){
 
@@ -1077,23 +1067,6 @@
                 success: function(data) {
 
                     toastr.success('Successfully product is added.');
-                    $.ajax({
-                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
-                        type:'get',
-                        success:function(data){
-
-                            $('.loading_button').hide();
-                            $('#addProductModal').modal('hide');
-                            if (!$.isEmptyObject(data.errorMsg)) {
-
-                                toastr.error(data.errorMsg);
-                            }else{
-
-                                $('.sale-product-table tbody').prepend(data);
-                                calculateTotalAmount();
-                            }
-                        }
-                    });
                 },error: function(err) {
 
                     $('.loading_button').hide();

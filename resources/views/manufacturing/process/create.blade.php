@@ -11,32 +11,33 @@
         table.display td input {height: 26px!important; padding: 3px;}
     </style>
 @endpush
+@section('title', 'Create Process - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>@lang('menu.create_process')</h5>
+                    <h5>{{ __("Create Process") }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="add_process_form" action="{{ route('manufacturing.process.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <input type="hidden" name="product_id" value="{{ $product['p_id'] }}">
-                <input type="hidden" name="variant_id" value="{{ $product['v_id'] ? $product['v_id'] : 'noid' }}">
+                <input type="hidden" name="product_id" value="{{ $product['product_id'] }}">
+                <input type="hidden" name="variant_id" value="{{ $product['variant_id'] ? $product['variant_id'] : 'noid' }}">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-12">
                                     @php
-                                        $p_code = $product['v_code'] ? $product['v_code'] : $product['p_code'];
+                                        $productCode = $product['variant_code'] ? $product['variant_code'] : $product['product_code'];
                                     @endphp
-                                    <p> <strong>@lang('menu.product') </strong> {{ $product['p_name'].' '.$product['v_name'].' ('.$p_code.')' }}</p>
+                                    <p> <strong>{{ __("Product") }} : </strong> {{ $product['product_name'].' '.$product['variant_name'].' ('.$productCode.')' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -47,22 +48,65 @@
                     <div class="sale-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card mb-3">
+                                <div class="card mb-1">
                                     <div class="card-body p-2">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6 offset-md-3">
+                                        <div class="row mb-2">
+                                            <div class="col-md-3">
+                                                <input type="hidden" id="e_unique_id">
+                                                <input type="hidden" id="e_item_name">
+                                                <input type="hidden" id="e_product_id">
+                                                <input type="hidden" id="e_variant_id">
                                                 <div class="searching_area" style="position: relative;">
-                                                    <label for="inputEmail3" class="col-form-label">@lang('menu.select_ingredients')</label>
+                                                    <label class="col-form-label">{{ __("Search Ingredient") }}</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-barcode text-dark"></i></span>
                                                         </div>
-                                                        <input type="text" name="search_product" class="form-control scanable" autocomplete="off" id="search_product" placeholder="Search Ingredient by product code(SKU) / Scan bar code" autofocus>
+                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Ingredient By Name / Code") }}" autocomplete="off" autofocus>
                                                     </div>
                                                     <div class="select_area">
                                                         <ul id="list" class="variant_list_area"></ul>
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Quantity') }}</label>
+                                                <div class="input-group">
+                                                    <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
+                                                    <select id="e_unit_id" class="form-control w-40">
+                                                        <option value="">{{ __('Unit') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Unit Cost(Exc. Tax)') }}</label>
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_exc_tax" value="0.00" placeholder="0.00" autocomplete="off">
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __('Vat/Tax') }}</label>
+                                                <div class="input-group">
+                                                    <select id="e_tax_ac_id" class="form-control w-50">
+                                                        <option data-product_tax_percent="0.00" value="">{{ __('NoVat/Tax') }}</option>
+                                                        @foreach ($taxAccounts as $taxAccount)
+                                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                                {{ $taxAccount->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+        
+                                                    <select id="e_tax_type" class="form-control w-50">
+                                                        <option value="1">{{ __('Exclusive') }}</option>
+                                                        <option value="2">{{ __('Inclusive') }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-md-4">
+                                                <label class="fw-bold">{{ __("Subtotal") }}</label>
+                                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_linetotal" value="0.00" placeholder="0.00" tabindex="-1">
                                             </div>
                                         </div>
 
@@ -72,11 +116,13 @@
                                                     <table class="display data__table table-striped">
                                                         <thead class="staky">
                                                             <tr>
-                                                                <th>@lang('menu.ingredient')</th>
-                                                                <th>@lang('menu.final_quantity')</th>
-                                                                <th>@lang('menu.unit')</th>
-                                                                <th>@lang('menu.unit_cost')</th>
-                                                                <th>@lang('menu.sub_total')</th>
+                                                                <th>{{ __("Ingredient") }}</th>
+                                                                <th>{{ __("Final Quantity") }}</th>
+                                                                <th>{{ __("Unit") }}</th>
+                                                                <th>{{ __("Unit Cost Exc. Tax") }}</th>
+                                                                <th>{{ __("Vat/Tax") }}</th>
+                                                                <th>{{ __("Unit Cost Inc. Tax") }}</th>
+                                                                <th>{{ __("Subtotal") }}</th>
                                                                 <th><i class="fas fa-trash-alt"></i></th>
                                                             </tr>
                                                         </thead>
@@ -85,7 +131,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -96,34 +141,34 @@
                 <div class="row">
                     <div class="col-md-12">
                         <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="mt-1 float-end clearfix"><strong>{{  __('Total Ingrediant Cost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_output_qty') : <span class="text-danger">*</span></b></label>
+                                    <label><b>{{ __("Total Output Qty") }}: <span class="text-danger">*</span></b></label>
                                     <div class="row">
                                         <div class="input-group">
-                                            <input required type="number" step="any" name="total_output_qty" class="form-control" autocomplete="off" id="total_output_qty" placeholder="@lang('menu.total_output_quantity')" value="1.00">
-                                            <select required name="unit_id" class="form-control" id="unit_id"></select>
+                                            <input required type="number" step="any" name="total_output_qty" class="form-control fw-bold" autocomplete="off" id="total_output_qty" placeholder="{{ __("Total Output Qty") }}" value="1.00">
+                                            <input readonly type="text" class="form-control fw-bold" value="{{ $product['unit_name'] }}">
+                                            <input type="hidden" name="unit_id" class="form-control" id="unit_id" value="{{ $product['unit_id'] }}">
                                             <span class="error error_total_output_qty"></span>
-                                            <span class="error error_unit_id"></span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>{{ __('Additional Production Cost') }} </b></label>
-                                    <input type="number" step="any" name="production_cost" class="form-control" autocomplete="off" id="production_cost" placeholder="Production Cost" value="0">
+                                    <label><b>{{ __('Additional Production Cost') }}</b></label>
+                                    <input type="number" step="any" name="production_cost" class="form-control fw-bold" autocomplete="off" id="production_cost" placeholder="{{ __('Additional Production Cost') }}" value="0">
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label><b>@lang('menu.total_cost') : <span class="text-danger">*</span></b></label>
-                                    <input required type="number" step="any" name="total_cost" class="form-control" autocomplete="off" id="total_cost" placeholder="@lang('menu.total_cost')">
+                                    <label><b>{{ __("Net Cost") }} <span class="text-danger">*</span></b></label>
+                                    <input required type="number" step="any" name="total_cost" class="form-control fw-bold" autocomplete="off" id="total_cost" placeholder="{{ __("Net Cost") }}">
                                 </div>
                             </div>
                         </div>
@@ -135,7 +180,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
+                                <button class="btn px-3 btn-success submit_button">{{ __("Save") }}</button>
                             </div>
                         </div>
                     </div>
@@ -147,23 +192,6 @@
 @push('scripts')
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script>
-        var unit_id = "{{ $product['unit_id'] }}";
-        var unites = [];
-        function getUnites(){
-
-            $.ajax({
-                url:"{{ route('purchases.get.all.unites') }}",
-                success:function(units){
-                    $.each(units, function(key, unit){
-
-                        $('#unit_id').append('<option '+(unit.id == unit_id ? 'SELECTED' : '')+' value="'+unit.id+'">'+unit.name+'</option>');
-                        unites.push({id : unit.id, name : unit.name});
-                    });
-                }
-            });
-        }
-        getUnites();
-
         $('#search_product').on('input', function(e) {
 
             $('.variant_list_area').empty();

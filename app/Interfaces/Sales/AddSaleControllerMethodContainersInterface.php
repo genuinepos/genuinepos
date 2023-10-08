@@ -9,11 +9,13 @@ interface AddSaleControllerMethodContainersInterface
      */
 
     public function createMethodContainer(
+        object $branchService,
         object $accountService,
         object $accountFilterService,
         object $paymentMethodService,
         object $warehouseService,
-        object $priceGroupService
+        object $priceGroupService,
+        object $managePriceGroupService,
     ): ?array;
 
     public function storeMethodContainer(
@@ -42,12 +44,13 @@ interface AddSaleControllerMethodContainersInterface
 
     function editMethodContainer(
         int $id,
+        object $branchService,
         object $saleService,
         object $accountService,
         object $accountFilterService,
         object $paymentMethodService,
         object $warehouseService,
-        object $priceGroupService
+        object $managePriceGroupService,
     ): array;
 
     function updateMethodContainer(

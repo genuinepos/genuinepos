@@ -3,8 +3,10 @@
 namespace Modules\SAAS\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Modules\SAAS\Notifications\VerifyEmail;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class VerificationController extends Controller
@@ -27,7 +29,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = 'saas/dashboard';
 
     /**
      * Create a new controller instance.
@@ -46,5 +48,22 @@ class VerificationController extends Controller
         return $request->user()->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
                         : view('saas::auth.verify');
+    }
+
+    public function resend(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return $request->wantsJson()
+                        ? new JsonResponse([], 204)
+                        : redirect($this->redirectPath());
+        }
+
+        $request->user()->notify(new VerifyEmail);
+
+        // $request->user()->sendEmailVerificationNotification();
+
+        return $request->wantsJson()
+                    ? new JsonResponse([], 202)
+                    : back()->with('resent', true);
     }
 }

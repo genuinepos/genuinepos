@@ -2387,7 +2387,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">@lang('menu.manufacturing')</p>
+                                <p class="sub-menu-group-title">{{ __("Manufacturing") }}</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('process_view'))
                                         <div class="sub-menu-col">
@@ -2397,7 +2397,7 @@
                                                         <span><i class="fas fa-dumpster-fire"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.process')</p>
+                                                <p class="switch_text">{{ __("Process") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2410,7 +2410,7 @@
                                                         <span><i class="fas fa-shapes"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.productions')</p>
+                                                <p class="switch_text">{{ __("Productions") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2423,7 +2423,7 @@
                                                         <span><i class="fas fa-sliders-h"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.manufacturing_setting')</p>
+                                                <p class="switch_text">{{ __("Manufacturing Setting") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2436,7 +2436,7 @@
                                                         <span><i class="fas fa-file-alt"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.manufacturing_report')</p>
+                                                <p class="switch_text">{{ __("Manufacturing Report") }}</p>
                                             </a>
                                         </div>
                                     @endif

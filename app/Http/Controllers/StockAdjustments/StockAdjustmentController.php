@@ -117,7 +117,6 @@ class StockAdjustmentController extends Controller
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $storeMethodContainer = $stockAdjustmentControllerMethodContainersInterface->storeMethodContainer(

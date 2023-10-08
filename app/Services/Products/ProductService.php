@@ -498,13 +498,31 @@ class ProductService
         return $query;
     }
 
-    public function branchProducts(?int $branchId): ?object
+    public function branchProducts(?int $branchId, bool $withVariant = false): ?object
     {
-        return DB::table('products')
-            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
-            ->where('product_access_branches.branch_id', $branchId)
-            ->select('products.*')
-            ->get();
+        if ($withVariant == false) {
+
+            return DB::table('products')
+                ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+                ->where('product_access_branches.branch_id', $branchId)
+                ->select('products.*')
+                ->get();
+        } else if ($withVariant == true) {
+
+            return DB::table('products')
+                ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+                ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+                ->where('product_access_branches.branch_id', $branchId)
+                ->select(
+                    'products.*',
+                    'product_variants.id as variant_id',
+                    'product_variants.variant_name',
+                    'product_variants.variant_code',
+                    'product_variants.variant_cost',
+                    'product_variants.variant_cost_with_tax',
+                    'product_variants.variant_price',
+                )->get();
+        }
     }
 
     public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object

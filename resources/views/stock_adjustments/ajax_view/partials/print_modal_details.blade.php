@@ -94,7 +94,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Stock Adjustment Voucher") }}</strong></h4>
+                <h6 style="text-transform: uppercase;"><strong>{{ __("Stock Adjustment Voucher") }}</strong></h6>
             </div>
         </div>
 
@@ -168,7 +168,7 @@
                                 @endif
                             </td>
 
-                            <td class="text-start" style="font-size:11px!important;">{{ $adjustmentProduct->quantity }}</td>
+                            <td class="text-start" style="font-size:11px!important;">{{ $adjustmentProduct->quantity.'/'.$adjustmentProduct?->unit?->code_name }}</td>
                             <td class="text-start" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($adjustmentProduct->unit_cost_inc_tax) }}
                             </td>
@@ -197,7 +197,6 @@
                                 {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                             </td>
                         </tr>
-
                     </thead>
                 </table>
             </div>
@@ -240,7 +239,7 @@
 
                 <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">{{ __("Powered By") }} <strong>SpeedDigit Software Solution.</strong></small>
+                        <small class="d-block" style="font-size: 9px!important;">{{ __("Powered By") }} <strong>{{ __("SpeedDigit Software Solution.") }}</strong></small>
                     @endif
                 </div>
 

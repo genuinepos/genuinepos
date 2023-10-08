@@ -264,9 +264,10 @@
         tfoot { display:table-footer-group }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 5px;margin-right: 5px;}
+    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
+
  <!-- Purchase print templete-->
 <div class="print_modal_details d-none">
     <div class="details_area">
@@ -335,12 +336,12 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        <strong>@lang('menu.email') : </strong> <b>{{ $purchase?->branch?->email }}</b>,
-                        <strong>@lang('menu.phone') : </strong> <b>{{ $purchase?->branch?->phone }}</b>
+                        <strong>@lang('menu.email') : </strong> {{ $purchase?->branch?->email }},
+                        <strong>@lang('menu.phone') : </strong> {{ $purchase?->branch?->phone }}
                     @else
 
-                        <strong>@lang('menu.email') : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>@lang('menu.phone') : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
+                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
                     @endif
                 </p>
             </div>
@@ -348,26 +349,26 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Invoice") }}</strong></h4>
+                <h5 style="text-transform: uppercase;"><strong>{{ __("Purchase Invoice") }}</strong></h5>
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : </strong><b>{{ $purchase->supplier->name }}</b></li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong><b>{{ $purchase->supplier->address }}</b></li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong><b>{{ $purchase->supplier->phone }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : </strong>{{ $purchase->supplier->name }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong>{{ $purchase->supplier->address }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong>{{ $purchase->supplier->phone }}</li>
                 </ul>
             </div>
 
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
-                        <b>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}</b>
+                        {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}
                     </li>
 
-                    <li style="font-size:11px!important;"><strong>{{ __("Invoice ID") }} : </strong><b>{{ $purchase->invoice_id }}</b></li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Invoice ID") }} : </strong>{{ $purchase->invoice_id }}</li>
 
                     <li style="font-size:11px!important;"><strong>{{ __("Payment Status") }} : </strong>
                         @php
@@ -383,7 +384,7 @@
                     </li>
 
                     <li style="font-size:11px!important;"><strong>{{ __("Created By") }} : </strong>
-                        <b>{{ $purchase?->admin?->prefix.' '.$purchase?->admin?->name.' '.$purchase?->admin?->last_name }}</b>
+                        {{ $purchase?->admin?->prefix.' '.$purchase?->admin?->name.' '.$purchase?->admin?->last_name }}
                     </li>
                 </ul>
             </div>
@@ -417,9 +418,9 @@
                                     <small class="d-block text-muted"><strong>{{ __("Batch No") }} :</strong>  {{ $purchaseProduct->batch_number }}, <strong>{{ __("Expire Date") }} :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
-                            <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
+                            <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity.'/'.$purchaseProduct?->unit?->code_name }}</td>
                             <td class="text-start" style="font-size:11px!important;">
-                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost) }}
+                                {{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost_exc_tax) }}
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_discount) }} </td>
                             <td class="text-start" style="font-size:11px!important;">{{ '('.$purchaseProduct->unit_tax_percent.'%)='.$purchaseProduct->unit_tax_amount }}</td>
@@ -439,7 +440,7 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                             </td>
                         </tr>
 
@@ -448,11 +449,11 @@
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($purchase->order_discount_type == 1)
 
-                                    <b>({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}</b>
+                                    ({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}
                                 @else
 
-                                    <b>({{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}%=)
-                                    {{ App\Utils\Converter::format_in_bdt($purchase->order_discount_amount) }}</b>
+                                    ({{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}%=)
+                                    {{ App\Utils\Converter::format_in_bdt($purchase->order_discount_amount) }}
                                 @endif
                             </td>
                         </tr>
@@ -460,42 +461,42 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Purchase Tax") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ '('.$purchase->purchase_tax_percent.'%)='. $purchase->purchase_tax_amount }}</b>
+                                {{ '('.$purchase->purchase_tax_percent.'%)='. $purchase->purchase_tax_amount }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Shipment Charge") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Total') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Paid") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->paid) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Due (On Invoice)") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt(0) }}
                             </td>
                         </tr>
                     </thead>

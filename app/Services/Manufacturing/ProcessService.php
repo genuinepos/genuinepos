@@ -8,6 +8,22 @@ use App\Models\Manufacturing\Process;
 
 class ProcessService
 {
+    public function addProcess(object $request): object
+    {
+        $addProcess = new Process();
+        $addProcess->branch_id = auth()->user()->branch_id;
+        $addProcess->product_id = $request->product_id;
+        $addProcess->variant_id = $request->variant_id != 'noid' ? $request->variant_id : null;
+        $addProcess->total_ingredient_cost = $request->total_ingredient_cost;
+        $addProcess->total_output_qty = $request->total_output_qty;
+        $addProcess->unit_id = $request->unit_id;
+        $addProcess->additional_production_cost = $request->additional_production_cost;
+        $addProcess->net_cost = $request->net_cost;
+        $addProcess->save();
+
+        return $addProcess;
+    }
+
     public function process(array $with = null): ?object
     {
         $query = Process::query();

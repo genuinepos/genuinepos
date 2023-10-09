@@ -294,7 +294,7 @@
                                                     @foreach ($purchase->purchaseProducts as $purchaseProduct)
                                                         @php
                                                             $variant = $purchaseProduct->variant ? ' - '.$purchaseProduct->variant->variant_name : '';
-                                                            $variantId = $purchaseProduct->product_variant_id ? $purchaseProduct->product_variant_id : 'noid';
+                                                            $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : 'noid';
 
                                                             if (isset($purchaseProduct->product_id)) {
                                                                 $itemUnitsArray[$purchaseProduct->product_id][] = [

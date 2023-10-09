@@ -1021,6 +1021,20 @@
         $('#add_item').html('Add');
     }
 
+    $(document).on('click', '#remove_product_btn',function(e){
+
+        e.preventDefault();
+
+        $(this).closest('tr').remove();
+
+        calculateTotalAmount();
+
+        setTimeout(function () {
+
+            clearEditItemFileds();
+        }, 5);
+    });
+
     // Input order discount and clculate total amount
     $(document).on('input', '#order_discount', function(){
 

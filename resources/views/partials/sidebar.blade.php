@@ -2397,7 +2397,7 @@
                                                         <span><i class="fas fa-dumpster-fire"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Process") }}</p>
+                                                <p class="switch_text">{{ __("Process/Bill Of Material") }}</p>
                                             </a>
                                         </div>
                                     @endif

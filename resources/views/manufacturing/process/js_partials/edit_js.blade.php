@@ -1,5 +1,5 @@
 <script>
-    var itemUnitsArray = [];
+    var itemUnitsArray = @json($itemUnitsArray);
 
     function calculateTotalAmount(){
 
@@ -189,7 +189,6 @@
         });
     }
 
-    // select single product and add purchase table
     function selectProduct(e) {
 
         $('.select_area').hide();
@@ -313,6 +312,7 @@
             tr += '<input type="hidden" id="item_name" value="'+e_item_name+'">';
             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="'+e_product_id+'">';
             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="'+e_variant_id+'">';
+            tr += '<input type="hidden" name="process_ingredient_ids[]">';
             tr += '<input type="hidden" id="'+uniqueId+'" value="'+uniqueId+'">';
             tr += '</td>';
 
@@ -437,7 +437,7 @@
         e.preventDefault();
 
         $(this).closest('tr').remove();
-
+        
         calculateTotalAmount();
 
         setTimeout(function () {
@@ -549,19 +549,14 @@
         }
     }
 
-    //Add purchase request by ajax
-    $('#add_process_form').on('submit', function(e){
+    //Edit Production Process request by ajax
+    $('#edit_process_form').on('submit', function(e){
         e.preventDefault();
 
         $('.loading_button').show();
         var url = $(this).attr('action');
 
-        isAjaxIn = false;
-        isAllowSubmit = false;
         $.ajax({
-            beforeSend: function(){
-                isAjaxIn = true;
-            },
             url:url,
             type:'post',
             data: new FormData(this),
@@ -569,9 +564,6 @@
             cache: false,
             processData: false,
             success:function(data){
-
-                isAjaxIn = true;
-                isAllowSubmit = true;
 
                 $('.error').html('');
                 $('.loading_button').hide();
@@ -584,8 +576,6 @@
                 window.location = "{{ url()->previous() }}";
             },error: function(err) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.error').html('');
 
@@ -607,11 +597,6 @@
                 });
             }
         });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
     });
 
     $('body').keyup(function(e){

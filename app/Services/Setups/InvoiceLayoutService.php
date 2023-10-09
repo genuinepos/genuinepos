@@ -146,7 +146,6 @@ class InvoiceLayoutService
 
     public function updateInvoiceLayout(int $id, object $request): void
     {
-        // dd($request->all());
         $updateInvoiceLayout = InvoiceLayout::where('id', $id)->first();
         $updateInvoiceLayout->branch_id = auth()->user()->branch_id;
         $updateInvoiceLayout->name = $request->name;

@@ -59,8 +59,6 @@ class AccountingVoucherDescriptionReferenceService
         $receivedOrPaidAmount = $amount;
         $dueSpecificInvoices = $this->dueSpecificInvoices(accountId: $accountId, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);
 
-        // dd($dueSpecificInvoices);
-
         // $dueInvoices = Sale::where('customer_id', $customerId)
         //     ->whereIn('id', $saleIds)
         //     ->orderBy('report_date', 'asc')

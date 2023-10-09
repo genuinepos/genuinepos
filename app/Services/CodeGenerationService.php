@@ -65,7 +65,6 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
             $entry = trim($entryRaw->$column);
             $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
-            // dd($splitterSplittedArray);
             $serial = $splitterSplittedArray[2];
             $previousMonthDigits = substr($splitterSplittedArray[1], -2);
             $currentMonthDigit = date('m');
@@ -93,8 +92,6 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
 
-        // dd($entryRaw);
-
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
         $dateTimeStrPrefix = date('ym');
         $prefixLength = strlen($prefix);
@@ -121,7 +118,6 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
         $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
         $finalStr = $prefix.$splitter.$finalSuffix;
-        // dd($finalStr);
         return $finalStr;
     }
 
@@ -133,8 +129,6 @@ class CodeGenerationService implements CodeGenerationServiceInterface
             ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
             // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
             ->first(["$column"]);
-
-        // dd($entryRaw);
 
         $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
         //$dateTimeStrPrefix = date('ym');
@@ -161,7 +155,6 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $finalSuffix = $suffixSeparator.$lastDigitsFinal;
         // $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
         $finalStr = $prefix.$splitter.$finalSuffix;
-        // dd($finalStr);
         return $finalStr;
     }
 }

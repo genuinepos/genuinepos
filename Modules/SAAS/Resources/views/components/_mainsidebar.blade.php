@@ -29,22 +29,25 @@
                     @endcanany
                 </ul>
                 <ul class="sidebar-link-group">
+                    @canany(['transactions'])
                     <li class="sidebar-dropdown-item">
                         <a role="button" class="sidebar-link has-sub" data-dropdown="billingDropdown">
                             <span class="nav-icon"><i class="fa-light fa-chart-simple"></i></span>
                             <span class="sidebar-txt">{{ __('Billing') }}</span>
                         </a>
                         <ul class="sidebar-dropdown-menu" id="billingDropdown">
-                            @canany(['transactions'])
+                            @can('transactions')
                             <li class="sidebar-dropdown-item">
                                 <a href="#" class="sidebar-link">
                                     {{ __('Transaction') }}
                                 </a>
                             </li>
-                            @endcanany
+                            @endcan
                         </ul>
                     </li>
+                    @endcanany
                 </ul>
+                @canany(['plans_index'])
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item">
                         <a role="button" class="sidebar-link has-sub" data-dropdown="planManagementDropdown">
@@ -60,6 +63,8 @@
                         </ul>
                     </li>
                 </ul>
+                @endcanany
+                @canany(['users_index'])
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item">
                         <a role="button" class="sidebar-link has-sub" data-dropdown="userManagementDropdown">
@@ -80,14 +85,16 @@
                         </ul>
                     </li>
                 </ul>
+                @endcanany
             </li>
-            {{--
+
+            @role('customer')
             <li class="help-center">
                 <h3>Help Center</h3>
                 <p>We're an award-winning, forward thinking</p>
                 <a href="#" class="btn btn-sm btn-light">Go to Help Center</a>
             </li>
-            --}}
+            @endrole
         </ul>
     </div>
 </div>

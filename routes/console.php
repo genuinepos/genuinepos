@@ -35,5 +35,4 @@ Artisan::command('play', function() {
             'hash' => sha1($notifiable->getEmailForVerification()),
         ]
     );
-    dd($res);
 });

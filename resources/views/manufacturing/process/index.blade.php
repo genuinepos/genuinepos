@@ -1,18 +1,18 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
+
 @endpush
-@section('title', 'Process - ')
+@section('title', 'Process/Bill Of Materials - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-dumpster-fire"></span>
-                    <h6>{{ __("Process") }}</h6>
+                    <h6>{{ __("Process/Bill Of Materials") }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
                 </a>
             </div>
         </div>
@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __("List Of Processes") }}</h6>
+                        <h6>{{ __("List Of Processes/BOM") }}</h6>
                     </div>
 
                     @if (auth()->user()->can('process_add'))
@@ -45,10 +45,9 @@
                                         <th class="text-black">{{ __("Created From") }}</th>
                                         <th class="text-black">{{ __("Category") }}</th>
                                         <th class="text-black">{{ __("Subcategory") }}</th>
-                                        <th class="text-black">{{ __("Wastage") }}</th>
                                         <th class="text-black">{{ __("Output Quantity") }}</th>
                                         <th class="text-black">{{ __('Total Ingredient Cost') }}</th>
-                                        <th class="text-black">{{ __("Production Cost") }}</th>
+                                        <th class="text-black">{{ __("Addl. Production Cost") }}</th>
                                         <th class="text-black">{{ __("Net Cost") }}</th>
                                     </tr>
                                 </thead>
@@ -70,50 +69,39 @@
 
     @if(auth()->user()->can('process_add'))
         <div class="modal fade" id="processSelectProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="staticBackdrop" aria-hidden="true"> 
+        aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif
 
-    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
-    aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content" id="view-modal-content">
-
-            </div>
-        </div>
-    </div>
+    <div id="details"></div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
-        // $('.select2').select2();
-
-        // var table = $('.data_tbl').DataTable({
-        //     dom: "lBfrtip",
-        //     buttons: [
-        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-        //         {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-        //     ],
-        //     "processing": true,
-        //     "serverSide": true,
-        //     aaSorting: [[0, 'asc']],
-        //     "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        //     ajax: "{{ route('manufacturing.process.index') }}",
-        //     columns: [
-        //         {data: 'action', name: 'action'},
-        //         {data: 'product', name: 'product'},
-        //         {data: 'branch', name: 'branches.name'},
-        //         {data: 'cate_name', name: 'cate_name'},
-        //         {data: 'sub_cate_name', name: 'sub_cate_name'},
-        //         {data: 'wastage_percent', name: 'wastage_percent'},
-        //         {data: 'total_output_qty', name: 'total_output_qty'},
-        //         {data: 'total_ingredient_cost', name: 'total_ingredient_cost'},
-        //         {data: 'production_cost', name: 'production_cost'},
-        //         {data: 'net_cost', name: 'net_cost'},
-        //     ],
-        // });
+        var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+            ],
+            "processing": true,
+            "serverSide": true,
+            aaSorting: [[0, 'asc']],
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            ajax: "{{ route('manufacturing.process.index') }}",
+            columns: [
+                {data: 'action', name: 'action'},
+                {data: 'product', name: 'product', className: 'fw-bold'},
+                {data: 'branch', name: 'branches.name'},
+                {data: 'cate_name', name: 'categories.name'},
+                {data: 'sub_cate_name', name: 'categories.name'},
+                {data: 'total_output_qty', name: 'parentBranch.name', className: 'fw-bold'},
+                {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'fw-bold'},
+                {data: 'additional_production_cost', name: 'additional_production_cost', className: 'fw-bold'},
+                {data: 'net_cost', name: 'net_cost', className: 'fw-bold'},
+            ],
+        });
 
         $(document).on('click', '#getProcessSelectProductModal', function(e) {
             e.preventDefault();
@@ -144,6 +132,51 @@
                         return;
                     }
                 }
+            });
+        });
+
+        $(document).on('click', '#details_btn', function(e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#details').html(data);
+                    $('#detailsModal').modal('show');
+                    $('.data_preloader').hide();
+                },error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
+        // Make print
+        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
+            e.preventDefault();
+
+            var body = $('.print_modal_details').html();
+
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
             });
         });
 

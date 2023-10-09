@@ -17,6 +17,7 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Sales\QuotationProductService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
 class QuotationController extends Controller
@@ -32,6 +33,7 @@ class QuotationController extends Controller
         private BranchService $branchService,
         private BranchSettingService $branchSettingService,
         private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
@@ -83,12 +85,13 @@ class QuotationController extends Controller
             quotationService: $this->quotationService,
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,
-            priceGroupService: $this->priceGroupService
+            priceGroupService: $this->priceGroupService,
+            managePriceGroupService: $this->managePriceGroupService,
         );
 
         extract($editMethodContainer);
 
-        return view('sales.add_sale.quotations.edit', compact('quotation', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups'));
+        return view('sales.add_sale.quotations.edit', compact('quotation', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
     }
 
     function update($id, Request $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface, CodeGenerationService $codeGenerator)

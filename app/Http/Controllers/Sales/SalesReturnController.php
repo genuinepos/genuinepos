@@ -114,17 +114,7 @@ class SalesReturnController extends Controller
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $generalSettings = config('generalSettings');
-        $branchName = $generalSettings['business__shop_name'];
-        if (auth()->user()?->branch) {
-
-            if (auth()->user()?->branch->parentBranch) {
-
-                $branchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
-            } else {
-
-                $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
-            }
-        }
+        $branchName = $this->branchService->branchName;
 
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
@@ -157,7 +147,7 @@ class SalesReturnController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
+            // ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $customerAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);

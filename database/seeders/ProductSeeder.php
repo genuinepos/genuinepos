@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         \App\Models\Category::factory()->count(10)->create();
-        \App\Models\SubCategory::factory()->count(10)->create();
+        // \App\Models\Category::factory()->count(10)->create();
         \App\Models\Brand::factory()->count(5)->create();
         \App\Models\Unit::factory()->count(5)->create();
         \App\Models\Tax::factory()->count(5)->create();

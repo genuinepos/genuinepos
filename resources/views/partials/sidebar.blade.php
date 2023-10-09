@@ -434,7 +434,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.brand')</p>
+                                            <p class="switch_text">{{ __("Brands") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -447,14 +447,14 @@
                                                     <span><i class="fas fa-weight-hanging"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.units')</p>
+                                            <p class="switch_text">{{ __("Units") }}</p>
                                         </a>
                                     </div>
                                 @endif
 
                                 @if (auth()->user()->can('variant'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('product.variants.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('product.bulk.variants.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>
@@ -462,7 +462,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.variants')</p>
+                                            <p class="switch_text">{{ __("Bulk Variants") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -477,7 +477,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.warranties')</p>
+                                            <p class="switch_text">{{ __("Warranties") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -494,7 +494,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.selling_price_group')</p>
+                                            <p class="switch_text">{{ __("Selling Price Groups") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -509,7 +509,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.generate_barcode')</p>
+                                            <p class="switch_text">{{ __("Generate Barcode") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -1567,23 +1567,10 @@
                                             <a href="{{ route('stock.adjustments.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-plus-square"></i></span>
+                                                        <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.add_stock_adjustment_from_branch')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('adjustment_add_from_warehouse'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('stock.adjustments.create.from.warehouse') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-square"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.add_stock_adjustment_from_warehouse')</p>
+                                                <p class="switch_text">{{ __("Add Stock Adjustment") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1593,40 +1580,39 @@
                                             <a href="{{ route('stock.adjustments.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-th-list"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.stock_adjustment_list')</p>
+                                                <p class="switch_text">{{ __("Stock Adjustmen List") }}</p>
                                             </a>
                                         </div>
                                     @endif
                                 </div>
                             </div>
 
-                            @if (
-                                (
-                                    auth()->user()->can('stock_adjustment_report') &&
-                                    auth()->user()->can('stock_adjustment_report')
-                                )
-                            )
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>{{ __('Stock Adjustment Reports') }}</strong></p>
-                                        <hr class="p-0 m-0 mb-3">
-                                    </div>
-                                </div> --}}
-
+                            @if (auth()->user()->can('stock_adjustment_report'))
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Stock Adjustment Reports') }}</p>
                                     <div class="sub-menu-row">
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('reports.stock.adjustments.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('reports.stock.adjustments.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
-                                                        <span><i class="fas fa-sliders-h"></i></span>
+                                                        <span><i class="fas fa-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.stock_adjustment_report')</p>
+                                                <p class="switch_text">{{ __("Stock Adjustment Report") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('reports.stock.adjusted.products.report.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-list"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Stock Adjusted Products Report") }}</p>
                                             </a>
                                         </div>
                                     </div>
@@ -2401,7 +2387,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">@lang('menu.manufacturing')</p>
+                                <p class="sub-menu-group-title">{{ __("Manufacturing") }}</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('process_view'))
                                         <div class="sub-menu-col">
@@ -2411,7 +2397,7 @@
                                                         <span><i class="fas fa-dumpster-fire"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.process')</p>
+                                                <p class="switch_text">{{ __("Process") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2424,7 +2410,7 @@
                                                         <span><i class="fas fa-shapes"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.productions')</p>
+                                                <p class="switch_text">{{ __("Productions") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2437,7 +2423,7 @@
                                                         <span><i class="fas fa-sliders-h"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.manufacturing_setting')</p>
+                                                <p class="switch_text">{{ __("Manufacturing Setting") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2450,7 +2436,7 @@
                                                         <span><i class="fas fa-file-alt"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.manufacturing_report')</p>
+                                                <p class="switch_text">{{ __("Manufacturing Report") }}</p>
                                             </a>
                                         </div>
                                     @endif

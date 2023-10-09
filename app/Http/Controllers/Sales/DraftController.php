@@ -13,6 +13,7 @@ use App\Services\Sales\SaleProductService;
 use App\Services\Sales\DraftProductService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 
 class DraftController extends Controller
@@ -25,6 +26,7 @@ class DraftController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
         private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
     }
@@ -76,12 +78,13 @@ class DraftController extends Controller
             draftService: $this->draftService,
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,
-            priceGroupService: $this->priceGroupService
+            priceGroupService: $this->priceGroupService,
+            managePriceGroupService: $this->managePriceGroupService
         );
 
         extract($editMethodContainer);
 
-        return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups'));
+        return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
     }
 
     function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)

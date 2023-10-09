@@ -19,6 +19,7 @@ use App\Services\Setups\PaymentMethodService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
 use App\Services\Sales\SalesOrderProductService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Accounts\AccountingVoucherService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
@@ -39,6 +40,7 @@ class SalesOrderController extends Controller
         private BranchService $branchService,
         private BranchSettingService $branchSettingService,
         private PriceGroupService $priceGroupService,
+        private ManagePriceGroupService $managePriceGroupService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
@@ -89,12 +91,13 @@ class SalesOrderController extends Controller
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,
             paymentMethodService: $this->paymentMethodService,
-            priceGroupService: $this->priceGroupService
+            priceGroupService: $this->priceGroupService,
+            managePriceGroupService: $this->managePriceGroupService
         );
 
         extract($editMethodContainer);
 
-        return view('sales.add_sale.orders.edit', compact('order', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups'));
+        return view('sales.add_sale.orders.edit', compact('order', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
     }
 
     function update($id, Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationService $codeGenerator)

@@ -24,26 +24,25 @@ class ProcessUtil
                 'categories.name as cate_name',
                 'subCate.name as sub_cate_name',
                 'subCate.name as sub_cate_name',
-                'units.name as u_name',
+                'units.name as unit_code',
             )->orderBy('processes.id', 'desc')->get();
 
         return DataTables::of($process)
-            ->addColumn('multiple_update', function ($row) {
-                return '<input id="'.$row->id.'" class="data_id sorting_disabled" type="checkbox" name="process_ids[]" value="'.$row->id.'"/>';
-            })
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="view" class="dropdown-item" href="'.route('manufacturing.process.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                $html .= '<a id="view" class="dropdown-item" href="'.route('manufacturing.process.show', [$row->id]).'"> ' . __("View") . '</a>';
 
                 if (auth()->user()->can('process_edit')) {
-                    $html .= '<a class="dropdown-item" href="'.route('manufacturing.process.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+
+                    $html .= '<a class="dropdown-item" href="'.route('manufacturing.process.edit', [$row->id]).'"> ' . __("Edit") . '</a>';
                 }
 
                 if (auth()->user()->can('process_delete')) {
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.process.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.process.delete', [$row->id]).'">' . __("Delete") . '</a>';
                 }
 
                 $html .= '</div>';
@@ -58,19 +57,19 @@ class ProcessUtil
                 return $row->wastage_percent.'%';
             })
             ->editColumn('total_output_qty', function ($row) {
+
                 $wastage = $row->total_output_qty / 100 * $row->wastage_percent;
                 $qtyWithWastage = $row->total_output_qty - $wastage;
-
-                return bcadd($qtyWithWastage, 0, 2).' '.$row->u_name;
+                return bcadd($qtyWithWastage, 0, 2).' '.$row->unit_code;
             })
             ->editColumn('total_ingredient_cost', function ($row) use ($generalSettings) {
-                return $generalSettings['business__currency'].' '.$row->total_ingredient_cost;
+                return $row->total_ingredient_cost;
             })
             ->editColumn('production_cost', function ($row) use ($generalSettings) {
-                return $generalSettings['business__currency'].' '.$row->production_cost;
+                return $row->production_cost;
             })
-            ->editColumn('total_cost', function ($row) use ($generalSettings) {
-                return $generalSettings['business__currency'].' '.$row->total_cost;
+            ->editColumn('net_cost', function ($row) use ($generalSettings) {
+                return $row->total_cost;
             })
             ->rawColumns(['multiple_update', 'action', 'product', 'wastage_percent', 'total_output_qty', 'total_ingredient_cost', 'production_cost', 'total_cost'])
             ->make(true);
@@ -80,39 +79,43 @@ class ProcessUtil
     {
         $product = [];
         $productAndVariantId = explode('-', $request->product_id);
-        $product_id = $productAndVariantId[0];
-        $variant_id = $productAndVariantId[1];
-        if ($variant_id != 'NULL') {
-            $v_product = DB::table('product_variants')->where('product_variants.id', $variant_id)
+        $productId = $productAndVariantId[0];
+        $variantId = $productAndVariantId[1];
+        if ($variantId != 'noid') {
+
+            $variantProduct = DB::table('product_variants')->where('product_variants.id', $variantId)
                 ->leftJoin('products', 'product_variants.product_id', 'products.id')
                 ->leftJoin('units', 'products.unit_id', 'units.id')
                 ->select(
-                    'product_variants.id as v_id',
+                    'product_variants.id as variant_id',
                     'product_variants.variant_name',
                     'product_variants.variant_code',
-                    'products.id as p_id',
+                    'products.id as product_id',
                     'products.name',
                     'products.id as unit_id',
                     'products.product_code',
                 )->first();
-            $product['p_id'] = $v_product->p_id;
-            $product['unit_id'] = $v_product->p_id;
-            $product['p_name'] = $v_product->name;
-            $product['p_code'] = $v_product->product_code;
-            $product['v_id'] = $v_product->v_id;
-            $product['v_name'] = $v_product->variant_name;
-            $product['v_code'] = $v_product->variant_code;
+
+            $product['product_id'] = $variantProduct->product_id;
+            $product['unit_id'] = $variantProduct->unit_id;
+            $product['product_name'] = $variantProduct->name;
+            $product['product_code'] = $variantProduct->product_code;
+            $product['variant_id'] = $variantProduct->variant_id;
+            $product['variant_name'] = $variantProduct->variant_name;
+            $product['variant_code'] = $variantProduct->variant_code;
         } else {
+
             $s_product = Product::with('unit')->where('id', $product_id)
                 ->select('id', 'unit_id', 'name', 'product_code')
                 ->first();
-            $product['p_id'] = $s_product->id;
+
+            $product['product_id'] = $s_product->id;
             $product['unit_id'] = $s_product->unit->id;
-            $product['p_name'] = $s_product->name;
-            $product['p_code'] = $s_product->product_code;
-            $product['v_id'] = null;
-            $product['v_name'] = null;
-            $product['v_code'] = null;
+            $product['product_name'] = $s_product->name;
+            $product['product_code'] = $s_product->product_code;
+            $product['variant_id'] = null;
+            $product['variant_name'] = null;
+            $product['variant_code'] = null;
         }
 
         return $product;

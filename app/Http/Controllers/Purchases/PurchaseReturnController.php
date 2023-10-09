@@ -119,17 +119,7 @@ class PurchaseReturnController extends Controller
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $generalSettings = config('generalSettings');
-        $branchName = $generalSettings['business__shop_name'];
-        if (auth()->user()?->branch) {
-
-            if (auth()->user()?->branch->parentBranch) {
-
-                $branchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
-            } else {
-
-                $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
-            }
-        }
+        $branchName = $this->branchService->branchName();
 
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
@@ -305,6 +295,8 @@ class PurchaseReturnController extends Controller
     public function edit($id)
     {
         $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
             'supplier:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'purchaseReturnProducts',
@@ -321,18 +313,7 @@ class PurchaseReturnController extends Controller
 
         $ownBranchIdOrParentBranchId = $return?->branch?->parent_branch_id ? $return?->branch?->parent_branch_id : $return?->branch_id;
 
-        $generalSettings = config('generalSettings');
-        $branchName = $generalSettings['business__shop_name'];
-        if ($return?->branch?->branch) {
-
-            if ($return?->branch?->parentBranch) {
-
-                $branchName = $return?->branch?->parentBranch?->name . '(' . $return?->branch->parentBranch?->area_name . ')';
-            } else {
-
-                $branchName = $return?->branch?->name . '(' . $return?->branch?->area_name . ')';
-            }
-        }
+        $branchName = $this->branchService->branchName(transObject: $return);
 
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
@@ -361,7 +342,7 @@ class PurchaseReturnController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', $return->branch_id)
+            // ->where('accounts.branch_id', $return->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $supplierAccounts = $this->accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);

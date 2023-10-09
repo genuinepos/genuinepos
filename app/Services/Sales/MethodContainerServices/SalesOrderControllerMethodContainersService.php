@@ -54,6 +54,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         object $accountFilterService,
         object $paymentMethodService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $order = $salesOrderService->singleSalesOrder(id: $id, with: [
@@ -91,12 +92,15 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $data['taxAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', $order->branch_id)
+            // ->where('accounts.branch_id', $order->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
+
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
+        
         $data['order'] = $order;
 
         return $data;

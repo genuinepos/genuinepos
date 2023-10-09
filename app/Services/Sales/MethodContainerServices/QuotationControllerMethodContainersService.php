@@ -44,6 +44,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         object $accountService,
         object $accountFilterService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $quotation = $quotationService->singleQuotation(id: $id, with: [
@@ -79,12 +80,13 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         $data['taxAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', $quotation->branch_id)
+            // ->where('accounts.branch_id', $quotation->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
         $data['quotation'] = $quotation;
 
         return $data;

@@ -6,7 +6,6 @@ use App\Models\Setups\BranchSetting;
 
 class BranchSettingService
 {
-
     public function addBranchSettings(int $branchId, int|null $parentBranchId = null, int $defaultInvoiceLayoutId, object $branchService): void
     {
         $branch = $branchService->singleBranch(id: $parentBranchId ? $parentBranchId : $branchId);

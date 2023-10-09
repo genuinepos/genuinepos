@@ -5,101 +5,68 @@
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
     </style>
 @endpush
-@section('title', 'HRM Leaves - ')
+@section('title', 'Manufacturing Settings - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
             <div class="row">
                 <div class="border-class">
                     <div class="main__content">
-                        {{-- <div class="sec-name">
-                            <div class="breadCrumbHolder module w-100">
-                                <div id="breadCrumb3" class="breadCrumb module">
-                                    <ul>
-                                        @if(auth()->user()->can('process_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.process.index') }}" class="text-white"><i class="fas fa-dumpster-fire"></i> <b>@lang('menu.process')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if(auth()->user()->can('production_view'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.productions.index') }}" class="text-white"><i class="fas fa-shapes"></i> <b>@lang('menu.productions')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if(auth()->user()->can('manuf_settings'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="text-white"><i class="fas fa-sliders-h text-primary"></i> <b>@lang('menu.manufacturing_setting')</b></a>
-                                            </li>
-                                        @endif
-
-                                        @if(auth()->user()->can('manuf_report'))
-                                            <li>
-                                                <a href="{{ route('manufacturing.report.index') }}" class="text-white"><i class="fas fa-file-alt"></i> <b>@lang('menu.manufacturing_report')</b></a>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-sliders-h"></span>
-                                <h6>Settings</h6>
+                                <h6>{{ __("Manufacturing Settings") }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                                <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
+                                <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
                             </a>
                         </div>
-                        <div class="p-3">
+                        <div class="p-1">
                             <div class="card">
-                                <form id="update_settings_form" action="{{ route('manufacturing.settings.store') }}" method="post" class="p-3">
+                                <form id="update_settings_form" action="{{ route('manufacturing.settings.store.or.update') }}" method="post" class="p-3">
                                     @csrf
                                     <div class="form-group row">
-                                        <div class="col-md-3">
-                                            <label><strong>@lang('menu.production_reference_prefix') </strong></label>
-                                            @php
-                                                $voucherPrefix = '';
-                                                if(isset($generalSettings['mf_settings__production_ref_prefix'])){
-                                                    $voucherPrefix = $generalSettings['mf_settings__production_ref_prefix'];
-                                                }
-                                            @endphp
-                                            <input type="text" name="production_ref_prefix" class="form-control"
-                                                autocomplete="off" placeholder="@lang('menu.production_reference_prefix')"
-                                                value="{{ $voucherPrefix }}">
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __("Product Voucher Prefix") }}</strong></label>
+                                            <input type="text" name="production_voucher_prefix" class="form-control" id="production_voucher_prefix" placeholder="{{ __("Product Voucher Prefix") }}" value="{{ $manufacturingSetting?->production_voucher_prefix }}" autocomplete="off" data-next="is_edit_ingredients_qty_in_production">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <div class="row mt-1">
-                                                <p class="checkbox_input_wrap mt-4">
-                                                    <input type="checkbox"
-                                                        @if(isset($generalSettings['mf_settings__enable_editing_ingredient_qty']))
-                                                            {{ $generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1' ? 'CHECKED' : '' }}
-                                                        @endif
-                                                        name="enable_editing_ingredient_qty"> &nbsp; <b>@lang('menu.enable_editing_ingredients_quantity_in_production')</b>
-                                                </p>
-                                            </div>
+                                            <label><strong>{{ __("Enable Editing Ingredients Quantity In Production") }}</strong></label>
+                                            <select name="is_edit_ingredients_qty_in_production" class="form-control" id="is_edit_ingredients_qty_in_production" data-next="is_update_product_cost_and_price_in_production">
+                                                <option value="1">{{ __("Yes") }}</option>
+                                                <option
+                                                    @if($manufacturingSetting)
+                                                        {{ $manufacturingSetting?->is_edit_ingredients_qty_in_production == 0 ? 'SELECTED' : '' }}
+                                                    @endif
+                                                    value="0"
+                                                >
+                                                    {{ __("No") }}
+                                                </option>
+                                            </select>
                                         </div>
 
-                                        <div class="col-md-5">
-                                            <div class="row mt-1">
-                                                <p class="checkbox_input_wrap mt-4">
-                                                    <input type="checkbox"
-                                                        @if(isset($generalSettings['mf_settings__enable_updating_product_price']))
-                                                            {{ $generalSettings['mf_settings__enable_updating_product_price'] == '1' ? 'CHECKED' : '' }}
-                                                        @endif
-                                                        name="enable_updating_product_price"> &nbsp; <b>@lang('menu.update_selling_finalizing_production')</b>
-                                                </p>
-                                            </div>
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __("Update Product Cost And Selling Price Based On Net Cost") }}</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Update Product Cost And Selling Price Based On Total Production Cost, On Finalizing Production") }}" class="fas fa-info-circle tp"></i></label>
+                                            <select name="is_update_product_cost_and_price_in_production" class="form-control" id="is_update_product_cost_and_price_in_production" data-next="save_changes">
+                                                <option value="1">{{ __("Yes") }}</option>
+                                                <option
+                                                    @if($manufacturingSetting)
+                                                        {{ $manufacturingSetting?->is_update_product_cost_and_price_in_production == 0 ? 'SELECTED' : '' }}
+                                                    @endif
+                                                    value="0"
+                                                >
+                                                    {{ __("No") }}
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="button" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -115,27 +82,86 @@
 @push('scripts')
 
 <script>
-    // Setup ajax for csrf token.
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
 
-    // call jquery method
+    $(document).on('click keypress focus blur change', '.form-control', function(event) {
+
+        $('.brand_submit_button').prop('type', 'button');
+    });
+
+    $(document).on('change keypress', 'input', function(e) {
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 13) {
+
+            e.preventDefault();
+
+            $('#' + nextId).focus().select();
+        }
+    });
+
+    $(document).on('change keypress click', 'select', function(e) {
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 0) {
+
+            $('#' + nextId).focus().select();
+        }
+    });
+
+    var isAllowSubmit = true;
+    $(document).on('click', '.submit_button',function () {
+
+        if (isAllowSubmit) {
+
+            $(this).prop('type', 'submit');
+        }else {
+
+            $(this).prop('type', 'button');
+        }
+    });
+
     $(document).ready(function(){
-        // Update settings by ajax
+
         $('#update_settings_form').on('submit', function(e){
             e.preventDefault();
+
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
+
             $.ajax({
                 url:url,
                 type:'post',
                 data: request,
-                success:function(data){
+                success:function(data) {
+
                     toastr.success(data);
                     $('.loading_button').hide();
+                    $('#production_voucher_prefix').focus().select();
+                }, error: function(err) {
+
+                    $('.loading_button').hide();
+                    if (err.status == 0) {
+
+                        toastr.error('Net Connetion Error. Reload This Page.');
+                        return;
+                    } else if(err.status == 500) {
+
+                        toastr.error('Server error. Please contact to the support team.');
+                        return;
+                    } else if(err.status == 403) {
+
+                        toastr.error('Access Denied');
+                        return;
+                    }
                 }
             });
         });
     });
+
+    $('#production_voucher_prefix').focus().select();
 </script>
 @endpush

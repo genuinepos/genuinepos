@@ -318,15 +318,6 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="card mb-1">
-                                    <div class="card-body p-1">
-                                        <div class="d-flex justify-content-end gap-2">
-                                            <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">{{ __('Recent Transaction') }}</button>
-                                            <button id="draft" value="save_and_print" class="btn btn-sm btn-primary text-white submit_button" data-status="2">{{ __("Draft") }}</button>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
                                         <div class="row gx-2 gy-1">

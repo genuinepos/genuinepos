@@ -20,6 +20,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $data = [];
         $sale = $saleService->singleSale(id: $id, with: [
+            'branch',
+            'branch.parentBranch',
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
             'saleProducts',
@@ -48,29 +50,20 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     }
 
     public function createMethodContainer(
+        object $branchService,
         object $accountService,
         object $accountFilterService,
         object $paymentMethodService,
         object $warehouseService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $data = [];
-        $generalSettings = config('generalSettings');
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        $data['branchName'] = $generalSettings['business__shop_name'];
-        if (auth()->user()?->branch) {
-
-            if (auth()->user()?->branch->parentBranch) {
-
-                $data['branchName'] = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
-            } else {
-
-                $data['branchName'] = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
-            }
-        }
+        $data['branchName'] = $branchService->branchName();
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
@@ -98,10 +91,12 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data['taxAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
+            // ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -188,7 +183,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         if (($request->status == SaleStatus::Final->value || $request->status == SaleStatus::Order->value) && $request->received_amount > 0) {
 
-            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $addSale->id);
+            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $addSale->id);
 
             // Add Debit Account Accounting voucher Description
             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);
@@ -255,6 +250,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
     function editMethodContainer(
         int $id,
+        object $branchService,
         object $saleService,
         object $accountService,
         object $accountFilterService,
@@ -272,20 +268,9 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'saleProducts.unit.baseUnit:id,name,code_name,base_unit_id',
         ]);
 
-        $generalSettings = config('generalSettings');
         $ownBranchIdOrParentBranchId = $sale?->branch?->parent_branch_id ? $sale?->branch?->parent_branch_id : $sale->branch_id;
 
-        $data['branchName'] = $generalSettings['business__shop_name'];
-        if ($sale?->branch?->branch) {
-
-            if ($sale?->branch?->branch->parentBranch) {
-
-                $data['branchName'] = $sale?->branch?->parentBranch?->name . '(' . $sale?->branch?->parentBranch?->area_name . ')';
-            } else {
-
-                $data['branchName'] = $sale?->branch?->name . '(' . $sale?->branch?->area_name . ')';
-            }
-        }
+        $data['branchName'] = $branchService->branchName(transObject: $sale);
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
@@ -313,7 +298,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data['taxAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            ->where('accounts.branch_id', $sale->branch_id)
+            // ->where('accounts.branch_id', $sale->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);

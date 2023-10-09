@@ -138,8 +138,10 @@ ul#sidenav li a:hover {
 /* ===============================================top navigation======================= */
 
 img.logo__img {
-    width: 134px;
-    margin-top: 8px;
+    width: auto !important;
+    height: auto !important;
+    max-height: 35px;
+    max-width: 110px;
 }
 
 .navigation {
@@ -807,6 +809,7 @@ footer img.logo {
 
 #dashboard-8 .main__nav ul li:first-child {
     width: 142px;
+    border-top: 1px solid rgba(255, 255, 255, 0.35)
 }
 
 .company-name {

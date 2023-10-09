@@ -43,5 +43,5 @@ Route::get('my-test', function () {
 });
 
 Route::get('t-id', function () {
-    dd(tenant());
+
 });

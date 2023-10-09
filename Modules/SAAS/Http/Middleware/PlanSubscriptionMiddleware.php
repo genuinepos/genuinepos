@@ -17,7 +17,6 @@ class PlanSubscriptionMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(tenant('id'), tenant('plan_id'));
         $validPlanSubscription = false;
         $subscription = DB::connection('mysql') // <-- landlord connection
             ->table('plan_subscriptions')
@@ -25,7 +24,7 @@ class PlanSubscriptionMiddleware
             ->orderByDesc('end_at')
             ->select('end_at')
             ->first();
-        
+
         if(isset($subscription->end_time)) {
             $validPlanSubscription = Carbon::parse($subscription->end_time)->gte(now());
             if($validPlanSubscription) {

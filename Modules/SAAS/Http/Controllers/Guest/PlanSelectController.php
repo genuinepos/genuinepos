@@ -25,7 +25,6 @@ class PlanSelectController extends Controller
     public function subscribe(Request $request, Plan $plan)
     {
         $intent = auth()->user()->createSetupIntent();
-        // dd($intent);
         return view('saas::guest.subscribe', compact('plan', 'intent'));
     }
 }

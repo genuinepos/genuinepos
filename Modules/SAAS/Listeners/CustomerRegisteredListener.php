@@ -16,7 +16,7 @@ class CustomerRegisteredListener
     public function __construct() {}
     // public function __construct(public CustomerRegisteredEvent $event)
     // {
-    //     dd($event->user);
+
     // }
 
     /**
@@ -28,7 +28,6 @@ class CustomerRegisteredListener
     public function handle(object $event) : void
     {
         // Mail::to($event->user->email)->send(new CustomerRegistrationConfirmationMail($event->user));
-        dd($event->user instanceof MustVerifyEmail,$event->user->hasVerifiedEmail());
         if ($event->user instanceof MustVerifyEmail && ! $event->user->hasVerifiedEmail()) {
             $event->user->sendEmailVerificationNotification();
         }

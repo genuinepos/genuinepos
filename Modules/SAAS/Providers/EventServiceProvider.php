@@ -13,10 +13,10 @@ class EventServiceProvider extends ServiceProvider
             CustomerRegisteredListener::class,
         ]
     ];
-    
+
     public function boot()
     {
-        // dd('here');
+
     }
 
 }

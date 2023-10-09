@@ -28,13 +28,13 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="edit_process_form" action="{{ route('manufacturing.process.update', $process->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $process->product_id }}">
                 <input type="hidden" name="variant_id" value="{{ $process->variant_id ? $process->variant_id : 'noid' }}">
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
 
                         <div class="element-body">
                             <div class="row">
@@ -61,6 +61,7 @@
                                                 <input type="hidden" id="e_item_name">
                                                 <input type="hidden" id="e_product_id">
                                                 <input type="hidden" id="e_variant_id">
+                                                <input type="hidden" id="e_tax_amount">
                                                 <input type="hidden" id="e_unit_cost_inc_tax">
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="col-form-label">{{ __("Search Ingredient") }}</label>
@@ -102,7 +103,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-        
+
                                                     <select id="e_unit_tax_type" class="form-control w-50">
                                                         <option value="1">{{ __('Exclusive') }}</option>
                                                         <option value="2">{{ __('Inclusive') }}</option>
@@ -135,7 +136,72 @@
                                                                 <th><i class="fas fa-trash-alt"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="ingredient_list"></tbody>
+                                                        <tbody id="ingredient_list">
+                                                            @php
+                                                                $itemUnitsArray = [];
+                                                            @endphp
+                                                            @foreach ($process->ingredients as $ingredient)
+                                                                @php
+                                                                    $variant = $ingredient->variant ? ' - '.$ingredient->variant->variant_name : '';
+                                                                    $variantId = $ingredient->variant_id ? $ingredient->variant_id : 'noid';
+
+                                                                    if (isset($ingredient->product_id)) {
+                                                                        $itemUnitsArray[$ingredient->product_id][] = [
+                                                                            'unit_id' => $ingredient->product->unit->id,
+                                                                            'unit_name' => $ingredient->product->unit->name,
+                                                                            'unit_code_name' => $ingredient->product->unit->code_name,
+                                                                            'base_unit_multiplier' => 1,
+                                                                            'multiplier_details' => '',
+                                                                            'is_base_unit' => 1,
+                                                                        ];
+                                                                    }
+                                                                @endphp
+
+                                                                <tr id="select_item">
+                                                                    <td>
+                                                                        <span id="span_item_name">{{ $ingredient->product->name . $variant }}</span>
+                                                                        <input type="hidden" id="item_name" value="{{ $ingredient->product->name . $variant }}">
+                                                                        <input type="hidden" name="product_ids[]" id="product_id" value="{{ $ingredient->product_id }}">
+                                                                        <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
+                                                                        <input type="hidden" name="process_ingredient_ids[]" value="{{ $ingredient->id }}">
+                                                                        <input type="hidden" id="{{ $ingredient->product_id.$variantId }}" value="{{ $ingredient->product_id.$variantId }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <span id="span_quantity_unit" class="fw-bold">{{ $ingredient->final_qty . '/' . $ingredient?->unit?->name }}</span>
+                                                                        <input type="hidden" name="final_quantities[]" id="final_quantity" value="{{ $ingredient->final_qty }}">
+                                                                        <input type="hidden" name="unit_ids[]" step="any" id="unit_id" value="{{ $ingredient->unit_id }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <span id="span_unit_cost_exc_tax" class="fw-bold">{{ $ingredient->unit_cost_exc_tax }}</span>
+                                                                        <input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="{{ $ingredient->unit_cost_exc_tax }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <span id="span_tax_percent" class="fw-bold">{{ $ingredient->unit_tax_percent.'%' }}</span>
+                                                                        <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $ingredient->tax_ac_id }}">
+                                                                        <input type="hidden" name="unit_tax_types[]" id="unit_tax_type" value="{{ $ingredient->unit_tax_type }}">
+                                                                        <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $ingredient->unit_tax_percent }}">
+                                                                        <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $ingredient->unit_tax_amount }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <span id="span_unit_cost_inc_tax" class="fw-bold">{{ $ingredient->unit_cost_inc_tax }}</span>
+                                                                        <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $ingredient->unit_cost_inc_tax }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <span id="span_linetotal" class="fw-bold">{{ $ingredient->subtotal }}</span>
+                                                                        <input type="hidden" name="subtotals[]" id="subtotal" value="{{ $ingredient->subtotal }}">
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -150,14 +216,14 @@
                 <input type="hidden" name="total_ingredient_cost" id="total_ingredient_cost" value="{{ $process->total_ingredient_cost }}">
 
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label><b>{{ __("Total Output Qty") }} : <span class="text-danger">*</span></b></label>
                                     <div class="row">
                                         <div class="input-group">
-                                            <input required type="number" step="any" name="total_output_qty" class="form-control" id="total_output_qty" data-next="additional_production_cost" value="{{ $process->total_output_qty }}" placeholder="{{ __("Total Output Quantity") }}" autocomplete="off">
+                                            <input required type="number" step="any" name="total_output_qty" class="form-control fw-bold" id="total_output_qty" data-next="additional_production_cost" value="{{ $process->total_output_qty }}" placeholder="{{ __("Total Output Quantity") }}" autocomplete="off">
                                             <input readonly type="text" class="form-control fw-bold" value="{{ $process?->unit?->name }}">
                                             <input type="hidden" name="unit_id" class="form-control" id="unit_id" value="{{ $process?->unit_id }}">
                                             <span class="error error_total_output_qty"></span>
@@ -167,12 +233,19 @@
 
                                 <div class="col-md-3">
                                     <label><b>{{ __("Additional Production Cost") }} </b></label>
-                                    <input type="number" step="any" name="additional_production_cost" class="form-control" id="additional_production_cost" data-next="save_changes" value="{{ $process->additional_production_cost }}" placeholder="{{ __("Additional Production Cost") }})" autocomplete="off">
+                                    <input type="number" step="any" name="additional_production_cost" class="form-control fw-bold" id="additional_production_cost" data-next="production_instruction" value="{{ $process->additional_production_cost }}" placeholder="{{ __("Additional Production Cost") }})" autocomplete="off">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label><b>{{ __("Net Cost") }} <span class="text-danger">*</span></b></label>
-                                    <input readonly required type="number" step="any" name="net_cost" class="form-control" id="net_cost" id="net_cost" value="{{ $process->net_cost }}" placeholder="{{ __("Net Cost") }}" autocomplete="off">
+                                    <input readonly required type="number" step="any" name="net_cost" class="form-control fw-bold" id="net_cost" id="net_cost" value="{{ $process->net_cost }}" placeholder="{{ __("Net Cost") }}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label><b>{{ __("Prodution Instruction") }} </b></label>
+                                    <input type="number" step="any" name="production_instruction" class="form-control" id="production_instruction" data-next="save_changes" value="{{ $process->production_instruction }}" placeholder="{{ __("Prodution Instruction") }}" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -184,7 +257,7 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                                <button type="button" id="save_changes" class="btn btn-sm btn-success submit_button">{{ __("Save Changes") }}</button>
+                                <button type="button" id="save_changes" class="btn btn-success submit_button">{{ __("Save Changes") }}</button>
                             </div>
                         </div>
                     </div>
@@ -194,5 +267,5 @@
     </div>
 @endsection
 @push('scripts')
-
+    @include('manufacturing.process.js_partials.edit_js')
 @endpush

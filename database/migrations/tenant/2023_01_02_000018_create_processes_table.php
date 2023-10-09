@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('unit_id')->nullable()->index('processes_unit_id_foreign');
             $table->decimal('additional_production_cost', 22, 2)->default(0);
             $table->decimal('net_cost', 22, 2)->default(0);
-            $table->text('process_instruction')->nullable();
+            $table->text('production_instruction')->nullable();
             $table->timestamps();
 
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');

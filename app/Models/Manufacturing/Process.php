@@ -4,6 +4,7 @@ namespace App\Models\Manufacturing;
 
 use App\Models\BaseModel;
 use App\Models\Products\Unit;
+use App\Models\Setups\Branch;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
 use App\Models\Manufacturing\ProcessIngredient;
@@ -13,6 +14,11 @@ class Process extends BaseModel
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 
     public function ingredients()
     {

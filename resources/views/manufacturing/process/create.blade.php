@@ -22,7 +22,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>{{ __("Create Process") }}</h5>
+                    <h5>{{ __("Create Process/BOM") }}</h5>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
@@ -60,6 +60,7 @@
                                                 <input type="hidden" id="e_item_name">
                                                 <input type="hidden" id="e_product_id">
                                                 <input type="hidden" id="e_variant_id">
+                                                <input type="hidden" id="e_tax_amount">
                                                 <input type="hidden" id="e_unit_cost_inc_tax">
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="col-form-label">{{ __("Search Ingredient") }}</label>
@@ -101,7 +102,7 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-        
+
                                                     <select id="e_unit_tax_type" class="form-control w-50">
                                                         <option value="1">{{ __('Exclusive') }}</option>
                                                         <option value="2">{{ __('Inclusive') }}</option>
@@ -171,12 +172,19 @@
 
                                 <div class="col-md-3">
                                     <label><b>{{ __('Additional Production Cost') }}</b></label>
-                                    <input type="number" step="any" name="additional_production_cost" class="form-control fw-bold" autocomplete="off" id="additional_production_cost" data-next="save" placeholder="{{ __('Additional Production Cost') }}" value="0">
+                                    <input type="number" step="any" name="additional_production_cost" class="form-control fw-bold" autocomplete="off" id="additional_production_cost" data-next="production_instruction" placeholder="{{ __('Additional Production Cost') }}" value="0">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label><b>{{ __("Net Cost") }} <span class="text-danger">*</span></b></label>
                                     <input readonly required type="number" step="any" name="net_cost" class="form-control fw-bold" id="net_cost" autocomplete="off" placeholder="{{ __("Net Cost") }}">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label><b>{{ __("Prodution Instruction") }} </b></label>
+                                    <input type="number" step="any" name="production_instruction" class="form-control" id="production_instruction" data-next="save" placeholder="{{ __("Prodution Instruction") }}" autocomplete="off">
                                 </div>
                             </div>
                         </div>

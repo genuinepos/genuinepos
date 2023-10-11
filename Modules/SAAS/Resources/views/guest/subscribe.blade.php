@@ -61,7 +61,7 @@
                             <div id="card-errors" role="alert"></div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-sm btn-primary pay">
-                                    Make Payment for Subscription
+                                    {{ __("Make Payment for Subscription") }}
                                 </button>
                             </div>
                         </form>

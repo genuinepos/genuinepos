@@ -107,7 +107,91 @@
                         {{-- Cards --}}
                         <div class="mt-3">
                             <div class="row g-3">
-                                <div class="col-md-3">
+                                <div class="col-12">
+                                    <div class="card-counter-wrap bg-white rounded">
+                                        <div class="part-txt">
+                                            <h6 class="mb-1">Today Status</h6>
+                                            <h6>All Purchase Sale & Due </h6>
+                                        </div>
+                                        <div class="card-counter-row">
+                                            <div class="card-counter-col">
+                                                <div class="card-counter d-flex justify-content-around align-content-center">
+                                                    <div class="icon">
+                                                        <i class="fas fa-receipt"></i>
+                                                    </div>
+                                                    <div class="numbers px-1">
+                                                        <h3 class="sub-title">@lang('menu.total_purchase')</h3>
+                                                        <h1 class="title">
+                                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                            <span class="card_amount" id="total_purchase"></span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="card-counter-col">
+                                                <div class="card-counter d-flex justify-content-around align-content-center">
+                                                    <div class="icon">
+                                                        <i class="fas fa-money-check"></i>
+                                                    </div>
+                                                    <div class="numbers px-1">
+                                                        <h3 class="sub-title">@lang('menu.total_sale')</h3>
+                                                        <h1 class="title">
+                                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                            <span class="card_amount" id="total_sale"></span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="card-counter-col">
+                                                <div class="card-counter d-flex justify-content-around align-content-center">
+                                                    <div class="icon">
+                                                        <i class="fas fa-clipboard"></i>
+                                                    </div>
+                                                    <div class="numbers px-1">
+                                                        <h3 class="sub-title">@lang('menu.purchase_due')</h3>
+                                                        <h1 class="title">
+                                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                            <span class="card_amount" id="total_purchase_due"></span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="card-counter-col">
+                                                <div class="card-counter d-flex justify-content-around align-content-center">
+                                                    <div class="icon">
+                                                        <i class="fas fa-file-invoice"></i>
+                                                    </div>
+                                                    <div class="numbers px-1">
+                                                        <h3 class="sub-title">@lang('menu.invoice_due')</h3>
+                                                        <h1 class="title">
+                                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                            <span class="card_amount" id="total_sale_due"></span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="card-counter-col">
+                                                <div class="card-counter d-flex justify-content-around align-content-center">
+                                                    <div class="icon">
+                                                        <i class="fas fa-file-invoice-dollar"></i>
+                                                    </div>
+                                                    <div class="numbers px-1">
+                                                        <h3 class="sub-title">@lang('menu.expense')</h3>
+                                                        <h1 class="title">
+                                                            <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                            <span class="card_amount" id="total_expense"></span>
+                                                        </h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-3">
                                     <div class="card-counter primary d-flex justify-content-around align-content-center">
                                         <div class="icon">
                                             <i class="fas fa-receipt"></i>
@@ -180,49 +264,53 @@
                                             </h1>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-3">
-                                    <div class="card-counter danger d-flex justify-content-around align-content-center">
-                                        <div class="icon">
-                                            <i class="fas fa-user"></i>
+                                <div class="col-12">
+                                    <div class="card-counter-row-2">
+                                        <div class="card-counter-col">
+                                            <div class="card-counter d-flex justify-content-around align-content-center">
+                                                <div class="icon">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <div class="numbers px-1">
+                                                    <h3 class="sub-title">@lang('menu.total_user')</h3>
+                                                    <h1 class="title">
+                                                        <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                        <span class="card_amount" id="total_user"></span>
+                                                    </h1>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="numbers px-1">
-                                            <h3 class="sub-title text-white">@lang('menu.total_user')</h3>
-                                            <h1 class="title">
-                                                <i class="fas fa-sync fa-spin card_preloader"></i>
-                                                <span class="card_amount" id="total_user"></span>
-                                            </h1>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="card-counter blue d-flex justify-content-around align-content-center">
-                                        <div class="icon">
-                                            <i class="fas fa-list"></i>
+                                        <div class="card-counter-col">
+                                            <div class="card-counter d-flex justify-content-around align-content-center">
+                                                <div class="icon">
+                                                    <i class="fas fa-list"></i>
+                                                </div>
+                                                <div class="numbers px-1">
+                                                    <h3 class="sub-title">@lang('menu.total_products')</h3>
+                                                    <h1 class="title">
+                                                        <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                        <span id="total_product"></span>
+                                                    </h1>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="numbers px-1">
-                                            <h3 class="sub-title text-white">@lang('menu.total_products')</h3>
-                                            <h1 class="title">
-                                                <i class="fas fa-sync fa-spin card_preloader"></i>
-                                                <span id="total_product"></span>
-                                            </h1>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="card-counter success d-flex justify-content-around align-content-center">
-                                        <div class="icon">
-                                            <i class="fas fa-balance-scale"></i>
-                                        </div>
-                                        <div class="numbers px-1">
-                                            <h3 class="sub-title text-white">@lang('menu.total_adjustment')</h3>
-                                            <h1 class="title">
-                                                <i class="fas fa-sync fa-spin card_preloader"></i>
-                                                <span class="card_amount" id="total_adjustment"></span>
-                                            </h1>
+                                        <div class="card-counter-col">
+                                            <div class="card-counter d-flex justify-content-around align-content-center">
+                                                <div class="icon">
+                                                    <i class="fas fa-balance-scale"></i>
+                                                </div>
+                                                <div class="numbers px-1">
+                                                    <h3 class="sub-title">@lang('menu.total_adjustment')</h3>
+                                                    <h1 class="title">
+                                                        <i class="fas fa-sync fa-spin card_preloader"></i>
+                                                        <span class="card_amount" id="total_adjustment"></span>
+                                                    </h1>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

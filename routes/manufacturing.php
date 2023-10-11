@@ -5,6 +5,7 @@ use App\Http\Controllers\Manufacturing\ReportController;
 use App\Http\Controllers\Manufacturing\ProcessController;
 use App\Http\Controllers\Manufacturing\SettingsController;
 use App\Http\Controllers\Manufacturing\ProductionController;
+use App\Http\Controllers\Manufacturing\ProcessIngredientController;
 use App\Http\Controllers\Manufacturing\ManufacturingSettingController;
 
 Route::group(['prefix' => 'manufacturing'], function () {
@@ -19,6 +20,11 @@ Route::group(['prefix' => 'manufacturing'], function () {
         Route::get('edit/{id}', 'edit')->name('manufacturing.process.edit');
         Route::post('update/{id}', 'update')->name('manufacturing.process.update');
         Route::delete('delete/{id}', 'delete')->name('manufacturing.process.delete');
+
+        Route::controller(ProcessIngredientController::class)->prefix('ingredients')->group(function () {
+
+            Route::get('ingredients/for/production/{processId}/{warehouseId?}', 'ingredientsForProduction')->name('manufacturing.process.ingredients.for.production');
+        });
     });
 
     Route::group(['prefix' => 'productions'], function () {
@@ -30,8 +36,6 @@ Route::group(['prefix' => 'manufacturing'], function () {
         Route::get('edit/{productionId}', [ProductionController::class, 'edit'])->name('manufacturing.productions.edit');
         Route::post('update/{productionId}', [ProductionController::class, 'update'])->name('manufacturing.productions.update');
         Route::delete('delete/{productionId}', [ProductionController::class, 'delete'])->name('manufacturing.productions.delete');
-        Route::get('get/process/{processId}', [ProductionController::class, 'getProcess']);
-        Route::get('get/ingredients/{processId}/{warehouseId}', [ProductionController::class, 'getIngredients']);
     });
 
     Route::controller(ManufacturingSettingController::class)->prefix('settings')->group(function () {

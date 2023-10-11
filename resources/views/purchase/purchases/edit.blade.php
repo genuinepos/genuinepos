@@ -272,19 +272,19 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>{{ __("Product") }}</th>
-                                                        <th>{{ __("Quantity") }}</th>
-                                                        <th>{{ __("Unit Cost(Exc. Tax)") }}</th>
-                                                        <th>{{ __("Unit Discount") }}</th>
-                                                        <th>{{ __("Unit Tax") }}</th>
-                                                        <th>{{ __('Net Unit Cost (Inc. Tax)') }}</th>
-                                                        <th>{{ __("Line-Total") }}</th>
+                                                        <th class="text-start">{{ __("Product") }}</th>
+                                                        <th class="text-start">{{ __("Quantity") }}</th>
+                                                        <th class="text-start">{{ __("Unit Cost(Exc. Tax)") }}</th>
+                                                        <th class="text-start">{{ __("Unit Discount") }}</th>
+                                                        <th class="text-start">{{ __("Unit Tax") }}</th>
+                                                        <th class="text-start">{{ __('Net Unit Cost (Inc. Tax)') }}</th>
+                                                        <th class="text-start">{{ __("Line-Total") }}</th>
 
                                                         @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
-                                                            <th>{{ __("Profit(%)") }}</th>
-                                                            <th>{{ __("Selling Price(Exc. Tax)") }}</th>
+                                                            <th class="text-start">{{ __("Profit(%)") }}</th>
+                                                            <th class="text-start">{{ __("Selling Price(Exc. Tax)") }}</th>
                                                         @endif
-                                                        <th><i class="fas fa-trash-alt"></i></th>
+                                                        <th class="text-start"><i class="fas fa-trash-alt"></i></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="purchase_list">
@@ -309,7 +309,7 @@
                                                         @endphp
 
                                                         <tr id="select_item">
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_item_name">{{ $purchaseProduct->product->name . $variant }}</span>
                                                                 <input type="hidden" id="item_name" value="{{ $purchaseProduct->product->name . $variant }}">
                                                                 <input type="hidden" name="descriptions[]" id="description" value="{{ $purchaseProduct->description }}">
@@ -319,7 +319,7 @@
                                                                 <input type="hidden" id="{{ $purchaseProduct->product_id.$variantId }}" value="{{ $purchaseProduct->product_id.$variantId }}">
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_quantity_unit" class="fw-bold">{{ $purchaseProduct->quantity . '/' . $purchaseProduct?->unit?->name }}</span>
                                                                 <input type="hidden" name="quantities[]" id="quantity" value="{{ $purchaseProduct->quantity }}">
                                                                 <input type="hidden" name="unit_ids[]" step="any" id="unit_id" value="{{ $purchaseProduct->unit_id }}">
@@ -330,7 +330,7 @@
                                                                 @endif
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 @php
                                                                    $has_batch_no_expire_date = $purchaseProduct?->product?->has_batch_no_expire_date;
                                                                 @endphp
@@ -342,7 +342,7 @@
                                                                 <input type="hidden" id="has_batch_no_expire_date" value="{{ $has_batch_no_expire_date }}">
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_discount_amount" class="fw-bold">{{ $purchaseProduct->unit_discount_amount }}</span>
                                                                 <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $purchaseProduct->unit_discount_type }}">
                                                                 <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $purchaseProduct->unit_discount }}">
@@ -351,7 +351,7 @@
                                                                 <input type="hidden" name="subtotals[]" id="subtotal" value="{{ $purchaseProduct->subtotal }}">
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_tax_percent" class="fw-bold">{{ $purchaseProduct->unit_tax_percent.'%' }}</span>
                                                                 <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $purchaseProduct->tax_ac_id }}">
                                                                 <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $purchaseProduct->tax_type }}">
@@ -359,31 +359,31 @@
                                                                 <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $purchaseProduct->unit_tax_amount }}">
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_unit_cost_inc_tax" class="fw-bold">{{ $purchaseProduct->net_unit_cost }}</span>
                                                                 <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $purchaseProduct->net_unit_cost }}">
                                                                 <input type="hidden" name="net_unit_costs[]" id="net_unit_cost" value="{{ $purchaseProduct->net_unit_cost }}">
                                                             </td>
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <span id="span_linetotal" class="fw-bold">{{ $purchaseProduct->line_total }}</span>
                                                                 <input type="hidden" name="linetotals[]" id="linetotal" value="{{ $purchaseProduct->line_total }}">
                                                             </td>
 
                                                             @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     <span id="span_profit" class="fw-bold">{{ $purchaseProduct->profit_margin }}</span>
                                                                     <input type="hidden" name="profits[]" id="profit" value="{{ $purchaseProduct->profit_margin }}">
                                                                 </td>
 
-                                                                <td>
+                                                                <td class="text-start">
                                                                     <span id="span_selling_price" class="fw-bold">{{ $purchaseProduct->selling_price }}</span>
                                                                     <input type="hidden" name="selling_prices[]" id="selling_price" value="{{ $purchaseProduct->selling_price }}">
                                                                 </td>
                                                             @endif
 
-                                                            <td>
+                                                            <td class="text-start">
                                                                 <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
                                                             </td>
                                                         </tr>

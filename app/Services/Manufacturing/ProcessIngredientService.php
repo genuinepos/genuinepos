@@ -3,6 +3,7 @@
 namespace App\Services\Manufacturing;
 
 use App\Enums\IsDeleteInUpdate;
+use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\ProcessIngredient;
 
 class ProcessIngredientService
@@ -79,6 +80,73 @@ class ProcessIngredientService
 
             $unusedIngredient->delete();
         }
+    }
+
+    function ingredientsForProduction(int $processId, ?int $warehouseId): array|object
+    {
+        $ingredients = DB::table('process_ingredients')
+            ->leftJoin('products', 'process_ingredients.product_id', 'products.id')
+            ->leftJoin('product_variants', 'process_ingredients.variant_id', 'product_variants.id')
+            ->leftJoin('units', 'process_ingredients.unit_id', 'units.id')
+            ->where('process_ingredients.process_id', $processId)
+            ->select(
+                'process_ingredients.*',
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.product_code',
+                'product_variants.id as variant_id',
+                'product_variants.variant_name as variant_name',
+                'product_variants.variant_code as variant_code',
+                'units.id as unit_id',
+                'units.name as unit_name',
+            )->get();
+
+        foreach ($ingredients as $ingredient) {
+
+            $productName = $ingredient->product_name . ($ingredient->variant_name ? $ingredient->variant_name : '');
+
+            if (isset($warehouseId)) {
+
+                $productStock = DB::table('product_stocks')
+                ->where('product_id', $ingredient->product_id)->where('variant_id', $ingredient->variant_id)
+                ->where('warehouse_id', $warehouseId)->first(['stock']);
+
+                if (!$productStock) {
+
+                    return ['pass' => false, 'msg' => 'Ingredient Name : ' . $productName . ' stock is not available in selected warehouse.'];
+                }
+
+                if ($productStock->stock < $ingredient->final_qty) {
+
+                    return ['pass' => false, 'msg' => 'Ingredient Name : ' . $productName . ' stock is insufficient in selected warehouse.'. 'Stock : '. $productStock->stock];
+                }else {
+
+                    $ingredient->stock = $productStock->stock;
+                }
+            }else {
+
+                $productStock = DB::table('product_stocks')
+                ->where('product_id', $ingredient->product_id)->where('variant_id', $ingredient->variant_id)
+                ->where('branch_id', auth()->user()->branch_id)
+                ->where('warehouse_id', null)
+                ->first(['stock']);
+
+                if (!$productStock) {
+
+                    return ['pass' => false, 'msg' => 'Ingredient Name : ' . $productName . ' stock is not available in shop/business.'];
+                }
+
+                if ( $productStock->stock < $ingredient->final_qty) {
+
+                    return ['pass' => false, 'msg' => 'Ingredient Name : ' . $productName . ' stock is insufficient in the shop/business.'];
+                }else {
+
+                    $ingredient->stock = $productStock->stock;
+                }
+            }
+        }
+
+        return $ingredients;
     }
 
     public function processIngredient(array $with = null): ?object

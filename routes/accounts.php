@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AccountGroupController;
-use App\Http\Controllers\Accounts\BankController;
 
 Route::group(['prefix' => 'accounting'], function () {
 

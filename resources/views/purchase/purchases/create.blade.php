@@ -290,19 +290,19 @@
                                         <table class="display data__table table sale-product-table">
                                             <thead class="staky">
                                                 <tr>
-                                                    <th>{{ __('Product') }}</th>
-                                                    <th>{{ __('Quantity') }}</th>
-                                                    <th>{{ __('Unit Cost(Exc. Tax)') }}</th>
-                                                    <th>{{ __('Unit Discount') }}</th>
-                                                    <th>{{ __('Unit Tax') }}</th>
-                                                    <th>{{ __('Net Unit Cost (Inc. Tax)') }}</th>
-                                                    <th>{{ __('Line-Total') }}</th>
+                                                    <th class="text-start">{{ __('Product') }}</th>
+                                                    <th class="text-start">{{ __('Quantity') }}</th>
+                                                    <th class="text-start">{{ __('Unit Cost(Exc. Tax)') }}</th>
+                                                    <th class="text-start">{{ __('Unit Discount') }}</th>
+                                                    <th class="text-start">{{ __('Unit Tax') }}</th>
+                                                    <th class="text-start">{{ __('Net Unit Cost (Inc. Tax)') }}</th>
+                                                    <th class="text-start">{{ __('Line-Total') }}</th>
 
                                                     @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
-                                                        <th>{{ __('Profit Margine') }}</th>
-                                                        <th>{{ __('Selling Price(Exc. Tax)') }}</th>
+                                                        <th class="text-start">{{ __('Profit Margine') }}</th>
+                                                        <th class="text-start">{{ __('Selling Price(Exc. Tax)') }}</th>
                                                     @endif
-                                                    <th><i class="fas fa-trash-alt"></i></th>
+                                                    <th class="text-start"><i class="fas fa-trash-alt"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody id="purchase_list"></tbody>

@@ -109,7 +109,7 @@ class ProcessService
 
     public function updateProcess(object $request, int $id): object
     {
-        $updateProcess = $this->process(with:['ingredients'])->where('id', $id)->first();
+        $updateProcess = $this->process(with: ['ingredients'])->where('id', $id)->first();
 
         foreach ($updateProcess->ingredients as $ingredient) {
 
@@ -130,13 +130,33 @@ class ProcessService
         return $updateProcess;
     }
 
-    function deleteProcess(int $id) : void {
-
+    function deleteProcess(int $id): void
+    {
         $deleteProcess = $this->process()->where('id', $id)->first();
         if (!is_null($deleteProcess)) {
 
             $deleteProcess->delete();
         }
+    }
+
+    public function processes(array $with = null): ?object
+    {
+        return DB::table('processes')
+            ->leftJoin('products', 'processes.product_id', 'products.id')
+            ->leftJoin('product_variants', 'processes.variant_id', 'product_variants.id')
+            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+            ->where('product_access_branches.branch_id', auth()->user()->branch_id)
+            ->select(
+                'processes.*',
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.product_code as product_code',
+                'products.tax_ac_id',
+                'products.tax_type',
+                'product_variants.id as variant_id',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+            )->get();
     }
 
     public function process(array $with = null): ?object

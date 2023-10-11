@@ -206,10 +206,6 @@ html {
     .button-group {
         display: block !important;
     }
-    .card-counter {
-        display: block !important;
-        height: 165px;
-    }
 }
 
 .switch_bar_cards {
@@ -256,4 +252,67 @@ html {
 .switch_bar_cards .switch_bar p {
     font-size: 10px;
     color: #ffffff;
+}
+@media screen and (max-width:1199px) {
+    .card-counter-wrap {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    .card-counter-wrap .part-txt {
+        width: 100%;
+    }
+    .card-counter-row {
+        width: 100%;
+        gap: 10px;
+    }
+    .card-counter-row .card-counter-col {
+        width: calc(100% / 5 - 8px);
+    }
+}
+@media screen and (max-width:991px) {
+    .card-counter-wrap {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    .card-counter-wrap .part-txt {
+        width: 100%;
+    }
+    .card-counter-row {
+        width: 100%;
+        gap: 10px;
+    }
+    .card-counter-row .card-counter-col {
+        width: calc(100% / 2 - 5px);
+    }
+    .card-counter-row-2 {
+        gap: 10px;
+    }
+    .card-counter-row-2 .card-counter-col {
+        width: calc(100% / 2 - 5px);
+    }
+}
+@media screen and (max-width:479px) {
+    .card-counter-wrap {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    .card-counter-wrap .part-txt {
+        width: 100%;
+    }
+    .card-counter-row {
+        width: 100%;
+        gap: 10px;
+    }
+    .card-counter-row .card-counter-col {
+        width: 100%;
+    }
+    .card-counter-row-2 {
+        gap: 10px;
+    }
+    .card-counter-row-2 .card-counter-col {
+        width: 100%;
+    }
 }

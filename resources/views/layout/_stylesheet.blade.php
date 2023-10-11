@@ -205,11 +205,6 @@
         --light-color-2: #e0e0e0;
     }
 
-    .orange-theme .top-icon {
-        border: #ffffff 1px solid;
-        background: #ff934b47;
-    }
-
     .rtl .navigation {
         right: 142px;
         padding-right: 0px;

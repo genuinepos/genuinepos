@@ -205,11 +205,6 @@
         --light-color-2: #e0e0e0;
     }
 
-    .orange-theme .top-icon {
-        border: #ffffff 1px solid;
-        background: #ff934b47;
-    }
-
     .rtl .navigation {
         right: 142px;
         padding-right: 0px;
@@ -347,15 +342,6 @@
 
     .modal-middle {
         margin-top: 33%;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #cbe4ee
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        /* background-color: #EBEDF3;*/
-        background-color: #cbe4ee;
     }
 
     /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/

@@ -391,7 +391,7 @@
         </div>
 
         <div class="purchase_product_table pt-1 pb-1">
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table table-sm table-bordered">
                 <thead>
                     <tr>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Description") }}</th>

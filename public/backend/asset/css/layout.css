@@ -138,8 +138,10 @@ ul#sidenav li a:hover {
 /* ===============================================top navigation======================= */
 
 img.logo__img {
-    width: 134px;
-    margin-top: 8px;
+    width: auto !important;
+    height: auto !important;
+    max-height: 35px;
+    max-width: 110px;
 }
 
 .navigation {
@@ -168,7 +170,6 @@ img.logo__img {
 
 ul.head__cn {
     display: flex;
-    border-left: 1px solid #000000;
 }
 
 ul.head__cn li .nav-btn {
@@ -177,11 +178,8 @@ ul.head__cn li .nav-btn {
     text-align: left;
     height: 45px !important;
     max-height: none;
-    background: linear-gradient(#424242, #000000) !important;
     color: #fff;
     border: 0;
-    border-left: 1px solid #424242;
-    border-right: 1px solid #000000;
     border-radius: 0;
     padding: 0 10px;
     position: relative;
@@ -807,6 +805,7 @@ footer img.logo {
 
 #dashboard-8 .main__nav ul li:first-child {
     width: 142px;
+    border-top: 1px solid rgba(255, 255, 255, 0.35)
 }
 
 .company-name {

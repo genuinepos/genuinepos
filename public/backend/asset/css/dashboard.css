@@ -212,8 +212,8 @@ html {
 }
 .switch_bar_cards a.bar-link {
     background: white !important;
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
     display: block;
     border-radius: 5px;
     margin-bottom: 5px;

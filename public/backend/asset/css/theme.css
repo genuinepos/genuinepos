@@ -163,6 +163,16 @@ body.red-theme {
     color: #ffffff;
 }
 
+.red-theme ul.head__cn {
+    border-left: 1px solid #2e0214;
+}
+
+.red-theme ul.head__cn li .nav-btn {
+    background: var(--red-color-gradient);
+    border-left: 1px solid #7d113a;
+    border-right: 1px solid #2e0214;
+}
+
 .red-theme ul.head__cn li a:hover,
 .red-theme ul.head__cn li a:focus {
     color: #ffffff;
@@ -255,25 +265,6 @@ body.red-theme {
 
 .red-theme .item-details-sec {
     background: var(--red-color-gradient);
-}
-
-.red-theme .btn-primary {
-    background: linear-gradient(var(--red-color-1) 50%, var(--red-color-2) 50%) !important;
-    background-image: linear-gradient(var(--red-color-1) 50%, var(--red-color-2) 50%) !important;
-    border-color: var(--red-color-1);
-}
-
-.red-theme .btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgb(126 13 61 / 30%);
-}
-
-.red-theme .btn-primary.active,
-.red-theme .btn-primary.tab_active {
-    background: var(--white-color) !important;
-    color: var(--dark-color-1) !important;
-    border-bottom-width: 1px !important;
-    border-top-width: 1px;
-    border-color: var(--red-color-1) !important;
 }
 
 .red-theme .btn_30_blue a {
@@ -448,6 +439,16 @@ body.blue-theme {
     color: #ffffff;
 }
 
+.blue-theme ul.head__cn {
+    border-left: 1px solid #28aefb;
+}
+
+.blue-theme ul.head__cn li .nav-btn {
+    background: var(--blue-color-gradient) !important;
+    border-left: 1px solid #0570b0;
+    border-right: 1px solid #28aefb;
+}
+
 .blue-theme ul.head__cn li a:hover,
 .blue-theme ul.head__cn li a:focus {
     color: #ffffff;
@@ -543,23 +544,6 @@ body.blue-theme {
     background: var(--blue-color-gradient);
 }
 
-.blue-theme .btn-primary {
-    background: linear-gradient(var(--blue-color-1) 50%, var(--blue-color-2) 50%) !important;
-    background-image: linear-gradient(var(--blue-color-1) 50%, var(--blue-color-2) 50%) !important;
-}
-
-.blue-theme .btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgb(41 176 253 / 50%);
-}
-.blue-theme .btn-primary.active,
-.blue-theme .btn-primary.tab_active {
-    background: var(--white-color) !important;
-    color: var(--dark-color-1) !important;
-    border-bottom-width: 1px !important;
-    border-top-width: 1px;
-    border-color: var(--blue-color-1) !important;
-}
-
 .blue-theme .btn_30_blue a {
     border: var(--blue-color-2) 1px solid;
     box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
@@ -646,6 +630,16 @@ body.dark-theme {
 
 .dark-theme .panel__nav {
     border-top: 1px solid var(--blue-color-1);
+}
+
+.dark-theme ul.head__cn {
+    border-left: 1px solid #000000;
+}
+
+.dark-theme ul.head__cn li .nav-btn {
+    background: linear-gradient(#424242, #000000) !important;
+    border-left: 1px solid #424242;
+    border-right: 1px solid #000000;
 }
 
 .dark-theme .text-primary {
@@ -805,11 +799,11 @@ body.dark-theme {
     border-right: 2px solid white !important;
 }
 
-.dark-theme table.display tbody tr:hover {
-    /* background: var(--dark-color-1) !important; */
+/* .dark-theme table.display tbody tr:hover {
+    background: var(--dark-color-1) !important;
     background: rgb(117, 117, 117) !important;
     color: #fff;
-}
+} */
 
 .dark-theme .tab_list_area ul li a:hover {
     border-bottom: 1px solid white;
@@ -820,26 +814,6 @@ body.dark-theme {
 
 .dark-theme .item-details-sec {
     background: var(--dark-color-gradient);
-}
-
-.dark-theme .btn-primary {
-    background: linear-gradient(var(--dark-color-2) 50%, #4a4a4a 50%);
-    background-image: linear-gradient(var(--dark-color-2) 50%, #4a4a4a 50%) !important;
-    box-shadow: 0px 0px 3px 0px rgb(0 0 0 / 50%);
-    border-color: var(--dark-color-2) !important;
-}
-
-
-.dark-theme .btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0 0 0 / 30%);
-}
-
-.dark-theme .btn-primary.active,
-.dark-theme .btn-primary.tab_active {
-    background: var(--white-color) !important;
-    color: var(--dark-color-1) !important;
-    border-bottom-width: 1px !important;
-    border-top-width: 1px;
 }
 
 .dark-theme .btn_30_blue a {
@@ -1004,6 +978,16 @@ body.light-theme {
     color: var(--black-color);
 }
 
+.light-theme ul.head__cn {
+    border-left: 1px solid #999999;
+}
+
+.light-theme ul.head__cn li .nav-btn {
+    background: var(--light-color-gradient) !important;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #999999;
+}
+
 .light-theme .select-dropdown select {
     background-color: var(--light-color-2);
 }
@@ -1096,26 +1080,6 @@ body.light-theme {
 
 .light-theme .item-details-sec {
     background: var(--light-color-gradient);
-}
-
-.light-theme .btn-primary {
-    background: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%) !important;
-    background-image: linear-gradient(var(--light-color-1) 50%, var(--light-color-2) 50%) !important;
-    border-color: rgb(0 0 0 / 20%);
-    color: var(--black-color);
-}
-
-.light-theme .btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgb(0 0 0 / 15%);
-}
-
-.light-theme .btn-primary.active,
-.light-theme .btn-primary.tab_active {
-    background: var(--white-color) !important;
-    color: var(--dark-color-1) !important;
-    border-bottom-width: 1px !important;
-    border-top-width: 1px;
-    border-color: rgb(0 0 0 / 20%) !important;
 }
 
 .light-theme .btn_30_blue a {
@@ -1302,6 +1266,16 @@ body.orange-theme {
     background: var(--orange-color-2);
 }
 
+.orange-theme ul.head__cn {
+    border-left: 1px solid #fe924a;
+}
+
+.orange-theme ul.head__cn li .nav-btn {
+    background: var(--orange-color-gradient) !important;
+    border-left: 1px solid #bf601f;
+    border-right: 1px solid #fe924a;
+}
+
 .orange-theme ul.head__cn li a {
     color: #ffffff;
 }
@@ -1401,25 +1375,6 @@ body.orange-theme {
 
 .orange-theme .item-details-sec {
     background: var(--orange-color-gradient);
-}
-
-.orange-theme .btn-primary {
-    background: linear-gradient(var(--orange-color-1) 50%, var(--orange-color-2) 50%) !important;
-    background-image: linear-gradient(var(--orange-color-1) 50%, var(--orange-color-2) 50%) !important;
-    border-color: var(--orange-color-1);
-}
-
-.orange-theme .btn-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgb(255 147 75 / 50%);
-}
-
-.orange-theme .btn-primary.active,
-.orange-theme .btn-primary.tab_active {
-    background: var(--white-color) !important;
-    color: var(--dark-color-1) !important;
-    border-bottom-width: 1px !important;
-    border-top-width: 1px;
-    border-color: var(--orange-color-1) !important;
 }
 
 .orange-theme .btn_30_blue a {

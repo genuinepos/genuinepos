@@ -8,7 +8,6 @@ use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\ProfileController;
 use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\Guest\PaymentController;
 use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
@@ -24,7 +23,7 @@ Route::prefix('saas')->group(function () {
         Route::get('login', [LoginController::class, 'showForm'])->name('login.showForm');
         Route::post('login', [LoginController::class, 'login'])->name('login');
     });
-    
+
     // Authenticated but Not Verified Yet
     Route::middleware('is_auth')->group(function() {
         Route::get('/email/verify', [VerificationController::class,'show'])->name('verification.notice');
@@ -54,8 +53,8 @@ Route::prefix('saas')->group(function () {
         Route::resource('roles', RoleController::class);
 
         // Plan purchase (verified user part)
-        Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe')->middleware('is_auth');
         Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
+        Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
     });
 
     // Plan exploration and plan-detail for guest+verified user

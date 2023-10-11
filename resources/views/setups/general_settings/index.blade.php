@@ -164,7 +164,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">Required Size : H : 40px; W: 110px;</small></label>
+                                            <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">Recommended Size : H : 40px; W: 110px;</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
 
                                             <span class="error error_business_logo"></span>

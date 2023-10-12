@@ -610,7 +610,40 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="">
+                                <div class="mb-2">
+                                    <label for="fullname" class="form-label text-bold">
+                                        <b>{{ __('Full Name') }}</b>
+                                    </label>
+                                    <input type="text" name="fullname" id="fullname"
+                                        class="form-control @error('fullname') is-invalid  @enderror"
+                                        placeholder="{{ __('Enter Full Name') }}" required />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="email" class="form-label text-bold">
+                                        <b>{{ __('Email Address') }}</b>
+                                    </label>
+                                    <input type="email" name="email" id="email"
+                                        class="form-control @error('email') is-invalid  @enderror"
+                                        placeholder="{{ __('Enter Email Address') }}" required />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="password" class="form-label text-bold">
+                                        <b>{{ __('Password') }}</b>
+                                    </label>
+                                    <input type="password" name="password" id="password"
+                                        class="form-control @error('password') is-invalid  @enderror"
+                                        placeholder="{{ __('Enter Password') }}" required />
+                                </div>
+                                <div class="mb-2">
+                                    <label for="phone" class="form-label text-bold">
+                                        <b>{{ __('Phone Number') }}</b>
+                                    </label>
+                                    <input type="text" phone="phone" id="phone"
+                                        class="form-control @error('phone') is-invalid  @enderror"
+                                        placeholder="{{ __('Enter Phone Number') }}" required />
+                                </div>
+                                <hr />
+                                <div class="mb-2">
                                     <label for="name" class="form-label text-bold">
                                         <b>{{ __('Business Name') }}</b>
                                     </label>
@@ -618,7 +651,7 @@
                                         class="form-control @error('name') is-invalid  @enderror"
                                         placeholder="{{ __('Enter Business Name') }}" required />
                                 </div>
-                                <div class="mt-3">
+                                <div class="mb-2">
                                     <label for="name"
                                         class="form-label text-bold"><b>{{ __('Domain Name') }}</b></label>
                                     <input type="text" name="domain" id="domain"
@@ -630,7 +663,7 @@
                                        <span id="domainPreview" class="monospace"></span>
                                     </p>
                                 </div>
-                                <div class="mt-3">
+                                <div class="mb-2">
                                     <input type="submit" class="btn btn-primary" value="{{ __('Create') }}" id="submitBtn" />
                                 </div>
                             </div>
@@ -685,6 +718,10 @@
                         _token: "{{ csrf_token() }}",
                         name: $('#name').val(),
                         domain: $('#domain').val(),
+                        fullname: $('#fullname').val(),
+                        email: $('#email').val(),
+                        password: $('#password').val(),
+                        phone: $('#phone').val()
                     },
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');
@@ -709,13 +746,14 @@
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             });
 
-            //on keydown, clear the countdown 
+            //on keydown, clear the countdown
             $input.on('keydown', function () {
                 clearTimeout(typingTimer);
             });
 
             //user is "finished typing," do something
             function doneTyping () {
+                $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
                 var domain = $('#domain').val();
                 $.ajax({
                     url: "{{ route('saas.domain.checkAvailability')}}",

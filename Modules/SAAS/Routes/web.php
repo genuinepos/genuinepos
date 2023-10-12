@@ -65,3 +65,17 @@ Route::prefix('saas')->group(function () {
 
     });
 });
+
+Route::get('dev-test', function() {
+    \Log::debug(DB::connection()->getName());
+    $tenantDb = \App\Models\Tenant::find('apex')->tenancy_db_name;
+    // config('database.connections.mysql.database', $tenantDb);
+    \DB::statement('use ' . $tenantDb);
+    \Log::debug(DB::connection()->getName());
+    // \Log::debug(DB::table('users')->select('name')->count());
+    \Log::debug(\App\Models\User::count());
+    \DB::reconnect();
+    // \Log::debug(DB::table('users')->select('name')->count());
+    \Log::debug(\App\Models\User::count());
+    \Log::debug(DB::connection()->getName());
+});

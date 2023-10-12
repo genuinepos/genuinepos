@@ -119,7 +119,7 @@
         </div>
 
         <div class="purchase_product_table pt-1 pb-1">
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <tr>
@@ -179,7 +179,7 @@
 
         <div class="row">
             <div class="col-6 offset-6">
-                <table class="table modal-table table-sm">
+                <table class="table print-table table-sm">
                     <thead>
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>

@@ -355,6 +355,18 @@ a.paginate_button.current {
     font-size: 11px;
 }
 
+.print-table tr {
+    line-height: 14px;
+}
+
+.print-table tbody tr {
+    line-height: 15px;
+}
+
+.print-table thead tr th {
+    font-size: 11px;
+}
+
 li {
     margin: 0px;
     padding: 0px;

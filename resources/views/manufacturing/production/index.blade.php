@@ -155,7 +155,7 @@
         </div>
     </div>
 
-    <div id="production_details"></div>
+    <div id="details"></div>
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -230,6 +230,52 @@
             e.preventDefault();
             $('.data_preloader').show();
             production_table.ajax.reload();
+        });
+
+          // Show details modal with data
+          $(document).on('click', '#details_btn', function(e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#details').html(data);
+                    $('#detailsModal').modal('show');
+                    $('.data_preloader').hide();
+                },error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
+         // Make print
+         $(document).on('click', '#modalDetailsPrintBtn', function(e) {
+            e.preventDefault();
+
+            var body = $('.print_modal_details').html();
+
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
+            });
         });
 
         $(document).on('click', '#delete',function(e){

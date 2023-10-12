@@ -57,6 +57,30 @@ class ProductionController extends Controller
         return view('manufacturing.production.index', compact('branches'));
     }
 
+    public function show($id)
+    {
+        if (!auth()->user()->can('production_view')) {
+
+            return response()->json('Access Denied');
+        }
+
+        $production = $this->productionService->singleProduction(with: [
+            'branch',
+            'branch.parentBranch',
+            'storeWarehouse:id,warehouse_name,warehouse_code',
+            'stockWarehouse:id,warehouse_name,warehouse_code',
+            'unit:id,code_name',
+            'product:id,name,product_code',
+            'variant:id,variant_name,variant_code',
+            'ingredients',
+            'ingredients.product:id,name,product_code',
+            'ingredients.variant:id,variant_name,variant_code',
+            'ingredients.unit:id,code_name',
+        ])->where('id', $id)->first();
+
+        return view('manufacturing.production.ajax_view.show', compact('production'));
+    }
+
     public function create()
     {
         if (!auth()->user()->can('production_add')) {
@@ -86,7 +110,7 @@ class ProductionController extends Controller
 
         $this->validate($request, [
             'process_id' => 'required',
-            'date' => 'required',
+            'date' => 'required|date',
             'total_output_quantity' => 'required',
             'total_final_output_quantity' => 'required',
             'net_cost' => 'required',
@@ -104,7 +128,6 @@ class ProductionController extends Controller
             DB::beginTransaction();
 
             $restrictions = $this->productionService->restrictions($request);
-
             if ($restrictions['pass'] = false) {
 
                 return response()->json(['errorMsg' => $restrictions['msg']]);
@@ -200,148 +223,69 @@ class ProductionController extends Controller
         }
     }
 
-    public function show($productionId)
-    {
-        if (!auth()->user()->can('production_view')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $production = Production::with([
-            'branch',
-            'stock_branch:id,name,branch_code',
-            'warehouse:id,warehouse_name,warehouse_code',
-            'stock_warehouse:id,warehouse_name,warehouse_code',
-            'unit:id,code_name',
-            'tax:id,tax_name,tax_percent',
-            'product:id,name,product_code',
-            'variant:id,variant_name,variant_code',
-            'ingredients',
-            'ingredients.product:id,name,product_code',
-            'ingredients.variant:id,variant_name,variant_code',
-            'ingredients.unit:id,code_name',
-        ])->where('id', $productionId)->first();
-
-        return view('manufacturing.production.ajax_view.show', compact('production'));
-    }
-
-    public function edit($productionId)
+    public function edit($id)
     {
         if (!auth()->user()->can('production_edit')) {
+
             abort(403, 'Access Forbidden.');
         }
 
-        $production = Production::with([
+        $production = $this->productionService->singleProduction(with: [
             'branch',
-            'stock_branch:id,name,branch_code',
-            'warehouse:id,warehouse_name,warehouse_code',
-            'stock_warehouse:id,warehouse_name,warehouse_code',
+            'branch.parentBranch:id,name,branch_code',
+            'stockWarehouse:id,warehouse_name,warehouse_code',
             'unit:id,name',
-            'tax:id,tax_name,tax_percent',
             'product:id,name,product_code',
             'variant:id,variant_name,variant_code',
             'ingredients',
             'ingredients.product:id,name,product_code',
             'ingredients.variant:id,variant_name,variant_code',
             'ingredients.unit:id,name',
-        ])->where('id', $productionId)->first();
+        ])->where('id', $id)->first();
 
-        $warehouses = DB::table('warehouse_branches')
-            ->where('warehouse_branches.branch_id', auth()->user()->branch_id)
-            ->orWhere('warehouse_branches.is_global', 1)
-            ->leftJoin('warehouses', 'warehouse_branches.warehouse_id', 'warehouses.id')
-            ->select(
-                'warehouses.id',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-            )->get();
+        $warehouses = $this->warehouseService->warehouses()->where('branch_id', $production->branch_id)
+            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
-        $taxes = DB::table('taxes')->select('id', 'tax_percent', 'tax_name')->get();
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
-        $productionAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 23)
-            ->get(['accounts.id', 'accounts.name']);
+        $processes = $this->processService->processes();
 
-        return view('manufacturing.production.edit', compact('warehouses', 'production', 'taxes', 'productionAccounts'));
+        return view('manufacturing.production.edit', compact('warehouses', 'production', 'processes', 'taxAccounts'));
     }
 
-    public function update(Request $request, $productionId)
+    public function update($id, Request $request)
     {
         if (!auth()->user()->can('production_edit')) {
 
             return response()->json('Access Denied');
         }
 
-        $tax_id = null;
-        if ($request->tax_id) {
-
-            $tax_id = explode('-', $request->tax_id)[0];
-        }
-
         $this->validate($request, [
-            'production_account_id' => 'required',
             'date' => 'required',
-            'output_quantity' => 'required',
-            'final_output_quantity' => 'required',
-            'total_cost' => 'required',
-        ], [
-            'production_account_id.required' => 'Production A/C is required',
+            'total_output_quantity' => 'required',
+            'total_final_output_quantity' => 'required',
+            'net_cost' => 'required',
         ]);
 
-        if (isset($request->store_warehouse_count) && isset($request->stock_warehouse_count)) {
+        if ($request->store_warehouse_count == 1) {
 
             $this->validate($request, [
                 'store_warehouse_id' => 'required',
             ]);
         }
 
-        if (!isset($request->product_ids)) {
+        $restrictions = $this->productionService->restrictions($request);
+        if ($restrictions['pass'] = false) {
 
-            return response()->json(['errorMsg' => 'Ingredients list must not be empty.']);
+            return response()->json(['errorMsg' => $restrictions['msg']]);
         }
 
-        $generalSettings = config('generalSettings');
-        $referenceNoPrefix = $generalSettings['mf_settings__production_ref_prefix'];
-
-        $updateProduction = Production::where('id', $productionId)->first();
-        $storedWarehouseId = $updateProduction->warehouse_id;
-
-        $updateProduction->reference_no = $request->reference_no ? $request->reference_no : ($referenceNoPrefix != null ? $referenceNoPrefix : '') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('productions'), 5, '0', STR_PAD_LEFT);
-        $updateProduction->production_account_id = $request->production_account_id;
-        $updateProduction->branch_id = auth()->user()->branch_id;
-        $updateProduction->warehouse_id = isset($request->store_warehouse_id) ? $request->store_warehouse_id : null;
-        $updateProduction->date = $request->date;
-        $updateProduction->time = date('h:i:s a');
-        $updateProduction->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
-        $updateProduction->total_ingredient_cost = $request->total_ingredient_cost;
-        $updateProduction->quantity = $request->output_quantity;
-        $updateProduction->parameter_quantity = $request->parameter_quantity;
-        $updateProduction->wasted_quantity = $request->wasted_quantity;
-        $updateProduction->total_final_quantity = $request->final_output_quantity;
-        $updateProduction->production_cost = $request->production_cost;
-        $updateProduction->total_cost = $request->total_cost;
-        $updateProduction->tax_id = $tax_id;
-        $updateProduction->tax_type = $request->tax_type;
-        $updateProduction->unit_cost_exc_tax = $request->per_unit_cost_exc_tax;
-        $updateProduction->unit_cost_inc_tax = $request->per_unit_cost_inc_tax;
-        $updateProduction->x_margin = $request->xMargin;
-        $updateProduction->price_exc_tax = $request->selling_price;
-        $updateProduction->is_final = isset($request->is_final) ? 1 : 0;
-        $updateProduction->save();
+        $updateProduction = $this->productionService->updateProduction(request: $request, productionId: $id);
 
         if (isset($request->is_final)) {
-
-            // Update Production A/C Ledger
-            $this->accountUtil->updateAccountLedger(
-                voucher_type_id: 22,
-                date: $request->date,
-                account_id: $request->production_account_id,
-                trans_id: $updateProduction->id,
-                amount: $request->total_cost,
-                balance_type: 'debit'
-            );
 
             $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
                 tranColName: 'production_id',
@@ -417,7 +361,7 @@ class ProductionController extends Controller
             $this->productStockUtil->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->branch_id);
         }
 
-        return response()->json(['successMsg' => 'Successfully production is updated.']);
+        return response()->json(__("Production is updated successfully."));
     }
 
     public function delete(Request $request, $productionId)
@@ -429,24 +373,6 @@ class ProductionController extends Controller
 
         $this->productionUtil->deleteProduction($productionId);
 
-        DB::statement('ALTER TABLE productions AUTO_INCREMENT = 1');
-
-        return response()->json('Successfully production is deleted');
-    }
-
-    public function getProcess($processId)
-    {
-        $process = DB::table('processes')
-            ->leftJoin('products', 'processes.product_id', 'products.id')
-            ->leftJoin('units', 'processes.unit_id', 'units.id')
-            ->leftJoin('taxes', 'products.tax_id', 'taxes.id')
-            ->select(
-                'processes.*',
-                'units.name as u_name',
-                'taxes.id as tax_id',
-                'taxes.tax_percent',
-            )->where('processes.id', $processId)->first();
-
-        return response()->json($process);
+        return response()->json(__("Production is deleted successfully"));
     }
 }

@@ -27,15 +27,15 @@ Route::group(['prefix' => 'manufacturing'], function () {
         });
     });
 
-    Route::group(['prefix' => 'productions'], function () {
+    Route::controller(ProductionController::class)->prefix('productions')->group(function () {
 
-        Route::get('/', [ProductionController::class, 'index'])->name('manufacturing.productions.index');
-        Route::get('show/{productionId}', [ProductionController::class, 'show'])->name('manufacturing.productions.show');
-        Route::get('create', [ProductionController::class, 'create'])->name('manufacturing.productions.create');
-        Route::post('store', [ProductionController::class, 'store'])->name('manufacturing.productions.store');
-        Route::get('edit/{productionId}', [ProductionController::class, 'edit'])->name('manufacturing.productions.edit');
-        Route::post('update/{productionId}', [ProductionController::class, 'update'])->name('manufacturing.productions.update');
-        Route::delete('delete/{productionId}', [ProductionController::class, 'delete'])->name('manufacturing.productions.delete');
+        Route::get('/', 'index')->name('manufacturing.productions.index');
+        Route::get('show/{id}', 'show')->name('manufacturing.productions.show');
+        Route::get('create', 'create')->name('manufacturing.productions.create');
+        Route::post('store', 'store')->name('manufacturing.productions.store');
+        Route::get('edit/{id}', 'edit')->name('manufacturing.productions.edit');
+        Route::post('update/{id}', 'update')->name('manufacturing.productions.update');
+        Route::delete('delete/{id}', 'delete')->name('manufacturing.productions.delete');
     });
 
     Route::controller(ManufacturingSettingController::class)->prefix('settings')->group(function () {

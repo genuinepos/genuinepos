@@ -18,14 +18,8 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $this->truncateRolePermissionDataButKeepOldData();
-        Artisan::call('optimize:clear');
-
         $this->createRolePermission();
-        Artisan::call('optimize:clear');
-
         $this->syncRolesPermissions();
-
-        $this->call(UserRoleSeeder::class);
     }
 
     public function truncateRolePermissionDataButKeepOldData(): void

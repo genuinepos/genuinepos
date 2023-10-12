@@ -152,7 +152,7 @@ html {
 }
 /* Arrow */
 .select-dropdown::after {
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 6 Pro";
     font-weight: 600;
     content: "\f063";
     position: absolute;

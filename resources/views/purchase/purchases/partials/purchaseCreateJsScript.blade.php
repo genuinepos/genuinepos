@@ -503,7 +503,7 @@
 
             var tr = '';
             tr += '<tr id="select_item">';
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_item_name">'+e_item_name+'</span>';
             tr += '<input type="hidden" id="item_name" value="'+e_item_name+'">';
             tr += '<input type="hidden" name="descriptions[]" id="description" value="'+e_description+'">';
@@ -512,7 +512,7 @@
             tr += '<input type="hidden" id="'+uniqueId+'" value="'+uniqueId+'">';
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_quantity_unit" class="fw-bold">'+parseFloat(e_quantity).toFixed(2)+'/'+e_unit_name+'</span>';
             tr += '<input type="hidden" name="quantities[]" id="quantity" value="'+e_quantity+'">';
             tr += '<input type="hidden" name="unit_ids[]" step="any" id="unit_id" value="'+e_unit_id+'">';
@@ -524,7 +524,7 @@
             @endif
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_unit_cost_exc_tax" class="fw-bold">'+parseFloat(e_unit_cost_exc_tax).toFixed(2)+'</span>';
             tr += '<input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="'+e_unit_cost_exc_tax+'">';
             tr += '<p class="p-0 m-0 fw-bold">Batch No/Expire Date: <span id="span_batch_expire_date">' + (e_has_batch_no_expire_date == 1 ? e_batch_number+' | '+ e_expire_date  : 'N/a')+ '</span>';
@@ -533,7 +533,7 @@
             tr += '<input type="hidden" id="has_batch_no_expire_date" value="' + e_has_batch_no_expire_date + '">';
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_discount_amount" class="fw-bold">'+parseFloat(e_discount_amount).toFixed(2)+'</span>';
             tr += '<input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="'+e_discount_type+'">';
             tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="'+parseFloat(e_discount).toFixed(2)+'">';
@@ -542,7 +542,7 @@
             tr += '<input type="hidden" name="unit_costs_with_discount[]" id="unit_cost_with_discount" value="'+parseFloat(e_unit_cost_with_discount).toFixed(2)+'">';
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_tax_percent" class="fw-bold">'+e_tax_percent+'%'+'</span>';
             tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="'+e_tax_ac_id+'">';
             tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="'+e_tax_type+'">';
@@ -550,24 +550,24 @@
             tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="'+parseFloat(e_tax_amount).toFixed(2)+'">';
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_unit_cost_inc_tax" class="fw-bold">'+parseFloat(e_unit_cost_inc_tax).toFixed(2)+'</span>';
             tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="'+parseFloat(e_unit_cost_inc_tax).toFixed(2)+'">';
             tr += '<input type="hidden" name="net_unit_costs[]" id="net_unit_cost" value="'+parseFloat(e_unit_cost_inc_tax).toFixed(2)+'">';
             tr += '</td>';
 
-            tr += '<td>';
+            tr += '<td class="text-start">';
             tr += '<span id="span_linetotal" class="fw-bold">'+parseFloat(e_linetotal).toFixed(2)+'</span>';
             tr += '<input type="hidden" name="linetotals[]" value="'+parseFloat(e_linetotal).toFixed(2)+'" id="linetotal">';
             tr += '</td>';
 
             @if ($generalSettings['purchase__is_edit_pro_price'] == '1')
-                tr += '<td>';
+                tr += '<td class="text-start">';
                 tr += '<span id="span_profit" class="fw-bold">'+parseFloat(e_profit_margin).toFixed(2)+'</span>';
                 tr += '<input type="hidden" name="profits[]" id="profit" value="'+parseFloat(e_profit_margin).toFixed(2)+'">';
                 tr += '</td>';
 
-                tr += '<td>';
+                tr += '<td class="text-start">';
                 tr += '<span id="span_showing_selling_price" class="fw-bold">'+parseFloat(e_selling_price).toFixed(2)+'</span>';
                 tr += '<input type="hidden" name="selling_prices[]" id="selling_price" value="'+parseFloat(e_selling_price).toFixed(2)+'">';
                 tr += '</td>';

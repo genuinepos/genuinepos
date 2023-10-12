@@ -572,28 +572,28 @@
                         tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
                         tr += '</td>';
 
-                        tr += '<td>';
+                        tr += '<td class="text-start">';
                         tr += '<span id="span_quantity" class="fw-bold">' + parseFloat(e_quantity).toFixed(2) + '</span>';
                         tr += '<input type="hidden" name="quantities[]" id="quantity" value="' + parseFloat(e_quantity).toFixed(2) + '">';
                         tr += '</td>';
 
-                        tr += '<td class="text">';
+                        tr += '<td class="text-start">';
                         tr += '<b><span id="span_unit">' + e_unit_name + '</span></b>';
                         tr += '<input type="hidden" name="unit_ids[]" id="unit_id" value="' + e_unit_id + '">';
                         tr += '</td>';
 
-                        tr += '<td>';
+                        tr += '<td class="text-start">';
                         tr += '<input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="' + parseFloat(e_price_exc_tax).toFixed(2) + '">';
                         tr += '<input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="' + parseFloat(e_price_inc_tax).toFixed(2) + '">';
                         tr += '<span id="span_unit_price_inc_tax" class="fw-bold">' + parseFloat(e_price_inc_tax).toFixed(2) + '</span>';
                         tr += '</td>';
 
-                        tr += '<td class="text text-center">';
+                        tr += '<td class="text-start">';
                         tr += '<span id="span_subtotal" class="fw-bold">' + parseFloat(e_subtotal).toFixed(2) + '</span>';
                         tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(e_subtotal).toFixed(2) + '" tabindex="-1">';
                         tr += '</td>';
 
-                        tr += '<td class="text-center">';
+                        tr += '<td class="text-start">';
                         tr += '<a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
                         tr += '</td>';
                         tr += '</tr>';

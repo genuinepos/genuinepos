@@ -13,6 +13,7 @@
         .selectProduct{background-color: #746e70; color: #fff!important;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         table.display td input {height: 26px!important; padding: 3px;}
+        tbody#ingredient_list td { line-height: 1;}
     </style>
 @endpush
 @section('title', 'Create Process - ')

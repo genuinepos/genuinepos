@@ -124,7 +124,7 @@ class WarehouseService
         return $query;
     }
 
-    public function singleWarehouse(int $id, array $with = null)
+    public function singleWarehouse(?int $id, array $with = null)
     {
         $query = Warehouse::query();
 

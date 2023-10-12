@@ -14,21 +14,23 @@
         .checkbox_input_wrap {
             text-align: right;
         }
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
+@section('title', 'Add Production - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h5>@lang('menu.add_production')</h5>
+                    <h5>{{ __("Add Production") }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <form id="add_production_form" action="{{ route('manufacturing.productions.store') }}" method="POST">
                 <input name="action_type" type="text" id="action_type" class="d-hide" value="">
                 <input name="product_id" type="text" id="product_id" class="d-hide" value="">
@@ -36,83 +38,59 @@
                 <input name="unit_id" type="text" id="unit_id" class="d-hide" value="">
                 @csrf
                 <section>
-                    <div class="form_element rounded mt-0 mb-3">
-
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row gx-2">
                                 <div class="col-md-2">
-                                    <label><b>@lang('menu.production_ac') : <span class="text-danger">*</span></b></label>
-                                    <select name="production_account_id" class="form-control add_input"
-                                        id="production_account_id" data-name="Production A/C">
-                                        @foreach ($productionAccounts as $productionAccount)
-                                            <option value="{{ $productionAccount->id }}">
-                                                {{ $productionAccount->name }}
-                                            </option>
+                                    <input type="hidden" name="store_warehouse_count" value="{{ count($warehouses) }}">
+                                    <label><b>{{ __("Store Location") }}</b>
+                                        @if (count($warehouses) > 0)
+                                            <span class="text-danger">*</span>
+                                        @endif
+                                    </label>
+                                    <select {{ count($warehouses) > 0 ? 'required' : '' }} class="form-control changeable" name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id" data-next="date" autofocus>
+                                        <option value="">{{ __("Select Warehouse") }}</option>
+                                        @foreach ($warehouses as $w)
+                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                         @endforeach
                                     </select>
-                                    <span class="error error_production_account_id"></span>
+                                    <span class="error error_store_warehouse_id"></span>
                                 </div>
 
                                 <div class="col-md-2">
-                                    @if (count($warehouses) > 0)
-                                    <input type="hidden" value="YES" name="store_warehouse_count">
-                                        <label > <b>@lang('menu.store_location') </b> <span
-                                            class="text-danger">*</span></label>
-                                        <select class="form-control changeable add_input"
-                                            name="store_warehouse_id" data-name="Warehouse" id="store_warehouse_id">
-                                            <option value="">@lang('menu.select_warehouse')</option>
-                                            @foreach ($warehouses as $w)
-                                                <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="error error_store_warehouse_id"></span>
-                                    @else
-                                        <label><b>@lang('menu.store_location') </b> </label>
-                                        <input readonly type="text" name="store_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
-                                    @endif
+                                    <label ><b>{{ __("Voucher No") }}</b></label>
+                                    <input readonly type="text" name="voucher_no" class="form-control" placeholder="{{ __("Voucher No") }}"/>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label > <b>@lang('menu.voucher_no') </b></label>
-                                    <input type="text" name="reference_no" class="form-control changeable" placeholder="@lang('menu.voucher_no')"/>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <label><b>@lang('menu.date') </b></label>
-                                    <input type="text" name="date" class="form-control changeable" value="{{ date($generalSettings['business__date_format']) }}" id="datepicker">
+                                    <label><b>{{ __("Date") }}</b></label>
+                                    <input type="text" name="date" class="form-control" id="date"  data-next="stock_warehouse_id" value="{{ date($generalSettings['business__date_format']) }}">
                                     <span class="error error_date"></span>
                                 </div>
 
                                 <div class="col-md-2">
-                                    @if (count($warehouses) > 0)
-                                        <input type="hidden" value="YES" name="stock_warehouse_count">
-                                        <label> <b>{{ __('Ingredient Stock Location') }} </b> <span
-                                            class="text-danger">*</span></label>
-                                        <select class="form-control changeable add_input"
-                                            name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id">
-                                            <option value="">@lang('menu.select_warehouse')</option>
-                                            @foreach ($warehouses as $w)
-                                                <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="error error_warehouse_id"></span>
-                                    @else
-                                        <label><b>{{ __('Ingredient Stock Location') }} </b> </label>
-                                        <input readonly type="text" name="stock_branch_id" class="form-control changeable" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}"/>
-                                    @endif
+                                    <label> <b>{{ __('Ingredient Stock Location') }} </b></label>
+                                    <select class="form-control" name="stock_warehouse_id" data-name="Warehouse" id="stock_warehouse_id" data-next="process_id">
+                                        <option value="">{{ __("Select Warehouse") }}</option>
+                                        @foreach ($warehouses as $w)
+                                            <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="error error_warehouse_id"></span>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <label><b>@lang('menu.product') </b> <span class="text-danger">*</span></label>
-                                    <select name="process_id" data-name="Product" class="form-control add_input"
-                                        id="product_id">
-                                        <option value="">{{ __('Select Process') }}</option>
-                                        @foreach ($products as $product)
+                                    <label><b>{{ __("Product") }} </b> <span class="text-danger">*</span></label>
+                                    <select name="process_id" class="form-control" id="process_id" data-next="total_output_quantity">
+                                        <option value="">{{ __('Select A Product Process') }}</option>
+                                        @foreach ($processes as $process)
                                             @php
-                                                $variant_name = $product->v_name ? $product->v_name : '';
-                                                $product_code = $product->v_code ? $product->v_code : $product->p_code;
+                                                $variant_name = $process->variant_name ? $process->variant_name : '';
+                                                $product_code = $process->variant_code ? $process->variant_code : $process->product_code;
                                             @endphp
-                                            <option value="{{ $product->id }}">{{ $product->p_name.' '.$variant_name.' ('.$product_code.')' }}</option>
+                                            <option data-p_id="{{ $process->product_id }}" data-v_id="{{ $process->variant_id }}" data-tax_ac_id="{{ $process->tax_ac_id }}" data-tax_type="{{ $process->tax_type }}" data-unit_id="{{ $process->unit_id }}" data-total_output_qty="{{ $process->total_output_qty }}" data-addl_production_cost="{{ $process->additional_production_cost }}" data-totol_ingredient_cost="{{ $process->total_ingredient_cost }}" data-net_cost="{{ $process->net_cost }}" value="{{ $process->id }}">
+                                                {{ $process->product_name.' '.$variant_name.' ('.$product_code.')' }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     <span class="error error_process_id"></span>
@@ -123,7 +101,7 @@
                 </section>
 
                 <section>
-                    <div class="sale-content">
+                    <div class="sale-content mb-1">
                         <div class="card p-1">
                             <div class="row">
                                 <div class="sale-item-sec">
@@ -132,10 +110,11 @@
                                             <table class="display data__table table-striped">
                                                 <thead class="staky">
                                                     <tr>
-                                                        <th>@lang('menu.ingredient')</th>
-                                                        <th>@lang('menu.input_quantity')</th>
-                                                        <th>@lang('menu.unit_cost')</th>
-                                                        <th>@lang('menu.sub_total')</th>
+                                                        <th>{{ __("Ingredient") }}</th>
+                                                        <th>{{ __("Stock Location") }}</th>
+                                                        <th>{{ __("Input Quantity") }}</th>
+                                                        <th>{{ __("Unit Cost Inc. Tax") }}</th>
+                                                        <th>{{ __("Subtotal") }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="ingredient_list"></tbody>
@@ -148,27 +127,27 @@
                     </div>
                 </section>
 
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col-md-12">
                         <input type="text" class="d-hide" name="total_ingredient_cost" id="total_ingredient_cost">
-                        <p class="my-3 float-end clearfix"><strong>{{ __('Total Ingredient Cost') }} </strong> <span id="span_total_ingredient_cost">0.00</span></p>
+                        <p class="float-end clearfix pe-1"><strong>{{ __('Total Ingredient Cost') }} : </strong> <span id="span_total_ingredient_cost">0.00</span></p>
                     </div>
                 </div>
 
-                <section class="last_section mb-3">
+                <section class="last_section mb-1">
                     <div class="row g-3">
                         <div class="col-md-5">
                             <div class="form_element rounded m-0">
                                 <div class="element-body">
-                                    <p><strong>@lang('menu.total_production_costing')</strong></p>
+                                    <p><strong>{{ __("Total Production Costing") }}</strong></p>
                                     <hr class="p-0 m-0 mb-1">
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.output_qty') </b></label>
+                                                <label class="col-5"><b>{{ __("Output Quantity") }}</b></label>
                                                 <div class="col-7">
-                                                    <input type="number" step="any" data-name="Quantity" class="form-control add_input" name="output_quantity" id="output_quantity" value="1.00">
-                                                    <input type="text" name="parameter_quantity" class="d-hide" id="parameter_quantity" value="0.00">
+                                                    <input type="number" step="any" data-name="Quantity" class="form-control fw-bold" name="total_output_quantity" id="total_output_quantity" data-next="total_wasted_quantity" value="1.00">
+                                                    <input type="text" name="total_parameter_quantity" class="d-hide" id="total_parameter_quantity" value="0.00">
                                                     <span class="error error_output_quantity"></span>
                                                 </div>
                                             </div>
@@ -178,9 +157,9 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Wasted Qty') }} </b></label>
+                                                <label class="col-5"><b>{{ __('Wasted Quantity') }} </b></label>
                                                 <div class="col-7">
-                                                    <input type="number" step="any" name="wasted_quantity" class="form-control" id="wasted_quantity" value="0.00">
+                                                    <input type="number" step="any" name="total_wasted_quantity" class="form-control fw-bold" id="total_wasted_quantity" data-next="additional_production_cost" value="0.00">
                                                     <span class="error error_wasted_quantity"></span>
                                                 </div>
                                             </div>
@@ -190,9 +169,9 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>{{ __('Final Output Qty') }} </b></label>
+                                                <label class="col-5"><b>{{ __('Final Output Quantity') }}</b></label>
                                                 <div class="col-7">
-                                                    <input readonly type="text" step="any" class="form-control" name="final_output_quantity" id="final_output_quantity" value="1.00">
+                                                    <input readonly type="text" step="any" class="form-control fw-bold" name="total_final_output_quantity" id="total_final_output_quantity" value="1.00">
                                                     <span class="error error_final_output_quantity"></span>
                                                 </div>
                                             </div>
@@ -202,9 +181,9 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.additional_cost') </b></label>
+                                                <label class="col-5"><b>{{ __("Additional Production Cost") }}</b></label>
                                                 <div class="col-7">
-                                                    <input name="production_cost" type="number" class="form-control" id="production_cost" value="0.00">
+                                                    <input type="number" step="any" name="additional_production_cost" class="form-control fw-bold" id="additional_production_cost" data-next="tax_ac_id" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -213,10 +192,10 @@
                                     <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.total_production_cost') </b></label>
+                                                <label class="col-5"><b>{{ __("Net Production Cost") }}</b></label>
                                                 <div class="col-7">
-                                                    <input readonly type="number" step="any" name="total_cost" class="form-control" id="total_cost" value="0.00">
-                                                    <span class="error error_total_cost"></span>
+                                                    <input readonly type="number" step="any" name="net_cost" class="form-control fw-bold" id="net_cost" value="0.00">
+                                                    <span class="error error_net_cost"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -228,30 +207,34 @@
                         <div class="col-md-7">
                             <div class="form_element rounded m-0">
                                 <div class="element-body">
-                                    <p><strong>@lang('menu.price')</strong></p>
+                                    <p><strong>{{ __("Pricing") }}</strong></p>
                                     <hr class="p-0 m-0 mb-1">
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax') </b> </label>
+                                                <label class="col-5"><b>{{ __("Vat/Tax") }}</b> </label>
                                                 <div class="col-7">
-                                                    <select class="form-control" name="tax_id" id="tax_id">
-                                                        <option value="">@lang('menu.no_tax')</option>
-                                                        @foreach ($taxes as $tax)
-                                                            <option value="{{ $tax->id.'-'.$tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                                    <select name="tax_ac_id" id="tax_ac_id" class="form-control" data-next="tax_type">
+                                                        <option data-product_tax_percent="0.00" value="">{{ __('NoVat/Tax') }}</option>
+                                                        @foreach ($taxAccounts as $taxAccount)
+                                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                                {{ $taxAccount->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
+                                                    <input type="hidden" name="unit_tax_percent" id="unit_tax_percent" value="0">
+                                                    <input type="hidden" name="unit_tax_amount" id="unit_tax_amount" value="0">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label for="inputEmail3" class="col-5"><b>@lang('menu.tax_type') </b> </label>
+                                                <label class="col-5"><b>{{ __("Tax Type") }}</b> </label>
                                                 <div class="col-7">
-                                                    <select name="tax_type" class="form-control" id="tax_type">
-                                                        <option value="1">@lang('menu.exclusive')</option>
-                                                        <option value="2">@lang('menu.exclusive')</option>
+                                                    <select name="tax_type" class="form-control" id="tax_type" data-next="profit_margin">
+                                                        <option value="1">{{ __("Exclusive") }}</option>
+                                                        <option value="2">{{ __("Inclusive") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -261,18 +244,18 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.par_unit_cost') </b></label>
+                                                <label class="col-5"><b>{{ __("Per Unit Cost Exc. Tax") }}</b></label>
                                                 <div class="col-7">
-                                                    <input type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control" placeholder="Par Unit Cost Exc.Tax" autocomplete="off" value="0.00">
+                                                    <input readonly type="text" name="per_unit_cost_exc_tax" id="per_unit_cost_exc_tax" class="form-control fw-bold" placeholder="{{ __("Per Unit Cost Exc. Tax") }}" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.cost')({{ __('Inc.Tax') }}) </b></label>
+                                                <label class="col-5"><b>{{ __("Per Unit Cost Inc. Tax") }}</b></label>
                                                 <div class="col-7">
-                                                    <input readonly type="text" name="per_unit_cost_inc_tax" id="per_unit_cost_inc_tax" class="form-control" placeholder="Par Unit Cost Inc.Tax" autocomplete="off" value="0.00">
+                                                    <input readonly type="text" name="per_unit_cost_inc_tax" class="form-control fw-bold" id="per_unit_cost_inc_tax" placeholder="{{ __("Per Unit Cost Inc. Tax") }}" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -281,39 +264,44 @@
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.x_margin')(%) </b></label>
+                                                <label class="col-5"><b>{{ __("Profit Margine") }}(%) </b></label>
                                                 <div class="col-7">
-                                                    <input type="text" name="xMargin" id="xMargin" class="form-control" placeholder="@lang('menu.x_margin')" autocomplete="off" value="0.00">
+                                                    <input type="text" name="profit_margin" id="profit_margin" class="form-control fw-bold" data-next="per_unit_price_exc_tax" placeholder="{{ __("Profit Margine") }}(%)" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-5"><b>@lang('menu.selling_price') </b></label>
+                                                <label class="col-5"><b>{{ __("Selling Price Exc. Tax") }}</b></label>
                                                 <div class="col-7">
-                                                    <input type="text" name="selling_price" id="selling_price" class="form-control" placeholder="@lang('menu.selling_price')" autocomplete="off" value="0.00">
+                                                    <input type="text" name="per_unit_price_exc_tax" id="per_unit_price_exc_tax" class="form-control fw-bold" data-next="status" placeholder="{{ __("Selling Price Exc. Tax") }}" autocomplete="off" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <p class="float-end is_final mt-3 mb-2">
-                                    <input type="checkbox" name="is_final" id="is_final"> &nbsp; <b> @lang('menu.finalize')</b> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Once finalized all ingredient stock will be deducted & production item stock will be increased and production item unit cost, price will be updated as well as editing of production will not be allowed." class="fas fa-info-circle tp"></i></p>
+                                    <div class="row mt-1">
+                                        <div class="col-md-6 offset-6">
+                                            <div class="input-group">
+                                                <label class="col-5"><b>{{ __("Status") }}</b></label>
+                                                <select name="status" class="form-control" id="status" data-next="save_and_print">
+                                                    <option value="0">{{ __("Hold") }}</option>
+                                                    <option value="1">{{ __("Final") }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="submit_button_area">
-                                <div class="row mt-1">
+                                <div class="row mt-2">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <div class="btn-loading">
-                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                            <button value="save" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                                            <button value="save_and_print" class="btn btn-sm btn-success submit_button">@lang('menu.save_print')</button>
+                                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                            <button type="button" value="save_and_print" id="save_and_print" class="btn btn-sm btn-success submit_button">{{ __("Save & Print") }}</button>
+                                            <button type="button" value="save" id="save" class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -326,302 +314,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        var tax_percent = 0;
-        $('#tax_id').on('change', function() {
-            var tax = $(this).val();
-            if (tax) {
-                var split = tax.split('-');
-                tax_percent = split[1];
-            }else{
-                tax_percent = 0;
-            }
-            __productPricingCalculate();
-        });
-
-        $('#tax_type').on('change', function() {
-            __productPricingCalculate();
-        });
-
-        //Get process data
-        $(document).on('change', '#product_id', function (e) {
-            e.preventDefault();
-            var processId = $(this).val();
-            var stockWarehouseId = $('#stock_warehouse_id').val() ? $('#stock_warehouse_id').val() : null;
-
-            @if (count($warehouses) > 0)
-
-                if (stockWarehouseId == null) {
-
-                    toastr.error('Ingredials Stock Location must not be empty.');
-                    var processId = $(this).val('');
-                    return;
-                }
-            @endif
-
-            var url = "{{ url('manufacturing/productions/get/process/') }}"+"/"+processId;
-            $.get(url, function(data) {
-
-                $('#product_id').val(data.product_id);
-                $('#variant_id').val(data.variant_id);
-                $('#output_quantity').val(data.total_output_qty);
-                $('#final_output_quantity').val(data.total_output_qty);
-                $('#parameter_quantity').val(data.total_output_qty);
-                $('#unit_id').val(data.unit_id);
-                $('#production_cost').val(data.production_cost);
-                $('#total_ingredient_cost').val(data.total_ingredient_cost);
-                $('#span_total_ingredient_cost').html(data.total_ingredient_cost);
-                $('#total_cost').val(data.total_cost);
-                var tax = data.tax_id ? data.tax_id+'-'+data.tax_percent : '';
-                tax_percent = data.tax_percent  ? data.tax_percent : 0;
-                $('#tax_id').val(tax);
-                var product_id = data.product_id;
-                var variantId = data.variant_id ? data.variant_id : null;
-
-                var url = "{{ url('manufacturing/productions/get/ingredients') }}"+"/"+processId+"/"+stockWarehouseId;
-
-                $.get(url, function(data) {
-
-                    $('#ingredient_list').html(data);
-
-                    __calculateTotalAmount();
-                });
-            });
-        });
-
-        $(document).on('input', '#output_quantity', function () {
-
-            var presentQty = $(this).val() ? $(this).val() : 0;
-            var parameterQty = $('#parameter_quantity').val() ? $('#parameter_quantity').val() : 0;
-            var meltipilerQty = parseFloat(presentQty) / parseFloat(parameterQty);
-            var allTr = $('#ingredient_list').find('tr');
-
-            allTr.each(function () {
-
-                var parameterInputQty = $(this).find('#parameter_input_quantity').val();
-                var updateInputQty = parseFloat(meltipilerQty) * parseFloat(parameterInputQty);
-                $(this).find('#input_quantity').val(parseFloat(updateInputQty).toFixed(2));
-                __calculateIngredientsTableAmount($(this));
-            });
-
-            __calculateTotalAmount();
-        });
-
-        $(document).on('input', '#wasted_quantity', function () {
-            __calculateTotalAmount();
-        });
-
-        $(document).on('input', '#production_cost', function () {
-            __calculateTotalAmount();
-        });
-
-        $(document).on('input', '#input_quantity', function () {
-            var value = $(this).val() ? $(this).val() : 0;
-            var tr = $(this).closest('tr');
-            tr.find('#parameter_input_quantity').val(parseFloat(value).toFixed(2));
-            __calculateIngredientsTableAmount(tr);
-        });
-
-        var errorCount = 0;
-        function __calculateIngredientsTableAmount(tr) {
-
-            var inputQty = tr.find('#input_quantity').val() ? tr.find('#input_quantity').val() : 0;
-            var unitCostIncTax = tr.find('#unit_cost_inc_tax').val();
-            var limitQty = tr.find('#qty_limit').val();
-            var unitName = tr.find('#qty_limit').data('unit');
-            var regexp = /^\d+\.\d{0,2}$/;
-            tr.find('#input_qty_error').html('');
-
-            // if (regexp.test(parseFloat(inputQty)) == true) {
-
-            //     tr.find('#input_qty_error').html('Deciaml value is not allowed.');
-            //     errorCount++;
-            // } else if(parseFloat(inputQty) > parseFloat(limitQty)) {
-
-            //     tr.find('#input_qty_error').html('Only '+limitQty+' '+unitName+' is available.');
-            //     errorCount++;
-            // }
-
-            if(parseFloat(inputQty) > parseFloat(limitQty)) {
-
-                tr.find('#input_qty_error').html('Only '+ limitQty + ' ' + unitName + ' is available.');
-                errorCount++;
-            }
-
-            var subtotal = parseFloat(inputQty) * parseFloat(unitCostIncTax);
-            tr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
-            tr.find('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
-            __calculateTotalAmount();
-        }
-
-        function __calculateTotalAmount(){
-
-            var subtotals = document.querySelectorAll('#subtotal');
-            var totalIngredientCost = 0;
-            subtotals.forEach(function(subtotal){
-
-                totalIngredientCost += parseFloat(subtotal.value);
-            });
-
-            $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
-            $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
-            var output_total_qty = $('#output_quantity').val() ? $('#output_quantity').val() : 0;
-            var wast_qty = $('#wasted_quantity').val() ? $('#wasted_quantity').val() : 0;
-            var calsQtyWithWastedQty = parseFloat(output_total_qty) - parseFloat(wast_qty);
-            $('#final_output_quantity').val(calsQtyWithWastedQty);
-            var productionCost = $('#production_cost').val() ? $('#production_cost').val() : 0;
-            var totalCost = parseFloat(totalIngredientCost) + parseFloat(productionCost);
-            $('#total_cost').val(parseFloat(totalCost).toFixed(2));
-            __productPricingCalculate();
-        }
-
-        function __productPricingCalculate() {
-            var total_cost = $('#total_cost').val() ? $('#total_cost').val() : 0;
-            var final_output_qty = $('#final_output_quantity').val() ? $('#final_output_quantity').val() : 0;
-            var par_unit_cost = parseFloat(total_cost) / parseFloat(final_output_qty);
-            var tax_type = $('#tax_type').val();
-            var calc_product_cost_tax = parseFloat(par_unit_cost) / 100 * parseFloat(tax_percent);
-
-            if (tax_type == 2) {
-
-                var inclusive_tax_percent = 100 + parseFloat(tax_percent);
-                var calc_tax = parseFloat(par_unit_cost) / parseFloat(inclusive_tax_percent) * 100;
-                calc_product_cost_tax = parseFloat(par_unit_cost) - parseFloat(calc_tax);
-            }
-
-            var per_unit_cost_inc_tax = parseFloat(par_unit_cost) + parseFloat(calc_product_cost_tax);
-            $('#per_unit_cost_exc_tax').val(parseFloat(par_unit_cost).toFixed(2));
-            $('#per_unit_cost_inc_tax').val(parseFloat(per_unit_cost_inc_tax).toFixed(2));
-
-            var xMargin = $('#xMargin').val() ? $('#xMargin').val() : 0;
-
-            if (xMargin > 0) {
-
-                var calculate_margin = parseFloat(par_unit_cost) / 100 * parseFloat(xMargin);
-                var selling_price = parseFloat(par_unit_cost) + parseFloat(calculate_margin);
-                $('#selling_price').val(parseFloat(selling_price).toFixed(2));
-            }
-        }
-
-        $('#xMargin').on('input', function() {
-
-            __productPricingCalculate();
-        });
-
-        $(document).on('input', '#selling_price',function() {
-
-            var selling_price = $(this).val() ? $(this).val() : 0;
-            var par_unit_cost = $('#per_unit_cost_exc_tax').val() ? $('#per_unit_cost_exc_tax').val() : 0;
-            var profitAmount = parseFloat(selling_price) - parseFloat(par_unit_cost);
-            var __cost = parseFloat(par_unit_cost) > 0 ? parseFloat(par_unit_cost) : parseFloat(profitAmount);
-            var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
-            var __calcProfit = calcProfit ? calcProfit : 0;
-            $('#xMargin').val(parseFloat(__calcProfit).toFixed(2));
-        });
-
-        $('.submit_button').on('click', function () {
-            var value = $(this).val();
-            $('#action_type').val(value);
-        });
-
-        //Add process request by ajax
-        $('#add_production_form').on('submit', function(e) {
-            e.preventDefault();
-            errorCount = 0;
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
-            var allTr = $('#ingredient_list').find('tr');
-            allTr.each(function () {
-
-                __calculateIngredientsTableAmount($(this));
-            });
-
-            if (errorCount > 0) {
-
-                $('.loading_button').hide();
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-                return;
-            }
-
-            $('.submit_button').prop('type', 'button');
-            $.ajax({
-
-                url:url,
-                type:'post',
-                data: request,
-                success:function(data){
-                    $('.submit_button').prop('type', 'sumbit');
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    if(!$.isEmptyObject(data.errorMsg)) {
-
-                        toastr.error(data.errorMsg);
-                    } else if(!$.isEmptyObject(data.successMsg)) {
-
-                        $('#add_production_form')[0].reset();
-                        $('#ingredient_list').empty();
-                        toastr.success(data.successMsg);
-                    }else {
-
-                        $('#add_production_form')[0].reset();
-                        $('#ingredient_list').empty();
-                        toastr.success('Successfully production is created.');
-                        $(data).printThis({
-                            debug: false,
-                            importCSS: true,
-                            importStyle: true,
-                            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                            removeInline: false,
-                            printDelay: 1000,
-                            header: null,
-                        });
-                    }
-                },error: function(err) {
-                    $('.submit_button').prop('type', 'sumbit');
-                    $('.loading_button').hide();
-                    $('.error').html('');
-                    if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.');
-                        return;
-                    }else if (err.status == 500) {
-                        toastr.error('Server error please contact to the support.');
-                        return;
-                    }
-
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-                        $('.error_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
-
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-        var _expectedDateFormat = '' ;
-        _expectedDateFormat = dateFormat.replace('d', 'DD');
-        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
-        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
-        new Litepicker({
-            singleMode: true,
-            element: document.getElementById('datepicker'),
-            dropdowns: {
-                minYear: new Date().getFullYear() - 50,
-                maxYear: new Date().getFullYear() + 100,
-                months: true,
-                years: true
-            },
-            tooltipText: {
-                one: 'night',
-                other: 'nights'
-            },
-            tooltipNumber: (totalDays) => {
-                return totalDays - 1;
-            },
-            format: _expectedDateFormat,
-        });
-    </script>
+    @include('manufacturing.production.js_partials.add_js')
 @endpush

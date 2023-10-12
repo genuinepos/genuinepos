@@ -12,11 +12,12 @@ use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
+use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
 Route::prefix('saas')->group(function () {
-    // Guest User Only
+    // Guest User
     Route::middleware('is_guest')->group(function () {
         Route::get('register', [RegistrationController::class, 'showForm'])->name('register.showForm');
         Route::post('register', [RegistrationController::class, 'register'])->name('register');
@@ -24,14 +25,22 @@ Route::prefix('saas')->group(function () {
         Route::post('login', [LoginController::class, 'login'])->name('login');
     });
 
-    // Authenticated but Not Verified Yet
+    // All User
+    Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
+    Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
+    Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
+    Route::get('plan/{plan:slug}/select', [PlanSelectController::class, 'select'])->name('plan.select');
+    Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
+
+    // Auth User **Not-Verified
     Route::middleware('is_auth')->group(function() {
         Route::get('/email/verify', [VerificationController::class,'show'])->name('verification.notice');
         Route::get('/email/verify/{id}/{hash}', [VerificationController::class,'verify'])->middleware(['signed'])->name('verification.verify');
         Route::post('/email/verify/resend', [VerificationController::class,'resend'])->name('verification.resend');
     });
 
-    // Authenticated and Verified User
+    // Auth and Verified
     Route::middleware(['is_verified'])->group(function () {
         Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -52,12 +61,5 @@ Route::prefix('saas')->group(function () {
 
         Route::resource('roles', RoleController::class);
 
-        // Plan purchase (verified user part)
-        Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
-        Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
     });
-
-    // Plan exploration and plan-detail for guest+verified user
-    Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
-    Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
 });

@@ -2137,8 +2137,23 @@ table.display tbody tr:hover {
     margin-top: 13px;
     border-top: 0;
 }
+.dataTables_filter {
+    width: 45% !important;
+}
 .modal.show .modal-dialog {
     margin-top: 60px;
+}
+@media screen and (max-width: 569px) {
+    .dataTables_wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .dataTables_filter {
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+    }
 }
 @media screen and (max-width: 992px) and (min-width: 768px) {
     .modal-dialog {

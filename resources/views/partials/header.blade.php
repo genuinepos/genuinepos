@@ -21,7 +21,7 @@
                         @endif
                     </a>
                 </div>
-                <div id="left_bar_toggle"><span class="fas fa-bars"></span></div>
+                <div id="left_bar_toggle"><span class="fa-light fa-bars"></span></div>
                 <div class="notify-menu">
                     <div class="company-name">
                         <p class="text-uppercase">

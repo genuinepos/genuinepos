@@ -88,4 +88,7 @@
             document.querySelector('.select2-search--dropdown .select2-search__field').focus();
         }
     });
+    if ($(window).width() < 768) {
+        $('.notify-menu .company-name').appendTo('.top-menu .logo__sec');
+    }
 </script>

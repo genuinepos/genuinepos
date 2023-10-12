@@ -454,8 +454,19 @@ textarea {
 }
 
 .btn.btn-primary {
-    background-image: linear-gradient(#044ab4 50%, #0d6efd 50%) !important;
-    border-color: #044ab4 !important;
+    background-image: linear-gradient(#135fd3 50%, #0d6efd 50%) !important;
+    border-color: #135fd3 !important;
+}
+.btn.btn-primary:active,
+.btn.btn-primary.active,
+.btn.btn-primary.tab_active {
+    background-image: linear-gradient(#0d6efd 50%, #044ab4 50%) !important;
+    color: #ffffff !important;
+}
+.btn.btn-primary:active i,
+.btn.btn-primary.active i,
+.btn.btn-primary.tab_active i {
+    color: #ffffff !important;
 }
 
 .btn.btn-secondary {
@@ -1609,16 +1620,14 @@ span.menu-title-t {
     .sub-menu_t {
         position: absolute;
         background: #fff;
-        height: 86vh;
+        height: 90vh;
         z-index: 20;
         display: none;
         left: 0px;
         padding: 0;
         padding-left: 140px;
         overflow-y: scroll;
-        padding-top: 20px;
-        padding-bottom: 77px;
-        margin-top: 48px;
+        padding-bottom: 30px;
     }
     .sub-menu-group {
         padding: 10px;
@@ -2084,7 +2093,7 @@ table.display tbody tr:hover {
     margin-right: 5px;
 }
 
-.display th {font-size: 11px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 3px!important; padding-bottom: 3px!important;}
+.display th {font-size: 11px; line-height: 20px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 3px!important; padding-bottom: 3px!important;}
 
 .display td {font-size: 11px; padding-left: 3px!important; padding-right: 9px!important; padding-top: 0px!important; padding-bottom: 0px!important;}
 

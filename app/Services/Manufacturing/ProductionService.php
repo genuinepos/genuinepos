@@ -217,7 +217,8 @@ class ProductionService
         $updateProduction->store_warehouse_id = $request->store_warehouse_id;
         $updateProduction->stock_warehouse_id = $request->stock_warehouse_id;
         $updateProduction->date = $request->date;
-        $updateProduction->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $time = date(' H:i:s', strtotime($updateProduction->date_ts));
+        $updateProduction->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateProduction->total_ingredient_cost = $request->total_ingredient_cost;
         $updateProduction->total_output_quantity = $request->total_output_quantity;
         $updateProduction->total_parameter_quantity = $request->total_parameter_quantity;

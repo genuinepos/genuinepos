@@ -26,8 +26,8 @@ Artisan::command('dev:m', function () {
 
     Schema::table('productions', function (Blueprint $table) {
 
-        $table->unsignedBigInteger('process_id')->after('stock_warehouse_id')->nullable()->index('productions_process_id_foreign');
-        $table->foreign(['process_id'])->references(['id'])->on('processes')->onDelete('CASCADE');
+        $table->unsignedBigInteger('production_ingredient_id')->after('production_id')->nullable();
+        $table->foreign('production_ingredient_id')->references('id')->on('production_ingredients')->onDelete('cascade');
     });
 });
 

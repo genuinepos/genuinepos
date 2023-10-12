@@ -152,7 +152,7 @@
 
             $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
             $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
-            var output_total_qty = $('#total_final_output_quantity').val() ? $('#total_final_output_quantity').val() : 0;
+            var output_total_qty = $('#total_output_quantity').val() ? $('#total_output_quantity').val() : 0;
             var wast_qty = $('#total_wasted_quantity').val() ? $('#total_wasted_quantity').val() : 0;
             var calsQtyWithWastedQty = parseFloat(output_total_qty) - parseFloat(wast_qty);
             $('#total_final_output_quantity').val(calsQtyWithWastedQty);

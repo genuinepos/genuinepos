@@ -6,6 +6,7 @@
             <input name="product_ids[]" type="hidden" class="productId-{{ $ingredient->product_id }}" id="product_id" value="{{ $ingredient->product_id }}">
             <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $ingredient->variant_id ? $ingredient->variant_id : 'noid' }}">
             <input type="hidden" name="unit_ids[]" step="any" id="unit_id" value="{{ $ingredient->unit_id }}">
+            <input type="hidden" name="production_ingredient_ids[]">
             <input type="hidden" id="current_qty" value="0">
             <input type="hidden" step="any" data-unit="{{ $ingredient->unit_name }}" id="qty_limit" value="{{ $ingredient->stock }}">
         </td>

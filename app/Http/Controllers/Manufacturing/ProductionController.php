@@ -153,7 +153,7 @@ class ProductionController extends Controller
 
                     if ($addProduction->status == ProductionStatus::Final->value) {
 
-                        $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $addProduction->date, productId: $addProductionIngredient->product_id, transId: $addProduction->id, rate: $addProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $addProductionIngredient->final_qty, subtotal: $addProductionIngredient->subtotal, variantId: $addProductionIngredient->variant_id, warehouseId: $addProduction->stock_warehouse_id);
+                        $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $addProduction->date, productId: $addProductionIngredient->product_id, transId: $addProduction->id, rate: $addProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $addProductionIngredient->final_qty, subtotal: $addProductionIngredient->subtotal, variantId: $addProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $addProductionIngredient->id, warehouseId: $addProduction->stock_warehouse_id);
 
                         $this->productStockService->adjustMainProductAndVariantStock($addProductionIngredient->product_id, $addProductionIngredient->variant_id);
 
@@ -172,7 +172,7 @@ class ProductionController extends Controller
 
             if ($addProduction->status == ProductionStatus::Final->value) {
 
-                if ($isUpdateProductCostAndPrice == 1) {
+                if ($isUpdateProductCostAndPrice == BooleanType::True->value) {
 
                     $this->productService->updateProductAndVariantPrice(productId: $addProduction->product_id, variantId: $addProduction->variant_id, unitCostWithDiscount: $addProduction->per_unit_cost_exc_tax, unitCostIncTax: $addProduction->per_unit_cost_inc_tax, profit: $addProduction->profit_margin, sellingPrice: $addProduction->per_unit_price_exc_tax, isEditProductPrice: BooleanType::True->value, isLastEntry: BooleanType::True->value);
                 }
@@ -272,91 +272,121 @@ class ProductionController extends Controller
 
         if ($request->store_warehouse_count == 1) {
 
-            $this->validate($request, [
-                'store_warehouse_id' => 'required',
-            ]);
+            $this->validate($request, ['store_warehouse_id' => 'required']);
         }
 
-        $restrictions = $this->productionService->restrictions($request);
-        if ($restrictions['pass'] = false) {
+        try {
 
-            return response()->json(['errorMsg' => $restrictions['msg']]);
-        }
+            DB::beginTransaction();
 
-        $updateProduction = $this->productionService->updateProduction(request: $request, productionId: $id);
+            $manufacturingSetting = $this->manufacturingSettingService->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
+            $isUpdateProductCostAndPrice = $manufacturingSetting ? $manufacturingSetting?->is_update_product_cost_and_price_in_production : BooleanType::True->value;
 
-        if (isset($request->is_final)) {
+            $restrictions = $this->productionService->restrictions($request);
+            if ($restrictions['pass'] = false) {
 
-            $this->purchaseSaleChainUtil->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(
-                tranColName: 'production_id',
-                transId: $updateProduction->id,
-                branchId: auth()->user()->branch_id,
-                productId: $request->product_id,
-                quantity: $request->final_output_quantity,
-                variantId: $request->variant_id,
-                unitCostIncTax: $request->per_unit_cost_inc_tax,
-                sellingPrice: $request->selling_price,
-                subTotal: $request->total_cost,
-                createdAt: date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))),
-                xMargin: $request->xMargin,
-            );
-        }
-
-        $index = 0;
-        foreach ($request->product_ids as $product_id) {
-
-            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-
-            $updateProductionIngredient = ProductionIngredient::where('production_id', $updateProduction->id)
-                ->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
-
-            if ($updateProductionIngredient) {
-
-                $updateProductionIngredient->unit_id = $request->unit_ids[$index];
-                $updateProductionIngredient->input_qty = $request->input_quantities[$index];
-                $updateProductionIngredient->parameter_quantity = $request->parameter_input_quantities[$index];
-                $updateProductionIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
-                $updateProductionIngredient->subtotal = $request->subtotals[$index];
-                $updateProductionIngredient->save();
+                return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            if ($generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1') {
+            $updateProduction = $this->productionService->updateProduction(request: $request, productionId: $id);
 
-                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+            if ($updateProduction->status == ProductionStatus::Final->value) {
 
-                if ($updateProduction->stock_warehouse_id) {
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $updateProduction->date, productId: $updateProduction->product_id, transId: $updateProduction->id, rate: $updateProduction->per_unit_cost_inc_tax, quantityType: 'in', quantity: $updateProduction->total_final_output_quantity, subtotal: $updateProduction->net_cost, variantId: $updateProduction->variant_id, warehouseId: $updateProduction->store_warehouse_id);
 
-                    $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateProduction->stock_warehouse_id);
-                } else {
+                if ($updateProduction->product_id != $updateProduction->previous_product_id && $updateProduction->variant_id != $updateProduction->previous_variant_id) {
 
-                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
+                    $this->productLedgerService->deleteUnusedProductLedgerEntry(transColName: 'production_id', transId: $updateProduction->id, productId: $updateProduction->previous_product_id, variantId: $updateProduction->previous_variant_id);
                 }
             }
-            $index++;
-        }
 
+            $index = 0;
+            foreach ($request->product_ids as $product_id) {
 
-        if ($generalSettings['mf_settings__enable_updating_product_price'] == '1') {
+                $updateProductionIngredient = $this->productionIngredientService->updateProductionIngredient(request: $request, productionId: $updateProduction->id, index: $index);
 
-            if ($updateProduction->is_last_entry == 1) {
+                if ($updateProduction->status == ProductionStatus::Final->value) {
 
-                $this->productionUtil->updateProductAndVariantPriceByProduction($updateProduction->product_id, $updateProduction->variant_id, $request->per_unit_cost_exc_tax, $request->per_unit_cost_inc_tax, $request->xMargin, $request->selling_price, $tax_id, $request->tax_type);
+                    $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Production->value, date: $updateProduction->date, productId: $updateProductionIngredient->product_id, transId: $updateProductionIngredient->id, rate: $updateProductionIngredient->unit_cost_inc_tax, quantityType: 'out', quantity: $updateProductionIngredient->final_qty, subtotal: $updateProductionIngredient->subtotal, variantId: $updateProductionIngredient->variant_id, optionalColName: 'production_ingredient_id', optionalColValue: $updateProductionIngredient->id, warehouseId: $updateProduction->stock_warehouse_id);
+
+                    $this->productStockService->adjustMainProductAndVariantStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id);
+
+                    if (isset($updateProduction->stock_warehouse_id)) {
+
+                        $this->productStockService->adjustWarehouseStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id, $updateProduction->stock_warehouse_id);
+                    } else {
+
+                        $this->productStockService->adjustBranchStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id, $updateProduction->branch_id);
+                    }
+                }
+
+                $index++;
             }
-        }
 
-        $this->productStockUtil->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
+            if ($updateProduction->status == ProductionStatus::Final->value) {
 
-        if (isset($request->store_warehouse_count)) {
+                if ($isUpdateProductCostAndPrice == BooleanType::True->value) {
 
-            $this->productStockUtil->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $request->store_warehouse_id);
+                    $this->productService->updateProductAndVariantPrice(productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, unitCostWithDiscount: $updateProduction->per_unit_cost_exc_tax, unitCostIncTax: $updateProduction->per_unit_cost_inc_tax, profit: $updateProduction->profit_margin, sellingPrice: $updateProduction->per_unit_price_exc_tax, isEditProductPrice: BooleanType::True->value, isLastEntry: BooleanType::True->value);
+                }
 
-            if ($storedWarehouseId != $request->store_warehouse_id) {
+                $this->productStockService->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
 
-                $this->productStockUtil->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $storedWarehouseId);
+                if (isset($updateProduction->store_warehouse_id)) {
+
+                    $this->productStockService->addWarehouseProduct($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->stock_warehouse_id);
+
+                    $this->productStockService->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->store_warehouse_id);
+                } else {
+
+                    $this->productStockService->addBranchProduct($updateProduction->product_id, $updateProduction->variant_id, auth()->user()->branch_id);
+
+                    $this->productStockService->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, auth()->user()->branch_id);
+                }
+
+                $this->purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'production_id', transId: $updateProduction->id, branchId: auth()->user()->branch_id, productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, quantity: $updateProduction->total_final_output_quantity, unitCostIncTax: $updateProduction->per_unit_cost_inc_tax, sellingPrice: $updateProduction->per_unit_price_exc_tax, subTotal: $updateProduction->net_cost, createdAt: $updateProduction->date_ts);
+
+                if ($updateProduction->product_id != $updateProduction->previous_product_id && $updateProduction->variant_id != $updateProduction->previous_variant_id) {
+
+                    $this->purchaseProductService->deleteUnusedPurchaseProduct(transColName: 'production_id', transColValue: $updateProduction->id, productId: $updateProduction->previous_product_id, variantId: $updateProduction->previous_variant_id);
+                }
             }
-        } else {
 
-            $this->productStockUtil->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->branch_id);
+            $deleteUnusedProductionIngredients = $this->productionIngredientService->productionIngredients()->where('production_id', $updateProduction->id)->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
+
+            foreach ($deleteUnusedProductionIngredients as $deleteUnusedProductionIngredient) {
+
+                $deleteUnusedProductionIngredient->delete();
+
+                if (isset($updateProduction->previous_store_warehouse_id)) {
+
+                    $this->productStockService->adjustWarehouseStock($deleteUnusedProductionIngredient->product_id, $deleteUnusedProductionIngredient->variant_id, $updateProduction->previous_store_warehouse_id);
+                } else {
+
+                    $this->productStockService->adjustBranchStock($deleteUnusedProductionIngredient->product_id, $deleteUnusedProductionIngredient->variant_id, $updateProduction->branch_id);
+                }
+            }
+
+            if ($updateProduction->product_id != $updateProduction->previous_product_id && $updateProduction->variant_id != $updateProduction->previous_variant_id) {
+
+                if (isset($updateProduction->previous_store_warehouse_id)) {
+
+                    $this->productStockService->adjustWarehouseStock($updateProduction->previous_variant_id, $updateProduction->previous_variant_id, $updateProduction->previous_store_warehouse_id);
+                } else {
+
+                    $this->productStockService->adjustBranchStock($updateProduction->previous_variant_id, $updateProduction->previous_variant_id, $updateProduction->branch_id);
+                }
+            }
+
+            if ($updateProduction->store_warehouse_id != $updateProduction->previous_store_warehouse_id) {
+
+                $this->productStockService->adjustWarehouseStock($updateProduction->variant_id, $updateProduction->variant_id, $updateProduction->previous_store_warehouse_id);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
         return response()->json(__("Production is updated successfully."));

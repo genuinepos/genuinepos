@@ -44,6 +44,8 @@ class ProductLedgerService
         float $quantity,
         float $subtotal,
         ?int $variantId = null,
+        ?int $optionalColName = null,
+        ?int $optionalColValue = null,
         ?int $branchId = null,
         ?int $warehouseId = null,
     ) {
@@ -59,6 +61,12 @@ class ProductLedgerService
         $add->{$voucherType['id']} = $transId;
         $add->rate = $rate;
         $add->{$quantityType} = $quantity;
+
+        if ($optionalColName) {
+
+            $add->{$optionalColName} = $optionalColValue;
+        }
+
         $add->subtotal = $subtotal;
         $add->type = $quantityType;
         $add->save();
@@ -74,6 +82,8 @@ class ProductLedgerService
         float $quantity,
         float $subtotal,
         ?int $variantId = null,
+        ?int $optionalColName = null,
+        ?int $optionalColValue = null,
         ?int $branchId = null,
         ?int $warehouseId = null,
         ?int $currentWarehouseId = null,
@@ -106,12 +116,42 @@ class ProductLedgerService
             $update->voucher_type = $voucherTypeId;
             $update->rate = $rate;
             $update->{$quantityType} = $quantity;
+
+            if ($optionalColName) {
+
+                $update->{$optionalColName} = $optionalColValue;
+            }
+
             $update->subtotal = $subtotal;
             $update->type = $quantityType;
             $update->save();
         } else {
 
-            $this->addProductLedgerEntry(voucherTypeId: $voucherTypeId, date: $date, productId: $productId, transId: $transId, rate: $rate, quantityType: $quantityType, quantity: $quantity, subtotal: $subtotal, variantId: $variantId, branchId: $branchId, warehouseId: $warehouseId);
+            $this->addProductLedgerEntry(
+                voucherTypeId: $voucherTypeId,
+                date: $date,
+                productId: $productId,
+                transId: $transId,
+                rate: $rate,
+                quantityType: $quantityType,
+                quantity: $quantity,
+                subtotal: $subtotal,
+                variantId: $variantId,
+                optionalColValue: $optionalColName,
+                optionalColValue: $optionalColValue,
+                branchId: $branchId,
+                warehouseId: $warehouseId
+            );
+        }
+    }
+
+    function deleteUnusedProductionLedgerEntry(string $transColName, int $transId, int $productId, ?int $variantId = null): void
+    {
+        $deleteProductLedgerEntry = ProductLedger::where($transColName, $transId)->where('product_id', $productId)->where('variant_id', $variantId)->first();
+        
+        if (!is_null($deleteProductLedgerEntry)) {
+
+            $deleteProductLedgerEntry->delete();
         }
     }
 }

@@ -132,7 +132,6 @@
         //     errorCount++;
         // }
 
-
         __limitQty = parseFloat(limitQty) + parseFloat(currentQty);
         if (parseFloat(inputQty) > parseFloat(__limitQty)) {
 
@@ -157,7 +156,7 @@
 
         $('#total_ingredient_cost').val(parseFloat(totalIngredientCost));
         $('#span_total_ingredient_cost').html(parseFloat(totalIngredientCost).toFixed(2));
-        var output_total_qty = $('#total_final_output_quantity').val() ? $('#total_final_output_quantity').val() : 0;
+        var output_total_qty = $('#total_output_quantity').val() ? $('#total_output_quantity').val() : 0;
         var wast_qty = $('#total_wasted_quantity').val() ? $('#total_wasted_quantity').val() : 0;
         var calsQtyWithWastedQty = parseFloat(output_total_qty) - parseFloat(wast_qty);
         $('#total_final_output_quantity').val(calsQtyWithWastedQty);
@@ -253,7 +252,7 @@
     }
 
     //Add process request by ajax
-    $('#add_production_form').on('submit', function(e) {
+    $('#edit_production_form').on('submit', function(e) {
         e.preventDefault();
 
         errorCount = 0;

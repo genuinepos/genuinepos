@@ -91,7 +91,7 @@ body.red-theme {
 }
 
 .red-theme .bg-color-body {
-    background: #eef0f8;
+    background: #edf2f6;
 }
 
 .red-theme footer {
@@ -363,7 +363,7 @@ body.blue-theme {
 }
 
 .blue-theme .bg-color-body {
-    background: #eef0f8;
+    background: #edf2f6;
 }
 
 .blue-theme footer {
@@ -651,7 +651,7 @@ body.dark-theme {
 }
 
 .dark-theme .bg-color-body {
-    background: #eef0f8;
+    background: #edf2f6;
 }
 
 .dark-theme footer {
@@ -896,7 +896,7 @@ body.light-theme {
 }
 
 .light-theme .bg-color-body {
-    background: #eef0f8;
+    background: #edf2f6;
 }
 
 .light-theme footer {
@@ -1183,7 +1183,7 @@ body.orange-theme {
 }
 
 .orange-theme .bg-color-body {
-    background: #eef0f8;
+    background: #edf2f6;
 }
 
 .orange-theme footer {

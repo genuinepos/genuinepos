@@ -4,6 +4,7 @@ namespace App\Services\Manufacturing;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductionStatus;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\Production;
@@ -198,6 +199,17 @@ class ProductionService
 
         $updateProduction = $this->singleProduction(with: ['ingredients'])->where('id', $productionId)->first();
 
+        $previousProductId = $updateProduction->product_id;
+        $previousVariantId = $updateProduction->variant_id;
+        $previousStoreWarehouseId = $updateProduction->store_warehouse_id;
+        $previousStockWarehouseId = $updateProduction->stock_warehouse_id;
+
+        foreach ($updateProduction->ingredients as $ingredient) {
+
+            $ingredient->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+            $ingredient->save();
+        }
+
         $updateProduction->process_id = $request->process_id;
         $updateProduction->product_id = $request->product_id;
         $updateProduction->variant_id = $request->variant_id == 'noid' ? null : $request->variant_id;
@@ -223,6 +235,13 @@ class ProductionService
         $updateProduction->per_unit_price_exc_tax = $request->per_unit_price_exc_tax;
         $updateProduction->status = $request->status;
         $updateProduction->save();
+
+        $updateProduction->previous_product_id = $previousProductId;
+        $updateProduction->previous_variant_id = $previousVariantId;
+        $updateProduction->previous_store_warehouse_id = $previousStoreWarehouseId;
+        $updateProduction->previous_stock_warehouse_id = $previousStockWarehouseId;
+
+        return $updateProduction;
     }
 
     public function singleProduction(array $with = null): ?object

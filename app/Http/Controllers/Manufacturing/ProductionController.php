@@ -302,41 +302,39 @@ class ProductionController extends Controller
             );
         }
 
-        if (isset($request->product_ids)) {
+        $index = 0;
+        foreach ($request->product_ids as $product_id) {
 
-            $index = 0;
-            foreach ($request->product_ids as $product_id) {
+            $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
 
-                $variant_id = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
+            $updateProductionIngredient = ProductionIngredient::where('production_id', $updateProduction->id)
+                ->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
 
-                $updateProductionIngredient = ProductionIngredient::where('production_id', $updateProduction->id)
-                    ->where('product_id', $product_id)->where('variant_id', $variant_id)->first();
+            if ($updateProductionIngredient) {
 
-                if ($updateProductionIngredient) {
-
-                    $updateProductionIngredient->unit_id = $request->unit_ids[$index];
-                    $updateProductionIngredient->input_qty = $request->input_quantities[$index];
-                    $updateProductionIngredient->parameter_quantity = $request->parameter_input_quantities[$index];
-                    $updateProductionIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
-                    $updateProductionIngredient->subtotal = $request->subtotals[$index];
-                    $updateProductionIngredient->save();
-                }
-
-                if ($generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1') {
-
-                    $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
-
-                    if ($updateProduction->stock_warehouse_id) {
-
-                        $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateProduction->stock_warehouse_id);
-                    } else {
-
-                        $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
-                    }
-                }
-                $index++;
+                $updateProductionIngredient->unit_id = $request->unit_ids[$index];
+                $updateProductionIngredient->input_qty = $request->input_quantities[$index];
+                $updateProductionIngredient->parameter_quantity = $request->parameter_input_quantities[$index];
+                $updateProductionIngredient->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
+                $updateProductionIngredient->subtotal = $request->subtotals[$index];
+                $updateProductionIngredient->save();
             }
+
+            if ($generalSettings['mf_settings__enable_editing_ingredient_qty'] == '1') {
+
+                $this->productStockUtil->adjustMainProductAndVariantStock($product_id, $variant_id);
+
+                if ($updateProduction->stock_warehouse_id) {
+
+                    $this->productStockUtil->adjustWarehouseStock($product_id, $variant_id, $updateProduction->stock_warehouse_id);
+                } else {
+
+                    $this->productStockUtil->adjustBranchStock($product_id, $variant_id, auth()->user()->branch_id);
+                }
+            }
+            $index++;
         }
+
 
         if ($generalSettings['mf_settings__enable_updating_product_price'] == '1') {
 

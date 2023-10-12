@@ -387,7 +387,7 @@ class DashboardController extends Controller
             $purchases = '';
             $query = DB::table('purchases')
                 ->leftJoin('branches', 'purchases.branch_id', 'branches.id')
-                ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id');
+                ->leftJoin('suppliers', 'purchases.supplier_account_id', 'suppliers.id');
 
             if ($request->branch_id) {
                 if ($request->branch_id == 'NULL') {

@@ -12,9 +12,9 @@ class GuestTenantController extends Controller
 {
     public function store(TenantStoreRequest $request)
     {
+        sleep(5);
+        return 0;
         $tenantRequest = $request->validated();
-        // return 'http://apex.pos.test';
-
         try {
             $tenant = Tenant::create([
                 'id' => $tenantRequest['domain'],

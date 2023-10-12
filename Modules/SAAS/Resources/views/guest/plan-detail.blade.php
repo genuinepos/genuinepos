@@ -598,12 +598,11 @@
     </div>
     </div>
 
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-        tabindex="-1">
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel">Create Business</h5>
+                    <h5 class="modal-title" id="exampleModalToggleLabel">{{ __("Create Business") }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -624,11 +623,12 @@
                                         class="form-label text-bold"><b>{{ __('Domain Name') }}</b></label>
                                     <input type="text" name="domain" id="domain"
                                         class="form-control @error('name') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()"
+                                        placeholder="{{ __('Enter Domain Name') }}"
+                                        {{-- placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()" --}}
                                         required />
-                                    {{-- <p class="mt-2">
-                                        * {{ __('Selected domain') }}: <strong><span id="domainPreview" class="monospace"></span></strong>
-                                    </p> --}}
+                                    <p class="mt-2">
+                                       <span id="domainPreview" class="monospace"></span>
+                                    </p>
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" class="btn btn-primary" value="{{ __('Create') }}" id="submitBtn" />
@@ -639,11 +639,14 @@
 
                     <div id="response-message" class="mt-3 d-none text-start" style="height: 100px;">
                         <div class="mt-2">
-                            <h6>Creating your Business. It can take a while, please wait...</h3>
+                            <h6 id="response-message-text">
+                                {{ __("Creating your Business. It can take a while, please wait...") }}
+                                Elapsed Time: <span id="timespan"></span> Seconds.
+                            </h3>
                         </div>
                        <div class="mt-3">
                             <div class="spinner-border text-dark" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ __("Loading") }}...</span>
                             </div>
                         </div>
                     </div>
@@ -655,7 +658,6 @@
     @push('js')
         <script>
             $('table').addClass('table table-striped');
-            // $('blockquote').addClass('blockquote');
             $('.ck-container ul').addClass('list-group');
             $('.ck-container ul li').addClass('list-group-item');
 
@@ -663,35 +665,19 @@
                 $('#exampleModalToggle').modal('show');
             });
 
-            function domainPreview() {
-                let domainInput = document.getElementById('domain');
-                let domainText = domainInput.value;
-                let selectedDomain = domainText;
-                let appDomain = "{{ config('app.domain') }}";
-                let isAvailable = true;
-                if (selectedDomain.lastIndexOf(appDomain) > -1) {
-                    selectedDomain = domainText.substring(0, domainText.lastIndexOf(appDomain));
-                }
-
-                if (domainText.length > 0) {
-                    selectedDomain = `${domainText}.${appDomain}`;
-                    if (!isAvailable) {
-                        selectedDomain = `<span class="text-danger">${selectedDomain} is already booked.</span>`;
-                    }
-                    if (isAvailable) {
-                        selectedDomain = `<span class="text-success">${selectedDomain} ✅</span>`;
-                    }
-                }
-
-                let domainPreview = document.getElementById('domainPreview');
-                domainPreview.innerHTML = selectedDomain;
-            }
-
+            var isAvailable = false;
             $('#submitBtn').click(function(e) {
                 e.preventDefault();
                 let url = $('#tenantStoreForm').attr('action');
                 $('#response-message').removeClass('d-none');
                 console.log(url);
+
+                $('#timespan').text(0);
+                setInterval(function() {
+                    let currentValue = parseInt($('#timespan').text() || 0);
+                    $('#timespan').text(currentValue+1);
+                }, 1000);
+
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -701,7 +687,8 @@
                         domain: $('#domain').val(),
                     },
                     success: function(res) {
-                        $('#response-message').addClass('d-none');
+                        $('#response-message-text').addClass('text-success');
+                        $('#response-message-text').text('{{ __("Successfully created! Redirecting you to your Domain...") }}');
                         window.location = res;
                     },
                     error: function(err) {
@@ -711,6 +698,43 @@
                 });
             });
 
+            // Domain Check
+            var typingTimer;                //timer identifier
+            var doneTypingInterval = 800;  //time in ms, 5 seconds for example
+            var $input = $('#domain');
+
+            //on keyup, start the countdown
+            $input.on('keyup', function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            //on keydown, clear the countdown 
+            $input.on('keydown', function () {
+                clearTimeout(typingTimer);
+            });
+
+            //user is "finished typing," do something
+            function doneTyping () {
+                var domain = $('#domain').val();
+                $.ajax({
+                    url: "{{ route('saas.domain.checkAvailability')}}",
+                    type: 'GET',
+                    data: {
+                        domain: domain
+                    },
+                    success: function(res) {
+                        if(res.isAvailable) {
+                            isAvailable = true;
+                            $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                        }
+                    },
+                    error: function(err) {
+                        isAvailable = false;
+                        $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                    }
+                });
+            }
         </script>
     @endpush
 </x-saas::guest>

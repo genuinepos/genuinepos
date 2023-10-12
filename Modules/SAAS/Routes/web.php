@@ -13,6 +13,7 @@ use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -32,6 +33,7 @@ Route::prefix('saas')->group(function () {
     Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
     Route::get('plan/{plan:slug}/select', [PlanSelectController::class, 'select'])->name('plan.select');
     Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
+    Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 
     // Auth User **Not-Verified
     Route::middleware('is_auth')->group(function() {

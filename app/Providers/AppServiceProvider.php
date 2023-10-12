@@ -14,11 +14,13 @@ use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersService;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
+use App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService;
 use App\Services\StockAdjustments\MethodContainerServices\StockAdjustmentControllerMethodContainersService;
 
 class AppServiceProvider extends ServiceProvider
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(QuotationControllerMethodContainersInterface::class, QuotationControllerMethodContainersService::class);
         $this->app->bind(DraftControllerMethodContainersInterface::class, DraftControllerMethodContainersService::class);
         $this->app->bind(StockAdjustmentControllerMethodContainersInterface::class, StockAdjustmentControllerMethodContainersService::class);
+        $this->app->bind(ProductionControllerMethodContainersInterface::class, ProductionControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

@@ -44,7 +44,7 @@ class ProductLedgerService
         float $quantity,
         float $subtotal,
         ?int $variantId = null,
-        ?int $optionalColName = null,
+        ?string $optionalColName = null,
         ?int $optionalColValue = null,
         ?int $branchId = null,
         ?int $warehouseId = null,
@@ -82,7 +82,7 @@ class ProductLedgerService
         float $quantity,
         float $subtotal,
         ?int $variantId = null,
-        ?int $optionalColName = null,
+        ?string $optionalColName = null,
         ?int $optionalColValue = null,
         ?int $branchId = null,
         ?int $warehouseId = null,
@@ -137,7 +137,7 @@ class ProductLedgerService
                 quantity: $quantity,
                 subtotal: $subtotal,
                 variantId: $variantId,
-                optionalColValue: $optionalColName,
+                optionalColName: $optionalColName,
                 optionalColValue: $optionalColValue,
                 branchId: $branchId,
                 warehouseId: $warehouseId
@@ -148,7 +148,7 @@ class ProductLedgerService
     function deleteUnusedProductionLedgerEntry(string $transColName, int $transId, int $productId, ?int $variantId = null): void
     {
         $deleteProductLedgerEntry = ProductLedger::where($transColName, $transId)->where('product_id', $productId)->where('variant_id', $variantId)->first();
-        
+
         if (!is_null($deleteProductLedgerEntry)) {
 
             $deleteProductLedgerEntry->delete();

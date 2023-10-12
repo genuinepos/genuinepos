@@ -44,10 +44,9 @@ class ProductionService
         return DataTables::of($productions)
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('manufacturing.productions.show', [$row->id]) . '"> ' . __("View") . '</a>';
+                $html .= '<a href="' . route('manufacturing.productions.show', [$row->id]) . '" class="dropdown-item" id="details_btn"> ' . __("View") . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -110,7 +109,7 @@ class ProductionService
             ->editColumn('product', function ($row) {
 
                 $variantName = $row->variant_name ? ' _ ' . $row->variant_name : '';
-                $productCode = $row->variant_code ? ' (' . $row->variant_code.')' : ' ('.$row->product_code.')';
+                $productCode = $row->variant_code ? ' (' . $row->variant_code . ')' : ' (' . $row->product_code . ')';
                 return Str::limit($row->product_name, 35, '') . $variantName . $productCode;
             })
 
@@ -195,7 +194,8 @@ class ProductionService
         return $addProduction;
     }
 
-    public function updateProduction(object $request, int $productionId) : object {
+    public function updateProduction(object $request, int $productionId): object
+    {
 
         $updateProduction = $this->singleProduction(with: ['ingredients'])->where('id', $productionId)->first();
 
@@ -243,6 +243,26 @@ class ProductionService
         $updateProduction->previous_stock_warehouse_id = $previousStockWarehouseId;
 
         return $updateProduction;
+    }
+
+    function deleteProduction(int $id): object|array
+    {
+        $deleteProduction = $this->singleProduction(with: ['product', 'variant', 'ingredients', 'purchaseProduct', 'purchaseProduct.purchaseSaleChains'])->where('id', $id)->first();
+
+        if ($deleteProduction->purchaseProduct && count($deleteProduction->purchaseProduct->purchaseSaleChains) > 0) {
+
+            $variant = $deleteProduction->variant ? ' - ' . $deleteProduction->variant->name : '';
+            $product = $deleteProduction?->product?->name . $variant;
+
+            return ['pass' => false, 'msg' => __("Production Can not be deleted. Mismatch between sold and Production stock accounting method. Product:") . $product];
+        }
+
+        if (!is_null($deleteProduction)) {
+
+            $deleteProduction->delete();
+        }
+
+        return $deleteProduction;
     }
 
     public function singleProduction(array $with = null): ?object

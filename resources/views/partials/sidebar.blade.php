@@ -250,7 +250,7 @@
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/conveyor.svg') }}">
-                                <p class="title">@lang('menu.manufacturing')</p>
+                                <p class="title">{{ __("Manufacturing") }}</p>
                             </a>
                         </li>
                     @endif
@@ -2375,76 +2375,99 @@
             </div>
 
             @if ($generalSettings['addons__manufacturing'] == 1)
-                <div class="sub-menu_t" id="manufacture">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center justify-content-end">
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                @if (
+                    auth()->user()->can('process_view') ||
+                    auth()->user()->can('production_view') ||
+                    auth()->user()->can('manuf_settings') ||
+                    auth()->user()->can('manuf_report')
+                )
+                    <div class="sub-menu_t" id="manufacture">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="container-fluid">
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __("Manufacturing") }}</p>
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('process_view'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('manufacturing.process.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-dumpster-fire"></i></span>
+                            <div class="container-fluid">
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __("Manufacturing") }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('process_view'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('manufacturing.process.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-dumpster-fire"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __("Process/Bill Of Material") }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __("Process/Bill Of Material") }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                    @if (auth()->user()->can('production_view'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('manufacturing.productions.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-shapes"></i></span>
+                                        @if (auth()->user()->can('production_view'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('manufacturing.productions.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-shapes"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __("Productions") }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __("Productions") }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
-                                    @if (auth()->user()->can('manuf_settings'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-sliders-h"></i></span>
+                                        @if (auth()->user()->can('manuf_settings'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-sliders-h"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __("Manufacturing Setting") }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('manuf_report'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('manufacturing.report.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-file-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __("Manufacturing Report") }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                                                    <p class="switch_text">{{ __("Manufacturing Setting") }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
+
+                                @if (auth()->user()->can('manuf_report'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __("Manufacturing Reports") }}</p>
+                                        <div class="sub-menu-row">
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('reports.production.report.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __("Production Report") }}</p>
+                                                </a>
+                                            </div>
+
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('reports.ingredients.report.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __("Ingredients Report") }}</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
 
             <div class="sub-menu_t" id="essentials">

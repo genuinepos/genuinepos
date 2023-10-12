@@ -128,6 +128,7 @@
                                                                 <input name="product_ids[]" type="hidden" class="productId-{{ $ingredient->product_id }}" id="product_id" value="{{ $ingredient->product_id }}">
                                                                 <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $ingredient->variant_id ? $ingredient->variant_id : 'noid' }}">
                                                                 <input type="hidden" name="unit_ids[]" step="any" id="unit_id" value="{{ $ingredient->unit_id }}">
+                                                                <input type="hidden" name="production_ingredient_ids[]" value="{{ $ingredient->id }}">
                                                                 <input type="hidden" step="any" id="current_qty" value="{{ $ingredient->final_qty }}">
                                                                 <input type="hidden" step="any" data-unit="{{ $ingredient?->unit?->name }}" id="qty_limit" value="{{ $currentStock->stock }}">
                                                             </td>
@@ -346,7 +347,7 @@
                                     </div>
 
                                     <div class="row mt-1">
-                                        <div class="col-md-6 offset-6">
+                                        <div class="col-md-12 col-lg-6 offset-lg-6">
                                             <div class="input-group">
                                                 <label class="col-5"><b>{{ __("Status") }}</b></label>
                                                 <select name="status" class="form-control" id="status" data-next="save_and_print">

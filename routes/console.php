@@ -24,10 +24,10 @@ Artisan::command('dev:m', function () {
     //     $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
     // });
 
-    Schema::table('productions', function (Blueprint $table) {
+    Schema::table('day_books', function (Blueprint $table) {
 
-        $table->unsignedBigInteger('production_ingredient_id')->after('production_id')->nullable();
-        $table->foreign('production_ingredient_id')->references('id')->on('production_ingredients')->onDelete('cascade');
+        $table->unsignedBigInteger('production_id')->after('stock_adjustment_id')->nullable();
+        $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
     });
 });
 

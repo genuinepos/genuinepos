@@ -93,7 +93,7 @@
                     {{-- Accordian --}}
                     <div class="accordion" id="accordionPanelsStayOpenExample">
                         {{-- Users Permission --}}
-                        <div class="accordion-item mb-3">
+                        <div class="accordion-item mb-1">
                           <div class="form_element rounded mt-0 mb-0">
                             <div class="accordion-header d-flex">
                                 <p class="checkbox_input_wrap ">
@@ -156,7 +156,7 @@
                          </div>
                         </div>
                          {{-- Contact Permission --}}
-                        <div class="accordion-item mb-3">
+                        <div class="accordion-item mb-1">
                           <div class="form_element rounded mt-0 mb-0">
                             <div class="accordion-header d-flex">
                                 <p class="checkbox_input_wrap ">
@@ -239,7 +239,7 @@
                          </div>
                         </div>
                          {{-- Products Permissions --}}
-                        <div class="accordion-item mb-3">
+                        <div class="accordion-item mb-1">
                           <div class="form_element rounded mt-0 mb-0">
                             <div class="accordion-header d-flex">
                                 <p class="checkbox_input_wrap ">
@@ -330,7 +330,7 @@
                          </div>
                         </div>
                          {{-- Purchases Permissions --}}
-                        <div class="accordion-item mb-3">
+                        <div class="accordion-item mb-1">
                           <div class="form_element rounded mt-0 mb-0">
                             <div class="accordion-header d-flex">
                                 <p class="checkbox_input_wrap ">
@@ -409,7 +409,7 @@
                          </div>
                         </div>
                          {{-- Example --}}
-                        <div class="accordion-item mb-3">
+                        <div class="accordion-item mb-1">
                           <div class="form_element rounded mt-0 mb-0">
                             <div class="accordion-header d-flex">
                                 <p class="checkbox_input_wrap ">

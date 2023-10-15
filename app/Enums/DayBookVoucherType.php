@@ -16,4 +16,5 @@ enum DayBookVoucherType: int
     case Contra = 10;
     case Expense = 11;
     case Incomes = 12;
+    case Production = 13;
 }

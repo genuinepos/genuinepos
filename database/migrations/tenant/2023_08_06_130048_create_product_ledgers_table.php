@@ -25,6 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('opening_stock_product_id')->nullable();
             $table->unsignedBigInteger('stock_adjustment_product_id')->nullable();
             $table->unsignedBigInteger('production_id')->nullable();
+            $table->unsignedBigInteger('production_ingredient_id')->nullable();
             $table->decimal('rate', 22, 2)->default(0);
             $table->decimal('in', 22, 2)->default(0);
             $table->decimal('out', 22, 2)->default(0);
@@ -44,6 +45,7 @@ return new class extends Migration
             $table->foreign('opening_stock_product_id')->references('id')->on('product_opening_stocks')->onDelete('cascade');
             $table->foreign('stock_adjustment_product_id')->references('id')->on('stock_adjustment_products')->onDelete('cascade');
             $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
+            $table->foreign('production_ingredient_id')->references('id')->on('production_ingredients')->onDelete('cascade');
         });
     }
 

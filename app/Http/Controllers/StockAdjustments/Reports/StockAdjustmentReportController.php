@@ -19,7 +19,7 @@ class StockAdjustmentReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('pro_sale_report')) {
+        if (!auth()->user()->can('product_sale_report')) {
 
             abort(403, 'Access Forbidden.');
         }

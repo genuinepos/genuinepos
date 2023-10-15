@@ -155,7 +155,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="pro_sale_report" class="sales_report super_select_all sales_app_permission"> @lang('menu.sold_item_statements')
+                                                <input type="checkbox" name="product_sale_report" class="sales_report super_select_all sales_app_permission"> @lang('menu.sold_item_statements')
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -171,7 +171,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="pro_sale_report" class="sales_report super_select_all sales_app_permission super_select_all">@lang('menu.sale_item_report')
+                                                <input type="checkbox" name="product_sale_report" class="sales_report super_select_all sales_app_permission super_select_all">@lang('menu.sale_item_report')
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">

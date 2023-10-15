@@ -96,7 +96,7 @@ Route::get('rp', function () {
         81 => 'discounts',
         82 => 'sale_statements',
         83 => 'sale_return_statements',
-        84 => 'pro_sale_report',
+        84 => 'product_sale_report',
         85 => 'sale_payment_report',
         86 => 'c_register_report',
         87 => 'sale_representative_report',

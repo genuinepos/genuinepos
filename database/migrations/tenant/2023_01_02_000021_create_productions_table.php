@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('branch_id')->nullable()->index('productions_branch_id_foreign');
             $table->unsignedBigInteger('store_warehouse_id')->nullable()->index('productions_store_warehouse_id_foreign');
             $table->unsignedBigInteger('stock_warehouse_id')->nullable()->index('productions_stock_warehouse_id_foreign');
-
+            $table->unsignedBigInteger('process_id')->nullable()->index('productions_process_id_foreign');
             $table->unsignedBigInteger('product_id')->nullable()->index('productions_product_id_foreign');
             $table->unsignedBigInteger('variant_id')->nullable()->index('productions_variant_id_foreign');
             $table->decimal('total_ingredient_cost', 22, 2)->nullable();
@@ -48,6 +48,7 @@ return new class extends Migration
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
             $table->foreign(['store_warehouse_id'])->references(['id'])->on('warehouses')->onDelete('CASCADE');
             $table->foreign(['stock_warehouse_id'])->references(['id'])->on('warehouses')->onDelete('CASCADE');
+            $table->foreign(['process_id'])->references(['id'])->on('processes')->onDelete('CASCADE');
             $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
             $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
             $table->foreign(['tax_ac_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');

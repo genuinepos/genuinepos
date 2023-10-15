@@ -8,13 +8,14 @@ use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
+use App\Models\Manufacturing\Process;
 use App\Models\Products\ProductVariant;
+use App\Models\Purchases\PurchaseProduct;
 use App\Models\Manufacturing\ProductionIngredient;
 
 class Production extends BaseModel
 {
     protected $guarded = [];
-
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()
@@ -55,5 +56,15 @@ class Production extends BaseModel
     public function stockWarehouse() // Ingredient stock warehouse
     {
         return $this->belongsTo(Warehouse::class, 'stock_warehouse_id');
+    }
+
+    public function process() // Ingredient stock warehouse
+    {
+        return $this->belongsTo(Process::class, 'process_id');
+    }
+
+    public function purchaseProduct()
+    {
+        return $this->belongsTo(PurchaseProduct::class, 'production_id');
     }
 }

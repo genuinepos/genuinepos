@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Purchased Products Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Production Report") }}</strong></h6>
         </div>
     </div>
 
@@ -138,7 +138,7 @@
         </div>
 
         <div class="col-4">
-            <p><strong>{{ __("Supplier") }} : </strong> {{ $filteredSupplierName }} </p>
+            <p><strong>{{ __("Status") }} : </strong> {{ $filteredStatusName }} </p>
         </div>
     </div>
 
@@ -146,8 +146,12 @@
         $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
-        $totalQty = 0;
-        $totalLineTotal = 0;
+        $totalOutputQty = 0;
+        $totalWastedQty = 0;
+        $totalFinalQty = 0;
+        $totalIngredientCost = 0;
+        $totalAdditionalCost = 0;
+        $totalNetCost = 0;
     @endphp
 
     <div class="row mt-1">
@@ -155,26 +159,36 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-start">{{ __("Product") }}</th>
-                        <th class="text-start">{{ __("P. Code(SKU)") }}</th>
+                        <th class="text-start">{{ __("Voucher No") }}</th>
                         <th class="text-start">{{ __("Shop/Business") }}</th>
-                        <th class="text-start">{{ __("Supplier") }}</th>
-                        <th class="text-start">{{ __("P.Invoice ID") }}</th>
-                        <th class="text-start">{{ __("Quantity") }}</th>
-                        <th class="text-end">{{ __("Unit Cost Exc. Tax") }}</th>
-                        <th class="text-end">{{ __("Unit Discount") }}</th>
+                        <th class="text-start">{{ __("Mfd. Product") }}</th>
+                        <th class="text-start">{{ __("Status") }}</th>
+                        <th class="text-end">{{ __("Unit Cost(Exc. Tax)") }}</th>
                         <th class="text-end">{{ __("Vat/Tax") }}</th>
-                        <th class="text-end">{{ __("Unit Cost Inc. Tax") }}</th>
-                        <th class="text-end">{{ __("Line-Total") }}</th>
+                        <th class="text-end">{{ __("Unit Cost(Inc. Tax)") }}</th>
+                        <th class="text-end">{{ __("Selling Price(Exc. Tax)") }}</th>
+                        <th class="text-end">{{ __("Output Qty") }}</th>
+                        <th class="text-end">{{ __("Wasted Qty") }}</th>
+                        <th class="text-end">{{ __("Final Qty") }}</th>
+                        <th class="text-black">{{ __("Total Ingred. Cost") }}</th>
+                        <th class="text-black">{{ __("Addl. Cost") }}</th>
+                        <th class="text-black">{{ __("Net Cost") }}</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
                     @php
                         $previousDate = '';
                     @endphp
-                    @foreach ($purchaseProducts as $purchaseProduct)
+                    @foreach ($productions as $production)
                         @php
-                           $date = date($__date_format, strtotime($purchaseProduct->report_date))
+                            $totalOutputQty += $production->total_output_quantity;
+                            $totalWastedQty += $production->total_wasted_quantity;
+                            $totalFinalQty += $production->total_final_output_quantity;
+                            $totalIngredientCost += $production->total_ingredient_cost;
+                            $totalAdditionalCost += $production->additional_production_cost;
+                            $totalNetCost = $production->net_cost;
+
+                           $date = date($__date_format, strtotime($production->date_ts))
                         @endphp
                         @if ($previousDate != $date)
 
@@ -188,39 +202,42 @@
                         @endif
 
                         <tr>
+                            <td>{{ $production->voucher_no }}</td>
+
                             <td class="text-start">
-                                @php
-                                    $variant = $purchaseProduct->variant_name ? ' - ' . $purchaseProduct->variant_name : '';
-                                    $totalQty += $purchaseProduct->quantity;
-                                    $totalLineTotal += $purchaseProduct->line_total;
-                                @endphp
-                               {{ $purchaseProduct->name . $variant }}
-                            </td>
+                                @if ($production->branch_id)
 
-                            <td class="text-start">{{ $purchaseProduct->variant_code ? $purchaseProduct->variant_code : $purchaseProduct->product_code}}</td>
-                            <td class="text-start">
-                                @if ($purchaseProduct->branch_id)
+                                    @if ($production->parent_branch_name)
 
-                                    @if ($purchaseProduct->parent_branch_name)
-
-                                        {{ $purchaseProduct->parent_branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}
+                                        {{ $production->parent_branch_name . '(' . $production->branch_area_name . ')' }}
                                     @else
 
-                                        {{ $purchaseProduct->branch_name . '(' . $purchaseProduct->branch_area_name . ')' }}
+                                        {{ $production->branch_name . '(' . $production->branch_area_name . ')' }}
                                     @endif
                                 @else
 
                                     {{$generalSettings['business__shop_name']}}
                                 @endif
                             </td>
-                            <td class="text-start">{{ $purchaseProduct->supplier_name }}</td>
-                            <td class="text-start">{{ $purchaseProduct->invoice_id }}</td>
-                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($purchaseProduct->quantity)  .'/'.$purchaseProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_cost_exc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->unit_discount_amount) }}</td>
-                            <td class="text-end fw-bold">{{ '('.$purchaseProduct->unit_tax_percent.'%)='.App\Utils\Converter::format_in_bdt($purchaseProduct->unit_tax_amount) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->net_unit_cost) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($purchaseProduct->line_total) }}</td>
+
+                            <td>
+                                @php
+                                    $variantName = $production->variant_name ? ' _ ' . $production->variant_name : '';
+                                @endphp
+                                {{ Str::limit($production->product_name, 35, '') . $variantName }}
+                            </td>
+
+                            <td class="text-start">{{ \App\Enums\ProductionStatus::tryFrom($production->status) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ '(' . $production->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($production->unit_tax_amount) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}</td>
+                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($production->total_output_quantity)  .'/'.$production->unit_name !!}</td>
+                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($production->total_wasted_quantity)  .'/'.$production->unit_name !!}</td>
+                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($production->total_final_output_quantity)  .'/'.$production->unit_name !!}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->total_ingredient_cost) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}</td>
+                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($production->net_cost) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -235,16 +252,44 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-end">{{ __("Total Qty") }} : </th>
+                        <th class="text-end">{{ __("Total Output Qty") }} : </th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalQty) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalOutputQty) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __("Net Total Amount") }} : </th>
+                        <th class="text-end">{{ __("Total Wasted Qty") }} : </th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalLineTotal) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalWastedQty) }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-end">{{ __("Total Final Output Qty") }} : </th>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($totalFinalQty) }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-end">{{ __("Total Ingredient Cost") }} : </th>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($totalIngredientCost) }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-end">{{ __("Total Additional Production Cost") }} : </th>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($totalAdditionalCost) }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-end">{{ __("Total Net Production Cost") }} : </th>
+                        <td class="text-end">
+                            {{ App\Utils\Converter::format_in_bdt($totalNetCost) }}
                         </td>
                     </tr>
                 </thead>

@@ -202,7 +202,7 @@
             </div>
 
             <div class="sale_product_table pt-3 pb-3">
-                <table class="table modal-table table-sm table-bordered">
+                <table class="table print-table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("S/L") }}</th>
@@ -331,7 +331,7 @@
                     @endif
                 </div>
                 <div class="col-6">
-                    <table class="table modal-table table-sm">
+                    <table class="table print-table table-sm">
                         <tbody>
                             <tr>
                                 <td class="text-end" style="font-size:11px!important;"><strong>{{ __("Net Total Amount") }} :{{ $generalSettings['business__currency'] }}</strong></td>

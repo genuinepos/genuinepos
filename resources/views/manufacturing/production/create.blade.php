@@ -282,7 +282,7 @@
                                     </div>
 
                                     <div class="row mt-1">
-                                        <div class="col-md-6 offset-6">
+                                        <div class="col-md-12 col-lg-6 offset-lg-6">
                                             <div class="input-group">
                                                 <label class="col-5"><b>{{ __("Status") }}</b></label>
                                                 <select name="status" class="form-control" id="status" data-next="save_and_print">

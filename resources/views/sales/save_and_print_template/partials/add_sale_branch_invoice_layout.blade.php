@@ -134,7 +134,7 @@
             </div>
 
             <div class="sale_product_table pt-3 pb-3">
-                <table class="table  modal-table table-sm table-bordered">
+                <table class="table  print-table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th class="text-start">@lang('menu.sl')</th>
@@ -257,7 +257,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <table class="table modal-table table-sm">
+                    <table class="table print-table table-sm">
                         <tbody>
                             <tr>
                                 <td class="text-end">

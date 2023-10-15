@@ -21,6 +21,7 @@ class DayBookService
             10 => 'Contra',
             11 => 'Expenses',
             12 => 'Incomes',
+            13 => 'Production',
         ];
     }
 
@@ -39,7 +40,8 @@ class DayBookService
             9 => ['name' => 'Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
             10 => ['name' => 'Contra', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
             11 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
-            11 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            12 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
+            13 => ['name' => 'Production', 'id' => 'production_id', 'voucher_no' => 'production_voucher_no', 'details_id' => 'production_voucher_id', 'link' => ''],
         ];
 
         return $data[$voucherTypeId];

@@ -700,7 +700,7 @@
                                                     {{ __('Sale Return Statements') }}
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="pro_sale_report" class="sales sale_all">
+                                                    <input type="checkbox" name="product_sale_report" class="sales sale_all">
                                                     {{ __('Sale Product Report') }}
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">

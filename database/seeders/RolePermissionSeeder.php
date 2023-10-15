@@ -169,7 +169,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '82', 'name' => 'discounts'],
             ['id' => '83', 'name' => 'sale_statements'],
             ['id' => '84', 'name' => 'sale_return_statements'],
-            ['id' => '85', 'name' => 'pro_sale_report'],
+            ['id' => '85', 'name' => 'product_sale_report'],
             ['id' => '86', 'name' => 'sale_payment_report'],
             ['id' => '87', 'name' => 'c_register_report'],
             ['id' => '88', 'name' => 'sale_representative_report'],

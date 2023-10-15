@@ -783,8 +783,8 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('pro_sale_report') ? 'CHECKED' : '' }}
-                                                    name="pro_sale_report" class="sales sale_all">
+                                                    {{ $role->hasPermissionTo('product_sale_report') ? 'CHECKED' : '' }}
+                                                    name="product_sale_report" class="sales sale_all">
                                                     {{ __('Sale Product Report') }}
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">

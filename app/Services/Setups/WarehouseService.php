@@ -25,7 +25,7 @@ class WarehouseService
             }
         }
 
-        if (auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
             $warehouses = $query->where('warehouse_branches.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', 0);
         }
@@ -51,8 +51,8 @@ class WarehouseService
                 }
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('warehouses.edit', [$row->id]).'" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="'.route('warehouses.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="' . route('warehouses.edit', [$row->id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -66,7 +66,7 @@ class WarehouseService
 
                     if ($row->b_name) {
 
-                        return $row->b_name.'/'.$row->b_code;
+                        return $row->b_name . '/' . $row->b_code;
                     } else {
 
                         return $generalSettings['business__shop_name'];
@@ -102,11 +102,20 @@ class WarehouseService
         $updateWarehouse->save();
     }
 
-    public function deleteWarehouse(int $id): void
+    public function deleteWarehouse(int $id): mixed
     {
         $deleteWarehouse = $this->singleWarehouse($id);
 
-        if (! is_null($deleteWarehouse)) {
+        $stock = DB::table('product_stocks')
+            ->where('warehouse_id', $id)
+            ->select(DB::raw('SUM(stock) as total_stock'))->groupBy('warehouse_id')->get();
+
+        if ($stock->sum('total_stock') > 0) {
+
+            return ['pass' => false, 'msg' => __('The warehouse can not be deleted. Product stocks belong under this warehouse.')];
+        }
+
+        if (!is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();
         }

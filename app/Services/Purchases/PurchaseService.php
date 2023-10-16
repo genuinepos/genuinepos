@@ -138,7 +138,6 @@ class PurchaseService
             ->make(true);
     }
 
-
     public function addPurchase(object $request, object $codeGenerator, string $invoicePrefix): ?object
     {
         $__invoicePrefix = $invoicePrefix != null ? $invoicePrefix : 'PI';

@@ -57,6 +57,7 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('warehouses.edit');
         Route::post('update/{id}', 'update')->name('warehouses.update');
         Route::delete('delete/{warehouseId}', 'delete')->name('warehouses.delete');
+        Route::get('warehouses/by/branch/{branchId}', 'warehousesBybranch')->name('warehouses.by.branch');
     });
 
     Route::group(['prefix' => 'invoices'], function () {

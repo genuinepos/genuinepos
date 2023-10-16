@@ -128,7 +128,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-            
+
                                             <div class="card-counter-col">
                                                 <div class="card-counter d-flex justify-content-around align-content-center">
                                                     <div class="icon">
@@ -143,7 +143,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-            
+
                                             <div class="card-counter-col">
                                                 <div class="card-counter d-flex justify-content-around align-content-center">
                                                     <div class="icon">
@@ -158,7 +158,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-            
+
                                             <div class="card-counter-col">
                                                 <div class="card-counter d-flex justify-content-around align-content-center">
                                                     <div class="icon">
@@ -173,7 +173,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-            
+
                                             <div class="card-counter-col">
                                                 <div class="card-counter d-flex justify-content-around align-content-center">
                                                     <div class="icon">
@@ -405,7 +405,10 @@
     @endif
 @endsection
 @push('scripts')
-    @if (auth()->user()->can('dash_data'))
+
+    @if (auth()->user()->can('dash_data') and false) {{-- Dashboard issue solve for now --}}
+
+    {{-- @if (auth()->user()->can('dash_data') and false) --}}
         <script>
             $(document).on('change', '#date', function() {
                 var date_range = $(this).val();

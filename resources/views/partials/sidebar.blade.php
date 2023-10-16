@@ -113,7 +113,7 @@
                     auth()->user()->can('discounts') ||
                     auth()->user()->can('sale_statements') ||
                     auth()->user()->can('sale_return_statements')||
-                    auth()->user()->can('pro_sale_report') ||
+                    auth()->user()->can('product_sale_report') ||
                     auth()->user()->can('sale_payment_report')||
                     auth()->user()->can('c_register_report')||
                     auth()->user()->can('sale_representative_report')
@@ -1271,7 +1271,7 @@
                         </div>
 
                         @if (
-                            auth()->user()->can('pro_sale_report') ||
+                            auth()->user()->can('product_sale_report') ||
                             auth()->user()->can('sale_payment_report') ||
                             auth()->user()->can('c_register_report') ||
                             auth()->user()->can('sale_representative_report')
@@ -1299,7 +1299,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('pro_sale_report'))
+                                    @if (auth()->user()->can('product_sale_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sold.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">

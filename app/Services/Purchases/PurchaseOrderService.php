@@ -4,6 +4,7 @@ namespace App\Services\Purchases;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseOrderService
 {
-    public function purchaseOrdersTable(object $request): object
+    public function purchaseOrdersTable(object $request, ?int $supplierAccountId = null): object
     {
         $generalSettings = config('generalSettings');
         $orders = '';
@@ -42,6 +43,20 @@ class PurchaseOrderService
             $query->where('purchases.po_receiving_status', $request->receiving_status);
         }
 
+        if ($request->payment_status) {
+
+            if ($request->payment_status == PaymentStatus::Paid->value) {
+
+                $query->where('purchases.due', '=', 0);
+            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+
+                $query->where('purchases.paid', '>', 0)->where('purchases.due', '>', 0);
+            } else if ($request->payment_status == PaymentStatus::Due->value) {
+
+                $query->where('purchases.paid', '=', 0);
+            }
+        }
+
         if ($request->from_date) {
 
             $from_date = date('Y-m-d', strtotime($request->from_date));
@@ -49,6 +64,11 @@ class PurchaseOrderService
             //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if (isset($supplierAccountId)) {
+
+            $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

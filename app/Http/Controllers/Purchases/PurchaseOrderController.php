@@ -44,7 +44,7 @@ class PurchaseOrderController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $supplierAccountId = null)
     {
         if (!auth()->user()->can('purchase_all')) {
 
@@ -53,7 +53,7 @@ class PurchaseOrderController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->purchaseOrderService->purchaseOrdersTable($request);
+            return $this->purchaseOrderService->purchaseOrdersTable(request: $request, supplierAccountId: $supplierAccountId);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

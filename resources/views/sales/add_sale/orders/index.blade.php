@@ -117,7 +117,7 @@
                                     <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
+                                    <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __("Action") }}</th>

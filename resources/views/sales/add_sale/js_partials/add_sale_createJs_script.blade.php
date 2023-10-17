@@ -528,121 +528,121 @@
 
                 var status = $('#status').val();
 
-                if ($.isEmptyObject(data.errorMsg)) {
+                if (status == 1 || status == '') {
 
-                    if (status == 1 || status == '') {
+                    if (!$.isEmptyObject(data.errorMsg)) {
 
-                       var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop';
-                        if (parseFloat(e_quantity) > parseFloat(data.stock)) {
-
-                            toastr.error('Current stock is ' + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);
-                            return;
-                        }
+                        toastr.error(data.errorMsg);
+                        return;
                     }
 
-                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + e_warehouse_id;
-                    var uniqueIdValue = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).val();
+                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop';
+                    if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
-                    if (uniqueIdValue == undefined) {
-
-                        var tr = '';
-                        tr += '<tr id="select_item">';
-                        tr += '<td class="text-start">';
-                        tr += '<span class="product_name">' + e_item_name + '</span>';
-                        tr += '<input type="hidden" id="item_name" value="' + e_item_name + '">';
-                        tr += '<input type="hidden" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="' + e_is_show_emi_on_pos + '">';
-                        tr += '<input type="hidden" name="descriptions[]" id="descriptions" value="' + e_descriptions + '">';
-                        tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + e_product_id + '">';
-                        tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + e_variant_id + '">';
-                        tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="' + e_tax_ac_id + '">';
-                        tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="' + e_tax_type + '">';
-                        tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="' + e_tax_percent + '">';
-                        tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="' + parseFloat(e_tax_amount).toFixed(2) + '">';
-                        tr += '<input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="' + e_discount_type + '">';
-                        tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="' + e_discount + '">';
-                        tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
-                        tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
-                        tr += '<input type="hidden" id="current_stock" value="' + stock_quantity + '">';
-                        tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' +e_unit_name+ '" id="stock_limit" value="' + data.stock + '">';
-                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + e_warehouse_id + '">';
-                        tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<span id="span_quantity" class="fw-bold">' + parseFloat(e_quantity).toFixed(2) + '</span>';
-                        tr += '<input type="hidden" name="quantities[]" id="quantity" value="' + parseFloat(e_quantity).toFixed(2) + '">';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<b><span id="span_unit">' + e_unit_name + '</span></b>';
-                        tr += '<input type="hidden" name="unit_ids[]" id="unit_id" value="' + e_unit_id + '">';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="' + parseFloat(e_price_exc_tax).toFixed(2) + '">';
-                        tr += '<input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="' + parseFloat(e_price_inc_tax).toFixed(2) + '">';
-                        tr += '<span id="span_unit_price_inc_tax" class="fw-bold">' + parseFloat(e_price_inc_tax).toFixed(2) + '</span>';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<span id="span_subtotal" class="fw-bold">' + parseFloat(e_subtotal).toFixed(2) + '</span>';
-                        tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(e_subtotal).toFixed(2) + '" tabindex="-1">';
-                        tr += '</td>';
-
-                        tr += '<td class="text-start">';
-                        tr += '<a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
-                        tr += '</td>';
-                        tr += '</tr>';
-
-                        $('#sale_product_list').append(tr);
-                        clearEditItemFileds();
-                        calculateTotalAmount();
-                    } else {
-
-                        var tr = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).closest('tr');
-
-                        tr.find('#item_name').val(e_item_name);
-                        tr.find('#product_id').val(e_product_id);
-                        tr.find('#variant_id').val(e_variant_id);
-                        tr.find('#tax_ac_id').val(e_tax_ac_id);
-                        tr.find('#tax_type').val(e_tax_type);
-                        tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
-                        tr.find('#unit_tax_amount').val(parseFloat(e_tax_amount).toFixed(2));
-                        tr.find('#unit_discount_type').val(e_discount_type);
-                        tr.find('#unit_discount').val(parseFloat(e_discount).toFixed(2));
-                        tr.find('#unit_discount_amount').val(parseFloat(e_discount_amount).toFixed(2));
-                        tr.find('#unit_cost_inc_tax').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
-                        tr.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
-                        tr.find('#span_quantity').html(parseFloat(e_quantity).toFixed(2));
-                        tr.find('#span_unit').html(e_unit_name);
-                        tr.find('#unit_id').val(e_unit_id);
-                        tr.find('#unit_price_exc_tax').val(parseFloat(e_price_exc_tax).toFixed(2));
-                        tr.find('#unit_price_inc_tax').val(parseFloat(e_price_inc_tax).toFixed(2));
-                        tr.find('#span_unit_price_inc_tax').html(parseFloat(e_price_inc_tax).toFixed(2));
-                        tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-                        tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
-                        tr.find('#is_show_emi_on_pos').val(e_is_show_emi_on_pos);
-                        tr.find('#descriptions').val(e_descriptions);
-                        tr.find('#stock_limit').val(data.stock);
-                        tr.find('#stock_limit').data('unit_name', e_unit_name);
-                        tr.find('.unique_id').val(e_product_id + e_variant_id + e_warehouse_id);
-                        tr.find('.unique_id').attr('id', e_product_id + e_variant_id + e_warehouse_id);
-                        tr.find('#warehouse_id').val(e_warehouse_id);
-                        tr.find('#stock_location_name').html(stock_location_name);
-
-                        clearEditItemFileds();
-                        calculateTotalAmount();
+                        toastr.error('Current stock is ' + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);
+                        return;
                     }
+                }
 
-                    $('#add_item').html('Add');
+                var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + e_warehouse_id;
+                var uniqueIdValue = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).val();
+
+                if (uniqueIdValue == undefined) {
+
+                    var tr = '';
+                    tr += '<tr id="select_item">';
+                    tr += '<td class="text-start">';
+                    tr += '<span class="product_name">' + e_item_name + '</span>';
+                    tr += '<input type="hidden" id="item_name" value="' + e_item_name + '">';
+                    tr += '<input type="hidden" name="is_show_emi_on_pos" id="is_show_emi_on_pos" value="' + e_is_show_emi_on_pos + '">';
+                    tr += '<input type="hidden" name="descriptions[]" id="descriptions" value="' + e_descriptions + '">';
+                    tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + e_product_id + '">';
+                    tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + e_variant_id + '">';
+                    tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="' + e_tax_ac_id + '">';
+                    tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="' + e_tax_type + '">';
+                    tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="' + e_tax_percent + '">';
+                    tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="' + parseFloat(e_tax_amount).toFixed(2) + '">';
+                    tr += '<input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="' + e_discount_type + '">';
+                    tr += '<input type="hidden" name="unit_discounts[]" id="unit_discount" value="' + e_discount + '">';
+                    tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
+                    tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
+                    tr += '<input type="hidden" id="current_stock" value="' + stock_quantity + '">';
+                    tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' +e_unit_name+ '" id="stock_limit" value="' + data.stock + '">';
+                    tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + e_warehouse_id + '">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + e_warehouse_id + '">';
+                    tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<span id="span_quantity" class="fw-bold">' + parseFloat(e_quantity).toFixed(2) + '</span>';
+                    tr += '<input type="hidden" name="quantities[]" id="quantity" value="' + parseFloat(e_quantity).toFixed(2) + '">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<b><span id="span_unit">' + e_unit_name + '</span></b>';
+                    tr += '<input type="hidden" name="unit_ids[]" id="unit_id" value="' + e_unit_id + '">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<input type="hidden" name="unit_prices_exc_tax[]" id="unit_price_exc_tax" value="' + parseFloat(e_price_exc_tax).toFixed(2) + '">';
+                    tr += '<input type="hidden" name="unit_prices_inc_tax[]" id="unit_price_inc_tax" value="' + parseFloat(e_price_inc_tax).toFixed(2) + '">';
+                    tr += '<span id="span_unit_price_inc_tax" class="fw-bold">' + parseFloat(e_price_inc_tax).toFixed(2) + '</span>';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<span id="span_subtotal" class="fw-bold">' + parseFloat(e_subtotal).toFixed(2) + '</span>';
+                    tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(e_subtotal).toFixed(2) + '" tabindex="-1">';
+                    tr += '</td>';
+
+                    tr += '<td class="text-start">';
+                    tr += '<a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>';
+                    tr += '</td>';
+                    tr += '</tr>';
+
+                    $('#sale_product_list').append(tr);
+                    clearEditItemFileds();
+                    calculateTotalAmount();
                 } else {
 
-                    toastr.error(data.errorMsg);
+                    var tr = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).closest('tr');
+
+                    tr.find('#item_name').val(e_item_name);
+                    tr.find('#product_id').val(e_product_id);
+                    tr.find('#variant_id').val(e_variant_id);
+                    tr.find('#tax_ac_id').val(e_tax_ac_id);
+                    tr.find('#tax_type').val(e_tax_type);
+                    tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
+                    tr.find('#unit_tax_amount').val(parseFloat(e_tax_amount).toFixed(2));
+                    tr.find('#unit_discount_type').val(e_discount_type);
+                    tr.find('#unit_discount').val(parseFloat(e_discount).toFixed(2));
+                    tr.find('#unit_discount_amount').val(parseFloat(e_discount_amount).toFixed(2));
+                    tr.find('#unit_cost_inc_tax').val(parseFloat(e_unit_cost_inc_tax).toFixed(2));
+                    tr.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
+                    tr.find('#span_quantity').html(parseFloat(e_quantity).toFixed(2));
+                    tr.find('#span_unit').html(e_unit_name);
+                    tr.find('#unit_id').val(e_unit_id);
+                    tr.find('#unit_price_exc_tax').val(parseFloat(e_price_exc_tax).toFixed(2));
+                    tr.find('#unit_price_inc_tax').val(parseFloat(e_price_inc_tax).toFixed(2));
+                    tr.find('#span_unit_price_inc_tax').html(parseFloat(e_price_inc_tax).toFixed(2));
+                    tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
+                    tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
+                    tr.find('#is_show_emi_on_pos').val(e_is_show_emi_on_pos);
+                    tr.find('#descriptions').val(e_descriptions);
+                    tr.find('#stock_limit').val(data.stock);
+                    tr.find('#stock_limit').data('unit_name', e_unit_name);
+                    tr.find('.unique_id').val(e_product_id + e_variant_id + e_warehouse_id);
+                    tr.find('.unique_id').attr('id', e_product_id + e_variant_id + e_warehouse_id);
+                    tr.find('#warehouse_id').val(e_warehouse_id);
+                    tr.find('#stock_location_name').html(stock_location_name);
+
+                    clearEditItemFileds();
+                    calculateTotalAmount();
                 }
+
+                $('#add_item').html('Add');
             }
         })
     });

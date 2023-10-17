@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SalesOrderService
 {
-    public function salesOrderListTable($request)
+    public function salesOrderListTable(object $request, ?int $customerAccountId = null)
     {
         $generalSettings = config('generalSettings');
         $orders = '';
@@ -23,17 +23,7 @@ class SalesOrderService
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.order_status', 1);
 
-        $this->filteredQuery($request, $query);
-
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
+        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId);
 
         $orders = $query->select(
             'sales.id',
@@ -234,7 +224,7 @@ class SalesOrderService
         $order->save();
     }
 
-    private function filteredQuery($request, $query)
+    private function filteredQuery(object $request, object $query, ?int $customerAccountId = null)
     {
         if ($request->branch_id) {
 
@@ -284,6 +274,21 @@ class SalesOrderService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sales.order_date_ts', $date_range); // Final
+        }
+
+        if (isset($customerAccountId)) {
+
+            $query->where('sales.customer_account_id', $customerAccountId);
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            if (auth()->user()->can('view_own_sale')) {
+
+                $query->where('sales.created_by_id', auth()->user()->id);
+            }
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

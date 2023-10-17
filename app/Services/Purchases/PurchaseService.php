@@ -3,6 +3,7 @@
 namespace App\Services\Purchases;
 
 use Carbon\Carbon;
+use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseService
 {
-    function purchaseListTable($request)
+    function purchaseListTable(object $request, ?int $supplierAccountId = null)
     {
         $generalSettings = config('generalSettings');
         $purchases = '';
@@ -48,6 +49,25 @@ class PurchaseService
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if ($request->payment_status) {
+
+            if ($request->payment_status == PaymentStatus::Paid->value) {
+
+                $query->where('purchases.due', '=', 0);
+            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+
+                $query->where('purchases.paid', '>', 0)->where('purchases.due', '>', 0);
+            } else if ($request->payment_status == PaymentStatus::Due->value) {
+
+                $query->where('purchases.paid', '=', 0);
+            }
+        }
+
+        if (isset($supplierAccountId)) {
+
+            $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

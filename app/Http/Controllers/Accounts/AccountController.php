@@ -80,7 +80,6 @@ class AccountController extends Controller
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -176,7 +175,6 @@ class AccountController extends Controller
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -288,7 +286,6 @@ class AccountController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $deleteAccount = $this->accountService->deleteAccount($accountId);

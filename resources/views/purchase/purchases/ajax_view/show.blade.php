@@ -268,7 +268,7 @@
     div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
 
- <!-- Purchase print templete-->
+<!-- Purchase print templete-->
 <div class="print_modal_details d-none">
     <div class="details_area">
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
@@ -391,7 +391,7 @@
         </div>
 
         <div class="purchase_product_table pt-1 pb-1">
-            <table class="table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Description") }}</th>
@@ -435,7 +435,7 @@
 
         <div class="row">
             <div class="col-6 offset-6">
-                <table class="table modal-table table-sm">
+                <table class="table print-table table-sm">
                     <thead>
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>

@@ -4,6 +4,7 @@ namespace App\Services\Manufacturing;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductionStatus;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manufacturing\Production;
@@ -43,10 +44,9 @@ class ProductionService
         return DataTables::of($productions)
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('manufacturing.productions.show', [$row->id]) . '"> ' . __("View") . '</a>';
+                $html .= '<a href="' . route('manufacturing.productions.show', [$row->id]) . '" class="dropdown-item" id="details_btn"> ' . __("View") . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -109,7 +109,7 @@ class ProductionService
             ->editColumn('product', function ($row) {
 
                 $variantName = $row->variant_name ? ' _ ' . $row->variant_name : '';
-                $productCode = $row->variant_code ? ' (' . $row->variant_code.')' : ' ('.$row->product_code.')';
+                $productCode = $row->variant_code ? ' (' . $row->variant_code . ')' : ' (' . $row->product_code . ')';
                 return Str::limit($row->product_name, 35, '') . $variantName . $productCode;
             })
 
@@ -165,6 +165,7 @@ class ProductionService
         $addProduction->branch_id = auth()->user()->branch_id;
         $addProduction->store_warehouse_id = $request->store_warehouse_id;
         $addProduction->stock_warehouse_id = $request->stock_warehouse_id;
+        $addProduction->process_id = $request->process_id;
         $addProduction->voucher_no = $voucherNo;
         $addProduction->date = $request->date;
         $addProduction->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
@@ -191,6 +192,77 @@ class ProductionService
         $addProduction->save();
 
         return $addProduction;
+    }
+
+    public function updateProduction(object $request, int $productionId): object
+    {
+
+        $updateProduction = $this->singleProduction(with: ['ingredients'])->where('id', $productionId)->first();
+
+        $previousProductId = $updateProduction->product_id;
+        $previousVariantId = $updateProduction->variant_id;
+        $previousStoreWarehouseId = $updateProduction->store_warehouse_id;
+        $previousStockWarehouseId = $updateProduction->stock_warehouse_id;
+
+        foreach ($updateProduction->ingredients as $ingredient) {
+
+            $ingredient->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+            $ingredient->save();
+        }
+
+        $updateProduction->process_id = $request->process_id;
+        $updateProduction->product_id = $request->product_id;
+        $updateProduction->variant_id = $request->variant_id == 'noid' ? null : $request->variant_id;
+        $updateProduction->unit_id = $request->unit_id;
+        $updateProduction->store_warehouse_id = $request->store_warehouse_id;
+        $updateProduction->stock_warehouse_id = $request->stock_warehouse_id;
+        $updateProduction->date = $request->date;
+        $time = date(' H:i:s', strtotime($updateProduction->date_ts));
+        $updateProduction->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateProduction->total_ingredient_cost = $request->total_ingredient_cost;
+        $updateProduction->total_output_quantity = $request->total_output_quantity;
+        $updateProduction->total_parameter_quantity = $request->total_parameter_quantity;
+        $updateProduction->total_wasted_quantity = $request->total_wasted_quantity;
+        $updateProduction->total_final_output_quantity = $request->total_final_output_quantity;
+        $updateProduction->additional_production_cost = $request->additional_production_cost;
+        $updateProduction->net_cost = $request->net_cost;
+        $updateProduction->tax_ac_id = $request->tax_ac_id;
+        $updateProduction->tax_type = $request->tax_type;
+        $updateProduction->unit_tax_percent = $request->unit_tax_percent;
+        $updateProduction->unit_tax_amount = $request->unit_tax_amount;
+        $updateProduction->per_unit_cost_exc_tax = $request->per_unit_cost_exc_tax;
+        $updateProduction->per_unit_cost_inc_tax = $request->per_unit_cost_inc_tax;
+        $updateProduction->profit_margin = $request->profit_margin;
+        $updateProduction->per_unit_price_exc_tax = $request->per_unit_price_exc_tax;
+        $updateProduction->status = $request->status;
+        $updateProduction->save();
+
+        $updateProduction->previous_product_id = $previousProductId;
+        $updateProduction->previous_variant_id = $previousVariantId;
+        $updateProduction->previous_store_warehouse_id = $previousStoreWarehouseId;
+        $updateProduction->previous_stock_warehouse_id = $previousStockWarehouseId;
+
+        return $updateProduction;
+    }
+
+    function deleteProduction(int $id): object|array
+    {
+        $deleteProduction = $this->singleProduction(with: ['product', 'variant', 'ingredients', 'purchaseProduct', 'purchaseProduct.purchaseSaleChains'])->where('id', $id)->first();
+
+        if ($deleteProduction->purchaseProduct && count($deleteProduction->purchaseProduct->purchaseSaleChains) > 0) {
+
+            $variant = $deleteProduction->variant ? ' - ' . $deleteProduction->variant->name : '';
+            $product = $deleteProduction?->product?->name . $variant;
+
+            return ['pass' => false, 'msg' => __("Production Can not be deleted. Mismatch between sold and Production stock accounting method. Product:") . $product];
+        }
+
+        if (!is_null($deleteProduction)) {
+
+            $deleteProduction->delete();
+        }
+
+        return $deleteProduction;
     }
 
     public function singleProduction(array $with = null): ?object

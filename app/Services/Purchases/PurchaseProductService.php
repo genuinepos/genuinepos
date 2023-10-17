@@ -532,6 +532,18 @@ class PurchaseProductService
         $purchaseProduct->save();
     }
 
+    function singlePurchaseProduct(?array $with = null): ?object
+    {
+        $query = PurchaseProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     function purchaseProducts(?array $with = null): ?object
     {
         $query = PurchaseProduct::query();
@@ -542,5 +554,18 @@ class PurchaseProductService
         }
 
         return $query;
+    }
+
+    public function deleteUnusedPurchaseProduct(string $transColName, int $transColValue, int $productId, ?int $variantId = null): void
+    {
+        $deletePurchaseProduct = $this->singlePurchaseProduct()->where($transColName, $transColValue)
+            ->where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->first();
+
+        if (!is_null($deletePurchaseProduct)) {
+
+            $deletePurchaseProduct->delete();
+        }
     }
 }

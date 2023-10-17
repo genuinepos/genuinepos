@@ -172,7 +172,7 @@
 
         <div class="purchase_product_table pt-2 pb-2">
             <p style="font-size:11px!important;"><strong>{{ __('Ingredients List') }}</strong></p>
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Ingredient Name") }}</th>
@@ -217,7 +217,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p style="font-size:11px!important;"><strong>{{ __("Production Quantity And Net Cost") }}</strong></p>
-                <table class="table modal-table table-sm table-bordered">
+                <table class="table print-table table-sm table-bordered">
                     <tbody>
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Total Output Qty") }}</th>
@@ -259,7 +259,7 @@
 
             <div class="col-md-6 text-end">
                 <p style="font-size:11px!important;"><strong>{{ __('Product Costing And Pricing') }}</strong></p>
-                <table class="table modal-table table-sm table-bordered">
+                <table class="table print-table table-sm table-bordered">
                     <tbody>
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Per Unit Cost Exc. Tax") }} : {{ $generalSettings['business__currency'] }}</th>

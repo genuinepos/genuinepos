@@ -6,7 +6,6 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -216,10 +215,10 @@ class RolePermissionSeeder extends Seeder
             ['id' => '129', 'name' => 'production_delete'],
             ['id' => '130', 'name' => 'manuf_settings'],
             ['id' => '131', 'name' => 'manuf_report'],
-            ['id' => '132', 'name' => 'proj_view'],
-            ['id' => '133', 'name' => 'proj_create'],
-            ['id' => '134', 'name' => 'proj_edit'],
-            ['id' => '135', 'name' => 'proj_delete'],
+            ['id' => '132', 'name' => 'project_view'],
+            ['id' => '133', 'name' => 'project_create'],
+            ['id' => '134', 'name' => 'project_edit'],
+            ['id' => '135', 'name' => 'project_delete'],
             ['id' => '136', 'name' => 'ripe_add_invo'],
             ['id' => '137', 'name' => 'ripe_edit_invo'],
             ['id' => '138', 'name' => 'ripe_view_invo'],

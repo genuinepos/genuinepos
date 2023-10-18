@@ -245,7 +245,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '157', 'name' => 'email_setting_view'],
             ['id' => '158', 'name' => 'email_setting_update'],
             ['id' => '159', 'name' => 'email_setting_delete'],
-
             ['id' => '160', 'name' => 'sms_setting_index'],
             ['id' => '161', 'name' => 'sms_setting_create'],
             ['id' => '162', 'name' => 'sms_setting_view'],

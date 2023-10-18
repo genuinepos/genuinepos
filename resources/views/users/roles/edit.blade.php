@@ -144,7 +144,7 @@
                                                    <label for="user_edit">{{ __('Edit User') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" {{ $role->hasPermissionTo('user_delete') ? 'CHECKED':'' }} 
+                                                    <input type="checkbox" {{ $role->hasPermissionTo('user_delete') ? 'CHECKED':'' }}
                                                     name="user_delete" id="user_delete" class="users users_all">
                                                    <label for="user_delete">{{ __('Delete User') }}</label>
                                                 </p>
@@ -205,36 +205,36 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('supplier_all') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('supplier_all') ? 'CHECKED' : '' }}
                                                     name="supplier_all" id="supplier_all" class="contacts contact_all">
                                                     <label for="supplier_all">{{ __('View All Supplier') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('supplier_add') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('supplier_add') ? 'CHECKED' : '' }}
                                                         name="supplier_add" id="supplier_add" class="contacts contact_all">
                                                    <label for="supplier_add">{{ __('Add Supplier') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('supplier_import') ? 'CHECKED' : '' }}name="supplier_import" id="supplier_import" class="contacts contact_all">
                                                     <label for="supplier_import">{{ __('Import Suppliers') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('supplier_edit') ? 'CHECKED' : '' }}
                                                     name="supplier_edit" id="supplier_edit" class="contacts contact_all">
                                                     <label for="supplier_edit">{{ __('Edit Supplier') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('supplier_delete') ? 'CHECKED' : '' }} name="supplier_delete" id="supplier_delete" class="contacts contact_all">
                                                    <label for="supplier_delete">{{ __('Delete Supplier') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('supplier_report') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('supplier_report') ? 'CHECKED' : '' }}
                                                     name="supplier_report" id="supplier_report" class="contacts contact_all">
                                                    <label for="supplier_report">{{ __('Supplier Report') }}</label>
                                                 </p>
@@ -248,44 +248,44 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('customer_all') ? 'CHECKED' : '' }}
                                                      name="customer_all" id="customer_all" class="contacts customer_all">
                                                    <label for="customer_all">{{ __('View All Customer') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('customer_add') ? 'CHECKED' : '' }}
                                                     name="customer_add" id="customer_add" class="contacts customer_all">
                                                     <label for="customer_add">{{ __('Add Customer') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('customer_import') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('customer_import') ? 'CHECKED' : '' }}
                                                     name="customer_import" id="customer_import" class="contacts customer_all">
                                                    <label for="customer_import"> {{ __('Import Customers') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('customer_edit') ? 'CHECKED' : '' }}
                                                     name="customer_edit" id="customer_edit" class="contacts customer_all">
                                                    <label for="customer_edit"> {{ __('Edit Customer') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('customer_delete') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('customer_delete') ? 'CHECKED' : '' }}
                                                      name="customer_delete" id="customer_delete" class="contacts customer_all">
                                                     <label for="customer_delete">{{ __('Delete Customer') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}  
+                                                    {{ $role->hasPermissionTo('customer_report') ? 'CHECKED' : '' }}
                                                      name="customer_report" id="customer_report" class="contacts customer_all">
                                                     <label for="customer_report">{{ __('Customer Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('customer_group') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('customer_group') ? 'CHECKED' : '' }}
                                                     name="customer_group" id="customer_group" class="contacts customer_all">
                                                     <label for="customer_group">{{ __('Customer Group') }} &rarr; {{ __('View/Add/Edit/Delete') }}</label>
                                                 </p>
@@ -320,38 +320,38 @@
                                                 </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('product_all') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('product_all') ? 'CHECKED' : '' }}
                                                     name="product_all" id="product_all" class="products product_all">
                                                    <label for="product_all"> {{ __('View All Product') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('product_add') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('product_add') ? 'CHECKED' : '' }}
                                                      name="product_add" id="product_add" class="products product_all">
                                                     <label for="product_add">{{ __('Add Product') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('product_edit') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('product_edit') ? 'CHECKED' : '' }}
                                                      name="product_edit" id="product_edit" class="products product_all">
                                                    <label for="product_edit">{{ __('Edit Product') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('openingStock_add') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('openingStock_add') ? 'CHECKED' : '' }}
                                                      name="openingStock_add" id="openingStock_add" class="products product_all">
                                                     <label for="openingStock_add">&nbsp;{{ __('Add/Edit Opening Stock') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('product_delete') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('product_delete') ? 'CHECKED' : '' }}
                                                      name="product_delete" id="product_delete" class="products product_all">
                                                     <label for="product_delete">{{ __('Delete Product') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('product_settings') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('product_settings') ? 'CHECKED' : '' }}
                                                      name="product_settings" id="product_settings" class="products product_all">
                                                     <label for="product_settings">{{ __('Product Settings') }}</label>
                                                 </p>
@@ -377,7 +377,7 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('categories') ? 'CHECKED' : '' }}
                                                     name="categories" id="categories" class="products product_others">
                                                    <label for="categories">{{ __('Categories') }}</label>
@@ -481,28 +481,28 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('purchase_settings') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('purchase_settings') ? 'CHECKED' : '' }}
                                                     name="purchase_settings" id="purchase_settings" class="purchase purchase_all">
 
                                                     <label for="purchase_settings">{{ __('Purchase Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('purchase_statements') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('purchase_statements') ? 'CHECKED' : '' }}
                                                      name="purchase_statements" id="purchase_statements" class="purchase purchase_all">
                                                     <label for="purchase_statements">{{ __('Purchase Statements') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('purchase_sale_report') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('purchase_sale_report') ? 'CHECKED' : '' }}
                                                      name="purchase_sale_report" id="purchase_sale_report" class="purchase purchase_all">
                                                     <label for="purchase_sale_report">{{ __('Purchase & Sale Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('pro_purchase_report') ? 'CHECKED' : '' }} 
-                                                     name="pro_purchase_report" id="pro_purchase_report" class="purchase purchase_all">
-                                                    <label for="pro_purchase_report">{{ __('Product Purchase Report') }}</label>
+                                                    {{ $role->hasPermissionTo('product_purchase_report') ? 'CHECKED' : '' }}
+                                                     name="product_purchase_report" id="product_purchase_report" class="purchase purchase_all">
+                                                    <label for="product_purchase_report">{{ __('Product Purchase Report') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -575,7 +575,7 @@
                                                     <label for="adjustment_add_from_location">{{ __('Add Adjustment From Business Location') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('adjustment_add_from_warehouse') ? 'CHECKED' : '' }}
                                                     name="adjustment_add_from_warehouse" id="adjustment_add_from_warehouse" class="adjustment adjustment_all">
                                                   <label for="adjustment_add_from_warehouse">{{ __('Add Adjustment From Warehouse') }}</label>
@@ -583,12 +583,12 @@
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
                                                     {{ $role->hasPermissionTo('delete_expense') ? 'CHECKED' : '' }}
-                                                    name="delete_expense" id="delete_expense" class="adjustment adjustment_all">
-                                                    <label for="delete_expense">{{ __('Delete Adjustment') }}</label>
+                                                    name="delete_expense" id="adjust_delete_expense" class="adjustment adjustment_all">
+                                                    <label for="adjust_delete_expense">{{ __('Delete Adjustment') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('stock_adjustment_report') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('stock_adjustment_report') ? 'CHECKED' : '' }}
                                                     name="stock_adjustment_report" id="stock_adjustment_report" class="adjustment adjustment_all">
                                                    <label for="stock_adjustment_report">{{ __('Stock Adjustment Report') }}</label>
                                                 </p>
@@ -624,44 +624,44 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('view_expense') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('view_expense') ? 'CHECKED' : '' }}
                                                     name="view_expense" id="view_expense" class="expenses expenses_all">
                                                     <label for="view_expense">{{ __('View Expense') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('add_expense') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('add_expense') ? 'CHECKED' : '' }}
                                                     name="add_expense" id="add_expense" class="expenses expenses_all">
                                                    <label for="add_expense">{{ __('Add Expense') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('edit_expense') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('edit_expense') ? 'CHECKED' : '' }}
                                                      name="edit_expense" id="edit_expense" class="expenses expenses_all">
                                                    <label for="edit_expense">{{ __('Edit expense') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('delete_expense') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('delete_expense') ? 'CHECKED' : '' }}
                                                      name="delete_expense" id="delete_expense" class="expenses expenses_all">
-                                                    <label for="delete_expense">{{ __('Delete Expense') }}</label>
+                                                    <label for="delete_expense"> {{ __('Delete Expense') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('expense_category') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('expense_category') ? 'CHECKED' : '' }}
                                                      name="expense_category" id="expense_category" class="expenses expenses_all">
                                                     <label for="expense_category">{{ __('Expense Category') }} &rarr; {{ __('View/Add/Edit/Delete') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('category_wise_expense') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('category_wise_expense') ? 'CHECKED' : '' }}
                                                      name="category_wise_expense" id="category_wise_expense" class="expenses expenses_all">
-                                                    <label for="">{{ __('View Category Wise Expense') }}</label>
+                                                    <label for="category_wise_expense">{{ __('View Category Wise Expense') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('expanse_report') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('expanse_report') ? 'CHECKED' : '' }}
                                                     name="expanse_report" id="expanse_report" class="expenses expenses_all">
                                                     <label for="expanse_report">{{ __('Expense Reports') }}</label>
                                                 </p>
@@ -697,82 +697,82 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('create_add_sale') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('create_add_sale') ? 'CHECKED' : '' }}
                                                     name="create_add_sale" id="create_add_sale" class="sales sale_all">
                                                     <label for="create_add_sale">{{ __('Create add sale') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('view_add_sale') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('view_add_sale') ? 'CHECKED' : '' }}
                                                      name="view_add_sale" id="view_add_sale" class="sales sale_all">
                                                     <label for="view_add_sale">{{ __('Manage Add Sale') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('edit_add_sale') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('edit_add_sale') ? 'CHECKED' : '' }}
                                                      name="edit_add_sale" id="edit_add_sale" class="sales sale_all">
                                                    <label for="edit_add_sale">{{ __('Edit Add Sale') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('delete_add_sale') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('delete_add_sale') ? 'CHECKED' : '' }}
                                                     name="delete_add_sale" id="delete_add_sale" class="sales sale_all">
                                                     <label for="delete_add_sale">{{ __('Delete Add Sale') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('add_sale_settings') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('add_sale_settings') ? 'CHECKED' : '' }}
                                                      name="add_sale_settings" id="add_sale_settings" class="sales sale_all">
                                                     <label for="add_sale_settings">{{ __('Add Sale Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('sale_draft') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('sale_draft') ? 'CHECKED' : '' }}
                                                     name="sale_draft" id="sale_draft" class="sales sale_all">
                                                    <label for="sale_draft">{{ __('List Draft') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('sale_quotation') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('sale_quotation') ? 'CHECKED' : '' }}
                                                     name="sale_quotation" id="sale_quotation" class="sales sale_all">
                                                     <label for="sale_quotation">{{ __('List Quotations') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="checkbox_input_wrap mt-4">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('sale_payment') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('sale_payment') ? 'CHECKED' : '' }}
                                                     name="sale_payment" id="sale_payment" class="sales sale_all">
                                                     <label for="sale_payment">{{ __('View/Add/Edit Payment') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('edit_price_sale_screen') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('edit_price_sale_screen') ? 'CHECKED' : '' }}
                                                     name="edit_price_sale_screen" id="edit_price_sale_screen" class="sales sale_all">
                                                     <label for="edit_price_sale_screen">{{ __('Edit Product Price from Sales Screen') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('edit_discount_sale_screen') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('edit_discount_sale_screen') ? 'CHECKED' : '' }}
                                                     name="edit_discount_sale_screen" id="edit_discount_sale_screen" class="sales sale_all">
                                                     <label for="edit_discount_sale_screen">{{ __('Edit Product Discount in Sale Scr') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('shipment_access') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('shipment_access') ? 'CHECKED' : '' }}
                                                      name="shipment_access" id="shipment_access" class="sales sale_all">
                                                    <label for="shipment_access">{{ __('Access Shipments') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('view_product_cost_is_sale_screed') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('view_product_cost_is_sale_screed') ? 'CHECKED' : '' }}
                                                      name="view_product_cost_is_sale_screed" id="view_product_cost_is_sale_screed" class="sales sale_all">
                                                     <label for="view_product_cost_is_sale_screed">{{ __('View Product Cost In Sale Screen') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('view_own_sale') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('view_own_sale') ? 'CHECKED' : '' }}
                                                      name="view_own_sale" id="view_own_sale" class="sales sale_all">
                                                     <label for="view_own_sale">{{ __('View only own Add/POS Sale') }}</label>
                                                 </p>
@@ -786,7 +786,7 @@
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="checkbox_input_wrap mt-4">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('discounts') ? 'CHECKED' : '' }}
                                                     name="discounts" id="discounts" class="sales sale_all">
                                                     <label for="discounts">{{ __('Manage Offers') }}</label>
@@ -804,22 +804,22 @@
                                                     <label for="sale_return_statements">{{ __('Sale Return Statements') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('product_sale_report') ? 'CHECKED' : '' }}
                                                     name="product_sale_report" id="product_sale_report" class="sales sale_all">
                                                     <label for="product_sale_report">{{ __('Sale Product Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('sale_payment_report') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('sale_payment_report') ? 'CHECKED' : '' }}
                                                     name="sale_payment_report" id="sale_payment_report" class="sales sale_all">
                                                    <label for="sale_payment_report"> {{ __('Receive Payment Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('c_register_report') ? 'CHECKED' : '' }}
-                                                     name="c_register_report" id="c_register_report" class="sales sale_all">
-                                                    <label for="c_register_report">{{ __('Cash Register Reports') }}</label>
+                                                    {{ $role->hasPermissionTo('cash_register_report') ? 'CHECKED' : '' }}
+                                                     name="cash_register_report" id="cash_register_report" class="sales sale_all">
+                                                    <label for="cash_register_report">{{ __('Cash Register Reports') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
@@ -861,7 +861,7 @@
                                                     <label for="pos_delete">{{ __('Delete POS Sale') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('pos_sale_settings') ? 'CHECKED' : '' }}
                                                     name="pos_sale_settings" id="pos_sale_settings" class="sales pos_sale_all">
                                                     <label for="pos_sale_settings">{{ __('POS Sale Settings') }}</label>
@@ -922,7 +922,7 @@
                                                     <label for="register_close">{{ __('Close Cash Register') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('another_register_close') ? 'CHECKED' : '' }}
                                                     name="another_register_close" id="another_register_close" class="cash_register cash_register_all">
                                                     <label for="another_register_close">{{ __('Close Another Cash Register') }}</label>
@@ -959,7 +959,7 @@
                                                      </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('tax_report') ? 'CHECKED' : '' }}
                                                     name="tax_report" id="tax_report" class="reports report_all">
                                                    <label for="tax_report">{{ __('Tax Report') }}</label>
@@ -1002,56 +1002,56 @@
 
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('tax') ? 'CHECKED' : '' }}
                                                     name="tax" id="tax" class="setup setup_all">
                                                     <label for="tax">{{ __('Tax') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('branch') ? 'CHECKED' : '' }}
                                                     name="branch" id="branch" class="setup setup_all">
                                                    <label for="branch"> {{ __('Business Location') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
+                                                    <input type="checkbox"
                                                     {{ $role->hasPermissionTo('warehouse') ? 'CHECKED' : '' }}
                                                     name="warehouse" id="warehouse" class="setup setup_all">
                                                    <label for="warehouse">{{ __('Warehouse') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('g_settings') ? 'CHECKED' : '' }}
-                                                    name="g_settings" id="g_settings" class="setup setup_all">
-                                                    <label for="g_settings">{{ __('General Settings') }}</label>
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('general_settings') ? 'CHECKED' : '' }}
+                                                    name="general_settings" id="general_settings" class="setup setup_all">
+                                                    <label for="general_settings">{{ __('General Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('p_settings') ? 'CHECKED' : '' }} 
-                                                    name="p_settings" id="p_settings" class="setup setup_all">
-                                                   <label for="p_settings">{{ __('Payment Settings') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('inv_sc') ? 'CHECKED' : '' }} 
-                                                    name="inv_sc" id="inv_sc" class="setup setup_all">
-                                                    <label for="inv_sc">{{ __('Invoice Schema') }}</label>
+                                                    {{ $role->hasPermissionTo('payment_settings') ? 'CHECKED' : '' }}
+                                                    name="payment_settings" id="payment_settings" class="setup setup_all">
+                                                   <label for="payment_settings">{{ __('Payment Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('inv_lay') ? 'CHECKED' : '' }} 
-                                                    name="inv_lay" id="inv_lay" class="setup setup_all">
-                                                   <label for="inv_lay"> {{ __('Invoice Layout') }}</label>
+                                                    {{ $role->hasPermissionTo('invoice _schema') ? 'CHECKED' : '' }}
+                                                    name="invoice _schema" id="invoice _schema" class="setup setup_all">
+                                                    <label for="invoice _schema">{{ __('Invoice Schema') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('barcode_settings') ? 'CHECKED' : '' }} 
+                                                    {{ $role->hasPermissionTo('invoice_layout') ? 'CHECKED' : '' }}
+                                                    name="invoice_layout" id="invoice_layout" class="setup setup_all">
+                                                   <label for="invoice_layout"> {{ __('Invoice Layout') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('barcode_settings') ? 'CHECKED' : '' }}
                                                      name="barcode_settings" id="barcode_settings" class="setup setup_all">
                                                     <label for="barcode_settings">{{ __('Barcode Sticker Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('cash_counters') ? 'CHECKED' : '' }} 
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('cash_counters') ? 'CHECKED' : '' }}
                                                     name="cash_counters" id="cash_counters" class="setup setup_all">
                                                     <label for="cash_counters">{{ __('Cash Counter') }}</label>
                                                 </p>
@@ -1087,10 +1087,10 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('dash_data') ? 'CHECKED' : '' }} 
-                                                    name="dash_data" id="dash_data" class="dashboard dashboard_all">
-                                                   <label for="dash_data">{{ __('View Dashboard Data') }}</label>
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('view_dashboard_data') ? 'CHECKED' : '' }}
+                                                    name="view_dashboard_data" id="view_dashboard_data" class="dashboard dashboard_all">
+                                                   <label for="view_dashboard_data">{{ __('View Dashboard Data') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -1124,10 +1124,10 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" 
-                                                    {{ $role->hasPermissionTo('ac_access') ? 'CHECKED' : '' }}
-                                                    name="ac_access" id="ac_access" class="accounting accounting_all">
-                                                    <label for="ac_access">{{ __('Access Accounting') }}</label>
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('accounting_access') ? 'CHECKED' : '' }}
+                                                    name="accounting_access" id="accounting_access" class="accounting accounting_all">
+                                                    <label for="accounting_access">{{ __('Access Accounting') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -1162,7 +1162,7 @@
                                                         </label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
+                                                        <input type="checkbox"
                                                         {{ $role->hasPermissionTo('hrm_dashboard') ? 'CHECKED' : '' }}
                                                         name="hrm_dashboard" id="hrm_dashboard" class="hrms hrm_all">
                                                         <label for="hrm_dashboard">{{ __('HRM Dashboard') }}</label>
@@ -1207,7 +1207,7 @@
                                                         </label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
+                                                        <input type="checkbox"
                                                         {{ $role->hasPermissionTo('leave_type') ? 'CHECKED' : '' }}
                                                         name="leave_type" id="leave_type" class="hrms hrm_others_all">
                                                        <label for="leave_type"> {{ __('Leave Type') }}</label>
@@ -1225,7 +1225,7 @@
                                                         <label for="shift">{{ __('Shift') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
+                                                        <input type="checkbox"
                                                         {{ $role->hasPermissionTo('view_allowance_and_deduction') ? 'CHECKED' : '' }}
                                                         name="view_allowance_and_deduction" id="view_allowance_and_deduction" class="hrms hrm_others_all">
                                                         <label for="view_allowance_and_deduction">{{ __('Allowance and deduction') }}</label>
@@ -1275,33 +1275,35 @@
                                             <div class="row">
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
+                                                        <label>
                                                         <input type="checkbox" class="manage_tasks" id="select_all"
                                                             data-target="manage_task_all" autocomplete="off">
                                                         <strong>{{ __('Manage Task') }}</strong>
+                                                        </label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('assign_todo') ? 'CHECKED' : '' }} 
-                                                        name="assign_todo" class="manage_tasks manage_task_all">
-                                                        {{ __('Todo') }}
+                                                        {{ $role->hasPermissionTo('assign_todo') ? 'CHECKED' : '' }}
+                                                        name="assign_todo" id="assign_todo" class="manage_tasks manage_task_all">
+                                                       <label for="assign_todo"> {{ __('Todo') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('work_space') ? 'CHECKED' : '' }} 
-                                                         name="work_space" class="manage_tasks manage_task_all">
-                                                        {{ __('Work Spaces') }}
+                                                        {{ $role->hasPermissionTo('work_space') ? 'CHECKED' : '' }}
+                                                         name="work_space" id="work_space" class="manage_tasks manage_task_all">
+                                                        <label for="work_space">{{ __('Work Spaces') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('memo') ? 'CHECKED' : '' }} 
-                                                         name="memo" class="manage_tasks manage_task_all">
-                                                        {{ __('Memo') }}
+                                                        {{ $role->hasPermissionTo('memo') ? 'CHECKED' : '' }}
+                                                         name="memo" id="memo" class="manage_tasks manage_task_all">
+                                                       <label for="memo"> {{ __('Memo') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('msg') ? 'CHECKED' : '' }} 
-                                                         name="msg" class="manage_tasks manage_task_all">
-                                                        {{ __('Message') }}
+                                                        {{ $role->hasPermissionTo('msg') ? 'CHECKED' : '' }}
+                                                         name="msg" id="msg" class="manage_tasks manage_task_all">
+                                                        <label for="msg">{{ __('Message') }}</label>
                                                     </p>
                                                 </div>
                                             </div>
@@ -1330,69 +1332,71 @@
                                             <div class="row">
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
+                                                        <label>
                                                         <input type="checkbox" class="manufacturings" id="select_all"
                                                             data-target="manufacturing_all" autocomplete="off">
                                                         <strong>{{ __('Manufacturing') }}</strong>
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
-                                                        {{ $role->hasPermissionTo('process_view') ? 'CHECKED' : '' }} 
-                                                        name="process_view" class="manufacturings manufacturing_all">
-                                                        {{ __('View process') }}
+                                                        </label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('process_add') ? 'CHECKED' : '' }} 
-                                                         name="process_add" class="manufacturings manufacturing_all">
-                                                        {{ __('Add Process') }}
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
-                                                        {{ $role->hasPermissionTo('process_edit') ? 'CHECKED' : '' }} 
-                                                        name="process_edit" class="manufacturings manufacturing_all">
-                                                        {{ __('Edit Process') }}
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
-                                                        {{ $role->hasPermissionTo('process_delete') ? 'CHECKED' : '' }} 
-                                                        name="process_delete" class="manufacturings manufacturing_all">
-                                                        {{ __('Delete Process') }}
+                                                        {{ $role->hasPermissionTo('process_view') ? 'CHECKED' : '' }}
+                                                        name="process_view" id="process_view" class="manufacturings manufacturing_all">
+                                                        <label for="process_view">{{ __('View process') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('production_view') ? 'CHECKED' : '' }} 
-                                                         name="production_view" class="manufacturings manufacturing_all">
-                                                        {{ __('View Production') }}
-                                                    </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
-                                                        {{ $role->hasPermissionTo('production_add') ? 'CHECKED' : '' }} 
-                                                        name="production_add" class="manufacturings manufacturing_all">
-                                                        {{ __('Add Production') }}
+                                                        {{ $role->hasPermissionTo('process_add') ? 'CHECKED' : '' }}
+                                                         name="process_add" id="process_add" class="manufacturings manufacturing_all">
+                                                        <label for="process_add">{{ __('Add Process') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('production_edit') ? 'CHECKED' : '' }}
-                                                         name="production_edit" class="manufacturings manufacturing_all">
-                                                        {{ __('Edit Production') }}
+                                                        {{ $role->hasPermissionTo('process_edit') ? 'CHECKED' : '' }}
+                                                        name="process_edit" id="process_edit" class="manufacturings manufacturing_all">
+                                                        <label for="process_edit">{{ __('Edit Process') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" 
+                                                        <input type="checkbox"
+                                                        {{ $role->hasPermissionTo('process_delete') ? 'CHECKED' :'' }}
+                                                        name="process_delete" id="process_delete" class="manufacturings manufacturing_all">
+                                                      <label for="process_delete">{{ __('Delete Process') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox"
+                                                        {{ $role->hasPermissionTo('production_view') ? 'CHECKED' : '' }}
+                                                         name="production_view" id="production_view" class="manufacturings manufacturing_all">
+                                                       <label for="production_view">{{ __('View Production') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox"
+                                                        {{ $role->hasPermissionTo('production_add') ? 'CHECKED' :'' }}
+                                                        name="production_add" id="production_add" class="manufacturings manufacturing_all">
+                                                        <label for="production_add">{{ __('Add Production') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox"
+                                                        {{ $role->hasPermissionTo('production_edit') ? 'CHECKED':'' }}
+                                                         name="production_edit" id="production_edit" class="manufacturings manufacturing_all">
+                                                        <label for="production_edit">{{ __('Edit Production') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox"
                                                         {{ $role->hasPermissionTo('production_delete') ? 'CHECKED' : '' }}
-                                                        name="production_delete" class="manufacturings manufacturing_all">
-                                                        {{ __('Delete Production') }}
+                                                        name="production_delete" id="production_delete" class="manufacturings manufacturing_all">
+                                                        <label for="production_delete">{{ __('Delete Production') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('manuf_settings') ? 'CHECKED' : '' }}
-                                                         name="manuf_settings" class="manufacturings manufacturing_all">
-                                                        {{ __('Manufacturing Settings') }}
+                                                        {{ $role->hasPermissionTo('manufacturing_settings') ? 'CHECKED' : '' }}
+                                                         name="manufacturing_settings" id="manufacturing_settings" class="manufacturings manufacturing_all">
+                                                        <label for="manufacturing_settings">{{ __('Manufacturing Settings') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox"
-                                                        {{ $role->hasPermissionTo('manuf_report') ? 'CHECKED' : '' }} 
-                                                        name="manuf_report" class="manufacturings manufacturing_all">
-                                                        {{ __('Manufacturing Report') }}
+                                                        {{ $role->hasPermissionTo('manufacturing_report') ? 'CHECKED' : '' }}
+                                                        name="manufacturing_report" id="manufacturing_report" class="manufacturings manufacturing_all">
+                                                       <label for="manufacturing_report">{{ __('Manufacturing Report') }}</label>
                                                     </p>
                                                 </div>
                                             </div>
@@ -1420,21 +1424,23 @@
                                         <div class="row">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
+                                                    <label>
                                                     <input type="checkbox" class="others" id="select_all"
                                                         data-target="other_all" autocomplete="off">
                                                     <strong>{{ __('Others') }}</strong>
+                                                    </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('today_summery') ? 'CHECKED' : '' }} 
-                                                     name="today_summery" class="others other_all">
-                                                    {{ __('Today Summery') }}
+                                                    {{ $role->hasPermissionTo('today_summery') ? 'CHECKED' : '' }}
+                                                     name="today_summery" id="today_summery" class="others other_all">
+                                                    <label for="today_summery">{{ __('Today Summery') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('communication') ? 'CHECKED' : '' }} 
-                                                     name="communication" class="others other_all">
-                                                    {{ __('Communication') }}
+                                                    {{ $role->hasPermissionTo('communication') ? 'CHECKED' : '' }}
+                                                     name="communication" id="communication" class="others other_all">
+                                                    <label for="communication">{{ __('Communication') }}</label>
                                                 </p>
                                             </div>
                                         </div>

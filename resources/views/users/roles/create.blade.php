@@ -462,9 +462,9 @@
                                                     <label for="purchase_sale_report">{{ __('Purchase & Sale Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="pro_purchase_report" id="pro_purchase_report"
+                                                    <input type="checkbox" name="product_purchase_report" id="product_purchase_report"
                                                         class="purchase purchase_all">
-                                                    <label for="pro_purchase_report">{{ __('Product Purchase Report') }}</label>
+                                                    <label for="product_purchase_report">{{ __('Product Purchase Report') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -731,9 +731,9 @@
                                                     <label for="sale_payment_report">{{ __('Receive Payment Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="c_register_report" id="c_register_report"
+                                                    <input type="checkbox" name="cash_register_report" id="cash_register_report"
                                                         class="sales sale_all">
-                                                   <label for="c_register_report">{{ __('Cash Register Reports') }}</label>
+                                                   <label for="cash_register_report">{{ __('Cash Register Reports') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="sale_representative_report" id="sale_representative_report"
@@ -910,20 +910,20 @@
                                                     <label for="warehouse">{{ __('Warehouse') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="g_settings" id="g_settings" class="setup setup_all">
-                                                    <label for="g_settings">{{ __('General Settings') }}</label>
+                                                    <input type="checkbox" name="general_settings" id="general_settings" class="setup setup_all">
+                                                    <label for="general_settings">{{ __('General Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="p_settings" id="p_settings" class="setup setup_all">
-                                                    <label for="p_settings">{{ __('Payment Settings') }}</label>
+                                                    <input type="checkbox" name="payment_settings" id="payment_settings" class="setup setup_all">
+                                                    <label for="payment_settings">{{ __('Payment Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="inv_sc" id="inv_sc" class="setup setup_all">
-                                                    <label for="inv_sc">{{ __('Invoice Schema') }}</label>
+                                                    <input type="checkbox" name="invoice _schema" id="invoice _schema" class="setup setup_all">
+                                                    <label for="invoice _schema">{{ __('Invoice Schema') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="inv_lay" id="inv_lay" class="setup setup_all">
-                                                    <label for="inv_lay">{{ __('Invoice Layout') }}</label>
+                                                    <input type="checkbox" name="invoice_layout" id="invoice_layout" class="setup setup_all">
+                                                    <label for="invoice_layout">{{ __('Invoice Layout') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="barcode_settings" id="barcode_settings"
@@ -966,9 +966,9 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="dash_data" id="dash_data"
+                                                    <input type="checkbox" name="view_dashboard_data" id="view_dashboard_data"
                                                         class="dashboard dashboard_all">
-                                                   <label for="dash_data">{{ __('View Dashboard Data') }}</label>
+                                                   <label for="view_dashboard_data">{{ __('View Dashboard Data') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -1002,9 +1002,9 @@
                                                    </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="ac_access" id="ac_access"
+                                                    <input type="checkbox" name="accounting_access" id="accounting_access"
                                                         class="accounting accounting_all">
-                                                    <label for="ac_access">{{ __('Access Accounting') }}</label>
+                                                    <label for="accounting_access">{{ __('Access Accounting') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -1236,14 +1236,14 @@
                                                         <label for="production_delete">{{ __('Delete Production') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="manuf_settings" id="manuf_settings"
+                                                        <input type="checkbox" name="manufacturing_settings" id="manufacturing_settings"
                                                             class="manufacturings manufacturing_all">
-                                                       <label for="manuf_settings">{{ __('Manufacturing Settings') }}</label>
+                                                       <label for="manufacturing_settings">{{ __('Manufacturing Settings') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="manuf_report" id="manuf_report"
+                                                        <input type="checkbox" name="manufacturing_report" id="manufacturing_report"
                                                             class="manufacturings manufacturing_all">
-                                                        <label for="manuf_report">{{ __('Manufacturing Report') }}</label>
+                                                        <label for="manufacturing_report">{{ __('Manufacturing Report') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

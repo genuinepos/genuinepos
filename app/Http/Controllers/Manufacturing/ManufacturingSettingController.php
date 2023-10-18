@@ -16,7 +16,7 @@ class ManufacturingSettingController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('manuf_settings')) {
+        if (!auth()->user()->can('manufacturing_settings')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -29,7 +29,7 @@ class ManufacturingSettingController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        if (!auth()->user()->can('manuf_settings')) {
+        if (!auth()->user()->can('manufacturing_settings')) {
 
             return response()->json('Access Forbidden');
         }

@@ -34,7 +34,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -54,7 +54,7 @@ class AccountController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -69,7 +69,7 @@ class AccountController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -165,7 +165,7 @@ class AccountController extends Controller
 
     public function update(Request $request, $accountId, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -282,7 +282,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }

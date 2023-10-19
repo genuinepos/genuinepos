@@ -4,6 +4,6 @@ namespace App\Enums;
 
 enum BooleanType: int
 {
-    case True = 0;
-    case False = 1;
+    case False = 0;
+    case True = 1;
 }

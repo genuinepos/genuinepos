@@ -306,24 +306,22 @@
             </div>
 
             <div class="col-8 text-end">
-                <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>
-                        @if ($purchase?->branch)
-                            @if ($purchase?->branch?->parent_branch_id)
+                <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    @if ($purchase?->branch)
+                        @if ($purchase?->branch?->parent_branch_id)
 
-                                {{ $purchase?->branch?->parentBranch?->name }}
-                            @else
-
-                                {{ $purchase?->branch?->name }}
-                            @endif
+                            {{ $purchase?->branch?->parentBranch?->name }}
                         @else
 
-                            {{ $generalSettings['business__shop_name'] }}
+                            {{ $purchase?->branch?->name }}
                         @endif
-                    </strong>
+                    @else
+
+                        {{ $generalSettings['business__shop_name'] }}
+                    @endif
                 </p>
 
-                <p>
+                <p style="font-size:12px!important;">
                     @if ($purchase?->branch)
 
                         {{ $purchase->branch->city . ', ' . $purchase->branch->state. ', ' . $purchase->branch->zip_code. ', ' . $purchase->branch->country }}
@@ -333,7 +331,7 @@
                     @endif
                 </p>
 
-                <p>
+                <p style="font-size:12px!important;">
                     @if ($purchase?->branch)
 
                         <strong>@lang('menu.email') : </strong> {{ $purchase?->branch?->email }},
@@ -349,7 +347,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h5 style="text-transform: uppercase;"><strong>{{ __("Purchase Invoice") }}</strong></h5>
+                <h5 style="text-transform: uppercase;" class="fw-bold">{{ __("Purchase Invoice") }}</h5>
             </div>
         </div>
 
@@ -529,7 +527,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($purchase->invoice_id, $generator::TYPE_CODE_128)) }}">
-                <p><b>{{ $purchase->invoice_id }}</b></p>
+                <p>{{ $purchase->invoice_id }}</p>
             </div>
         </div>
 

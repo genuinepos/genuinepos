@@ -15,26 +15,34 @@
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             @if (auth()->user()->is_delonging_an_area == 0)
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form_element rounded mt-0 mb-3">
+                        <div class="form_element rounded mt-0 mb-1">
                             <div class="element-body">
                                 <form id="filter_form" action="" method="get" class="px-2">
                                     <div class="form-group row">
-                                        <div class="col-md-3">
-                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                            <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                @foreach ($branches as $branch)
-                                                    <option value="{{ $branch->id }}">
-                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                            <div class="col-md-4">
+                                                <label><strong>{{ __("Created From") }}</strong></label>
+                                                <select name="branch_id"
+                                                    class="form-control select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            @php
+                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $branchCode = '-(' . $branch->branch_code.')';
+                                                            @endphp
+                                                            {{  $branchName.$areaName.$branchCode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
 
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
@@ -263,14 +271,14 @@
                     data: request,
                     success: function(data) {
 
-                        if ($.isEmptyObject(data.errorMsg)) {
+                        if (!$.isEmptyObject(data.errorMsg)) {
 
-                            toastr.error(data);
-                            warehouseTable.ajax.reload();
-                        } else {
-
-                            toastr.error(data.errorMsg, 'Error');
+                            toastr.error(data.errorMsg);
+                            return;
                         }
+
+                        toastr.error(data);
+                        warehouseTable.ajax.reload();
                     }
                 });
             });

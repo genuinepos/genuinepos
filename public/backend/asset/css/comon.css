@@ -277,7 +277,7 @@ canvas#chart {
 /* =============================================bootstrap model================= */
 
 .modal-header {
-    padding: 4px 12px;
+    padding: 1px 12px;
     background: -webkit-linear-gradient(
         top,
         #19a6d3 0%,

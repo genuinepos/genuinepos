@@ -2,7 +2,9 @@
 
 use App\Models\Account;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountGroup;
+use App\Models\Products\ProductStock;
 use Illuminate\Support\Facades\Route;
 
 Route::get('my-test', function () {
@@ -36,12 +38,35 @@ Route::get('my-test', function () {
     //     ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
     //     ->get();
 
-    $my_array = extract(array("variable" => "Cat", "b" => "Dog", "c" => "Horse"));
+    $productLedger = DB::table('product_ledgers')
+        ->where('product_ledgers.product_id', 29)
+        ->where('product_ledgers.variant_id', null)
+        ->where('product_ledgers.branch_id', null)
+        ->where('product_ledgers.warehouse_id', null)
+        ->select(
+            DB::raw("SUM(product_ledgers.in) as stock_in"),
+            DB::raw("SUM(product_ledgers.out) as stock_out"),
+            // DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
+            DB::raw("SUM(product_ledgers.subtotal) as total_purchased_cost"),
+        )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
-    return $variable;
-    // extract($my_array, EXTR_PREFIX_SAME, "dup");
+    $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
+
+    $productStock = ProductStock::where('product_id', 29)
+        ->where('variant_id', null)
+        ->where('branch_id', null)
+        ->where('branch_id', null)
+        ->first();
+
+    $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
+    $stockValue = $avgUnitCost * $currentStock;
+
+    $productStock->stock = $currentStock;
+    $productStock->stock_value = $stockValue;
+    $productStock->save();
+
+    return $productStock;
 });
 
 Route::get('t-id', function () {
-
 });

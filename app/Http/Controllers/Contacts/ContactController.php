@@ -166,7 +166,7 @@ class ContactController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('supplier_delete')) {
+        if (!auth()->user()->can('supplier_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

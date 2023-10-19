@@ -37,6 +37,7 @@ Route::middleware([
     Route::middleware('auth')->group(base_path('routes/purchases.php'));
     Route::middleware('auth')->group(base_path('routes/general_searches.php'));
     Route::middleware('auth')->group(base_path('routes/stock_adjustments.php'));
+    Route::middleware('auth')->group(base_path('routes/transfer_stocks.php'));
 });
 
 /*

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sales\Reports;
 
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,7 @@ class SalesOrderReportController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
@@ -198,6 +199,20 @@ class SalesOrderReportController extends Controller
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sales.order_date_ts', $date_range); // Final
+        }
+
+        if ($request->payment_status) {
+
+            if ($request->payment_status == PaymentStatus::Paid->value) {
+
+                $query->where('sales.due', '=', 0);
+            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+
+                $query->where('sales.paid', '>', 0)->where('sales.due', '>', 0);
+            } else if ($request->payment_status == PaymentStatus::Due->value) {
+
+                $query->where('sales.paid', '=', 0);
+            }
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

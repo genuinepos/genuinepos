@@ -48,7 +48,7 @@ class SalesOrderController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $customerAccountId = null)
     {
         if (!auth()->user()->can('view_add_sale')) {
 
@@ -57,7 +57,7 @@ class SalesOrderController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->salesOrderService->salesOrderListTable($request);
+            return $this->salesOrderService->salesOrderListTable(request: $request, customerAccountId: $customerAccountId);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

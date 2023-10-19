@@ -17,7 +17,7 @@ use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
-    Route::get('/', 'index')->name('purchases.index');
+    Route::get('index/{supplierAccountId?}', 'index')->name('purchases.index');
     Route::get('show/{id}', 'show')->name('purchases.show');
     Route::get('create', 'create')->name('purchases.create');
     Route::post('store', 'store')->name('purchases.store');
@@ -28,6 +28,17 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
         Route::get('/', 'index')->name('purchases.products.index');
         Route::get('for/purchase/return/{purchase_id}', 'purchaseProductsForPurchaseReturn')->name('purchases.products.for.purchase.return');
+    });
+
+    Route::controller(PurchaseOrderController::class)->prefix('orders')->group(function () {
+        Route::get('index/{supplierAccountId?}', 'index')->name('purchase.orders.index');
+        Route::get('create', 'create')->name('purchase.orders.create');
+        Route::post('store', 'store')->name('purchase.orders.store');
+        Route::get('show/{id}', 'show')->name('purchase.orders.show');
+        Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
+        Route::post('update/{id}', 'update')->name('purchase.orders.update');
+        Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
+        Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
     });
 
     Route::controller(PurchaseReturnController::class)->prefix('returns')->group(function () {
@@ -45,17 +56,6 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
         Route::get('/', 'index')->name('purchase.settings.index');
         Route::post('update', 'update')->name('purchase.settings.update');
-    });
-
-    Route::controller(PurchaseOrderController::class)->prefix('orders')->group(function () {
-        Route::get('/', 'index')->name('purchase.orders.index');
-        Route::get('create', 'create')->name('purchase.orders.create');
-        Route::post('store', 'store')->name('purchase.orders.store');
-        Route::get('show/{id}', 'show')->name('purchase.orders.show');
-        Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
-        Route::post('update/{id}', 'update')->name('purchase.orders.update');
-        Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
-        Route::get('print/supplier/copy/{id}', 'printSupplierCopy')->name('purchases.order.print.supplier.copy');
     });
 
     Route::group(['prefix' => 'reports'], function () {

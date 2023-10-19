@@ -202,7 +202,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This product is not available in this Shop/Business.']);
+            return response()->json(['errorMsg' => 'Product stock is not available in this Shop/Business.']);
         }
     }
 

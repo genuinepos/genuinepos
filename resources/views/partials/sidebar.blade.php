@@ -128,7 +128,7 @@
 
                 @if ($generalSettings['modules__transfer_stock'] == '1')
 
-                    <li data-menu="transfer" class="{{ request()->is('transfer/stocks*') ? 'menu_active' : '' }}">
+                    <li data-menu="transfer" class="{{ request()->is('transfer-stocks*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
                             <p class="title">@lang('menu.transfer')</p>
@@ -1408,140 +1408,115 @@
                         </div>
 
                         <div class="container-fluid">
-                            {{-- <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
-                                    <p>{!! __('menu.transfer_stock_heading_1') !!}</p>
-                                </div>
-                            </div>
-                            <hr class="p-0 m-0 mb-3"> --}}
-
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{!! __('menu.transfer_stock_heading_1') !!}</p>
+                            {{-- <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __("Transfer Stock") }} <strong>{{ __("Warehouse To Shop/Business") }}</strong></p>
                                 <div class="sub-menu-row">
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stock.to.branch.create') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('transfer.stock.warehouse.to.branch.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-exchange-alt"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.add_transfer')<small class="ml-1"><b>(@lang('menu.to_branch'))</small></b></p>
+                                            <p class="switch_text">{{ __("Add Transfer Stock") }} <small style="font-size:9px;"><b>({{ __("Warehouse To Shop/Business") }})</b></small></p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stock.to.branch.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('transfer.stock.warehouse.to.branch.index', \App\Enums\TransferStockType::WarehouseToBranch->value) }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-list-ul"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.transfer_list')</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stocks.to.warehouse.receive.stock.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-check-double"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.receive_stocks')<small class="ml-1"><b>(From B.Location)</small></b></p>
+                                            <p class="switch_text">{{ __("Transfer List") }}</p>
                                         </a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            {{-- <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
-                                    <p>{!! __('menu.transfer_stock_heading_2') !!}</p>
-                                </div>
-                            </div>
-                            <hr class="p-0 m-0 mb-3"> --}}
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{!! __('menu.transfer_stock_heading_2') !!}</p>
+                            {{-- <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __("Transfer Stock") }} <strong>{{ __("Shop/Business To Warehouse") }}</strong></p>
                                 <div class="sub-menu-row">
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stock.to.warehouse.create') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('transfer.stock.branch.to.warehouse.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-exchange-alt"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.add_transfer')<small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
+                                            <p class="switch_text">{{ __("Add Transfer Stock") }} <small style="font-size:9px;"> <b>({{ __("Shop/Business To Warehouse") }})</b></small></p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stock.to.warehouse.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('transfer.stock.branch.to.warehouse.index', \App\Enums\TransferStockType::BranchToWarehouse->value) }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-list-ul"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.transfer_list')<small class="ml-1">(@lang('menu.to_warehouse'))</small></p>
+                                            <p class="switch_text">{{ __("Transfer Stock List") }}</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="sub-menu-group">
+                                {{-- <p class="sub-menu-group-title">{{ __("Transfer Stock") }} <strong>{{ __("Own Shop/Business To Another Shop/Business") }}</strong></p> --}}
+                                <p class="sub-menu-group-title">{{ __("Transfer Stock") }}</p>
+                                <div class="sub-menu-row">
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                                </div>
+                                            </div>
+                                            {{-- <p class="switch_text">{{ __("Add Transfer Stock") }} <br><small style="font-size:8px;"><b>({{ __("Own Shop/Business To Another Shop/Business") }})</b></small></p> --}}
+                                            <p class="switch_text">{{ __("Add Transfer Stock") }}</p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stocks.to.branch.receive.stock.index') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('transfer.stock.branch.to.branch.index', \App\Enums\TransferStockType::BranchToBranch->value) }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-check-double"></i></span>
+                                                    <span><i class="fas fa-list-ul"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.receive_stocks')</p>
+                                            <p class="switch_text">{{ __("Transfer Stock List") }}</p>
                                         </a>
                                     </div>
                                 </div>
                             </div>
 
-                            @if ($generalSettings['addons__branches'] == 1)
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-10 p-1 ms-4 text-center d-flex justify-content-top align-items-start flex-column">
-                                        <p>{!! __('menu.transfer_stock_heading_3') !!}</p>
+                            <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __("Receive Transferred Stocks") }} <strong></strong></p>
+                                <div class="sub-menu-row">
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('receive.stock.from.warehouse.index') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Receive From Warehouse") }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="{{ route('receive.stock.from.branch.index') }}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-list-ul"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Receive From Shop/Business") }}</p>
+                                        </a>
                                     </div>
                                 </div>
-                                <hr class="p-0 m-0 mb-3"> --}}
-                                <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">{!! __('menu.transfer_stock_heading_3') !!}</p>
-                                    <div class="sub-menu-row">
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('transfer.stock.branch.to.branch.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-exchange-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.add_transfer')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('transfer.stock.branch.to.branch.transfer.list') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list-ul"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.transfer_list')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('transfer.stock.branch.to.branch.receivable.list') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-check-double"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.receive_stocks')</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>

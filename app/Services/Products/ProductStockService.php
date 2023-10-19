@@ -53,6 +53,7 @@ class ProductStockService
             $productLedger = DB::table('product_ledgers')
                 ->where('product_ledgers.product_id', $productId)
                 ->where('product_ledgers.variant_id', $variantId)
+                ->where('product_ledgers.branch_id', $branchId)
                 ->where('product_ledgers.warehouse_id', null)
                 ->select(
                     DB::raw("SUM(product_ledgers.in) as stock_in"),
@@ -67,7 +68,9 @@ class ProductStockService
 
             $productStock = ProductStock::where('product_id', $productId)
                 ->where('variant_id', $variantId)
-                ->where('branch_id', $branchId)->first();
+                ->where('branch_id', $branchId)
+                ->where('warehouse_id', null)
+                ->first();
 
             $productStock->stock = $currentStock;
             $productStock->stock_value = $stockValue;

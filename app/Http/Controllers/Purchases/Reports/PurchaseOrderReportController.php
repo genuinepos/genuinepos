@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Purchases\Reports;
 
 use Carbon\Carbon;
+use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
 use App\Enums\PurchaseStatus;
 use Illuminate\Support\Facades\DB;
@@ -35,34 +36,7 @@ class PurchaseOrderReportController extends Controller
                 ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
                 ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-            if (!empty($request->branch_id)) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('purchases.branch_id', null);
-                } else {
-
-                    $query->where('purchases.branch_id', $request->branch_id);
-                }
-            }
-
-            if ($request->supplier_account_id) {
-
-                $query->where('purchases.supplier_account_id', $request->supplier_account_id);
-            }
-
-            if ($request->from_date) {
-
-                $from_date = date('Y-m-d', strtotime($request->from_date));
-                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-                $query->whereBetween('purchases.report_date', $date_range); // Final
-            }
-
-            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-                $query->where('purchases.branch_id', auth()->user()->branch_id);
-            }
+            $this->filter(request: $request, query: $query);
 
             $orders = $query->select(
                 'purchases.id',
@@ -186,34 +160,7 @@ class PurchaseOrderReportController extends Controller
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (!empty($request->branch_id)) {
-
-            if ($request->branch_id == 'NULL') {
-
-                $query->where('purchases.branch_id', null);
-            } else {
-
-                $query->where('purchases.branch_id', $request->branch_id);
-            }
-        }
-
-        if ($request->supplier_account_id) {
-
-            $query->where('purchases.supplier_account_id', $request->supplier_account_id);
-        }
-
-        if ($request->from_date) {
-
-            $from_date = date('Y-m-d', strtotime($request->from_date));
-            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $query->whereBetween('purchases.report_date', $date_range); // Final
-        }
-
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-            $query->where('purchases.branch_id', auth()->user()->branch_id);
-        }
+        $this->filter(request: $request, query: $query);
 
         $orders = $query->select(
             'purchases.id',
@@ -247,5 +194,53 @@ class PurchaseOrderReportController extends Controller
         )->where('purchases.purchase_status', PurchaseStatus::PurchaseOrder->value)->orderBy('purchases.report_date', 'desc')->get();
 
         return view('purchase.reports.purchase_order_report.ajax_view.print', compact('orders', 'ownOrParentBranch', 'filteredBranchName', 'filteredSupplierName', 'fromDate', 'toDate'));
+    }
+
+    function filter(object $request, object $query): object
+    {
+        if (!empty($request->branch_id)) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('purchases.branch_id', null);
+            } else {
+
+                $query->where('purchases.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->supplier_account_id) {
+
+            $query->where('purchases.supplier_account_id', $request->supplier_account_id);
+        }
+
+        if ($request->payment_status) {
+
+            if ($request->payment_status == PaymentStatus::Paid->value) {
+
+                $query->where('purchases.due', '=', 0);
+            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+
+                $query->where('purchases.paid', '>', 0)->where('purchases.due', '>', 0);
+            } else if ($request->payment_status == PaymentStatus::Due->value) {
+
+                $query->where('purchases.paid', '=', 0);
+            }
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('purchases.report_date', $date_range); // Final
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('purchases.branch_id', auth()->user()->branch_id);
+        }
+
+        return $query;
     }
 }

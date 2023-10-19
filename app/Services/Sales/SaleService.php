@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SaleService
 {
-    public function addSalesListTable($request)
+    public function addSalesListTable(object $request, ?int $customerAccountId = null): object
     {
         $generalSettings = config('generalSettings');
         $sales = '';
@@ -23,7 +23,7 @@ class SaleService
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.status', SaleStatus::Final->value);
 
-        $this->filteredQuery($request, $query);
+        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId);
 
         // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
 
@@ -42,16 +42,6 @@ class SaleService
         //         ->where('created_by', 1)
         //         ->orderBy('sales.report_date', 'desc');
         // }
-
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-            if (auth()->user()->can('view_own_sale')) {
-
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
 
         $sales = $query->select(
             'sales.id',
@@ -93,7 +83,7 @@ class SaleService
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
-                    
+
                     if (auth()->user()->can('delete_add_sale')) {
 
                         $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
@@ -396,7 +386,7 @@ class SaleService
         return ['pass' => true];
     }
 
-    private function filteredQuery($request, $query)
+    private function filteredQuery(object $request, object $query, ?int $customerAccountId = null)
     {
         if ($request->branch_id) {
 
@@ -446,6 +436,21 @@ class SaleService
             // $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
             $query->whereBetween('sales.sale_date_ts', $date_range); // Final
+        }
+
+        if (isset($customerAccountId)) {
+
+            $query->where('sales.customer_account_id', $customerAccountId);
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            if (auth()->user()->can('view_own_sale')) {
+
+                $query->where('sales.created_by_id', auth()->user()->id);
+            }
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
         }
 
         return $query;

@@ -42,6 +42,8 @@ class DayBookService
             11 => ['name' => 'Expenses', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
             12 => ['name' => 'Incomes', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
             13 => ['name' => 'Production', 'id' => 'production_id', 'voucher_no' => 'production_voucher_no', 'details_id' => 'production_voucher_id', 'link' => ''],
+            14 => ['name' => 'TransferStock', 'id' => 'transfer_stock_id', 'voucher_no' => 'transfer_stock_voucher_no', 'details_id' => 'transfer_stock_voucher_id', 'link' => ''],
+            15 => ['name' => 'ReceivedStock', 'id' => 'transfer_stock_id', 'voucher_no' => 'transfer_stock_voucher_no', 'details_id' => 'transfer_stock_voucher_id', 'link' => ''],
         ];
 
         return $data[$voucherTypeId];
@@ -55,9 +57,11 @@ class DayBookService
         $amount,
         $amountType,
         $productId = null,
+        $branchId = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new DayBook();
+        $add->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
         $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $add->account_id = $accountId ? $accountId : null;
         $add->voucher_type = $voucherTypeId;
@@ -75,6 +79,7 @@ class DayBookService
         $amount,
         $amountType,
         $productId = null,
+        $branchId = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $update = '';
@@ -92,13 +97,14 @@ class DayBookService
         } else {
 
             $this->addDayBook(
-                $voucherTypeId,
-                $date,
-                $accountId,
-                $transId,
-                $amount,
-                $amountType,
-                $productId,
+                voucherTypeId: $voucherTypeId,
+                date: $date,
+                accountId: $accountId,
+                transId: $transId,
+                amount: $amount,
+                amountType: $amountType,
+                productId: $productId,
+                branchId: $branchId,
             );
         }
     }

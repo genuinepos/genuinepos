@@ -21,7 +21,8 @@ use App\Http\Controllers\Sales\Reports\SalesReturnedProductReportController;
 Route::prefix('sales')->group(function () {
 
     Route::controller(AddSalesController::class)->prefix('add-sale')->group(function () {
-        Route::get('/', 'index')->name('sales.index');
+
+        Route::get('index/{customerAccountId?}', 'index')->name('sales.index');
         Route::get('show/{id}', 'show')->name('sales.show');
         Route::get('create', 'create')->name('sales.create');
         Route::post('store', 'store')->name('sales.store');
@@ -40,7 +41,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(SalesOrderController::class)->prefix('orders')->group(function () {
 
-        Route::get('/', 'index')->name('sale.orders.index');
+        Route::get('index/{customerAccountId?}', 'index')->name('sale.orders.index');
         Route::get('show/{id}', 'show')->name('sale.orders.show');
         Route::get('edit/{id}', 'edit')->name('sale.orders.edit');
         Route::post('update/{id}', 'update')->name('sale.orders.update');

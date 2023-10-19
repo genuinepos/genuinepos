@@ -52,7 +52,7 @@ class PurchaseController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $supplierAccountId = null)
     {
         if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
@@ -60,7 +60,7 @@ class PurchaseController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->purchaseService->purchaseListTable($request);
+            return $this->purchaseService->purchaseListTable(request: $request, supplierAccountId: $supplierAccountId);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

@@ -2,7 +2,7 @@
 
 namespace App\Services\Products;
 
-use App\Models\PriceGroupProduct;
+use App\Models\Products\PriceGroupProduct;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;

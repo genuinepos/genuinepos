@@ -11,4 +11,6 @@ enum ProductLedgerVoucherType: int
     case PurchaseReturn = 4;
     case StockAdjustment = 5;
     case Production = 6;
+    case TransferStock = 7;
+    case ReceiveStock = 8;
 }

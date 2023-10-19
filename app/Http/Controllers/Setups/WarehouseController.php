@@ -16,7 +16,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('warehouse')) {
+        if (!auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -26,14 +26,15 @@ class WarehouseController extends Controller
             return $this->warehouseService->warehouseListTable($request);
         }
 
-        $branches = $this->branchService->branches()->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('setups.warehouses.index', compact('branches'));
     }
 
     public function create()
     {
-        if (! auth()->user()->can('warehouse')) {
+        if (!auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -98,7 +99,12 @@ class WarehouseController extends Controller
 
             DB::beginTransaction();
 
-            $this->warehouseService->deleteWarehouse($id);
+            $deleteWarehouse = $this->warehouseService->deleteWarehouse($id);
+
+            if (isset($deleteWarehouse['pass']) && $deleteWarehouse['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteWarehouse['msg']]);
+            }
 
             DB::commit();
         } catch (Exception $e) {
@@ -106,5 +112,11 @@ class WarehouseController extends Controller
         }
 
         return response()->json(__('Successfully warehouse is deleted'));
+    }
+
+    function warehousesByBranch($branchId) {
+
+        $__branchId = $branchId == 'NULL' ? null : $branchId;
+        return $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->get();
     }
 }

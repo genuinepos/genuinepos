@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sales\Reports;
 
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -27,7 +28,7 @@ class SalesReportController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
@@ -38,34 +39,7 @@ class SalesReportController extends Controller
                 ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
                 ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id');
 
-            if (!empty($request->branch_id)) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('sales.branch_id', null);
-                } else {
-
-                    $query->where('sales.branch_id', $request->branch_id);
-                }
-            }
-
-            if ($request->customer_account_id) {
-
-                $query->where('sales.customer_account_id', $request->customer_account_id);
-            }
-
-            if ($request->from_date) {
-
-                $from_date = date('Y-m-d', strtotime($request->from_date));
-                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-                $query->whereBetween('sales.sale_date_ts', $date_range); // Final
-            }
-
-            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-                $query->where('sales.branch_id', auth()->user()->branch_id);
-            }
+            $this->filter(request: $request, query: $query);
 
             $sales = $query->select(
                 'sales.id',
@@ -176,34 +150,7 @@ class SalesReportController extends Controller
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id');
 
-        if (!empty($request->branch_id)) {
-
-            if ($request->branch_id == 'NULL') {
-
-                $query->where('sales.branch_id', null);
-            } else {
-
-                $query->where('sales.branch_id', $request->branch_id);
-            }
-        }
-
-        if ($request->customer_account_id) {
-
-            $query->where('sales.customer_account_id', $request->customer_account_id);
-        }
-
-        if ($request->from_date) {
-
-            $from_date = date('Y-m-d', strtotime($request->from_date));
-            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-            $query->whereBetween('sales.sale_date_ts', $date_range); // Final
-        }
-
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-            $query->where('sales.branch_id', auth()->user()->branch_id);
-        }
+        $this->filter(request: $request, query: $query);
 
         $sales = $query->select(
             'sales.id',
@@ -229,5 +176,53 @@ class SalesReportController extends Controller
         )->where('sales.status', SaleStatus::Final->value)->orderBy('sales.sale_date_ts', 'desc')->get();
 
         return view('sales.reports.sales_report.ajax_view.print', compact('sales', 'ownOrParentBranch', 'filteredBranchName', 'filteredCustomerName', 'fromDate', 'toDate'));
+    }
+
+    private function filter(object $request, object $query): object
+    {
+        if (!empty($request->branch_id)) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('sales.branch_id', null);
+            } else {
+
+                $query->where('sales.branch_id', $request->branch_id);
+            }
+        }
+
+        if ($request->customer_account_id) {
+
+            $query->where('sales.customer_account_id', $request->customer_account_id);
+        }
+
+        if ($request->from_date) {
+
+            $from_date = date('Y-m-d', strtotime($request->from_date));
+            $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+            $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+            $query->whereBetween('sales.sale_date_ts', $date_range); // Final
+        }
+
+        if ($request->payment_status) {
+
+            if ($request->payment_status == PaymentStatus::Paid->value) {
+
+                $query->where('sales.due', '=', 0);
+            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+
+                $query->where('sales.paid', '>', 0)->where('sales.due', '>', 0);
+            } else if ($request->payment_status == PaymentStatus::Due->value) {
+
+                $query->where('sales.paid', '=', 0);
+            }
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $query->where('sales.branch_id', auth()->user()->branch_id);
+        }
+
+        return $query;
     }
 }

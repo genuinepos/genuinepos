@@ -12,7 +12,6 @@ class RoleController extends Controller
         if (! auth()->user()->can('role_view')) {
             abort(403, 'Access Forbidden.');
         }
-
         return view('users.roles.index');
     }
 

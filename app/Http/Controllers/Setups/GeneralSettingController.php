@@ -19,7 +19,7 @@ class GeneralSettingController extends Controller
 
     public function index()
     {
-        if (! auth()->user()->can('g_settings')) {
+        if (! auth()->user()->can('general_settings')) {
             abort(403, 'Access Forbidden.');
         }
         $generalSettings = config('generalSettings');

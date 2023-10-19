@@ -17,7 +17,7 @@ class InvoiceSchemaController extends Controller
     // Category main page/index page
     public function index(Request $request)
     {
-        if (! auth()->user()->can('inv_sc')) {
+        if (! auth()->user()->can('invoice _schema')) {
             abort(403, 'Access Forbidden.');
         }
 

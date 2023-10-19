@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('manufacturing_settings', function (Blueprint $table) {
+        Schema::create('manufacturingeneral_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('production_voucher_prefix')->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('manufacturing_settings');
+        Schema::dropIfExists('manufacturingeneral_settings');
     }
 };

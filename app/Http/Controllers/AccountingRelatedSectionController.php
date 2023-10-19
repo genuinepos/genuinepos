@@ -24,7 +24,7 @@ class AccountingRelatedSectionController extends Controller
     // balance sheet view
     public function balanceSheet()
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -220,7 +220,7 @@ class AccountingRelatedSectionController extends Controller
     // Trial balance view
     public function trialBalance()
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -273,7 +273,7 @@ class AccountingRelatedSectionController extends Controller
     // Cash flow view
     public function cashFow()
     {
-        if (! auth()->user()->can('ac_access')) {
+        if (! auth()->user()->can('accounting_access')) {
             abort(403, 'Access Forbidden.');
         }
 

@@ -179,7 +179,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="c_register_report" class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.cash_register_reports')
+                                                <input type="checkbox" name="cash_register_report" class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.cash_register_reports')
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -659,7 +659,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="pro_purchase_report" class="procurement_report procurement_permission super_select_all"> Item purchased report
+                                            <input type="checkbox" name="product_purchase_report" class="procurement_report procurement_permission super_select_all"> Item purchased report
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
@@ -1056,7 +1056,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="manuf_settings" class="manage_production manufacturing_permission super_select_all">  @lang('menu.manufacturing_setting')
+                                            <input type="checkbox" name="manufacturing_settings" class="manage_production manufacturing_permission super_select_all">  @lang('menu.manufacturing_setting')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
@@ -1068,7 +1068,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="manuf_report" class="menufacturing_report manufacturing_permission super_select_all">  @lang('menu.manufacturing_report')
+                                            <input type="checkbox" name="manufacturing_report" class="menufacturing_report manufacturing_permission super_select_all">  @lang('menu.manufacturing_report')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6"></div>
@@ -1795,12 +1795,12 @@
                                         <input type="checkbox" class="select_all super_select_all setup_permission" data-target="settings" autocomplete="off"> <strong>Settings</strong>
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="g_settings" class="settings setup_permission super_select_all">
+                                        <input type="checkbox" name="general_settings" class="settings setup_permission super_select_all">
                                         General
                                         settings
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="p_settings" class="settings setup_permission super_select_all">
+                                        <input type="checkbox" name="payment_settings" class="settings setup_permission super_select_all">
                                         Payment
                                         settings
                                     </p>
@@ -1838,13 +1838,13 @@
 
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="inv_sc" class="app_setup setup_permission super_select_all">
+                                        <input type="checkbox" name="invoice _schema" class="app_setup setup_permission super_select_all">
                                         Invoice
                                         schemas
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="inv_lay" class="app_setup setup_permission super_select_all">
+                                        <input type="checkbox" name="invoice_layout" class="app_setup setup_permission super_select_all">
                                         Invoice
                                         layout
                                     </p>
@@ -1946,7 +1946,7 @@
                                     <p class="text-info"><input type="checkbox" class="select_all super_select_all dashboard_permission" data-target="dashboard" autocomplete="off"><strong> @lang('menu.dashboard')</strong>
                                     </p>
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="dash_data" class="dashboard dashboard_permission super_select_all">
+                                        <input type="checkbox" name="view_dashboard_data" class="dashboard dashboard_permission super_select_all">
                                         View
                                         dashboard Data
                                     </p>

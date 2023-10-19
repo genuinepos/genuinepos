@@ -19,7 +19,7 @@ class IngredientReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('manuf_report')) {
+        if (!auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }
@@ -151,7 +151,7 @@ class IngredientReportController extends Controller
 
     public function print(Request $request)
     {
-        if (!auth()->user()->can('manuf_report')) {
+        if (!auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }

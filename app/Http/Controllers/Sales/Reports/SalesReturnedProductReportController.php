@@ -24,7 +24,7 @@ class SalesReturnedProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sale_return_statements')) {
+        if (!auth()->user()->can('sales_return_report')) {
 
             abort(403, 'Access Forbidden.');
         }

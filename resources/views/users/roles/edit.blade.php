@@ -776,13 +776,6 @@
                                                      name="view_own_sale" id="view_own_sale" class="sales sale_all">
                                                     <label for="view_own_sale">{{ __('View only own Add/POS Sale') }}</label>
                                                 </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('return_access') ? 'CHECKED' : '' }}
-                                                     name="return_access" id="return_access" class="sales sale_all">
-                                                   <label for="return_access">{{ __('Access Sale Return') }}</label>
-                                                </p>
-
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="checkbox_input_wrap mt-4">
@@ -793,15 +786,15 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('sale_statements') ? 'CHECKED' : '' }}
-                                                     name="sale_statements" id="sale_statements" class="sales sale_all">
-                                                    <label for="sale_statements">{{ __('Sale Statements') }}</label>
+                                                    {{ $role->hasPermissionTo('sales_report') ? 'CHECKED' : '' }}
+                                                     name="sales_report" id="sales_report" class="sales sale_all">
+                                                    <label for="sales_report">{{ __('Sale Statements') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('sale_return_statements') ? 'CHECKED' : '' }}
-                                                     name="sale_return_statements" id="sale_return_statements" class="sales sale_all">
-                                                    <label for="sale_return_statements">{{ __('Sale Return Statements') }}</label>
+                                                    {{ $role->hasPermissionTo('sales_return_report') ? 'CHECKED' : '' }}
+                                                     name="sales_return_report" id="sales_return_report" class="sales sale_all">
+                                                    <label for="sales_return_report">{{ __('Sale Return Statements') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
@@ -811,9 +804,9 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('sale_payment_report') ? 'CHECKED' : '' }}
-                                                    name="sale_payment_report" id="sale_payment_report" class="sales sale_all">
-                                                   <label for="sale_payment_report"> {{ __('Receive Payment Report') }}</label>
+                                                    {{ $role->hasPermissionTo('received_against_sales_report') ? 'CHECKED' : '' }}
+                                                    name="received_against_sales_report" id="received_against_sales_report" class="sales sale_all">
+                                                   <label for="received_against_sales_report"> {{ __('Receive Payment Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"

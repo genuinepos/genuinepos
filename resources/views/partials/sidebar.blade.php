@@ -111,10 +111,10 @@
                     auth()->user()->can('pos_sale_settings')||
                     auth()->user()->can('add_sale_settings') ||
                     auth()->user()->can('discounts') ||
-                    auth()->user()->can('sale_statements') ||
-                    auth()->user()->can('sale_return_statements')||
+                    auth()->user()->can('sales_report') ||
+                    auth()->user()->can('sales_return_report')||
                     auth()->user()->can('product_sale_report') ||
-                    auth()->user()->can('sale_payment_report')||
+                    auth()->user()->can('received_against_sales_report')||
                     auth()->user()->can('cash_register_report')||
                     auth()->user()->can('sale_representative_report')
                 )
@@ -1272,7 +1272,7 @@
 
                         @if (
                             auth()->user()->can('product_sale_report') ||
-                            auth()->user()->can('sale_payment_report') ||
+                            auth()->user()->can('received_against_sales_report') ||
                             auth()->user()->can('cash_register_report') ||
                             auth()->user()->can('sale_representative_report')
                         )
@@ -1286,7 +1286,7 @@
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __("Sale Reports") }}</p>
                                 <div class="sub-menu-row">
-                                    @if (auth()->user()->can('sale_statements'))
+                                    @if (auth()->user()->can('sales_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sales.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1312,7 +1312,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_statements'))
+                                    @if (auth()->user()->can('sales_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sales.order.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1325,7 +1325,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_statements'))
+                                    @if (auth()->user()->can('sales_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sales.ordered.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1338,7 +1338,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_return_statements'))
+                                    @if (auth()->user()->can('sales_return_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sales.return.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1351,7 +1351,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_return_statements'))
+                                    @if (auth()->user()->can('sales_return_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sales.returned.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1364,7 +1364,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('sale_payment_report'))
+                                    @if (auth()->user()->can('received_against_sales_report'))
                                         <div class="sub-menu-col">
                                             <a href="#" class="switch-bar-wrap">
                                                 <div class="switch_bar">

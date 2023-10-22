@@ -280,8 +280,38 @@ class RolePermissionSeeder extends Seeder
             ['id' => '189', 'name' => 'sold_product_list'],
             ['id' => '190', 'name' => 'sales_order_list'],
             ['id' => '191', 'name' => 'sales_order_to_invoice'],
-            
-            
+            // Purchase
+            // ['id' => '192', 'name' => 'add_purchase_order'],
+            // ['id' => '193', 'name' => 'p_o_list'],
+            // ['id' => '194', 'name' => 'add_purchase_return'],
+            // ['id' => '195', 'name' => 'purchase_return_list'],
+            // ['id' => '196', 'name' => 'purchase_report'],
+            // Product
+            ['id' => '192', 'name' => 'product_import'],
+            ['id' => '193', 'name' => 'expired_product_list'],
+            ['id' => '194', 'name' => 'manage_price_group'],
+            ['id' => '196', 'name' => 'product_category_index'],
+            ['id' => '197', 'name' => 'product_category_add'],
+            ['id' => '198', 'name' => 'product_category_edit'],
+            ['id' => '199', 'name' => 'product_category_delete'],
+            ['id' => '200', 'name' => 'product_brand_index'],
+            ['id' => '201', 'name' => 'product_brand_add'],
+            ['id' => '202', 'name' => 'product_brand_edit'],
+            ['id' => '203', 'name' => 'product_brand_delete'],
+            ['id' => '204', 'name' => 'product_unit_index'],
+            ['id' => '205', 'name' => 'product_unit_add'],
+            ['id' => '206', 'name' => 'product_unit_edit'],
+            ['id' => '207', 'name' => 'product_unit_delete'],
+            ['id' => '208', 'name' => 'product_variant_index'],
+            ['id' => '209', 'name' => 'product_variant_add'],
+            ['id' => '210', 'name' => 'product_variant_edit'],
+            ['id' => '211', 'name' => 'product_variant_delete'],
+            ['id' => '212', 'name' => 'product_warranty_index'],
+            ['id' => '213', 'name' => 'product_warranty_add'],
+            ['id' => '214', 'name' => 'product_warranty_edit'],
+            ['id' => '215', 'name' => 'product_warranty_delete'],
+            ['id' => '216', 'name' => 'product_expired_list'],
+
         ];
 
         return $permissions;

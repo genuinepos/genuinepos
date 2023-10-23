@@ -10,7 +10,7 @@
 @endpush
 @section('title', 'Dashboard - ')
 @section('content')
-    @if (auth()->user()->can('dash_data'))
+    @if (auth()->user()->can('view_dashboard_data'))
         <div id="dashboard" class="p-3">
             <div class="row mb-3">
                 <div class="main__content">
@@ -406,9 +406,9 @@
 @endsection
 @push('scripts')
 
-    @if (auth()->user()->can('dash_data') and false) {{-- Dashboard issue solve for now --}}
+    @if (auth()->user()->can('view_dashboard_data') and false) {{-- Dashboard issue solve for now --}}
 
-    {{-- @if (auth()->user()->can('dash_data') and false) --}}
+    {{-- @if (auth()->user()->can('view_dashboard_data') and false) --}}
         <script>
             $(document).on('change', '#date', function() {
                 var date_range = $(this).val();

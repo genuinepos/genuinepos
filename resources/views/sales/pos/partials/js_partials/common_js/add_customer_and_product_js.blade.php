@@ -29,10 +29,10 @@
 
             $('#previous_due').val(data.total_sale_due);
 
-            if (rp_settings.enable_rp == '1') {
+            if (rpayment_settings.enable_rp == '1') {
 
                 $('#earned_point').val(data.point);
-                var __point_amount = parseFloat(data.point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
+                var __point_amount = parseFloat(data.point) * parseFloat(rpayment_settings.redeem_amount_per_unit_rp);
                 $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
             }
 

@@ -185,7 +185,7 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="c_register_report" {{ $role->hasPermissionTo('c_register_report') ? 'checked' : '' }} class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.cash_register_reports')
+                                                    <input type="checkbox" name="cash_register_report" {{ $role->hasPermissionTo('cash_register_report') ? 'checked' : '' }} class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.cash_register_reports')
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
@@ -649,7 +649,7 @@
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
-                                                <input type="checkbox" name="pro_purchase_report" {{ $role->hasPermissionTo('pro_purchase_report') ? 'checked' : '' }} class="procurement_report procurement_permission super_select_all"> Item purchased report
+                                                <input type="checkbox" name="product_purchase_report" {{ $role->hasPermissionTo('product_purchase_report') ? 'checked' : '' }} class="procurement_report procurement_permission super_select_all"> Item purchased report
                                             </p>
 
                                             <p class="checkbox_input_wrap mt-1">
@@ -1035,7 +1035,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="manuf_settings" {{ $role->hasPermissionTo('manuf_settings') ? 'checked' : '' }} class="manage_production manufacturing_permission super_select_all">  @lang('menu.manufacturing_setting')
+                                            <input type="checkbox" name="manufacturing_settings" {{ $role->hasPermissionTo('manufacturing_settings') ? 'checked' : '' }} class="manage_production manufacturing_permission super_select_all">  @lang('menu.manufacturing_setting')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6">
@@ -1047,7 +1047,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="manuf_report" {{ $role->hasPermissionTo('manuf_report') ? 'checked' : '' }} class="menufacturing_report manufacturing_permission super_select_all">  @lang('menu.manufacturing_report')
+                                            <input type="checkbox" name="manufacturing_report" {{ $role->hasPermissionTo('manufacturing_report') ? 'checked' : '' }} class="menufacturing_report manufacturing_permission super_select_all">  @lang('menu.manufacturing_report')
                                         </p>
                                     </div>
                                     <div class="col-lg-3 col-sm-6"></div>
@@ -1737,12 +1737,12 @@
                                             <input type="checkbox" class="select_all super_select_all setup_permission" data-target="settings" autocomplete="off"> <strong>Settings</strong>
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="g_settings" {{ $role->hasPermissionTo('g_settings') ? 'checked' : '' }} class="settings setup_permission super_select_all">
+                                            <input type="checkbox" name="general_settings" {{ $role->hasPermissionTo('general_settings') ? 'checked' : '' }} class="settings setup_permission super_select_all">
                                             General
                                             settings
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="p_settings" {{ $role->hasPermissionTo('p_settings') ? 'checked' : '' }} class="settings setup_permission super_select_all">
+                                            <input type="checkbox" name="payment_settings" {{ $role->hasPermissionTo('payment_settings') ? 'checked' : '' }} class="settings setup_permission super_select_all">
                                             Payment
                                             settings
                                         </p>
@@ -1780,13 +1780,13 @@
 
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="inv_sc" {{ $role->hasPermissionTo('inv_sc') ? 'checked' : '' }} class="app_setup setup_permission super_select_all">
+                                            <input type="checkbox" name="invoice _schema" {{ $role->hasPermissionTo('invoice _schema') ? 'checked' : '' }} class="app_setup setup_permission super_select_all">
                                             Invoice
                                             schemas
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="inv_lay" {{ $role->hasPermissionTo('inv_lay') ? 'checked' : '' }} class="app_setup setup_permission super_select_all">
+                                            <input type="checkbox" name="invoice_layout" {{ $role->hasPermissionTo('invoice_layout') ? 'checked' : '' }} class="app_setup setup_permission super_select_all">
                                             Invoice
                                             layout
                                         </p>
@@ -1887,7 +1887,7 @@
                                         <p class="text-info"><input type="checkbox" class="select_all super_select_all dashboard_permission" data-target="dashboard" autocomplete="off"><strong> @lang('menu.dashboard')</strong>
                                         </p>
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="dash_data" {{ $role->hasPermissionTo('dash_data') ? 'checked' : '' }} class="dashboard dashboard_permission super_select_all">
+                                            <input type="checkbox" name="view_dashboard_data" {{ $role->hasPermissionTo('view_dashboard_data') ? 'checked' : '' }} class="dashboard dashboard_permission super_select_all">
                                             View
                                             dashboard Data
                                         </p>

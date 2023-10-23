@@ -16,7 +16,7 @@ class InvoiceLayoutController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('inv_lay')) {
+        if (! auth()->user()->can('invoice_layout')) {
             abort(403, 'Access Forbidden.');
         }
         if ($request->ajax()) {

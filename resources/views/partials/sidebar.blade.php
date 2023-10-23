@@ -115,7 +115,7 @@
                     auth()->user()->can('sale_return_statements')||
                     auth()->user()->can('product_sale_report') ||
                     auth()->user()->can('sale_payment_report')||
-                    auth()->user()->can('c_register_report')||
+                    auth()->user()->can('cash_register_report')||
                     auth()->user()->can('sale_representative_report')
                 )
                     <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
@@ -180,7 +180,7 @@
 
                 @if ($generalSettings['modules__accounting'] == '1')
 
-                    @if (auth()->user()->can('ac_access'))
+                    @if (auth()->user()->can('accounting_access'))
                         <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/accounting.svg') }}">
@@ -244,8 +244,8 @@
                     @if (
                         auth()->user()->can('process_view') ||
                         auth()->user()->can('production_view') ||
-                        auth()->user()->can('manuf_settings') ||
-                        auth()->user()->can('manuf_report')
+                        auth()->user()->can('manufacturing_settings') ||
+                        auth()->user()->can('manufacturing_report')
                     )
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
@@ -305,10 +305,10 @@
                     auth()->user()->can('branch') ||
                     auth()->user()->can('warehouse') ||
                     auth()->user()->can('tax') ||
-                    auth()->user()->can('g_settings') ||
-                    auth()->user()->can('p_settings') ||
-                    auth()->user()->can('inv_sc') ||
-                    auth()->user()->can('inv_lay') ||
+                    auth()->user()->can('general_settings') ||
+                    auth()->user()->can('payment_settings') ||
+                    auth()->user()->can('invoice _schema') ||
+                    auth()->user()->can('invoice_layout') ||
                     auth()->user()->can('barcode_settings') ||
                     auth()->user()->can('cash_counters')
                 )
@@ -766,7 +766,7 @@
 
             @if ($generalSettings['modules__purchases'] == '1')
                 @canany([
-                    "pro_purchase_report",
+                    "product_purchase_report",
                     "purchase_add",
                     "purchase_all",
                     "purchase_delete",
@@ -912,8 +912,8 @@
                                         auth()->user()->can('purchase_sale_report')
                                     ) ||
                                     (
-                                        auth()->user()->can('pro_purchase_report') &&
-                                        auth()->user()->can('pro_purchase_report')
+                                        auth()->user()->can('product_purchase_report') &&
+                                        auth()->user()->can('product_purchase_report')
                                     ) ||
                                     (
                                         auth()->user()->can('purchase_payment_report') &&
@@ -944,7 +944,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('pro_purchase_report'))
+                                            @if (auth()->user()->can('product_purchase_report'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('reports.purchased.products.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -1273,7 +1273,7 @@
                         @if (
                             auth()->user()->can('product_sale_report') ||
                             auth()->user()->can('sale_payment_report') ||
-                            auth()->user()->can('c_register_report') ||
+                            auth()->user()->can('cash_register_report') ||
                             auth()->user()->can('sale_representative_report')
                         )
                             {{-- <div class="row">
@@ -1377,7 +1377,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('c_register_report'))
+                                    @if (auth()->user()->can('cash_register_report'))
                                         <div class="sub-menu-col">
                                             <a href="#" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1702,7 +1702,7 @@
 
             @if ($generalSettings['modules__accounting'] == '1')
 
-                @if (auth()->user()->can('ac_access'))
+                @if (auth()->user()->can('accounting_access'))
 
                     <div class="sub-menu_t" id="accounting">
                         <div class="sub-menu-width">
@@ -2228,7 +2228,7 @@
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Set-up') }}</p>
                             <div class="sub-menu-row">
-                                @if (auth()->user()->can('g_settings'))
+                                @if (auth()->user()->can('general_settings'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
@@ -2282,7 +2282,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('p_settings'))
+                                @if (auth()->user()->can('payment_settings'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('payment.methods.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2306,7 +2306,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('inv_sc'))
+                                @if (auth()->user()->can('invoice _schema'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('invoices.schemas.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2319,7 +2319,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('inv_lay'))
+                                @if (auth()->user()->can('invoice_layout'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('invoices.layouts.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2389,8 +2389,8 @@
                 @if (
                     auth()->user()->can('process_view') ||
                     auth()->user()->can('production_view') ||
-                    auth()->user()->can('manuf_settings') ||
-                    auth()->user()->can('manuf_report')
+                    auth()->user()->can('manufacturing_settings') ||
+                    auth()->user()->can('manufacturing_report')
                 )
                     <div class="sub-menu_t" id="manufacture">
                         <div class="sub-menu-width">
@@ -2432,7 +2432,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('manuf_settings'))
+                                        @if (auth()->user()->can('manufacturing_settings'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
                                                     <div class="switch_bar">
@@ -2447,7 +2447,7 @@
                                     </div>
                                 </div>
 
-                                @if (auth()->user()->can('manuf_report'))
+                                @if (auth()->user()->can('manufacturing_report'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __("Manufacturing Reports") }}</p>
                                         <div class="sub-menu-row">

@@ -1,5 +1,5 @@
 <script>
-    var rp_settings = {
+    var rpayment_settings = {
         enable_rp : "{{ $generalSettings['reward_point_settings__enable_cus_point'] }}",
         redeem_amount_per_unit_rp : "{{ $generalSettings['reward_point_settings__redeem_amount_per_unit_rp'] }}",
         min_order_total_for_redeem : "{{ $generalSettings['reward_point_settings__min_order_total_for_redeem'] }}",
@@ -10,7 +10,7 @@
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
 
-        if (rp_settings.enable_rp == '1') {
+        if (rpayment_settings.enable_rp == '1') {
 
             if ($('#customer_id').val()) {
 
@@ -33,7 +33,7 @@
     $(document).on('input', '#total_redeem_point', function () {
 
         var redeeming_point = $(this).val();
-        var __point_amount = parseFloat(redeeming_point) * parseFloat(rp_settings.redeem_amount_per_unit_rp);
+        var __point_amount = parseFloat(redeeming_point) * parseFloat(rpayment_settings.redeem_amount_per_unit_rp);
         $('#redeem_amount').val(parseFloat(__point_amount));
     });
 
@@ -51,21 +51,21 @@
         }
 
         var total_invoice_payable = $('#total_invoice_payable').val();
-        if (rp_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rp_settings.min_order_total_for_redeem)) {
+        if (rpayment_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rpayment_settings.min_order_total_for_redeem)) {
 
-            toastr.error('Minimum order amount is '+rp_settings.min_order_total_for_redeem+' to redeem the points.');
+            toastr.error('Minimum order amount is '+rpayment_settings.min_order_total_for_redeem+' to redeem the points.');
             return;
         }
 
-        if (rp_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rp_settings.min_redeem_point)) {
+        if (rpayment_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rpayment_settings.min_redeem_point)) {
 
-            toastr.error('Minimum redeem points is '+rp_settings.min_redeem_point);
+            toastr.error('Minimum redeem points is '+rpayment_settings.min_redeem_point);
             return;
         }
 
-        if (rp_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rp_settings.max_redeem_point)) {
+        if (rpayment_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rpayment_settings.max_redeem_point)) {
 
-            toastr.error('Maximum redeem points is '+rp_settings.max_redeem_point);
+            toastr.error('Maximum redeem points is '+rpayment_settings.max_redeem_point);
             return;
         }
 
@@ -77,7 +77,7 @@
         var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
         var calcLastPoint = parseFloat(earned_point) - parseFloat(total_redeem_point);
         $('#earned_point').val(parseFloat(calcLastPoint));
-        var calcLastAmount = parseFloat(calcLastPoint) * parseFloat(parseFloat(rp_settings.redeem_amount_per_unit_rp));
+        var calcLastAmount = parseFloat(calcLastPoint) * parseFloat(parseFloat(rpayment_settings.redeem_amount_per_unit_rp));
         $('#trial_point_amount').val(parseFloat(calcLastAmount).toFixed(2));
         var pre_redeemed = $('#pre_redeemed').val() ? $('#pre_redeemed').val() : 0;
         var calcPreRedeemPoint = parseFloat(pre_redeemed) + parseFloat(total_redeem_point);

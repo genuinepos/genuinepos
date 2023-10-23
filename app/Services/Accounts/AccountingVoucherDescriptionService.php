@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\IsDeleteInUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescription;
 
@@ -47,11 +48,11 @@ class AccountingVoucherDescriptionService
         return $AccountingVoucherDescription;
     }
 
-    public function updatePaymentDescription(
+    public function updateAccountingVoucherDescription(
         int $accountingVoucherId,
         int $accountingVoucherDescriptionId,
         int $accountId,
-        int $paymentMethodId,
+        ?int $paymentMethodId,
         string $amountType,
         float $amount,
         ?string $transactionNo = null,
@@ -60,12 +61,14 @@ class AccountingVoucherDescriptionService
         ?string $chequeIssueDate = null,
         ?string $note = null
     ) {
-        $accountingVoucherDescription = AccountingVoucherDescription::where('id', $accountingVoucherDescriptionId)->where('payment_id', $accountingVoucherId)->first();
+        $accountingVoucherDescription = AccountingVoucherDescription::where('id', $accountingVoucherDescriptionId)->where('accounting_voucher_id', $accountingVoucherId)->first();
         $addOrUpdateAccountingVoucherDescription = '';
+        $current_account_id = null;
 
         if ($accountingVoucherDescription) {
 
             $addOrUpdateAccountingVoucherDescription = $accountingVoucherDescription;
+            $current_account_id = $accountingVoucherDescription->account_id;
         } else {
 
             $addOrUpdateAccountingVoucherDescription = new AccountingVoucherDescription();
@@ -86,7 +89,7 @@ class AccountingVoucherDescriptionService
         $addOrUpdateAccountingVoucherDescription->cheque_issue_date = $chequeIssueDate;
         $addOrUpdateAccountingVoucherDescription->cheque_issue_date = $chequeIssueDate;
         $addOrUpdateAccountingVoucherDescription->note = $note;
-        $addOrUpdateAccountingVoucherDescription->is_delete_in_update = 0;
+        $addOrUpdateAccountingVoucherDescription->is_delete_in_update = IsDeleteInUpdate::No->value;
         $addOrUpdateAccountingVoucherDescription->save();
 
         if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 2 || $accountGroup->sub_sub_group_number == 11) {
@@ -96,6 +99,8 @@ class AccountingVoucherDescriptionService
 
             $addOrUpdateAccountingVoucherDescription->is_cash_bank_ac = 0;
         }
+
+        $addOrUpdateAccountingVoucherDescription->current_account_id = $current_account_id;
 
         return $addOrUpdateAccountingVoucherDescription;
     }
@@ -109,9 +114,9 @@ class AccountingVoucherDescriptionService
         }
     }
 
-    public function deleteUnusedAccountingVoucherDescriptions($paymentId)
+    public function deleteUnusedAccountingVoucherDescriptions($accountingVoucherId)
     {
-        $deletableDescriptions = AccountingVoucherDescription::where('payment_id', $paymentId)->where('is_delete_in_update', 1)->get();
+        $deletableDescriptions = AccountingVoucherDescription::where('accounting_voucher_id', $accountingVoucherId)->where('is_delete_in_update', 1)->get();
 
         foreach ($deletableDescriptions as $deletableDescription) {
 

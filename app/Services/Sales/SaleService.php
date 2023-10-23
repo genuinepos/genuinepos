@@ -283,8 +283,8 @@ class SaleService
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',
-            'saleProducts.purchaseSaleChains',
-            'saleProducts.purchaseSaleChains.purchaseProduct',
+            'saleProducts.purchaseSaleProductChains',
+            'saleProducts.purchaseSaleProductChains.purchaseProduct',
         ]);
 
         $voucherName = SaleStatus::tryFrom($deleteSale->status)->name;
@@ -292,7 +292,7 @@ class SaleService
 
         if (count($deleteSale->references) > 0) {
 
-            return ['pass' => false, 'msg' => __("Sale can not be deleted. There is one or more receipt which is against this ${$__voucherName}.")];
+            return ['pass' => false, 'msg' => __("Sale can not be deleted. There is one or more receipt which is against this ${__voucherName}.")];
         }
 
         $deleteSale->delete();

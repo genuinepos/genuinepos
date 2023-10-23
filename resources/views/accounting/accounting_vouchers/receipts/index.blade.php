@@ -1,8 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
-@section('title', 'Sales Order List - ')
+@section('title', 'Receipt List - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -11,10 +12,11 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
-                                <h5>{{ __("Sales Orders") }}</h5>
+                                <span class="fas fa-shopping-basket"></span>
+                                <h5>{{ __("Receipts") }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
+                                    class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
                     </div>
 
@@ -29,8 +31,8 @@
                                                     <div class="col-md-2">
                                                         <label><strong>{{ __("Shop/Business") }}</strong></label>
                                                         <select name="branch_id"
-                                                            class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">@lang('menu.all')</option>
+                                                            class="form-control select2" id="f_branch_id" autofocus>
+                                                            <option value="">{{ __("All") }}</option>
                                                             <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -47,21 +49,11 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Payment Status") }}</strong></label>
-                                                    <select name="payment_status" id="payment_status" class="form-control">
+                                                    <label><strong>{{ __("Received From") }}</strong></label>
+                                                    <select name="credit_account_id" class="form-control select2" id="f_credit_account_id" autofocus>
                                                         <option value="">{{ __("All") }}</option>
-                                                        @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
-                                                            <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-2">
-                                                    <label><strong>{{ __("Customer") }}</strong></label>
-                                                    <select name="customer_account_id" class="form-control select2" id="customer_account_id" autofocus>
-                                                        <option value="">{{ __("All") }}</option>
-                                                        @foreach ($customerAccounts as $customerAccount)
-                                                            <option data-customer_account_name="{{ $customerAccount->name.'/'.$customerAccount->phone }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name.'/'.$customerAccount->phone }}</option>
+                                                        @foreach ($creditAccounts as $creditAccount)
+                                                            <option data-credit_account_name="{{ $creditAccount->name.'/'.$creditAccount->phone }}" value="{{ $creditAccount->id }}">{{ $creditAccount->name.'/'.$creditAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -70,9 +62,11 @@
                                                     <label><strong>{{ __("From Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_f"></i>
+                                                            </span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="from_date" class="form-control"  autocomplete="off">
+                                                        <input type="text" name="from_date" id="f_from_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -80,16 +74,20 @@
                                                     <label><strong>{{ __("To Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                <i class="fas fa-calendar-week input_f"></i>
+                                                            </span>
                                                         </div>
-                                                        <input type="text" name="to_date" id="to_date" class="form-control" autocomplete="off">
+                                                        <input type="text" name="to_date" id="f_to_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
+                                                            <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -101,13 +99,13 @@
 
                         <div class="card">
                             <div class="section-header">
-                                <div class="col-6">
-                                    <h6>{{ __('List Of Sales Orders') }}</h6>
+                                <div class="col-10">
+                                    <h6>{{ __('List Of Receipts') }}</h6>
                                 </div>
 
-                                @if(auth()->user()->can('create_add_sale'))
-                                    <div class="col-6 d-flex justify-content-end">
-                                        <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                @if(auth()->user()->can('purchase_add'))
+                                    <div class="col-2 d-flex justify-content-end">
+                                        <a href="{{ route('receipts.create') }}" class="btn btn-sm btn-primary" id="addReceipt"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -122,35 +120,33 @@
                                             <tr>
                                                 <th>{{ __("Action") }}</th>
                                                 <th>{{ __("Date") }}</th>
-                                                <th>{{ __("Order ID") }}</th>
-                                                <th>{{ __("Shop") }}</th>
-                                                <th>{{ __("Customer") }}</th>
-                                                <th>{{ __("Payment Status") }}</th>
-                                                <th>{{ __("Total Item") }}</th>
-                                                <th>{{ __("Total Qty") }}</th>
-                                                <th>{{ __("Total Ordered Amt") }}</th>
-                                                <th>{{ __("Advance Received") }}</th>
-                                                <th>{{ __("Due") }}</th>
-                                                <th>{{ __("Created By") }}</th>
+                                                <th>{{ __('Voucher') }}</th>
+                                                <th>{{ __("Shop/Business") }}</th>
+                                                <th>{{ __('Reference') }}</th>
+                                                <th>{{ __('Remarks') }}</th>
+                                                <th>{{ __("Received From") }}</th>
+                                                <th>{{ __("Received To") }}</th>
+                                                <th>{{ __("Type/Method") }}</th>
+                                                <th>{{ __("Trans. No") }}</th>
+                                                <th>{{ __("Cheque No") }}</th>
+                                                {{-- <th>{{ __("Cheque S/L No") }}</th> --}}
+                                                <th>{{ __("Received Amount") }}</th>
+                                                {{-- <th>{{ __("Created By") }}</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
-                                                <th id="total_item" class="text-white text-end"></th>
-                                                <th id="total_qty" class="text-white text-end"></th>
-                                                <th id="total_invoice_amount" class="text-white text-end"></th>
-                                                <th id="received_amount" class="text-white text-end"></th>
-                                                <th id="due" class="text-white text-end"></th>
-                                                <th class="text-white text-end">---</th>
+                                                <th colspan="11" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th id="total_amount" class="text-white"></th>
+                                                {{-- <th></th> --}}
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
                             </div>
 
-                            <form id="deleted_form" action="" method="post">
+                            <form id="delete_form" action="" method="post">
                                 @method('DELETE')
                                 @csrf
                             </form>
@@ -161,72 +157,56 @@
         </div>
     </div>
 
+    <div class="modal fade" id="addOrEditReceiptModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
     <div id="details"></div>
     <div id="extra_details"></div>
-
-    <!-- Edit Shipping modal -->
-    <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
-
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         // Show session message by toster alert.
-        @if (Session::has('successMsg'))
-            toastr.success('{{ session('successMsg') }}');
-        @endif
-
-        var table = $('.data_tbl').DataTable({
-            "processing": true,
-            "serverSide": true,
+        var receiptTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [
                 {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
                 {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
             ],
+            "processing": true,
+            "serverSide": true,
+            //aaSorting: [[0, 'asc']],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('sale.orders.index') }}",
+                "url": "{{ route('receipts.index') }}",
                 "data": function(d) {
-                    d.branch_id = $('#branch_id').val();
-                    d.customer_account_id = $('#customer_account_id').val();
-                    d.payment_status = $('#payment_status').val();
-                    d.user_id = $('#user_id').val();
-                    d.from_date = $('#from_date').val();
-                    d.to_date = $('#to_date').val();
+                    d.branch_id = $('#f_branch_id').val();
+                    d.credit_account_id = $('#f_credit_account_id').val();
+                    d.from_date = $('#f_from_date').val();
+                    d.to_date = $('#f_to_date').val();
                 }
             },
             columns: [
                 {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'order_id', name: 'sales.order_id', className: 'fw-bold'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'customer_name', name: 'customers.name'},
-                {data: 'payment_status', name: 'created_by.name', className: 'text-start'},
-                {data: 'total_item', name: 'total_item', className: 'text-end fw-bold'},
-                {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
-                {data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold'},
-                {data: 'received_amount', name: 'paid', className: 'text-end fw-bold'},
-                {data: 'due', name: 'due', className: 'text-end fw-bold'},
-                {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
-
+                {data: 'date', name: 'accountingVoucher.date'},
+                {data: 'voucher_no',name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
+                {data: 'branch',name: 'accountingVoucher.branch.name'},
+                {data: 'reference', name: 'accountingVoucher.saleRef.invoice_id'},
+                {data: 'remarks',name: 'accountingVoucher.remarks'},
+                {data: 'received_from',name: 'account.name'},
+                {data: 'received_to',name: 'accountingVoucher.voucherDebitDescription.account.name'},
+                {data: 'payment_method',name: 'accountingVoucher.voucherDebitDescription.paymentMethod.name'},
+                {data: 'transaction_no',name: 'accountingVoucher.voucherDebitDescription.transaction_no'},
+                {data: 'cheque_no',name: 'accountingVoucher.voucherDebitDescription.cheque_no'},
+                // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
+                {data: 'total_amount',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no', className: 'text-end fw-bold'},
+                // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
             ],fnDrawCallback: function() {
-                var total_item = sum_table_col($('.data_tbl'), 'total_item');
-                $('#total_item').text(bdFormat(total_item));
 
-                var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-                $('#total_qty').text(bdFormat(total_qty));
-
-                var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-                $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
-
-                var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
-                $('#received_amount').text(bdFormat(received_amount));
-
-                var due = sum_table_col($('.data_tbl'), 'due');
-                $('#due').text(bdFormat(due));
+                var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
+                $('#total_amount').text(bdFormat(total_amount));
 
                 $('.data_preloader').hide();
             }
@@ -234,7 +214,6 @@
 
         function sum_table_col(table, class_name) {
             var sum = 0;
-
             table.find('tbody').find('tr').each(function() {
 
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
@@ -244,50 +223,97 @@
                     );
                 }
             });
-
             return sum;
         }
 
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
+
             $('.data_preloader').show();
-            table.ajax.reload();
+            receiptTable.ajax.reload();
         });
 
-        $(document).on('click', '#editShipmentDetails', function(e) {
+        $.ajaxSetup ({
+            // Disable caching of AJAX responses
+            cache: false
+        });
+
+        $(document).on('click', '#addReceipt', function(e) {
             e.preventDefault();
 
-            $('.data_preloader').show();
             var url = $(this).attr('href');
 
             $.ajax({
                 url: url,
                 type: 'get',
+                cache: false,
+                async: false,
+                dataType: 'html',
                 success: function(data) {
 
-                    $('#editShipmentDetailsModal').html(data);
-                    $('#editShipmentDetailsModal').modal('show');
-                    $('.data_preloader').hide();
+                    // window.history.forward(1);
+                    // location.reload(true);
+                    $('#addOrEditReceiptModal').empty();
+                    $('#addOrEditReceiptModal').html(data);
+                    $('#addOrEditReceiptModal').modal('show');
 
                     setTimeout(function() {
 
-                        $('#shipment_shipment_address').focus().select();
+                        $('#receipt_date').focus().select();
                     }, 500);
-                },error: function(err) {
+                }, error: function(err) {
 
-                    $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        return;
+                    } else if (err.status == 500) {
 
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
                     }
                 }
             });
         });
 
+        $(document).on('click', '#editReceipt', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                cache: false,
+                async: false,
+                dataType: 'html',
+                success: function(data) {
+
+                    $('#addOrEditReceiptModal').empty();
+                    $('#addOrEditReceiptModal').html(data);
+                    $('#addOrEditReceiptModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#receipt_date').focus().select();
+                    }, 500);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        // Show details modal with data
         $(document).on('click', '#details_btn', function(e) {
             e.preventDefault();
 
@@ -316,6 +342,54 @@
             });
         });
 
+        $(document).on('click', '#delete', function(e){
+
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            $('#delete_form').attr('action', url);
+            $.confirm({
+                'title': 'Confirmation',
+                'content': 'Are you sure, you want to delete?',
+                'buttons': {
+                    'Yes': {'class': 'yes btn-modal-primary','action': function() { $('#delete_form').submit(); }},
+                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#delete_form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    receiptTable.ajax.reload();
+                    toastr.error(data);
+                },error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
         // Make print
         $(document).on('click', '#modalDetailsPrintBtn', function(e) {
             e.preventDefault();
@@ -326,56 +400,18 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
                 removeInline: false,
                 printDelay: 500,
                 header: null,
             });
         });
-
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    
-                    if (!$.isEmptyObject(data.errorMsg)) {
-
-                        toastr.error(data.errorMsg);
-                        return;
-                    }
-
-                    table.ajax.reload();
-                    toastr.error(data);
-                }
-            });
-        });
-
     </script>
 
     <script type="text/javascript">
-        new Litepicker({
+         new Litepicker({
             singleMode: true,
-            element: document.getElementById('from_date'),
+            element: document.getElementById('f_from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -394,7 +430,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('to_date'),
+            element: document.getElementById('f_to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -408,7 +444,9 @@
             tooltipNumber: (totalDays) => {
                 return totalDays - 1;
             },
-            format: 'DD-MM-YYYY',
+            format: 'DD-MM-YYYY'
         });
+
+        function getSupplier() {}
     </script>
 @endpush

@@ -202,7 +202,7 @@ class ProductService
                     return $html;
                 }
             })
-            ->editColumn('access_branches', function ($row) use ($generalSettings, $request) {
+            ->editColumn('access_branches', function ($row) use ($generalSettings, $request, $ownBranchIdOrParentBranchId) {
 
                 $productAccessBranches = $row->productAccessBranches;
                 // $query = DB::table('product_branches')->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->where('product_branches.product_id', $row->id);
@@ -232,7 +232,7 @@ class ProductService
 
                 if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-                    $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
+                    $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
 
                 $text = '';

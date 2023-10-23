@@ -1,11 +1,14 @@
 <?php
 
-use App\Models\Account;
 use Illuminate\Support\Arr;
+use App\Models\Accounts\Account;
+use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
+use App\Enums\AccountingVoucherType;
 use App\Models\Accounts\AccountGroup;
 use App\Models\Products\ProductStock;
 use Illuminate\Support\Facades\Route;
+use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
 
@@ -38,34 +41,106 @@ Route::get('my-test', function () {
     //     ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
     //     ->get();
 
-    $productLedger = DB::table('product_ledgers')
-        ->where('product_ledgers.product_id', 29)
-        ->where('product_ledgers.variant_id', null)
-        ->where('product_ledgers.branch_id', null)
-        ->where('product_ledgers.warehouse_id', null)
-        ->select(
-            DB::raw("SUM(product_ledgers.in) as stock_in"),
-            DB::raw("SUM(product_ledgers.out) as stock_out"),
-            // DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
-            DB::raw("SUM(product_ledgers.subtotal) as total_purchased_cost"),
-        )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
+    // return $receipts = AccountingVoucherDescription::query()
+    //     ->with([
+    //         'account:id,name,phone,address',
+    //         'accountingVoucher:id,branch_id,voucher_no,date,date_ts,voucher_type,sale_ref_id,purchase_return_ref_id,stock_adjustment_ref_id,total_amount,remarks,created_by_id',
+    //         'accountingVoucher.branch:id,name,branch_code,parent_branch_id',
+    //         'accountingVoucher.branch.parentBranch:id,name',
+    //         'accountingVoucher.voucherDebitDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
+    //         'accountingVoucher.voucherDebitDescription.account:id,name',
+    //         'accountingVoucher.voucherDebitDescription.paymentMethod:id,name',
+    //         'accountingVoucher.createdBy:id,prefix,name,last_name',
+    //         'accountingVoucher.saleRef:id,status,invoice_id,order_id',
+    //         'accountingVoucher.purchaseReturnRef:id,voucher_no',
+    //     ])
+    //     ->where('amount_type', 'cr')
+    //     ->where('account_id', 226)
+    //     ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
+    //     ->where('accounting_vouchers.voucher_type', AccountingVoucherType::Receipt->value)
+    //     ->select(
+    //         'accounting_voucher_descriptions.id as idf',
+    //         'accounting_voucher_descriptions.accounting_voucher_id',
+    //     )
+    //     ->orderBy('accounting_vouchers.date_ts', 'desc')
+    //     ->get();
 
-    $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
+    // foreach ($receipts as $receipt) {
+    //     echo 'Date : ' . $receipt?->accountingVoucher->date . '</br>';
+    //     echo 'Voucher No : ' . $receipt?->accountingVoucher->voucher_no . '</br>';
+    //     echo 'Voucher Type : ' . ($receipt?->accountingVoucher->voucher_type == AccountingVoucherType::Receipt->value ? AccountingVoucherType::Receipt->name : '') . '</br>';
+    //     echo 'Received Amount : ' . $receipt?->accountingVoucher->total_amount . '</br>';
+    //     echo 'debit A/c : ' . $receipt?->accountingVoucher?->voucherDebitDescription?->account?->name . '</br>';
+    //     echo 'Payment Method : ' . $receipt?->accountingVoucher?->voucherDebitDescription?->paymentMethod?->name . '</br>';
+    //     echo 'Cheque No : ' . $receipt?->accountingVoucher?->voucherDebitDescription?->cheque_no . '</br>';
+    //     echo 'Cheque Serial No : ' . $receipt?->accountingVoucher?->voucherDebitDescription?->cheque_serial_no . '</br>';
+    //     echo 'Received From : ' . $receipt?->account?->name . '</br>';
+    //     echo 'Remarks : ' . $receipt?->accountingVoucher?->remarks . '</br></br></br>';
+    // }
 
-    $productStock = ProductStock::where('product_id', 29)
-        ->where('variant_id', null)
-        ->where('branch_id', null)
-        ->where('branch_id', null)
-        ->first();
+    $ownBranchIdOrParentBranchId = null;
+    $customerAccounts = '';
+    $query = DB::table('accounts')
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('account_groups.sub_sub_group_number', 6);
 
-    $avgUnitCost = $currentStock > 0 ? $productLedger->sum('total_purchased_cost') / $currentStock : $product->product_cost;
-    $stockValue = $avgUnitCost * $currentStock;
+    $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+    $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone');
 
-    $productStock->stock = $currentStock;
-    $productStock->stock_value = $stockValue;
-    $productStock->save();
+    $assets = '';
+    $assetsQ = DB::table('accounts')
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('account_groups.main_group_number', 1)
+        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6]);
+        ->where(function ($query) {
+            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6])
+                ->orWhereNull('account_groups.sub_sub_group_number');
+        });
 
-    return $productStock;
+    $assetsQ->where('accounts.branch_id', auth()->user()->branch_id);
+
+    $assets = $assetsQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+
+    $liabilities = '';
+    $liabilitiesQ = DB::table('accounts')
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('account_groups.main_group_number', 2)
+        ->where('account_groups.is_global', 0)
+        ->where(function ($query) {
+            $query->whereNotIn('account_groups.sub_sub_group_number', [10, 11])
+                ->orWhereNull('account_groups.sub_sub_group_number');
+        });
+        // ->whereNotIn('account_groups.sub_sub_group_number', [10, 11]);
+
+    $liabilitiesQ->where('accounts.branch_id', auth()->user()->branch_id);
+
+    $liabilities = $liabilitiesQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+
+    $global = '';
+    $globalQ = DB::table('accounts')
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('account_groups.is_global', 1)
+        ->whereIn('account_groups.sub_group_number', [6, 7])
+        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11]);
+        ->where(function ($query) {
+            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11])
+                ->orWhereNull('account_groups.sub_sub_group_number');
+        });
+
+     $global = $globalQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+
+    return $results = Account::query()
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('account_groups.sub_sub_group_number', 10)
+        ->select('accounts.id', 'accounts.name', 'accounts.phone')
+        ->union($customerAccounts)
+        ->union($assets)
+        ->union($liabilities)
+        ->union($global)
+        // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
+        ->orderBy('id', 'desc')
+        ->orderBy('name', 'asc')
+        ->get();
 });
 
 Route::get('t-id', function () {

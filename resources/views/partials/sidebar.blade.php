@@ -1781,7 +1781,7 @@
                                         </div>
 
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('accounts.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('payments.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-money-check-alt"></i></span>

@@ -16,6 +16,6 @@ class DayBookController extends Controller
     function vouchersForReceiptOrPayment($accountId = null, $type = null)
     {
         $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $accountId, type: $type);
-        return $vouchers = $this->dayBookVoucherService->filteredVoucherForReceipt(vouchers: $trans);
+        return $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
     }
 }

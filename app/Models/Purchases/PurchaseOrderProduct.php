@@ -4,9 +4,9 @@ namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
 use App\Models\Products\Unit;
-use App\Models\ProductVariant;
 use App\Models\Products\Product;
 use App\Models\Purchases\Purchase;
+use App\Models\Products\ProductVariant;
 
 class PurchaseOrderProduct extends BaseModel
 {

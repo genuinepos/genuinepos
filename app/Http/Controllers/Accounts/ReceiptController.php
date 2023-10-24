@@ -97,7 +97,7 @@ class ReceiptController extends Controller
 
             $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $creditAccountId, type: AccountingVoucherType::Receipt->value);
 
-            $vouchers = $this->dayBookVoucherService->filteredVoucherForReceipt(vouchers: $trans);
+            $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
@@ -225,7 +225,7 @@ class ReceiptController extends Controller
 
         $transAccountId = isset($creditAccountId) ? $creditAccountId : $receipt->voucherCreditDescription->account_id;
         $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $transAccountId, type: AccountingVoucherType::Receipt->value);
-        $vouchers = $this->dayBookVoucherService->filteredVoucherForReceipt(vouchers: $trans);
+        $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
 
         $ownBranchIdOrParentBranchId = $receipt?->branch?->parent_branch_id ? $receipt?->branch?->parent_branch_id : $receipt?->branch_id;
 

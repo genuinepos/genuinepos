@@ -113,20 +113,20 @@ class GeneralSettingController extends Controller
             'prefix__purchase_invoice' => $request->purchase_invoice,
             'prefix__sale_invoice' => $request->sale_invoice,
             'prefix__purchase_return' => $request->purchase_return,
-            'prefix__stock_transfer' => $request->stock_transfer,
+            // 'prefix__stock_transfer' => $request->stock_transfer,
             'prefix__stock_adjustment' => $request->stock_adjustment,
             'prefix__sale_return' => $request->sale_return,
             'prefix__expenses' => $request->expenses,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
-            'prefix__payment' => $request->purchase_payment,
-            'prefix__receipt' => $request->sale_payment,
-            'prefix__expanse_payment' => $request->expanse_payment,
+            'prefix__payment' => $request->payment,
+            'prefix__receipt' => $request->receipt,
+            // 'prefix__expanse_payment' => $request->expanse_payment,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Prefix settings updated Successfully');
+        return response()->json(__("Prefix settings updated Successfully"));
     }
 
     public function systemSettings(Request $request)

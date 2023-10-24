@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\DayBookController;
+use App\Http\Controllers\Accounts\PaymentController;
 use App\Http\Controllers\Accounts\ReceiptController;
 use App\Http\Controllers\Accounts\AccountGroupController;
 
@@ -51,6 +52,17 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}/{creditAccountId?}', 'edit')->name('receipts.edit');
         Route::post('update/{id}', 'update')->name('receipts.update');
         Route::delete('delete/{id}', 'delete')->name('receipts.delete');
+    });
+
+    Route::controller(PaymentController::class)->prefix('payments')->group(function () {
+
+        Route::get('index/{debitAccountId?}', 'index')->name('payments.index');
+        Route::get('show/{id}', 'show')->name('payments.show');
+        Route::get('create/{debitAccountId?}', 'create')->name('payments.create');
+        Route::post('store', 'store')->name('payments.store');
+        Route::get('edit/{id}/{debitAccountId?}', 'edit')->name('payments.edit');
+        Route::post('update/{id}', 'update')->name('payments.update');
+        Route::delete('delete/{id}', 'delete')->name('payments.delete');
     });
 
     Route::controller(DayBookController::class)->prefix('day-books')->group(function () {

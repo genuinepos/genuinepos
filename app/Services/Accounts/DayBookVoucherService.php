@@ -68,8 +68,8 @@ class DayBookVoucherService
         return $vouchers;
     }
 
-    function filteredVoucherForReceipt(?object $vouchers) : ?array {
-
+    function filteredVoucher(?object $vouchers): ?array
+    {
         $arr = [];
         foreach ($vouchers as $key => $voucher) {
 
@@ -97,7 +97,7 @@ class DayBookVoucherService
                         'due' => $voucher->sale_due,
                     ];
                 }
-            }else if ($voucher->voucher_type == DayBookVoucherType::SalesOrder->value) {
+            } else if ($voucher->voucher_type == DayBookVoucherType::SalesOrder->value) {
 
                 if ($voucher->sale_due > 0) {
 
@@ -123,14 +123,14 @@ class DayBookVoucherService
                 }
             } else if ($voucher->voucher_type == DayBookVoucherType::Purchase->value) {
 
-                if ($voucher->due > 0) {
+                if ($voucher->purchase_due > 0) {
 
-                    $payable = $voucher->total_purchase_amount;
+                    $payable = $voucher->purchased_amount;
                     $paymentStatus = '';
-                    if ($voucher->due > 0 && $voucher->due < $payable) {
+                    if ($voucher->purchase_due > 0 && $voucher->purchase_due < $payable) {
 
                         $paymentStatus = __("Partial");
-                    } elseif ($payable == $voucher->due) {
+                    } elseif ($payable == $voucher->purchase_due) {
 
                         $paymentStatus = __("Due");
                     }
@@ -142,19 +142,19 @@ class DayBookVoucherService
                         'voucherTypeStr' => __('Purchase'),
                         'voucherNo' => $voucher->purchase_invoice,
                         'paymentStatus' => $paymentStatus,
-                        'due' => $voucher->due,
+                        'due' => $voucher->purchase_due,
                     ];
                 }
-            }else if ($voucher->voucher_type == DayBookVoucherType::PurchaseOrder->value) {
+            } else if ($voucher->voucher_type == DayBookVoucherType::PurchaseOrder->value) {
 
-                if ($voucher->due > 0) {
+                if ($voucher->purchase_due > 0) {
 
-                    $payable = $voucher->total_purchase_amount;
+                    $payable = $voucher->purchased_amount;
                     $paymentStatus = '';
-                    if ($voucher->due > 0 && $voucher->due < $payable) {
+                    if ($voucher->purchase_due > 0 && $voucher->purchase_due < $payable) {
 
                         $paymentStatus = __("Partial");
-                    } elseif ($payable == $voucher->due) {
+                    } elseif ($payable == $voucher->purchase_due) {
 
                         $paymentStatus = __("Due");
                     }
@@ -166,7 +166,7 @@ class DayBookVoucherService
                         'voucherTypeStr' => __('P/o'),
                         'voucherNo' => $voucher->purchase_invoice,
                         'paymentStatus' => $paymentStatus,
-                        'due' => $voucher->due,
+                        'due' => $voucher->purchase_due,
                     ];
                 }
             }

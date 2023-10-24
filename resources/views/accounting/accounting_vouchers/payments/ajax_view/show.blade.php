@@ -8,7 +8,7 @@
          <div class="modal-content">
              <div class="modal-header">
                  <h6 class="modal-title" id="exampleModalLabel">
-                    {{ __("Receipt Details") }} ({{ __("Voucher No") }} : <strong>{{ $receipt->voucher_no }}</strong>)
+                    {{ __("Payment Details") }} ({{ __("Voucher No") }} : <strong>{{ $payment->voucher_no }}</strong>)
                  </h6>
                  <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
              </div>
@@ -17,40 +17,35 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
-                                {{ date($generalSettings['business__date_format'], strtotime($receipt->date)) }}
+                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                             </li>
-                            <li style="font-size:11px!important;"><strong>{{ __("Voucher No") }} : </strong>{{ $receipt->voucher_no }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __("Received Amount") }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __("Voucher No") }} : </strong>{{ $payment->voucher_no }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __("Paid Amount") }} : </strong>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }}</li>
                          </ul>
                      </div>
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __("Reference") }} : </strong>
-                                @if ($receipt?->saleRef)
+                                @if ($payment?->purchaseRef)
 
-                                    @if ($receipt?->saleRef->status == \App\Enums\SaleStatus::Final->value)
+                                    @if ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                        {{ __("Sales") }} : {{ $receipt?->saleRef->invoice_id }}
-                                    @elseif ($receipt?->saleRef->status == \App\Enums\SaleStatus::Order->value)
+                                        {{ __("Purchase") }} : {{ $payment?->purchaseRef->invoice_id }}
+                                    @elseif ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                        {{ __("Sales-Order") }} : {{ $receipt?->saleRef->order_id }}
+                                        {{ __("P/o") }} : {{ $payment?->purchaseRef->invoice_id }}
                                     @endif
                                 @endif
 
-                                @if ($receipt?->purchaseReturnRef)
+                                @if ($payment?->salesReturnRef)
 
-                                    {{ __("Purchase Return") }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
-                                @endif
-
-                                @if ($receipt?->stockAdjustmentRef)
-
-                                    {{ __("Stock Adjustment") }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
+                                    {{ __("Purchase Return") }} : {{ $payment?->salesReturnRef->voucher_no }}
                                 @endif
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __("Created By") }} : </strong>
-                                {{ $receipt?->createdBy?->prefix.' '.$receipt?->createdBy?->name.' '.$receipt?->createdBy?->last_name }}
+                                {{ $payment?->createdBy?->prefix.' '.$payment?->createdBy?->name.' '.$payment?->createdBy?->last_name }}
                             </li>
                          </ul>
                      </div>
@@ -58,14 +53,14 @@
                      <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __("Shop/Business") }} : </strong>
-                                @if ($receipt->branch_id)
+                                @if ($payment->branch_id)
 
-                                    @if($receipt?->branch?->parentBranch)
+                                    @if($payment?->branch?->parentBranch)
 
-                                        {{ $receipt?->branch?->parentBranch?->name . '(' . $receipt?->branch?->area_name . ')'.'-('.$receipt?->branch?->branch_code.')' }}
+                                        {{ $payment?->branch?->parentBranch?->name . '(' . $payment?->branch?->area_name . ')'.'-('.$payment?->branch?->branch_code.')' }}
                                     @else
 
-                                        {{ $receipt?->branch?->name . '(' . $receipt?->branch?->area_name . ')'.'-('.$receipt?->branch?->branch_code.')' }}
+                                        {{ $payment?->branch?->name . '(' . $payment?->branch?->area_name . ')'.'-('.$payment?->branch?->branch_code.')' }}
                                     @endif
                                 @else
 
@@ -74,9 +69,9 @@
                            </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __("Phone") }} : </strong>
-                                @if ($receipt->branch)
+                                @if ($payment->branch)
 
-                                    {{ $receipt->branch->phone }}
+                                    {{ $payment->branch->phone }}
                                 @else
 
                                     {{ $generalSettings['business__phone'] }}
@@ -88,8 +83,8 @@
                  <br>
                  <div class="row mt-2">
                     <div class="col-6">
-                        <p class="fw-bold">{{ __("Received From") }} :</p>
-                        @foreach ($receipt->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
+                        <p class="fw-bold">{{ __("Paid To") }} :</p>
+                        @foreach ($payment->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
                             <div class="table-responsive">
                                 <table class="table print-table table-sm">
                                     <thead>
@@ -115,7 +110,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Paid Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                                             <td class="text-end fw-bold" style="font-size:11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                             </td>
@@ -127,13 +122,13 @@
                     </div>
 
                     <div class="col-6">
-                        <p class="fw-bold">{{ __("Received To") }} : </p>
-                        @foreach ($receipt->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
+                        <p class="fw-bold">{{ __("Paid From") }} : </p>
+                        @foreach ($payment->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
                             <div class="table-responsive">
                                 <table class="table print-table table-sm">
                                     <thead>
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Debit A/c") }} : </th>
+                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Credit A/c") }} : </th>
                                             <td class="text-end" style="font-size:11px!important;">
                                                 {{ $description?->account?->name }}
                                             </td>
@@ -174,13 +169,13 @@
                 </div>
 
                 @php
-                    $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
+                    $debtiDescription = $payment->voucherDescriptions()->where('amount_type', 'dr')->first();
                 @endphp
 
                 <div class="purchase_product_table mt-2">
                     <div class="row">
                         <div class="col-md-6">
-                            <p class="fw-bold">{{ __("Receipt Against Vouchers") }}</p>
+                            <p class="fw-bold">{{ __("Paid Against Vouchers") }}</p>
                             <div class="table-responsive">
                                 <table class="display table modal-table table-sm">
                                     <thead>
@@ -195,11 +190,11 @@
                                         @php
                                             $totalAmount = 0;
                                         @endphp
-                                        @foreach ($creditDescription->references as $reference)
+                                        @foreach ($debtiDescription->references as $reference)
 
                                             @php
                                                 $isOrder = 0;
-                                                if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
+                                                if ($reference?->purchase?->purchase_status == App\Enums\PurchaseStatus::PurchaseOrder->value) {
 
                                                     $isOrder = 1;
                                                 }
@@ -208,66 +203,50 @@
                                             @if ($isOrder == 0)
                                                 <tr>
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            {{ $reference?->sale->date }}
+                                                            {{ $reference?->purchase->date }}
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ $reference?->purchaseReturn->date }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ $reference?->stockAdjustment->date }}
+                                                            {{ $reference?->salesReturn->date }}
                                                         @endif
                                                     </td>
 
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                            @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                                {{ $reference?->sale->invoice_id }}
+                                                                {{ $reference?->purchase->invoice_id }}
+                                                            @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                            @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-
-                                                                {{ $reference?->sale->order_id }}
+                                                                {{ $reference?->purchase->invoice_id }}
                                                             @endif
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ $reference?->purchaseReturn->voucher_no }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ $reference?->stockAdjustment->voucher_no }}
+                                                            {{ $reference?->salesReturn->voucher_no }}
                                                         @endif
                                                     </td>
 
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                            @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                                {{ __("Sales") }}
-                                                            @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
+                                                                {{ __("Purchase") }}
+                                                            @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                                {{ __("Sales-Order") }}
+                                                                {{ __("P/o") }}
                                                             @endif
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ __("Purchase Return") }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ __("Stock Adjustment") }}
+                                                            {{ __("Sales Return") }}
                                                         @endif
                                                     </td>
 
@@ -290,7 +269,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <p class="fw-bold">{{ __("Receipt Against Order Vouchers") }}</p>
+                            <p class="fw-bold">{{ __("Paid Against Order Vouchers") }}</p>
                             <div class="table-responsive">
                                 <table class="display table modal-table table-sm">
                                     <thead>
@@ -305,11 +284,11 @@
                                         @php
                                             $totalAmount = 0;
                                         @endphp
-                                        @foreach ($creditDescription->references as $reference)
+                                        @foreach ($debtiDescription->references as $reference)
 
                                             @php
                                                 $isOrder = 0;
-                                                if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
+                                                if ($reference?->purchase?->purchase_status == App\Enums\PurchaseStatus::PurchaseOrder->value) {
 
                                                     $isOrder = 1;
                                                 }
@@ -318,66 +297,50 @@
                                             @if ($isOrder == 1)
                                                 <tr>
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            {{ $reference?->sale->date }}
+                                                            {{ $reference?->purchase->date }}
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ $reference?->purchaseReturn->date }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ $reference?->stockAdjustment->date }}
+                                                            {{ $reference?->salesReturn->date }}
                                                         @endif
                                                     </td>
 
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                            @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                                {{ $reference?->sale->invoice_id }}
+                                                                {{ $reference?->purchase->invoice_id }}
+                                                            @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                            @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-
-                                                                {{ $reference?->sale->order_id }}
+                                                                {{ $reference?->purchase->invoice_id }}
                                                             @endif
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ $reference?->purchaseReturn->voucher_no }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ $reference?->stockAdjustment->voucher_no }}
+                                                            {{ $reference?->salesReturn->voucher_no }}
                                                         @endif
                                                     </td>
 
                                                     <td class="text-start" style="font-size:11px!important;">
-                                                        @if ($reference?->sale)
+                                                        @if ($reference?->purchase)
 
-                                                            @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                            @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                                {{ __("Sales") }}
-                                                            @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
+                                                                {{ __("Purchase") }}
+                                                            @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                                {{ __("Sales-Order") }}
+                                                                {{ __("P/o") }}
                                                             @endif
                                                         @endif
 
-                                                        @if ($reference?->purchaseReturn)
+                                                        @if ($reference?->salesReturn)
 
-                                                            {{ __("Purchase Return") }}
-                                                        @endif
-
-                                                        @if ($reference?->stockAdjustment)
-
-                                                            {{ __("Stock Adjustment") }}
+                                                            {{ __("Sales Return") }}
                                                         @endif
                                                     </td>
 
@@ -405,7 +368,7 @@
                      <div class="col-md-6">
                          <div class="details_area">
                              <p style="font-size:11px!important;"><strong>{{ __("Remarks") }}</strong></p>
-                             <p class="shipping_details" style="font-size:11px!important;">{{ $receipt->remarks }}</p>
+                             <p class="shipping_details" style="font-size:11px!important;">{{ $payment->remarks }}</p>
                          </div>
                      </div>
                  </div>
@@ -447,25 +410,25 @@
     <div class="details_area">
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
             <div class="col-4">
-                @if ($receipt->branch)
+                @if ($payment->branch)
 
-                    @if ($receipt?->branch?->parent_branch_id)
+                    @if ($payment?->branch?->parent_branch_id)
 
-                        @if ($receipt->branch?->parentBranch?->logo != 'default.png')
+                        @if ($payment->branch?->parentBranch?->logo != 'default.png')
 
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->parentBranch?->logo) }}">
                         @else
 
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->parentBranch?->name }}</span>
                         @endif
                     @else
 
-                        @if ($receipt->branch?->logo != 'default.png')
+                        @if ($payment->branch?->logo != 'default.png')
 
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payment->branch?->logo) }}">
                         @else
 
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payment->branch?->name }}</span>
                         @endif
                     @endif
                 @else
@@ -482,13 +445,13 @@
             <div class="col-8 text-end">
                 <p style="text-transform: uppercase;" class="p-0 m-0">
                     <strong>
-                        @if ($receipt?->branch)
-                            @if ($receipt?->branch?->parent_branch_id)
+                        @if ($payment?->branch)
+                            @if ($payment?->branch?->parent_branch_id)
 
-                                {{ $receipt?->branch?->parentBranch?->name }}
+                                {{ $payment?->branch?->parentBranch?->name }}
                             @else
 
-                                {{ $receipt?->branch?->name }}
+                                {{ $payment?->branch?->name }}
                             @endif
                         @else
 
@@ -498,9 +461,9 @@
                 </p>
 
                 <p>
-                    @if ($receipt?->branch)
+                    @if ($payment?->branch)
 
-                        {{ $receipt->branch->city . ', ' . $receipt->branch->state. ', ' . $receipt->branch->zip_code. ', ' . $receipt->branch->country }}
+                        {{ $payment->branch->city . ', ' . $payment->branch->state. ', ' . $payment->branch->zip_code. ', ' . $payment->branch->country }}
                     @else
 
                         {{ $generalSettings['business__address'] }}
@@ -508,14 +471,14 @@
                 </p>
 
                 <p>
-                    @if ($receipt?->branch)
+                    @if ($payment?->branch)
 
-                        <strong>@lang('menu.email') : </strong> {{ $receipt?->branch?->email }},
-                        <strong>@lang('menu.phone') : </strong> {{ $receipt?->branch?->phone }}
+                        <strong>{{ __("Email") }} : </strong> {{ $payment?->branch?->email }},
+                        <strong>{{ __("Phone") }} : </strong> {{ $payment?->branch?->phone }}
                     @else
 
-                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
-                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
+                        <strong>{{ __("Email") }}: </strong> {{ $generalSettings['business__email'] }},
+                        <strong>{{ __("Phone") }} : </strong> {{ $generalSettings['business__phone'] }}
                     @endif
                 </p>
             </div>
@@ -531,36 +494,32 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
-                        {{ date($generalSettings['business__date_format'], strtotime($receipt->date)) }}
+                        {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
                     </li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Voucher No") }} : </strong>{{ $receipt->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Received Amount") }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Voucher No") }} : </strong>{{ $payment->voucher_no }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Paid Amount") }} : </strong>{{ App\Utils\Converter::format_in_bdt($payment->total_amount) }}</li>
                 </ul>
             </div>
 
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __("Reference") }} : </strong>
-                        @if ($receipt?->saleRef)
+                        @if ($payment?->purchaseRef)
 
-                            @if ($receipt?->saleRef->status == \App\Enums\SaleStatus::Final->value)
-                                {{ __("Sales") }} : {{ $receipt?->saleRef->invoice_id }}
-                            @elseif ($receipt?->saleRef->status == \App\Enums\SaleStatus::Order->value)
-                                {{ __("Sales-Order") }} : {{ $receipt?->saleRef->order_id }}
+                            @if ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
+                                {{ __("Purchase") }} : {{ $payment?->saleRef->invoice_id }}
+                            @elseif ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
+                                {{ __("P/o") }} : {{ $payment?->purchaseRef->invoice_id }}
                             @endif
                         @endif
 
-                        @if ($receipt?->purchaseReturnRef)
-                            {{ __("Purchase Return") }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
-                        @endif
-
-                        @if ($receipt?->stockAdjustmentRef)
-                            {{ __("Stock Adjustment") }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
+                        @if ($payment?->salesReturnRef)
+                            {{ __("Sales Return") }} : {{ $payment?->salesReturnRef->voucher_no }}
                         @endif
                     </li>
 
                     <li style="font-size:11px!important;"><strong>{{ __("Created By") }} : </strong>
-                        {{ $receipt?->createdBy?->prefix.' '.$receipt?->createdBy?->name.' '.$receipt?->createdBy?->last_name }}
+                        {{ $payment?->createdBy?->prefix.' '.$payment?->createdBy?->name.' '.$payment?->createdBy?->last_name }}
                     </li>
                 </ul>
             </div>
@@ -568,8 +527,8 @@
 
         <div class="row mt-2">
             <div class="col-6">
-                <p class="fw-bold">{{ __("Received From") }} :</p>
-                @foreach ($receipt->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
+                <p class="fw-bold">{{ __("Paid To") }} :</p>
+                @foreach ($payment->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
@@ -594,7 +553,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Paid Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                 </td>
@@ -605,8 +564,8 @@
             </div>
 
             <div class="col-6">
-                <p class="fw-bold">{{ __("Received To") }} : </p>
-                @foreach ($receipt->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
+                <p class="fw-bold">{{ __("Paid From") }} : </p>
+                @foreach ($payment->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
                     <table class="table print-table table-sm">
                         <thead>
                             <tr>
@@ -650,13 +609,13 @@
         </div>
 
         @php
-            $creditDescription = $receipt->voucherDescriptions()->where('amount_type', 'cr')->first();
+            $debitDescription = $payment->voucherDescriptions()->where('amount_type', 'dr')->first();
         @endphp
 
         <div class="purchase_product_table mt-2">
             <div class="row">
                 <div class="col-6">
-                    <p class="fw-bold">{{ __("Receipt Against Vouchers") }}</p>
+                    <p class="fw-bold">{{ __("Paid Against Vouchers") }}</p>
                     <table class="table report-table table-sm table-bordered print_table">
                         <thead>
                             <tr>
@@ -670,10 +629,10 @@
                             @php
                                 $totalAmount = 0;
                             @endphp
-                            @foreach ($creditDescription->references as $reference)
+                            @foreach ($debitDescription->references as $reference)
                                 @php
                                     $isOrder = 0;
-                                    if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
+                                    if ($reference?->purchase?->purchase_status == App\Enums\PurchaseStatus::PurchaseOrder->value) {
 
                                         $isOrder = 1;
                                     }
@@ -681,66 +640,50 @@
                                 @if ($isOrder == 0)
                                     <tr>
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                {{ $reference?->sale->date }}
+                                                {{ $reference?->purchase->date }}
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ $reference?->purchaseReturn->date }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ $reference?->stockAdjustment->date }}
+                                                {{ $reference?->salesReturn->date }}
                                             @endif
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                    {{ $reference?->sale->invoice_id }}
+                                                    {{ $reference?->purchase->invoice_id }}
+                                                @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-
-                                                    {{ $reference?->sale->order_id }}
+                                                    {{ $reference?->purchase->invoice_id }}
                                                 @endif
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ $reference?->purchaseReturn->voucher_no }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ $reference?->stockAdjustment->voucher_no }}
+                                                {{ $reference?->salesReturn->voucher_no }}
                                             @endif
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                    {{ __("Sales") }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
+                                                    {{ __("Purchase") }}
+                                                @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                    {{ __("Sales-Order") }}
+                                                    {{ __("P/o") }}
                                                 @endif
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ __("Purchase Return") }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ __("Stock Adjustment") }}
+                                                {{ __("Sales Return") }}
                                             @endif
                                         </td>
 
@@ -762,7 +705,7 @@
                 </div>
 
                 <div class="col-6">
-                    <p class="fw-bold">{{ __("Receipt Against Order Vouchers") }}</p>
+                    <p class="fw-bold">{{ __("Paid Against Order Vouchers") }}</p>
                     <table class="table report-table table-sm table-bordered print_table">
                         <thead>
                             <tr>
@@ -776,10 +719,10 @@
                             @php
                                 $totalAmount = 0;
                             @endphp
-                            @foreach ($creditDescription->references as $reference)
+                            @foreach ($debitDescription->references as $reference)
                                 @php
                                     $isOrder = 0;
-                                    if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
+                                    if ($reference?->purchase?->purchase_status == App\Enums\PurchaseStatus::PurchaseOrder->value) {
 
                                         $isOrder = 1;
                                     }
@@ -787,66 +730,51 @@
                                 @if ($isOrder == 1)
                                     <tr>
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                {{ $reference?->sale->date }}
+                                                {{ $reference?->purchase->date }}
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ $reference?->purchaseReturn->date }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ $reference?->stockAdjustment->date }}
+                                                {{ $reference?->salesReturn->date }}
                                             @endif
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                @if ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                    {{ $reference?->sale->invoice_id }}
+                                                    {{ $reference?->purchase->invoice_id }}
 
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
+                                                @elseif ($reference?->purchase->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                    {{ $reference?->sale->order_id }}
+                                                    {{ $reference?->purchase->invoice_id }}
                                                 @endif
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ $reference?->purchaseReturn->voucher_no }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ $reference?->stockAdjustment->voucher_no }}
+                                                {{ $reference?->salesReturn->voucher_no }}
                                             @endif
                                         </td>
 
                                         <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
+                                            @if ($reference?->purchase)
 
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
+                                                @if ($reference?->purchase->status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                                    {{ __("Sales") }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
+                                                    {{ __("Purchase") }}
+                                                @elseif ($reference?->purchase->status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                                    {{ __("Sales-Order") }}
+                                                    {{ __("P/o") }}
                                                 @endif
                                             @endif
 
-                                            @if ($reference?->purchaseReturn)
+                                            @if ($reference?->salesReturn)
 
-                                                {{ __("Purchase Return") }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-
-                                                {{ __("Stock Adjustment") }}
+                                                {{ __("Sales Return") }}
                                             @endif
                                         </td>
 
@@ -893,8 +821,8 @@
 
         <div class="row">
             <div class="col-md-12 text-center">
-                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($receipt->voucher_no, $generator::TYPE_CODE_128)) }}">
-                <p>{{ $receipt->voucher_no }}</p>
+                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payment->voucher_no, $generator::TYPE_CODE_128)) }}">
+                <p>{{ $payment->voucher_no }}</p>
             </div>
         </div>
 
@@ -918,4 +846,3 @@
     </div>
 </div>
  <!-- Purchase print templete end-->
-

@@ -695,7 +695,6 @@ class AccountingVoucherDescriptionReferenceService
             return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                // ->orderBy('report_date', 'asc')
                 ->get()
                 ->sortBy(function ($purchase) use ($refIds) {
                     return array_search($purchase->id, $refIds);
@@ -705,7 +704,6 @@ class AccountingVoucherDescriptionReferenceService
             return PurchaseReturn::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                // ->orderBy('date_ts', 'asc')
                 ->get()
                 ->sortBy(function ($purchaseReturn) use ($refIds) {
                     return array_search($purchaseReturn->id, $refIds);
@@ -715,8 +713,6 @@ class AccountingVoucherDescriptionReferenceService
             return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                // ->orderBy('date_ts', 'asc')
-                // ->orderByRaw(DB::raw("FIELD(id ?, [$ids_ordered])"))
                 ->get()
                 ->sortBy(function ($sale) use ($refIds) {
                     return array_search($sale->id, $refIds);
@@ -726,7 +722,6 @@ class AccountingVoucherDescriptionReferenceService
             return SaleReturn::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                // ->orderBy('date_ts', 'asc')
                 ->get()
                 ->sortBy(function ($salesReturn) use ($refIds) {
                     return array_search($salesReturn->id, $refIds);

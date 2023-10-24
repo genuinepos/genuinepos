@@ -4,22 +4,27 @@
         .form_element {
             border: 1px solid #7e0d3d;
         }
+
         label {
             font-size: 12px !important;
         }
+
         ul.menus_unorder_list {
             list-style: none;
             float: left;
             width: 100%;
         }
+
         ul.menus_unorder_list .menu_list {
             display: block;
             text-align: center;
             margin-bottom: 10px;
         }
+
         ul.menus_unorder_list .menu_list:last-child {
             margin-bottom: 0;
         }
+
         ul.menus_unorder_list .menu_list .menu_btn {
             color: black;
             padding: 6px 1px;
@@ -31,11 +36,13 @@
             background: white;
             transition: .2s;
         }
+
         ul.menus_unorder_list .menu_list .menu_btn.menu_active {
             border-color: var(--dark-color-1);
-            color: #504d4d!important;
+            color: #504d4d !important;
             font-weight: 600;
         }
+
         .hide-all {
             display: none;
         }
@@ -64,8 +71,7 @@
                                 <div class="settings_side_menu">
                                     <ul class="menus_unorder_list">
                                         <li class="menu_list">
-                                            <a class="menu_btn menu_active" data-form="business_settings_form"
-                                                href="#">@lang('menu.business_settings')</a>
+                                            <a class="menu_btn menu_active" data-form="business_settings_form" href="#">@lang('menu.business_settings')</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -103,9 +109,7 @@
                             </div>
 
                             <div class="col-md-9">
-                                <form id="business_settings_form" class="setting_form p-2"
-                                    action="{{ route('settings.business.settings') }}" method="post"
-                                    enctype="multipart/form-data">
+                                <form id="business_settings_form" class="setting_form p-2" action="{{ route('settings.business.settings') }}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">@lang('menu.business_settings') </h6>
@@ -115,30 +119,24 @@
                                     <div class="form-group row">
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.business_name') </strong></label>
-                                            <input type="text" name="shop_name" class="form-control bs_input"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['business__shop_name'] }}">
+                                            <input type="text" name="shop_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.address') </strong></label>
-                                            <input type="text" name="address" class="form-control bs_input"
-                                                autocomplete="off" placeholder="Business address"
-                                                value="{{ $generalSettings['business__address'] }}">
+                                            <input type="text" name="address" class="form-control bs_input" autocomplete="off" placeholder="Business address" value="{{ $generalSettings['business__address'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.phone') </strong></label>
-                                            <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number"
-                                                value="{{ $generalSettings['business__phone'] }}">
+                                            <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number" value="{{ $generalSettings['business__phone'] }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>@lang('menu.email') </strong></label>
-                                            <input type="text" name="email" class="form-control bs_input" placeholder="Business email address"
-                                                value="{{ $generalSettings['business__email'] }}">
+                                            <input type="text" name="email" class="form-control bs_input" placeholder="Business email address" value="{{ $generalSettings['business__email'] }}">
                                         </div>
 
                                         <div class="col-md-4">
@@ -147,17 +145,13 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                                 </div>
-                                                <input type="text" name="start_date" class="form-control" autocomplete="off"
-                                                    value="{{ $generalSettings['business__start_date'] }}">
+                                                <input type="text" name="start_date" class="form-control" autocomplete="off" value="{{ $generalSettings['business__start_date'] }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Default Profit') }}(%) </strong><span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" name="default_profit" class="form-control bs_input"
-                                                autocomplete="off" data-name="Default profit" id="default_profit"
-                                                value="{{ $generalSettings['business__default_profit'] }}">
+                                            <label><strong>{{ __('Default Profit') }}(%) </strong><span class="text-danger">*</span></label>
+                                            <input type="number" name="default_profit" class="form-control bs_input" autocomplete="off" data-name="Default profit" id="default_profit" value="{{ $generalSettings['business__default_profit'] }}">
                                             <span class="error error_default_profit"></span>
                                         </div>
                                     </div>
@@ -172,12 +166,9 @@
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Currency') }}</strong><span class="text-danger">*</span></label>
-                                            <select name="currency" class="form-control bs_input" data-name="Currency"
-                                                id="currency">
+                                            <select name="currency" class="form-control bs_input" data-name="Currency" id="currency">
                                                 @foreach ($currencies as $currency)
-                                                    <option
-                                                        {{ $generalSettings['business__currency'] == $currency->symbol ? 'SELECTED' : '' }}
-                                                        value="{{ $currency->symbol }}">
+                                                    <option {{ $generalSettings['business__currency'] == $currency->symbol ? 'SELECTED' : '' }} value="{{ $currency->symbol }}">
                                                         {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
                                                     </option>
                                                 @endforeach
@@ -186,12 +177,10 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Accounting Method') }} </strong> <span
-                                                    class="text-danger">*</span></label>
-                                            <select name="stock_accounting_method" class="form-control bs_input"
-                                                data-name="Stock Accounting Method" id="stock_accounting_method">
+                                            <label><strong>{{ __('Stock Accounting Method') }} </strong> <span class="text-danger">*</span></label>
+                                            <select name="stock_accounting_method" class="form-control bs_input" data-name="Stock Accounting Method" id="stock_accounting_method">
                                                 @php
-                                                    $stock_accounting_method = $generalSettings['business__stock_accounting_method'] ?? NULL;
+                                                    $stock_accounting_method = $generalSettings['business__stock_accounting_method'] ?? null;
                                                 @endphp
                                                 @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
                                                     <option {{ $stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
@@ -204,13 +193,10 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Date Format') }}</strong><span class="text-danger">*</span></label>
-                                            <select name="date_format" class="form-control bs_input" data-name="Date format"
-                                                id="date_format">
-                                                <option value="d-m-Y"
-                                                    {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
+                                            <select name="date_format" class="form-control bs_input" data-name="Date format" id="date_format">
+                                                <option value="d-m-Y" {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
                                                     dd-mm-yyyy</option>
-                                                <option value="m-d-Y"
-                                                    {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
+                                                <option value="m-d-Y" {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
                                                     mm-dd-yyyy</option>
                                                 <option value="Y-m-d" {{ $generalSettings['business__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
                                                     yyyy-mm-dd</option>
@@ -220,27 +206,21 @@
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Time Format') }}</strong><span class="text-danger">*</span></label>
-                                            <select name="time_format" class="form-control bs_input" data-name="Time format"
-                                                id="time_format">
-                                                <option value="12"
-                                                    {{ $generalSettings['business__time_format'] == '12' ? 'SELECTED' : '' }}>
+                                            <select name="time_format" class="form-control bs_input" data-name="Time format" id="time_format">
+                                                <option value="12" {{ $generalSettings['business__time_format'] == '12' ? 'SELECTED' : '' }}>
                                                     12 Hour</option>
-                                                <option value="24"
-                                                    {{ $generalSettings['business__time_format'] == '24' ? 'SELECTED' : '' }}>
+                                                <option value="24" {{ $generalSettings['business__time_format'] == '24' ? 'SELECTED' : '' }}>
                                                     24 Hour</option>
                                             </select>
                                             <span class="error error_time_format"></span>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Time Zone') }} </strong><span class="text-danger">*</span> {{  now()->format('Y-m-d') }}</label>
-                                            <select name="timezone" class="form-control bs_input" data-name="Time format"
-                                                id="time_format">
+                                            <label><strong>{{ __('Time Zone') }} </strong><span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
+                                            <select name="timezone" class="form-control bs_input" data-name="Time format" id="time_format">
                                                 <option value="">{{ __('Time Zone') }}</option>
                                                 @foreach ($timezones as $key => $timezone)
-                                                    <option
-                                                        {{ ($generalSettings['business__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }}
-                                                        value="{{ $key }}">{{ $timezone }}</option>
+                                                    <option {{ ($generalSettings['business__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_time_format"></span>
@@ -257,8 +237,7 @@
                                     </div>
                                 </form>
 
-                                <form id="tax_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.tax.settings') }}" method="post">
+                                <form id="tax_settings_form" class="setting_form hide-all" action="{{ route('settings.tax.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -268,36 +247,29 @@
                                     <div class="form-group row">
                                         <div class="col-md-4">
                                             <label>Tax 1 Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="tax_1_name" class="form-control" autocomplete="off"
-                                                placeholder="GST / VAT / Other"
-                                                value="{{ $generalSettings['tax__tax_1_name'] }}">
+                                            <input type="text" name="tax_1_name" class="form-control" autocomplete="off" placeholder="GST / VAT / Other" value="{{ $generalSettings['tax__tax_1_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label>Tax 1 No <span class="text-danger">*</span></label>
-                                            <input type="text" name="tax_1_no" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['tax__tax_1_no'] }}">
+                                            <input type="text" name="tax_1_no" class="form-control" autocomplete="off" value="{{ $generalSettings['tax__tax_1_no'] }}">
                                         </div>
 
                                         <div class="col-md-4">
                                             <label>Tax 2 Name <span class="text-danger">*</span></label>
-                                            <input type="text" name="tax_2_name" class="form-control" autocomplete="off"
-                                                placeholder="GST / VAT / Other"
-                                                value="{{ $generalSettings['tax__tax_2_name'] }}">
+                                            <input type="text" name="tax_2_name" class="form-control" autocomplete="off" placeholder="GST / VAT / Other" value="{{ $generalSettings['tax__tax_2_name'] }}">
                                         </div>
 
                                         <div class="col-md-4 mt-2">
                                             <label>Tax 2 No<span class="text-danger">*</span></label>
-                                            <input type="text" name="tax_2_no" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['tax__tax_2_no'] }}">
+                                            <input type="text" name="tax_2_no" class="form-control" autocomplete="off" value="{{ $generalSettings['tax__tax_2_no'] }}">
                                         </div>
 
                                         <div class="col-md-8">
                                             <div class="row mt-5">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['tax__is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
-                                                        &nbsp; {{ __('Enable inline tax in purchase and sell') }}
+                                                    <input type="checkbox" {{ $generalSettings['tax__is_tax_en_purchase_sale'] == '1' ? 'CHECKED' : '' }} name="is_tax_en_purchase_sale" id="is_tax_en_purchase_sale">
+                                                    &nbsp; {{ __('Enable inline tax in purchase and sell') }}
                                                 </p>
                                             </div>
                                         </div>
@@ -313,8 +285,7 @@
                                     </div>
                                 </form>
 
-                                <form id="dashboard_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.dashboard.settings') }}" method="post">
+                                <form id="dashboard_settings_form" class="setting_form hide-all" action="{{ route('settings.dashboard.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">@lang('menu.dashboard_settings')</h6>
@@ -323,16 +294,11 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-6">
-                                            <label><strong>{{ __("View Stock Expiry Alert For") }} </strong> <span
-                                                    class="text-danger">*</span></label>
+                                            <label><strong>{{ __('View Stock Expiry Alert For') }} </strong> <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="number" name="view_stock_expiry_alert_for"
-                                                    class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for"
-                                                    data-name="Day amount" autocomplete="off"
-                                                    value="{{ $generalSettings['dashboard__view_stock_expiry_alert_for'] }}">
+                                                <input type="number" name="view_stock_expiry_alert_for" class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for" data-name="Day amount" autocomplete="off" value="{{ $generalSettings['dashboard__view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text input-group-text-sm"
-                                                        id="basic-addon1">@lang('menu.days')</span>
+                                                    <span class="input-group-text input-group-text-sm" id="basic-addon1">@lang('menu.days')</span>
                                                 </div>
                                             </div>
                                             <span class="error error_dbs_view_stock_expiry_alert_for"></span>
@@ -349,8 +315,7 @@
                                     </div>
                                 </form>
 
-                                <form id="prefix_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.prefix.settings') }}" method="post">
+                                <form id="prefix_settings_form" class="setting_form hide-all" action="{{ route('settings.prefix.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">@lang('menu.prefix_settings')</h6>
@@ -359,54 +324,48 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('PURCHASE Invoice') }} </strong></label>
-                                            <input type="text" name="purchase_invoice" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['prefix__purchase_invoice'] }}">
+                                            <label><strong>{{ __('Purchase Invoice') }}</strong></label>
+                                            <input type="text" name="purchase_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>Sale Invoice </strong></label>
-                                            <input type="text" name="sale_invoice" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__sale_invoice'] }}">
+                                            <label><strong>{{ __("Sale Invoice") }}</strong></label>
+                                            <input type="text" name="sale_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__sale_invoice'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.purchase_return') </strong></label>
-                                            <input type="text" name="purchase_return" class="form-control"
-                                                autocomplete="off"
-                                                value="{{ $generalSettings['prefix__purchase_return'] }}">
+                                            <label><strong>{{ __("Purchase Return") }}</strong></label>
+                                            <input type="text" name="purchase_return" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_return'] }}">
                                         </div>
 
-                                        <div class="col-md-4">
+                                        {{-- <div class="col-md-4">
                                             <label><strong>{{ __('Stock Transfer') }} </strong></label>
-                                            <input type="text" name="stock_transfer" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__stock_transfer'] }}">
-                                        </div>
+                                            <input type="text" name="stock_transfer" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__stock_transfer'] }}">
+                                        </div> --}}
                                     </div>
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Stock Adjustment") }}</strong></label>
+                                            <label><strong>{{ __('Stock Adjustment') }}</strong></label>
                                             <input type="text" name="stock_adjustment" class="form-control" value="{{ $generalSettings['prefix__stock_adjustment'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.sale_return') </strong></label>
+                                            <label><strong>{{ __("Sales Return") }}</strong></label>
                                             <input type="text" name="sale_return" class="form-control" value="{{ $generalSettings['prefix__sale_return'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.expenses') </strong></label>
+                                            <label><strong>{{ __("Expense") }}</strong></label>
                                             <input type="text" name="expenses" class="form-control" value="{{ $generalSettings['prefix__expenses'] }}" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <div class="col-md-4">
+                                        {{-- <div class="col-md-4">
                                             <label><strong>{{ __('Expense Payment') }} </strong></label>
-                                            <input type="text" name="expanse_payment" class="form-control" value="{{ $generalSettings['prefix__expanse_payment'] }}" autocomplete="off" >
-                                        </div>
+                                            <input type="text" name="expanse_payment" class="form-control" value="{{ $generalSettings['prefix__expanse_payment'] }}" autocomplete="off">
+                                        </div> --}}
 
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Payment') }} </strong></label>
@@ -421,22 +380,21 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Supplier ID") }}</strong></label>
+                                            <label><strong>{{ __('Supplier ID') }}</strong></label>
                                             <input type="text" name="supplier_id" class="form-control" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Customer ID") }} </strong></label>
-                                            <input type="text" name="customer_id" class="form-control" autocomplete="off"
-                                                value="{{ $generalSettings['prefix__customer_id'] }}">
+                                            <label><strong>{{ __('Customer ID') }} </strong></label>
+                                            <input type="text" name="customer_id" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__customer_id'] }}">
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -454,7 +412,7 @@
                                             <label><strong>Theme Color </strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
                                                 <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
-                                                <option  {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
                                                 <option {{ ($generalSettings['system__theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
                                                 <option {{ ($generalSettings['system__theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
                                                 <option {{ ($generalSettings['system__theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
@@ -484,8 +442,7 @@
                                     </div>
                                 </form>
 
-                                <form id="point_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.reward.point.settings') }}" method="post">
+                                <form id="point_settings_form" class="setting_form hide-all" action="{{ route('settings.reward.point.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <h6 class="text-primary mb-3"><b>@lang('menu.reward_point_settings')</b></h6>
@@ -560,8 +517,7 @@
                                     </div>
                                 </form>
 
-                                <form id="module_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.module.settings') }}" method="post">
+                                <form id="module_settings_form" class="setting_form hide-all" action="{{ route('settings.module.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -573,9 +529,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }}
-                                                        name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -583,9 +537,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }}
-                                                        name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -593,9 +545,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }}
-                                                        name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }} name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -605,9 +555,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__transfer_stock'] == '1' ? 'CHECKED' : '' }}
-                                                        name="transfer_stock" autocomplete="off">
+                                                    <input type="checkbox" {{ $generalSettings['modules__transfer_stock'] == '1' ? 'CHECKED' : '' }} name="transfer_stock" autocomplete="off">
                                                     &nbsp; <b>{{ __('Transfers Stock') }}</b>
                                                 </p>
                                             </div>
@@ -616,9 +564,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }}
-                                                        name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }} name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -626,9 +572,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__expenses'] == '1' ? 'CHECKED' : '' }}
-                                                        name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__expenses'] == '1' ? 'CHECKED' : '' }} name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -638,18 +582,14 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }}
-                                                        name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }} name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox"
-                                                        {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }}
-                                                        name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }} name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -657,9 +597,7 @@
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox"
-                                                            {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }}
-                                                            name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
+                                                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -678,11 +616,7 @@
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox"
-                                                            @if (isset($generalSettings['modules__manufacturing']))
-                                                                {{ $generalSettings['modules__manufacturing'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                            name="manufacturing" autocomplete="off">
+                                                        <input type="checkbox" @if (isset($generalSettings['modules__manufacturing'])) {{ $generalSettings['modules__manufacturing'] == '1' ? 'CHECKED' : '' }} @endif name="manufacturing" autocomplete="off">
                                                         &nbsp;<b>{{ __('Manufacture') }}</b>
                                                     </p>
                                                 </div>
@@ -693,11 +627,7 @@
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox"
-                                                            @if (isset($generalSettings['modules__service']))
-                                                                {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }}
-                                                            @endif
-                                                            name="service" autocomplete="off">
+                                                        <input type="checkbox" @if (isset($generalSettings['modules__service'])) {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} @endif name="service" autocomplete="off">
                                                         &nbsp;<b>@lang('menu.service')</b>
                                                     </p>
                                                 </div>
@@ -715,8 +645,7 @@
                                     </div>
                                 </form>
 
-                                <form id="e_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="e_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -765,16 +694,14 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings
-                                                    ['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.user_forget_password_via_email')</b>
+                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.user_forget_password_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings
-                                                    ['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.coupon_offer_via_email')</b>
+                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.coupon_offer_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -783,21 +710,21 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset ($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.discount_redeemed_via_email')</b>
+                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.discount_redeemed_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset ($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.new_product_arrived_via_email')</b>
+                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.new_product_arrived_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset ($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.weekly_news_letter_via_email')</b>
+                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.weekly_news_letter_via_email')</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -811,8 +738,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <form id="s_settings_form" class="setting_form hide-all"
-                                    action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="s_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">

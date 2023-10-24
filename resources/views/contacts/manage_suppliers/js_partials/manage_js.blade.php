@@ -44,6 +44,99 @@
     //     }
     // });
 
+    var purchasesTable = $('#purchases-table').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        ],
+        "processing": true,
+        "serverSide": true,
+        //aaSorting: [[0, 'asc']],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('purchases.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            "data": function(d) {
+                d.branch_id = $('#purchases_branch_id').val();
+                d.payment_status = $('#purchases_payment_status').val();
+                d.from_date = $('#purchases_from_date').val();
+                d.to_date = $('#purchases_to_date').val();
+            }
+        },
+        columns: [
+            {data: 'action'},
+            {data: 'date', name: 'purchases.date'},
+            {data: 'invoice_id',name: 'purchases.invoice_id'},
+            {data: 'branch',name: 'branches.name'},
+            {data: 'supplier_name', name: 'suppliers.name'},
+            {data: 'payment_status',name: 'payment_status', className: 'fw-bold'},
+            {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end fw-bold'},
+            {data: 'paid',name: 'paid', className: 'text-end fw-bold'},
+            {data: 'purchase_return_amount',name: 'purchase_return_amount', className: 'text-end fw-bold'},
+            {data: 'due',name: 'due', className: 'text-end fw-bold'},
+            {data: 'created_by',name: 'created_by.name'},
+        ],fnDrawCallback: function() {
+
+            var total_purchase_amount = sum_table_col($('.purchases-table'), 'total_purchase_amount');
+            $('#purchases_total_purchase_amount').text(bdFormat(total_purchase_amount));
+            var paid = sum_table_col($('.purchases-table'), 'paid');
+            $('#purchases_paid').text(bdFormat(paid));
+            var due = sum_table_col($('.purchases-table'), 'due');
+            $('#purchases_due').text(bdFormat(due));
+            var purchase_return_amount = sum_table_col($('.purchases-table'), 'purchase_return_amount');
+            $('#purchases_purchase_return_amount').text(bdFormat(purchase_return_amount));
+
+            $('.data_preloader').hide();
+        }
+    });
+
+    var purchaseOrderstable = $('#purchase-orders-table').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        ],
+        "processing": true,
+        "serverSide": true,
+        //aaSorting: [[0, 'asc']],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('purchase.orders.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            "data": function(d) {
+                d.branch_id = $('#purchase_orders_branch_id').val();
+                d.receiving_status = $('#receiving_status').val();
+                d.from_date = $('#purchase_orders_from_date').val();
+                d.to_date = $('#purchase_orders_to_date').val();
+            }
+        },
+        columns: [
+            {data: 'action'},
+            {data: 'date', name: 'purchases.date'},
+            {data: 'invoice_id',name: 'purchases.invoice_id'},
+            {data: 'branch',name: 'branches.name'},
+            {data: 'supplier_name', name: 'suppliers.name'},
+            {data: 'created_by', name: 'created_by.name'},
+            {data: 'receiving_status', name: 'purchases.po_receiving_status', className: 'fw-bold'},
+            {data: 'payment_status', name: 'created_by.last_name', className: 'fw-bold'},
+            {data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold'},
+            {data: 'paid', name: 'purchases.paid', className: 'text-end fw-bold'},
+            {data: 'due', name: 'purchases.due', className: 'text-end fw-bold'},
+        ],fnDrawCallback: function() {
+
+            var total_purchase_amount = sum_table_col($('.purchase-orders-table'), 'total_purchase_amount');
+            $('#purchase_orders_total_purchase_amount').text(bdFormat(total_purchase_amount));
+            var paid = sum_table_col($('.purchase-orders-table'), 'paid');
+            $('#purchase_orders_paid').text(bdFormat(paid));
+            var due = sum_table_col($('.purchase-orders-table'), 'due');
+            $('#purchase_orders_due').text(bdFormat(due));
+            $('.data_preloader').hide();
+        }
+    });
+
     var salesTable = $('#sales-table').DataTable({
         "processing": true,
         "serverSide": true,
@@ -81,23 +174,23 @@
             {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
 
         ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.data_tbl'), 'total_item');
-            $('#total_item').text(bdFormat(total_item));
+            var total_item = sum_table_col($('.sales-table'), 'total_item');
+            $('#sales_total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-            $('#total_qty').text(bdFormat(total_qty));
+            var total_qty = sum_table_col($('.sales-table'), 'total_qty');
+            $('#sales_total_qty').text(bdFormat(total_qty));
 
-            var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-            $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
+            var total_invoice_amount = sum_table_col($('.sales-table'), 'total_invoice_amount');
+            $('#sales_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
-            $('#received_amount').text(bdFormat(received_amount));
+            var received_amount = sum_table_col($('.sales-table'), 'received_amount');
+            $('#sales_received_amount').text(bdFormat(received_amount));
 
-            var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-            $('#sale_return_amount').text(bdFormat(sale_return_amount));
+            var sale_return_amount = sum_table_col($('.sales-table'), 'sale_return_amount');
+            $('#sales_sale_return_amount').text(bdFormat(sale_return_amount));
 
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            var due = sum_table_col($('.sales-table'), 'due');
+            $('#sales_due').text(bdFormat(due));
 
             $('.data_preloader').hide();
         }
@@ -138,114 +231,21 @@
             {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
 
         ],fnDrawCallback: function() {
-            var total_item = sum_table_col($('.data_tbl'), 'total_item');
-            $('#total_item').text(bdFormat(total_item));
+            var total_item = sum_table_col($('.sales-order-table'), 'total_item');
+            $('#sales_order_total_item').text(bdFormat(total_item));
 
-            var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
-            $('#total_qty').text(bdFormat(total_qty));
+            var total_qty = sum_table_col($('.sales-order-table'), 'total_qty');
+            $('#sales_order_total_qty').text(bdFormat(total_qty));
 
-            var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-            $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
+            var total_invoice_amount = sum_table_col($('.sales-order-table'), 'total_invoice_amount');
+            $('#sales_order_total_invoice_amount').text(bdFormat(total_invoice_amount));
 
-            var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
-            $('#received_amount').text(bdFormat(received_amount));
+            var received_amount = sum_table_col($('.sales-order-table'), 'received_amount');
+            $('#sales_order_received_amount').text(bdFormat(received_amount));
 
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
+            var due = sum_table_col($('.sales-order-table'), 'due');
+            $('#sales_order_due').text(bdFormat(due));
 
-            $('.data_preloader').hide();
-        }
-    });
-
-    var purchasesTable = $('#purchases-table').DataTable({
-        dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        ],
-        "processing": true,
-        "serverSide": true,
-        //aaSorting: [[0, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        "ajax": {
-            "url": "{{ route('purchases.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
-            "data": function(d) {
-                d.branch_id = $('#purchases_branch_id').val();
-                d.payment_status = $('#purchases_payment_status').val();
-                d.from_date = $('#purchases_from_date').val();
-                d.to_date = $('#purchases_to_date').val();
-            }
-        },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'purchases.date'},
-            {data: 'invoice_id',name: 'purchases.invoice_id'},
-            {data: 'branch',name: 'branches.name'},
-            {data: 'supplier_name', name: 'suppliers.name'},
-            {data: 'payment_status',name: 'payment_status', className: 'fw-bold'},
-            {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end fw-bold'},
-            {data: 'paid',name: 'paid', className: 'text-end fw-bold'},
-            {data: 'purchase_return_amount',name: 'purchase_return_amount', className: 'text-end fw-bold'},
-            {data: 'due',name: 'due', className: 'text-end fw-bold'},
-            {data: 'created_by',name: 'created_by.name'},
-        ],fnDrawCallback: function() {
-
-            var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
-            $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.data_tbl'), 'paid');
-            $('#paid').text(bdFormat(paid));
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
-            var purchase_return_amount = sum_table_col($('.data_tbl'), 'purchase_return_amount');
-            $('#purchase_return_amount').text(bdFormat(purchase_return_amount));
-
-            $('.data_preloader').hide();
-        }
-    });
-
-    var purchaseOrderstable = $('#purchase-orders-table').DataTable({
-        dom: "lBfrtip",
-        buttons: [
-            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        ],
-        "processing": true,
-        "serverSide": true,
-        //aaSorting: [[0, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        "ajax": {
-            "url": "{{ route('purchase.orders.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
-            "data": function(d) {
-                d.branch_id = $('#purchases_orders_branch_id').val();
-                d.payment_status = $('#purchases_orders_payment_status').val();
-                d.from_date = $('#purchases_orders_from_date').val();
-                d.to_date = $('#purchases_orders_to_date').val();
-            }
-        },
-        columns: [
-            {data: 'action'},
-            {data: 'date', name: 'purchases.date'},
-            {data: 'invoice_id',name: 'purchases.invoice_id'},
-            {data: 'branch',name: 'branches.name'},
-            {data: 'supplier_name', name: 'suppliers.name'},
-            {data: 'created_by', name: 'created_by.name'},
-            {data: 'receiving_status', name: 'purchases.po_receiving_status', className: 'fw-bold'},
-            {data: 'payment_status', name: 'created_by.last_name', className: 'fw-bold'},
-            {data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold'},
-            {data: 'paid', name: 'purchases.paid', className: 'text-end fw-bold'},
-            {data: 'due', name: 'purchases.due', className: 'text-end fw-bold'},
-        ],fnDrawCallback: function() {
-
-            var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
-            $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
-            var paid = sum_table_col($('.data_tbl'), 'paid');
-            $('#paid').text(bdFormat(paid));
-            var due = sum_table_col($('.data_tbl'), 'due');
-            $('#due').text(bdFormat(due));
             $('.data_preloader').hide();
         }
     });
@@ -287,8 +287,51 @@
             // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
         ],fnDrawCallback: function() {
 
-            var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
-            $('#total_amount').text(bdFormat(total_amount));
+            var total_amount = sum_table_col($('.receipts-table'), 'total_amount');
+            $('#receipt_total_amount').text(bdFormat(total_amount));
+            $('.data_preloader').hide();
+        }
+    });
+
+    var paymentTable = $('#payments-table').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        ],
+        "processing": true,
+        "serverSide": true,
+        //aaSorting: [[0, 'asc']],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('payments.index', ['debitAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            "data": function(d) {
+                d.branch_id = $('#payments_branch_id').val();
+                d.from_date = $('#payments_from_date').val();
+                d.to_date = $('#payments_to_date').val();
+            }
+        },
+        columns: [
+            {data: 'action'},
+            {data: 'date', name: 'accountingVoucher.date'},
+            {data: 'voucher_no', name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
+            {data: 'branch', name: 'accountingVoucher.branch.name'},
+            {data: 'reference', name: 'accountingVoucher.purchaseRef.invoice_id'},
+            {data: 'remarks', name: 'accountingVoucher.remarks'},
+            {data: 'paid_from', name: 'accountingVoucher.voucherCreditDescription.account.name'},
+            {data: 'payment_method', name: 'accountingVoucher.voucherCreditDescription.paymentMethod.name'},
+            {data: 'transaction_no', name: 'accountingVoucher.voucherCreditDescription.transaction_no'},
+            {data: 'cheque_no', name: 'accountingVoucher.voucherCreditDescription.cheque_no'},
+            // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
+            {data: 'total_amount',name: 'accountingVoucher.voucherCreditDescription.cheque_serial_no', className: 'text-end fw-bold'},
+            // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
+        ],fnDrawCallback: function() {
+
+            var total_amount = sum_table_col($('.payments-table'), 'total_amount');
+            $('#payments_total_amount').text(bdFormat(total_amount));
+
             $('.data_preloader').hide();
         }
     });
@@ -378,7 +421,7 @@
         e.preventDefault();
 
         $('.data_preloader').show();
-        purchaseOrderstable.ajax.reload();
+        purchasesTable.ajax.reload();
 
         filterObj = {
             branch_id : $('#purchase_orders_branch_id').val(),
@@ -399,6 +442,21 @@
             branch_id : $('#receipts_branch_id').val(),
             from_date : $('#receipts_from_date').val(),
             to_date : $('#receipts_to_date').val(),
+        };
+
+        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+    });
+
+    $(document).on('submit', '#filter_payments', function (e) {
+        e.preventDefault();
+
+        $('.data_preloader').show();
+        paymentTable.ajax.reload();
+
+        filterObj = {
+            branch_id : $('#payments_branch_id').val(),
+            from_date : $('#payments_from_date').val(),
+            to_date : $('#payments_to_date').val(),
         };
 
         // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
@@ -935,6 +993,80 @@
                 setTimeout(function() {
 
                     $('#receipt_date').focus().select();
+                }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#addPayment', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            cache: false,
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+
+                // window.history.forward(1);
+                // location.reload(true);
+                $('#addOrEditPaymentModal').empty();
+                $('#addOrEditPaymentModal').html(data);
+                $('#addOrEditPaymentModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#payment_date').focus().select();
+                }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#editPayment', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            cache: false,
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+
+                $('#addOrEditPaymentModal').empty();
+                $('#addOrEditPaymentModal').html(data);
+                $('#addOrEditPaymentModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#payment_date').focus().select();
                 }, 500);
             }, error: function(err) {
 

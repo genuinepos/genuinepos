@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Sales\Sale;
 use App\Models\Setups\Branch;
 use App\Models\Sales\SaleReturn;
+use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseReturn;
 use App\Models\StockAdjustments\StockAdjustment;

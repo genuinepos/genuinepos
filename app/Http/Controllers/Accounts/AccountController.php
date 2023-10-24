@@ -116,7 +116,7 @@ class AccountController extends Controller
 
                 $contactIdPrefix = $accountGroup->sub_sub_group_number == 6 ? $cusIdPrefix : $supIdPrefix;
                 $contactPhoneNo = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
-                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
+                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_address : $request->supplier_address;
 
                 $addAccount->phone = $contactPhoneNo;
                 $addAccount->address = $contactAddress;
@@ -219,7 +219,7 @@ class AccountController extends Controller
             if ($accountGroup->sub_sub_group_number == 6 || $accountGroup->sub_sub_group_number == 10) {
 
                 $contactPhoneNo = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
-                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_phone_no : $request->supplier_phone_no;
+                $contactAddress = $accountGroup->sub_sub_group_number == 6 ? $request->customer_address : $request->supplier_address;
 
                 $updateAccount->phone = $contactPhoneNo;
                 $updateAccount->address = $contactAddress;

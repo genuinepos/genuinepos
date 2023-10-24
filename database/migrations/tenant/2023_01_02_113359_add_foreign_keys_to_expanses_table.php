@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('expanses', function (Blueprint $table) {
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
             $table->foreign(['expense_account_id'])->references(['id'])->on('accounts')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign(['transfer_branch_to_branch_id'])->references(['id'])->on('transfer_stock_branch_to_branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            // $table->foreign(['transfer_branch_to_branch_id'])->references(['id'])->on('transfer_stock_branch_to_branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

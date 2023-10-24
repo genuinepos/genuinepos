@@ -33,7 +33,8 @@ return new class extends Migration
             $table->timestamp('report_date')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('expense_account_id')->nullable()->index('expanses_expense_account_id_foreign');
-            $table->unsignedBigInteger('transfer_branch_to_branch_id')->nullable()->index('expanses_transfer_branch_to_branch_id_foreign');
+            // $table->unsignedBigInteger('transfer_branch_to_branch_id');
+            // ->nullable()->index('expanses_transfer_branch_to_branch_id_foreign');
         });
     }
 

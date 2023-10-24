@@ -15,10 +15,10 @@
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">

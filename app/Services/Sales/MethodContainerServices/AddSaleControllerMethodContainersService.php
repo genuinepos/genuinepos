@@ -214,7 +214,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ]
         );
 
-        if ($sale->due > 0) {
+        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
 
             $accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
         }
@@ -439,7 +439,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'saleProducts.purchaseSaleProductChains.purchaseProduct',
         ]);
 
-        if ($sale->due > 0) {
+        if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
 
             $accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
         }
@@ -478,7 +478,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         object $userActivityLogUtil,
     ): array|object {
 
-        $deleteSale = $this->saleService->deleteSale($id);
+        $deleteSale = $saleService->deleteSale($id);
 
         if (isset($deleteSale['pass']) && $deleteSale['pass'] == false) {
 

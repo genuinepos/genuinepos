@@ -1752,7 +1752,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="sub-menu-row">
+                                    {{-- <div class="sub-menu-row">
                                         <div class="sub-menu-col">
                                             <a href="{{ route('accounting.assets.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1761,6 +1761,55 @@
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">@lang('menu.assets')</p>
+                                            </a>
+                                        </div>
+                                    </div> --}}
+                                </div>
+
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __("Accounting Vouchers") }}</p>
+                                    <div class="sub-menu-row">
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('receipts.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-check-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Receipts") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounts.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-check-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Payments") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-hand-holding-usd"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Contras") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-hand-holding-usd"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Expenses") }}</p>
                                             </a>
                                         </div>
 
@@ -1772,63 +1821,6 @@
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">@lang('menu.loans')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-hand-holding-usd"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.contra')</p>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="sub-menu-row">
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.balance.sheet') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-balance-scale"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.balance_sheet')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.trial.balance') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-balance-scale-right"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.trial_balance')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.cash.flow') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-money-bill-wave"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.cash_flow')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.profit.loss.account') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-chart-line"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.profit_loss_account')</p>
                                             </a>
                                         </div>
                                     </div>
@@ -1851,7 +1843,7 @@
                                                         <span><i class="fas fa-chart-line"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.daily_profit_loss_report')</p>
+                                                <p class="switch_text">{{ __("Cash Profit/Loss") }}</p>
                                             </a>
                                         </div>
 
@@ -1862,7 +1854,51 @@
                                                         <span><i class="fas fa-money-bill-wave"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.financial_report')</p>
+                                                <p class="switch_text">{{ __("Finalcial Report") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.profit.loss.account') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-chart-line"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.profit_loss_account')</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.balance.sheet') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-balance-scale"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Balance Sheet") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.trial.balance') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-balance-scale-right"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.trial_balance')</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('accounting.cash.flow') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-bill-wave"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">@lang('menu.cash_flow')</p>
                                             </a>
                                         </div>
                                     </div>

@@ -778,7 +778,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                     </div>
-                                                                    <input type="text" name="p_from_date" id="recipts_from_date" class="form-control" autocomplete="off">
+                                                                    <input type="text" name="from_date" id="recipts_from_date" class="form-control" autocomplete="off">
                                                                 </div>
                                                             </div>
 
@@ -788,7 +788,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                                     </div>
-                                                                    <input type="text" name="p_to_date" id="recipts_to_date" class="form-control" autocomplete="off">
+                                                                    <input type="text" name="to_date" id="recipts_to_date" class="form-control" autocomplete="off">
                                                                 </div>
                                                             </div>
 
@@ -812,7 +812,7 @@
                                                 <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <a href="#" class="btn btn-sm btn-success"><i class="far fa-money-bill-alt text-white"></i> {{ __("Add Receipt") }}</a>
+                                                            <a href="{{ route('receipts.create', ['creditAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addReceipt"><i class="far fa-money-bill-alt text-white"></i> {{ __("Add Receipt") }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -827,25 +827,31 @@
                             <div class="col-md-12">
                                 <div class="widget_content table_area">
                                     <div class="table-responsive">
-                                        <table class="display data_tbl data__table payments_table w-100">
+                                        <table id="receipts-table" class="display data_tbl data__table payments_table w-100">
                                             <thead>
-                                                <tr class="text-start">
-                                                    <th class="text-start">{{ __("Date") }}</th>
-                                                    <th class="text-start">{{ __("Voucher No") }}</th>
-                                                    <th class="text-start">{{ __("Reference") }}</th>
-                                                    <th class="text-start">{{ __("Against Voucher") }}</th>
-                                                    <th class="text-start">{{ __("Receipt Method") }}</th>
-                                                    <th class="text-start">{{ __("Account") }}</th>
-                                                    <th class="text-end">{{ __("Received Amount") }}</th>
-                                                    <th class="text-start">{{ __("Action") }}</th>
+                                                <tr>
+                                                    <th>{{ __("Action") }}</th>
+                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Voucher') }}</th>
+                                                    <th>{{ __("Shop/Business") }}</th>
+                                                    <th>{{ __('Reference') }}</th>
+                                                    <th>{{ __('Remarks') }}</th>
+                                                    {{-- <th>{{ __("Received From") }}</th> --}}
+                                                    <th>{{ __("Received To") }}</th>
+                                                    <th>{{ __("Type/Method") }}</th>
+                                                    <th>{{ __("Trans. No") }}</th>
+                                                    <th>{{ __("Cheque No") }}</th>
+                                                    {{-- <th>{{ __("Cheque S/L No") }}</th> --}}
+                                                    <th>{{ __("Received Amount") }}</th>
+                                                    {{-- <th>{{ __("Created By") }}</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th class="text-end text-white" colspan="6">{{ __("Total") }} </th>
-                                                    <th class="text-end text-white" id="received_amount"></th>
-                                                    <th class="text-start text-white">---</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th id="total_amount" class="text-white"></th>
+                                                    {{-- <th></th> --}}
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -930,6 +936,8 @@
 
     <!-- Edit Shipping modal -->
     <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+    <div class="modal fade" id="addOrEditReceiptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     @include('contacts.manage_customers.js_partials.manage_js')

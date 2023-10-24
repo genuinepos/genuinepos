@@ -280,6 +280,86 @@ class AccountingVoucherDescriptionReferenceService
 
                     $index++;
                 }
+            } else {
+
+                if ($refIdColName = 'sale_id') {
+
+                    $refIdColName = 'purchase_return_id';
+                } else if ($refIdColName = 'purchase_id') {
+
+                    $refIdColName = 'sale_return_id';
+                }
+
+                $dueRandomInvoices = $this->dueRandomInvoices(accountId: $accountId, refIdColName: $refIdColName);
+
+                if (count($dueRandomInvoices) > 0) {
+
+                    if ($dueInvoice->due > $receivedOrPaidAmount) {
+
+                        if ($receivedOrPaidAmount > 0) {
+
+                            $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                            $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                            $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                            $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+                            $addAccountingVoucherDescriptionRef->save();
+
+                            if ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'sale_return_id') {
+
+                                $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                            }
+                        }
+                    } elseif ($dueInvoice->due == $receivedOrPaidAmount) {
+
+                        if ($receivedOrPaidAmount > 0) {
+
+                            $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                            $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                            $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                            $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+                            $addAccountingVoucherDescriptionRef->save();
+
+                            if ($isOrderInvoice == 0) {
+
+                                $receivedOrPaidAmount -= $receivedOrPaidAmount;
+                            }
+
+                            if ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'sale_return_id') {
+
+                                $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                            }
+                        }
+                    } elseif ($dueInvoice->due < $receivedOrPaidAmount) {
+
+                        if ($receivedOrPaidAmount > 0) {
+
+                            $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                            $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                            $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                            $addAccountingVoucherDescriptionRef->amount = $dueInvoice->due;
+                            $addAccountingVoucherDescriptionRef->save();
+
+                            if ($isOrderInvoice == 0) {
+
+                                $receivedOrPaidAmount -= $dueInvoice->due;
+                            }
+
+                            if ($refIdColName == 'purchase_return_id') {
+
+                                $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                            } elseif ($refIdColName == 'sale_return_id') {
+
+                                $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -410,6 +490,88 @@ class AccountingVoucherDescriptionReferenceService
                 }
             }
         }
+
+        if ($receivedOrPaidAmount > 0) {
+
+            if ($refIdColName = 'sale_id') {
+
+                $refIdColName = 'purchase_return_id';
+            } else if ($refIdColName = 'purchase_id') {
+
+                $refIdColName = 'sale_return_id';
+            }
+
+            $dueRandomInvoices = $this->dueRandomInvoices(accountId: $accountId, refIdColName: $refIdColName);
+
+            if (count($dueRandomInvoices) > 0) {
+
+                if ($dueInvoice->due > $receivedOrPaidAmount) {
+
+                    if ($receivedOrPaidAmount > 0) {
+
+                        $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                        $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                        $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                        $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+                        $addAccountingVoucherDescriptionRef->save();
+
+                        if ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'sale_return_id') {
+
+                            $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                        }
+                    }
+                } elseif ($dueInvoice->due == $receivedOrPaidAmount) {
+
+                    if ($receivedOrPaidAmount > 0) {
+
+                        $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                        $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                        $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                        $addAccountingVoucherDescriptionRef->amount = $receivedOrPaidAmount;
+                        $addAccountingVoucherDescriptionRef->save();
+
+                        if ($isOrderInvoice == 0) {
+
+                            $receivedOrPaidAmount -= $receivedOrPaidAmount;
+                        }
+
+                        if ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'sale_return_id') {
+
+                            $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                        }
+                    }
+                } elseif ($dueInvoice->due < $receivedOrPaidAmount) {
+
+                    if ($receivedOrPaidAmount > 0) {
+
+                        $addAccountingVoucherDescriptionRef = new AccountingVoucherDescriptionReference();
+                        $addAccountingVoucherDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+                        $addAccountingVoucherDescriptionRef->{$refIdColName} = $dueInvoice->id;
+                        $addAccountingVoucherDescriptionRef->amount = $dueInvoice->due;
+                        $addAccountingVoucherDescriptionRef->save();
+
+                        if ($isOrderInvoice == 0) {
+
+                            $receivedOrPaidAmount -= $dueInvoice->due;
+                        }
+
+                        if ($refIdColName == 'purchase_return_id') {
+
+                            $purchaseReturnService->adjustPurchaseReturnVoucherAmounts($dueInvoice);
+                        } elseif ($refIdColName == 'sale_return_id') {
+
+                            $salesReturnService->adjustSalesReturnVoucherAmounts($dueInvoice);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function invoiceOrVoucherDueAmountAutoDistribution(
@@ -527,34 +689,48 @@ class AccountingVoucherDescriptionReferenceService
     private function dueSpecificInvoices(int $accountId, string $refIdColName, array $refIds, ?int $branchId = null)
     {
         $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
+
         if ($refIdColName == 'purchase_id') {
 
             return Purchase::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('report_date', 'asc')
-                ->get();
+                // ->orderBy('report_date', 'asc')
+                ->get()
+                ->sortBy(function ($purchase) use ($refIds) {
+                    return array_search($purchase->id, $refIds);
+                });
         } elseif ($refIdColName == 'purchase_return_id') {
 
             return PurchaseReturn::where('branch_id', $__branchId)
                 ->where('supplier_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('date_ts', 'asc')
-                ->get();
+                // ->orderBy('date_ts', 'asc')
+                ->get()
+                ->sortBy(function ($purchaseReturn) use ($refIds) {
+                    return array_search($purchaseReturn->id, $refIds);
+                });
         } elseif ($refIdColName == 'sale_id') {
 
             return Sale::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('date_ts', 'asc')
-                ->get();
+                // ->orderBy('date_ts', 'asc')
+                // ->orderByRaw(DB::raw("FIELD(id ?, [$ids_ordered])"))
+                ->get()
+                ->sortBy(function ($sale) use ($refIds) {
+                    return array_search($sale->id, $refIds);
+                });
         } elseif ($refIdColName == 'sale_return_id') {
 
             return SaleReturn::where('branch_id', $__branchId)
                 ->where('customer_account_id', $accountId)
                 ->whereIn('id', $refIds)
-                ->orderBy('date_ts', 'asc')
-                ->get();
+                // ->orderBy('date_ts', 'asc')
+                ->get()
+                ->sortBy(function ($salesReturn) use ($refIds) {
+                    return array_search($salesReturn->id, $refIds);
+                });
         }
     }
 

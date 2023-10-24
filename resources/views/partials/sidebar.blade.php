@@ -307,7 +307,7 @@
                     auth()->user()->can('tax') ||
                     auth()->user()->can('general_settings') ||
                     auth()->user()->can('payment_settings') ||
-                    auth()->user()->can('invoice _schema') ||
+                    auth()->user()->can('invoice_schema') ||
                     auth()->user()->can('invoice_layout') ||
                     auth()->user()->can('barcode_settings') ||
                     auth()->user()->can('cash_counters')
@@ -2309,7 +2309,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('invoice _schema'))
+                                @if (auth()->user()->can('invoice_schema'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('invoices.schemas.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">

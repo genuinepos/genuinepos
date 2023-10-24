@@ -1838,7 +1838,7 @@
 
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="invoice _schema" class="app_setup setup_permission super_select_all">
+                                        <input type="checkbox" name="invoice_schema" class="app_setup setup_permission super_select_all">
                                         Invoice
                                         schemas
                                     </p>

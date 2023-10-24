@@ -218,7 +218,7 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('supplier_import') ? 'CHECKED' : '' }}name="supplier_import" id="supplier_import" class="contacts contact_all">
+                                                    {{ $role->hasPermissionTo('supplier_import') ? 'CHECKED' : '' }} name="supplier_import" id="supplier_import" class="contacts contact_all">
                                                     <label for="supplier_import">{{ __('Import Suppliers') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">

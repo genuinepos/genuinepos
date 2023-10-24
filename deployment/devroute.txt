@@ -110,7 +110,7 @@ Route::get('rp', function () {
         95 => 'warehouse',
         96 => 'general_settings',
         97 => 'payment_settings',
-        98 => 'invoice _schema',
+        98 => 'invoice_schema',
         99 => 'invoice_layout',
         100 => 'barcode_settings',
         101 => 'cash_counters',

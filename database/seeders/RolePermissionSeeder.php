@@ -181,7 +181,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '95', 'name' => 'warehouse'],
             ['id' => '96', 'name' => 'general_settings'],
             ['id' => '97', 'name' => 'payment_settings'],
-            ['id' => '98', 'name' => 'invoice _schema'],
+            ['id' => '98', 'name' => 'invoice_schema'],
             ['id' => '99', 'name' => 'invoice_layout'],
             ['id' => '100', 'name' => 'barcode_settings'],
             ['id' => '101', 'name' => 'cash_counters'],

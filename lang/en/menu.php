@@ -1940,7 +1940,7 @@ return [
     'version' => 'Version',
     'receive' => 'Receive',
     'essentials' => 'Essentials',
-    'sale_payment_report' => 'Sale Payment Report',
+    'received_against_sales_report' => 'Sale Payment Report',
     'select_role' => 'Select Role',
     'daily_profit_loss_report' => 'Daily Profit/Loss Report',
     'edit_leave' => 'Edit Leave',

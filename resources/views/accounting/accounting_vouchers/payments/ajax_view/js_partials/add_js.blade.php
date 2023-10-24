@@ -104,8 +104,8 @@
 
 <script>
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
-
-        $('.submit_button').prop('type', 'button');
+         
+        $('.payment_submit_button').prop('type', 'button');
     });
 
     $(document).on('change keypress', 'input', function(e) {
@@ -336,3 +336,25 @@
         });
     </script>
 @endif
+
+<script>
+    new Litepicker({
+        singleMode: true,
+        element: document.getElementById('payment_date'),
+        dropdowns: {
+            minYear: new Date().getFullYear() - 50,
+            maxYear: new Date().getFullYear() + 100,
+            months: true,
+            years: true
+        },
+        tooltipText: {
+            one: 'night',
+            other: 'nights'
+        },
+        tooltipNumber: (totalDays) => {
+            return totalDays - 1;
+        },
+        format: 'DD-MM-YYYY'
+    });
+</script>
+

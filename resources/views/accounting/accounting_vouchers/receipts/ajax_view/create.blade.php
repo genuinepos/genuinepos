@@ -296,8 +296,8 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button receipt_loading_btn d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success receipt_submit_button me-2" value="save_and_print">{{ __("Save & Print") }}</button>
-                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success receipt_submit_button me-2" value="save">{{ __("Save") }}</button>
+                            <button type="button" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success receipt_submit_button me-2" value="save_and_print">{{ __("Save & Print") }}</button>
+                            <button type="button" id="save" value="save" class="btn btn-sm btn-success receipt_submit_button me-2" value="save">{{ __("Save") }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                         </div>
                     </div>

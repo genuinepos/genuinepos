@@ -1598,6 +1598,7 @@
                 </div>
             @endif
 
+
             @if ($generalSettings['modules__expenses'] == '1')
                 <div class="sub-menu_t" id="expenses">
                     <div class="sub-menu-width">
@@ -1791,16 +1792,18 @@
                                             </a>
                                         </div>
 
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-hand-holding-usd"></i></span>
+                                        @if (auth()->user()->can('view_expense'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('expenses.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-hand-holding-usd"></i></span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="switch_text">{{ __("Contras") }}</p>
-                                            </a>
-                                        </div>
+                                                    <p class="switch_text">{{ __("Expenses") }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
 
                                         <div class="sub-menu-col">
                                             <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
@@ -1809,7 +1812,7 @@
                                                         <span><i class="fas fa-hand-holding-usd"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Expenses") }}</p>
+                                                <p class="switch_text">{{ __("Contras") }}</p>
                                             </a>
                                         </div>
 

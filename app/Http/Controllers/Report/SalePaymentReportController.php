@@ -90,7 +90,7 @@ class SalePaymentReportController extends Controller
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
         $customers = DB::table('customers')->get(['id', 'name', 'phone']);
 
-        return view('reports.sale_payment_report.index', compact('branches', 'customers'));
+        return view('reports.received_against_sales_report.index', compact('branches', 'customers'));
     }
 
     public function print(Request $request)
@@ -151,6 +151,6 @@ class SalePaymentReportController extends Controller
                 ->get();
         }
 
-        return view('reports.sale_payment_report.ajax_view.print', compact('payments', 'fromDate', 'toDate', 'branch_id'));
+        return view('reports.received_against_sales_report.ajax_view.print', compact('payments', 'fromDate', 'toDate', 'branch_id'));
     }
 }

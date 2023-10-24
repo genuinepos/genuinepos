@@ -1938,7 +1938,7 @@ return [
     'version' => 'الإصدار',
     'receive' => 'يستلم',
     'essentials' => 'الضروريات',
-    'sale_payment_report' => 'تقرير الدفع للبيع',
+    'received_against_sales_report' => 'تقرير الدفع للبيع',
     'select_role' => 'حدد الدور',
     'daily_profit_loss_report' => 'تقرير الربح / الخسارة اليومي',
     'edit_leave' => 'جعل إجازة التحرير',

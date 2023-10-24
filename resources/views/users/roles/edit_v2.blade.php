@@ -154,7 +154,7 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="sale_statements" {{ $role->hasPermissionTo('sale_statements') ? 'checked' : '' }} {{ $role->hasPermissionTo('sale_statements') ? 'checked' : '' }} class="sales_report sales_app_permission super_select_all">
+                                                    <input type="checkbox" name="sales_report" {{ $role->hasPermissionTo('sales_report') ? 'checked' : '' }} {{ $role->hasPermissionTo('sales_report') ? 'checked' : '' }} class="sales_report sales_app_permission super_select_all">
                                                     @lang('menu.sale_statement')
                                                 </p>
 
@@ -181,7 +181,7 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="sale_payment_report" {{ $role->hasPermissionTo('sale_payment_report') ? 'checked' : '' }} class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.receive_payment') @lang('menu.report')
+                                                    <input type="checkbox" name="received_against_sales_report" {{ $role->hasPermissionTo('received_against_sales_report') ? 'checked' : '' }} class="sales_report super_select_all sales_app_permission super_select_all"> @lang('menu.receive_payment') @lang('menu.report')
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">

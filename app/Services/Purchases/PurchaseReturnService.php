@@ -292,7 +292,7 @@ class PurchaseReturnService
         return $query->where('id', $id)->first();
     }
 
-    public function adjustPurchaseReturnVoucherAmounts($purchaseReturn)
+    public function adjustPurchaseReturnVoucherAmounts(object $purchaseReturn)
     {
         $totalReceived = DB::table('voucher_description_references')
             ->where('voucher_description_references.purchase_return_id', $purchaseReturn->id)

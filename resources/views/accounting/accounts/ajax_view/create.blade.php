@@ -19,7 +19,6 @@
                         <select required name="account_group_id" class="form-control select2" id="account_group_id">
                             <option value="">@lang('menu.select') @lang('menu.account_group')</option>
                             @foreach ($groups as $group)
-
                                 @if (($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) && !auth()->user()->branch_id)
 
                                     <option value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">

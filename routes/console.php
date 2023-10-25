@@ -25,14 +25,9 @@ Artisan::command('dev:m', function () {
     //     $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
     // });
 
-    Schema::table('product_ledgers', function (Blueprint $table) {
-        $table->dropForeign(['transfer_stock_id']);
-        $table->dropColumn('transfer_stock_id');
-    });
-
-    Schema::table('product_ledgers', function (Blueprint $table) {
-        $table->unsignedBigInteger('transfer_stock_product_id')->after('production_id')->nullable();
-        $table->foreign(['transfer_stock_product_id'])->references(['id'])->on('transfer_stock_products')->onDelete('CASCADE');
+    Schema::table('day_books', function (Blueprint $table) {
+        $table->unsignedBigInteger('voucher_description_id')->after('transfer_stock_id')->nullable();
+        $table->foreign(['voucher_description_id'])->references(['id'])->on('accounting_voucher_descriptions')->onDelete('CASCADE');
     });
 });
 

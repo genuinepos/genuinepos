@@ -145,21 +145,40 @@
 
         if (e.value == 'add_more') {
 
+            var variantChild = document.querySelectorAll('#variant_child');
+            var lastvariantChild = variantChild[variantChild.length - 1];
+
             tr.find('#next_step').val('');
-            if (nxt.length == 0) {
+            // if (nxt.length == 0) {
 
-                if (tr.find('#variant_child').val() == '') {
+            //     if (tr.find('#variant_child').val() == '') {
 
-                    tr.find('#variant_child').focus();
-                    return;
-                }
+            //         tr.find('#variant_child').focus();
+            //         return;
+            //     }
 
-                addMore();
-            }else {
+            //     addMore();
+            // }else {
 
-                nxt.find('#variant_child').focus().select();
+            //     nxt.find('#variant_child').focus().select();
+            // }
+
+            // if (nxt.find('#variant_child').val() == '') {
+            if (tr.find('#variant_child').val() == '') {
+
+                tr.find('#variant_child').focus();
+                return;
             }
-        } else if(e.value == 'remove'){
+
+            if (lastvariantChild.value == '') {
+
+                // nxt.find('#variant_child').focus().select();
+                lastvariantChild.focus().select();
+                return;
+            }
+
+            addMore();
+        } else if(e.value == 'remove') {
 
             previousTr = tr.prev();
             nxtTr = tr.next();
@@ -173,8 +192,13 @@
 
                 previousTr.find('#variant_child').focus().select();
             }
-        }else if(e.value == 'list_end'){
+        }else if(e.value == 'next_field') {
 
+            tr.find('#next_step').val('');
+            nxt.find('#variant_child').focus().select();
+        }else if(e.value == 'list_end') {
+
+            tr.find('#next_step').val('');
             $('#variant_save').focus();
         }
     }
@@ -194,6 +218,7 @@
         html += '<select onkeypress="nextStep(this)" onchange="nextStep(this)" class="form-control" id="next_step">';
         html += '<option value="">{{ __("Next Step") }}</option>';
         html += '<option value="add_more">{{ __("Add More") }}</option>';
+        html += '<option value="next_field">{{ __("Next Field") }}</option>';
         html += '<option value="list_end">{{ __("List End") }}</option>';
         html += '<option value="remove">{{ __("Remove") }}</option>';
         html += '</select>';

@@ -2,15 +2,20 @@
 
 namespace App\Models\Accounts;
 
+use App\Models\Sales\Sale;
+use App\Models\Sales\SaleReturn;
 use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchases\PurchaseReturn;
+use App\Models\StockAdjustments\StockAdjustment;
 use App\Models\Accounts\AccountingVoucherDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AccountingVoucherDescriptionReference extends Model
 {
-    protected $table = 'voucher_description_references';
     use HasFactory;
+    
+    protected $table = 'voucher_description_references';
 
     public function voucherDescription()
     {
@@ -20,5 +25,25 @@ class AccountingVoucherDescriptionReference extends Model
     public function purchase()
     {
         return $this->belongsTo(Purchase::class, 'purchase_id');
+    }
+
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class, 'sale_id');
+    }
+
+    public function salesReturn()
+    {
+        return $this->belongsTo(SaleReturn::class, 'sale_return_id');
+    }
+
+    public function purchaseReturn()
+    {
+        return $this->belongsTo(PurchaseReturn::class, 'purchase_return_id');
+    }
+
+    public function stockAdjustment()
+    {
+        return $this->belongsTo(StockAdjustment::class, 'stock_adjustment_id');
     }
 }

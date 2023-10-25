@@ -218,7 +218,7 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('supplier_import') ? 'CHECKED' : '' }}name="supplier_import" id="supplier_import" class="contacts contact_all">
+                                                    {{ $role->hasPermissionTo('supplier_import') ? 'CHECKED' : '' }} name="supplier_import" id="supplier_import" class="contacts contact_all">
                                                     <label for="supplier_import">{{ __('Import Suppliers') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
@@ -1443,9 +1443,9 @@
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('invoice _schema') ? 'CHECKED' : '' }}
-                                                    name="invoice _schema" id="invoice _schema" class="setup setup_all">
-                                                    <label for="invoice _schema">{{ __('Invoice Schema') }}</label>
+                                                    {{ $role->hasPermissionTo('invoice_schema') ? 'CHECKED' : '' }}
+                                                    name="invoice_schema" id="invoice_schema" class="setup setup_all">
+                                                    <label for="invoice_schema">{{ __('Invoice Schema') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"

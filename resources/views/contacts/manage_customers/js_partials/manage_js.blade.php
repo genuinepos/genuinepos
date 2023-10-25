@@ -220,11 +220,10 @@
         "ajax": {
             "url": "{{ route('purchase.orders.index', ['supplierAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
             "data": function(d) {
-                d.branch_id = $('#branch_id').val();
-                d.supplier_account_id = $('#supplier_account_id').val();
-                d.receiving_status = $('#receiving_status').val();
-                d.from_date = $('#from_date').val();
-                d.to_date = $('#to_date').val();
+                d.branch_id = $('#purchases_orders_branch_id').val();
+                d.payment_status = $('#purchases_orders_payment_status').val();
+                d.from_date = $('#purchases_orders_from_date').val();
+                d.to_date = $('#purchases_orders_to_date').val();
             }
         },
         columns: [
@@ -251,59 +250,48 @@
         }
     });
 
-    // @if(auth()->user()->can('sale_payment'))
+    var receiptTable = $('#receipts-table').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+        ],
+        "processing": true,
+        "serverSide": true,
+        //aaSorting: [[0, 'asc']],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('receipts.index', ['creditAccountId' => $contact?->account?->id ? $contact?->account?->id : 0]) }}",
+            "data": function(d) {
+                d.branch_id = $('#receipts_branch_id').val();
+                d.from_date = $('#receipts_from_date').val();
+                d.to_date = $('#receipts_to_date').val();
+            }
+        },
+        columns: [
+            {data: 'action'},
+            {data: 'date', name: 'accountingVoucher.date'},
+            {data: 'voucher_no',name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
+            {data: 'branch',name: 'accountingVoucher.branch.name'},
+            {data: 'reference', name: 'accountingVoucher.saleRef.invoice_id'},
+            {data: 'remarks',name: 'accountingVoucher.remarks'},
+            // {data: 'received_from',name: 'account.name'},
+            {data: 'received_to',name: 'accountingVoucher.voucherDebitDescription.account.name'},
+            {data: 'payment_method',name: 'accountingVoucher.voucherDebitDescription.paymentMethod.name'},
+            {data: 'transaction_no',name: 'accountingVoucher.voucherDebitDescription.transaction_no'},
+            {data: 'cheque_no',name: 'accountingVoucher.voucherDebitDescription.cheque_no'},
+            // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
+            {data: 'total_amount',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no', className: 'text-end fw-bold'},
+            // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
+        ],fnDrawCallback: function() {
 
-    //     var payments_table = $('.payments_table').DataTable({
-    //         "processing": true,
-    //         "serverSide": true,
-    //         "searching" : true,
-    //         dom: "lBfrtip",
-    //         buttons: [
-    //             {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-    //             {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
-    //         ],
-
-    //         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-    //         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-
-    //customers.all.payment.list', $contact->id
-    //         "ajax": {
-    //             "url": "#",
-    //             "data": function(d) {
-    //                 d.branch_id = $('#payment_branch_id').val();
-    //                 d.p_from_date = $('#payment_from_date').val();
-    //                 d.p_to_date = $('#payment_to_date').val();
-    //             }
-    //         },
-
-    //         columnDefs: [{
-    //             "targets": [3, 4, 5, 6],
-    //             "orderable": false,
-    //             "searchable": false
-    //         }],
-
-    //         columns: [
-    //             {data: 'date', name: 'customer_ledgers.date'},
-    //             {data: 'voucher_no', name: 'customer_payments.voucher_no'},
-    //             {data: 'reference', name: 'customer_payments.reference'},
-    //             {data: 'against_invoice', name: 'sales.invoice_id'},
-    //             {data: 'type', name: 'type'},
-    //             {data: 'method', name: 'method'},
-    //             {data: 'account', name: 'account'},
-    //             {data: 'less_amount', name: 'customer_payments.less_amount', className: 'text-end'},
-    //             {data: 'amount', name: 'customer_ledgers.amount', className: 'text-end'},
-    //             {data: 'action'},
-    //         ],fnDrawCallback: function() {
-
-    //             var amount = sum_table_col($('.data_tbl'), 'amount');
-    //             $('#amount').text(bdFormat(amount));
-
-    //             var less_amount = sum_table_col($('.data_tbl'), 'less_amount');
-    //             $('#less_amount').text(bdFormat(less_amount));
-    //             $('.data_preloader').hide();
-    //         }
-    //     });
-    // @endif
+            var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
+            $('#total_amount').text(bdFormat(total_amount));
+            $('.data_preloader').hide();
+        }
+    });
 
     function sum_table_col(table, class_name) {
         var sum = 0;
@@ -381,6 +369,36 @@
             branch_id : $('#purchases_branch_id').val(),
             from_date : $('#purchases_from_date').val(),
             to_date : $('#purchases_to_date').val(),
+        };
+
+        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+    });
+
+    $(document).on('submit', '#filter_purchase_orders', function (e) {
+        e.preventDefault();
+
+        $('.data_preloader').show();
+        purchaseOrderstable.ajax.reload();
+
+        filterObj = {
+            branch_id : $('#purchase_orders_branch_id').val(),
+            from_date : $('#purchase_orders_from_date').val(),
+            to_date : $('#purchase_orders_to_date').val(),
+        };
+
+        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+    });
+
+    $(document).on('submit', '#filter_receipts', function (e) {
+        e.preventDefault();
+
+        $('.data_preloader').show();
+        receiptTable.ajax.reload();
+
+        filterObj = {
+            branch_id : $('#receipts_branch_id').val(),
+            from_date : $('#receipts_from_date').val(),
+            to_date : $('#receipts_to_date').val(),
         };
 
         // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
@@ -503,6 +521,8 @@
     litepicker('purchases_to_date');
     litepicker('purchase_orders_from_date');
     litepicker('purchase_orders_to_date');
+    litepicker('receipts_from_date');
+    litepicker('receipts_to_date');
 </script>
 
 <script>
@@ -808,8 +828,8 @@
         });
     });
 
-     //Print purchase Payment report
-     $(document).on('click', '#printPurchaseOrdersReport', function(e) {
+    //Print purchase Payment report
+    $(document).on('click', '#printPurchaseOrdersReport', function(e) {
         e.preventDefault();
 
         var url = "{{ route('reports.purchase.orders.print') }}";
@@ -846,6 +866,87 @@
                     pageTitle: "",
                     // footer: 'Footer Text',
                 });
+            }
+        });
+    });
+</script>
+
+<script>
+    $.ajaxSetup ({
+        // Disable caching of AJAX responses
+        cache: false
+    });
+
+    $(document).on('click', '#addReceipt', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            cache: false,
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+
+                // window.history.forward(1);
+                // location.reload(true);
+                $('#addOrEditReceiptModal').empty();
+                $('#addOrEditReceiptModal').html(data);
+                $('#addOrEditReceiptModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#receipt_date').focus().select();
+                }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#editReceipt', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            cache: false,
+            async: false,
+            dataType: 'html',
+            success: function(data) {
+
+                $('#addOrEditReceiptModal').empty();
+                $('#addOrEditReceiptModal').html(data);
+                $('#addOrEditReceiptModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#receipt_date').focus().select();
+                }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
     });

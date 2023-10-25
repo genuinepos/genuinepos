@@ -486,19 +486,19 @@
                                                    <label for="product_warranty_index">{{ __('View All Warranty') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_warranty" id="add_warranty"
+                                                    <input type="checkbox" name="product_warranty_add" id="product_warranty_add"
                                                         class="products product_warranties">
-                                                   <label for="add_warranty">{{ __('Add Warranty') }}</label>
+                                                   <label for="product_warranty_add">{{ __('Add Warranty') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_warranty" id="edit_warranty"
+                                                    <input type="checkbox" name="product_warranty_edit" id="product_warranty_edit"
                                                         class="products product_warranties">
-                                                   <label for="edit_warranty">{{ __('Edit Warranty') }}</label>
+                                                   <label for="product_warranty_edit">{{ __('Edit Warranty') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_warranty" id="delete_warranty"
+                                                    <input type="checkbox" name="product_warranty_delete" id="product_warranty_delete"
                                                         class="products product_warranties">
-                                                   <label for="delete_warranty">{{ __('Delete Warranty') }}</label>
+                                                   <label for="product_warranty_delete">{{ __('Delete Warranty') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -1214,8 +1214,8 @@
                                                     <label for="payment_settings">{{ __('Payment Settings') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="invoice _schema" id="invoice _schema" class="setup setup_all">
-                                                    <label for="invoice _schema">{{ __('Invoice Schema') }}</label>
+                                                    <input type="checkbox" name="invoice_schema" id="invoice_schema" class="setup setup_all">
+                                                    <label for="invoice_schema">{{ __('Invoice Schema') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="invoice_layout" id="invoice_layout" class="setup setup_all">

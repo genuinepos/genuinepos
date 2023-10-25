@@ -166,6 +166,7 @@
         font-weight: 600
     }
 
+    
     /* RTL */
     :root {
         --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);

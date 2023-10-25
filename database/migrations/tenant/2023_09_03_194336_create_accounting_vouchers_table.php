@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('voucher_no');
             $table->tinyInteger('voucher_type');
+            $table->tinyInteger('mode')->default(1)->comment('1=single_mode,2=multiple_mode');
+            $table->string('reference')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('sale_ref_id')->nullable();
             $table->unsignedBigInteger('sale_return_ref_id')->nullable();

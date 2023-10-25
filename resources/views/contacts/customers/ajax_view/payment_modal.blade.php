@@ -669,8 +669,9 @@
           return str;
       }
 
-        $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
-            $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr');
-            $(this).addClass('active_tr');
-        });
+    $(document).on('click', '.invoice_and_order_table_area table tbody tr', function () {
+
+        $('.invoice_and_order_table_area table tbody tr').removeClass('active_tr');
+        $(this).addClass('active_tr');
+    });
 </script>

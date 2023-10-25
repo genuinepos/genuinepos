@@ -136,8 +136,6 @@ class PaymentController extends Controller
             'credit_account_id' => 'required',
         ]);
 
-        // dd($request->ref_ids);
-
         try {
             DB::beginTransaction();
 
@@ -166,7 +164,6 @@ class PaymentController extends Controller
 
             //Add Debit Ledger Entry
             $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->credit_account_id);
-
 
             // Add Credit Account Accounting voucher Description
             $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
@@ -309,7 +306,7 @@ class PaymentController extends Controller
 
             //Add credit Ledger Entry
             $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
-
+ 
             DB::commit();
         } catch (Exception $e) {
 

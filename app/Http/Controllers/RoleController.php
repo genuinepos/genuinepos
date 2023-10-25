@@ -52,6 +52,12 @@ class RoleController extends Controller
 
         $updatedPermission = array_keys($data);
 
+        $appPermissionArray = (new \Database\Seeders\RolePermissionSeeder)->getPermissionsArray();
+        $appPermissionArray = array_column($appPermissionArray, 'name');
+        // dd(\array_diff($updatedPermission, $appPermissionArray));
+        // dd(\array_diff($appPermissionArray, $updatedPermission));
+        // dd($updatedPermission, $appPermissionArray);
+
         $updateRole = new Role();
         $updateRole->name = $request->role_name;
         $updateRole->save();

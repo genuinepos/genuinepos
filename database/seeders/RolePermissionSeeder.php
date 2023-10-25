@@ -110,11 +110,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '24', 'name' => 'product_edit'],
             ['id' => '25', 'name' => 'openingStock_add'],
             ['id' => '26', 'name' => 'product_delete'],
-            ['id' => '27', 'name' => 'categories'],
-            ['id' => '28', 'name' => 'brand'],
-            ['id' => '29', 'name' => 'units'],
-            ['id' => '30', 'name' => 'variant'],
-            ['id' => '31', 'name' => 'warranties'],
+            // ['id' => '27', 'name' => 'categories'],
+            // ['id' => '28', 'name' => 'brand'],
+            // ['id' => '29', 'name' => 'units'],
+            // ['id' => '30', 'name' => 'variant'],
+            // ['id' => '31', 'name' => 'warranties'],
             ['id' => '32', 'name' => 'selling_price_group'],
             ['id' => '33', 'name' => 'generate_barcode'],
             ['id' => '34', 'name' => 'product_settings'],
@@ -261,12 +261,12 @@ class RolePermissionSeeder extends Seeder
             ['id' => '171', 'name' => 'own_to_other_business_location__add_transfer'],
             ['id' => '172', 'name' => 'own_to_other_business_location__transfer_list'],
             ['id' => '173', 'name' => 'own_to_other_business_location__receive_stock'],
-            ['id' => '174', 'name' => 'brand_create'],
-            ['id' => '175', 'name' => 'brand_edit'],
-            ['id' => '176', 'name' => 'brand_delete'],
-            ['id' => '177', 'name' => 'unit_create'],
-            ['id' => '178', 'name' => 'unit_edit'],
-            ['id' => '179', 'name' => 'unit_delete'],
+            // ['id' => '174', 'name' => 'brand_create'],
+            // ['id' => '175', 'name' => 'brand_edit'],
+            // ['id' => '176', 'name' => 'brand_delete'],
+            // ['id' => '177', 'name' => 'unit_create'],
+            // ['id' => '178', 'name' => 'unit_edit'],
+            // ['id' => '179', 'name' => 'unit_delete'],
             // Sales Reports
             ['id' => '180', 'name' => 'sold_product_report'],
             ['id' => '181', 'name' => 'sales_order_report'],
@@ -312,8 +312,22 @@ class RolePermissionSeeder extends Seeder
             ['id' => '215', 'name' => 'product_warranty_delete'],
             ['id' => '216', 'name' => 'product_expired_list'],
 
-            // Purchase
-            ['id' => '217', 'name' => 'product_expired_list'],
+            ['id' => '217', 'name' => 'purchase_order_index'],
+            ['id' => '218', 'name' => 'purchase_order_add'],
+            ['id' => '219', 'name' => 'purchase_order_edit'],
+            ['id' => '220', 'name' => 'purchase_order_delete'],
+
+            ['id' => '221', 'name' => 'purchase_return_index'],
+            ['id' => '222', 'name' => 'purchase_return_add'],
+            ['id' => '223', 'name' => 'purchase_return_edit'],
+            ['id' => '224', 'name' => 'purchase_return_delete'],
+
+            ['id' => '225', 'name' => 'purchase_report'],
+            ['id' => '226', 'name' => 'purchase_order_report'],
+            ['id' => '227', 'name' => 'purchase_ordered_product_report'],
+            ['id' => '228', 'name' => 'purchase_return_report'],
+            ['id' => '229', 'name' => 'purchase_returned_product_report'],
+
 
         ];
 

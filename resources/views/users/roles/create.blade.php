@@ -102,6 +102,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-3">
+                                <div class="input-group align-items-center gap-2">
+                                    <label for="inputEmail3"> <b> Select All </b> </label>
+                                    <div class="d-flex align-items-center">
+                                        <input type="checkbox" class="select_all super_select_all" id="super_select_all" data-target="super_select_all" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {{-- Accordian --}}
@@ -1604,6 +1612,16 @@
     </div>
 @endsection
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#super_select_all', function() {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                });
+            });
+        });
+    </script>
     <script>
         $(document).on('click', '#select_all', function() {
 

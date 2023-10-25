@@ -67,6 +67,7 @@
             });
 
             html += '</select>';
+            html += '<input type="hidden" name="accounting_voucher_description_ids[]">';
             html += '<input type="hidden" class="unique_id-' + generate_unique_id + '" id="unique_id" value="' + generate_unique_id + '">';
             html += '</td>';
 
@@ -115,7 +116,7 @@
         }else if(event.value == 'list_end') {
 
             tr.find('#expense_next_step').val('');
-            $('#save_and_print').focus();
+            $('#save_changes').focus();
         }
     }
 
@@ -178,8 +179,6 @@
     var isAllowSubmit = true;
     $(document).on('click', '.expense_submit_button', function() {
 
-        var value = $(this).val();
-        $('#action').val(value);
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
@@ -190,18 +189,13 @@
     });
 
     //Add payment request by ajax
-    $('#add_expense_form').on('submit', function(e) {
+    $('#edit_expense_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.expense_loading_btn').show();
         var url = $(this).attr('action');
 
-        isAjaxIn = false;
-        isAllowSubmit = false;
         $.ajax({
-            beforeSend: function() {
-                isAjaxIn = true;
-            },
             url: url,
             type: 'post',
             data: new FormData(this),
@@ -210,9 +204,6 @@
             processData: false,
             success: function(data) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
-
                 $('.error').html('');
                 $('.expense_loading_btn').hide();
 
@@ -220,36 +211,14 @@
 
                     toastr.error(data.errorMsg);
                     return;
-                } else if (data.successMsg) {
-
-                    toastr.success(data.successMsg);
-                    $('#addOrEditExpenseModal').modal('hide');
-                    $('#addOrEditExpenseModal').empty();
-                    expenseTable.ajax.reload();
-                    return;
-                } else {
-
-                    toastr.success("{{ __('Expense added successfully.') }}");
-
-                    $('#addOrEditExpenseModal').modal('hide');
-                    $('#addOrEditExpenseModal').empty();
-
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 1000
-                    });
-
-                    expenseTable.ajax.reload();
-                    return;
                 }
+
+                toastr.success(data);
+                $('#addOrEditExpenseModal').modal('hide');
+                $('#addOrEditExpenseModal').empty();
+                expenseTable.ajax.reload();
             }, error: function(err) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.expense_loading_btn').hide();
                 $('.error').html('');
 
@@ -271,11 +240,6 @@
                 });
             }
         });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
     });
 </script>
 
@@ -297,5 +261,16 @@
             return totalDays - 1;
         },
         format: 'DD-MM-YYYY'
+    });
+
+    var expenseDebitAccountIds = document.querySelectorAll('.expense_debit_account_id');
+
+    $.each(expenseDebitAccountIds, function(index, value) {
+
+        if (index > 0) {
+
+            var id = $(value).attr('id');
+            $('#' + id, '#expense_ledger_list').select2();
+        }
     });
 </script>

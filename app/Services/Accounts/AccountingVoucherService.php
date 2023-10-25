@@ -51,6 +51,7 @@ class AccountingVoucherService
             'voucherCreditDescription.references.salesReturn',
             'voucherCreditDescription.references.purchaseReturn',
             'voucherCreditDescription.references.stockAdjustment',
+            'voucherDebitDescriptions',
         ]);
 
         $updateAccountingVoucher->sale_ref_id = $saleRefId ? $saleRefId : $updateAccountingVoucher->sale_ref_id;

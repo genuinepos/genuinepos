@@ -46,12 +46,12 @@
                                                     </div>
                                                 @endif
 
-                                                <div class="col-md-2">
+                                                {{-- <div class="col-md-2">
                                                     <label><strong>{{ __('Expense Ledger') }}</strong></label>
                                                     <select name="debit_account_id" class="form-control select2" id="f_debit_account_id" autofocus>
                                                         <option value="">{{ __('All') }}</option>
                                                     </select>
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-md-2">
                                                     <label><strong>{{ __('From Date') }}</strong></label>
@@ -160,50 +160,49 @@
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         // Show session message by toster alert.
-        // var expenseTable = $('.data_tbl').DataTable({
-        //     dom: "lBfrtip",
-        //     buttons: [
-        //         {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //         {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-        //     ],
-        //     "processing": true,
-        //     "serverSide": true,
-        //     //aaSorting: [[0, 'asc']],
-        //     "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        //     "ajax": {
-        //         "url": "{{ route('payments.index') }}",
-        //         "data": function(d) {
-        //             d.branch_id = $('#f_branch_id').val();
-        //             d.debit_account_id = $('#f_debit_account_id').val();
-        //             d.from_date = $('#f_from_date').val();
-        //             d.to_date = $('#f_to_date').val();
-        //         }
-        //     },
-        //     columns: [
-        //         {data: 'action'},
-        //         {data: 'date', name: 'accountingVoucher.date'},
-        //         {data: 'voucher_no', name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
-        //         {data: 'branch', name: 'accountingVoucher.branch.name'},
-        //         {data: 'reference', name: 'accountingVoucher.purchaseRef.invoice_id'},
-        //         {data: 'remarks', name: 'accountingVoucher.remarks'},
-        //         {data: 'paid_to', name: 'account.name'},
-        //         {data: 'paid_from', name: 'accountingVoucher.voucherCreditDescription.account.name'},
-        //         {data: 'payment_method', name: 'accountingVoucher.voucherCreditDescription.paymentMethod.name'},
-        //         {data: 'transaction_no', name: 'accountingVoucher.voucherCreditDescription.transaction_no'},
-        //         {data: 'cheque_no', name: 'accountingVoucher.voucherCreditDescription.cheque_no'},
-        //         // {data: 'cheque_serial_no',name: 'accountingVoucher.voucherDebitDescription.cheque_serial_no'},
-        //         {data: 'total_amount',name: 'accountingVoucher.voucherCreditDescription.cheque_serial_no', className: 'text-end fw-bold'},
-        //         // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
-        //     ],fnDrawCallback: function() {
+        var expenseTable = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [
+                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:first-child)'}},
+                {extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:first-child)'}},
+            ],
+            "processing": true,
+            "serverSide": true,
+            //aaSorting: [[0, 'asc']],
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "ajax": {
+                "url": "{{ route('expenses.index') }}",
+                "data": function(d) {
+                    d.branch_id = $('#f_branch_id').val();
+                    // d.debit_account_id = $('#f_debit_account_id').val();
+                    d.from_date = $('#f_from_date').val();
+                    d.to_date = $('#f_to_date').val();
+                }
+            },
+            columns: [
+                {data: 'action'},
+                {data: 'date', name: 'date'},
+                {data: 'voucher_no', name: 'voucher_no', className: 'fw-bold'},
+                {data: 'branch', name: 'branch.name'},
+                {data: 'reference', name: 'reference'},
+                {data: 'remarks', name: 'remarks'},
+                {data: 'paid_from', name: 'voucherCreditDescription.account.name'},
+                {data: 'payment_method', name: 'voucherCreditDescription.paymentMethod.name'},
+                {data: 'transaction_no', name: 'voucherCreditDescription.transaction_no'},
+                {data: 'cheque_no', name: 'voucherCreditDescription.cheque_no'},
+                {data: 'expense_descriptions',name: 'voucherDebitDescriptions.account.name'},
+                {data: 'total_amount',name: 'branch.parentBranch.name', className: 'text-end fw-bold'},
+                // {data: 'created_by',name: 'accountingVoucher.createdBy.name'},
+            ],fnDrawCallback: function() {
 
-        //         var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
-        //         $('#total_amount').text(bdFormat(total_amount));
+                var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
+                $('#total_amount').text(bdFormat(total_amount));
 
-        //         $('.data_preloader').hide();
-        //     }
-        // });
+                $('.data_preloader').hide();
+            }
+        });
 
         function sum_table_col(table, class_name) {
             var sum = 0;
@@ -224,7 +223,7 @@
             e.preventDefault();
 
             $('.data_preloader').show();
-            paymentTable.ajax.reload();
+            expenseTable.ajax.reload();
         });
 
         $.ajaxSetup({

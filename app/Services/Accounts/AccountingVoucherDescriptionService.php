@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\BooleanType;
 use App\Enums\IsDeleteInUpdate;
 use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescription;
@@ -39,10 +40,10 @@ class AccountingVoucherDescriptionService
 
         if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 2 || $accountGroup->sub_sub_group_number == 11) {
 
-            $AccountingVoucherDescription->is_cash_bank_ac = 1;
+            $AccountingVoucherDescription->is_cash_bank_ac = BooleanType::True->value;
         } else {
 
-            $AccountingVoucherDescription->is_cash_bank_ac = 0;
+            $AccountingVoucherDescription->is_cash_bank_ac = BooleanType::False->value;
         }
 
         return $AccountingVoucherDescription;
@@ -94,10 +95,10 @@ class AccountingVoucherDescriptionService
 
         if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 2 || $accountGroup->sub_sub_group_number == 11) {
 
-            $addOrUpdateAccountingVoucherDescription->is_cash_bank_ac = 1;
+            $addOrUpdateAccountingVoucherDescription->is_cash_bank_ac = BooleanType::True->value;
         } else {
 
-            $addOrUpdateAccountingVoucherDescription->is_cash_bank_ac = 0;
+            $addOrUpdateAccountingVoucherDescription->is_cash_bank_ac = BooleanType::False->value;
         }
 
         $addOrUpdateAccountingVoucherDescription->current_account_id = $current_account_id;
@@ -109,14 +110,15 @@ class AccountingVoucherDescriptionService
     {
         foreach ($descriptions as $description) {
 
-            $description->is_delete_in_update = 1;
+            $description->is_delete_in_update = IsDeleteInUpdate::Yes->value;
             $description->save();
         }
     }
 
     public function deleteUnusedAccountingVoucherDescriptions($accountingVoucherId)
     {
-        $deletableDescriptions = AccountingVoucherDescription::where('accounting_voucher_id', $accountingVoucherId)->where('is_delete_in_update', 1)->get();
+        $deletableDescriptions = AccountingVoucherDescription::where('accounting_voucher_id', $accountingVoucherId)
+            ->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
 
         foreach ($deletableDescriptions as $deletableDescription) {
 
@@ -135,7 +137,7 @@ class AccountingVoucherDescriptionService
 
             if ($account->sub_sub_group_number == 1 || $account->sub_sub_group_number == 2 || $account->sub_sub_group_number == 11) {
 
-                if (! isset($cashBankAccountId)) {
+                if (!isset($cashBankAccountId)) {
 
                     $cashBankAccountId = $account->id;
                 }

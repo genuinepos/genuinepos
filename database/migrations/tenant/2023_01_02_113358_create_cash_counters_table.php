@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('counter_name');
             $table->string('short_name');
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

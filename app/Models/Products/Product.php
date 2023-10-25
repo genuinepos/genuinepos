@@ -2,17 +2,14 @@
 
 namespace App\Models\Products;
 
-use App\Models\SaleProduct;
 use App\Models\ComboProduct;
 use App\Models\ProductImage;
-use App\Models\ProductBranch;
 use App\Models\Products\Unit;
 use App\Models\Products\Brand;
 use App\Models\Accounts\Account;
-use App\Models\ProductWarehouse;
 use App\Models\Products\Category;
 use App\Models\Products\Warranty;
-use App\Models\PurchaseOrderProduct;
+use App\Models\Sales\SaleProduct;
 use App\Models\Manufacturing\Process;
 use App\Models\Products\ProductStock;
 use App\Models\Products\ProductVariant;
@@ -20,10 +17,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Manufacturing\Production;
 use App\Models\Purchases\PurchaseProduct;
 use App\Models\Products\ProductAccessBranch;
-use App\Models\TransferStockToBranchProduct;
+use App\Models\Purchases\PurchaseOrderProduct;
 use App\Models\Manufacturing\ProcessIngredient;
-use App\Models\TransferStockToWarehouseProduct;
-use App\Models\TransferStockBranchToBranchProducts;
+use App\Models\TransferStocks\TransferStockProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
@@ -46,17 +42,7 @@ class Product extends Model
 
     public function purchasedVariants()
     {
-        return $this->hasMany(ProductVariant::class, 'product_id')->where('is_purchased', 1);
-    }
-
-    public function productBranches()
-    {
-        return $this->hasMany(ProductBranch::class);
-    }
-
-    public function productWarehouses()
-    {
-        return $this->hasMany(ProductWarehouse::class);
+        return $this->hasMany(ProductVariant::class, 'variant_id')->where('is_purchased', 1);
     }
 
     public function purchasedProducts()
@@ -85,7 +71,7 @@ class Product extends Model
 
     public function transferBranchToBranchProducts()
     {
-        return $this->hasMany(TransferStockBranchToBranchProducts::class, 'product_id');
+        return $this->hasMany(TransferStockProduct::class, 'product_id');
     }
 
     public function processIngredients()
@@ -98,14 +84,14 @@ class Product extends Model
         return $this->hasMany(PurchaseOrderProduct::class);
     }
 
-    public function transferToBranchProducts()
+    public function transferWarehouseToBranchProducts()
     {
-        return $this->hasMany(TransferStockToBranchProduct::class);
+        return $this->hasMany(TransferStockProduct::class, 'product_id');
     }
 
-    public function transferToWarehouseProducts()
+    public function transferBranchToWarehouseProducts()
     {
-        return $this->hasMany(TransferStockToWarehouseProduct::class);
+        return $this->hasMany(TransferStockProduct::class, 'product_id');
     }
 
     public function category()

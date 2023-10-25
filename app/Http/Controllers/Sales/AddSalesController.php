@@ -204,7 +204,7 @@ class AddSalesController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-        $data = $addSaleControllerMethodContainersInterface->editMethodContainer(
+        $editMethodContainer = $addSaleControllerMethodContainersInterface->editMethodContainer(
             id: $id,
             branchService: $this->branchService,
             saleService: $this->saleService,
@@ -215,7 +215,7 @@ class AddSalesController extends Controller
             priceGroupService: $this->priceGroupService,
         );
 
-        extract($data);
+        extract($editMethodContainer);
 
         return view('sales.add_sale.edit', compact('sale', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'warehouses', 'branchName'));
     }
@@ -255,9 +255,9 @@ class AddSalesController extends Controller
                 codeGenerator: $codeGenerator,
             );
 
-            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
             }
 
             DB::commit();

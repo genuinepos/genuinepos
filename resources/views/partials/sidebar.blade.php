@@ -157,27 +157,6 @@
                     @endif
                 @endif
 
-                @if ($generalSettings['modules__expenses'] == '1')
-
-                    @if (
-                        auth()->user()->can('view_expense') ||
-                        auth()->user()->can('add_expense') ||
-                        auth()->user()->can('expense_category') ||
-                        auth()->user()->can('category_wise_expense') ||
-                        (
-                            auth()->user()->can('expanse_report') &&
-                            auth()->user()->can('expanse_report')
-                        )
-                    )
-                        <li data-menu="expenses" class="{{ request()->is('expenses*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/budget.svg') }}">
-                                <p class="title">@lang('menu.expenses')</p>
-                            </a>
-                        </li>
-                    @endif
-                @endif
-
                 @if ($generalSettings['modules__accounting'] == '1')
 
                     @if (auth()->user()->can('accounting_access'))
@@ -1588,109 +1567,6 @@
                                                     </div>
                                                 </div>
                                                 <p class="switch_text">{{ __("Stock Adjusted Products Report") }}</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-
-            @if ($generalSettings['modules__expenses'] == '1')
-                <div class="sub-menu_t" id="expenses">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center justify-content-end">
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container-fluid">
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Expense Management') }}</p>
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('add_expense') )
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('expanses.create') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-square"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.add_expense')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('expense_category') )
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('expenses.categories.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-cubes"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.expense_categories')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('view_expense'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('expanses.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-list-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.expense_list')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            @if (
-                                (
-                                    auth()->user()->can('expanse_report') &&
-                                    auth()->user()->can('expanse_report')
-                                )
-                            )
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>@lang('menu.expense_report')</strong></p>
-                                        <hr class="p-0 m-0 mb-3">
-                                    </div>
-                                </div> --}}
-
-                                <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">@lang('menu.expense_report')</p>
-                                    <div class="sub-menu-row">
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('reports.expenses.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-money-bill-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.expense_report')</p>
-                                            </a>
-                                        </div>
-
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('reports.expenses.category.wise.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-list-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.category_wise_expense_report')</p>
                                             </a>
                                         </div>
                                     </div>

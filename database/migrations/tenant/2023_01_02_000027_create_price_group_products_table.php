@@ -18,8 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('price_group_id')->nullable()->index('price_group_products_price_group_id_foreign');
             $table->unsignedBigInteger('product_id')->nullable()->index('price_group_products_product_id_foreign');
             $table->unsignedBigInteger('variant_id')->nullable()->index('price_group_products_variant_id_foreign');
-            $table->decimal('price', 22)->nullable();
+            $table->decimal('price', 22, 2)->nullable();
             $table->timestamps();
+
+            $table->foreign(['price_group_id'])->references(['id'])->on('price_groups')->onDelete('CASCADE');
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
+            $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
         });
     }
 

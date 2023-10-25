@@ -312,6 +312,9 @@ class RolePermissionSeeder extends Seeder
             ['id' => '215', 'name' => 'product_warranty_delete'],
             ['id' => '216', 'name' => 'product_expired_list'],
 
+            // Purchase
+            ['id' => '217', 'name' => 'product_expired_list'],
+
         ];
 
         return $permissions;

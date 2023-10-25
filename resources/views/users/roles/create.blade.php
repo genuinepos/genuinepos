@@ -367,19 +367,19 @@
                                                    <label for="product_category_index">{{ __('View All Category') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_category" id="add_category"
+                                                    <input type="checkbox" name="product_category_add" id="product_category_add"
                                                         class="products product_category">
-                                                   <label for="add_category">{{ __('Add Category') }}</label>
+                                                   <label for="product_category_add">{{ __('Add Category') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_category" id="edit_category"
+                                                    <input type="checkbox" name="product_category_edit" id="product_category_edit"
                                                         class="products product_category">
-                                                   <label for="edit_category">{{ __('Edit Category') }}</label>
+                                                   <label for="product_category_edit">{{ __('Edit Category') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_category" id="delete_category"
+                                                    <input type="checkbox" name="product_category_delete" id="product_category_delete"
                                                         class="products product_category">
-                                                   <label for="delete_category">{{ __('Delete Category') }}</label>
+                                                   <label for="product_category_delete">{{ __('Delete Category') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -391,24 +391,24 @@
                                                   </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="view_brand" id="view_brand"
+                                                    <input type="checkbox" name="product_brand_index" id="product_brand_index"
                                                         class="products product_brand">
-                                                   <label for="view_brand">{{ __('View All Brand') }}</label>
+                                                   <label for="product_brand_index">{{ __('View All Brand') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_brand" id="add_brand"
+                                                    <input type="checkbox" name="product_brand_add" id="product_brand_add"
                                                         class="products product_brand">
-                                                   <label for="add_brand">{{ __('Add Brand') }}</label>
+                                                   <label for="product_brand_add">{{ __('Add Brand') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_brand" id="edit_brand"
+                                                    <input type="checkbox" name="product_brand_edit" id="product_brand_edit"
                                                         class="products product_brand">
-                                                   <label for="edit_brand">{{ __('Edit Brand') }}</label>
+                                                   <label for="product_brand_edit">{{ __('Edit Brand') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_brand" id="delete_brand"
+                                                    <input type="checkbox" name="product_brand_delete" id="product_brand_delete"
                                                         class="products product_brand">
-                                                   <label for="delete_brand">{{ __('Delete Brand') }}</label>
+                                                   <label for="product_brand_delete">{{ __('Delete Brand') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -420,24 +420,24 @@
                                                   </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="view_unit" id="view_unit"
+                                                    <input type="checkbox" name="product_unit_index" id="product_unit_index"
                                                         class="products product_unit">
-                                                   <label for="view_unit">{{ __('View All Unit') }}</label>
+                                                   <label for="product_unit_index">{{ __('View All Unit') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_unit" id="add_unit"
+                                                    <input type="checkbox" name="product_unit_add" id="product_unit_add"
                                                         class="products product_unit">
-                                                   <label for="add_unit">{{ __('Add Unit') }}</label>
+                                                   <label for="product_unit_add">{{ __('Add Unit') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_unit" id="edit_unit"
+                                                    <input type="checkbox" name="product_unit_edit" id="product_unit_edit"
                                                         class="products product_unit">
-                                                   <label for="edit_unit">{{ __('Edit Unit') }}</label>
+                                                   <label for="product_unit_edit">{{ __('Edit Unit') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_unit" id="delete_unit"
+                                                    <input type="checkbox" name="product_unit_delete" id="product_unit_delete"
                                                         class="products product_unit">
-                                                   <label for="delete_unit">{{ __('Delete Unit') }}</label>
+                                                   <label for="product_unit_delete">{{ __('Delete Unit') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -452,24 +452,24 @@
                                                   </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="view_variant" id="view_variant"
+                                                    <input type="checkbox" name="product_variant_index" id="product_variant_index"
                                                         class="products product_variant">
-                                                   <label for="view_variant">{{ __('View All Variant') }}</label>
+                                                   <label for="product_variant_index">{{ __('View All Variant') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_variant" id="add_variant"
+                                                    <input type="checkbox" name="product_variant_add" id="product_variant_add"
                                                         class="products product_variant">
-                                                   <label for="add_variant">{{ __('Add Variant') }}</label>
+                                                   <label for="product_variant_add">{{ __('Add Variant') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_variant" id="edit_variant"
+                                                    <input type="checkbox" name="product_variant_edit" id="product_variant_edit"
                                                         class="products product_variant">
-                                                   <label for="edit_variant">{{ __('Edit Variant') }}</label>
+                                                   <label for="product_variant_edit">{{ __('Edit Variant') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_variant" id="delete_variant"
+                                                    <input type="checkbox" name="product_variant_delete" id="product_variant_delete"
                                                         class="products product_variant">
-                                                   <label for="delete_variant">{{ __('Delete Variant') }}</label>
+                                                   <label for="product_variant_delete">{{ __('Delete Variant') }}</label>
                                                 </p>
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -481,9 +481,9 @@
                                                   </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="view_warranty" id="view_warranty"
+                                                    <input type="checkbox" name="product_warranty_index" id="product_warranty_index"
                                                         class="products product_warranties">
-                                                   <label for="view_warranty">{{ __('View All Warranty') }}</label>
+                                                   <label for="product_warranty_index">{{ __('View All Warranty') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="add_warranty" id="add_warranty"
@@ -604,17 +604,117 @@
                                                         class="purchase purchase_all">
                                                     <label for="purchase_statements">{{ __('Purchase Statements') }}</label>
                                                 </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_order" autocomplete="off">
+                                                    <strong>{{ __('Purchase Order') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_index" id="purchase_order_index"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_index">{{ __('View All Purchase Order') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_add" id="purchase_order_add"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_add">{{ __('Purchase Order Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_edit" id="purchase_order_edit"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_edit">{{ __('Purchase Order Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_delete" id="purchase_order_delete"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_delete">{{ __('Purchase Order Delete') }}</label>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_return" autocomplete="off">
+                                                    <strong>{{ __('Purchase Return') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_index" id="purchase_return_index"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_index">{{ __('View All Purchase Return') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_add" id="purchase_return_add"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_add">{{ __('Purchase Return Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_edit" id="purchase_return_edit"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_edit">{{ __('Purchase Return Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_delete" id="purchase_return_delete"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_delete">{{ __('Purchase Return Delete') }}</label>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_report" autocomplete="off">
+                                                    <strong>{{ __('Purchase Reports') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_report" id="purchase_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_report">{{ __('Purchase Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_report" id="purchase_order_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_order_report">{{ __('Purchase Order Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_ordered_product_report" id="purchase_ordered_product_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_ordered_product_report">{{ __('Purchase Ordered Product Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_report" id="purchase_return_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_return_report">{{ __('Purchase Return Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_returned_product_report" id="purchase_returned_product_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_returned_product_report">{{ __('Purchase Returned Products Report') }}</label>
+                                                </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="purchase_sale_report" id="purchase_sale_report"
-                                                        class="purchase purchase_all">
+                                                        class="purchase purchase_report">
                                                     <label for="purchase_sale_report">{{ __('Purchase & Sale Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="product_purchase_report" id="product_purchase_report"
-                                                        class="purchase purchase_all">
+                                                        class="purchase purchase_report">
                                                     <label for="product_purchase_report">{{ __('Product Purchase Report') }}</label>
                                                 </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_payment_report" id="purchase_payment_report"
+                                                        class="purchase purchase_report">
+                                                   <label for="purchase_payment_report"> {{ __(' Purchase Payment Report') }}</label>
+                                                </p>
                                             </div>
+                                        </div>
+                                        <hr class="mt-2">
+                                        <div class="row">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
@@ -632,11 +732,6 @@
                                                     <input type="checkbox" name="purchase_return" id="purchase_return"
                                                         class="purchase other_purchase">
                                                     <label for="purchase_return">{{ __('Access Purchase Return') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="purchase_payment_report" id="purchase_payment_report"
-                                                        class="purchase other_purchase">
-                                                   <label for="purchase_payment_report"> {{ __(' Purchase Payment Report') }}</label>
                                                 </p>
                                             </div>
                                         </div>

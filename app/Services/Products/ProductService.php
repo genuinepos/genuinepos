@@ -155,7 +155,9 @@ class ProductService
 
                 if ($countPriceGroup > 0) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
+                    if (auth()->user()->can('manage_price_group')) {
+                        $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
+                    }
                 }
 
                 $html .= ' </div>';

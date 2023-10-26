@@ -18,6 +18,11 @@ class ProductSettingsController extends Controller
 
     public function index()
     {
+        if (!auth()->user()->can('product_settings')) {
+
+            abort(403, __("Access Forbidden."));
+        }
+
         $units = $this->unitService->units()->get();
 
         return view('product.products.settings.index', compact('units'));
@@ -25,6 +30,11 @@ class ProductSettingsController extends Controller
 
     public function update(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
+        if (!auth()->user()->can('product_settings')) {
+
+            abort(403, __("Access Forbidden."));
+        }
+        
         $updateProductSettings = $this->productSettingsService->updateProductSettings(request: $request, generalSettingService: $generalSettingService);
         
         return response()->json(__("Product settings updated successfully"));

@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
-                                @if (auth()->user()->can('variant'))
+                                @if (auth()->user()->can('product_variant_add'))
                                     <a href="{{ route('product.bulk.variants.create') }}" class="btn btn-sm btn-primary" id="addVariant"><i class="fas fa-plus-square"></i> {{ __("Add Variant") }}</a>
                                 @endif
                             </div>

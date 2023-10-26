@@ -20,6 +20,11 @@ class PriceGroupManageController extends Controller
 
     public function index($productId, $type)
     {
+        if (!auth()->user()->can('manage_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $product = $this->productService->singleProduct(
             id: $productId,
@@ -42,6 +47,11 @@ class PriceGroupManageController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
+        if (!auth()->user()->can('manage_price_group')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         try {
 
             DB::beginTransaction();

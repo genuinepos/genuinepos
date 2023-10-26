@@ -81,6 +81,9 @@ class PurchaseController extends Controller
 
     public function show($id)
     {
+        if (!auth()->user()->can('purchase_all')) {
+            abort(403, 'Access Forbidden.');
+        }
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
             'supplier:id,name,phone,address',

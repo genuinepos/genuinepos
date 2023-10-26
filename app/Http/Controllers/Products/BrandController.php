@@ -31,6 +31,10 @@ class BrandController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('product_brand_add')) {
+            abort(403, __("Access Forbidden."));
+        }
+
         return view('product.brands.ajax_view.create');
     }
 
@@ -74,6 +78,10 @@ class BrandController extends Controller
     // Update Brand method
     public function update($id, Request $request)
     {
+        if (!auth()->user()->can('product_brand_edit')) {
+            abort(403, __("Access Forbidden."));
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',

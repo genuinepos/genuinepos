@@ -118,19 +118,17 @@
                                     <h6>{{ __('All Product') }}</h6>
                                 </div>
 
-                                @if(auth()->user()->can('product_add'))
-
-                                    <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
+                                <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
+                                    @if(auth()->user()->can('product_add'))
                                         <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i>{{ __("Add Product") }}</a>
+                                    @endif
+                                    <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
 
-                                        <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
+                                    @if (auth()->user()->can('product_delete'))
 
-                                        @if (auth()->user()->can('product_delete'))
-
-                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">@lang('menu.delete_selected')</a>
-                                        @endif
-                                    </div>
-                                @endif
+                                        <a href="" class="btn btn-sm btn-danger multipla_delete_btn">@lang('menu.delete_selected')</a>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="widget_content">

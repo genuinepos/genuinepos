@@ -1682,7 +1682,7 @@
                                         @endif
 
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('accounting.contras.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('contras.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-hand-holding-usd"></i></span>

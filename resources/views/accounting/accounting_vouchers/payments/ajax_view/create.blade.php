@@ -109,24 +109,13 @@
                         <div class="row" style="border-right:1px solid black;">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Date") }} <span class="text-danger">*</span></label>
-                                <input required name="date" class="form-control" id="payment_date" data-next="payment_payment_method_id" value="{{ date($generalSettings['business__date_format']) }}" placeholder="{{ __("Date") }}" autocomplete="off">
+                                <input required name="date" class="form-control" id="payment_date" data-next="payment_credit_account_id" value="{{ date($generalSettings['business__date_format']) }}" placeholder="{{ __("Date") }}" autocomplete="off">
                                 <span class="error error_payment_date"></span>
                             </div>
 
                             <div class="col-md-12">
-                                <label class="fw-bold">{{ __("Type/Method") }} <span class="text-danger">*</span></label>
-                                <select required name="payment_method_id" class="form-control" id="payment_payment_method_id" data-next="payment_credit_account_id">
-                                    @foreach ($methods as $method)
-                                        <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">{{ $method->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <span class="error error_payment_payment_method_id"></span>
-                            </div>
-
-                            <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Credit A/c") }} <span class="text-danger">*</span> </label>
-                                <select required name="credit_account_id" class="form-control select2" id="payment_credit_account_id" data-next="payment_transaction_no">
+                                <select required name="credit_account_id" class="form-control select2" id="payment_credit_account_id" data-next="payment_payment_method_id">
                                     <option value="">{{ __("Select Credit A/c") }}</option>
                                     @foreach ($accounts as $ac)
                                         @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
@@ -143,6 +132,17 @@
                                     @endforeach
                                 </select>
                                 <span class="error error_payment_credit_account_id"></span>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="fw-bold">{{ __("Type/Method") }} <span class="text-danger">*</span></label>
+                                <select required name="payment_method_id" class="form-control" id="payment_payment_method_id" data-next="payment_transaction_no">
+                                    @foreach ($methods as $method)
+                                        <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">{{ $method->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="error error_payment_payment_method_id"></span>
                             </div>
 
                             <div class="col-md-12">

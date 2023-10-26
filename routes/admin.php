@@ -13,7 +13,6 @@ use App\Http\Controllers\BulkVariantController;
 use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommonAjaxCallController;
-use App\Http\Controllers\ContraController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\CustomerImportController;
@@ -565,49 +564,6 @@ Route::group(['prefix' => 'sales'], function () {
 //     });
 // });
 
-// Expense route group
-Route::group(['prefix' => 'expenses'], function () {
-
-    Route::get('/', [ExpanseController::class, 'index'])->name('expanses.index');
-    Route::get('category/wise/expenses', [ExpanseController::class, 'categoryWiseExpense'])->name('expanses.category.wise.expense');
-    Route::get('create', [ExpanseController::class, 'create'])->name('expanses.create');
-    Route::post('store', [ExpanseController::class, 'store'])->name('expanses.store');
-    Route::get('edit/{expanseId}', [ExpanseController::class, 'edit'])->name('expanses.edit');
-    Route::post('update/{expenseId}', [ExpanseController::class, 'update'])->name('expanses.update');
-    Route::delete('delete/{expanseId}', [ExpanseController::class, 'delete'])->name('expanses.delete');
-    Route::get('all/categories', [ExpanseController::class, 'allCategories'])->name('expanses.all.categories');
-    Route::get('payment/modal/{expenseId}', [ExpanseController::class, 'paymentModal'])->name('expanses.payment.modal');
-    Route::post('payment/{expenseId}', [ExpanseController::class, 'payment'])->name('expanses.payment');
-    Route::get('payment/view/{expenseId}', [ExpanseController::class, 'paymentView'])->name('expanses.payment.view');
-    Route::get('payment/details/{paymentId}', [ExpanseController::class, 'paymentDetails'])->name('expanses.payment.details');
-    Route::get('payment/edit/{paymentId}', [ExpanseController::class, 'paymentEdit'])->name('expanses.payment.edit');
-    Route::post('payment/update/{paymentId}', [ExpanseController::class, 'paymentUpdate'])->name('expanses.payment.update');
-    Route::delete('payment/delete/{paymentId}', [ExpanseController::class, 'paymentDelete'])->name('expanses.payment.delete');
-    Route::post('add/quick/expense/category', [ExpanseController::class, 'addQuickExpenseCategory'])->name('expanses.add.quick.expense.category');
-
-    // Expanse category route group
-    Route::group(['prefix' => 'categories'], function () {
-
-        Route::get('/', [ExpanseCategoryController::class, 'index'])->name('expenses.categories.index');
-        Route::post('store', [ExpanseCategoryController::class, 'store'])->name('expenses.categories.store');
-        Route::get('edit/{id}', [ExpanseCategoryController::class, 'edit'])->name('expenses.categories.edit');
-        Route::post('update/{id}', [ExpanseCategoryController::class, 'update'])->name('expenses.categories.update');
-        Route::delete('delete/{id}', [ExpanseCategoryController::class, 'delete'])->name('expenses.categories.delete');
-    });
-
-    Route::group(['prefix' => 'report/expenses'], function () {
-
-        Route::get('/', [ExpanseReportController::class, 'index'])->name('reports.expenses.index');
-        Route::get('print', [ExpanseReportController::class, 'print'])->name('reports.expenses.print');
-    });
-
-    Route::group(['prefix' => 'report/category/wise/expenses'], function () {
-
-        Route::get('/', [ExpenseReportCategoryWiseController::class, 'index'])->name('reports.expenses.category.wise.index');
-        Route::get('print', [ExpenseReportCategoryWiseController::class, 'print'])->name('reports.expenses.category.wise.print');
-    });
-});
-
 Route::group(['prefix' => 'accounting'], function () {
 
     // Route::group(['prefix' => 'banks'], function () {
@@ -618,28 +574,28 @@ Route::group(['prefix' => 'accounting'], function () {
     //     Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
     // });
 
-    Route::group(['prefix' => 'accounts'], function () {
+    // Route::group(['prefix' => 'accounts'], function () {
 
-        Route::get('/', [AccountController::class, 'index'])->name('accounting.accounts.index');
-        Route::get('account/book/{accountId}', [AccountController::class, 'accountBook'])->name('accounting.accounts.book');
-        Route::get('account/ledger/print/{accountId}', [AccountController::class, 'ledgerPrint'])->name('accounting.accounts.ledger.print');
-        Route::post('store', [AccountController::class, 'store'])->name('accounting.accounts.store');
-        Route::get('edit/{id}', [AccountController::class, 'edit'])->name('accounting.accounts.edit');
-        Route::post('update/{id}', [AccountController::class, 'update'])->name('accounting.accounts.update');
-        Route::delete('delete/{accountId}', [AccountController::class, 'delete'])->name('accounting.accounts.delete');
-    });
+    //     Route::get('/', [AccountController::class, 'index'])->name('accounting.accounts.index');
+    //     Route::get('account/book/{accountId}', [AccountController::class, 'accountBook'])->name('accounting.accounts.book');
+    //     Route::get('account/ledger/print/{accountId}', [AccountController::class, 'ledgerPrint'])->name('accounting.accounts.ledger.print');
+    //     Route::post('store', [AccountController::class, 'store'])->name('accounting.accounts.store');
+    //     Route::get('edit/{id}', [AccountController::class, 'edit'])->name('accounting.accounts.edit');
+    //     Route::post('update/{id}', [AccountController::class, 'update'])->name('accounting.accounts.update');
+    //     Route::delete('delete/{accountId}', [AccountController::class, 'delete'])->name('accounting.accounts.delete');
+    // });
 
-    Route::group(['prefix' => 'contras'], function () {
+    // Route::group(['prefix' => 'contras'], function () {
 
-        Route::get('/', [ContraController::class, 'index'])->name('accounting.contras.index');
-        Route::get('create', [ContraController::class, 'create'])->name('accounting.contras.create');
-        Route::get('show/{contraId}', [ContraController::class, 'show'])->name('accounting.contras.show');
-        Route::get('account/book/{contraId}', [ContraController::class, 'accountBook'])->name('accounting.contras.book');
-        Route::post('store', [ContraController::class, 'store'])->name('accounting.contras.store');
-        Route::get('edit/{contraId}', [ContraController::class, 'edit'])->name('accounting.contras.edit');
-        Route::post('update/{contraId}', [ContraController::class, 'update'])->name('accounting.contras.update');
-        Route::delete('delete/{contraId}', [ContraController::class, 'delete'])->name('accounting.contras.delete');
-    });
+    //     Route::get('/', [ContraController::class, 'index'])->name('accounting.contras.index');
+    //     Route::get('create', [ContraController::class, 'create'])->name('accounting.contras.create');
+    //     Route::get('show/{contraId}', [ContraController::class, 'show'])->name('accounting.contras.show');
+    //     Route::get('account/book/{contraId}', [ContraController::class, 'accountBook'])->name('accounting.contras.book');
+    //     Route::post('store', [ContraController::class, 'store'])->name('accounting.contras.store');
+    //     Route::get('edit/{contraId}', [ContraController::class, 'edit'])->name('accounting.contras.edit');
+    //     Route::post('update/{contraId}', [ContraController::class, 'update'])->name('accounting.contras.update');
+    //     Route::delete('delete/{contraId}', [ContraController::class, 'delete'])->name('accounting.contras.delete');
+    // });
 
     Route::group(['prefix' => '/'], function () {
 

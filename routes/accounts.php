@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Accounts\BankController;
+use App\Http\Controllers\Accounts\ContraController;
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\ExpenseController;
@@ -75,6 +76,17 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}', 'edit')->name('expenses.edit');
         Route::post('update/{id}', 'update')->name('expenses.update');
         Route::delete('delete/{id}', 'delete')->name('expenses.delete');
+    });
+
+    Route::controller(ContraController::class)->prefix('contras')->group(function () {
+
+        Route::get('/', 'index')->name('contras.index');
+        Route::get('show/{id}', 'show')->name('contras.show');
+        Route::get('create', 'create')->name('contras.create');
+        Route::post('store', 'store')->name('contras.store');
+        Route::get('edit/{id}', 'edit')->name('contras.edit');
+        Route::post('update/{id}', 'update')->name('contras.update');
+        Route::delete('delete/{id}', 'delete')->name('contras.delete');
     });
 
     Route::controller(DayBookController::class)->prefix('day-books')->group(function () {

@@ -17,10 +17,8 @@ use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\DayBookVoucherService;
 use App\Services\Accounts\AccountingVoucherService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class ExpenseController extends Controller
 {
@@ -32,11 +30,9 @@ class ExpenseController extends Controller
         private AccountLedgerService $accountLedgerService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
-        private DayBookVoucherService $dayBookVoucherService,
         private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
-        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
     }
 

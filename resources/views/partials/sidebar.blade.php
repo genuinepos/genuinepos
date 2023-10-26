@@ -46,7 +46,10 @@
                 @if (
                     auth()->user()->can('product_all') ||
                     auth()->user()->can('product_add') ||
-                    auth()->user()->can('categories') ||
+                    auth()->user()->can('product_category_index') ||
+                    auth()->user()->can('product_category_add') ||
+                    auth()->user()->can('product_category_edit') ||
+                    auth()->user()->can('product_category_delete') ||
                     auth()->user()->can('brand') ||
                     auth()->user()->can('units') ||
                     auth()->user()->can('variant') ||

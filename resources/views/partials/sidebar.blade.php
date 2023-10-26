@@ -452,7 +452,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('variant'))
+                                @if (auth()->user()->can('product_variant_index'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('product.bulk.variants.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -467,7 +467,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('warranties'))
+                                @if (auth()->user()->can('product_warranty_index'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('warranties.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">

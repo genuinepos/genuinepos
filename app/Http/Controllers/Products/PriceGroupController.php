@@ -16,7 +16,7 @@ class PriceGroupController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -31,7 +31,7 @@ class PriceGroupController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -41,7 +41,7 @@ class PriceGroupController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -57,7 +57,7 @@ class PriceGroupController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -69,7 +69,7 @@ class PriceGroupController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -85,7 +85,7 @@ class PriceGroupController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -97,7 +97,7 @@ class PriceGroupController extends Controller
 
     public function changeStatus($id)
     {
-        if (!auth()->user()->can('selling_price_group')) {
+        if (!auth()->user()->can('selling_price_group_index')) {
 
             abort(403, __("Access Forbidden."));
         }

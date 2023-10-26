@@ -22,7 +22,7 @@
                         <h6>{{ __('All Selling Price Group') }}</h6>
                     </div>
 
-                    @if (auth()->user()->can('selling_price_group'))
+                    @if (auth()->user()->can('selling_price_group_index'))
                         <div class="col-6 d-flex justify-content-end">
                             <a href="{{ route('selling.price.groups.create') }}" class="btn btn-sm btn-primary" id="addPriceGroup"><i class="fas fa-plus-square"></i>{{ __("Add Price Group") }}</a>
                         </div>

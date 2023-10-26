@@ -126,7 +126,7 @@ return [
     'sub_total' => 'SubTotal',
     'variants' => 'Variants',
     'warranties' => 'Warranties',
-    'selling_price_group' => 'Selling Price Group',
+    'selling_price_group_index' => 'Selling Price Group',
     'generate_barcode' => 'Generate Barcode',
     'daily_stock' => 'Daily Stock',
     'add_daily_stock' => 'Add Daily Stock',

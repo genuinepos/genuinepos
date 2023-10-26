@@ -382,6 +382,13 @@
                                                         class="products product_all">
                                                     <label for="product_settings">{{ __('Product Settings') }}</label>
                                                 </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('generate_barcode') ? 'CHECKED' : '' }}
+                                                     name="generate_barcode" id="generate_barcode"
+                                                        class="products product_all">
+                                                    <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
+                                                </p>
 
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -599,23 +606,37 @@
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
                                                     <input id="select_all" type="checkbox" class="products"
-                                                        data-target="product_others" autocomplete="off">
-                                                    <strong>{{ __('Others') }}</strong>
-                                                </label>
+                                                        data-target="product_selling_price_group_index" autocomplete="off">
+                                                    <strong>{{ __('Selling Price Group') }}</strong>
+                                                  </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" 
+                                                    {{ $role->hasPermissionTo('selling_price_group_index') ? 'CHECKED' : '' }}
+                                                    name="selling_price_group_index" id="selling_price_group_index"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_index">{{ __('View All Selling Price Group') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('selling_price_group') ? 'CHECKED' : '' }}
-                                                     name="selling_price_group" id="selling_price_group"
-                                                        class="products product_others">
-                                                <label for="selling_price_group">{{ __('Selling Price Group') }}</label>
+                                                    {{ $role->hasPermissionTo('selling_price_group_add') ? 'CHECKED' : '' }}
+                                                     name="selling_price_group_add" id="selling_price_group_add"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_add">{{ __('Selling Price Group Add') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox"
-                                                    {{ $role->hasPermissionTo('generate_barcode') ? 'CHECKED' : '' }}
-                                                     name="generate_barcode" id="generate_barcode"
-                                                        class="products product_others">
-                                                    <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
+                                                    {{ $role->hasPermissionTo('selling_price_group_edit') ? 'CHECKED' : '' }}
+                                                     name="selling_price_group_edit" id="selling_price_group_edit"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_edit">{{ __('Selling Price Group Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox"
+                                                    {{ $role->hasPermissionTo('selling_price_group_delete') ? 'CHECKED' : '' }}
+                                                     name="selling_price_group_delete" id="selling_price_group_delete"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_delete">{{ __('Selling Price Group Delete') }}</label>
                                                 </p>
                                             </div>
                                         </div>

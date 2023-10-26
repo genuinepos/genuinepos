@@ -115,7 +115,7 @@ class RolePermissionSeeder extends Seeder
             // ['id' => '29', 'name' => 'units'],
             // ['id' => '30', 'name' => 'variant'],
             // ['id' => '31', 'name' => 'warranties'],
-            ['id' => '32', 'name' => 'selling_price_group'],
+            // ['id' => '32', 'name' => 'selling_price_group_index'],
             ['id' => '33', 'name' => 'generate_barcode'],
             ['id' => '34', 'name' => 'product_settings'],
             ['id' => '35', 'name' => 'stock_report'],
@@ -286,6 +286,7 @@ class RolePermissionSeeder extends Seeder
             // ['id' => '194', 'name' => 'add_purchase_return'],
             // ['id' => '195', 'name' => 'purchase_return_list'],
             // ['id' => '196', 'name' => 'purchase_report'],
+
             // Product
             ['id' => '192', 'name' => 'product_import'],
             ['id' => '193', 'name' => 'expired_product_list'],
@@ -327,7 +328,11 @@ class RolePermissionSeeder extends Seeder
             ['id' => '227', 'name' => 'purchase_ordered_product_report'],
             ['id' => '228', 'name' => 'purchase_return_report'],
             ['id' => '229', 'name' => 'purchase_returned_product_report'],
-            
+            ['id' => '230', 'name' => 'selling_price_group_index'],
+            ['id' => '231', 'name' => 'selling_price_group_add'],
+            ['id' => '232', 'name' => 'selling_price_group_edit'],
+            ['id' => '233', 'name' => 'selling_price_group_delete'],
+           
 
         ];
 

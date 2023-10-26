@@ -125,7 +125,7 @@ return [
     'sub_total' => 'المجموع الفرعي',
     'variants' => 'المتغيرات',
     'warranties' => 'الضمانات',
-    'selling_price_group' => 'مجموعة سعر البيع',
+    'selling_price_group_index' => 'مجموعة سعر البيع',
     'generate_barcode' => 'إنشاء رمز شريطي',
     'daily_stock' => 'مخزون يومي',
     'add_daily_stock' => 'أضف مخزون يومي',

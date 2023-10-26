@@ -54,7 +54,7 @@
                     auth()->user()->can('units') ||
                     auth()->user()->can('variant') ||
                     auth()->user()->can('warranties') ||
-                    auth()->user()->can('selling_price_group') ||
+                    auth()->user()->can('selling_price_group_index') ||
                     auth()->user()->can('generate_barcode') ||
                     (
                         auth()->user()->can('product_settings') &&
@@ -442,7 +442,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('units'))
+                                @if (auth()->user()->can('product_unit_index'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('units.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -487,7 +487,7 @@
                             </div>
 
                             <div class="sub-menu-row">
-                                @if (auth()->user()->can('selling_price_group'))
+                                @if (auth()->user()->can('selling_price_group_index'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('selling.price.groups.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">

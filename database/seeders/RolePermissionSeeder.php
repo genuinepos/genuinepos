@@ -327,7 +327,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '227', 'name' => 'purchase_ordered_product_report'],
             ['id' => '228', 'name' => 'purchase_return_report'],
             ['id' => '229', 'name' => 'purchase_returned_product_report'],
-
+            
 
         ];
 

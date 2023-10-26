@@ -76,7 +76,7 @@
 
                  <div class="row mt-2">
                     <div class="col-12">
-                        <p class="fw-bold" style="border-bottom: 1px solid black;">{{ __("Credit A/c Details") }} :</p>
+                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __("Credit A/c Details") }} :</p>
                         <div class="table-responsive">
                             <table class="table print-table table-sm">
                                 <thead>
@@ -130,10 +130,9 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="fw-bold" style="border-bottom: 1px solid black;">{{ __("Expesne Descriptions") }} : </p>
+                        <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __("Expesne Descriptions") }} : </p>
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <thead>
@@ -329,7 +328,7 @@
         @endphp
         <div class="row mt-2">
             <div class="col-12">
-                <p class="fw-bold" style="border-bottom: 1px solid black;">{{ __("Credit A/c Details") }} :</p>
+                <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __("Credit A/c Details") }} :</p>
                 <table class="table print-table table-sm">
                     <thead>
                         <tr>
@@ -380,7 +379,7 @@
 
         <div class="row mt-2">
             <div class="col-12">
-                <p class="fw-bold" style="border-bottom: 1px solid black;">{{ __("Expesne Descriptions") }} : </p>
+                <p class="fw-bold" style="border-bottom: 1px solid black;font-size:11px!important;">{{ __("Expesne Descriptions") }} : </p>
                 <table class="table report-table table-sm table-bordered print_table mt-1">
                     <thead>
                         <tr>

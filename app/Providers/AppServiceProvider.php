@@ -13,6 +13,7 @@ use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
+use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
 use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
@@ -21,6 +22,7 @@ use App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersSe
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
+use App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService;
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductionControllerMethodContainersInterface::class, ProductionControllerMethodContainersService::class);
         $this->app->bind(ReceiptControllerMethodContainersInterface::class, ReceiptControllerMethodContainersService::class);
         $this->app->bind(PaymentControllerMethodContainersInterface::class, PaymentControllerMethodContainersService::class);
+        $this->app->bind(ExpenseControllerMethodContainersInterface::class, ExpenseControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);
         $this->app->bind(CacheServiceInterface::class, CacheService::class);
         $this->app->bind(GeneralSettingServiceInterface::class, GeneralSettingService::class);

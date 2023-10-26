@@ -72,7 +72,7 @@ class ContraService
 
                     // if (auth()->user()->can('edit_expense')) {
 
-                        $html .= '<a href="' . route('contras.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editContra">' . __("Edit") . '</a>';
+                    $html .= '<a href="' . route('contras.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editContra">' . __("Edit") . '</a>';
                     // }
                 }
 
@@ -80,7 +80,7 @@ class ContraService
 
                     // if (auth()->user()->can('delete_expense')) {
 
-                        $html .= '<a href="' . route('contras.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                    $html .= '<a href="' . route('contras.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
                     // }
                 }
 
@@ -132,6 +132,30 @@ class ContraService
 
             ->rawColumns(['action', 'date', 'voucher_no', 'branch', 'remarks', 'credit_account', 'expense_descriptions', 'payment_method', 'transaction_no', 'cheque_no', 'cheque_serial_no', 'debit_account', 'total_amount', 'created_by'])
             ->make(true);
+    }
+
+    public function deleteContra(int $id)
+    {
+        $deleteContra = $this->singleContra(id: $id);
+
+        if (!is_null($deleteContra)) {
+
+            $deleteContra->delete();
+        }
+
+        return $deleteContra;
+    }
+
+    public function singleContra(int $id, array $with = null): ?object
+    {
+        $query = AccountingVoucher::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query->where('id', $id)->first();
     }
 
     public function restrictions(object $request): array

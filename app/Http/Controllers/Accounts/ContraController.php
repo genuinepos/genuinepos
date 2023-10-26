@@ -245,4 +245,25 @@ class ContraController extends Controller
 
         return response()->json(__("Contra updated successfully."));
     }
+
+    function delete($id)
+    {
+        if (!auth()->user()->can('delete_expense')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $deleteContra = $this->contraService->deleteContra(id: $id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__("Expense deleted successfully."));
+    }
 }

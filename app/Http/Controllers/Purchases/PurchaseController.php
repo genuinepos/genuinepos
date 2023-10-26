@@ -156,6 +156,10 @@ class PurchaseController extends Controller
     // add purchase method
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (!auth()->user()->can('purchase_add')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'invoice_id' => 'sometimes|unique:purchases,invoice_id',
@@ -401,6 +405,11 @@ class PurchaseController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
+        if (!auth()->user()->can('purchase_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'date' => 'required|date',
@@ -588,6 +597,10 @@ class PurchaseController extends Controller
     // delete purchase method
     public function delete($id)
     {
+        if (!auth()->user()->can('purchase_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
         try {
             DB::beginTransaction();
 

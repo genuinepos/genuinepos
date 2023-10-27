@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-
+        .element-body { padding: 1px 7px 6px 6px; }
     </style>
 @endpush
 @section('title', 'Product List - ')
@@ -20,44 +20,45 @@
                         </div>
                     </div>
 
-                    <div class="p-lg-3 p-1">
-                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
+                    <div class="p-lg-1 p-1">
+                        <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                             <div class="element-body">
-                                <form action="" method="get" class="p-2">
+                                <form action="" method="get">
                                     <div class="form-group row">
-                                        @if ($generalSettings['addons__branches'] == 1)
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-lg-2 col-md-3">
-                                                    <label><b>{{ __("Shop/Business") }}</b></label>
-                                                    <select class="form-control submit_able select2" name="branch_id" id="branch_id">
-                                                        <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">
-                                                            {{ $generalSettings['business__shop_name'] . '(Business)' }}
+                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                            <div class="col-md-2">
+                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">{{ __("All") }}</option>
+                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            @php
+                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $branchCode = '-(' . $branch->branch_code.')';
+                                                            @endphp
+                                                            {{  $branchName.$areaName.$branchCode }}
                                                         </option>
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}">
-                                                                {{ $branch->name.'/'.$branch->branch_code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         @endif
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.type') </b></label>
+                                            <label><b>{{ __("Type") }}</b></label>
                                             <select name="product_type" id="product_type" class="form-control submit_able select2" autofocus>
-                                                <option value="">@lang('menu.all')</option>
-                                                <option value="1">@lang('menu.single')</option>
-                                                <option value="2">@lang('menu.variant')</option>
-                                                <option value="3">@lang('menu.combo')</option>
+                                                <option value="">{{ __("All") }}</option>
+                                                <option value="1">{{ __("Single") }}</option>
+                                                <option value="2">{{ __("Variant") }}</option>
+                                                <option value="3">{{ __("Combo") }}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.category') </b></label>
+                                            <label><b>{{ __("Category") }}</b></label>
                                             <select id="category_id" name="category_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($categories as $cate)
                                                     <option value="{{ $cate->id }}">{{ $cate->name }}</option>
                                                 @endforeach
@@ -65,9 +66,9 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.unit') </b></label>
+                                            <label><b>{{ __("Unit") }}</b></label>
                                             <select id="unit_id" name="unit_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                 @endforeach
@@ -75,9 +76,9 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.tax') </b></label>
+                                            <label><b>{{ __("Tax") }}</b></label>
                                             <select id="tax_ac_id" name="tax_ac_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($taxAccounts as $tax)
                                                     <option value="{{ $tax->id }}">{{ $tax->name }}</option>
                                                 @endforeach
@@ -85,18 +86,18 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.status') </b></label>
+                                            <label><b>{{ __("Status") }}</b></label>
                                             <select name="status" id="status" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
-                                                <option value="1">@lang('menu.active')</option>
+                                                <option value="">{{ __("All") }}</option>
+                                                <option value="1">{{ __("Active") }}</option>
                                                 <option value="0">{{ __('In-Active') }}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.brand')</b></label>
+                                            <label><b>{{ __("Brand.") }}</b></label>
                                             <select id="brand_id" name="brand_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                 @endforeach
@@ -121,13 +122,11 @@
                                 @if(auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i>{{ __("Add Product") }}</a>
-
-                                        <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add Product") }}</a>
 
                                         @if (auth()->user()->can('product_delete'))
 
-                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">@lang('menu.delete_selected')</a>
+                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">{{ __("Delete Selected All") }}</a>
                                         @endif
                                     </div>
                                 @endif
@@ -156,7 +155,7 @@
                                                     <th>{{ __("Curr. Stock") }}</th>
                                                     <th>{{ __("Type") }}</th>
                                                     <th>{{ __("Category") }}</th>
-                                                    <th>Brand</th>
+                                                    <th>{{ __("Brand.") }}</th>
                                                     <th>{{ __("Default Tax") }}</th>
                                                     <th>{{ __("Status") }}</th>
                                                 </tr>
@@ -237,17 +236,17 @@
         },
         columns: [
             {data: 'multiple_delete', name: 'products.name', orderable: false},
-            {data: 'photo', name: 'products.name'},
-            {data: 'action', name: 'products.name'},
-            {data: 'name', name: 'products.name'},
-            {data: 'access_branches', name: 'products.product_code'},
-            {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
-            {data: 'product_price', name: 'products.product_price'},
-            {data: 'quantity', name: 'products.product_price'},
-            {data: 'type', name: 'products.type'},
+            {data: 'photo', name: 'name'},
+            {data: 'action', name: 'name'},
+            {data: 'name', name: 'name'},
+            {data: 'access_branches', name: 'product_code'},
+            {data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold'},
+            {data: 'product_price', name: 'product_price', className: 'fw-bold'},
+            {data: 'quantity', name: 'product_price'},
+            {data: 'type', name: 'type'},
             {data: 'cate_name', name: 'categories.name'},
             {data: 'brand_name', name: 'brands.name'},
-            {data: 'tax_name', name: 'taxes.tax_name'},
+            {data: 'tax_name', name: 'brands.name'},
             {data: 'status', name: 'products.status'},
         ],
     });

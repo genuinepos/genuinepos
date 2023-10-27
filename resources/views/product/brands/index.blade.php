@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="brandAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     <script>
@@ -119,11 +119,11 @@
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server error. Please contact to the support team.');
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                             return;
                         }
                     }
@@ -150,17 +150,16 @@
 
                             $('#brand_name').focus().select();
                         }, 500);
-                    }
-                    , error: function(err) {
+                    } , error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server error. Please contact to the support team.');
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                             return;
                         }
                     }

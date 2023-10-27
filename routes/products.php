@@ -14,7 +14,7 @@ use App\Http\Controllers\Products\PriceGroupManageController;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 
-    Route::get('/', 'index')->name('products.index');
+    Route::get('index/{isForCreatePage?}', 'index')->name('products.index');
     Route::get('show/{id}', 'show')->name('products.show');
     Route::get('create', 'create')->name('products.create');
     Route::post('store', 'store')->name('products.store');

@@ -3,7 +3,7 @@
     <div class="modal-dialog select_variant_modal_dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.select_variant_child')</h6>
+                <h6 class="modal-title" id="exampleModalLabel">{{ __("Select Variant Child") }}</h6>
                 <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
             <div class="modal-body">
@@ -110,39 +110,8 @@
 </div>
 <!-- Add Category Modal End -->
 
- <!-- Add Brand Modal -->
-<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
- aria-hidden="true">
-    <div class="modal-dialog double-col-modal" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_brand')</h6>
-                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-            </div>
-            <div class="modal-body">
-                <!--begin::Form-->
-                <form id="add_brand_form" action="{{ route('products.add.brand') }}">
-                    <div class="form-group">
-                        <b>@lang('menu.name') </b> <span class="text-danger">*</span>
-                        <input type="text" name="name" class="form-control add_brand_input"
-                            data-name="Brand name" id="add_brand_name" placeholder="Brand name" />
-                        <span class="error error_add_brand_name"></span>
-                    </div>
-
-                    <div class="form-group row mt-2">
-                        <div class="col-md-12 d-flex justify-content-end">
-                            <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success submit_button">@lang('menu.save')</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Add Brand Modal -->
+<div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 <!-- Add Brand Modal End -->
 
 <!-- Add Warranty Modal -->

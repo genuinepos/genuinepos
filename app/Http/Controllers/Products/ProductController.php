@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
+use App\Services\Products\BrandService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\WarrantyService;
+use App\Services\Products\BulkVariantService;
 use App\Services\Products\ProductVariantService;
 use App\Services\Products\ProductAccessBranchService;
 
@@ -16,6 +21,11 @@ class ProductController extends Controller
 {
     public function __construct(
         private ProductService $productService,
+        private UnitService $unitService,
+        private CategoryService $categoryService,
+        private BrandService $brandService,
+        private BulkVariantService $bulkVariantService,
+        private WarrantyService $warrantyService,
         private ProductVariantService $productVariantService,
         private ProductAccessBranchService $productAccessBranchService,
         private AccountService $accountService,
@@ -24,7 +34,7 @@ class ProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $isForCreatePage = 0)
     {
         if (!auth()->user()->can('product_all')) {
 
@@ -33,19 +43,20 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->productService->productListTable($request);
+            return $this->productService->productListTable($request, $isForCreatePage);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
-        $brands = DB::table('brands')->get(['id', 'name']);
-        $units = DB::table('units')->get(['id', 'name', 'code_name']);
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.is_default_tax_calculator', 1)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
@@ -62,10 +73,10 @@ class ProductController extends Controller
             return $this->productService->createProductListOfProducts();
         }
 
-        $units = DB::table('units')->get(['id', 'name', 'code_name']);
-        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'desc')->get(['id', 'name']);
-        $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
-        $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
+        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -75,7 +86,9 @@ class ProductController extends Controller
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
-        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches'));
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants'));
     }
 
     public function store(Request $request)
@@ -90,7 +103,7 @@ class ProductController extends Controller
                 'image.*' => 'sometimes|image|max:2048',
             ],
             [
-                'unit_id.required' => 'Product unit field is required.',
+                'unit_id.required' => __('Product unit field is required.'),
             ]
         );
 

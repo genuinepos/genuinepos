@@ -91,7 +91,7 @@
                     toastr.error(data.errorMsg, 'ERROR');
                 }else{
 
-                    toastr.success('Brand is added successfully');
+                    toastr.success("{{ __('Brand is added successfully') }}");
                     $('#brandAddOrEditModal').modal('hide');
                     var brand_id = $('#brand_id').val();
                     var product_brand_id = $('#product_brand_id').val();
@@ -124,15 +124,15 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                     return;
                 } else if(err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                     return;
                 } else if(err.status == 403) {
 
-                    toastr.error('Access Denied');
+                    toastr.error("{{ __('Access Denied') }}");
                     return;
                 }
 

@@ -73,6 +73,18 @@ class WarrantyService
         return $deleteWarranty;
     }
 
+    public function warranties(array $with = null): ?object
+    {
+        $query = Warranty::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function singleWarranty(int $id, array $with = null): ?object
     {
         $query = Warranty::query();

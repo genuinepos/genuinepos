@@ -278,18 +278,18 @@ class ProductController extends Controller
 
         $this->productUtil->addOrUpdateProductInBranchAndUpdateStatus($request, $addProduct->id);
 
-        if ($addProduct) {
+        // if ($addProduct) {
 
-            if (env('EMAIL_ACTIVE') == 'true') {
+        //     if (env('EMAIL_ACTIVE') == 'true') {
 
-                $customers = Customer::pluck('email', 'id')->toArray();
-                $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
-            }
-        }
+        //         $customers = Customer::pluck('email', 'id')->toArray();
+        //         $this->emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $addProduct));
+        //     }
+        // }
 
-        session()->flash('successMsg', 'Product created Successfully');
+        session()->flash('successMsg', __('Product created Successfully'));
 
-        return response()->json('Product created Successfully');
+        return response()->json( __("Product created Successfully"));
     }
 
     public function view($productId)

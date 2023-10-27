@@ -1,6 +1,10 @@
 @extends('layout.master')
 @push('stylesheets')
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
+    <style>
+        .tab_list_area {padding-bottom: 0px;}
+        .card-body { padding: 4px 6px; }
+    </style>
 @endpush
 @section('title', 'Categories/SubCategories - ')
 @section('content')
@@ -21,7 +25,7 @@
                     </div>
 
                     <div class="p-1">
-                        <div class="row g-lg-3 g-1">
+                        <div class="row g-lg-1 g-1">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">

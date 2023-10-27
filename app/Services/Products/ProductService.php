@@ -2,6 +2,8 @@
 
 namespace App\Services\Products;
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use App\Models\ProductImage;
 use App\Models\Products\Product;
@@ -12,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
 {
-    public function productListTable($request)
+    public function productListTable(object $request, int $isForCreatePage): object
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         $generalSettings = config('generalSettings');
@@ -114,7 +116,7 @@ class ProductService
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->distinct('product_access_branches.branch_id')->orderBy('id', 'desc');
+        )->distinct('product_access_branches.branch_id')->orderBy('products.id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
@@ -123,45 +125,51 @@ class ProductService
             })->editColumn('photo', function ($row) use ($img_url) {
 
                 return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
-            })->addColumn('action', function ($row) use ($countPriceGroup) {
+            })->addColumn('action', function ($row) use ($countPriceGroup, $isForCreatePage) {
 
-                $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '">View</a>';
+                if ($isForCreatePage == BooleanType::False->value) {
 
-                if (auth()->user()->can('product_edit')) {
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                    $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '">' . __("View") . '</a>';
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
+                    if (auth()->user()->can('product_edit')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
+                    }
+
+                    if (auth()->user()->can('product_delete')) {
+
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">' . __("Delete") . '</a>';
+                    }
+
+                    // if ($row->status == 1) {
+
+                    //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                    // } else {
+
+                    //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                    // }
+
+                    if (auth()->user()->can('openingStock_add')) {
+
+                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">' . __("Add or edit opening stock") . '</a>';
+                    }
+
+                    if ($countPriceGroup > 0) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
+                    }
+
+                    $html .= ' </div>';
+                    $html .= '</div>';
+
+                    return $html;
+                } else if ($isForCreatePage == BooleanType::True->value) {
+
+                    return '<a class="action-btn c-edit" href="' . route('products.edit', [$row->id]) . '">' . __("Edit") . '</a>';
                 }
-
-                if (auth()->user()->can('product_delete')) {
-
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">Delete</a>';
-                }
-
-                // if ($row->status == 1) {
-
-                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                // } else {
-
-                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                // }
-
-                if (auth()->user()->can('openingStock_add')) {
-
-                    $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">Add or edit opening stock</a>';
-                }
-
-                if ($countPriceGroup > 0) {
-
-                    $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
-                }
-
-                $html .= ' </div>';
-                $html .= '</div>';
-
-                return $html;
             })->editColumn('name', function ($row) {
                 $html = '';
                 $html .= $row->name;
@@ -172,16 +180,16 @@ class ProductService
 
                 if ($row->type == 1 && $row->is_variant == 1) {
 
-                    return '<span class="text-primary">Variant</span>';
+                    return '<span class="text-primary">' . __("Variant") . '</span>';
                 } elseif ($row->type == 1 && $row->is_variant == 0) {
 
-                    return '<span class="text-success">Single</span>';
+                    return '<span class="text-success">' . __("Single") . '</span>';
                 } elseif ($row->type == 2) {
 
-                    return '<span class="text-info">Combo</span>';
+                    return '<span class="text-info">' . __("Combo") . '</span>';
                 } elseif ($row->type == 3) {
 
-                    return '<span class="text-info">Digital</span>';
+                    return '<span class="text-info">' . __("Digital") . '</span>';
                 }
             })
             ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
@@ -230,7 +238,7 @@ class ProductService
                 //         ->orderBy('product_branches.branch_id', 'asc')->get();
                 // }
 
-                if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True) {
 
                     $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
@@ -249,6 +257,18 @@ class ProductService
 
                 return $text;
             })
+            ->editColumn('product_cost_with_tax', function ($row) {
+
+                // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($row->product_cost_with_tax);
+            })
+            ->editColumn('product_price', function ($row) {
+
+                // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($row->product_price);
+            })
             ->editColumn('quantity', function ($row) {
 
                 // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
@@ -257,7 +277,7 @@ class ProductService
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
-            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
+            ->rawColumns(['multiple_delete', 'photo', 'product_cost_with_tax', 'product_cost_with_tax', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
             ->smart(true)->make(true);
     }
 

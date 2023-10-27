@@ -25,14 +25,14 @@ return new class extends Migration
             $table->unsignedBigInteger('tax_ac_id')->nullable();
             $table->tinyInteger('tax_type')->default(1);
             $table->unsignedBigInteger('warranty_id')->nullable()->index('products_warranty_id_foreign');
-            $table->decimal('product_cost', 22)->default(0);
-            $table->decimal('product_cost_with_tax', 22)->default(0);
-            $table->decimal('profit', 22)->default(0);
-            $table->decimal('product_price', 22)->default(0);
-            $table->decimal('offer_price', 22)->default(0);
+            $table->decimal('product_cost', 22, 2)->default(0);
+            $table->decimal('product_cost_with_tax', 22, 2)->default(0);
+            $table->decimal('profit', 22, 2)->default(0);
+            $table->decimal('product_price', 22, 2)->default(0);
+            $table->decimal('offer_price', 22, 2)->default(0);
             $table->boolean('is_manage_stock')->default(true);
-            $table->decimal('quantity', 22)->default(0);
-            $table->decimal('combo_price', 22)->default(0);
+            $table->decimal('quantity', 22, 2)->default(0);
+            $table->decimal('combo_price', 22, 2)->default(0);
             $table->bigInteger('alert_quantity')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_combo')->default(false);
@@ -50,12 +50,6 @@ return new class extends Migration
             $table->string('weight', 191)->nullable();
             $table->string('product_condition', 191)->nullable();
             $table->boolean('status')->default(true);
-            $table->decimal('number_of_sale', 22)->default(0);
-            $table->decimal('total_transfered', 22)->default(0);
-            $table->decimal('total_adjusted', 22)->default(0);
-            $table->string('custom_field_1', 191)->nullable();
-            $table->string('custom_field_2', 191)->nullable();
-            $table->string('custom_field_3', 191)->nullable();
             $table->timestamps();
 
             $table->foreign('tax_ac_id')->references('id')->on('accounts')->onDelete('cascade');

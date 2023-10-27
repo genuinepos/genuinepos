@@ -2,8 +2,8 @@
 
 namespace App\Models\Products;
 
-use App\Models\SaleProduct;
 use App\Models\Products\Product;
+use App\Models\Sales\SaleProduct;
 use App\Models\Products\ProductStock;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseProduct;
@@ -46,12 +46,17 @@ class ProductVariant extends Model
 
     public function purchaseVariants()
     {
-        return $this->hasMany(PurchaseProduct::class, 'product_variant_id');
+        return $this->hasMany(PurchaseProduct::class, 'variant_id');
     }
 
     public function saleVariants()
     {
-        return $this->hasMany(SaleProduct::class, 'product_variant_id');
+        return $this->hasMany(SaleProduct::class, 'variant_id');
+    }
+
+    public function productLedgers()
+    {
+        return $this->hasMany(ProductLedger::class, 'variant_id')->where('voucher_type', '!=', 0);
     }
 
     public function updateVariantCost()

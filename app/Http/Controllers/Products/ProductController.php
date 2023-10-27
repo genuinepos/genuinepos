@@ -93,6 +93,36 @@ class ProductController extends Controller
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode'));
     }
 
+    public function edit(Request $request, $id)
+    {
+        if (!auth()->user()->can('product_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $product = $this->productService->singleProduct(id: $id, with: ['variants', 'variants.productLedgers', 'productAccessBranches']);
+
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $subCategories = $this->categoryService->categories()->where('parent_category_id', $product->sub_category_id)->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
+        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
+
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
+
+        return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
+    }
+
     public function store(Request $request)
     {
         $this->validate(
@@ -102,7 +132,6 @@ class ProductController extends Controller
                 'code' => 'sometimes|unique:products,product_code',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
-                'image.*' => 'sometimes|image|max:2048',
             ],
             [
                 'unit_id.required' => __('Product unit field is required.'),
@@ -146,6 +175,60 @@ class ProductController extends Controller
         return $addProduct;
     }
 
+    public function update(Request $request, $id)
+    {
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code',
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == 1) {
+
+            $this->validate(
+                $request,
+                ['variant_image.*' => 'sometimes|image|max:2048'],
+            );
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $restrictions = $this->productService->restrictions($request);
+
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
+
+            $updateProduct = $this->productService->updateProduct(request: $request, product: $id);
+
+            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
+
+                $this->productVariantService->updateProductVariants(request: $request, productId: $updateProduct->id);
+
+                $this->productVariantService->deleteUnusedProductVariants(productId: $updateProduct->id);
+            }
+
+            $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Product Updated successfully.'));
+    }
+
     public function formPart($type)
     {
         $type = $type;
@@ -157,8 +240,8 @@ class ProductController extends Controller
         return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
     }
 
-    public function getLastProductId() {
-
+    public function getLastProductId()
+    {
         return $this->productService->getLastProductSerialCode();
     }
 }

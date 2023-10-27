@@ -6,6 +6,7 @@ use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use App\Models\ProductImage;
+use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -124,7 +125,7 @@ class ProductService
                 return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
             })->editColumn('photo', function ($row) use ($img_url) {
 
-                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
             })->addColumn('action', function ($row) use ($countPriceGroup, $isForCreatePage) {
 
                 if ($isForCreatePage == BooleanType::False->value) {
@@ -346,33 +347,79 @@ class ProductService
 
         $addProduct->save();
 
-        // if ($request->type == 2) {
-
-        //     $addProduct->is_combo = 1;
-        //     $addProduct->profit = $request->profit ? $request->profit : 0.00;
-        //     $addProduct->combo_price = $request->combo_price;
-        //     $addProduct->product_price = $request->combo_price;
-        //     $addProduct->save();
-
-        //     $productIds = $request->product_ids;
-        //     $combo_quantities = $request->combo_quantities;
-        //     $productVariantIds = $request->variant_ids;
-        //     $index = 0;
-
-        //     foreach ($productIds as $id) {
-
-        //         $addComboProducts = new ComboProduct();
-        //         $addComboProducts->product_id = $addProduct->id;
-        //         $addComboProducts->combo_product_id = $id;
-        //         $addComboProducts->quantity = $combo_quantities[$index];
-        //         $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
-        //         $addComboProducts->save();
-
-        //         $index++;
-        //     }
-        // }
-
         return $addProduct;
+    }
+
+    public function updateProduct(object $request, int $productId): object
+    {
+        $updateProduct = $this->singleProduct(id: $productId, with: ['variants', 'productAccessBranches']);
+
+        if (count($updateProduct->variants) > 0) {
+
+            foreach ($updateProduct->variants as $variant) {
+
+                $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+                $variant->save();
+            }
+        }
+
+        $updateProduct->type = $request->type;
+        $updateProduct->name = $request->name;
+        $updateProduct->product_code = $request->code ? $request->code : $request->current_product_code;
+        $updateProduct->category_id = $request->category_id;
+        $updateProduct->sub_category_id = $request->sub_category_id;
+        $updateProduct->brand_id = $request->brand_id;
+        $updateProduct->unit_id = $request->unit_id;
+        $updateProduct->alert_quantity = $request->alert_quantity;
+        $updateProduct->tax_ac_id = $request->tax_ac_id;
+        $updateProduct->tax_type = $request->tax_type;
+        $updateProduct->product_condition = $request->product_condition;
+        $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $updateProduct->is_for_sale = $request->is_for_sale;
+        $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $updateProduct->is_manage_stock = $request->is_manage_stock;
+        $updateProduct->product_details = isset($request->product_details) ? $request->product_details : null;
+        $updateProduct->is_purchased = 0;
+        $updateProduct->barcode_type = $request->barcode_type;
+        $updateProduct->warranty_id = $request->warranty_id;
+        $updateProduct->weight = isset($request->weight) ? $request->weight : null;
+
+        if ($request->type == 1) {
+
+            $updateProduct->is_variant = $request->is_variant ? 1 : 0;
+            $updateProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $updateProduct->profit = $request->profit ? $request->profit : 0;
+            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $updateProduct->product_price = $request->product_price ? $request->product_price : 0;
+        }
+
+        if ($request->file('photo')) {
+
+            if ($updateProduct->thumbnail_photo != 'default.png') {
+
+                if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+
+                    unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                }
+            }
+
+            $productThumbnailPhoto = $request->file('photo');
+            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+
+            $path = public_path('uploads/product/thumbnail');
+
+            if (!file_exists($path)) {
+
+                mkdir($path);
+            }
+
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            $updateProduct->thumbnail_photo = $productThumbnailName;
+        }
+
+        $updateProduct->save();
+
+        return $updateProduct;
     }
 
     public function updateProductAndVariantPrice(
@@ -434,7 +481,7 @@ class ProductService
 
             if ($request->variant_combinations == null) {
 
-                return ['pass' => false, 'msg' => 'You have selected Has variant? = Yes but there is no variant at all.'];
+                return ['pass' => false, 'msg' => 'You have selected Has variant? = Yes, but there is no variant at all.'];
             }
         }
 
@@ -500,8 +547,8 @@ class ProductService
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
     }
 
-    public function getLastProductSerialCode() {
-
+    public function getLastProductSerialCode()
+    {
         $id = 1;
         $lastEntry = DB::table('products')->orderBy('id', 'desc')->first(['id']);
 

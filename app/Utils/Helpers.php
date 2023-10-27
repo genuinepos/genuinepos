@@ -6,19 +6,19 @@
 $bn = ['১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', '০'];
 $en = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
-if (! function_exists('bn2en')) {
+if (!function_exists('bn2en')) {
     function bn2en($number)
     {
         return str_replace($bn, $en, $number);
     }
 }
-if (! function_exists('en2bn')) {
+if (!function_exists('en2bn')) {
     function en2bn($number)
     {
         return str_replace($en, $bn, $number);
     }
 }
-if (! function_exists('format_in_text')) {
+if (!function_exists('format_in_text')) {
     function format_in_text($number)
     {
         if (extension_loaded('intl')) {
@@ -30,7 +30,7 @@ if (! function_exists('format_in_text')) {
         }
     }
 }
-if (! function_exists('format_in_bdt')) {
+if (!function_exists('format_in_bdt')) {
     function format_in_bdt($number)
     {
         if (extension_loaded('intl')) {
@@ -42,7 +42,7 @@ if (! function_exists('format_in_bdt')) {
         }
     }
 }
-if (! function_exists('format_in_bdt_bn')) {
+if (!function_exists('format_in_bdt_bn')) {
     function format_in_bdt_bn($number)
     {
         if (extension_loaded('intl')) {

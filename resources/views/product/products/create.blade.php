@@ -103,9 +103,9 @@
                                                 <div class="col-8">
                                                     <select class="form-control" name="barcode_type" id="barcode_type" data-next="category_id">
                                                         <option value="CODE128">{{ __("Code 128 (C128)") }}</option>
-                                                        <option value="CODE39">{{ __("Code 39 (C39)") }}</option>
+                                                        {{-- <option value="CODE39">{{ __("Code 39 (C39)") }}</option>
                                                         <option value="EAN13">{{ __("EAN-13") }}</option>
-                                                        <option value="UPC">{{ __("UPC") }}</option>
+                                                        <option value="UPC">{{ __("UPC") }}</option> --}}
                                                     </select>
                                                 </div>
                                             </div>
@@ -133,9 +133,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
 
-                                        @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group flex-nowrap">
                                                     <label class="col-4"><b>{{ __("Subcategory") }}</b></label>
@@ -206,7 +204,7 @@
                                         @endif
 
                                         @if ($generalSettings['addons__branch_limit'] > 1)
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                 <div class="col-md-6">
                                                     <div class="input-group">
                                                         <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
@@ -52,11 +53,10 @@ class ProductController extends Controller
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
@@ -80,7 +80,7 @@ class ProductController extends Controller
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
@@ -88,7 +88,9 @@ class ProductController extends Controller
 
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
 
-        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants'));
+        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
+
+        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode'));
     }
 
     public function store(Request $request)
@@ -128,13 +130,12 @@ class ProductController extends Controller
 
             $addProduct = $this->productService->addProduct($request);
 
-            $variantIds = '';
-            if ($request->type == 1 && $request->is_variant == 1) {
+            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
 
-                $variantIds = $this->productVariantService->addProductVariants($request);
+                $this->productVariantService->addProductVariants(request: $request, productId: $addProduct->id);
             }
 
-            $this->productAccessBranchService->addProductAccessBranches($request, $addProduct->id);
+            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
 
             DB::commit();
         } catch (Exception $e) {
@@ -148,10 +149,16 @@ class ProductController extends Controller
     public function formPart($type)
     {
         $type = $type;
-        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts'));
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
+    }
+
+    public function getLastProductId() {
+
+        return $this->productService->getLastProductSerialCode();
     }
 }

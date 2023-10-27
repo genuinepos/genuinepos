@@ -121,7 +121,6 @@ class GeneralSettingController extends Controller
             'prefix__customer_id' => $request->customer_id,
             'prefix__payment' => $request->payment,
             'prefix__receipt' => $request->receipt,
-            // 'prefix__expanse_payment' => $request->expanse_payment,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

@@ -48,6 +48,7 @@
         }
     </style>
 @endpush
+@section('title', 'General Settings - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -61,7 +62,7 @@
                 </a>
             </div>
         </div>
-        <div class="p-3">
+        <div class="p-1">
             <div class="form_element rounded m-0">
 
                 <div class="element-body">
@@ -112,35 +113,35 @@
                                 <form id="business_settings_form" class="setting_form p-2" action="{{ route('settings.business.settings') }}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">@lang('menu.business_settings') </h6>
+                                            <h6 class="text-primary">{{ __("Business Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.business_name') </strong></label>
+                                            <label><strong>{{ __("Business Name") }}</strong></label>
                                             <input type="text" name="shop_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.address') </strong></label>
+                                            <label><strong>{{ __("Address") }}</strong></label>
                                             <input type="text" name="address" class="form-control bs_input" autocomplete="off" placeholder="Business address" value="{{ $generalSettings['business__address'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.phone') </strong></label>
+                                            <label><strong>{{ __("Phone") }}</strong></label>
                                             <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number" value="{{ $generalSettings['business__phone'] }}">
                                         </div>
                                     </div>
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.email') </strong></label>
+                                            <label><strong>{{ __("Email") }}</strong></label>
                                             <input type="text" name="email" class="form-control bs_input" placeholder="Business email address" value="{{ $generalSettings['business__email'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>@lang('menu.start_date') </strong></label>
+                                            <label><strong>{{ __("Account Start Date") }}</strong></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -158,7 +159,7 @@
 
                                     <div class="form-group row mt-1">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">Recommended Size : H : 40px; W: 110px;</small></label>
+                                            <label><strong>{{ __('Business Logo') }} </strong> <small class="red-label-notice">{{ __("Recommended Size : H : 40px; W: 110px;") }}</small></label>
                                             <input type="file" class="form-control" name="business_logo" id="business_logo">
 
                                             <span class="error error_business_logo"></span>

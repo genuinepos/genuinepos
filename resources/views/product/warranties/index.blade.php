@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     <script>

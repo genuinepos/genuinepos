@@ -1,5 +1,4 @@
 @extends('layout.master')
-
 @push('stylesheets')
     <style>
         .form_element {border: 1px solid #7e0d3d;}
@@ -25,9 +24,6 @@
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
-@php
-    $productSerial = new App\Utils\InvoiceVoucherRefIdUtil();
-@endphp
 
 @section('title', 'Add Product - ')
 
@@ -37,14 +33,14 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-plus-circle"></span>
-                    <h6>@lang('menu.add_product')</h6>
+                    <h6>{{ __("Add Product") }}</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
-            <input type="hidden" id="product_serial" value="{{ str_pad($productSerial->getLastId('products'), 4, '0', STR_PAD_LEFT) }}">
+            <input type="hidden" id="product_serial" value="{{ $lastProductSerialCode }}">
             <input type="hidden" id="code_prefix" value="{{ $generalSettings['product__product_code_prefix'] }}">
             <section class="p-lg-1 p-1">
                 <div class="row g-1">
@@ -68,7 +64,7 @@
                                                 <label class="col-4"><b>{{ __("Product Code") }}
                                                     <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Also known as SKU. Product code(SKU) must be unique. If you leave this field empty, it will be generated automatically.") }}" class="fas fa-info-circle tp"></i> </b> </label>
                                                 <div class="col-8">
-                                                    <input type="text" name="code" class="form-control" autocomplete="off" id="code" data-next="unit_id" placeholder="Product Code">
+                                                    <input type="text" name="code" class="form-control" autocomplete="off" id="code" data-next="unit_id" placeholder="{{ __("Product Code") }}">
                                                     <input type="hidden" name="auto_generated_code" id="auto_generated_code">
                                                     <span class="error error_code"></span>
                                                 </div>
@@ -93,7 +89,7 @@
                                                         </select>
 
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text add_button" id="addUnitModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                            <span class="input-group-text {{ !auth()->user()->can('product_unit_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_unit_add')? 'addUnit': '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                         </div>
                                                     </div>
                                                     <span class="error error_unit_id"></span>
@@ -120,7 +116,7 @@
                                         @if ($generalSettings['product__is_enable_categories'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>@lang('menu.category') </b> </label>
+                                                    <label class="col-4"><b>{{ __("Category") }}</b> </label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
                                                             <select class="form-control select2 flex-nowrap" name="category_id" id="category_id" data-next="sub_category_id">
@@ -130,7 +126,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addCategoryModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_category_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_brand_add')? 'addCategory': '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_category_id"></span>
@@ -157,7 +153,7 @@
                                         @if ($generalSettings['product__is_enable_brands'] == '1')
                                             <div class="col-md-6">
                                                 <div class="input-group flex-nowrap">
-                                                    <label class="col-4"><b>{{ __("menu.brand") }}</b></label>
+                                                    <label class="col-4"><b>{{ __("Brand.") }}</b></label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
                                                             <select class="form-control select2" name="brand_id" id="brand_id" data-next="alert_quantity">
@@ -168,7 +164,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addBrandModal"><i class="fas fa-plus-square input_i"></i></span>
+                                                                <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" id="{{ auth()->user()->can('product_brand_add')? 'addBrand': '' }}"><i class="fas fa-plus-square input_i"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -201,7 +197,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" data-bs-toggle="modal" data-bs-target="#addWarrantyModal"><i class="fas fa-plus-square input_i"></i><span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_warranty_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_warranty_add')? 'addWarranty': '' }}"><i class="fas fa-plus-square input_i"></i><span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,9 +214,7 @@
                                                             <input type="hidden" name="branch_count" value="branch_count">
                                                             <select class="form-control select2" name="branch_ids[]" id="branch_id" multiple>
                                                                 @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name.'-('.$branch->branch_code.')' }}
-                                                                    </option>
+                                                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <span class="error error_branch_ids"></span>

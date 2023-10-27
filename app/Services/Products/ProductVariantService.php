@@ -2,20 +2,17 @@
 
 namespace App\Services\Products;
 
-use App\Models\ProductVariant;
+use App\Models\Products\ProductVariant;
 use Intervention\Image\Facades\Image;
 
 class ProductVariantService
 {
-    public function addProductVariants(object $request): array
+    public function addProductVariants(object $request, int $productId): void
     {
-        $variantId = [];
-
-        $index = 0;
-        foreach ($request->variant_combinations as $variantCombination) {
+        foreach ($request->variant_combinations as $index => $variantCombination) {
 
             $addVariant = new ProductVariant();
-            $addVariant->product_id = $addProduct->id;
+            $addVariant->product_id = $productId;
             $addVariant->variant_name = $variantCombination;
             $addVariant->variant_code = $request->variant_codes[$index];
             $addVariant->variant_cost = $request->variant_costings[$index];
@@ -39,12 +36,6 @@ class ProductVariantService
             }
 
             $addVariant->save();
-
-            array_push($variantIds, $addVariant->id);
-
-            $index++;
         }
-
-        return $variantIds;
     }
 }

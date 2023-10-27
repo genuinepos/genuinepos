@@ -4,7 +4,7 @@
 
     $('.select2').select2();
 
-    var product_table = $('.data_tbl').DataTable({
+    var productTable = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,
         // aaSorting: [[0, 'asc']],
@@ -427,7 +427,7 @@
 
                     if ($.isEmptyObject(data.errorMsg)) {
 
-                        toastr.success(data);
+                        toastr.success("{{ __('Product added successfully.') }}");
                         variant_code_sequel = 0;
 
                         if (action_direction == 'save') {
@@ -441,7 +441,20 @@
                             document.getElementById('name').focus();
                             getLastid();
                             generateProductCode();
-                            productListtable.ajax.reload();
+                            productTable.ajax.reload();
+
+                            $("#unit_id").select2("destroy");
+                            $("#unit_id").select2();
+                            $("#category_id").select2("destroy");
+                            $("#category_id").select2();
+                            $("#sub_category_id").select2("destroy");
+                            $("#sub_category_id").select2();
+                            $("#brand_id").select2("destroy");
+                            $("#brand_id").select2();
+                            $("#warranty_id").select2("destroy");
+                            $("#warranty_id").select2();
+                            $("#branch_id").select2("destroy");
+                            $("#branch_id").select2();
                         }
                     } else {
 
@@ -457,15 +470,15 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     }else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
                     }
 
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    toastr.error("{{ __('Please check again all form fields.') }}", "{{ __('Some thing went wrong.') }}");
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
@@ -543,9 +556,10 @@
 
     function getLastid() {
 
-        $.get("{{ route('common.ajax.call.get.last.id', ['products', 4]) }}", function(productSerial) {
+        $.get("{{ route('products.get.last.product.id') }}", function(productSerial) {
 
             $('#product_serial').val(productSerial);
+            generateProductCode();
         });
     }
 
@@ -565,35 +579,135 @@
 </script>
 
 <script>
-       $(document).on('click', '#addBrand', function(e) {
-            e.preventDefault();
+    $(document).on('click', '#addUnit', function(e) {
+        e.preventDefault();
 
-            var url = $(this).attr('href');
+        var url = "{{ route('units.create', 0) }}";
 
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
 
-                    $('#brandAddOrEditModal').html(data);
-                    $('#brandAddOrEditModal').modal('show');
+                $('#unitAddOrEditModal').html(data);
+                $('#unitAddOrEditModal').modal('show');
 
-                    setTimeout(function() {
+                setTimeout(function() {
 
-                        $('#brand_name').focus();
-                    }, 500);
-                }, error: function(err) {
+                    $('#unit_name').focus();
+                }, 500);
+            },
+            error: function(err) {
 
-                    if (err.status == 0) {
+                if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                        return;
-                    } else if (err.status == 500) {
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
 
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
                 }
-            });
+            }
         });
+    });
+
+    $(document).on('click', '#addCategory', function(e) {
+        e.preventDefault();
+
+        var url = "{{ route('categories.create') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#categoryAddOrEditModal').html(data);
+                $('#categoryAddOrEditModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#category_name').focus();
+                }, 500);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error. Reload This Page.');
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error('Server error. Please contact to the support team.');
+                    return;
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#addBrand', function(e) {
+        e.preventDefault();
+
+        var url = "{{ route('brands.create') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#brandAddOrEditModal').html(data);
+                $('#brandAddOrEditModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#brand_name').focus();
+                }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#addWarranty', function(e) {
+
+        e.preventDefault();
+
+        var url = "{{ route('warranties.create') }}";
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#warrantyAddOrEditModal').html(data);
+                $('#warrantyAddOrEditModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#warranty_name').focus();
+                }, 500);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    });
 </script>

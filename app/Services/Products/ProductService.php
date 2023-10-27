@@ -252,7 +252,7 @@ class ProductService
 
                     $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
 
-                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . $areaName . ',</p>';
+                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . ',</p>';
                 }
 
                 return $text;
@@ -345,63 +345,6 @@ class ProductService
         }
 
         $addProduct->save();
-
-        if ($request->type == 1) {
-
-            if ($request->is_variant == 1) {
-
-                $index = 0;
-                foreach ($request->variant_combinations as $value) {
-
-                    $addVariant = new ProductVariant();
-                    $addVariant->product_id = $addProduct->id;
-                    $addVariant->variant_name = $value;
-                    $addVariant->variant_code = $request->variant_codes[$index];
-                    $addVariant->variant_cost = $request->variant_costings[$index];
-                    $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
-                    $addVariant->variant_profit = $request->variant_profits[$index];
-                    $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
-
-                    if (isset($request->variant_image[$index])) {
-
-                        $variantImage = $request->variant_image[$index];
-                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                        $path = public_path('uploads/product/variant_image');
-
-                        if (!file_exists($path)) {
-
-                            mkdir($path);
-                        }
-
-                        Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
-                        $addVariant->variant_image = $variantImageName;
-                    }
-
-                    $addVariant->save();
-
-                    array_push($variantIds, $addVariant->id);
-
-                    $index++;
-                }
-            }
-        }
-
-        if ($request->file('image')) {
-
-            if (count($request->file('image')) > 0) {
-
-                foreach ($request->file('image') as $image) {
-
-                    $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('uploads/product/' . $productImageName);
-                    $addProductImage = new ProductImage();
-                    $addProductImage->product_id = $addProduct->id;
-                    $addProductImage->image = $productImageName;
-                    $addProductImage->save();
-                }
-            }
-        }
 
         // if ($request->type == 2) {
 
@@ -555,5 +498,18 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
+    }
+
+    public function getLastProductSerialCode() {
+
+        $id = 1;
+        $lastEntry = DB::table('products')->orderBy('id', 'desc')->first(['id']);
+
+        if ($lastEntry) {
+
+            $id = ++$lastEntry->id;
+        }
+
+        return str_pad($id, 4, '0', STR_PAD_LEFT);
     }
 }

@@ -99,8 +99,8 @@
 
                     toastr.success("{{ __('Category created successfully') }}");
                     $('#categoryAddOrEditModal').modal('hide');
-                    var category_id = $('#brand_id').val();
-                    var product_category_id = $('#product_brand_id').val();
+                    var category_id = $('#category_id').val();
+                    var product_category_id = $('#product_category_id').val();
 
                     if (category_id != undefined) {
 

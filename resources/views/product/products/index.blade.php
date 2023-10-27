@@ -32,14 +32,7 @@
                                                     <option value="">{{ __("All") }}</option>
                                                     <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
                                                     @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            @php
-                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                $branchCode = '-(' . $branch->branch_code.')';
-                                                            @endphp
-                                                            {{  $branchName.$areaName.$branchCode }}
-                                                        </option>
+                                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

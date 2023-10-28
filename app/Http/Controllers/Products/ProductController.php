@@ -142,12 +142,13 @@ class ProductController extends Controller
 
             $this->validate(
                 $request,
-                ['variant_image.*' => 'sometimes|image|max:2048'],
+                [
+                    'variant_image.*' => 'sometimes|image|max:2048'
+                ],
             );
         }
 
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->productService->restrictions($request);
@@ -181,7 +182,7 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code',
+                'code' => 'sometimes|unique:products,product_code,' . $id,
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
             ],
@@ -199,7 +200,6 @@ class ProductController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->productService->restrictions($request);
@@ -209,7 +209,7 @@ class ProductController extends Controller
                 return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            $updateProduct = $this->productService->updateProduct(request: $request, product: $id);
+            $updateProduct = $this->productService->updateProduct(request: $request, productId: $id);
 
             if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
 
@@ -226,7 +226,7 @@ class ProductController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__('Product Updated successfully.'));
+        return response()->json(__('Product updated successfully.'));
     }
 
     public function formPart($type)
@@ -238,6 +238,26 @@ class ProductController extends Controller
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
 
         return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
+    }
+
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteProduct = $this->productService->deleteProduct(id: $id);
+            if (isset($deleteProduct['pass']) && $deleteProduct['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteProduct['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Product deleted successfully.'));
     }
 
     public function getLastProductId()

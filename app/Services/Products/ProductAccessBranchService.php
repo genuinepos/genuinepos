@@ -2,6 +2,8 @@
 
 namespace App\Services\Products;
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\ProductAccessBranch;
 
@@ -36,7 +38,11 @@ class ProductAccessBranchService
 
     public function updateProductAccessBranches(object $request, object $product)
     {
-        if (isset($request->branch_count) && isset($request->branch_ids)) {
+        if (
+            isset($request->branch_count) &&
+            auth()->user()->role_type != RoleType::Other->value &&
+            auth()->user()->is_belonging_an_area == BooleanType::False->value
+        ) {
 
             foreach ($product->productAccessBranches as $productAccessBranch) {
 
@@ -47,29 +53,32 @@ class ProductAccessBranchService
                 }
             }
 
-            foreach ($request->branch_ids as $branch_id) {
+            if (isset($request->branch_ids)) {
 
-                $productAssetBranch = $this->productAssetBranch()->where('branch_id', $branch_id)
-                    ->where('product_id', $product->id)->first();
+                foreach ($request->branch_ids as $branch_id) {
 
-                if (!$productAssetBranch) {
+                    $productAssetBranch = $this->productAssetBranch()->where('branch_id', $branch_id)
+                        ->where('product_id', $product->id)->first();
 
-                    $addProductAccessBranch = new ProductAccessBranch();
-                    $addProductAccessBranch->product_id = $productId;
-                    $addProductAccessBranch->branch_id = $branch_id;
-                    $addProductAccessBranch->save();
-                } else {
+                    if (!$productAssetBranch) {
 
-                    $productAssetBranch->is_delete_in_update = IsDeleteInUpdate::No->value;
-                    $productAssetBranch->save();
+                        $addProductAccessBranch = new ProductAccessBranch();
+                        $addProductAccessBranch->product_id = $product->id;
+                        $addProductAccessBranch->branch_id = $branch_id;
+                        $addProductAccessBranch->save();
+                    } else {
+
+                        $productAssetBranch->is_delete_in_update = IsDeleteInUpdate::No->value;
+                        $productAssetBranch->save();
+                    }
                 }
             }
 
             $deleteUnusedProductAccessBranches = $this->productAssetBranch()->where('product_id', $product->id)
-                ->where('is_delete_in_update', 1)->get();
+                ->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
 
             foreach ($deleteUnusedProductAccessBranches as $deleteUnusedProductAccessBranch) {
-                
+
                 $deleteUnusedProductAccessBranch->delete();
             }
         }

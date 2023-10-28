@@ -12,6 +12,8 @@ use App\Models\Products\Warranty;
 use App\Models\Sales\SaleProduct;
 use App\Models\Manufacturing\Process;
 use App\Models\Products\ProductStock;
+use App\Models\Products\ProductLedger;
+use App\Enums\ProductLedgerVoucherType;
 use App\Models\Products\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Manufacturing\Production;
@@ -162,5 +164,15 @@ class Product extends Model
     {
         // $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         return $this->hasOne(ProductAccessBranch::class)->where('branch_id', $branchId);
+    }
+
+    public function ledgerEntries()
+    {
+        return $this->hasMany(ProductLedger::class, 'product_id')->where('voucher_type', '!=', ProductLedgerVoucherType::OpeningStock->value);
+    }
+
+    public function ownBranchAllStocks()
+    {
+        return $this->hasMany(ProductStock::class, 'product_id')->where('branch_id', auth()->user()->branch_id);
     }
 }

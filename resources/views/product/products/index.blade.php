@@ -27,10 +27,10 @@
                                     <div class="form-group row">
                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-2">
-                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                <label><strong>{{ __("Shop Acccess") }}</strong></label>
                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">{{ __("All") }}</option>
-                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                    {{-- <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option> --}}
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                     @endforeach
@@ -235,7 +235,7 @@
             {data: 'access_branches', name: 'product_code'},
             {data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold'},
             {data: 'product_price', name: 'product_price', className: 'fw-bold'},
-            {data: 'quantity', name: 'product_price'},
+            {data: 'quantity', name: 'product_price', className: 'fw-bold'},
             {data: 'type', name: 'type'},
             {data: 'cate_name', name: 'categories.name'},
             {data: 'brand_name', name: 'brands.name'},

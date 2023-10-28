@@ -27,14 +27,14 @@ class ProductService
             'productAccessBranches',
             'productAccessBranches.branch:id,name,area_name,branch_code,parent_branch_id',
             'productAccessBranches.branch.parentBranch:id,name,area_name,branch_code',
+            'ownBranchAllStocks:id,branch_id,stock',
         ])
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('products.status', 1);
+            ->leftJoin('units', 'products.unit_id', 'units.id');
 
         if ($request->branch_id) {
 
@@ -111,6 +111,7 @@ class ProductService
                 'products.thumbnail_photo',
                 'products.expire_date',
                 'products.is_combo',
+                'products.quantity',
                 'units.name as unit_name',
                 'tax.name as tax_name',
                 'categories.name as cate_name',
@@ -153,14 +154,16 @@ class ProductService
                     //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     // }
 
-                    if (auth()->user()->can('openingStock_add')) {
-
-                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">' . __("Add or edit opening stock") . '</a>';
-                    }
+                    $html .= '<a href="#" class="dropdown-item">' . __("Product Ledger") . '</a>';
 
                     if ($countPriceGroup > 0) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
+                        $html .= '<a href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '" class="dropdown-item"> ' . __("Manage Price Group") . '</a>';
+                    }
+
+                    if (auth()->user()->can('openingStock_add')) {
+
+                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">' . __("Add or edit opening stock") . '</a>';
                     }
 
                     $html .= ' </div>';
@@ -274,7 +277,18 @@ class ProductService
 
                 // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
 
-                return \App\Utils\Converter::format_in_bdt(0) . '/' . $row->unit_name;
+                if (auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+                    $branchAllStock = 0;
+                    foreach($row->ownBranchAllStocks as $stock){
+
+                        $branchAllStock += $stock->stock;
+                    }
+
+                    return \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name;
+                }
+
+                return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
@@ -473,6 +487,23 @@ class ProductService
             $updateVariant->is_purchased = 1;
             $updateVariant->save();
         }
+    }
+
+    public function deleteProduct(int $id): array
+    {
+        $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries']);
+
+        if (!is_null($deleteProduct)) {
+
+            if (count($deleteProduct->ledgerEntries) > 0) {
+
+                return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
+            }
+
+            $deleteProduct->delete();
+        }
+
+        return ['pass' => true];
     }
 
     public function restrictions($request)

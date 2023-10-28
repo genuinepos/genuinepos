@@ -103,7 +103,7 @@ class ProductVariantService
         }
     }
 
-    public function singleVariant(int $id, array $with = null): ?object
+    public function singleVariant(?int $id, array $with = null): ?object
     {
         $query = ProductVariant::query();
 
@@ -115,7 +115,7 @@ class ProductVariantService
         return $query->where('id', $id)->first();
     }
 
-    public function variant(array $with = null): ?object
+    public function variants(array $with = null): ?object
     {
         $query = ProductVariant::query();
 

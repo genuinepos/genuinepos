@@ -134,7 +134,7 @@ class ProductService
                     $html = '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '">' . __("View") . '</a>';
+                    $html .= '<a href="' . route('products.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
 
                     if (auth()->user()->can('product_edit')) {
 
@@ -280,7 +280,7 @@ class ProductService
                 if (auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
                     $branchAllStock = 0;
-                    foreach($row->ownBranchAllStocks as $stock){
+                    foreach ($row->ownBranchAllStocks as $stock) {
 
                         $branchAllStock += $stock->stock;
                     }
@@ -294,6 +294,55 @@ class ProductService
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
             ->rawColumns(['multiple_delete', 'photo', 'product_cost_with_tax', 'product_cost_with_tax', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
             ->smart(true)->make(true);
+    }
+
+    function productShowQueries(int $id): array
+    {
+        $data = [];
+
+        $data['product'] = $this->singleProduct(id: $id, with: [
+            'brand',
+            'category',
+            'subcategory',
+            'warranty',
+            'variants',
+            'tax',
+            'unit'
+        ]);
+
+        $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
+            ->where('product_ledgers.branch_id', auth()->user()->branch_id)->where('product_ledgers.product_id', $data['product']->id)
+            ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
+            ->select(
+                'branches.name as branch_name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+                'warehouses.warehouse_name',
+                'warehouses.is_global',
+                'product_ledgers.branch_id',
+                'product_ledgers.warehouse_id',
+                DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 8 then product_ledgers.in end), 0) as total_received'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.in end), 0) as total_production'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.out end), 0) as total_used_in_production'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 3 then product_ledgers.in end), 0) as total_purchase'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 4 then product_ledgers.out end), 0) as total_purchase_return'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
+                DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
+            )
+            ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
+
+            $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ->get();
+            $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)->get();
+
+        return $data;
     }
 
     public function createProductListOfProducts()
@@ -491,13 +540,27 @@ class ProductService
 
     public function deleteProduct(int $id): array
     {
-        $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries']);
+        $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries', 'variants']);
 
         if (!is_null($deleteProduct)) {
 
             if (count($deleteProduct->ledgerEntries) > 0) {
 
                 return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
+            }
+
+            if (count($deleteProduct->variants) > 0) {
+
+                foreach ($deleteProduct->variants as $variant) {
+
+                    if ($variant->variant_image) {
+
+                        if (file_exists(public_path('uploads/product/variant_image/' . $variant->variant_image))) {
+
+                            unlink(public_path('uploads/product/variant_image/' . $variant->variant_image));
+                        }
+                    }
+                }
             }
 
             $deleteProduct->delete();

@@ -58,7 +58,7 @@ class ProductStockService
                 ->select(
                     DB::raw("SUM(product_ledgers.in) as stock_in"),
                     DB::raw("SUM(product_ledgers.out) as stock_out"),
-                    DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
+                    DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost"),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
@@ -93,7 +93,7 @@ class ProductStockService
                 ->select(
                     DB::raw("SUM(product_ledgers.in) as stock_in"),
                     DB::raw("SUM(product_ledgers.out) as stock_out"),
-                    DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
+                    DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost"),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');

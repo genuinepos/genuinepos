@@ -19,6 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('branch_id')->nullable()->index('payment_method_settings_branch_id_foreign');
             $table->unsignedBigInteger('account_id')->nullable()->index('payment_method_settings_account_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['account_id'])->references(['id'])->on('accounts')->onDelete('SET NULL');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['payment_method_id'])->references(['id'])->on('payment_methods')->onDelete('CASCADE');
         });
     }
 

@@ -78,69 +78,34 @@ Route::get('my-test', function () {
     //     echo 'Remarks : ' . $receipt?->accountingVoucher?->remarks . '</br></br></br>';
     // }
 
-    $ownBranchIdOrParentBranchId = null;
-    $customerAccounts = '';
-    $query = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.sub_sub_group_number', 6);
+    return $ownBranchStock = DB::table('product_ledgers')
+    ->where('product_ledgers.branch_id', null)
+    ->where('product_ledgers.product_id', 32)
+    ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
+    ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+    ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
+        ->select(
+            'branches.name',
+            'parentBranch.name',
+            'warehouses.warehouse_name',
+            'warehouses.is_global',
+            'product_ledgers.branch_id',
+            'product_ledgers.warehouse_id',
+            DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 8 then product_ledgers.in end), 0) as total_received'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.in end), 0) as total_production'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.out end), 0) as total_used_in_production'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 3 then product_ledgers.in end), 0) as total_purchase'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 4 then product_ledgers.out end), 0) as total_purchase_return'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
+            DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
+            DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
+        )
+        ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
 
-    $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-    $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $assets = '';
-    $assetsQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.main_group_number', 1)
-        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6]);
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-
-    $assetsQ->where('accounts.branch_id', auth()->user()->branch_id);
-
-    $assets = $assetsQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $liabilities = '';
-    $liabilitiesQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.main_group_number', 2)
-        ->where('account_groups.is_global', 0)
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [10, 11])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-        // ->whereNotIn('account_groups.sub_sub_group_number', [10, 11]);
-
-    $liabilitiesQ->where('accounts.branch_id', auth()->user()->branch_id);
-
-    $liabilities = $liabilitiesQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $global = '';
-    $globalQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.is_global', 1)
-        ->whereIn('account_groups.sub_group_number', [6, 7])
-        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11]);
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-
-     $global = $globalQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    return $results = Account::query()
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.sub_sub_group_number', 10)
-        ->select('accounts.id', 'accounts.name', 'accounts.phone')
-        ->union($customerAccounts)
-        ->union($assets)
-        ->union($liabilities)
-        ->union($global)
-        // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
-        ->orderBy('id', 'desc')
-        ->orderBy('name', 'asc')
-        ->get();
 });
 
 Route::get('t-id', function () {

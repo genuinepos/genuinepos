@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('attachment');
             $table->string('extension')->nullable();
             $table->timestamps();
+            $table->foreign(['workspace_id'])->references(['id'])->on('workspaces')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

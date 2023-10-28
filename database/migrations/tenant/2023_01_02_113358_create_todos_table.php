@@ -24,6 +24,9 @@ return new class extends Migration
             $table->unsignedBigInteger('branch_id')->nullable()->index('todos_branch_id_foreign');
             $table->unsignedBigInteger('admin_id')->nullable()->index('todos_admin_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['admin_id'])->references(['id'])->on('users')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
         });
     }
 

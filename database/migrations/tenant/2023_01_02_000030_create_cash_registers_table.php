@@ -26,6 +26,11 @@ return new class extends Migration
             $table->boolean('status')->default(true)->comment('1=open;0=closed;');
             $table->text('closing_note')->nullable();
             $table->timestamps();
+
+            $table->foreign(['admin_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['cash_counter_id'])->references(['id'])->on('cash_counters')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign(['sale_account_id'])->references(['id'])->on('accounts')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

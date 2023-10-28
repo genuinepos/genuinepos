@@ -22,6 +22,8 @@ return new class extends Migration
             $table->decimal('amount', 22)->default(0);
             $table->string('applicable_date')->nullable();
             $table->timestamps();
+
+            $table->foreign(['employee_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 

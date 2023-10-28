@@ -61,6 +61,14 @@ class ProductController extends Controller
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
 
+    public function show($id) {
+
+        $productShowQueries = $this->productService->productShowQueries(id: $id);
+        extract($productShowQueries);
+
+        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks'));
+    }
+
     public function create(Request $request)
     {
         if (!auth()->user()->can('product_add')) {

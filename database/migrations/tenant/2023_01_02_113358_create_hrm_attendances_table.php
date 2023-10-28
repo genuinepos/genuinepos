@@ -29,6 +29,8 @@ return new class extends Migration
             $table->timestamp('at_date_ts')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
+
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

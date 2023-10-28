@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('report_date')->nullable();
             $table->boolean('is_delete_in_update')->default(false);
             $table->timestamps();
+
+            $table->foreign(['order_product_id'])->references(['id'])->on('purchase_order_products')->onDelete('CASCADE');
         });
     }
 

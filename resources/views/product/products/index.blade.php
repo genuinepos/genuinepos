@@ -171,12 +171,10 @@
         </div>
     </div>
 
-    <!-- Details Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-    <!-- Details Modal End-->
+    <div id="details"></div>
 
     <!-- Opening stock Modal -->
-    <div class="modal fade" id="openingStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="openingStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -188,21 +186,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Opening stock Modal-->
 @endsection
 @push('scripts')
 <!--Data table js active link-->
 <script>
     $('.loading_button').hide();
-    // Filter toggle
-    $('.filter_btn').on('click', function(e) {
-        e.preventDefault();
 
-        $('.filter_body').toggle(500);
-    });
-
-    var product_table = $('.data_tbl').DataTable({
+    var productTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -248,13 +240,13 @@
 
         $(document).on('change', '.submit_able', function() {
 
-            product_table.ajax.reload();
+            productTable.ajax.reload();
         });
     });
 
     $(document).on('ifChanged', '#is_for_sale', function() {
 
-        product_table.ajax.reload();
+        productTable.ajax.reload();
     });
 
     $(document).on('change', '.all', function() {
@@ -268,16 +260,31 @@
         }
     });
 
-    $(document).on('click', '.details_button', function(e) {
+    $(document).on('click', '#details_btn', function(e) {
         e.preventDefault();
 
-        var url = $(this).attr('href');
         $('.data_preloader').show();
-        $.get(url, function (data){
+        var url = $(this).attr('href');
 
-            $('#detailsModal').html(data);
-            $('.data_preloader').hide();
-            $('#detailsModal').modal('show');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#details').html(data);
+                $('#detailsModal').modal('show');
+                $('.data_preloader').hide();
+            },error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                }else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
         });
     });
 
@@ -337,7 +344,7 @@
                     return;
                 }
 
-                product_table.ajax.reload();
+                productTable.ajax.reload();
                 toastr.error(data);
             }
         });
@@ -366,7 +373,7 @@
                                     return;
                                 }
                                 toastr.success(data);
-                                product_table.ajax.reload();
+                                productTable.ajax.reload();
                             }
                         });
                     }
@@ -379,16 +386,6 @@
                 }
             }
         });
-
-        // $.ajax({
-        //     url: url,
-        //     type: 'get',
-        //     success: function(data) {
-
-        //         toastr.success(data);
-        //         product_table.ajax.reload();
-        //     }
-        // });
     });
 
     $(document).on('click', '.multipla_delete_btn',function(e){
@@ -439,110 +436,11 @@
                     toastr.error(data.errorMsg, 'Attention');
                 } else {
 
-                    product_table.ajax.reload();
+                    productTable.ajax.reload();
                     toastr.success(data, 'Attention');
                 }
             }
         });
     });
-
-    // Show opening stock modal with data
-    $(document).on('click', '#opening_stock', function(e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        var url = $(this).attr('href');
-        $.ajax({
-            url: url,
-            type: 'get',
-            success: function(data) {
-                $('#opening_stock_view').html(data);
-                $('#openingStockModal').modal('show');
-                $('.data_preloader').hide();
-            }
-        });
-    });
-
-    //Update product opening stock request by ajax
-    $(document).on('submit', '#update_opening_stock_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var request = $(this).serialize();
-        var url = $(this).attr('action');
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success(data);
-                product_table.ajax.reload();
-                $('.loading_button').hide();
-                $('#openingStockModal').modal('hide');
-            }
-        });
-    });
-
-    // Reduce empty opening stock qty field
-    $(document).on('blur', '#quantity', function() {
-
-        if ($(this).val() == '') {
-
-            $(this).val(parseFloat(0).toFixed(2));
-        }
-    });
-
-    // Reduce empty opening stock unit cost field
-    $(document).on('blur', '#unit_cost_inc_tax', function() {
-        if ($(this).val() == '') {
-            $(this).val(parseFloat(0).toFixed(2));
-        }
-    });
-
-    $(document).on('input', '#quantity', function() {
-
-        var qty = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
-        tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    $(document).on('input', '#unit_cost_inc_tax', function() {
-
-        var unit_cost_inc_tax = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var qty = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
-        tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    // Make print
-    $(document).on('click', '.print_btn', function(e) {
-        e.preventDefault();
-        var body = $('.modal-body').html();
-        var header = $('.heading_area').html();
-        $(body).printThis({
-            debug: false,
-            importCSS: true,
-            importStyle: true,
-            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-            removeInline: true,
-            printDelay: 800,
-            header: null,
-        });
-    });
-
-    document.onkeyup = function () {
-        var e = e || window.event; // for IE to cover IEs window event-object
-
-        if(e.ctrlKey && e.which == 13) {
-
-            // $('#add_btn').click();
-            window.location = $('#add_btn').attr('href');
-            return false;
-        }
-    }
 </script>
 @endpush

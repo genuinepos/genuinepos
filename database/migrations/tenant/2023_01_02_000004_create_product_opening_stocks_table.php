@@ -24,6 +24,11 @@ return new class extends Migration
             $table->decimal('subtotal', 22)->default(0);
             $table->string('lot_no')->nullable();
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
+            $table->foreign(['product_variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
+            $table->foreign(['warehouse_id'])->references(['id'])->on('warehouses')->onDelete('CASCADE');
         });
     }
 

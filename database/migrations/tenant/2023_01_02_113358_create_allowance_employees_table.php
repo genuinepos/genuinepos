@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->index('allowance_employees_user_id_foreign');
             $table->boolean('is_delete_in_update')->nullable()->default(false);
             $table->timestamps();
+
+            $table->foreign(['allowance_id'])->references(['id'])->on('hrm_allowance')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 

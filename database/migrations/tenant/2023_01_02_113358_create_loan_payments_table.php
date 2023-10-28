@@ -27,6 +27,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->index('loan_payments_user_id_foreign');
             $table->tinyInteger('payment_type')->default(1)->comment('1=pay_loan_payment;2=get_loan_payment');
             $table->timestamps();
+
+            $table->foreign(['account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['company_id'])->references(['id'])->on('loan_companies')->onDelete('CASCADE');
+            $table->foreign(['payment_method_id'])->references(['id'])->on('payment_methods')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('SET NULL');
         });
     }
 

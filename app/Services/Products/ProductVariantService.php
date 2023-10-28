@@ -99,6 +99,13 @@ class ProductVariantService
 
         foreach ($deleteAbleVariants as $deleteAbleVariant) {
 
+            if (isset($deleteAbleVariant->variant_image)) {
+
+                if (file_exists(public_path('uploads/product/variant_image/' . $deleteAbleVariant->variant_image))) {
+
+                    unlink(public_path('uploads/product/variant_image/' . $deleteAbleVariant->variant_image));
+                }
+            }
             $deleteAbleVariant->delete();
         }
     }

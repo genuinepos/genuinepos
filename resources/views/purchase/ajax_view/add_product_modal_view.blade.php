@@ -5,7 +5,7 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Product') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
                 class="fas fa-times"></span></a>
         </div>
@@ -14,13 +14,13 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-3">
-                        <label><b>@lang('menu.product_name') : </b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="name" class="form-control" id="add_name" placeholder="@lang('menu.product_name')"/>
+                        <label><b>{{ __('Product Name') }} : </b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="name" class="form-control" id="add_name" placeholder="{{ __('Product Name') }}"/>
                         <span class="error error_add_name"></span>
                     </div>
 
                     <div class="col-md-3">
-                        <label><b>@lang('menu.product_code') (SKU) : </b></label>
+                        <label><b>{{ __('Product Code') }} (SKU) : </b></label>
                         <input type="text" name="product_code" class="form-control" placeholder="@lang('menu.product_code')"/>
                         <span class="error error_add_product_code"></span>
                     </div>
@@ -36,9 +36,9 @@
                     </div>
 
                     <div class="col-md-3 ">
-                        <label><b> @lang('menu.unit') : </b> <span class="text-danger">*</span></label>
+                        <label><b> {{ __('Unit') }} : </b> <span class="text-danger">*</span></label>
                         <select required class="form-control product_unit" name="unit_id" id="add_unit_id">
-                            <option value="">@lang('menu.select_unit')</option>
+                            <option value="">{{ __('Select Unit') }}</option>
                             @foreach ($units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->name }}({{ $unit->code_name }})</option>
                             @endforeach
@@ -50,7 +50,7 @@
                 <div class="form-group row mt-1">
                     @if ($generalSettings['product__is_enable_categories'] == '1')
                         <div class="col-md-3">
-                            <label><b>@lang('menu.category') : </b> </label>
+                            <label><b>{{ __('Category') }} : </b> </label>
                             <select class="form-control category" name="category_id" id="add_category_id">
                                 <option value="">@lang('menu.select_category')</option>
                                 @foreach ($categories as $category)
@@ -63,9 +63,9 @@
 
                     @if ($generalSettings['product__is_enable_categories'] == '1' && $generalSettings['product__is_enable_sub_categories'] == '1')
                         <div class="col-md-3 parent_category">
-                            <label><b>@lang('menu.child_category') : </b></label>
+                            <label><b>{{ __('Child Category') }} : </b></label>
                             <select class="form-control" name="sub_category_id" id="add_sub_category_id">
-                                <option value="">@lang('menu.select_child_category_first')</option>
+                                <option value="">{{ __('Select Child Category First') }}</option>
                             </select>
                         </div>
                     @endif
@@ -75,7 +75,7 @@
                             <label><b>@lang('menu.brand') : </b></label>
                             <select class="form-control" data-live-search="true" name="brand_id"
                                 id="add_brand_id">
-                                <option value="">@lang('menu.select_brand')</option>
+                                <option value="">{{ __('Select Brand') }}</option>
                                 @foreach ($brands as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                 @endforeach
@@ -85,9 +85,9 @@
 
                     @if ($generalSettings['product__is_enable_warranty'] == '1')
                         <div class="col-md-3">
-                            <label><b>@lang('menu.warranty') : </b></label>
+                            <label><b>{{ __('Warranty') }} : </b></label>
                             <select class="form-control" name="warranty_id" id="add_warranty_id">
-                                <option value="">@lang('menu.select_warranty')</option>
+                                <option value="">{{ __('Select Warranty') }}</option>
                                 @foreach ($warranties as $warranty)
                                     <option value="{{ $warranty->id }}">{{ $warranty->name }} ({{$warranty->type == 1 ? 'Warranty' : 'Guaranty'}})</option>
                                 @endforeach

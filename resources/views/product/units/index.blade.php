@@ -9,7 +9,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-sort-amount-up"></span>
-                    <h5>@lang('menu.units')</h5>
+                    <h5>{{ __('Units') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -25,8 +25,8 @@
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
-                                @if (auth()->user()->can('units'))
-                                    <a href="{{ route('units.create', 1) }}" class="btn btn-sm btn-primary" id="addUnit"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
+                                @if (auth()->user()->can('product_unit_add'))
+                                    <a href="{{ route('units.create', 1) }}" class="btn btn-sm btn-primary" id="addUnit"><i class="fas fa-plus-square"></i> {{ __('Add Unit') }}</a>
                                 @endif
                             </div>
                         </div>

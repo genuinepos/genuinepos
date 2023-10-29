@@ -749,7 +749,7 @@
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">
-                                        <input type="checkbox" name="selling_price_group" class="product inventory_permission super_select_all">@lang('menu.selling_price_group')
+                                        <input type="checkbox" name="selling_price_group_index" class="product inventory_permission super_select_all">@lang('menu.selling_price_group_index')
                                     </p>
 
                                     <p class="checkbox_input_wrap mt-1">

@@ -737,7 +737,7 @@
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">
-                                            <input type="checkbox" name="selling_price_group" {{ $role->hasPermissionTo('selling_price_group') ? 'checked' : '' }} class="product inventory_permission super_select_all"> @lang('menu.selling_price_group')
+                                            <input type="checkbox" name="selling_price_group_index" {{ $role->hasPermissionTo('selling_price_group_index') ? 'checked' : '' }} class="product inventory_permission super_select_all"> @lang('menu.selling_price_group_index')
                                         </p>
 
                                         <p class="checkbox_input_wrap mt-1">

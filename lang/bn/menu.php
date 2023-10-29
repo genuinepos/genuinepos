@@ -125,7 +125,7 @@ return [
     'sub_total' => 'সর্বমোট',
     'variants' => 'বৈকল্পিক',
     'warranties' => 'ওয়ারেন্টি',
-    'selling_price_group' => 'বিক্রয় মূল্য গ্রুপ',
+    'selling_price_group_index' => 'বিক্রয় মূল্য গ্রুপ',
     'generate_barcode' => 'বারকোড তৈরি করুন',
     'daily_stock' => 'দৈনিক স্টক',
     'add_daily_stock' => 'দৈনিক স্টক যোগ করুন',

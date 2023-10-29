@@ -41,7 +41,7 @@
                                             </div>
 
                                             <div class="col-md-6 text-end">
-                                                @if (auth()->user()->can('categories'))
+                                                @if (auth()->user()->can('product_category_add'))
                                                     <a href="{{ route('categories.create') }}" class="btn btn-sm btn-primary" id="addCategory"><i class="fas fa-plus-square"></i> {{ __("Add Category") }}</a>
 
                                                     <a href="{{ route('subcategories.create') }}" class="btn btn-sm btn-primary p-1 d-hide" id="addSubcategory"><i class="fas fa-plus-square"></i> {{ __("Add Subcategory") }}</a>

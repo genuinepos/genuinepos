@@ -18,7 +18,7 @@ class WarrantyController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('warranties')) {
+        if (!auth()->user()->can('product_warranty_index')) {
 
             abort(403, __("Access Forbidden."));
         }
@@ -38,7 +38,7 @@ class WarrantyController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('warranties')) {
+        if (!auth()->user()->can('product_warranty_add')) {
 
             return response()->json(__("Access Denied"));
         }
@@ -76,7 +76,7 @@ class WarrantyController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('warranties')) {
+        if (!auth()->user()->can('product_warranty_edit')) {
 
             return response()->json(__("Access Denied"));
         }
@@ -108,7 +108,7 @@ class WarrantyController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('warranties')) {
+        if (!auth()->user()->can('product_warranty_delete')) {
 
             return response()->json(__("Access Denied"));
         }

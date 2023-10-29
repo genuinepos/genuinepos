@@ -43,7 +43,7 @@ Route::get('rp', function () {
         28 => 'units',
         29 => 'variant',
         30 => 'warranties',
-        31 => 'selling_price_group',
+        31 => 'selling_price_group_index',
         32 => 'generate_barcode',
         33 => 'product_settings',
         34 => 'stock_report',

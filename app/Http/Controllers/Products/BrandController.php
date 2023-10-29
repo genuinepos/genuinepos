@@ -18,7 +18,7 @@ class BrandController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('brand')) {
+        if (!auth()->user()->can('product_brand_index')) {
             abort(403, __("Access Forbidden."));
         }
 
@@ -31,12 +31,16 @@ class BrandController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('product_brand_add')) {
+            abort(403, __("Access Forbidden."));
+        }
+
         return view('product.brands.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('brand')) {
+        if (!auth()->user()->can('product_brand_add')) {
             abort(403, __("Access Forbidden."));
         }
 
@@ -63,7 +67,7 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('brand')) {
+        if (!auth()->user()->can('product_brand_edit')) {
             abort(403, __("Access Forbidden."));
         }
 
@@ -74,6 +78,10 @@ class BrandController extends Controller
     // Update Brand method
     public function update($id, Request $request)
     {
+        if (!auth()->user()->can('product_brand_edit')) {
+            abort(403, __("Access Forbidden."));
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'photo' => 'sometimes|image|max:2048',
@@ -99,7 +107,7 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('brand')) {
+        if (!auth()->user()->can('product_brand_delete')) {
             abort(403, __("Access Forbidden."));
         }
 

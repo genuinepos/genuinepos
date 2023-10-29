@@ -14,7 +14,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h6>@lang('menu.products')</h6>
+                                <h6>{{ __("Products") }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -109,7 +109,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
-                                    <h6>{{ __('All Product') }}</h6>
+                                    <h6>{{ __('List Of Products') }}</h6>
                                 </div>
 
                                 @if(auth()->user()->can('product_add'))
@@ -123,6 +123,7 @@
                                         @endif
                                     </div>
                                 @endif
+
                             </div>
 
                             <div class="widget_content">

@@ -102,6 +102,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-3">
+                                <div class="input-group align-items-center gap-2">
+                                    <label for="inputEmail3"> <b> Select All </b> </label>
+                                    <div class="d-flex align-items-center">
+                                        <input type="checkbox" class="select_all super_select_all" id="super_select_all" data-target="super_select_all" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {{-- Accordian --}}
@@ -351,6 +359,11 @@
                                                         class="products product_all">
                                                     <label for="product_settings">{{ __('Product Settings') }}</label>
                                                 </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="generate_barcode" id="generate_barcode"
+                                                        class="products product_all">
+                                                    <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
+                                                </p>
 
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
@@ -524,19 +537,29 @@
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
                                                     <input id="select_all" type="checkbox" class="products"
-                                                        data-target="product_others" autocomplete="off">
-                                                    <strong>{{ __('Others') }}</strong>
+                                                        data-target="product_selling_price_group_index" autocomplete="off">
+                                                    <strong>{{ __('Selling Price Group') }}</strong>
                                                   </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="selling_price_group" id="selling_price_group"
-                                                        class="products product_others">
-                                                   <label for="selling_price_group">{{ __('Selling Price Group') }}</label>
+                                                    <input type="checkbox" name="selling_price_group_index" id="selling_price_group_index"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_index">{{ __('View All Selling Price Group') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="generate_barcode" id="generate_barcode"
-                                                        class="products product_others">
-                                                    <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
+                                                    <input type="checkbox" name="selling_price_group_add" id="selling_price_group_add"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_add">{{ __('Selling Price Group Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="selling_price_group_index_edit" id="selling_price_group_index_edit"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_edit">{{ __('Selling Price Group Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="selling_price_group_index_delete" id="selling_price_group_delete"
+                                                        class="products product_selling_price_group_index">
+                                                   <label for="selling_price_group_index_delete">{{ __('Selling Price Group Delete') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -604,17 +627,117 @@
                                                         class="purchase purchase_all">
                                                     <label for="purchase_statements">{{ __('Purchase Statements') }}</label>
                                                 </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_order" autocomplete="off">
+                                                    <strong>{{ __('Purchase Order') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_index" id="purchase_order_index"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_index">{{ __('View All Purchase Order') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_add" id="purchase_order_add"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_add">{{ __('Purchase Order Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_edit" id="purchase_order_edit"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_edit">{{ __('Purchase Order Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_delete" id="purchase_order_delete"
+                                                        class="purchase purchase_order">
+                                                    <label for="purchase_order_delete">{{ __('Purchase Order Delete') }}</label>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_return" autocomplete="off">
+                                                    <strong>{{ __('Purchase Return') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_index" id="purchase_return_index"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_index">{{ __('View All Purchase Return') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_add" id="purchase_return_add"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_add">{{ __('Purchase Return Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_edit" id="purchase_return_edit"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_edit">{{ __('Purchase Return Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_delete" id="purchase_return_delete"
+                                                        class="purchase purchase_return">
+                                                    <label for="purchase_return_delete">{{ __('Purchase Return Delete') }}</label>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                    <input type="checkbox" class="purchase" id="select_all"
+                                                        data-target="purchase_report" autocomplete="off">
+                                                    <strong>{{ __('Purchase Reports') }}</strong>
+                                                   </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_report" id="purchase_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_report">{{ __('Purchase Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_order_report" id="purchase_order_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_order_report">{{ __('Purchase Order Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_ordered_product_report" id="purchase_ordered_product_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_ordered_product_report">{{ __('Purchase Ordered Product Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_return_report" id="purchase_return_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_return_report">{{ __('Purchase Return Report') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_returned_product_report" id="purchase_returned_product_report"
+                                                        class="purchase purchase_report">
+                                                    <label for="purchase_returned_product_report">{{ __('Purchase Returned Products Report') }}</label>
+                                                </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="purchase_sale_report" id="purchase_sale_report"
-                                                        class="purchase purchase_all">
+                                                        class="purchase purchase_report">
                                                     <label for="purchase_sale_report">{{ __('Purchase & Sale Report') }}</label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="product_purchase_report" id="product_purchase_report"
-                                                        class="purchase purchase_all">
+                                                        class="purchase purchase_report">
                                                     <label for="product_purchase_report">{{ __('Product Purchase Report') }}</label>
                                                 </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="purchase_payment_report" id="purchase_payment_report"
+                                                        class="purchase purchase_report">
+                                                   <label for="purchase_payment_report"> {{ __(' Purchase Payment Report') }}</label>
+                                                </p>
                                             </div>
+                                        </div>
+                                        <hr class="mt-2">
+                                        <div class="row">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
@@ -632,11 +755,6 @@
                                                     <input type="checkbox" name="purchase_return" id="purchase_return"
                                                         class="purchase other_purchase">
                                                     <label for="purchase_return">{{ __('Access Purchase Return') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="purchase_payment_report" id="purchase_payment_report"
-                                                        class="purchase other_purchase">
-                                                   <label for="purchase_payment_report"> {{ __(' Purchase Payment Report') }}</label>
                                                 </p>
                                             </div>
                                         </div>
@@ -1510,11 +1628,19 @@
 @endsection
 @push('scripts')
     <script>
+        $(document).ready(function() {
+            $(document).on('change', '#super_select_all', function() {
+                var checkboxes = document.querySelectorAll('.accordion input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                });
+            });
+        });
+    </script>
+    <script>
         $(document).on('click', '#select_all', function() {
-
             var target = $(this).data('target');
             if ($(this).is(':CHECKED', true)) {
-
                 $('.' + target).prop('checked', true);
             } else {
                 $('.' + target).prop('checked', false);

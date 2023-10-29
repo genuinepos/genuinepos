@@ -185,17 +185,17 @@
                                                         @endif
                                                     @endif
                                                 </td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_opening_stock).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase_return).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_production).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_used_in_production).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sale).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sales_return) }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment).'/'.$product?->unit?->code_name }}</td>
-                                                <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_opening_stock).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_purchase_return).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_production).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_used_in_production).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sale).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_sales_return).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_transferred).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_received).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->total_stock_adjustment).'/'.$product?->unit?->code_name }}</td>
+                                                <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($ownBranchAndWarehouseStock->stock).'/'.$product?->unit?->code_name }}</td>
 
                                                 @php
                                                     $currentStock = $ownBranchAndWarehouseStock->stock;
@@ -254,17 +254,17 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_opening_stock).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_purchase).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_purchase_return).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_production).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_used_in_production).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_sale).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_sales_return) }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_transferred).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_received).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_stock_adjustment).'/'.$product?->unit?->code_name }}</td>
-                                            <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->stock).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_opening_stock).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_purchase).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_purchase_return).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_production).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_used_in_production).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_sale).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_sales_return).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_transferred).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_received).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#dc3545!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->total_stock_adjustment).'/'.$product?->unit?->code_name }}</td>
+                                            <td style="font-size:10px!important;color:#198754!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($globalWareHouseStock->stock).'/'.$product?->unit?->code_name }}</td>
 
                                             @php
                                                 $currentStock = $globalWareHouseStock->stock;

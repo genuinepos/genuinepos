@@ -859,6 +859,7 @@
             var inputs = $('.bs_input');
             inputs.removeClass('is-invalid');
             $('.error').html('');
+            
             var countErrorField = 0;
             $.each(inputs, function(key, val) {
 

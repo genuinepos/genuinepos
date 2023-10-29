@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Products;
+
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
 
 class ProductOpeningStock extends BaseModel
 {
     protected $guarded = [];
-
     protected $hidden = ['created_at', 'updated_at'];
 
     public function branch()
@@ -20,6 +24,6 @@ class ProductOpeningStock extends BaseModel
 
     public function variant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

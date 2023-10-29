@@ -20,8 +20,10 @@ class GeneralSettingController extends Controller
     public function index()
     {
         if (! auth()->user()->can('general_settings')) {
+            
             abort(403, 'Access Forbidden.');
         }
+
         $generalSettings = config('generalSettings');
         $currencies = Currency::all();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();

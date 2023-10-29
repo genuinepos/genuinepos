@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Arr;
+use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
@@ -78,34 +79,33 @@ Route::get('my-test', function () {
     //     echo 'Remarks : ' . $receipt?->accountingVoucher?->remarks . '</br></br></br>';
     // }
 
-    return $ownBranchStock = DB::table('product_ledgers')
-    ->where('product_ledgers.branch_id', null)
-    ->where('product_ledgers.product_id', 32)
-    ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
-    ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-    ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
-        ->select(
-            'branches.name',
-            'parentBranch.name',
-            'warehouses.warehouse_name',
-            'warehouses.is_global',
-            'product_ledgers.branch_id',
-            'product_ledgers.warehouse_id',
-            DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 8 then product_ledgers.in end), 0) as total_received'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.in end), 0) as total_production'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.out end), 0) as total_used_in_production'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 3 then product_ledgers.in end), 0) as total_purchase'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 4 then product_ledgers.out end), 0) as total_purchase_return'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
-            DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
-            DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
-        )
-        ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
-
+    // return $ownBranchStock = DB::table('product_ledgers')
+    // ->where('product_ledgers.branch_id', null)
+    // ->where('product_ledgers.product_id', 32)
+    // ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
+    // ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+    // ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
+    //     ->select(
+    //         'branches.name',
+    //         'parentBranch.name',
+    //         'warehouses.warehouse_name',
+    //         'warehouses.is_global',
+    //         'product_ledgers.branch_id',
+    //         'product_ledgers.warehouse_id',
+    //         DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 8 then product_ledgers.in end), 0) as total_received'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.in end), 0) as total_production'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.out end), 0) as total_used_in_production'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 3 then product_ledgers.in end), 0) as total_purchase'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 4 then product_ledgers.out end), 0) as total_purchase_return'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
+    //         DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
+    //         DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
+    //     )
+    //     ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
 });
 
 Route::get('t-id', function () {

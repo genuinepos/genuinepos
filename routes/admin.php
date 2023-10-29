@@ -117,31 +117,31 @@ Route::group(['prefix' => 'product'], function () {
     // Products route group
     Route::group(['prefix' => '/'], function () {
 
-        Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
-        Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
+        // Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
+        // Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
         Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
         Route::get('add', [ProductController::class, 'create'])->name('products.add.view');
-        Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
-        Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
-        Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
-        Route::get('combo/product/{productId}', [ProductController::class, 'getComboProducts'])->name('products.get.combo.products');
-        Route::post('update/{productId}', [ProductController::class, 'update'])->name('products.update');
-        Route::get('default/profit', [ProductController::class, 'defaultProfit'])->name('products.add.get.default.profit');
-        Route::delete('delete/{productId}', [ProductController::class, 'delete'])->name('products.delete');
-        Route::delete('multiple/delete', [ProductController::class, 'multipleDelete'])->name('products.multiple.delete');
-        Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
-        Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
+        // Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
+        // Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
+        // Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
+        // Route::get('combo/product/{productId}', [ProductController::class, 'getComboProducts'])->name('products.get.combo.products');
+        // Route::post('update/{productId}', [ProductController::class, 'update'])->name('products.update');
+        // Route::get('default/profit', [ProductController::class, 'defaultProfit'])->name('products.add.get.default.profit');
+        // Route::delete('delete/{productId}', [ProductController::class, 'delete'])->name('products.delete');
+        // Route::delete('multiple/delete', [ProductController::class, 'multipleDelete'])->name('products.multiple.delete');
+        // Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
+        // Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
         Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
         Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
-        Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
-        Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
-        Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');
-        Route::post('save/price/groups', [ProductController::class, 'savePriceGroup'])->name('products.save.price.groups');
-        Route::post('opening/stock/update', [ProductController::class, 'openingStockUpdate'])->name('products.opening.stock.update');
-        Route::post('add/category', [ProductController::class, 'addCategory'])->name('products.add.category');
-        Route::post('add/brand', [ProductController::class, 'addBrand'])->name('products.add.brand');
-        Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
-        Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
+        // Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
+        // Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
+        // Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');
+        // Route::post('save/price/groups', [ProductController::class, 'savePriceGroup'])->name('products.save.price.groups');
+        // Route::post('opening/stock/update', [ProductController::class, 'openingStockUpdate'])->name('products.opening.stock.update');
+        // Route::post('add/category', [ProductController::class, 'addCategory'])->name('products.add.category');
+        // Route::post('add/brand', [ProductController::class, 'addBrand'])->name('products.add.brand');
+        // Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
+        // Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
 
         Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
 

@@ -132,7 +132,7 @@ class ProductService
                 if ($isForCreatePage == BooleanType::False->value) {
 
                     $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ' . __("Action") . '</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a href="' . route('products.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
 
@@ -163,7 +163,7 @@ class ProductService
 
                     if (auth()->user()->can('openingStock_add')) {
 
-                        $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">' . __("Add or edit opening stock") . '</a>';
+                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __("Add or edit opening stock") . '</a>';
                     }
 
                     $html .= ' </div>';

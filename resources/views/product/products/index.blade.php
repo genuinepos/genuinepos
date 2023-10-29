@@ -127,7 +127,7 @@
 
                             <div class="widget_content">
                                 <!--begin: Datatable-->
-                                <form id="multiple_action_form" action="{{ route('products.multiple.delete') }}" method="post">
+                                <form id="multiple_action_form" action="#" method="post">
                                     @method('DELETE')
                                     @csrf
                                     <input type="hidden" name="action" id="action">
@@ -174,19 +174,7 @@
     <div id="details"></div>
 
     <!-- Opening stock Modal -->
-    {{-- <div class="modal fade" id="openingStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add opening stock') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="opening_stock_view">
-
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    <div class="modal fade" id="addOrEditOpeningStock" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     <!-- Opening stock Modal-->
 @endsection
 @push('scripts')
@@ -377,8 +365,7 @@
                             }
                         });
                     }
-                },
-                'No': {
+                }, 'No': {
                     'class': 'no btn-modal-primary',
                     'action': function() {
                         // console.log('Confirmation canceled.');
@@ -438,6 +425,38 @@
 
                     productTable.ajax.reload();
                     toastr.success(data, 'Attention');
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#openingStock', function(e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#addOrEditOpeningStock').html(data);
+                $('#addOrEditOpeningStock').modal('show');
+
+                // setTimeout(function() {
+
+                //     $('#brand_name').focus();
+                // }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
                 }
             }
         });

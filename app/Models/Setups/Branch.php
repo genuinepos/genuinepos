@@ -9,6 +9,7 @@ use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
 use App\Models\Setups\BranchSetting;
 use App\Models\Setups\InvoiceLayout;
+use App\Models\Products\ProductOpeningStock;
 
 class Branch extends BaseModel
 {
@@ -54,5 +55,11 @@ class Branch extends BaseModel
     public function branchSetting()
     {
         return $this->hasOne(BranchSetting::class, 'branch_id');
+    }
+
+    public function openingStockProduct()
+    {
+        return $this->hasOne(ProductOpeningStock::class, 'branch_id')
+            ->where('warehouse_id', null);
     }
 }

@@ -1,5 +1,5 @@
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-full-display">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title product_name" id="exampleModalLabel">
@@ -11,17 +11,17 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="carousel-item active product_image">
-                            <img  class="rounded" style="height:170px;width:190px;" src="{{ asset('uploads/product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
+                            <img  class="rounded" style="height:120px;width:120px;" src="{{ asset('uploads/product/thumbnail/' . $product->thumbnail_photo) }}" class="d-block w-100">
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <ul class="list-unstyled">
+                            <li style="font-size:11px!important;"><strong>{{ __("Name") }} : </strong> {{ $product->name }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Product Code(SKU)") }} : </strong> {{ $product->product_code }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Brand.") }} : </strong> {{ $product?->brand ? $product?->brand?->name : __('N/A') }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Unit") }} : </strong> {{ $product?->unit ? $product?->unit?->name : __('N/A') }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Barcode Type") }} : </strong> {{ $product->barcode_type }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __("Is Manage Stock?") }} : </strong> {!! $product->is_manage_stock == 1 ? '<span class="text-success">YES</span>' : '<span class="text-danger">'.__('NO') .'</span>' !!}</li>
                         </ul>
                     </div>
 
@@ -31,9 +31,8 @@
                             <li style="font-size:11px!important;"><strong>{{ __("Subcategory") }} : </strong> {{ $product->subcategory ? $product?->subcategory?->name : __('N/A') }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Is For Sale?") }} : </strong>{{ $product->is_for_sale == 1 ? __('Yes')  : __('No') }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __("Alert Quantity") }} : </strong>{{ $product->alert_quantity }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __("Warranty") }} : </strong>
-                                {{ $product->warranty_name ? $product->warranty_name : __('N/A') }}
-                            </li>
+                            <li style="font-size:11px!important;"><strong>{{ __("Is Manage Stock?") }} : </strong> {!! $product->is_manage_stock == 1 ? '<span class="text-success">YES</span>' : '<span class="text-danger">'.__('NO') .'</span>' !!}</li>
+
                         </ul>
                     </div>
 
@@ -65,13 +64,15 @@
                             <li style="font-size:11px!important;">
                                 <strong class="text-primary">{{ $product->is_manage_stock == 0 ? '(Service related/Digital Item)' : '' }} </strong>
                             </li>
+                            <li style="font-size:11px!important;"><strong>{{ __("Warranty") }} : </strong>
+                                {{ $product?->warranty ? $product?->warranty?->name.'('.$product?->warranty?->duration.' '.$product?->warranty?->duration_type.')' : __('N/A') }}
+                            </li>
                         </ul>
                     </div>
                 </div><br>
 
                 <div class="row">
                     <div class="col-md-12">
-
                         @if ($product->is_variant == 0)
                             <div class="table-responsive">
                                 <table id="" class="table modal-table table-sm">
@@ -150,6 +151,10 @@
                             <table id="" class="table modal-table table-sm">
                                 <thead>
                                     <tr class="bg-primary">
+                                        @if ($ownBranchAndWarehouseStocks->first()->variant_name)
+                                            <th style="font-size:10px!important;">{{ __("Variant") }}</th>
+                                        @endif
+
                                         <th style="font-size:10px!important;">{{ __("Stock Location") }}</th>
                                         <th style="font-size:10px!important;">{{ __("Opening Stock") }}</th>
                                         <th style="font-size:10px!important;">{{ __("Purchased") }}</th>
@@ -169,7 +174,11 @@
                                     @foreach ($ownBranchAndWarehouseStocks as $ownBranchAndWarehouseStock)
                                         @if ($ownBranchAndWarehouseStock->is_global == 0 || $ownBranchAndWarehouseStock->is_global == null)
                                             <tr>
-                                                <td style="font-size:10px!important;">
+                                                @if ($ownBranchAndWarehouseStock->variant_name)
+                                                    <td style="font-size:10px!important;" class="fw-bold">{{ $ownBranchAndWarehouseStock->variant_name }}</td>
+                                                @endif
+
+                                                <td style="font-size:10px!important;" class="fw-bold">
                                                     @if ($ownBranchAndWarehouseStock->warehouse_name)
                                                         {{ $ownBranchAndWarehouseStock->warehouse_name }}
                                                     @else
@@ -205,7 +214,6 @@
                                                 <td style="font-size:10px!important;" class="fw-bold">{{ App\Utils\Converter::format_in_bdt($stockValue) }}</td>
                                             </tr>
                                         @endif
-
                                     @endforeach
                                 </tbody>
                             </table>
@@ -220,6 +228,9 @@
                             <table id="" class="table modal-table table-sm">
                                 <thead>
                                     <tr class="bg-primary">
+                                        @if ($globalWareHouseStocks->first()->variant_name)
+                                            <th style="font-size:10px!important;">{{ __("Variant") }}</th>
+                                        @endif
                                         <th style="font-size:10px!important;">{{ __("Stock Location") }}</th>
                                         <th style="font-size:10px!important;">{{ __("Opening Stock") }}</th>
                                         <th style="font-size:10px!important;">{{ __("Purchased") }}</th>
@@ -238,7 +249,11 @@
                                 <tbody>
                                     @foreach ($globalWareHouseStocks as $globalWareHouseStock)
                                         <tr>
-                                            <td style="font-size:10px!important;">
+                                            @if ($globalWareHouseStock->variant_name)
+                                                <td style="font-size:10px!important;" class="fw-bold">{{ $globalWareHouseStock->variant_name }}</td>
+                                            @endif
+
+                                            <td style="font-size:10px!important;" class="fw-bold">
                                                 @if ($globalWareHouseStock->warehouse_name)
                                                     {{ $globalWareHouseStock->warehouse_name }}
                                                 @else

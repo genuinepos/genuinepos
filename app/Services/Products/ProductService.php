@@ -312,6 +312,7 @@ class ProductService
 
         $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
             ->where('product_ledgers.branch_id', auth()->user()->branch_id)->where('product_ledgers.product_id', $data['product']->id)
+            ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
             ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
@@ -324,6 +325,7 @@ class ProductService
                 'warehouses.is_global',
                 'product_ledgers.branch_id',
                 'product_ledgers.warehouse_id',
+                'product_variants.variant_name',
                 DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
                 DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
                 DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
@@ -339,8 +341,17 @@ class ProductService
             )
             ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
 
-            $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ->get();
-            $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)->get();
+        $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
+            ->orderBy('product_ledgers.branch_id', 'asc')
+            ->orderBy('product_ledgers.product_id', 'desc')
+            ->orderBy('product_ledgers.variant_id', 'desc')
+            ->get();
+            
+        $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
+            ->orderBy('product_ledgers.branch_id', 'asc')
+            ->orderBy('product_ledgers.product_id', 'desc')
+            ->orderBy('product_ledgers.variant_id', 'desc')
+            ->get();
 
         return $data;
     }

@@ -111,7 +111,7 @@ class ProductController extends Controller
         $product = $this->productService->singleProduct(id: $id, with: ['variants', 'variants.productLedgers', 'productAccessBranches']);
 
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
-        $subCategories = $this->categoryService->categories()->where('parent_category_id', $product->sub_category_id)->get(['id', 'name']);
+        $subCategories = $this->categoryService->categories()->where('parent_category_id', ($product->category_id ? $product->category_id : 0))->get(['id', 'name']);
         $brands = $this->brandService->brands()->get(['id', 'name']);
         $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
         $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);

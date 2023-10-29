@@ -8,27 +8,34 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cubes"></span>
-                    <h5>@lang('menu.cash_counter')</h5>
+                    <h5>{{ __("Cash Counters") }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form_element rounded mt-0 mb-3">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                                    @if (auth()->user()->is_belonging_an_area == 0)
-                                        <div class="col-md-2">
-                                            <label><strong>{{ __('Shop') }}</strong></label>
-                                            <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
-                                                <option value="">{{ __("All") }}</option>
+                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                            <select name="branch_id"
+                                                class="form-control select2" id="branch_id" autofocus>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
-                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                        @php
+                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                            $branchCode = '-' . $branch->branch_code;
+                                                        @endphp
+                                                        {{  $branchName.$areaName.$branchCode }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -51,7 +58,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-7">
-                        <h6>{{ __('Cash Counter List') }}</h6>
+                        <h6>{{ __('List Of Cash Counters') }}</h6>
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
@@ -122,32 +129,34 @@
             processing: true,
             serverSide: true,
             searchable: true,
-            ajax: "{{ route('cash.counters.index') }}",
+            "ajax": {
+                "url": "{{ route('cash.counters.index') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                }
+            },
             "lengthMenu": [
                 [50, 100, 500, 1000, -1],
                 [50, 100, 500, 1000, "All"]
             ],
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'counter_name',
-                    name: 'counter_name'
-                },
-                {
-                    data: 'short_name',
-                    name: 'short_name'
-                },
-                {
-                    data: 'branch',
-                    name: 'branch'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
-            ],
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'counter_name', name: 'counter_name' },
+                { data: 'short_name', name: 'short_name' },
+                { data: 'branch', name: 'branch' },
+                { data: 'action', name: 'action' },
+            ],fnDrawCallback: function() {
+
+                $('.data_preloader').hide();
+            }
+        });
+
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function (e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            cashCounterTable.ajax.reload();
         });
 
         // Setup ajax for csrf token.

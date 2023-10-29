@@ -1,6 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sales;
+
+use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Setups\CashCounter;
+use App\Models\Sales\CashRegisterTransaction;
 
 class CashRegister extends BaseModel
 {
@@ -8,12 +14,12 @@ class CashRegister extends BaseModel
 
     protected $hidden = ['updated_at'];
 
-    public function cash_register_transactions()
+    public function transactions()
     {
         return $this->hasMany(CashRegisterTransaction::class);
     }
 
-    public function cash_counter()
+    public function cashCounter()
     {
         return $this->belongsTo(CashCounter::class);
     }
@@ -23,8 +29,8 @@ class CashRegister extends BaseModel
         return $this->belongsTo(Branch::class);
     }
 
-    public function admin()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

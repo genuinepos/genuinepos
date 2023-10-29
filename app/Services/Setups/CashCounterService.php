@@ -132,4 +132,16 @@ class CashCounterService
 
         return $query->where('id', $id)->first();
     }
+
+    public function cashCounters(array $with = null)
+    {
+        $query = CashCounter::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
 }

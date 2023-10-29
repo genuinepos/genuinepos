@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Sales;
+
+use App\Models\BaseModel;
+use App\Models\Sales\Sale;
 
 class CashRegisterTransaction extends BaseModel
 {

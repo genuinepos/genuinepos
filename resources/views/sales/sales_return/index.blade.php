@@ -24,9 +24,9 @@
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body">
                                         <form id="filter_form">
-                                            <div class="form-group row">
+                                            <div class="form-group row align-items-end">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-3">
                                                         <label><strong>{{ __("Shop/Business") }}</strong></label>
                                                         <select name="branch_id"
                                                             class="form-control select2" id="branch_id" autofocus>
@@ -86,8 +86,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-2">
-                                                    <label><strong></strong></label>
+                                                <div class="col-md-1">
                                                     <div class="input-group">
                                                         <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                                     </div>

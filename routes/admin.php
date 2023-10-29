@@ -400,16 +400,7 @@ Route::group(['prefix' => 'sales'], function () {
     // });
 
     //Pos cash register routes
-    Route::group(['prefix' => 'cash/register'], function () {
-
-        Route::get('/', [CashRegisterController::class, 'create'])->name('sales.cash.register.create');
-        Route::post('store', [CashRegisterController::class, 'store'])->name('sales.cash.register.store');
-        Route::get('close/cash/register/modal/view', [CashRegisterController::class, 'closeCashRegisterModalView'])->name('sales.cash.register.close.modal.view');
-        Route::get('cash/register/details', [CashRegisterController::class, 'cashRegisterDetails'])->name('sales.cash.register.details');
-        Route::get('cash/register/details/for/report/{crId}', [CashRegisterController::class, 'cashRegisterDetailsForReport'])->name('sales.cash.register.details.for.report');
-        Route::post('close', [CashRegisterController::class, 'close'])->name('sales.cash.register.close');
-    });
-
+   
     // Pos routes
     Route::group(['prefix' => 'pos'], function () {
 

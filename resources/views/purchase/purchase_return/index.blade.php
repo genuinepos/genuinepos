@@ -28,8 +28,8 @@
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                    <div class="col-md-2">
-                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                    <div class="col-md-3">
+                                                        <label><strong>{{ __("Shop/Business") }}</strong></label>
                                                         <select name="branch_id"
                                                             class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>

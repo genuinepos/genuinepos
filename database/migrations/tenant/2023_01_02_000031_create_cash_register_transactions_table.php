@@ -19,8 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('sale_id')->nullable()->index('cash_register_transactions_sale_id_foreign');
             $table->timestamps();
 
-            $table->foreign(['cash_register_id'])->references(['id'])->on('cash_registers')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['sale_id'])->references(['id'])->on('sales')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['cash_register_id'])->references(['id'])->on('cash_registers')->onDelete('CASCADE');
+            $table->foreign(['sale_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
         });
     }
 

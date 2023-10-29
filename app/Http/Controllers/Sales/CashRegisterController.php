@@ -1,41 +1,47 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Sales;
 
-use App\Models\CashRegister;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountService;
+use App\Services\Sales\CashRegisterService;
+use App\Services\Setups\CashCounterService;
 
 class CashRegisterController extends Controller
 {
-    public function __construct()
-    {
-
+    public function __construct(
+        private CashRegisterService $cashRegisterService,
+        private CashCounterService $cashCounterService,
+        private AccountService $accountService,
+    ) {
     }
 
-    // Create cash register
     public function create()
     {
-        if (! auth()->user()->can('cash_counters')) {
+        if (!auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }
-        $cashCounters = DB::table('cash_counters')
+
+        $cashCounters = $this->cashCounterService->cashCounters()
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'counter_name', 'short_name']);
 
-        $saleAccounts = DB::table('account_branches')
-            ->leftJoin('accounts', 'account_branches.account_id', 'accounts.id')
-            ->where('account_branches.branch_id', auth()->user()->branch_id)
-            ->where('accounts.account_type', 5)
+        $saleAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_group_number', 15)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name']);
 
-        $openedCashRegister = CashRegister::with('branch', 'admin')
-            ->where('admin_id', auth()->user()->id)->where('status', 1)
+        $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['branch', 'user'])
+            ->where('user_id', auth()->user()->id)->where('status', BooleanType::True->value)
             ->first();
 
-        if (! $openedCashRegister) {
+        if (!$openedCashRegister) {
 
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
         } else {
@@ -44,10 +50,9 @@ class CashRegisterController extends Controller
         }
     }
 
-    // Store cash register
     public function store(Request $request)
     {
-        if (! auth()->user()->can('cash_counters')) {
+        if (!auth()->user()->can('cash_counters')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -56,10 +61,11 @@ class CashRegisterController extends Controller
 
         $this->validate($request, [
             'counter_id' => 'required',
-            'cash_in_hand' => 'required',
             'sale_account_id' => 'required',
+            'cash_account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'Sale A/C is required',
+            'sale_account_id.required' => 'Sale A/c is required',
+            'cash_account_id.required' => 'Cash A/c is required',
         ]);
 
         $dateFormat = $generalSettings['business__date_format'];
@@ -67,14 +73,16 @@ class CashRegisterController extends Controller
 
         $__timeFormat = '';
         if ($timeFormat == '12') {
+
             $__timeFormat = ' h:i:s';
         } elseif ($timeFormat == '24') {
+
             $__timeFormat = ' H:i:s';
         }
 
         $addCashRegister = new CashRegister();
         $addCashRegister->admin_id = auth()->user()->id;
-        $addCashRegister->date = date($dateFormat.$__timeFormat);
+        $addCashRegister->date = date($dateFormat . $__timeFormat);
         $addCashRegister->cash_counter_id = $request->counter_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
         $addCashRegister->cash_in_hand = $request->cash_in_hand;
@@ -87,7 +95,7 @@ class CashRegisterController extends Controller
     // cash register Details
     public function cashRegisterDetails()
     {
-        if (! auth()->user()->can('register_view')) {
+        if (!auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -115,7 +123,7 @@ class CashRegisterController extends Controller
     // Cash Register Details For Report
     public function cashRegisterDetailsForReport($crId)
     {
-        if (! auth()->user()->can('register_view')) {
+        if (!auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -202,7 +210,7 @@ class CashRegisterController extends Controller
                 'branches.branch_code as b_name',
             );
 
-        if (! $crId) {
+        if (!$crId) {
 
             $activeCashRegister = $activeCashRegisterQuery
                 ->where('users.id', auth()->user()->id)

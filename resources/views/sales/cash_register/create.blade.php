@@ -8,7 +8,7 @@
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
-            <form action="{{ route('sales.cash.register.store') }}" method="POST">
+            <form action="{{ route('cash.register.store') }}" method="POST">
                 @csrf
                 <section class="mt-5">
                     <div class="container-fluid">
@@ -73,8 +73,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>@lang('menu.sale_account') </b> </label>
                                                     <div class="col-8">
-                                                        <select required name="sale_account_id" class="form-control add_input"
-                                                        id="sale_account_id" data-name="Sale A/C">
+                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="price_group_id">
                                                             @foreach ($saleAccounts as $saleAccount)
                                                                 <option value="{{ $saleAccount->id }}">
                                                                     {{ $saleAccount->name }}

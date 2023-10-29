@@ -9,6 +9,7 @@ use App\Http\Controllers\Sales\QuotationController;
 use App\Http\Controllers\Sales\SalesOrderController;
 use App\Http\Controllers\Sales\SalesReturnController;
 use App\Http\Controllers\Sales\SoldProductController;
+use App\Http\Controllers\Sales\CashRegisterController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
@@ -37,6 +38,15 @@ Route::prefix('sales')->group(function () {
             Route::get('/', 'index')->name('sale.products.index');
             Route::get('for/sales/return/{sale_id}', 'soldProductsForSalesReturn')->name('sale.products.for.sales.return');
         });
+    });
+
+    Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
+
+        Route::get('create', 'create')->name('cash.register.create');
+        Route::post('store', 'store')->name('cash.register.store');
+        Route::get('show', 'show')->name('cash.register.details');
+        Route::get('close', 'close')->name('cash.register.close');
+        Route::post('closed', 'closed')->name('cash.register.closed');
     });
 
     Route::controller(SalesOrderController::class)->prefix('orders')->group(function () {

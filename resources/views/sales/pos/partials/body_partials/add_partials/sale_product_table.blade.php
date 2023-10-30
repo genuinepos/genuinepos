@@ -11,18 +11,18 @@
         <table class="table data__table modal-table table-sm sale-product-table">
             <thead>
                 <tr>
-                    <th scope="col">@lang('menu.sl')</th>
-                    <th scope="col">@lang('menu.name')</th>
-                    <th scope="col">@lang('menu.qty_weight')</th>
-                    <th scope="col">@lang('menu.unit')</th>
-                    <th scope="col">@lang('menu.price_inc_tax')</th>
-                    <th scope="col">@lang('menu.sub_total')</th>
+                    <th scope="col">{{ __("S/L") }}</th>
+                    <th scope="col">{{ __("Product") }}</th>
+                    <th scope="col">{{ __("Qty/Weight") }}</th>
+                    <th scope="col">{{ __("Unit") }}</th>
+                    <th scope="col">{{ __("Price Inc. Tax") }}</th>
+                    <th scope="col">{{ __("Subtotal") }}</th>
                     <th scope="col"><i class="fas fa-trash-alt"></i></th>
                 </tr>
             </thead>
 
             <tbody id="product_list">
-            
+
             </tbody>
         </table>
     </div>

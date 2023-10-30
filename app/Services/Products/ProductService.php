@@ -15,7 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
 {
-    public function productListTable(object $request, int $isForCreatePage): object
+    public function productListTable(object $request, int $isForCreatePage = 0): object
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         $generalSettings = config('generalSettings');
@@ -70,6 +70,11 @@ class ProductService
         if ($request->category_id) {
 
             $query->where('products.category_id', $request->category_id);
+        }
+
+        if ($request->sub_category_id) {
+
+            $query->where('products.sub_category_id', $request->sub_category_id);
         }
 
         if ($request->unit_id) {
@@ -346,7 +351,7 @@ class ProductService
             ->orderBy('product_ledgers.product_id', 'desc')
             ->orderBy('product_ledgers.variant_id', 'desc')
             ->get();
-            
+
         $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
             ->orderBy('product_ledgers.branch_id', 'asc')
             ->orderBy('product_ledgers.product_id', 'desc')

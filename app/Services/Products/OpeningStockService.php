@@ -30,7 +30,6 @@ class OpeningStockService
         }
 
         $addOrEditOpeningStock->branch_id = $request->branch_ids[$index];
-        $addOrEditOpeningStock->branch_id = $request->branch_ids[$index];
         $addOrEditOpeningStock->warehouse_id = $request->warehouse_ids[$index];
         $addOrEditOpeningStock->product_id = $request->product_ids[$index];
         $addOrEditOpeningStock->variant_id = $request->variant_ids[$index];

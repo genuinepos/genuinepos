@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
-    <title>Genuine POS</title>
+    <title>{{ __('GPOSS - Create Mode') }}</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}">
     {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
+    {{-- <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css"> --}}
 
     <!-- Calculator -->
     <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/comon.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/pos.css') }}">
-    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet"
-    type="text/css"/>
-    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/pos.css') }}">
+    <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
-    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
+    <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
 
-    <script src="{{asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
+    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
     <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
-    <script src="{{asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
-    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
         .d-hide {
             display: none;
         }
     </style>
 
-{{-- Harrison Bootstrap-Custom --}}
+    {{-- Harrison Bootstrap-Custom --}}
     <style>
         @media (min-width: 576px) {
             .modal-full-display {
@@ -110,7 +111,7 @@
         }
 
         .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #cbe4ee
+            background-color: #cbe4ee;
         }
 
         .table-striped tbody tr:nth-of-type(odd) {
@@ -120,10 +121,24 @@
 
         /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
 
-
         .widget_content .table-responsive {
             min-height: 80vh !important;
         }
+
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            display: inline-block;
+            width: 143px;
+        }
+
+        .select2-selection:focus {
+            box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+            color: #212529;
+            background-color: #fff;
+            border-color: #86b7fe;
+            outline: 0;
+        }
+
+        html.sf-js-enabled { overflow: hidden;}
     </style>
 </head>
 
@@ -142,8 +157,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
-                        <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span
-                            class="fas fa-times"></span></a>
+                        <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
@@ -154,11 +168,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method_id" class="form-control"  id="payment_method_id">
+                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                value="{{ $method->id }}">
+                                            <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
                                         @endforeach
@@ -178,7 +190,7 @@
                                                 @php
                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/c)';
                                                 @endphp
-                                                {{ $account->name.$accountType }}
+                                                {{ $account->name . $accountType }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -207,7 +219,7 @@
         <!--Add Payment modal End-->
 
         @if ($generalSettings['reward_point_settings__enable_cus_point'] == '1')
-        <!--Redeem Point modal-->
+            <!--Redeem Point modal-->
             <div class="modal fade" id="pointReedemModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
                 <div class="modal-dialog col-40-modal" role="document">
                     <div class="modal-content">
@@ -250,14 +262,13 @@
         <!--Redeem Point modal-->
     </form>
 
-     <!-- Recent transection list modal-->
-     <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!-- Recent transection list modal-->
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -265,9 +276,9 @@
                         <div class="btn-group">
                             <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/quotations/2') }}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/drafts/2') }}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
                         </div>
                     </div>
 
@@ -315,8 +326,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <!--begin::Form-->
@@ -348,8 +358,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                            class="fas fa-times"></span></a>
+                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="add_product_body"></div>
                 </div>
@@ -364,8 +373,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="add_customer_modal_body"></div>
             </div>
@@ -382,8 +390,7 @@
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="suspended_sale_list"></div>
             </div>
@@ -413,21 +420,21 @@
                         @endif
 
                         <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.quantity')</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="@lang('menu.quantity')" value=""/>
+                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="@lang('menu.quantity')" value="" />
                             <span class="error error_e_quantity"></span>
                         </div>
 
                         <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong>  : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="@lang('menu.unit')" value=""/>
+                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
+                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen')? '': 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="@lang('menu.unit')" value="" />
                             <span class="error error_e_unit_price"></span>
                         </div>
 
                         @if (auth()->user()->can('edit_discount_pos_screen'))
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong>  </label>
+                                    <label><strong>@lang('menu.discount_type')</strong> </label>
                                     <select class="form-control" id="e_unit_discount_type">
                                         <option value="2">@lang('menu.percentage')</option>
                                         <option value="1">@lang('menu.fixed')</option>
@@ -435,9 +442,9 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong>  </label>
-                                    <input type="number" class="form-control" id="e_unit_discount" value="0.00"/>
-                                    <input type="hidden" id="e_discount_amount"/>
+                                    <label><strong>@lang('menu.discount')</strong> </label>
+                                    <input type="number" class="form-control" id="e_unit_discount" value="0.00" />
+                                    <input type="hidden" id="e_discount_amount" />
                                 </div>
                             </div>
                         @endif
@@ -484,8 +491,7 @@
                 </div>
                 <div class="modal-header">
                     <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="stock_modal_body"></div>
             </div>
@@ -617,8 +623,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="payment_heading">@lang('menu.add_shortcut_menus')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span
-                        class="fas fa-times"></span></a>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="modal-body_shortcuts"></div>
             </div>
@@ -628,7 +633,8 @@
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}
-    <script src="{{asset('')}}/backend/asset/js/sale.exchange.js"></script>
+    <script src="{{ asset('') }}/backend/asset/js/sale.exchange.js"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
@@ -643,13 +649,13 @@
         }
         allPosShortcutMenus();
 
-        $('#cash_register_details').on('click', function (e) {
+        $('#cash_register_details').on('click', function(e) {
             e.preventDefault();
 
             $.ajax({
-                url:"{{route('sales.cash.register.details')}}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('cash.register.show') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#cash_register_details_content').html(data);
                     $('#cashRegisterDetailsModal').modal('show');
@@ -657,13 +663,13 @@
             });
         });
 
-        $('#close_register').on('click', function (e) {
+        $('#close_register').on('click', function(e) {
             e.preventDefault();
 
             $.ajax({
-                url:"{{route('sales.cash.register.close.modal.view')}}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('cash.register.close') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#close_register_content').html(data);
                     $('#closeRegisterModal').modal('show');
@@ -671,7 +677,7 @@
             });
         });
 
-        $(document).on('click', '#pos_exit_button',function(e){
+        $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -681,14 +687,24 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure, you want to exit?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {window.location = "{{ route('dashboard.dashboard') }}";}},
-                    'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.')}}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            window.location = "{{ route('dashboard.dashboard') }}";
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.')
+                        }
+                    }
                 }
             });
         });
 
         //Key shortcut for to the settings
-        shortcuts.add('ctrl+q',function() {
+        shortcuts.add('ctrl+q', function() {
 
             window.location = "{{ route('settings.general.index') }}";
         });
@@ -700,7 +716,7 @@
             scrollContainer.scrollLeft += evt.deltaY;
         });
 
-        $('#payment_method_id').on('change', function () {
+        $('#payment_method_id').on('change', function() {
 
             var account_id = $(this).find('option:selected').data('account_id');
             setMethodAccount(account_id);
@@ -711,7 +727,7 @@
             if (account_id) {
 
                 $('#account_id').val(account_id);
-            }else if(account_id === ''){
+            } else if (account_id === '') {
 
                 $('#account_id option:first-child').prop("selected", true);
             }
@@ -724,19 +740,19 @@
             elem = elem || document.documentElement;
 
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-                    if (elem.requestFullscreen) {
+                if (elem.requestFullscreen) {
 
-                        elem.requestFullscreen();
-                    } else if (elem.msRequestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.msRequestFullscreen) {
 
-                        elem.msRequestFullscreen();
-                    } else if (elem.mozRequestFullScreen) {
+                    elem.msRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
 
-                        elem.mozRequestFullScreen();
-                    } else if (elem.webkitRequestFullscreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) {
 
-                        elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                    }
+                    elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
             } else {
 
                 if (document.exitFullscreen) {
@@ -754,7 +770,31 @@
         document.getElementById('fullscreen').addEventListener('click', function() {
             toggleFullscreen();
         });
-</script>
+
+        $(window).scroll(function() {
+            if ($('.select2').is(':visible')) {
+                $('.select2-dropdown').css({
+                    "display": "none"
+                });
+            }
+        });
+
+        $(document).on('click', '.select2', function(e) {
+            e.preventDefault();
+            $('.select2-dropdown').css({
+                "display": ""
+            });
+        });
+
+        $(document).on('select2:open', () => {
+
+            if ($('.select2-search--dropdown .select2-search__field').length > 0) {
+
+                document.querySelector('.select2-search--dropdown .select2-search__field').focus();
+            }
+        });
+    </script>
     @stack('js')
 </body>
+
 </html>

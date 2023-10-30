@@ -1,4 +1,5 @@
 <script>
+    $('#customer_account_id').select2();
     $('#addCustomer').on('click', function () {
 
         $.get("{{ route('sales.pos.add.quick.customer.modal') }}", function(data) {
@@ -45,9 +46,10 @@
 
     @if (auth()->user()->can('product_add'))
 
+        // sales.add.product.modal.view
         $('#add_product').on('click', function() {
             $.ajax({
-                url:"{{ route('sales.add.product.modal.view') }}",
+                url:"#",
                 type:'get',
                 success:function(data){
 

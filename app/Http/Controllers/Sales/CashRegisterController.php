@@ -7,6 +7,7 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\CashRegisterService;
 use App\Services\Setups\CashCounterService;
@@ -17,12 +18,13 @@ class CashRegisterController extends Controller
         private CashRegisterService $cashRegisterService,
         private CashCounterService $cashCounterService,
         private AccountService $accountService,
+        private BranchService $branchService,
     ) {
     }
 
     public function create()
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -38,12 +40,22 @@ class CashRegisterController extends Controller
             ->get(['accounts.id', 'accounts.name']);
 
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['branch', 'user'])
-            ->where('user_id', auth()->user()->id)->where('status', BooleanType::True->value)
+            ->where('user_id', auth()->user()->id)
+            ->where('status', BooleanType::True->value)
             ->first();
+
+        $cashAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name')
+            ->get();
+
+        $branchName = $this->branchService->branchName();
 
         if (!$openedCashRegister) {
 
-            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts'));
+            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName'));
         } else {
 
             return redirect()->route('sales.pos.create');
@@ -52,15 +64,13 @@ class CashRegisterController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('cash_counters')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $generalSettings = config('generalSettings');
-
         $this->validate($request, [
-            'counter_id' => 'required',
+            'cash_counter_id' => 'required',
             'sale_account_id' => 'required',
             'cash_account_id' => 'required',
         ], [
@@ -68,32 +78,13 @@ class CashRegisterController extends Controller
             'cash_account_id.required' => 'Cash A/c is required',
         ]);
 
-        $dateFormat = $generalSettings['business__date_format'];
-        $timeFormat = $generalSettings['business__time_format'];
-
-        $__timeFormat = '';
-        if ($timeFormat == '12') {
-
-            $__timeFormat = ' h:i:s';
-        } elseif ($timeFormat == '24') {
-
-            $__timeFormat = ' H:i:s';
-        }
-
-        $addCashRegister = new CashRegister();
-        $addCashRegister->admin_id = auth()->user()->id;
-        $addCashRegister->date = date($dateFormat . $__timeFormat);
-        $addCashRegister->cash_counter_id = $request->counter_id;
-        $addCashRegister->sale_account_id = $request->sale_account_id;
-        $addCashRegister->cash_in_hand = $request->cash_in_hand;
-        $addCashRegister->branch_id = auth()->user()->branch_id;
-        $addCashRegister->save();
+        $this->cashRegisterService->addCashRegister(request: $request);
 
         return redirect()->route('sales.pos.create');
     }
 
     // cash register Details
-    public function cashRegisterDetails()
+    public function show()
     {
         if (!auth()->user()->can('register_view')) {
 
@@ -101,14 +92,12 @@ class CashRegisterController extends Controller
         }
 
         $queries = $this->detailsRegisterQuery();
-
         $activeCashRegister = $queries['activeCashRegister'];
         $paymentMethodPayments = $queries['paymentMethodPayments'];
         $accountPayments = $queries['accountPayments'];
         $totalCredit = $queries['totalCredit'];
 
         return view(
-
             'sales.cash_register.ajax_view.cash_register_details',
             compact(
 
@@ -136,10 +125,8 @@ class CashRegisterController extends Controller
         $totalCredit = $queries['totalCredit'];
 
         return view(
-
             'sales.cash_register.ajax_view.cash_register_details',
             compact(
-
                 'activeCashRegister',
                 'paymentMethodPayments',
                 'accountPayments',
@@ -149,7 +136,7 @@ class CashRegisterController extends Controller
     }
 
     // get closing cash register details
-    public function closeCashRegisterModalView()
+    public function close()
     {
         $queries = $this->detailsRegisterQuery();
 
@@ -159,7 +146,6 @@ class CashRegisterController extends Controller
         $totalCredit = $queries['totalCredit'];
 
         return view(
-
             'sales.cash_register.ajax_view.close_cash_register_view',
             compact(
                 'activeCashRegister',
@@ -171,7 +157,7 @@ class CashRegisterController extends Controller
     }
 
     // Close cash register
-    public function close(Request $request)
+    public function closed(Request $request)
     {
         $this->validate($request, [
             'closed_amount' => 'required',

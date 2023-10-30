@@ -400,26 +400,8 @@ Route::group(['prefix' => 'sales'], function () {
     // });
 
     //Pos cash register routes
-   
-    // Pos routes
-    Route::group(['prefix' => 'pos'], function () {
 
-        Route::get('create', [POSController::class, 'create'])->name('sales.pos.create');
-        Route::get('product/list', [POSController::class, 'posProductList'])->name('sales.pos.product.list');
-        Route::post('store', [POSController::class, 'store'])->name('sales.pos.store');
-        Route::get('pick/hold/invoice', [POSController::class, 'pickHoldInvoice']);
-        Route::get('edit/{saleId}', [POSController::class, 'edit'])->name('sales.pos.edit');
-        Route::get('invoice/products/{saleId}', [POSController::class, 'invoiceProducts'])->name('sales.pos.invoice.products');
-        Route::post('update', [POSController::class, 'update'])->name('sales.pos.update');
-        Route::get('suspended/sale/list', [POSController::class, 'suspendedList'])->name('sales.pos.suspended.list');
-        Route::get('branch/stock', [POSController::class, 'branchStock'])->name('sales.pos.branch.stock');
-        Route::get('add/customer/modal', [POSController::class, 'addQuickCustomerModal'])->name('sales.pos.add.quick.customer.modal');
-        Route::post('add/customer', [POSController::class, 'addCustomer'])->name('sales.pos.add.customer');
-        Route::get('get/recent/product/{product_id}', [POSController::class, 'getRecentProduct']);
-        Route::get('search/exchangeable/invoice', [POSController::class, 'searchExchangeableInv'])->name('sales.pos.search.exchange.invoice');
-        Route::post('prepare/exchange', [POSController::class, 'prepareExchange'])->name('sales.pos.prepare.exchange');
-        Route::post('exchange/confirm', [POSController::class, 'exchangeConfirm'])->name('sales.pos.exchange.confirm');
-    });
+    // Pos routes
 
     // Route::group(['prefix' => 'reports'], function () {
 

@@ -146,13 +146,14 @@ class Product extends Model
         }
 
         return $this->hasOne(PurchaseProduct::class)->where('left_qty', '>', '0')
+            ->where('branch_id', auth()->user()->branch_id)
             ->orderBy('created_at', $ordering)->select('product_id', 'net_unit_cost');
     }
 
     public function productBranchStock()
     {
         return $this->hasOne(ProductStock::class, 'product_id')->where('branch_id', auth()->user()->branch_id)
-            ->select('id', 'branch_id', 'product_id', 'variant_id', 'stock');
+            ->select('id', 'branch_id', 'product_id', 'stock', 'all_stock');
     }
 
     public function productAccessBranches()

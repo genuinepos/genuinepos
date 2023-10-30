@@ -12,12 +12,14 @@ use App\Services\Setups\WarehouseService;
 use App\Services\Products\OpeningStockService;
 use App\Services\Products\ProductStockService;
 use App\Services\Products\ProductLedgerService;
+use App\Services\Purchases\PurchaseProductService;
 
 class OpeningStockController extends Controller
 {
     public function __construct(
         private OpeningStockService $openingStockService,
         private ProductStockService $productStockService,
+        private PurchaseProductService $purchaseProductService,
         private ProductService $productService,
         private ProductLedgerService $productLedgerService,
         private WarehouseService $warehouseService,
@@ -45,21 +47,21 @@ class OpeningStockController extends Controller
 
                 $addOrEditOpeningStock = $this->openingStockService->addOrEditProductOpeningStock(request: $request, index: $index);
 
-                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id, currentWarehouseId: $addOrEditOpeningStock->warehouse_id);
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
 
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id);
 
-                if (isset($addOrEditOpeningStock->warehouse_id)) {
+                $this->productStockService->adjustBranchAllStock(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, branchId: $addOrEditOpeningStock->branch_id);
 
-                    $this->productStockService->addWarehouseProduct(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
+                if (isset($addOrEditOpeningStock->warehouse_id)) {
 
                     $this->productStockService->adjustWarehouseStock(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
                 } else {
 
-                    $this->productStockService->addBranchProduct(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id);
-
-                    $this->productStockService->adjustBranchStock($addOrEditOpeningStock->product_id, $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id);
+                    $this->productStockService->adjustBranchStock($addOrEditOpeningStock->product_id, $addOrEditOpeningStock->variant_id, $addOrEditOpeningStock->branch_id);
                 }
+
+                $this->purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'opening_stock_id', transId: $addOrEditOpeningStock->id, branchId: auth()->user()->branch_id, productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id, quantity: $addOrEditOpeningStock->quantity, unitCostIncTax: $addOrEditOpeningStock->unit_cost_inc_tax, sellingPrice: 0, subTotal: $addOrEditOpeningStock->subtotal, createdAt: $addOrEditOpeningStock->date_ts);
             }
 
             DB::commit();
@@ -68,6 +70,6 @@ class OpeningStockController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(['Opening stock is added successfully.']);
+        return response()->json(__('Opening stock is added successfully.'));
     }
 }

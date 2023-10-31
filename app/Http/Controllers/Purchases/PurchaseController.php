@@ -296,13 +296,13 @@ class PurchaseController extends Controller
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
+                $this->productStockService->adjustBranchAllStock($productId, $variantId, branchId: auth()->user()->branch_id);
+
                 if (isset($request->warehouse_count)) {
 
-                    $this->productStockService->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                 } else {
 
-                    $this->productStockService->addBranchProduct(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
                     $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
                 }
 
@@ -523,19 +523,18 @@ class PurchaseController extends Controller
 
                 foreach ($deletedUnusedPurchaseProducts as $deletedPurchaseProduct) {
 
-                    $storedProductId = $deletedPurchaseProduct->product_id;
-                    $storedVariantId = $deletedPurchaseProduct->variant_id;
                     $deletedPurchaseProduct->delete();
 
                     // Adjust deleted product stock
-                    $this->productStockService->adjustMainProductAndVariantStock($storedProductId, $storedVariantId);
+                    $this->productStockService->adjustMainProductAndVariantStock($deletedPurchaseProduct->product_id, $deletedPurchaseProduct->variant_id);
+                    $this->productStockService->adjustBranchAllStock(productId: $deletedPurchaseProduct->product_id, variantId: $deletedPurchaseProduct->variant_id, branchId: $purchase->branch_id);
 
                     if (isset($storedCurrentWarehouseId)) {
 
-                        $this->productStockService->adjustWarehouseStock($storedProductId, $storedVariantId, $storedCurrentWarehouseId);
+                        $this->productStockService->adjustWarehouseStock(productId: $deletedPurchaseProduct->product_id, variantId: $deletedPurchaseProduct->variant_id, warehouseId: $storedCurrentWarehouseId);
                     } else {
 
-                        $this->productStockService->adjustBranchStock($storedProductId, $storedVariantId, $purchase->branch_id);
+                        $this->productStockService->adjustBranchStock(productId: $storedProductId, variantId: $deletedPurchaseProduct->variant_id, branchId: $purchase->branch_id);
                     }
                 }
             }
@@ -546,13 +545,13 @@ class PurchaseController extends Controller
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
+                $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
+
                 if (isset($request->warehouse_count)) {
 
-                    $this->productStockService->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                 } else {
 
-                    $this->productStockService->addBranchProduct(productId: $productId, variantId: $variantId, branchId: $updatePurchaseProduct->branch_id);
                     $this->productStockService->adjustBranchStock($productId, $variantId, branchId: $updatePurchaseProduct->branch_id);
                 }
 
@@ -615,6 +614,8 @@ class PurchaseController extends Controller
 
                 $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : null;
                 $this->productStockService->adjustMainProductAndVariantStock($purchaseProduct->product_id, $variantId);
+
+                $this->productStockService->adjustBranchAllStock(productId: $purchaseProduct->product_id, variantId: $variantId, branchId: $deletePurchase->branch_id);
 
                 if ($deletePurchase->warehouse_id) {
 

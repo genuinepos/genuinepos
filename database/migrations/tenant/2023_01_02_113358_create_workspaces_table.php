@@ -26,6 +26,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('estimated_hours', 191)->nullable();
             $table->timestamps();
+
+            $table->foreign(['admin_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('SET NULL');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

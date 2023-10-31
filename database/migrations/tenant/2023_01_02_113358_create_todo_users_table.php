@@ -17,8 +17,11 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('todo_id')->index('todo_users_todo_id_foreign');
             $table->unsignedBigInteger('user_id')->index('todo_users_user_id_foreign');
-            $table->boolean('is_delete_in_update')->default(false);
+            $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
+
+            $table->foreign(['todo_id'])->references(['id'])->on('todos')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 

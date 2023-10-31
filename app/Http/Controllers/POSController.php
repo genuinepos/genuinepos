@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SaleMailJob;
-use App\Models\CashRegister;
+use App\Models\Sales\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Customer;
 use App\Models\Setups\PaymentMethod;
@@ -47,7 +47,7 @@ class POSController extends Controller
         }
 
         $openedCashRegister = CashRegister::with('admin', 'cash_counter')
-            ->where('admin_id', auth()->user()->id)
+            ->where('user_id', auth()->user()->id)
             ->where('status', 1)
             ->first();
 
@@ -94,7 +94,7 @@ class POSController extends Controller
             ));
         } else {
 
-            return redirect()->route('sales.cash.register.create');
+            return redirect()->route('cash.register.create');
         }
     }
 

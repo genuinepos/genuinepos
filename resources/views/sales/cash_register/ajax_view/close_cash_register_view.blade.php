@@ -12,7 +12,7 @@
 </div>
 <div class="modal-body">
     <!--begin::Form-->
-    <form action="{{ route('sales.cash.register.close') }}" method="POST">
+    <form action="{{ route('cash.register.close') }}" method="POST">
         @csrf
         @if(auth()->user()->can('register_view'))
             <table class="cash_register_table modal-table table table-sm">

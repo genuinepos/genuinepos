@@ -17,9 +17,4 @@ class Loan extends BaseModel
     {
         return $this->belongsTo(Account::class, 'account_id');
     }
-
-    public function cashFlow()
-    {
-        return $this->hasOne(CashFlow::class);
-    }
 }

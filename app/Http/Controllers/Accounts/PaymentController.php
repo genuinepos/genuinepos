@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Accounts;
 
 use Illuminate\Http\Request;
 use App\Models\Setups\Branch;
-use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
 use App\Services\Sales\SaleService;
-use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
-use App\Enums\AccountLedgerVoucherType;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
@@ -25,6 +22,7 @@ use App\Services\Accounts\DayBookVoucherService;
 use App\Services\Purchases\PurchaseReturnService;
 use App\Services\Accounts\AccountingVoucherService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PaymentController extends Controller
@@ -66,67 +64,34 @@ class PaymentController extends Controller
         return view('accounting.accounting_vouchers.payments.index', compact('branches', 'debitAccounts'));
     }
 
-    function show($id)
+    function show(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
-        $payment = $this->accountingVoucherService->singleAccountingVoucher(
+        $showMethodContainer = $paymentControllerMethodContainersInterface->showMethodContainer(
             id: $id,
-            with: [
-                'branch',
-                'branch.parentBranch',
-                'voucherDescriptions',
-                'voucherDescriptions.references',
-                'voucherDescriptions.references.sale',
-                'voucherDescriptions.references.purchaseReturn',
-                'voucherDescriptions.references.stockAdjustment',
-                'purchaseRef',
-                'salesReturnRef',
-                'stockAdjustmentRef',
-            ],
+            accountingVoucherService: $this->accountingVoucherService,
         );
+
+        extract($showMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.ajax_view.show', compact('payment'));
     }
 
-    public function create($debitAccountId = null)
+    public function create(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $debitAccountId = null)
     {
-        $account = '';
-        $vouchers = [];
-        if (isset($debitAccountId)) {
+        $createMethodContainer = $paymentControllerMethodContainersInterface->createMethodContainer(
+            debitAccountId: $debitAccountId,
+            accountService: $this->accountService,
+            accountFilterService: $this->accountFilterService,
+            dayBookVoucherService: $this->dayBookVoucherService,
+            paymentMethodService: $this->paymentMethodService,
+        );
 
-            $account = $this->accountService->singleAccountById(id: $debitAccountId, with: ['contact']);
-
-            $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $debitAccountId, type: AccountingVoucherType::Payment->value);
-
-            $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
-        }
-
-        $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-
-        $accounts = $this->accountService->accounts(with: [
-            'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
-        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->whereIn('account_groups.sub_sub_group_number', [2])
-            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-            ->get();
-
-        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
-        $receivableAccounts = '';
-        if (!isset($creditAccountId)) {
-
-            $receivableAccounts = $this->accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
-        }
-
-        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+        extract($createMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.ajax_view.create', compact('vouchers', 'account', 'accounts', 'methods', 'receivableAccounts'));
     }
 
-    public function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'date' => 'required|date',
@@ -139,51 +104,24 @@ class PaymentController extends Controller
         try {
             DB::beginTransaction();
 
-            $restrictions = $this->paymentService->restrictions(request: $request);
+            $storeMethodContainer = $paymentControllerMethodContainersInterface->storeMethodContainer(
+                request: $request,
+                paymentService: $this->paymentService,
+                branchSettingService: $this->branchSettingService,
+                accountLedgerService: $this->accountLedgerService,
+                accountingVoucherService: $this->accountingVoucherService,
+                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
+                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
+                dayBookService: $this->dayBookService,
+                codeGenerator: $codeGenerator,
+            );
 
-            if ($restrictions['pass'] == false) {
+            if (isset($storeMethodContainer['pass']) && $storeMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
+                return response()->json(['errorMsg' => $storeMethodContainer['msg']]);
             }
 
-            $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
-
-            // Add Accounting Voucher
-            $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
-
-            // Add Payment Description Debit Entry
-            $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
-
-            // Add Day Book entry for Payment
-            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $request->date, accountId: $request->debit_account_id, transId: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
-
-             // Add Accounting VoucherDescription References
-             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: isset($request->ref_ids) ? $request->ref_ids : null);
-
-            //Add Debit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', cash_bank_account_id: $request->credit_account_id);
-
-            // Add Credit Account Accounting voucher Description
-            $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
-
-            //Add Credit Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->credit_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit');
-
-            $payment = $this->accountingVoucherService->singleAccountingVoucher(
-                id: $addAccountingVoucher->id,
-                with: [
-                    'branch',
-                    'branch.parentBranch',
-                    'voucherDescriptions',
-                    'voucherDescriptions.references',
-                    'voucherDescriptions.references.purchase',
-                    'voucherDescriptions.references.salesReturn',
-                    'purchaseRef',
-                    'salesReturnRef',
-                ],
-            );
+            extract($storeMethodContainer);
 
             DB::commit();
         } catch (Exception $e) {
@@ -200,57 +138,24 @@ class PaymentController extends Controller
         }
     }
 
-    function edit($id, $debitAccountId = null)
+    function edit(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id, $debitAccountId = null)
     {
-        $payment = $this->accountingVoucherService->singleAccountingVoucher(
+        $editMethodContainer = $paymentControllerMethodContainersInterface->editMethodContainer(
             id: $id,
-            with: [
-                'voucherCreditDescription',
-                'voucherDebitDescription',
-                'voucherDebitDescription.references',
-                'voucherDebitDescription.references.purchase',
-                'voucherDebitDescription.references.salesReturn',
-            ],
+            debitAccountId: $debitAccountId,
+            accountingVoucherService: $this->accountingVoucherService,
+            accountService: $this->accountService,
+            accountFilterService: $this->accountFilterService,
+            dayBookVoucherService: $this->dayBookVoucherService,
+            paymentMethodService: $this->paymentMethodService,
         );
 
-        $account = '';
-        $vouchers = [];
-        if (isset($debitAccountId)) {
-
-            $account = $this->accountService->singleAccountById(id: $debitAccountId, with: ['contact']);
-        }
-
-        $transAccountId = isset($debitAccountId) ? $debitAccountId : $payment->voucherDebitDescription->account_id;
-        $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $transAccountId, type: AccountingVoucherType::Payment->value);
-        $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
-
-        $ownBranchIdOrParentBranchId = $payment?->branch?->parent_branch_id ? $payment?->branch?->parent_branch_id : $payment?->branch_id;
-
-        $accounts = $this->accountService->accounts(with: [
-            'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
-        ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->whereIn('account_groups.sub_sub_group_number', [2])
-            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-            ->get();
-
-        $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
-        $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
-
-        $payableAccounts = '';
-        if (!isset($debitAccountId)) {
-
-            $payableAccounts = $this->accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
-        }
+        extract($editMethodContainer);
 
         return view('accounting.accounting_vouchers.payments.ajax_view.edit', compact('payment', 'vouchers', 'account', 'accounts', 'methods', 'payableAccounts'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
         $this->validate($request, [
             'date' => 'required|date',
@@ -263,50 +168,25 @@ class PaymentController extends Controller
         try {
             DB::beginTransaction();
 
-            $restrictions = $this->paymentService->restrictions(request: $request);
+            $updateMethodContainer = $paymentControllerMethodContainersInterface->updateMethodContainer(
+                id: $id,
+                request: $request,
+                paymentService: $this->paymentService,
+                branchSettingService: $this->branchSettingService,
+                accountLedgerService: $this->accountLedgerService,
+                accountingVoucherService: $this->accountingVoucherService,
+                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
+                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
+                dayBookService: $this->dayBookService,
+                purchaseService: $this->purchaseService,
+                salesReturnService: $this->salesReturnService,
+            );
 
-            if ($restrictions['pass'] == false) {
+            if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {
 
-                return response()->json(['errorMsg' => $restrictions['msg']]);
+                return response()->json(['errorMsg' => $updateMethodContainer['msg']]);
             }
 
-            // Add Accounting Voucher
-            $updateAccountingVoucher = $this->accountingVoucherService->updateAccountingVoucher(id: $id, date: $request->date, remarks: $request->remarks, reference: $request->reference, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
-
-             // Add Payment Description Debit Entry
-             $updateAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherDebitDescription->id, accountId: $request->debit_account_id, paymentMethodId: null, amountType: 'dr', amount: $request->paying_amount);
-
-             // Add Day Book entry for Payment
-             $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::Payment->value, date: $request->date, accountId: $request->debit_account_id, transId: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amountType: 'debit');
-
-             if ($updateAccountingVoucher?->voucherDebitDescription && count($updateAccountingVoucher?->voucherDebitDescription?->references) > 0) {
-
-                 foreach ($updateAccountingVoucher?->voucherDebitDescription?->references as $reference) {
-
-                     $reference->delete();
-
-                     if ($reference->purchase) {
-
-                         $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $reference->purchase);
-                     } else if ($reference->salesReturn) {
-
-                         $this->salesReturnService->adjustSalesReturnVoucherAmounts(salesReturn: $reference->salesReturn);
-                     }
-                 }
-             }
-
-             // Add Accounting VoucherDescription References
-             $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $updateAccountingVoucherDebitDescription->id, accountId: $request->debit_account_id, amount: $request->paying_amount, refIdColName: 'purchase_id', refIds: isset($request->ref_ids) ? $request->ref_ids : null);
-
-             //Add Debit Ledger Entry
-             $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherDebitDescription->id, amount: $request->paying_amount, amount_type: 'debit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherDebitDescription->current_account_id, cash_bank_account_id: $request->credit_account_id);
-
-            // Add Credit Account Accounting voucher Description
-            $updateAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->updateAccountingVoucherDescription(accountingVoucherId: $updateAccountingVoucher->id, accountingVoucherDescriptionId: $updateAccountingVoucher->voucherCreditDescription->id, accountId: $request->credit_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->paying_amount, transactionNo: $request->transaction_no, chequeNo: $request->cheque_no, chequeSerialNo: $request->cheque_serial_no);
-
-            //Add credit Ledger Entry
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Payment->value, date: $request->date, account_id: $request->debit_account_id, trans_id: $updateAccountingVoucherCreditDescription->id, amount: $request->paying_amount, amount_type: 'credit', branch_id: $updateAccountingVoucher->branch_id, current_account_id: $updateAccountingVoucherCreditDescription->current_account_id);
- 
             DB::commit();
         } catch (Exception $e) {
 
@@ -316,35 +196,19 @@ class PaymentController extends Controller
         return response()->json(__("Payment updated successfully."));
     }
 
-    public function delete($id)
+    public function delete(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
         try {
             DB::beginTransaction();
 
-            $deletePayment = $this->paymentService->deletePayment(id: $id);
-
-            foreach ($deletePayment->voucherDescriptions as $voucherDescription) {
-
-                if (count($voucherDescription->references)) {
-
-                    foreach ($voucherDescription->references as $reference) {
-
-                        if ($reference->sale) {
-
-                            $this->saleService->adjustSaleInvoiceAmounts(sale: $reference->sale);
-                        } else if ($reference->purchase) {
-
-                            $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $reference->purchase);
-                        } else if ($reference->salesReturn) {
-
-                            $this->salesReturnService->adjustSalesReturnVoucherAmounts(salesReturn: $reference->salesReturn);
-                        } else if ($reference->purchaseReturn) {
-
-                            $this->purchaseReturnService->adjustPurchaseReturnVoucherAmounts(purchaseReturn: $reference->purchaseReturn);
-                        }
-                    }
-                }
-            }
+            $deleteMethodContainer = $paymentControllerMethodContainersInterface->deleteMethodContainer(
+                id: $id,
+                paymentService: $this->paymentService,
+                saleService: $this->saleService,
+                salesReturnService: $this->salesReturnService,
+                purchaseService: $this->purchaseService,
+                purchaseReturnService: $this->purchaseReturnService,
+            );
 
             DB::commit();
         } catch (Exception $e) {

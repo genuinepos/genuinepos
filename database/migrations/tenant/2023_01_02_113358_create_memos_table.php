@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedBigInteger('admin_id')->nullable()->index('memos_admin_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['admin_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 

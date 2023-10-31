@@ -20,8 +20,10 @@ class GeneralSettingController extends Controller
     public function index()
     {
         if (! auth()->user()->can('general_settings')) {
+            
             abort(403, 'Access Forbidden.');
         }
+
         $generalSettings = config('generalSettings');
         $currencies = Currency::all();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();
@@ -121,7 +123,6 @@ class GeneralSettingController extends Controller
             'prefix__customer_id' => $request->customer_id,
             'prefix__payment' => $request->payment,
             'prefix__receipt' => $request->receipt,
-            // 'prefix__expanse_payment' => $request->expanse_payment,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

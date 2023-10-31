@@ -3,6 +3,7 @@
 namespace App\Models\Setups;
 
 use App\Models\BaseModel;
+use App\Models\Products\ProductOpeningStock;
 
 class Warehouse extends BaseModel
 {
@@ -21,23 +22,13 @@ class Warehouse extends BaseModel
         return $this->hasMany(Purchase::class);
     }
 
-    public function sale_product()
+    public function saleProduct()
     {
         return $this->hasMany(SaleProduct::class, 'stock_warehouse_id');
     }
 
-    public function transfer_to_branch()
+    public function openingStockProduct()
     {
-        return $this->hasMany(TransferStockToWarehouse::class);
-    }
-
-    public function transfer_stock_branch()
-    {
-        return $this->hasMany(TransferStockToBranch::class);
-    }
-
-    public function transfer_stock_branch_to_branch()
-    {
-        return $this->hasMany(TransferStockBranchToBranch::class, 'sender_warehouse_id');
+        return $this->hasOne(ProductOpeningStock::class, 'warehouse_id');
     }
 }

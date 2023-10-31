@@ -13,7 +13,9 @@ class CashCounterService
         $generalSettings = config('generalSettings');
         $cashCounters = '';
 
-        $query = DB::table('cash_counters')->leftJoin('branches', 'cash_counters.branch_id', 'branches.id');
+        $query = DB::table('cash_counters')
+        ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
+        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
         if (isset($request)) {
 
@@ -35,12 +37,15 @@ class CashCounterService
         }
 
         $cashCounters = $query->select(
-            'branches.name as br_name',
-            'branches.branch_code as br_code',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'branches.area_name',
+            'parentBranch.name as parent_branch_name',
             'cash_counters.id',
+            'cash_counters.branch_id',
             'cash_counters.counter_name',
             'cash_counters.short_name'
-        )->get();
+        )->orderBy('branch_id', 'asc')->get();
 
         return DataTables::of($cashCounters)
             ->addIndexColumn()
@@ -55,9 +60,15 @@ class CashCounterService
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                if ($row->br_name) {
+                if ($row->branch_id) {
 
-                    return $row->br_name.'/'.$row->br_code;
+                    if ($row->parent_branch_name) {
+
+                        return $row->parent_branch_name . '(' . $row->area_name . ')-'.$row->branch_code;
+                    } else {
+
+                        return $row->branch_name . '(' . $row->area_name . ')-'.$row->branch_code;
+                    }
                 } else {
 
                     return $generalSettings['business__shop_name'];
@@ -120,5 +131,17 @@ class CashCounterService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function cashCounters(array $with = null)
+    {
+        $query = CashCounter::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

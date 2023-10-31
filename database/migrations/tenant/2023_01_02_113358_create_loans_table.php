@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable()->index('loans_branch_id_foreign');
-            $table->unsignedBigInteger('expense_id')->nullable()->index('loans_expense_id_foreign');
             $table->unsignedBigInteger('purchase_id')->nullable()->index('loans_purchase_id_foreign');
             $table->string('reference_no')->nullable();
             $table->unsignedBigInteger('loan_company_id')->nullable()->index('loans_loan_company_id_foreign');
@@ -32,6 +31,13 @@ return new class extends Migration
             $table->string('loan_by', 191)->nullable();
             $table->unsignedBigInteger('created_user_id')->nullable()->index('loans_created_user_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['created_user_id'])->references(['id'])->on('users')->onDelete('SET NULL');
+            $table->foreign(['loan_account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
+            $table->foreign(['loan_company_id'])->references(['id'])->on('loan_companies')->onDelete('CASCADE');
+            $table->foreign(['purchase_id'])->references(['id'])->on('purchases')->onDelete('CASCADE');
         });
     }
 

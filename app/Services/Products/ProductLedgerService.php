@@ -2,6 +2,7 @@
 
 namespace App\Services\Products;
 
+use App\Enums\ProductLedgerVoucherType;
 use App\Models\Products\ProductLedger;
 
 class ProductLedgerService
@@ -56,7 +57,8 @@ class ProductLedgerService
         $add->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
         $add->warehouse_id = $warehouseId;
         $add->date = $date;
-        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $time = $voucherTypeId == ProductLedgerVoucherType::OpeningStock->value ? ' 01:00:00' : date(' H:i:s');
+        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . $time));
         $add->product_id = $productId;
         $add->variant_id = $variantId ? $variantId : null;
         $add->voucher_type = $voucherTypeId;

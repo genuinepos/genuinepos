@@ -106,8 +106,6 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
-
     <script>
         var lastChartListClass = '';
 

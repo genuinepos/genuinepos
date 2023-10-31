@@ -147,8 +147,7 @@
                         warrantiesTable.ajax.reload();
                     }
                 }
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;

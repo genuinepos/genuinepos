@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->index(['model_id', 'model_type']);
             $table->primary(['permission_id', 'model_id', 'model_type']);
+
+            $table->foreign(['permission_id'])->references(['id'])->on('permissions')->onDelete('CASCADE');
         });
     }
 

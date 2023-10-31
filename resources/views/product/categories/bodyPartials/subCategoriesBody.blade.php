@@ -31,4 +31,4 @@
     </div>
 </div>
 
-<div class="modal fade" id="subcategoryAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+<div class="modal fade" id="subcategoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>

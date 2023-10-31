@@ -237,7 +237,7 @@
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                             $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-(' . $branch->branch_code.')';
+                                                                            $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
                                                                         <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
@@ -367,7 +367,7 @@
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                             $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-(' . $branch->branch_code.')';
+                                                                            $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
                                                                         <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
@@ -495,7 +495,7 @@
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                             $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-(' . $branch->branch_code.')';
+                                                                            $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
                                                                         <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                             {{  $branchName.$areaName.$branchCode }}
@@ -629,7 +629,7 @@
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                             $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-(' . $branch->branch_code.')';
+                                                                            $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
                                                                         <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
@@ -762,7 +762,7 @@
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                                 $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                                $branchCode = '-(' . $branch->branch_code.')';
+                                                                                $branchCode = '-' . $branch->branch_code;
                                                                             @endphp
                                                                             <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                                 {{ $branchName . $areaName . $branchCode }}
@@ -889,7 +889,7 @@
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                                 $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                                $branchCode = '-(' . $branch->branch_code.')';
+                                                                                $branchCode = '-' . $branch->branch_code;
                                                                             @endphp
                                                                             <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                                                 {{ $branchName . $areaName . $branchCode }}

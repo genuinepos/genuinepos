@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->index(['model_id', 'model_type']);
             $table->primary(['role_id', 'model_id', 'model_type']);
+
+            $table->foreign(['role_id'])->references(['id'])->on('roles')->onDelete('CASCADE');
         });
     }
 

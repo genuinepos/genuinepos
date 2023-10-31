@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hrm_leavetypes', function (Blueprint $table) {
+        Schema::create('hrm_leave_types', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('leave_type');

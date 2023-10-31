@@ -48,6 +48,8 @@ class ProductStockService
             ->where('id', $productId)->select('id', 'is_manage_stock', 'product_cost')
             ->first();
 
+        $this->addBranchProduct(productId: $productId, variantId: $variantId, branchId: $branchId);
+
         if ($product->is_manage_stock == 1) {
 
             $productLedger = DB::table('product_ledgers')
@@ -58,7 +60,7 @@ class ProductStockService
                 ->select(
                     DB::raw("SUM(product_ledgers.in) as stock_in"),
                     DB::raw("SUM(product_ledgers.out) as stock_out"),
-                    DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
+                    DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost"),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');
@@ -78,11 +80,45 @@ class ProductStockService
         }
     }
 
+    public function adjustBranchAllStock(int $productId, ?int $variantId = null, ?int $branchId = null): void
+    {
+        $product = DB::table('products')
+            ->where('id', $productId)->select('id', 'is_manage_stock', 'product_cost')
+            ->first();
+
+        $this->addBranchProduct(productId: $productId, variantId: $variantId, branchId: $branchId);
+
+        if ($product->is_manage_stock == 1) {
+
+            $productLedger = DB::table('product_ledgers')
+                ->where('product_ledgers.product_id', $productId)
+                ->where('product_ledgers.variant_id', $variantId)
+                ->where('product_ledgers.branch_id', $branchId)
+                ->select(
+                    DB::raw("SUM(product_ledgers.in) as all_stock_in"),
+                    DB::raw("SUM(product_ledgers.out) as all_stock_out"),
+                )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
+
+            $allStock = $productLedger->sum('all_stock_in') - $productLedger->sum('all_stock_out');
+
+            $productStock = ProductStock::where('product_id', $productId)
+                ->where('variant_id', $variantId)
+                ->where('branch_id', $branchId)
+                ->where('warehouse_id', null)
+                ->first();
+
+            $productStock->all_stock = $allStock;
+            $productStock->save();
+        }
+    }
+
     public function adjustWarehouseStock(int $productId, ?int $variantId = null, int $warehouseId): void
     {
         $product = DB::table('products')
             ->where('id', $productId)->select('id', 'is_manage_stock', 'product_cost')
             ->first();
+
+        $this->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $warehouseId);
 
         if ($product->is_manage_stock == 1) {
 
@@ -93,7 +129,7 @@ class ProductStockService
                 ->select(
                     DB::raw("SUM(product_ledgers.in) as stock_in"),
                     DB::raw("SUM(product_ledgers.out) as stock_out"),
-                    DB::raw("SUM(case when purchase_product_id then product_ledgers.subtotal end) as total_purchased_cost"),
+                    DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_purchased_cost"),
                 )->groupBy('product_ledgers.product_id', 'product_ledgers.variant_id')->get();
 
             $currentStock = $productLedger->sum('stock_in') - $productLedger->sum('stock_out');

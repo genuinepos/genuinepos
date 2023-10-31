@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('variant_id')->nullable();
             $table->decimal('stock', 22, 2)->default(0);
             $table->decimal('stock_value', 22, 2)->default(0);
+            $table->decimal('all_stock', 22, 2)->default(0);
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

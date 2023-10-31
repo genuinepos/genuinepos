@@ -826,8 +826,8 @@
         });
     }
 
-    var unites = @json($units);
-    var taxArray = @json($taxes);
+    var unites = [];
+    var taxArray = [];
 
     $('body').keyup(function(e){
 
@@ -840,7 +840,7 @@
     });
 
     $(document).on('mouseenter', '#list>li>a',function () {
-        
+
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });

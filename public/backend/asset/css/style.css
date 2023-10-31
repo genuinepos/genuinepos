@@ -2335,3 +2335,12 @@ label.col-6 {
     text-align: right;
 } */
 /* label right code end */
+
+.disabled_element {
+    background: #e8e8e8;
+    cursor: no-drop;
+}
+
+.disabled_element i {
+    color: gray !important;
+}

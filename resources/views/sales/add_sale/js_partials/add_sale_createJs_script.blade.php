@@ -1,6 +1,5 @@
 <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
 
     $('.select2').select2();
@@ -79,7 +78,7 @@
 
                             if (product.is_manage_stock == 1) {
 
-                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.stock).toFixed(2));
+                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.all_stock).toFixed(2));
                             }
 
                             var price = 0;
@@ -178,7 +177,7 @@
 
                         if (variant.product.is_manage_stock == 1) {
 
-                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.stock).toFixed(2));
+                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.all_stock).toFixed(2));
                         }
 
                         var price = 0;

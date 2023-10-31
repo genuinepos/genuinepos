@@ -22,6 +22,9 @@ return new class extends Migration
             $table->decimal('per_unit_value', 22)->default(0);
             $table->decimal('total_value', 22)->default(0);
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['type_id'])->references(['id'])->on('asset_types')->onDelete('CASCADE');
         });
     }
 

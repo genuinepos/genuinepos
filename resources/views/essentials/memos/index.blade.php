@@ -4,7 +4,6 @@
         .top-menu-area ul li { display: inline-block;margin-right: 3px; }
         .top-menu-area a { border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px; }
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'All Memos -')
 @section('content')
@@ -156,7 +155,6 @@
     <!-- Add Modal End-->
 @endsection
 @push('scripts')
-<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
     var table = $('.data_tbl').DataTable({
         dom: "lBfrtip",

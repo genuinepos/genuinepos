@@ -225,8 +225,7 @@
                     toastr.success(data.successMsg);
                     $('#addOrEditExpenseModal').modal('hide');
                     $('#addOrEditExpenseModal').empty();
-                    // expenseTable.ajax.reload();
-
+                    expenseTable.ajax.reload();
                     return;
                 } else {
 
@@ -244,7 +243,7 @@
                         printDelay: 1000
                     });
 
-                    // expenseTable.ajax.reload();
+                    expenseTable.ajax.reload();
                     return;
                 }
             }, error: function(err) {

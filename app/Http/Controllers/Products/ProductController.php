@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
+use App\Services\Products\BrandService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\WarrantyService;
+use App\Services\Products\BulkVariantService;
 use App\Services\Products\ProductVariantService;
 use App\Services\Products\ProductAccessBranchService;
 
@@ -16,6 +22,11 @@ class ProductController extends Controller
 {
     public function __construct(
         private ProductService $productService,
+        private UnitService $unitService,
+        private CategoryService $categoryService,
+        private BrandService $brandService,
+        private BulkVariantService $bulkVariantService,
+        private WarrantyService $warrantyService,
         private ProductVariantService $productVariantService,
         private ProductAccessBranchService $productAccessBranchService,
         private AccountService $accountService,
@@ -24,7 +35,7 @@ class ProductController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $isForCreatePage = 0)
     {
         if (!auth()->user()->can('product_all')) {
 
@@ -33,21 +44,29 @@ class ProductController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->productService->productListTable($request);
+            return $this->productService->productListTable($request, $isForCreatePage);
         }
 
-        $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
-        $brands = DB::table('brands')->get(['id', 'name']);
-        $units = DB::table('units')->get(['id', 'name', 'code_name']);
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
+    }
+
+    public function show($id) {
+
+        $productShowQueries = $this->productService->productShowQueries(id: $id);
+        extract($productShowQueries);
+
+        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks'));
     }
 
     public function create(Request $request)
@@ -62,20 +81,54 @@ class ProductController extends Controller
             return $this->productService->createProductListOfProducts();
         }
 
-        $units = DB::table('units')->get(['id', 'name', 'code_name']);
-        $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('id', 'desc')->get(['id', 'name']);
-        $brands = DB::table('brands')->orderBy('id', 'desc')->get(['id', 'name']);
-        $warranties = DB::table('warranties')->orderBy('id', 'desc')->get(['id', 'name']);
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
+        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
-        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches'));
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
+
+        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode'));
+    }
+
+    public function edit(Request $request, $id)
+    {
+        if (!auth()->user()->can('product_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $product = $this->productService->singleProduct(id: $id, with: ['variants', 'variants.productLedgers', 'productAccessBranches']);
+
+        $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
+        $subCategories = $this->categoryService->categories()->where('parent_category_id', ($product->category_id ? $product->category_id : 0))->get(['id', 'name']);
+        $brands = $this->brandService->brands()->get(['id', 'name']);
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
+        $warranties = $this->warrantyService->warranties()->orderBy('id', 'desc')->get(['id', 'name']);
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
+            ->where('accounts.branch_id', auth()->user()->branch_id)
+            ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
+
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        $lastProductSerialCode = $this->productService->getLastProductSerialCode();
+
+        return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
     public function store(Request $request)
@@ -92,10 +145,62 @@ class ProductController extends Controller
                 'code' => 'sometimes|unique:products,product_code',
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
-                'image.*' => 'sometimes|image|max:2048',
             ],
             [
-                'unit_id.required' => 'Product unit field is required.',
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == 1) {
+
+            $this->validate(
+                $request,
+                [
+                    'variant_image.*' => 'sometimes|image|max:2048'
+                ],
+            );
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $restrictions = $this->productService->restrictions($request);
+
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
+
+            $addProduct = $this->productService->addProduct($request);
+
+            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
+
+                $this->productVariantService->addProductVariants(request: $request, productId: $addProduct->id);
+            }
+
+            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return $addProduct;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code,' . $id,
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
             ]
         );
 
@@ -108,7 +213,6 @@ class ProductController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->productService->restrictions($request);
@@ -118,15 +222,16 @@ class ProductController extends Controller
                 return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            $addProduct = $this->productService->addProduct($request);
+            $updateProduct = $this->productService->updateProduct(request: $request, productId: $id);
 
-            $variantIds = '';
-            if ($request->type == 1 && $request->is_variant == 1) {
+            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
 
-                $variantIds = $this->productVariantService->addProductVariants($request);
+                $this->productVariantService->updateProductVariants(request: $request, productId: $updateProduct->id);
+
+                $this->productVariantService->deleteUnusedProductVariants(productId: $updateProduct->id);
             }
 
-            $this->productAccessBranchService->addProductAccessBranches($request, $addProduct->id);
+            $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
 
             DB::commit();
         } catch (Exception $e) {
@@ -134,16 +239,42 @@ class ProductController extends Controller
             DB::rollBack();
         }
 
-        return $addProduct;
+        return response()->json(__('Product updated successfully.'));
     }
 
     public function formPart($type)
     {
         $type = $type;
-        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('account_groups.is_default_tax_calculator', 1)
+        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
-        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts'));
+        $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+
+        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
+    }
+
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $deleteProduct = $this->productService->deleteProduct(id: $id);
+            if (isset($deleteProduct['pass']) && $deleteProduct['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteProduct['msg']]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
+        }
+
+        return response()->json(__('Product deleted successfully.'));
+    }
+
+    public function getLastProductId()
+    {
+        return $this->productService->getLastProductSerialCode();
     }
 }

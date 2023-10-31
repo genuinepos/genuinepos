@@ -539,7 +539,6 @@
 @endsection
 @push('scripts')
     @include('purchase.purchases.partials.purchaseCreateJsScript')
-    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2();
 

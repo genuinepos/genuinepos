@@ -18,6 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id')->index('role_has_permissions_role_id_foreign');
 
             $table->primary(['permission_id', 'role_id']);
+
+            $table->foreign(['permission_id'])->references(['id'])->on('permissions')->onDelete('CASCADE');
+            $table->foreign(['role_id'])->references(['id'])->on('roles')->onDelete('CASCADE');
         });
     }
 

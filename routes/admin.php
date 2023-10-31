@@ -13,7 +13,6 @@ use App\Http\Controllers\BulkVariantController;
 use App\Http\Controllers\CashRegisterController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommonAjaxCallController;
-use App\Http\Controllers\ContraController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\CustomerImportController;
@@ -118,31 +117,31 @@ Route::group(['prefix' => 'product'], function () {
     // Products route group
     Route::group(['prefix' => '/'], function () {
 
-        Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
-        Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
+        // Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
+        // Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
         Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
         Route::get('add', [ProductController::class, 'create'])->name('products.add.view');
-        Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
-        Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
-        Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
-        Route::get('combo/product/{productId}', [ProductController::class, 'getComboProducts'])->name('products.get.combo.products');
-        Route::post('update/{productId}', [ProductController::class, 'update'])->name('products.update');
-        Route::get('default/profit', [ProductController::class, 'defaultProfit'])->name('products.add.get.default.profit');
-        Route::delete('delete/{productId}', [ProductController::class, 'delete'])->name('products.delete');
-        Route::delete('multiple/delete', [ProductController::class, 'multipleDelete'])->name('products.multiple.delete');
-        Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
-        Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
+        // Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
+        // Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
+        // Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
+        // Route::get('combo/product/{productId}', [ProductController::class, 'getComboProducts'])->name('products.get.combo.products');
+        // Route::post('update/{productId}', [ProductController::class, 'update'])->name('products.update');
+        // Route::get('default/profit', [ProductController::class, 'defaultProfit'])->name('products.add.get.default.profit');
+        // Route::delete('delete/{productId}', [ProductController::class, 'delete'])->name('products.delete');
+        // Route::delete('multiple/delete', [ProductController::class, 'multipleDelete'])->name('products.multiple.delete');
+        // Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
+        // Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
         Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
         Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
-        Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
-        Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
-        Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');
-        Route::post('save/price/groups', [ProductController::class, 'savePriceGroup'])->name('products.save.price.groups');
-        Route::post('opening/stock/update', [ProductController::class, 'openingStockUpdate'])->name('products.opening.stock.update');
-        Route::post('add/category', [ProductController::class, 'addCategory'])->name('products.add.category');
-        Route::post('add/brand', [ProductController::class, 'addBrand'])->name('products.add.brand');
-        Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
-        Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
+        // Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
+        // Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
+        // Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');
+        // Route::post('save/price/groups', [ProductController::class, 'savePriceGroup'])->name('products.save.price.groups');
+        // Route::post('opening/stock/update', [ProductController::class, 'openingStockUpdate'])->name('products.opening.stock.update');
+        // Route::post('add/category', [ProductController::class, 'addCategory'])->name('products.add.category');
+        // Route::post('add/brand', [ProductController::class, 'addBrand'])->name('products.add.brand');
+        // Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
+        // Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
 
         Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
 
@@ -401,35 +400,8 @@ Route::group(['prefix' => 'sales'], function () {
     // });
 
     //Pos cash register routes
-    Route::group(['prefix' => 'cash/register'], function () {
-
-        Route::get('/', [CashRegisterController::class, 'create'])->name('sales.cash.register.create');
-        Route::post('store', [CashRegisterController::class, 'store'])->name('sales.cash.register.store');
-        Route::get('close/cash/register/modal/view', [CashRegisterController::class, 'closeCashRegisterModalView'])->name('sales.cash.register.close.modal.view');
-        Route::get('cash/register/details', [CashRegisterController::class, 'cashRegisterDetails'])->name('sales.cash.register.details');
-        Route::get('cash/register/details/for/report/{crId}', [CashRegisterController::class, 'cashRegisterDetailsForReport'])->name('sales.cash.register.details.for.report');
-        Route::post('close', [CashRegisterController::class, 'close'])->name('sales.cash.register.close');
-    });
 
     // Pos routes
-    Route::group(['prefix' => 'pos'], function () {
-
-        Route::get('create', [POSController::class, 'create'])->name('sales.pos.create');
-        Route::get('product/list', [POSController::class, 'posProductList'])->name('sales.pos.product.list');
-        Route::post('store', [POSController::class, 'store'])->name('sales.pos.store');
-        Route::get('pick/hold/invoice', [POSController::class, 'pickHoldInvoice']);
-        Route::get('edit/{saleId}', [POSController::class, 'edit'])->name('sales.pos.edit');
-        Route::get('invoice/products/{saleId}', [POSController::class, 'invoiceProducts'])->name('sales.pos.invoice.products');
-        Route::post('update', [POSController::class, 'update'])->name('sales.pos.update');
-        Route::get('suspended/sale/list', [POSController::class, 'suspendedList'])->name('sales.pos.suspended.list');
-        Route::get('branch/stock', [POSController::class, 'branchStock'])->name('sales.pos.branch.stock');
-        Route::get('add/customer/modal', [POSController::class, 'addQuickCustomerModal'])->name('sales.pos.add.quick.customer.modal');
-        Route::post('add/customer', [POSController::class, 'addCustomer'])->name('sales.pos.add.customer');
-        Route::get('get/recent/product/{product_id}', [POSController::class, 'getRecentProduct']);
-        Route::get('search/exchangeable/invoice', [POSController::class, 'searchExchangeableInv'])->name('sales.pos.search.exchange.invoice');
-        Route::post('prepare/exchange', [POSController::class, 'prepareExchange'])->name('sales.pos.prepare.exchange');
-        Route::post('exchange/confirm', [POSController::class, 'exchangeConfirm'])->name('sales.pos.exchange.confirm');
-    });
 
     // Route::group(['prefix' => 'reports'], function () {
 
@@ -565,49 +537,6 @@ Route::group(['prefix' => 'sales'], function () {
 //     });
 // });
 
-// Expense route group
-Route::group(['prefix' => 'expenses'], function () {
-
-    Route::get('/', [ExpanseController::class, 'index'])->name('expanses.index');
-    Route::get('category/wise/expenses', [ExpanseController::class, 'categoryWiseExpense'])->name('expanses.category.wise.expense');
-    Route::get('create', [ExpanseController::class, 'create'])->name('expanses.create');
-    Route::post('store', [ExpanseController::class, 'store'])->name('expanses.store');
-    Route::get('edit/{expanseId}', [ExpanseController::class, 'edit'])->name('expanses.edit');
-    Route::post('update/{expenseId}', [ExpanseController::class, 'update'])->name('expanses.update');
-    Route::delete('delete/{expanseId}', [ExpanseController::class, 'delete'])->name('expanses.delete');
-    Route::get('all/categories', [ExpanseController::class, 'allCategories'])->name('expanses.all.categories');
-    Route::get('payment/modal/{expenseId}', [ExpanseController::class, 'paymentModal'])->name('expanses.payment.modal');
-    Route::post('payment/{expenseId}', [ExpanseController::class, 'payment'])->name('expanses.payment');
-    Route::get('payment/view/{expenseId}', [ExpanseController::class, 'paymentView'])->name('expanses.payment.view');
-    Route::get('payment/details/{paymentId}', [ExpanseController::class, 'paymentDetails'])->name('expanses.payment.details');
-    Route::get('payment/edit/{paymentId}', [ExpanseController::class, 'paymentEdit'])->name('expanses.payment.edit');
-    Route::post('payment/update/{paymentId}', [ExpanseController::class, 'paymentUpdate'])->name('expanses.payment.update');
-    Route::delete('payment/delete/{paymentId}', [ExpanseController::class, 'paymentDelete'])->name('expanses.payment.delete');
-    Route::post('add/quick/expense/category', [ExpanseController::class, 'addQuickExpenseCategory'])->name('expanses.add.quick.expense.category');
-
-    // Expanse category route group
-    Route::group(['prefix' => 'categories'], function () {
-
-        Route::get('/', [ExpanseCategoryController::class, 'index'])->name('expenses.categories.index');
-        Route::post('store', [ExpanseCategoryController::class, 'store'])->name('expenses.categories.store');
-        Route::get('edit/{id}', [ExpanseCategoryController::class, 'edit'])->name('expenses.categories.edit');
-        Route::post('update/{id}', [ExpanseCategoryController::class, 'update'])->name('expenses.categories.update');
-        Route::delete('delete/{id}', [ExpanseCategoryController::class, 'delete'])->name('expenses.categories.delete');
-    });
-
-    Route::group(['prefix' => 'report/expenses'], function () {
-
-        Route::get('/', [ExpanseReportController::class, 'index'])->name('reports.expenses.index');
-        Route::get('print', [ExpanseReportController::class, 'print'])->name('reports.expenses.print');
-    });
-
-    Route::group(['prefix' => 'report/category/wise/expenses'], function () {
-
-        Route::get('/', [ExpenseReportCategoryWiseController::class, 'index'])->name('reports.expenses.category.wise.index');
-        Route::get('print', [ExpenseReportCategoryWiseController::class, 'print'])->name('reports.expenses.category.wise.print');
-    });
-});
-
 Route::group(['prefix' => 'accounting'], function () {
 
     // Route::group(['prefix' => 'banks'], function () {
@@ -618,28 +547,28 @@ Route::group(['prefix' => 'accounting'], function () {
     //     Route::delete('delete/{id}', [BankController::class, 'delete'])->name('accounting.banks.delete');
     // });
 
-    Route::group(['prefix' => 'accounts'], function () {
+    // Route::group(['prefix' => 'accounts'], function () {
 
-        Route::get('/', [AccountController::class, 'index'])->name('accounting.accounts.index');
-        Route::get('account/book/{accountId}', [AccountController::class, 'accountBook'])->name('accounting.accounts.book');
-        Route::get('account/ledger/print/{accountId}', [AccountController::class, 'ledgerPrint'])->name('accounting.accounts.ledger.print');
-        Route::post('store', [AccountController::class, 'store'])->name('accounting.accounts.store');
-        Route::get('edit/{id}', [AccountController::class, 'edit'])->name('accounting.accounts.edit');
-        Route::post('update/{id}', [AccountController::class, 'update'])->name('accounting.accounts.update');
-        Route::delete('delete/{accountId}', [AccountController::class, 'delete'])->name('accounting.accounts.delete');
-    });
+    //     Route::get('/', [AccountController::class, 'index'])->name('accounting.accounts.index');
+    //     Route::get('account/book/{accountId}', [AccountController::class, 'accountBook'])->name('accounting.accounts.book');
+    //     Route::get('account/ledger/print/{accountId}', [AccountController::class, 'ledgerPrint'])->name('accounting.accounts.ledger.print');
+    //     Route::post('store', [AccountController::class, 'store'])->name('accounting.accounts.store');
+    //     Route::get('edit/{id}', [AccountController::class, 'edit'])->name('accounting.accounts.edit');
+    //     Route::post('update/{id}', [AccountController::class, 'update'])->name('accounting.accounts.update');
+    //     Route::delete('delete/{accountId}', [AccountController::class, 'delete'])->name('accounting.accounts.delete');
+    // });
 
-    Route::group(['prefix' => 'contras'], function () {
+    // Route::group(['prefix' => 'contras'], function () {
 
-        Route::get('/', [ContraController::class, 'index'])->name('accounting.contras.index');
-        Route::get('create', [ContraController::class, 'create'])->name('accounting.contras.create');
-        Route::get('show/{contraId}', [ContraController::class, 'show'])->name('accounting.contras.show');
-        Route::get('account/book/{contraId}', [ContraController::class, 'accountBook'])->name('accounting.contras.book');
-        Route::post('store', [ContraController::class, 'store'])->name('accounting.contras.store');
-        Route::get('edit/{contraId}', [ContraController::class, 'edit'])->name('accounting.contras.edit');
-        Route::post('update/{contraId}', [ContraController::class, 'update'])->name('accounting.contras.update');
-        Route::delete('delete/{contraId}', [ContraController::class, 'delete'])->name('accounting.contras.delete');
-    });
+    //     Route::get('/', [ContraController::class, 'index'])->name('accounting.contras.index');
+    //     Route::get('create', [ContraController::class, 'create'])->name('accounting.contras.create');
+    //     Route::get('show/{contraId}', [ContraController::class, 'show'])->name('accounting.contras.show');
+    //     Route::get('account/book/{contraId}', [ContraController::class, 'accountBook'])->name('accounting.contras.book');
+    //     Route::post('store', [ContraController::class, 'store'])->name('accounting.contras.store');
+    //     Route::get('edit/{contraId}', [ContraController::class, 'edit'])->name('accounting.contras.edit');
+    //     Route::post('update/{contraId}', [ContraController::class, 'update'])->name('accounting.contras.update');
+    //     Route::delete('delete/{contraId}', [ContraController::class, 'delete'])->name('accounting.contras.delete');
+    // });
 
     Route::group(['prefix' => '/'], function () {
 

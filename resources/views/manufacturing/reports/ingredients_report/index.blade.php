@@ -1,6 +1,5 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
          .data_preloader{top:2.3%}
@@ -63,7 +62,7 @@
                                                     @php
                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                         $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                        $branchCode = '-(' . $branch->branch_code.')';
+                                                        $branchCode = '-' . $branch->branch_code;
                                                     @endphp
                                                     <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
                                                         {{  $branchName . $areaName . $branchCode }}

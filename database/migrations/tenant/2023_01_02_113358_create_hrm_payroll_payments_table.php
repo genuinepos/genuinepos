@@ -41,6 +41,11 @@ return new class extends Migration
             $table->mediumText('note')->nullable();
             $table->unsignedBigInteger('admin_id')->nullable()->index('hrm_payroll_payments_admin_id_foreign');
             $table->timestamps();
+
+            $table->foreign(['account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
+            $table->foreign(['admin_id'])->references(['id'])->on('users')->onDelete('SET NULL');
+            $table->foreign(['payment_method_id'])->references(['id'])->on('payment_methods')->onDelete('CASCADE');
+            $table->foreign(['payroll_id'])->references(['id'])->on('hrm_payrolls')->onDelete('CASCADE');
         });
     }
 

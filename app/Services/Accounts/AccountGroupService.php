@@ -26,7 +26,6 @@ class AccountGroupService
         $addGroup = new AccountGroup();
         $addGroup->sorting_number = $parentGroup->sorting_number;
         $addGroup->name = $request->name;
-        $addGroup->branch_id = $parentGroup->is_global == 0 ? auth()->user()->branch_id : null;
         $addGroup->parent_group_id = $request->parent_group_id;
         $addGroup->is_default_tax_calculator = $request->is_default_tax_calculator;
         $addGroup->is_allowed_bank_details = $request->is_allowed_bank_details;

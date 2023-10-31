@@ -831,8 +831,8 @@
         });
     }
 
-    var unites = @json($units);
-    var taxArray = @json($taxes);
+    var unites = [];
+    var taxArray = [];
 
     $('body').keyup(function(e){
 

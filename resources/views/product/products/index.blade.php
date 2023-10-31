@@ -1,7 +1,7 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-
+        .element-body { padding: 1px 7px 6px 6px; }
     </style>
 @endpush
 @section('title', 'Product List - ')
@@ -14,50 +14,44 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h6>@lang('menu.products')</h6>
+                                <h6>{{ __("Products") }}</h6>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
                     </div>
 
-                    <div class="p-lg-3 p-1">
-                        <div class="form_element rounded mt-0 mb-lg-3 mb-1">
+                    <div class="p-lg-1 p-1">
+                        <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                             <div class="element-body">
-                                <form action="" method="get" class="p-2">
+                                <form action="" method="get">
                                     <div class="form-group row">
-                                        @if ($generalSettings['addons__branches'] == 1)
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-lg-2 col-md-3">
-                                                    <label><b>{{ __("Shop/Business") }}</b></label>
-                                                    <select class="form-control submit_able select2" name="branch_id" id="branch_id">
-                                                        <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">
-                                                            {{ $generalSettings['business__shop_name'] . '(Business)' }}
-                                                        </option>
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}">
-                                                                {{ $branch->name.'/'.$branch->branch_code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
+                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                            <div class="col-md-2">
+                                                <label><strong>{{ __("Shop Acccess") }}</strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">{{ __("All") }}</option>
+                                                    {{-- <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option> --}}
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         @endif
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.type') </b></label>
+                                            <label><b>{{ __("Type") }}</b></label>
                                             <select name="product_type" id="product_type" class="form-control submit_able select2" autofocus>
-                                                <option value="">@lang('menu.all')</option>
-                                                <option value="1">@lang('menu.single')</option>
-                                                <option value="2">@lang('menu.variant')</option>
-                                                <option value="3">@lang('menu.combo')</option>
+                                                <option value="">{{ __("All") }}</option>
+                                                <option value="1">{{ __("Single") }}</option>
+                                                <option value="2">{{ __("Variant") }}</option>
+                                                <option value="3">{{ __("Combo") }}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.category') </b></label>
+                                            <label><b>{{ __("Category") }}</b></label>
                                             <select id="category_id" name="category_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($categories as $cate)
                                                     <option value="{{ $cate->id }}">{{ $cate->name }}</option>
                                                 @endforeach
@@ -65,9 +59,9 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.unit') </b></label>
+                                            <label><b>{{ __("Unit") }}</b></label>
                                             <select id="unit_id" name="unit_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                 @endforeach
@@ -75,9 +69,9 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.tax') </b></label>
+                                            <label><b>{{ __("Tax") }}</b></label>
                                             <select id="tax_ac_id" name="tax_ac_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($taxAccounts as $tax)
                                                     <option value="{{ $tax->id }}">{{ $tax->name }}</option>
                                                 @endforeach
@@ -85,18 +79,18 @@
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.status') </b></label>
+                                            <label><b>{{ __("Status") }}</b></label>
                                             <select name="status" id="status" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
-                                                <option value="1">@lang('menu.active')</option>
+                                                <option value="">{{ __("All") }}</option>
+                                                <option value="1">{{ __("Active") }}</option>
                                                 <option value="0">{{ __('In-Active') }}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-lg-2 col-md-3">
-                                            <label><b>@lang('menu.brand')</b></label>
+                                            <label><b>{{ __("Brand.") }}</b></label>
                                             <select id="brand_id" name="brand_id" class="form-control submit_able select2">
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                 @endforeach
@@ -115,25 +109,26 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
-                                    <h6>{{ __('All Product') }}</h6>
+                                    <h6>{{ __('List Of Products') }}</h6>
                                 </div>
 
-                                <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                    @if(auth()->user()->can('product_add'))
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i>{{ __("Add Product") }}</a>
-                                    @endif
-                                    <a href="" class="btn btn-sm btn-secondary multipla_deactive_btn">@lang('menu.deactivate_selected')</a>
+                                @if(auth()->user()->can('product_add'))
 
-                                    @if (auth()->user()->can('product_delete'))
+                                    <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
+                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add Product") }}</a>
 
-                                        <a href="" class="btn btn-sm btn-danger multipla_delete_btn">@lang('menu.delete_selected')</a>
-                                    @endif
-                                </div>
+                                        @if (auth()->user()->can('product_delete'))
+
+                                            <a href="" class="btn btn-sm btn-danger multipla_delete_btn">{{ __("Delete Selected All") }}</a>
+                                        @endif
+                                    </div>
+                                @endif
+
                             </div>
 
                             <div class="widget_content">
                                 <!--begin: Datatable-->
-                                <form id="multiple_action_form" action="{{ route('products.multiple.delete') }}" method="post">
+                                <form id="multiple_action_form" action="#" method="post">
                                     @method('DELETE')
                                     @csrf
                                     <input type="hidden" name="action" id="action">
@@ -154,7 +149,7 @@
                                                     <th>{{ __("Curr. Stock") }}</th>
                                                     <th>{{ __("Type") }}</th>
                                                     <th>{{ __("Category") }}</th>
-                                                    <th>Brand</th>
+                                                    <th>{{ __("Brand.") }}</th>
                                                     <th>{{ __("Default Tax") }}</th>
                                                     <th>{{ __("Status") }}</th>
                                                 </tr>
@@ -177,38 +172,18 @@
         </div>
     </div>
 
-    <!-- Details Modal -->
-    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
-    <!-- Details Modal End-->
+    <div id="details"></div>
 
     <!-- Opening stock Modal -->
-    <div class="modal fade" id="openingStockModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Add opening stock') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="opening_stock_view">
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="addOrEditOpeningStock" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     <!-- Opening stock Modal-->
 @endsection
 @push('scripts')
 <!--Data table js active link-->
 <script>
     $('.loading_button').hide();
-    // Filter toggle
-    $('.filter_btn').on('click', function(e) {
-        e.preventDefault();
 
-        $('.filter_body').toggle(500);
-    });
-
-    var product_table = $('.data_tbl').DataTable({
+    var productTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
             {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
@@ -235,17 +210,17 @@
         },
         columns: [
             {data: 'multiple_delete', name: 'products.name', orderable: false},
-            {data: 'photo', name: 'products.name'},
-            {data: 'action', name: 'products.name'},
-            {data: 'name', name: 'products.name'},
-            {data: 'access_branches', name: 'products.product_code'},
-            {data: 'product_cost_with_tax', name: 'products.product_cost_with_tax'},
-            {data: 'product_price', name: 'products.product_price'},
-            {data: 'quantity', name: 'products.product_price'},
-            {data: 'type', name: 'products.type'},
+            {data: 'photo', name: 'name'},
+            {data: 'action', name: 'name'},
+            {data: 'name', name: 'name'},
+            {data: 'access_branches', name: 'product_code'},
+            {data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold'},
+            {data: 'product_price', name: 'product_price', className: 'fw-bold'},
+            {data: 'quantity', name: 'product_price', className: 'fw-bold'},
+            {data: 'type', name: 'type'},
             {data: 'cate_name', name: 'categories.name'},
             {data: 'brand_name', name: 'brands.name'},
-            {data: 'tax_name', name: 'taxes.tax_name'},
+            {data: 'tax_name', name: 'brands.name'},
             {data: 'status', name: 'products.status'},
         ],
     });
@@ -254,13 +229,13 @@
 
         $(document).on('change', '.submit_able', function() {
 
-            product_table.ajax.reload();
+            productTable.ajax.reload();
         });
     });
 
     $(document).on('ifChanged', '#is_for_sale', function() {
 
-        product_table.ajax.reload();
+        productTable.ajax.reload();
     });
 
     $(document).on('change', '.all', function() {
@@ -274,16 +249,31 @@
         }
     });
 
-    $(document).on('click', '.details_button', function(e) {
+    $(document).on('click', '#details_btn', function(e) {
         e.preventDefault();
 
-        var url = $(this).attr('href');
         $('.data_preloader').show();
-        $.get(url, function (data){
+        var url = $(this).attr('href');
 
-            $('#detailsModal').html(data);
-            $('.data_preloader').hide();
-            $('#detailsModal').modal('show');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+
+                $('#details').html(data);
+                $('#detailsModal').modal('show');
+                $('.data_preloader').hide();
+            },error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                }else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
         });
     });
 
@@ -343,7 +333,7 @@
                     return;
                 }
 
-                product_table.ajax.reload();
+                productTable.ajax.reload();
                 toastr.error(data);
             }
         });
@@ -372,12 +362,11 @@
                                     return;
                                 }
                                 toastr.success(data);
-                                product_table.ajax.reload();
+                                productTable.ajax.reload();
                             }
                         });
                     }
-                },
-                'No': {
+                }, 'No': {
                     'class': 'no btn-modal-primary',
                     'action': function() {
                         // console.log('Confirmation canceled.');
@@ -385,16 +374,6 @@
                 }
             }
         });
-
-        // $.ajax({
-        //     url: url,
-        //     type: 'get',
-        //     success: function(data) {
-
-        //         toastr.success(data);
-        //         product_table.ajax.reload();
-        //     }
-        // });
     });
 
     $(document).on('click', '.multipla_delete_btn',function(e){
@@ -445,110 +424,43 @@
                     toastr.error(data.errorMsg, 'Attention');
                 } else {
 
-                    product_table.ajax.reload();
+                    productTable.ajax.reload();
                     toastr.success(data, 'Attention');
                 }
             }
         });
     });
 
-    // Show opening stock modal with data
-    $(document).on('click', '#opening_stock', function(e) {
+    $(document).on('click', '#openingStock', function(e) {
         e.preventDefault();
-        $('.data_preloader').show();
+
         var url = $(this).attr('href');
+
         $.ajax({
             url: url,
             type: 'get',
             success: function(data) {
-                $('#opening_stock_view').html(data);
-                $('#openingStockModal').modal('show');
-                $('.data_preloader').hide();
+
+                $('#addOrEditOpeningStock').html(data);
+                $('#addOrEditOpeningStock').modal('show');
+
+                // setTimeout(function() {
+
+                //     $('#brand_name').focus();
+                // }, 500);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
     });
-
-    //Update product opening stock request by ajax
-    $(document).on('submit', '#update_opening_stock_form', function(e) {
-        e.preventDefault();
-        $('.loading_button').show();
-        var request = $(this).serialize();
-        var url = $(this).attr('action');
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-                toastr.success(data);
-                product_table.ajax.reload();
-                $('.loading_button').hide();
-                $('#openingStockModal').modal('hide');
-            }
-        });
-    });
-
-    // Reduce empty opening stock qty field
-    $(document).on('blur', '#quantity', function() {
-
-        if ($(this).val() == '') {
-
-            $(this).val(parseFloat(0).toFixed(2));
-        }
-    });
-
-    // Reduce empty opening stock unit cost field
-    $(document).on('blur', '#unit_cost_inc_tax', function() {
-        if ($(this).val() == '') {
-            $(this).val(parseFloat(0).toFixed(2));
-        }
-    });
-
-    $(document).on('input', '#quantity', function() {
-
-        var qty = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val() ? tr.find('#unit_cost_inc_tax').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
-        tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    $(document).on('input', '#unit_cost_inc_tax', function() {
-
-        var unit_cost_inc_tax = $(this).val() ? $(this).val() : 0;
-        var tr = $(this).closest('tr');
-        var qty = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
-        var calcSubtotal = parseFloat(qty) * parseFloat(unit_cost_inc_tax);
-        tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-    });
-
-    // Make print
-    $(document).on('click', '.print_btn', function(e) {
-        e.preventDefault();
-        var body = $('.modal-body').html();
-        var header = $('.heading_area').html();
-        $(body).printThis({
-            debug: false,
-            importCSS: true,
-            importStyle: true,
-            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-            removeInline: true,
-            printDelay: 800,
-            header: null,
-        });
-    });
-
-    document.onkeyup = function () {
-        var e = e || window.event; // for IE to cover IEs window event-object
-
-        if(e.ctrlKey && e.which == 13) {
-
-            // $('#add_btn').click();
-            window.location = $('#add_btn').attr('href');
-            return false;
-        }
-    }
 </script>
 @endpush

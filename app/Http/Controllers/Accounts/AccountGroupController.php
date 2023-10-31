@@ -35,7 +35,7 @@ class AccountGroupController extends Controller
     public function create()
     {
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
-            ->where('is_main_group', 0)->where('branch_id', auth()->user()->branch_id)->orWhere('is_global', 1)->get();
+            ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
 
         return view('accounting.groups.ajax_view.create', compact('formGroups'));
     }

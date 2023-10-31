@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('priority')->nullable();
             $table->timestamps();
+
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('SET NULL');
+            $table->foreign(['workspace_id'])->references(['id'])->on('workspaces')->onDelete('CASCADE');
         });
     }
 

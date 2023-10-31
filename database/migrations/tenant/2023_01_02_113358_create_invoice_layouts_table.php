@@ -57,6 +57,8 @@ return new class extends Migration
             $table->string('account_no', 191)->nullable();
             $table->boolean('is_default')->default(false);
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

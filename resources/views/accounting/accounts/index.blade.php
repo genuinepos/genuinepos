@@ -1,6 +1,5 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'Account List - ')
 @section('content')
@@ -33,7 +32,7 @@
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
                                                                 $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                $branchCode = '-(' . $branch->branch_code.')';
+                                                                $branchCode = '-' . $branch->branch_code;
                                                             @endphp
                                                             {{  $branchName.$areaName.$branchCode }}
                                                         </option>

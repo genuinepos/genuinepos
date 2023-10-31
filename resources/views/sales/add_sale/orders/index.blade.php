@@ -205,7 +205,7 @@
                 {data: 'branch', name: 'branches.name'},
                 {data: 'customer_name', name: 'customers.name'},
                 {data: 'payment_status', name: 'created_by.name', className: 'text-start'},
-                {data: 'total_item', name: 'total_item', className: 'text-end fw-bold'},
+                {data: 'total_item', name: 'sales.quotation_id', className: 'text-end fw-bold'},
                 {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
                 {data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold'},
                 {data: 'received_amount', name: 'paid', className: 'text-end fw-bold'},

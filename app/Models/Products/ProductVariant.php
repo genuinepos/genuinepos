@@ -21,6 +21,8 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(Product::class)->select([
             'id',
+            'category_id',
+            'brand_id',
             'name',
             'tax_ac_id',
             'tax_type',

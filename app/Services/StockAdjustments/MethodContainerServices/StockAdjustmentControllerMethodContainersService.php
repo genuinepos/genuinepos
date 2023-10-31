@@ -94,12 +94,14 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
 
             $productStockService->adjustMainProductAndVariantStock(productId: $addStockAdjustmentProduct->product_id, variantId: $addStockAdjustmentProduct->variant_id);
 
+            $productStockService->adjustBranchAllStock(productId: $addStockAdjustmentProduct->product_id, variantId: $addStockAdjustmentProduct->variant_id, branchId: auth()->user()->branch_id);
+
             if ($addStockAdjustmentProduct->warehouse_id) {
 
                 $productStockService->adjustWarehouseStock(productId: $addStockAdjustmentProduct->product_id, variantId: $addStockAdjustmentProduct->variant_id, warehouseId: $addStockAdjustmentProduct->warehouse_id);
             } else {
 
-                $productStockService->adjustBranchStock($addStockAdjustmentProduct->product_id, $addStockAdjustmentProduct->variant_id, branchId: auth()->user()->branch_id);
+                $productStockService->adjustBranchStock(productId: $addStockAdjustmentProduct->product_id, variantId: $addStockAdjustmentProduct->variant_id, branchId: auth()->user()->branch_id);
             }
 
             $index++;

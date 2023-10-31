@@ -21,7 +21,7 @@
                     <div class="product-img">
                         <img loading="lazy" src="{{ $impUrl }}">
                     </div>
-                    <div class="product-name" id="{{ $product->product_id . $product->variant_id }}">
+                    <div class="product-name" id="{{ $product->product_id . ($product->variant_id ? 'vid-'.$product->variant_id : 'no_v_id') }}">
                         <a href="#" tabindex="-1">
                             {{ Str::limit($product->product_name, 15, '').$variantName}}
                         </a>

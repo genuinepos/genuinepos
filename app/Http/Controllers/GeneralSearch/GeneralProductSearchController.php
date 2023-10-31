@@ -43,6 +43,8 @@ class GeneralProductSearchController extends Controller
 
         $product = $query->select([
             'products.id',
+            'products.category_id',
+            'products.brand_id',
             'products.name',
             'products.type',
             'products.product_code',
@@ -70,6 +72,11 @@ class GeneralProductSearchController extends Controller
     public function checkProductDiscountWithStock($productId, $variantId = null, $priceGroupId = null, $branchId = null)
     {
         return $this->generalProductSearchService->getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId, $branchId);
+    }
+
+    public function checkProductDiscountWithSingleOrVariantBranchStock($productId, $variantId = null, $priceGroupId = null, $branchId = null)
+    {
+        return $this->generalProductSearchService->getProductDiscountByIdWithSingleOrVariantBranchStock($productId, $variantId, $priceGroupId, $branchId);
     }
 
     public function singleProductStock($productId, $warehouseId = null, $branchId = null)
@@ -103,7 +110,8 @@ class GeneralProductSearchController extends Controller
         return $this->generalProductSearchService->getProductUnitAndMultiplierUnit($productId);
     }
 
-    function productSearchByOnlyName($keyWord, $branchId = null) {
+    function productSearchByOnlyName($keyWord, $branchId = null)
+    {
 
         $keyWord = (string) $keyWord;
         $__keyWord = str_replace('~', '/', $keyWord);

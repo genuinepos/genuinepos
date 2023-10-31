@@ -1154,3 +1154,11 @@ input#quantity {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+.set-height table tr td a {
+    font-size: 11px;
+}
+
+tbody#product_list td {
+    font-size: 11px;
+}

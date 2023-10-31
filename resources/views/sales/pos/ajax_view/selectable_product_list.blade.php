@@ -9,7 +9,7 @@
 
             $__updateProductCost = $product->is_variant == 1 ? $updateVariantCost : $updateProductCost;
 
-            $variantName = $product->variant_name ? '-'.$product->variant_name : '';
+            $variantName = $product->variant_name ? $product->variant_name : '';
 
             $variantImage = $product->variant_image ? asset('uploads/product/variant_image/'.$product->variant_image) : asset('uploads/product/thumbnail/'.$product->thumbnail_photo);
 

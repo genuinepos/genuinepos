@@ -124,7 +124,7 @@
 
                                 var tr = '';
                                 tr += '<tr>';
-                                tr += '<td class="serial">1</td>';
+                                tr += '<td id="serial">1</td>';
                                 tr += '<td class="text-start">';
                                 tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
                                 tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product.id + '">';
@@ -170,6 +170,7 @@
                                 // calculateTotalAmount();
                                 // unique_index++;
                                 activeSelectedItems();
+                                adjustSerial();
                             }else {
 
                                 var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
@@ -265,7 +266,7 @@
                             var name = variant.product.name.length > 30 ? variant.product.name.substring(0, 30) + '...' : variant.product.name;
                             var tr = '';
                             tr += '<tr>';
-                            tr += '<td class="serial">1</td>';
+                            tr += '<td id="serial">1</td>';
 
                             tr += '<td class="text-start">';
                             tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + ' - ' + variant.variant_name + '</a><br/><input type="' + (variant.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
@@ -311,6 +312,7 @@
                             // calculateTotalAmount();
                             // unique_index++;
                             activeSelectedItems();
+                            adjustSerial();
                         }else {
 
                             var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
@@ -475,7 +477,7 @@
 
                         var tr = '';
                         tr += '<tr>';
-                        tr += '<td class="serial">1</td>';
+                        tr += '<td class="fw-bold" id="serial">1</td>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + __name + '</a><br/><input type="' + (is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
                         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product_id + '">';
@@ -516,15 +518,22 @@
                         tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
                         tr += '</tr>';
 
-                        $('#product_list').prepend(tr);
+                        $('#product_list').append(tr);
 
                         activeSelectedItems();
+                        adjustSerial();
                     }else {
 
                         var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
                         var currentQty = exTr.find('#quantity').val() ? exTr.find('#quantity').val() : 0;
                         var updateQty = parseFloat(currentQty) + 1;
 
+                        if (updateQty > data.stock) {
+
+                            toastr.error("{{ __('Quantity exceed the current stock') }}");
+                            return;
+                        }
+         
                         exTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                         exTr.find('#span_quantity').html(parseFloat(updateQty).toFixed(2));
 

@@ -57,7 +57,7 @@
                                         <label class="col-4"><b>{{ __('Supplier') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
-                                                <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
+                                                <select required name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
                                                     <option value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
                                                         <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
@@ -94,7 +94,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
+                                                <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
                                                     <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $w)
                                                         @php

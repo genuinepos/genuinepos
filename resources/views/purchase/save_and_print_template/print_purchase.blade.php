@@ -160,9 +160,9 @@
 
                             <td class="text-start" style="font-size:11px!important;">
                                 <p>{{ Str::limit($purchaseProduct->product->name, 25).' '. $variant }}</p>
-                                <small class="d-block text-muted">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
+                                <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted">{{ __("Batch No") }} : {{ $purchaseProduct->batch_number }}, {{ __("Expire Date") }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                    <small class="d-block text-muted" style="font-size: 9px!important;">{{ __("Batch No") }} : {{ $purchaseProduct->batch_number }}, {{ __("Expire Date") }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>

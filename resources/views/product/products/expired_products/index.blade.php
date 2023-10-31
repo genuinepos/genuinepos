@@ -11,7 +11,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h6>@lang('menu.expired_products')</h6>
+                                <h6>{{ __("Expired Products") }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -21,7 +21,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
-                                    <h6>{{ __('All Expired Products') }}</h6>
+                                    <h6>{{ __('List Of Expired Products') }}</h6>
                                 </div>
                             </div>
 
@@ -33,14 +33,14 @@
                                                 <th data-bSortable="false">
                                                     <input class="all" type="checkbox" name="all_checked"/>
                                                 </th>
-                                                <th>@lang('menu.action')</th>
-                                                <th>@lang('menu.product')</th>
-                                                <th>@lang('menu.unit_cost_inc_tax')</th>
-                                                <th>@lang('menu.selling_price_exc_tax')</th>
-                                                <th>@lang('menu.supplier')</th>
-                                                <th>@lang('menu.purchase_invoice_id')</th>
-                                                <th>@lang('menu.batch_number')</th>
-                                                <th>@lang('menu.expired_date')</th>
+                                                <th>{{ __("Action") }}</th>
+                                                <th>{{ __("Product") }}</th>
+                                                <th>{{ __("Unit Cost Inc. Tax") }}</th>
+                                                <th>{{ __("Selling Price Exc. Tax") }}</th>
+                                                <th>{{ __("Supplier") }}</th>
+                                                <th>{{ __("Purchase Invoice ID") }}</th>
+                                                <th>{{ __("Batch No") }}</th>
+                                                <th>{{ __("Expired Date") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -58,7 +58,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 @push('scripts')
 <!--Data table js active link-->
@@ -85,16 +84,9 @@
         "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         "ajax": {
             "url": "{{ route('products.expired.products') }}",
-            // "data": function(d) {
-            //     d.branch_id = $('#branch_id').val();
-            //     d.type = $('#product_type').val();
-            //     d.category_id = $('#category_id').val();
-            //     d.brand_id = $('#brand_id').val();
-            //     d.unit_id = $('#unit_id').val();
-            //     d.tax_id = $('#tax_id').val();
-            //     d.status = $('#status').val();
-            //     d.is_for_sale = $('#is_for_sale').val();
-            // }
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+            }
         },
         columns: [
             {data: 'multiple_check', name: 'products.name'},

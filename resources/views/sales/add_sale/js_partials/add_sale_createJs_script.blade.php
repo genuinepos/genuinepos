@@ -8,7 +8,6 @@
     var branch_id = "{{ auth()->user()->branch_id }}";
     var branch_name = "{{ $branchName }}";
 
-
     // Get all price group
     var priceGroups = @json($priceGroupProducts);
 

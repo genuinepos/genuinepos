@@ -35,9 +35,9 @@ class GeneralProductSearchService
                 'product',
                 'product.productAccessBranch',
                 'updateVariantCost',
-                'product.tax:id,name,tax_percent',
-                'product.unit:id,name,code_name',
-                'product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'product.tax:id,tax_percent',
+                'product.unit:id,name',
+                'product.unit.childUnits:id,name,base_unit_id,base_unit_multiplier',
                 'variantBranchStock',
             )->where('variant_code', $keyWord)
                 ->select([

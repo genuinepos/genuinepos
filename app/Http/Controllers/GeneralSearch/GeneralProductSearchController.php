@@ -29,8 +29,8 @@ class GeneralProductSearchController extends Controller
             'variants',
             'variants.updateVariantCost',
             'tax:id,tax_percent',
-            'unit:id,name,code_name',
-            'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+            'unit:id,name',
+            'unit.childUnits:id,name,base_unit_id,base_unit_multiplier',
             'updateProductCost',
             'productBranchStock',
         ]);

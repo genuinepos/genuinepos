@@ -32,6 +32,11 @@ class AccountingVoucher extends Model
         return $this->hasOne(AccountingVoucherDescription::class, 'accounting_voucher_id')->where('amount_type', 'dr');
     }
 
+    public function voucherDebitDescriptions()
+    {
+        return $this->hasMany(AccountingVoucherDescription::class, 'accounting_voucher_id')->where('amount_type', 'dr');
+    }
+
     public function voucherCreditDescription()
     {
         return $this->hasOne(AccountingVoucherDescription::class, 'accounting_voucher_id')->where('amount_type', 'cr');

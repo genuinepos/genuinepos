@@ -8,13 +8,14 @@ use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
 use App\Http\Controllers\Products\PriceGroupController;
 use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\OpeningStockController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\ProductSettingsController;
 use App\Http\Controllers\Products\PriceGroupManageController;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 
-    Route::get('/', 'index')->name('products.index');
+    Route::get('index/{isForCreatePage?}', 'index')->name('products.index');
     Route::get('show/{id}', 'show')->name('products.show');
     Route::get('create', 'create')->name('products.create');
     Route::post('store', 'store')->name('products.store');
@@ -22,6 +23,12 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::post('update/{id}', 'update')->name('products.update');
     Route::delete('delete/{id}', 'delete')->name('products.delete');
     Route::get('form/part/{type}', 'formPart')->name('products.form.part');
+    Route::get('get/last/product/id', 'getLastProductId')->name('products.get.last.product.id');
+
+    Route::controller(OpeningStockController::class)->prefix('opening-stock')->group(function () {
+        Route::get('create/or/edit/{productId}', 'createOrEdit')->name('product.opening.stocks.create');
+        Route::post('store/or/update', 'storeOrUpdate')->name('product.opening.stocks.store.or.update');
+    });
 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
         Route::get('/', 'index')->name('categories.index');

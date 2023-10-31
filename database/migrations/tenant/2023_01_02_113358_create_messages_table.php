@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->index('messages_user_id_foreign');
             $table->text('description');
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

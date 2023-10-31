@@ -2,8 +2,11 @@
 
 namespace App\Services\Products;
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use App\Models\ProductImage;
+use App\Enums\IsDeleteInUpdate;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -12,7 +15,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
 {
-    public function productListTable($request)
+    public function productListTable(object $request, int $isForCreatePage = 0): object
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
         $generalSettings = config('generalSettings');
@@ -24,14 +27,14 @@ class ProductService
             'productAccessBranches',
             'productAccessBranches.branch:id,name,area_name,branch_code,parent_branch_id',
             'productAccessBranches.branch.parentBranch:id,name,area_name,branch_code',
+            'ownBranchAllStocks:id,branch_id,stock',
         ])
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
             ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
             ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
             ->leftJoin('brands', 'products.brand_id', 'brands.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->where('products.status', 1);
+            ->leftJoin('units', 'products.unit_id', 'units.id');
 
         if ($request->branch_id) {
 
@@ -67,6 +70,11 @@ class ProductService
         if ($request->category_id) {
 
             $query->where('products.category_id', $request->category_id);
+        }
+
+        if ($request->sub_category_id) {
+
+            $query->where('products.sub_category_id', $request->sub_category_id);
         }
 
         if ($request->unit_id) {
@@ -108,13 +116,14 @@ class ProductService
                 'products.thumbnail_photo',
                 'products.expire_date',
                 'products.is_combo',
+                'products.quantity',
                 'units.name as unit_name',
                 'tax.name as tax_name',
                 'categories.name as cate_name',
                 'sub_cate.name as sub_cate_name',
                 'brands.name as brand_name',
             ]
-        )->distinct('product_access_branches.branch_id')->orderBy('id', 'desc');
+        )->distinct('product_access_branches.branch_id')->orderBy('products.id', 'desc');
 
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
@@ -122,48 +131,54 @@ class ProductService
                 return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
             })->editColumn('photo', function ($row) use ($img_url) {
 
-                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
-            })->addColumn('action', function ($row) use ($countPriceGroup) {
+                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+            })->addColumn('action', function ($row) use ($countPriceGroup, $isForCreatePage) {
 
-                $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action</button>';
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('products.view', [$row->id]) . '">View</a>';
+                if ($isForCreatePage == BooleanType::False->value) {
 
-                if (auth()->user()->can('product_edit')) {
+                    $html = '<div class="btn-group" role="group">';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ' . __("Action") . '</button>';
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
+                    $html .= '<a href="' . route('products.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
 
-                    $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
-                }
+                    if (auth()->user()->can('product_edit')) {
 
-                if (auth()->user()->can('product_delete')) {
-
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">Delete</a>';
-                }
-
-                // if ($row->status == 1) {
-
-                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
-                // } else {
-
-                //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
-                // }
-
-                if (auth()->user()->can('openingStock_add')) {
-
-                    $html .= '<a class="dropdown-item" id="opening_stock" href="' . route('products.opening.stock', [$row->id]) . '">Add or edit opening stock</a>';
-                }
-
-                if ($countPriceGroup > 0) {
-
-                    if (auth()->user()->can('manage_price_group')) {
-                        $html .= '<a class="dropdown-item" href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '"> ' . __("Manage Price Group") . '</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
                     }
+
+                    if (auth()->user()->can('product_delete')) {
+
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">' . __("Delete") . '</a>';
+                    }
+
+                    // if ($row->status == 1) {
+
+                    //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-up text-success"></i> Change Status</a>';
+                    // } else {
+
+                    //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
+                    // }
+
+                    $html .= '<a href="#" class="dropdown-item">' . __("Product Ledger") . '</a>';
+
+                    if ($countPriceGroup > 0) {
+
+                        $html .= '<a href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '" class="dropdown-item"> ' . __("Manage Price Group") . '</a>';
+                    }
+
+                    if (auth()->user()->can('openingStock_add')) {
+
+                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __("Add or edit opening stock") . '</a>';
+                    }
+
+                    $html .= ' </div>';
+                    $html .= '</div>';
+
+                    return $html;
+                } else if ($isForCreatePage == BooleanType::True->value) {
+
+                    return '<a class="action-btn c-edit" href="' . route('products.edit', [$row->id]) . '">' . __("Edit") . '</a>';
                 }
-
-                $html .= ' </div>';
-                $html .= '</div>';
-
-                return $html;
             })->editColumn('name', function ($row) {
                 $html = '';
                 $html .= $row->name;
@@ -174,16 +189,16 @@ class ProductService
 
                 if ($row->type == 1 && $row->is_variant == 1) {
 
-                    return '<span class="text-primary">Variant</span>';
+                    return '<span class="text-primary">' . __("Variant") . '</span>';
                 } elseif ($row->type == 1 && $row->is_variant == 0) {
 
-                    return '<span class="text-success">Single</span>';
+                    return '<span class="text-success">' . __("Single") . '</span>';
                 } elseif ($row->type == 2) {
 
-                    return '<span class="text-info">Combo</span>';
+                    return '<span class="text-info">' . __("Combo") . '</span>';
                 } elseif ($row->type == 3) {
 
-                    return '<span class="text-info">Digital</span>';
+                    return '<span class="text-info">' . __("Digital") . '</span>';
                 }
             })
             ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
@@ -232,7 +247,7 @@ class ProductService
                 //         ->orderBy('product_branches.branch_id', 'asc')->get();
                 // }
 
-                if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True) {
 
                     $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
@@ -246,21 +261,104 @@ class ProductService
 
                     $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
 
-                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . $areaName . ',</p>';
+                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . ',</p>';
                 }
 
                 return $text;
+            })
+            ->editColumn('product_cost_with_tax', function ($row) {
+
+                // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($row->product_cost_with_tax);
+            })
+            ->editColumn('product_price', function ($row) {
+
+                // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
+
+                return \App\Utils\Converter::format_in_bdt($row->product_price);
             })
             ->editColumn('quantity', function ($row) {
 
                 // $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
 
-                return \App\Utils\Converter::format_in_bdt(0) . '/' . $row->unit_name;
+                if (auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+                    $branchAllStock = 0;
+                    foreach ($row->ownBranchAllStocks as $stock) {
+
+                        $branchAllStock += $stock->stock;
+                    }
+
+                    return \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name;
+                }
+
+                return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
-            ->rawColumns(['multiple_delete', 'photo', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
+            ->rawColumns(['multiple_delete', 'photo', 'product_cost_with_tax', 'product_cost_with_tax', 'quantity', 'action', 'name', 'type', 'cate_name', 'status', 'expire_date', 'tax_name', 'brand_name', 'access_branches'])
             ->smart(true)->make(true);
+    }
+
+    function productShowQueries(int $id): array
+    {
+        $data = [];
+
+        $data['product'] = $this->singleProduct(id: $id, with: [
+            'brand',
+            'category',
+            'subcategory',
+            'warranty',
+            'variants',
+            'tax',
+            'unit'
+        ]);
+
+        $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
+            ->where('product_ledgers.branch_id', auth()->user()->branch_id)->where('product_ledgers.product_id', $data['product']->id)
+            ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
+            ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('warehouses', 'product_ledgers.warehouse_id', 'warehouses.id')
+            ->select(
+                'branches.name as branch_name',
+                'branches.area_name',
+                'branches.branch_code',
+                'parentBranch.name as parent_branch_name',
+                'warehouses.warehouse_name',
+                'warehouses.is_global',
+                'product_ledgers.branch_id',
+                'product_ledgers.warehouse_id',
+                'product_variants.variant_name',
+                DB::raw('IFNULL(SUM(product_ledgers.in - product_ledgers.out), 0) as stock'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 0 then product_ledgers.in end), 0) as total_opening_stock'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 7 then product_ledgers.out end), 0) as total_transferred'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 8 then product_ledgers.in end), 0) as total_received'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.in end), 0) as total_production'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 6 then product_ledgers.out end), 0) as total_used_in_production'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 3 then product_ledgers.in end), 0) as total_purchase'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 4 then product_ledgers.out end), 0) as total_purchase_return'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
+                DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
+                DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
+            )
+            ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
+
+        $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
+            ->orderBy('product_ledgers.branch_id', 'asc')
+            ->orderBy('product_ledgers.product_id', 'desc')
+            ->orderBy('product_ledgers.variant_id', 'desc')
+            ->get();
+
+        $data['globalWareHouseStocks'] = $ownBranchAndWarehouseStocksQ->where('warehouses.is_global', 1)
+            ->orderBy('product_ledgers.branch_id', 'asc')
+            ->orderBy('product_ledgers.product_id', 'desc')
+            ->orderBy('product_ledgers.variant_id', 'desc')
+            ->get();
+
+        return $data;
     }
 
     public function createProductListOfProducts()
@@ -328,90 +426,79 @@ class ProductService
 
         $addProduct->save();
 
+        return $addProduct;
+    }
+
+    public function updateProduct(object $request, int $productId): object
+    {
+        $updateProduct = $this->singleProduct(id: $productId, with: ['variants', 'productAccessBranches']);
+
+        if (count($updateProduct->variants) > 0) {
+
+            foreach ($updateProduct->variants as $variant) {
+
+                $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+                $variant->save();
+            }
+        }
+
+        $updateProduct->type = $request->type;
+        $updateProduct->name = $request->name;
+        $updateProduct->product_code = $request->code ? $request->code : $request->current_product_code;
+        $updateProduct->category_id = $request->category_id;
+        $updateProduct->sub_category_id = $request->sub_category_id;
+        $updateProduct->brand_id = $request->brand_id;
+        $updateProduct->unit_id = $request->unit_id;
+        $updateProduct->alert_quantity = $request->alert_quantity;
+        $updateProduct->tax_ac_id = $request->tax_ac_id;
+        $updateProduct->tax_type = $request->tax_type;
+        $updateProduct->product_condition = $request->product_condition;
+        $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
+        $updateProduct->is_for_sale = $request->is_for_sale;
+        $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
+        $updateProduct->is_manage_stock = $request->is_manage_stock;
+        $updateProduct->product_details = isset($request->product_details) ? $request->product_details : null;
+        $updateProduct->is_purchased = 0;
+        $updateProduct->barcode_type = $request->barcode_type;
+        $updateProduct->warranty_id = $request->warranty_id;
+        $updateProduct->weight = isset($request->weight) ? $request->weight : null;
+
         if ($request->type == 1) {
 
-            if ($request->is_variant == 1) {
-
-                $index = 0;
-                foreach ($request->variant_combinations as $value) {
-
-                    $addVariant = new ProductVariant();
-                    $addVariant->product_id = $addProduct->id;
-                    $addVariant->variant_name = $value;
-                    $addVariant->variant_code = $request->variant_codes[$index];
-                    $addVariant->variant_cost = $request->variant_costings[$index];
-                    $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
-                    $addVariant->variant_profit = $request->variant_profits[$index];
-                    $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
-
-                    if (isset($request->variant_image[$index])) {
-
-                        $variantImage = $request->variant_image[$index];
-                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
-                        $path = public_path('uploads/product/variant_image');
-
-                        if (!file_exists($path)) {
-
-                            mkdir($path);
-                        }
-
-                        Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
-                        $addVariant->variant_image = $variantImageName;
-                    }
-
-                    $addVariant->save();
-
-                    array_push($variantIds, $addVariant->id);
-
-                    $index++;
-                }
-            }
+            $updateProduct->is_variant = $request->is_variant ? 1 : 0;
+            $updateProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
+            $updateProduct->profit = $request->profit ? $request->profit : 0;
+            $updateProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
+            $updateProduct->product_price = $request->product_price ? $request->product_price : 0;
         }
 
-        if ($request->file('image')) {
+        if ($request->file('photo')) {
 
-            if (count($request->file('image')) > 0) {
+            if ($updateProduct->thumbnail_photo != 'default.png') {
 
-                foreach ($request->file('image') as $image) {
+                if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
 
-                    $productImage = $image;
-                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('uploads/product/' . $productImageName);
-                    $addProductImage = new ProductImage();
-                    $addProductImage->product_id = $addProduct->id;
-                    $addProductImage->image = $productImageName;
-                    $addProductImage->save();
+                    unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
                 }
             }
+
+            $productThumbnailPhoto = $request->file('photo');
+            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+
+            $path = public_path('uploads/product/thumbnail');
+
+            if (!file_exists($path)) {
+
+                mkdir($path);
+            }
+
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            $updateProduct->thumbnail_photo = $productThumbnailName;
         }
 
-        // if ($request->type == 2) {
+        $updateProduct->save();
 
-        //     $addProduct->is_combo = 1;
-        //     $addProduct->profit = $request->profit ? $request->profit : 0.00;
-        //     $addProduct->combo_price = $request->combo_price;
-        //     $addProduct->product_price = $request->combo_price;
-        //     $addProduct->save();
-
-        //     $productIds = $request->product_ids;
-        //     $combo_quantities = $request->combo_quantities;
-        //     $productVariantIds = $request->variant_ids;
-        //     $index = 0;
-
-        //     foreach ($productIds as $id) {
-
-        //         $addComboProducts = new ComboProduct();
-        //         $addComboProducts->product_id = $addProduct->id;
-        //         $addComboProducts->combo_product_id = $id;
-        //         $addComboProducts->quantity = $combo_quantities[$index];
-        //         $addComboProducts->product_variant_id = $productVariantIds[$index] !== 'noid' ? $productVariantIds[$index] : null;
-        //         $addComboProducts->save();
-
-        //         $index++;
-        //     }
-        // }
-
-        return $addProduct;
+        return $updateProduct;
     }
 
     public function updateProductAndVariantPrice(
@@ -467,13 +554,44 @@ class ProductService
         }
     }
 
+    public function deleteProduct(int $id): array
+    {
+        $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries', 'variants']);
+
+        if (!is_null($deleteProduct)) {
+
+            if (count($deleteProduct->ledgerEntries) > 0) {
+
+                return ['pass' => false, 'msg' => __('Product can not be deleted. This product has one or more entries in the product ledger.')];
+            }
+
+            if (count($deleteProduct->variants) > 0) {
+
+                foreach ($deleteProduct->variants as $variant) {
+
+                    if ($variant->variant_image) {
+
+                        if (file_exists(public_path('uploads/product/variant_image/' . $variant->variant_image))) {
+
+                            unlink(public_path('uploads/product/variant_image/' . $variant->variant_image));
+                        }
+                    }
+                }
+            }
+
+            $deleteProduct->delete();
+        }
+
+        return ['pass' => true];
+    }
+
     public function restrictions($request)
     {
         if ($request->is_variant == 1) {
 
             if ($request->variant_combinations == null) {
 
-                return ['pass' => false, 'msg' => 'You have selected Has variant? = Yes but there is no variant at all.'];
+                return ['pass' => false, 'msg' => 'You have selected Has variant? = Yes, but there is no variant at all.'];
             }
         }
 
@@ -537,5 +655,18 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
+    }
+
+    public function getLastProductSerialCode()
+    {
+        $id = 1;
+        $lastEntry = DB::table('products')->orderBy('id', 'desc')->first(['id']);
+
+        if ($lastEntry) {
+
+            $id = ++$lastEntry->id;
+        }
+
+        return str_pad($id, 4, '0', STR_PAD_LEFT);
     }
 }

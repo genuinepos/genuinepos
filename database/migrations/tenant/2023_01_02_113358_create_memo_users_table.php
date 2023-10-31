@@ -20,6 +20,9 @@ return new class extends Migration
             $table->boolean('is_delete_in_update')->default(false);
             $table->boolean('is_author')->default(false);
             $table->timestamps();
+
+            $table->foreign(['memo_id'])->references(['id'])->on('memos')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

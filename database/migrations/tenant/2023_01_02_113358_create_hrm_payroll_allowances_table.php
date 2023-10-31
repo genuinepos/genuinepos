@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamp('report_date_ts')->nullable();
             $table->boolean('is_delete_in_update')->default(false);
             $table->timestamps();
+
+            $table->foreign(['payroll_id'])->references(['id'])->on('hrm_payrolls')->onDelete('CASCADE');
         });
     }
 

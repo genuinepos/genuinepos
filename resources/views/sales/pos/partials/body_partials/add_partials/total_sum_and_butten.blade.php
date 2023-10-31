@@ -140,7 +140,7 @@
             <div class="wrapper_input_btn">
                 <div class="checkout-input-sec">
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end"><b>@lang('menu.net_total')</b></label>
+                        <label class="col-sm-5 col-form-label text-white text-end"><b>{{ __("Net Total") }}</b></label>
                         <div class="col-sm-7">
                             <strong>
                                 <input readonly type="number" class="form-control pos-amounts" name="net_total_amount" id="net_total_amount" value="0.00" tabindex="-1">
@@ -150,13 +150,13 @@
 
                     @if ($generalSettings['pos__is_enabled_discount'] == '1')
                         <div class="row">
-                            <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.discount')</label>
+                            <label class="col-sm-5 col-form-label text-white text-end">{{ __("Sale Discount") }}</label>
                             <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-6">
                                         <select name="order_discount_type" id="order_discount_type" class="form-control pos-amounts">
-                                            <option value="1">@lang('menu.fixed')(0.00)</option>
-                                            <option value="2">Percent(%)</option>
+                                            <option value="1">{{ __("Fixed") }}(0.00)</option>
+                                            <option value="2">{{ __("Percentage") }}(%)</option>
                                         </select>
                                         {{-- <input name="order_discount_type" class="form-control" id="order_discount_type" value="1"> --}}
                                     </div>
@@ -166,15 +166,13 @@
                                     </div>
                                 </div>
 
-                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
-                                    value="0.00" tabindex="-1">
+                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                             </div>
                         </div>
                     @else
-                        <input name="order_discount" type="hidden" id="order_discount" value="0.00" tabindex="-1">
-                        <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount"
-                            value="0.00" tabindex="-1">
-                        <input name="order_discount_type" class="d-hide" id="order_discount_type" value="1">
+                        <input type="hidden" name="order_discount" id="order_discount" value="0.00">
+                        <input type="hidden" name="order_discount_amount" id="order_discount_amount" value="0.00">
+                        <input type="hidden" name="order_discount_type" id="order_discount_type">
                     @endif
 
                     @if ($generalSettings['pos__is_enabled_order_tax'] == '1')
@@ -182,50 +180,49 @@
                             <label class="col-sm-5 col-form-label text-white text-end">{{ __('Vat/Tax') }}</label>
                             <div class="col-sm-7">
                                 <div class="row g-2">
-                                    <div class="col-6">
-                                        <select name="order_tax" class="form-control pos-amounts" id="order_tax">
-                                            <option value="0.00">@lang('menu.no_tax')</option>
-                                            @foreach ($taxes as $tax)
-                                                <option value="{{ $tax->tax_percent }}">{{ $tax->tax_name }}</option>
+                                    <div class="col-12">
+                                        <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
+                                            <option data-order_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
+                                            @foreach ($taxAccounts as $taxAccount)
+                                                <option {{ $generalSettings['sale__default_tax_id'] == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                    {{ $taxAccount->name }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                    </div>
-
-                                    <div class="col-6">
-                                        <input type="number" class="form-control pos-amounts fw-bold" name="order_tax_amount" id="order_tax_amount"
-                                        value="0.00">
+                                        <input type="number" step="any" class="d-none" name="order_tax_percent" id="order_tax_percent" value="0.00">
+                                        <input type="number" step="any" class="d-none" name="order_tax_amount" id="order_tax_amount" value="0.00">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @else
-                        <input name="order_tax" type="hidden" id="order_tax" value="0.00" tabindex="-1">
-                        <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00" tabindex="-1">
+                        <input type="hidden" name="order_tax_percent" id="order_tax_percent" value="0.00">
+                        <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
                     @endif
 
                     <div class="row">
                         <label class="col-sm-5 col-form-label text-white text-end">{{ __('Previous Due') }}</label>
                         <div class="col-sm-7">
-                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="previous_due" id="previous_due" value="0.00" tabindex="-1">
+                            <input readonly type="number" step="any" name="previous_due" class="form-control pos-amounts fw-bold" id="previous_due" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.invoice_amount')</label>
+                        <label class="col-sm-5 col-form-label text-white text-end">{{ __("Invoice Amount") }}</label>
                         <div class="col-sm-7">
-                            <input class="form-control fw-bold" type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" value="0.00" tabindex="-1">
+                            <input type="number" step="any" name="total_invoice_amount" class="form-control fw-bold" id="total_invoice_amount" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.receivable')</label>
+                        <label class="col-sm-5 col-form-label text-white text-end">{{ __("Receivable") }}</label>
                         <div class="col-sm-7">
-                            <input readonly class="form-control pos-amounts fw-bold" type="number" step="any" name="total_receivable_amount" id="total_receivable_amount" value="0.00" tabindex="-1">
+                            <input readonly type="number" step="any" name="total_receivable_amount" class="form-control pos-amounts fw-bold" id="total_receivable_amount" value="0.00" tabindex="-1">
                         </div>
                     </div>
 
                     <div class="row">
-                        <label class="col-sm-5 col-form-label text-white text-end">@lang('menu.cash_receive')</label>
+                        <label class="col-sm-5 col-form-label text-white text-end">{{ __("Cash Receive") }}</label>
                         <div class="col-sm-7">
                             <div class="input-group">
                                 <span class="input-group-text cash_receive_input">>></span>

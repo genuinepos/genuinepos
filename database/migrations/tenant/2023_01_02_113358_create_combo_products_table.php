@@ -18,9 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable()->index('combo_products_product_id_foreign');
             $table->unsignedBigInteger('combo_product_id')->nullable()->index('combo_products_combo_product_id_foreign');
             $table->decimal('quantity', 22)->nullable()->default(0);
-            $table->unsignedBigInteger('product_variant_id')->nullable()->index('combo_products_product_variant_id_foreign');
+            $table->unsignedBigInteger('variant_id')->nullable()->index('combo_products_product_variant_id_foreign');
             $table->boolean('delete_in_update')->default(false);
             $table->timestamps();
+
+            $table->foreign(['combo_product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
+            $table->foreign(['product_variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
         });
     }
 

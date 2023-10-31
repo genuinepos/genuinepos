@@ -153,7 +153,6 @@
 @endsection
 @push('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
-    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         $('.select2').select2({
             placeholder: "Select Group",

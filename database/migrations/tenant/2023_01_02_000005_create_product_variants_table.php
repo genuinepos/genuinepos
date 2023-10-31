@@ -18,18 +18,17 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->index('product_variants_product_id_foreign');
             $table->string('variant_name');
             $table->string('variant_code');
-            $table->decimal('variant_quantity', 22)->default(0);
-            $table->decimal('number_of_sale', 22)->default(0);
-            $table->decimal('total_transfered', 22)->default(0);
-            $table->decimal('total_adjusted', 22)->default(0);
-            $table->decimal('variant_cost', 22);
-            $table->decimal('variant_cost_with_tax', 22)->default(0);
-            $table->decimal('variant_profit', 22)->default(0);
-            $table->decimal('variant_price', 22);
+            $table->decimal('variant_quantity', 22, 2)->default(0);
+            $table->decimal('variant_cost', 22, 2);
+            $table->decimal('variant_cost_with_tax', 22, 2)->default(0);
+            $table->decimal('variant_profit', 22, 2)->default(0);
+            $table->decimal('variant_price', 22, 2);
             $table->string('variant_image', 191)->nullable();
             $table->boolean('is_purchased')->default(false);
-            $table->boolean('delete_in_update')->default(false);
+            $table->boolean('is_delete_in_update')->default(0);
             $table->timestamps();
+
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
         });
     }
 

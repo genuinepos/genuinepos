@@ -27,7 +27,8 @@ class CashCounterController extends Controller
             return $this->cashCounterService->cashCounterListTable($request);
         }
 
-        $branches = $this->branchService->branches()->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('setups.cash_counter.index', compact('branches'));
     }

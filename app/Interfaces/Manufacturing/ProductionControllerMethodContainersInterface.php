@@ -8,12 +8,12 @@ interface ProductionControllerMethodContainersInterface
      * @return \App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService
      */
 
-     public function showMethodContainer(
+    public function showMethodContainer(
         int $id,
         object $productionService,
     ): ?array;
 
-     public function createMethodContainer(
+    public function createMethodContainer(
         object $warehouseService,
         object $accountService,
         object $processService,

@@ -40,8 +40,10 @@ return new class extends Migration
             $table->boolean('is_global')->default(false);
             $table->timestamps();
 
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
             $table->foreign('account_group_id')->references('id')->on('account_groups')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('bank_id')->references('id')->on('banks')->onDelete('cascade');
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }

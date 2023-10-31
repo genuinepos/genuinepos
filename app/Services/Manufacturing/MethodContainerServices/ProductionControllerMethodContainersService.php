@@ -99,6 +99,8 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
                     $productStockService->adjustMainProductAndVariantStock($addProductionIngredient->product_id, $addProductionIngredient->variant_id);
 
+                    $productStockService->adjustBranchAllStock(productId: $addProductionIngredient->product_id, variantId: $addProductionIngredient->variant_id, branchId: auth()->user()->branch_id);
+
                     if (isset($addProduction->stock_warehouse_id)) {
 
                         $productStockService->adjustWarehouseStock($addProductionIngredient->product_id, $addProductionIngredient->variant_id, $addProduction->stock_warehouse_id);
@@ -121,14 +123,13 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
             $productStockService->adjustMainProductAndVariantStock($addProduction->product_id, $addProduction->variant_id);
 
-            if (isset($addProduction->store_warehouse_id)) {
+            $productStockService->adjustBranchAllStock(productId: $addProduction->product_id, variantId: $addProduction->variant_id, branchId: auth()->user()->branch_id);
 
-                $productStockService->addWarehouseProduct($addProduction->product_id, $addProduction->variant_id, $addProduction->store_warehouse_id);
+            if (isset($addProduction->store_warehouse_id)) {
 
                 $productStockService->adjustWarehouseStock($addProduction->product_id, $addProduction->variant_id, $addProduction->store_warehouse_id);
             } else {
 
-                $productStockService->addBranchProduct($addProduction->product_id, $addProduction->variant_id, auth()->user()->branch_id);
                 $productStockService->adjustBranchStock($addProduction->product_id, $addProduction->variant_id, auth()->user()->branch_id);
             }
 
@@ -235,6 +236,8 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
                 $productStockService->adjustMainProductAndVariantStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id);
 
+                $productStockService->adjustBranchAllStock(productId: $updateProductionIngredient->product_id, variantId: $updateProductionIngredient->variant_id, branchId: $updateProduction->branch_id);
+
                 if (isset($updateProduction->stock_warehouse_id)) {
 
                     $productStockService->adjustWarehouseStock($updateProductionIngredient->product_id, $updateProductionIngredient->variant_id, $updateProduction->stock_warehouse_id);
@@ -256,16 +259,14 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
             $productStockService->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
 
-            if (isset($updateProduction->store_warehouse_id)) {
+            $productStockService->adjustBranchAllStock(productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, branchId: $updateProduction->branch_id);
 
-                $productStockService->addWarehouseProduct($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->store_warehouse_id);
+            if (isset($updateProduction->store_warehouse_id)) {
 
                 $productStockService->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->store_warehouse_id);
             } else {
 
-                $productStockService->addBranchProduct($updateProduction->product_id, $updateProduction->variant_id, auth()->user()->branch_id);
-
-                $productStockService->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, auth()->user()->branch_id);
+                $productStockService->adjustBranchStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->branch_id);
             }
 
             $purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'production_id', transId: $updateProduction->id, branchId: auth()->user()->branch_id, productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, quantity: $updateProduction->total_final_output_quantity, unitCostIncTax: $updateProduction->per_unit_cost_inc_tax, sellingPrice: $updateProduction->per_unit_price_exc_tax, subTotal: $updateProduction->net_cost, createdAt: $updateProduction->date_ts);
@@ -282,6 +283,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
             $deleteUnusedProductionIngredient->delete();
 
+            $productStockService->adjustMainProductAndVariantStock($deleteUnusedProductionIngredient->product_id, $deleteUnusedProductionIngredient->variant_id);
+
+            $productStockService->adjustBranchAllStock(productId: $deleteUnusedProductionIngredient->product_id, variantId: $deleteUnusedProductionIngredient->variant_id, branchId: $updateProduction->branch_id);
+
             if (isset($updateProduction->previous_stock_warehouse_id)) {
 
                 $productStockService->adjustWarehouseStock($deleteUnusedProductionIngredient->product_id, $deleteUnusedProductionIngredient->variant_id, $updateProduction->previous_stock_warehouse_id);
@@ -292,6 +297,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         }
 
         if ($updateProduction->product_id != $updateProduction->previous_product_id && $updateProduction->variant_id != $updateProduction->previous_variant_id) {
+
+            $productStockService->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
+
+            $productStockService->adjustBranchAllStock(productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, branchId: $updateProduction->branch_id);
 
             if (isset($updateProduction->previous_store_warehouse_id)) {
 
@@ -304,6 +313,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
         if ($updateProduction->store_warehouse_id != $updateProduction->previous_store_warehouse_id) {
 
+            $productStockService->adjustMainProductAndVariantStock($updateProduction->product_id, $updateProduction->variant_id);
+
+            $productStockService->adjustBranchAllStock(productId: $updateProduction->product_id, variantId: $updateProduction->variant_id, branchId: $updateProduction->branch_id);
+
             $productStockService->adjustWarehouseStock($updateProduction->product_id, $updateProduction->variant_id, $updateProduction->previous_store_warehouse_id);
         }
 
@@ -313,6 +326,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
                 ->where('production_id', $updateProduction->id)->get();
 
             foreach ($productionIngredients as $productionIngredient) {
+
+                $productStockService->adjustMainProductAndVariantStock($productionIngredient->product_id, $productionIngredient->variant_id);
+
+                $productStockService->adjustBranchAllStock(productId: $productionIngredient->product_id, variantId: $productionIngredient->variant_id, branchId: $updateProduction->branch_id);
 
                 $productStockService->adjustWarehouseStock($productionIngredient->product_id, $productionIngredient->variant_id, $updateProduction->previous_stock_warehouse_id);
             }
@@ -335,6 +352,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
 
         if ($deleteProduction->status == ProductionStatus::Final->value) {
 
+            $productStockService->adjustMainProductAndVariantStock($deleteProduction->product_id, $deleteProduction->variant_id);
+
+            $productStockService->adjustBranchAllStock(productId: $deleteProduction->product_id, variantId: $deleteProduction->variant_id, branchId: $deleteProduction->branch_id);
+
             if (isset($deleteProduction->store_warehouse_id)) {
 
                 $productStockService->adjustWarehouseStock($deleteProduction->product_id, $deleteProduction->variant_id, $deleteProduction->store_warehouse_id);
@@ -344,6 +365,10 @@ class ProductionControllerMethodContainersService implements ProductionControlle
             }
 
             foreach ($deleteProduction->ingredients as $ingredient) {
+
+                $productStockService->adjustMainProductAndVariantStock($ingredient->product_id, $ingredient->variant_id);
+
+                $productStockService->adjustBranchAllStock(productId: $ingredient->product_id, variantId: $ingredient->variant_id, branchId: $deleteProduction->branch_id);
 
                 if (isset($deleteProduction->stock_warehouse_id)) {
 

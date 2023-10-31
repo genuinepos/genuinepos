@@ -256,6 +256,8 @@ class SalesReturnController extends Controller
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
+                $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
+
                 if (isset($request->warehouse_count) && $request->warehouse_id) {
 
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);

@@ -246,6 +246,8 @@ class PurchaseReturnController extends Controller
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
+                $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
+
                 if (isset($request->warehouse_ids[$__index])) {
 
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
@@ -452,6 +454,8 @@ class PurchaseReturnController extends Controller
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
 
+                $this->productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updateReturn->branch_id);
+
                 if (isset($request->warehouse_ids[$__index])) {
 
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_ids[$__index]);
@@ -472,6 +476,8 @@ class PurchaseReturnController extends Controller
 
                     // Adjust deleted product stock
                     $this->productStockService->adjustMainProductAndVariantStock($deletedUnusedPurchaseReturnProduct->product_id, $deletedUnusedPurchaseReturnProduct->variant_id);
+
+                    $this->productStockService->adjustBranchAllStock(productId: $deletedUnusedPurchaseReturnProduct->product_id, variantId: $deletedUnusedPurchaseReturnProduct->variant_id, branchId: $updateReturn->branch_id);
 
                     if (isset($deletedUnusedPurchaseReturnProduct->warehouse_id)) {
 
@@ -520,14 +526,16 @@ class PurchaseReturnController extends Controller
 
             foreach ($deletePurchaseReturn->purchaseReturnProducts as $returnProduct) {
 
-                $this->productStockService->adjustMainProductAndVariantStock($returnProduct->product_id, $variantId);
+                $this->productStockService->adjustMainProductAndVariantStock($returnProduct->product_id, $returnProduct->variant_id);
+
+                $this->productStockService->adjustBranchAllStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->branch_id);
 
                 if ($deletePurchase->warehouse_id) {
 
                     $this->productStockService->adjustWarehouseStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->warehouse_id);
                 } else {
 
-                    $this->productStockService->adjustBranchStock($returnProduct->product_id, $variantId, $deletePurchaseReturn->branch_id);
+                    $this->productStockService->adjustBranchStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->branch_id);
                 }
             }
 

@@ -2,8 +2,8 @@
 
 namespace App\Models\Products;
 
-use App\Models\SaleProduct;
 use App\Models\Products\Product;
+use App\Models\Sales\SaleProduct;
 use App\Models\Products\ProductStock;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseProduct;
@@ -22,21 +22,16 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class)->select([
             'id',
             'name',
-            'type',
-            'tax_id',
-            'brand_id',
-            'category_id',
+            'tax_ac_id',
             'tax_type',
             'unit_id',
-            'product_code',
             'product_cost',
             'product_cost_with_tax',
             'profit',
             'product_price',
-            'offer_price',
-            'quantity',
             'combo_price',
             'is_combo',
+            'is_for_sale',
             'is_variant',
             'is_show_emi_on_pos',
             'is_manage_stock',
@@ -46,12 +41,17 @@ class ProductVariant extends Model
 
     public function purchaseVariants()
     {
-        return $this->hasMany(PurchaseProduct::class, 'product_variant_id');
+        return $this->hasMany(PurchaseProduct::class, 'variant_id');
     }
 
     public function saleVariants()
     {
-        return $this->hasMany(SaleProduct::class, 'product_variant_id');
+        return $this->hasMany(SaleProduct::class, 'variant_id');
+    }
+
+    public function productLedgers()
+    {
+        return $this->hasMany(ProductLedger::class, 'variant_id')->where('voucher_type', '!=', 0);
     }
 
     public function updateVariantCost()
@@ -68,13 +68,15 @@ class ProductVariant extends Model
             $ordering = 'desc';
         }
 
-        return $this->hasOne(PurchaseProduct::class, 'product_variant_id')->where('left_qty', '>', '0')
-            ->orderBy('created_at', $ordering)->select('product_variant_id', 'net_unit_cost');
+        return $this->hasOne(PurchaseProduct::class, 'variant_id')
+            ->where('left_qty', '>', '0')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->orderBy('created_at', $ordering)->select('variant_id', 'net_unit_cost');
     }
 
     public function variantBranchStock()
     {
         return $this->hasOne(ProductStock::class, 'variant_id')->where('branch_id', auth()->user()->branch_id)
-            ->select('id', 'branch_id', 'product_id', 'variant_id', 'stock');
+            ->select('id', 'branch_id', 'product_id', 'variant_id', 'stock', 'all_stock');
     }
 }

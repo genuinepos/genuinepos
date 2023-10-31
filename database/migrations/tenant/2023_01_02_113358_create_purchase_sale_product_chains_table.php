@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('sale_product_id')->nullable()->index('purchase_sale_product_chains_sale_product_id_foreign');
             $table->decimal('sold_qty', 22)->default(0);
             $table->timestamps();
+
+            $table->foreign(['purchase_product_id'])->references(['id'])->on('purchase_products')->onDelete('CASCADE');
+            $table->foreign(['sale_product_id'])->references(['id'])->on('sale_products')->onDelete('CASCADE');
         });
     }
 

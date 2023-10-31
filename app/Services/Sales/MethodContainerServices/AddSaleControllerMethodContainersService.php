@@ -91,7 +91,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data['taxAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
-            // ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
@@ -226,6 +225,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
                 $variantId = $request->variant_ids[$__index] != 'noid' ? $request->variant_ids[$__index] : null;
                 $productStockService->adjustMainProductAndVariantStock(productId: $productId, variantId: $variantId);
+
+                $productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
 
                 if (isset($request->warehouse_ids[$__index])) {
 
@@ -417,6 +418,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                 // Adjust deleted product stock
                 $productStockService->adjustMainProductAndVariantStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id);
 
+                $productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updateSale->branch_id);
+
                 if (isset($deletedUnusedSaleProduct->warehouse_id)) {
 
                     $productStockService->adjustWarehouseStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id, $deletedUnusedSaleProduct->warehouse_id);
@@ -490,6 +493,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             foreach ($deleteSale->saleProducts as $saleProduct) {
 
                 $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
+
+                $productStockService->adjustBranchAllStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $saleProduct->branch_id);
 
                 if ($saleProduct->warehouse_id) {
 

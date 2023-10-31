@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->index('workspace_users_user_id_foreign');
             $table->boolean('is_delete_in_update')->default(false);
             $table->timestamps();
+
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('SET NULL');
+            $table->foreign(['workspace_id'])->references(['id'])->on('workspaces')->onDelete('CASCADE');
         });
     }
 

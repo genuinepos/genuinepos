@@ -13,7 +13,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 </style>
  <!-- Purchase print templete-->
 <div class="purchase_print_template">
@@ -83,12 +83,12 @@
                 <p>
                     @if ($purchase?->branch)
 
-                        <strong>@lang('menu.email') : </strong> <b>{{ $purchase?->branch?->email }}</b>,
-                        <strong>@lang('menu.phone') : </strong> <b>{{ $purchase?->branch?->phone }}</b>
+                        <strong>{{ __("Email") }} : </strong> <b>{{ $purchase?->branch?->email }}</b>,
+                        <strong>{{ __("Phone") }} : </strong> <b>{{ $purchase?->branch?->phone }}</b>
                     @else
 
-                        <strong>@lang('menu.email') : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>@lang('menu.phone') : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>{{ __("Email") }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
+                        <strong>{{ __("Phone") }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
                     @endif
                 </p>
             </div>
@@ -96,7 +96,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Invoice") }}</strong></h4>
+                <h4 style="text-transform: uppercase;" class="fw-bold">{{ __("Purchase Invoice") }}</h4>
             </div>
         </div>
 

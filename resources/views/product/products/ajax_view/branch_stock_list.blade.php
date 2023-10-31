@@ -20,7 +20,7 @@
                         @endphp
                         <td>{{ $product->product_code }}</td>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product_branch->branch->name .' - '. $product_branch->branch->branch_code }}</td>
+                        <td>{{ $product_branch->branch->name . ' - ' . $product_branch->branch->branch_code }}</td>
                         <td>{{ number_format($product_price_inc_tax, 2) }}</td>
                         <td><strong>{{ $product_branch->product_quantity .' ('. $product->unit->code_name.')' }}</strong></td>
                         @php
@@ -29,14 +29,14 @@
                         <td>{{ number_format($stockValue, 2)  }}</td>
                     </tr>
                 @endforeach
-            @else 
+            @else
                 <tr>
                     <td colspan="7" class="text-center">{{ __('This product is not available in any branch') }}.</td>
                 </tr>
             @endif
         </tbody>
     </table>
-@else 
+@else
     <table id="variant_product_branch_stock_table" class="table table-sm custom-table">
         <thead>
             <tr class="bg-primary">
@@ -69,7 +69,7 @@
                         </tr>
                     @endforeach
                 @endforeach
-            @else 
+            @else
                 <tr>
                     <td colspan="7" class="text-center">{{ __('This product is not available in any branch') }}.</td>
                 </tr>

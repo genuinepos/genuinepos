@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Arr;
+use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
+use App\Models\Products\Product;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
@@ -77,70 +79,6 @@ Route::get('my-test', function () {
     //     echo 'Received From : ' . $receipt?->account?->name . '</br>';
     //     echo 'Remarks : ' . $receipt?->accountingVoucher?->remarks . '</br></br></br>';
     // }
-
-    $ownBranchIdOrParentBranchId = null;
-    $customerAccounts = '';
-    $query = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.sub_sub_group_number', 6);
-
-    $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-    $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $assets = '';
-    $assetsQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.main_group_number', 1)
-        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6]);
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 2, 6])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-
-    $assetsQ->where('accounts.branch_id', auth()->user()->branch_id);
-
-    $assets = $assetsQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $liabilities = '';
-    $liabilitiesQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.main_group_number', 2)
-        ->where('account_groups.is_global', 0)
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [10, 11])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-        // ->whereNotIn('account_groups.sub_sub_group_number', [10, 11]);
-
-    $liabilitiesQ->where('accounts.branch_id', auth()->user()->branch_id);
-
-    $liabilities = $liabilitiesQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    $global = '';
-    $globalQ = DB::table('accounts')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.is_global', 1)
-        ->whereIn('account_groups.sub_group_number', [6, 7])
-        // ->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11]);
-        ->where(function ($query) {
-            $query->whereNotIn('account_groups.sub_sub_group_number', [1, 10, 11])
-                ->orWhereNull('account_groups.sub_sub_group_number');
-        });
-
-     $global = $globalQ->select('accounts.id', 'accounts.name', 'accounts.phone');
-
-    return $results = Account::query()
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('account_groups.sub_sub_group_number', 10)
-        ->select('accounts.id', 'accounts.name', 'accounts.phone')
-        ->union($customerAccounts)
-        ->union($assets)
-        ->union($liabilities)
-        ->union($global)
-        // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
-        ->orderBy('id', 'desc')
-        ->orderBy('name', 'asc')
-        ->get();
 });
 
 Route::get('t-id', function () {

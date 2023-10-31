@@ -104,18 +104,6 @@ class UnitService
         return ['pass' => true, 'data' => $deleteUnit];
     }
 
-    public function units(array $with = null)
-    {
-        $query = Unit::query();
-
-        if (isset($with)) {
-
-            $query->with($with);
-        }
-
-        return $query;
-    }
-
     public function singleUnit(int $id, array $with = null)
     {
         $query = Unit::query();
@@ -126,5 +114,17 @@ class UnitService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function units(array $with = null)
+    {
+        $query = Unit::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

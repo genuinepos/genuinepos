@@ -23,6 +23,9 @@ return new class extends Migration
             $table->integer('subject_type')->nullable();
             $table->text('descriptions')->nullable();
             $table->timestamps();
+
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 

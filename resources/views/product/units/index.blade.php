@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="unitAddOrEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
     <script>
@@ -75,25 +75,19 @@
                     extend: 'excel',
                     text: 'Excel',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:last-child)' }
                 },
                 {
                     extend: 'pdf',
                     text: 'Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:last-child)' }
                 },
                 {
                     extend: 'print',
                     text: 'Print',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:last-child)' }
                 },
             ],
             serverSide: true,

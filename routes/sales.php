@@ -2,13 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Sales\DraftController;
+use App\Http\Controllers\Sales\PosSaleController;
 use App\Http\Controllers\Sales\AddSalesController;
 use App\Http\Controllers\Sales\DiscountController;
 use App\Http\Controllers\Sales\ShipmentController;
 use App\Http\Controllers\Sales\QuotationController;
 use App\Http\Controllers\Sales\SalesOrderController;
+use App\Http\Controllers\Sales\SalesHelperController;
 use App\Http\Controllers\Sales\SalesReturnController;
 use App\Http\Controllers\Sales\SoldProductController;
+use App\Http\Controllers\Sales\CashRegisterController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
@@ -37,6 +40,39 @@ Route::prefix('sales')->group(function () {
             Route::get('/', 'index')->name('sale.products.index');
             Route::get('for/sales/return/{sale_id}', 'soldProductsForSalesReturn')->name('sale.products.for.sales.return');
         });
+    });
+
+    Route::controller(SalesHelperController::class)->prefix('helper')->group(function () {
+
+        Route::get('pos/selectable/products', 'posSelectableProducts')->name('sales.helper.pos.selectable.products');
+    });
+
+    Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
+
+        Route::get('create', 'create')->name('sales.pos.create');
+        Route::get('product/list', 'posProductList')->name('sales.pos.product.list');
+        Route::post('store', 'store')->name('sales.pos.store');
+        Route::get('pick/hold/invoice', 'pickHoldInvoice');
+        Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
+        Route::get('invoice/products/{saleId}', 'invoiceProducts')->name('sales.pos.invoice.products');
+        Route::post('update', 'update')->name('sales.pos.update');
+        Route::get('suspended/sale/list', 'suspendedList')->name('sales.pos.suspended.list');
+        Route::get('branch/stock', 'branchStock')->name('sales.pos.branch.stock');
+        Route::get('add/customer/modal', 'addQuickCustomerModal')->name('sales.pos.add.quick.customer.modal');
+        Route::post('add/customer', 'addCustomer')->name('sales.pos.add.customer');
+        Route::get('get/recent/product/{product_id}', 'getRecentProduct');
+        Route::get('search/exchangeable/invoice', 'searchExchangeableInv')->name('sales.pos.search.exchange.invoice');
+        Route::post('prepare/exchange', 'prepareExchange')->name('sales.pos.prepare.exchange');
+        Route::post('exchange/confirm', 'exchangeConfirm')->name('sales.pos.exchange.confirm');
+    });
+
+    Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
+
+        Route::get('create', 'create')->name('cash.register.create');
+        Route::post('store', 'store')->name('cash.register.store');
+        Route::get('show', 'show')->name('cash.register.show');
+        Route::get('close', 'close')->name('cash.register.close');
+        Route::post('closed', 'closed')->name('cash.register.closed');
     });
 
     Route::controller(SalesOrderController::class)->prefix('orders')->group(function () {

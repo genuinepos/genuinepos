@@ -20,6 +20,9 @@ return new class extends Migration
             $table->decimal('paid_amount', 22)->default(0);
             $table->tinyInteger('payment_type')->default(1)->comment('1=pay_loan_payment;2=get_loan_payment');
             $table->timestamps();
+
+            $table->foreign(['loan_id'])->references(['id'])->on('loans')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['loan_payment_id'])->references(['id'])->on('loan_payments')->onUpdate('NO ACTION')->onDelete('CASCADE');
         });
     }
 

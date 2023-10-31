@@ -45,7 +45,6 @@ class GeneralProductSearchService
                     'product_id',
                     'variant_name',
                     'variant_code',
-                    'variant_quantity',
                     'variant_cost',
                     'variant_cost_with_tax',
                     'variant_profit',
@@ -54,7 +53,7 @@ class GeneralProductSearchService
 
             if ($variantProduct && $variantProduct?->product?->productAccessBranch($branchId)) {
 
-                if ($isShowNotForSaleItem == 0 && $variantProduct->product->is_for_sale == 0) {
+                if ($isShowNotForSaleItem == 0 && $variantProduct?->product?->is_for_sale == 0) {
 
                     return response()->json(['errorMsg' => __("Product is not for sale")]);
                 }

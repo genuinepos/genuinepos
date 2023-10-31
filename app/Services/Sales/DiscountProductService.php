@@ -60,7 +60,7 @@ class DiscountProductService
         }
     }
 
-    public function singleDiscountProduct(?array $with = null): ?object
+    public function singleDiscountProduct(int $id, ?array $with = null): ?object
     {
         $query = DiscountProduct::query();
 

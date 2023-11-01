@@ -124,4 +124,9 @@ class PosSaleController extends Controller
             return redirect()->route('cash.register.create');
         }
     }
+
+    public function store(Request $request) {
+
+        return $request->all();
+    }
 }

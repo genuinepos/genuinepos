@@ -138,6 +138,5 @@
         $(this).closest('tr').remove();
         calculateTotalAmount();
         activeSelectedItems();
-        adjustSerial();
     });
 </script>

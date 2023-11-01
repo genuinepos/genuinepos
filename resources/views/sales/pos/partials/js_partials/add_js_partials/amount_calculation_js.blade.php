@@ -2,11 +2,12 @@
     // Calculate total amount functionalities
     function calculateTotalAmount() {
 
-        var indexes = document.querySelectorAll('#index');
-        indexes.forEach(function (index) {
-            var className = index.getAttribute("class");
-            var rowIndex = $('.' + className).closest('tr').index();
-            $('.' + className).closest('tr').find('.serial').html(rowIndex + 1);
+        var serials = document.querySelectorAll('#serial');
+        var serialsArray = Array.from(serials);
+
+        serials.forEach(function (element, index) {
+
+            element.innerHTML = index + 1;
         });
 
         var quantities = document.querySelectorAll('#quantity');
@@ -21,9 +22,7 @@
         });
 
         $('#total_item').val(parseFloat(total_item));
-        $('.mb_total_item').val(parseFloat(total_item));
         $('#total_qty').val(parseFloat(total_qty).toFixed(2));
-        $('.mb_total_qty').val(parseFloat(total_qty).toFixed(2));
 
         // Update Net total Amount
         var netTotalAmount = 0;
@@ -48,7 +47,7 @@
         var orderDiscountAmount = $('#order_discount_amount').val() ? $('#order_discount_amount').val() : 0;
 
         // Calc order tax amount
-        var orderTax = $('#order_tax').val() ? $('#order_tax').val() : 0;
+        var orderTax = $('#sale_tax_ac_id').find('option:selected').data('order_tax_percent') ? $('#sale_tax_ac_id').find('option:selected').data('order_tax_percent') : 0;
         var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax);
         $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
 
@@ -63,10 +62,6 @@
                                 + parseFloat(shipmentCharge);
 
         $('#total_invoice_amount').val(parseFloat(calcTotalInvoiceAmount).toFixed(2));
-
-        var ex_inv_payable_amount = $('#ex_inv_payable_amount').val() ? $('#ex_inv_payable_amount').val() : 0;
-        var ex_inv_paid = $('#ex_inv_paid').val() ? $('#ex_inv_paid').val() : 0;
-        var exchange_item_total_price = $('#exchange_item_total_price').val() ? $('#exchange_item_total_price').val() : 0;
 
         var calcTotalReceivableAmount = parseFloat(netTotalAmount) -
             parseFloat(orderDiscountAmount) +
@@ -107,73 +102,6 @@
     $(document).on('input', '#order_discount', function () {
 
         calculateTotalAmount();
-    });
-
-    $(document).on('input', '#quantity', function () {
-        var qty = $(this).val() ? $(this).val() : 0;
-
-        if (qty < 0) {
-
-            $(this).val(0);
-        }
-
-        if (parseFloat(qty) >= 0) {
-
-            var tr = $(this).closest('tr');
-            var qty_limit = tr.find('#qty_limit').val();
-            var unit = tr.find('#unit').val();
-
-            if (parseInt(qty) > parseInt(qty_limit)) {
-
-                toastr.error('Quantity Limit Is - ' + qty_limit + ' ' + unit);
-                $(this).val(qty_limit);
-                var unitPrice = tr.find('#unit_price_inc_tax').val();
-                var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty_limit);
-                tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-                tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-                calculateTotalAmount();
-                return;
-            }
-
-            var unitPrice = tr.find('#unit_price_inc_tax').val();
-            var calcSubtotal = parseFloat(unitPrice) * parseFloat(qty);
-            tr.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-            tr.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-            calculateTotalAmount();
-        }
-    });
-
-    // Calculate unit discount
-    $('#e_unit_discount').on('input', function () {
-
-        var discountValue = $(this).val() ? $(this).val() : 0.00;
-
-        if ($('#e_unit_discount_type').val() == 1) {
-
-            $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
-        } else {
-
-            var unit_price = $('#e_unit_price').val();
-            var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
-            $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
-        }
-    });
-
-    // change unit discount type var productTableRow
-    $('#e_unit_discount_type').on('change', function () {
-
-        var type = $(this).val();
-        var discountValue = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
-
-        if (type == 1) {
-
-            $('#e_discount_amount').val(parseFloat(discountValue).toFixed(2));
-        } else {
-
-            var unit_price = $('#e_unit_price').val();
-            var calcUnitDiscount = parseFloat(unit_price) / 100 * parseFloat(discountValue);
-            $('#e_discount_amount').val(parseFloat(calcUnitDiscount).toFixed(2));
-        }
     });
 
     // Cash receive by modal input with change value

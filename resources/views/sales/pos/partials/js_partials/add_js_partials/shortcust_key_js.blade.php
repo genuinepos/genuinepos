@@ -1,35 +1,38 @@
 <script>
 
-    //Key shortcut for pic hold invoice
+    //Key shortcut for draft
     shortcuts.add('f2', function () {
 
-        $('#action').val(2);
-        $('#button_type').val(0);
-        $('#pos_submit_form').submit();
+        $('#draft').click();
+        $('#draft_disabled').click();
     });
 
-    //Key shortcut for pic hold invoice
+    //Key shortcut for quotation
     shortcuts.add('f4', function () {
 
-        $('#action').val(4);
-        $('#button_type').val(0);
-        $('#pos_submit_form').submit();
+        $('#quotation').click();
+        $('#quotation_disabled').click();
     });
 
-    //Key shortcut for pic hold invoice
+    //Key shortcut for hold invoice
     shortcuts.add('f8', function () {
 
-        $('#action').val(5);
-        $('#button_type').val(0);
-        $('#pos_submit_form').submit();
+        $('#hold_invoice').click();
+        $('#hold_invoice_disabled').click();
     });
 
-    //Key shortcut for pic hold invoice
+    //Key shortcut for credit and final
+    shortcuts.add('alt+a', function () {
+
+        $('#credit_and_final').click();
+        $('#credit_sale_disabled').click();
+    });
+
+
+    //Key shortcut for Final
     shortcuts.add('f10', function () {
 
-        $('#action').val(1);
-        $('#button_type').val(1);
-        $('#pos_submit_form').submit();
+        $('#final').click();
     });
 
     //Key shortcut for all payment method
@@ -42,14 +45,6 @@
     shortcuts.add('alt+g', function () {
 
         fullDue();
-    });
-
-    //Key shortcut for pic hold invoice
-    shortcuts.add('alt+a', function () {
-
-        $('#action').val(6);
-        $('#button_type').val(0);
-        $('#pos_submit_form').submit();
     });
 
     //Key shortcut for pic hold invoice

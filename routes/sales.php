@@ -50,7 +50,6 @@ Route::prefix('sales')->group(function () {
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
 
         Route::get('create', 'create')->name('sales.pos.create');
-        Route::get('product/list', 'posProductList')->name('sales.pos.product.list');
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('pick/hold/invoice', 'pickHoldInvoice');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');

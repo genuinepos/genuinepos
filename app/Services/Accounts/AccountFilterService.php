@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountFilterService
 {
-    public function filterCashBankAccounts(object $accounts): ?array
+    public function filterCashBankAccounts(object $accounts)
     {
         $filteredAccounts = [];
 
@@ -34,11 +34,6 @@ class AccountFilterService
             }
         }
 
-        usort($filteredAccounts, function ($item) {
-
-            return $item['sorting_number'];
-        });
-
-        return $filteredAccounts;
+        return collect($filteredAccounts)->values()->sortBy('sorting_number');
     }
 }

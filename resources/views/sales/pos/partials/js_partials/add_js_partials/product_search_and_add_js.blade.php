@@ -1,7 +1,6 @@
 <script>
     // Get all price group
     var priceGroups = @json($priceGroupProducts);
-    // var unique_index = 0;
     var delay = (function() {
         var timer = 0;
         return function(callback, ms) {
@@ -167,15 +166,19 @@
                                 tr += '</tr>';
 
                                 $('#product_list').prepend(tr);
-                                // calculateTotalAmount();
-                                // unique_index++;
+                                calculateTotalAmount();
                                 activeSelectedItems();
-                                adjustSerial();
                             }else {
 
                                 var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
                                 var currentQty = exTr.find('#quantity').val() ? exTr.find('#quantity').val() : 0;
                                 var updateQty = parseFloat(currentQty) + 1;
+
+                                if (updateQty > stock) {
+
+                                    toastr.error("{{ __('Quantity exceed the current stock') }}");
+                                    return;
+                                }
 
                                 exTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                                 exTr.find('#span_quantity').html(parseFloat(updateQty).toFixed(2));
@@ -309,15 +312,19 @@
                             tr += '</tr>';
 
                             $('#product_list').prepend(tr);
-                            // calculateTotalAmount();
-                            // unique_index++;
+                            calculateTotalAmount();
                             activeSelectedItems();
-                            adjustSerial();
                         }else {
 
                             var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
                             var currentQty = exTr.find('#quantity').val() ? exTr.find('#quantity').val() : 0;
                             var updateQty = parseFloat(currentQty) + 1;
+
+                            if (updateQty > stock) {
+
+                                toastr.error("{{ __('Quantity exceed the current stock') }}");
+                                return;
+                            }
 
                             exTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                             exTr.find('#span_quantity').html(parseFloat(updateQty).toFixed(2));
@@ -520,8 +527,8 @@
 
                         $('#product_list').append(tr);
 
+                        calculateTotalAmount();
                         activeSelectedItems();
-                        adjustSerial();
                     }else {
 
                         var exTr = $('#' + uniqueIdForPreventDuplicateEntry).closest('tr');
@@ -533,7 +540,7 @@
                             toastr.error("{{ __('Quantity exceed the current stock') }}");
                             return;
                         }
-         
+
                         exTr.find('#quantity').val(parseFloat(updateQty).toFixed(2));
                         exTr.find('#span_quantity').html(parseFloat(updateQty).toFixed(2));
 
@@ -551,8 +558,10 @@
         });
     }
 
-    var unites = [];
-    var taxArray = [];
+    function editProduct(e) {
+
+        $('#editProductModal').modal('show');
+    }
 
     $('body').keyup(function(e) {
 

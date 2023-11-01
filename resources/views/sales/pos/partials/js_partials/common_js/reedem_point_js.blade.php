@@ -12,21 +12,26 @@
 
         if (rpayment_settings.enable_rp == '1') {
 
-            if ($('#customer_id').val()) {
+            if ($('#customer_account_id').val()) {
 
                 var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
                 $('#available_point').val(parseFloat(earned_point));
                 $('#redeem_amount').val('');
                 $('#total_redeem_point').val('')
                 $('#pointReedemModal').modal('show');
+
+                setTimeout(function() {
+
+                    $('#total_redeem_point').focus().select();
+                }, 500);
             }else{
 
-                toastr.error('Select customer first.');
+                toastr.error("{{ __('Please select a customer first.') }}");
                 return;
             }
         }else{
 
-            toastr.error('Reaward pointing system is disabled.');
+            toastr.error("{{ __('Reaward pointing system is disabled.') }}");
         }
     });
 
@@ -46,26 +51,26 @@
 
         if (parseFloat(total_redeem_point) > parseFloat(available_point)) {
 
-            toastr.error('Only '+available_point+' points is available.');
+            toastr.error("{{ __('Only ') }}" + available_point + "{{ __('points is available.') }}");
             return;
         }
 
         var total_invoice_payable = $('#total_invoice_payable').val();
         if (rpayment_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rpayment_settings.min_order_total_for_redeem)) {
 
-            toastr.error('Minimum order amount is '+rpayment_settings.min_order_total_for_redeem+' to redeem the points.');
+            toastr.error("{{ __('Minimum sale amount is ') }}"+rpayment_settings.min_order_total_for_redeem+"{{ __('to redeem the points.') }}");
             return;
         }
 
         if (rpayment_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rpayment_settings.min_redeem_point)) {
 
-            toastr.error('Minimum redeem points is '+rpayment_settings.min_redeem_point);
+            toastr.error("{{ __('Minimum redeem points is ') }}"+rpayment_settings.min_redeem_point);
             return;
         }
 
         if (rpayment_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rpayment_settings.max_redeem_point)) {
 
-            toastr.error('Maximum redeem points is '+rpayment_settings.max_redeem_point);
+            toastr.error("{{ __('Maximum redeem points is ') }}"+rpayment_settings.max_redeem_point);
             return;
         }
 

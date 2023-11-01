@@ -156,14 +156,14 @@
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
+                        <h6 class="modal-title" id="payment_heading">{{ __("Choose Payment Method") }}</h6>
                         <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __("Payment Method") }} </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -179,7 +179,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>@lang('menu.debit_account') </strong> </label>
+                                <label><strong>{{ __("Debit Account") }}</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -199,16 +199,16 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> @lang('menu.payment_note') </strong></label>
-                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="@lang('menu.note')"></textarea>
+                            <label><strong>{{ __("Payment Note") }}</strong></label>
+                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="{{ __("Payment Note") }}"></textarea>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')</span></button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="cancel_pay_mathod">@lang('menu.close')</button>
-                                    <a href="#" class="btn btn-sm btn-success" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">@lang('menu.confirm') (F10)</a>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="cancel_pay_mathod">{{ __("Close") }}</button>
+                                    <a href="#" class="btn btn-sm btn-success" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">{{ __("Confirm") }} (F10)</a>
                                 </div>
                             </div>
                         </div>
@@ -224,34 +224,35 @@
                 <div class="modal-dialog col-40-modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.reedem_oint')</h6>
+                            <h6 class="modal-title" id="exampleModalLabel">{{ __("Redeem Point") }}</h6>
                             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                         </div>
+
                         <div class="modal-body">
                             <div class="form-group">
-                                <label><b>@lang('menu.available_point') </b> </label>
-                                <input type="number" step="any" name="available_point" id="available_point" class="form-control" value="0" readonly>
+                                <label><b>{{ __("Available Point") }}</b></label>
+                                <input readonly type="number" step="any" name="available_point" id="available_point" class="form-control fw-bold" data-next="total_redeem_point" value="0" tabindex="-1">
                             </div>
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeemed') </b> </label>
-                                    <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
+                                    <label><b>{{ __("Redeemed") }}</b></label>
+                                    <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control fw-bold" data-next="redeem_btn">
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-hide" value="0">
                                     <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-hide" value="0">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeem_amount') </b> </label>
-                                    <input type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control">
+                                    <label><b>{{ __("Redeem Amount") }}</b></label>
+                                    <input readonly type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control fw-bold" tabindex="-1">
                                 </div>
                             </div>
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
-                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">@lang('menu.redeem')</a>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b>{{ __("Loading") }}</b></button>
+                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">{{ __("Redeem") }}</a>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">{{ __("Close") }}</button>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +272,6 @@
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <div class="tab_list_area">
                         <div class="btn-group">
                             <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
@@ -397,82 +397,86 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
+
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">@lang('menu.samsung_a')</h6>
+                    <h6 class="modal-title" id="e_product_name">@lang('menu.samsung_a')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <form id="update_selling_product">
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ $generalSettings['business__currency'] }}</span>
-                                    <span id="unit_cost">1,200.00</span>
+                                    <span id="unit_cost">/span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __("Cost") }}</span>
                             </p>
                         @endif
 
-                        <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="@lang('menu.quantity')" value="" />
-                            <span class="error error_e_quantity"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen')? '': 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="@lang('menu.unit')" value="" />
-                            <span class="error error_e_unit_price"></span>
-                        </div>
-
-                        @if (auth()->user()->can('edit_discount_pos_screen'))
-                            <div class="form-group row mt-1">
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong> </label>
-                                    <select class="form-control" id="e_unit_discount_type">
-                                        <option value="2">@lang('menu.percentage')</option>
-                                        <option value="1">@lang('menu.fixed')</option>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label> <strong>{{ __("Quantity") }}</strong> : <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                    <select id="e_unit_id" class="form-control w-40">
+                                        <option value="">{{ __('Unit') }}</option>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong> </label>
-                                    <input type="number" class="form-control" id="e_unit_discount" value="0.00" />
-                                    <input type="hidden" id="e_discount_amount" />
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
+                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}" value="0.00">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label><strong>{{ __("Unit Discount") }}</strong> </label>
+                                <div class="input-group">
+                                    <select class="form-control" id="e_unit_discount_type">
+                                        <option value="1">{{ __("Fixed") }}</option>
+                                        <option value="2">{{ __("Percentage") }}</option>
+                                    </select>
+
+                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control" id="e_unit_discount" value="0.00"/>
+                                    <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>
-                        @endif
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-6">
-                                <label><strong> @lang('menu.tax')</strong> </label>
-                                <select class="form-control" id="e_unit_tax"></select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> </label>
-                                <select class="form-control" id="e_tax_type">
-                                    <option value="1">@lang('menu.exclusive')</option>
-                                    <option value="2">@lang('menu.inclusive')</option>
-                                </select>
-                            </div>
                         </div>
 
-                        <div class="form-group mt-1">
-                            <label><strong>@lang('menu.sale_unit')</strong> </label>
-                            <select class="form-control" id="e_unit"></select>
-                        </div>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label><strong>{{ __("Vat/Tax") }}</strong> </label>
+                                <div class="input-group">
+                                    <select id="e_tax_ac_id" class="form-control w-50">
+                                        <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
+                                        @foreach ($taxAccounts as $taxAccount)
+                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                {{ $taxAccount->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12 d-flex justify-content-end gap-2">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
+                                    <select id="e_tax_type" class="form-control w-50" tabindex="-1">
+                                        <option value="1">{{ __('Exclusive') }}</option>
+                                        <option value="2">{{ __('Inclusive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Subtotal') }}</label>
+                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Edit') }}</a>
+                                <input type="reset" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger" value="{{ __('Reset') }}">
                             </div>
                         </div>
                     </form>

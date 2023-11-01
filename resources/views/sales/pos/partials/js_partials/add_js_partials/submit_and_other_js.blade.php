@@ -1,43 +1,52 @@
 <script>
     var actionMessage = 'Data inserted Successfull.';
 
-    $(document).on('click', '#submit_btn', function (e) {
-        e.preventDefault();
+    function saveAndPrintSuccessMsg() {
 
-        var action = $(this).data('action_id');
-        var button_type = $(this).data('button_type');
+        var status = $('status').val();
 
-        if (action == 1) {
+        if (status == 1) {
 
-            actionMessage = 'Sale created Successfully.';
-        } else if (action == 2) {
+           return actionMessage = 'Sale created Successfully.';
+        } else if (status == 2) {
 
-            actionMessage = 'Draft created successfully.';
-        } else if (action == 4) {
+           return actionMessage = 'Draft created successfully.';
+        } else if (status == 4) {
 
-            actionMessage = 'Quotation created Successfully.';
+           return actionMessage = 'Quotation created Successfully.';
         }
+    }
 
-        $('#action').val(action);
-        $('#button_type').val(button_type);
-        $('#b').val(action);
-        $('#pos_submit_form').submit();
-    });
-
-    $(document).on('click', '#full_due_button', function (e) {
-        e.preventDefault();
+    $(document).on('click', '#credit_and_final', function (e) {
         fullDue();
     });
 
     function fullDue() {
         var total_receivable_amount = $('#total_receivable_amount').val();
         $('#received_amount').val(parseFloat(0).toFixed(2));
-        $('#change_amount').val(- parseFloat(total_receivable_amount).toFixed(2));
+        $('#change_amount').val(parseFloat(0).toFixed(2));
         $('#total_due').val(parseFloat(total_receivable_amount).toFixed(2));
-        $('#action').val(1);
-        $('#button_type').val(0);
-        $('#pos_submit_form').submit();
     }
+
+    $(document).on('click keypress focus blur change', '.form-control', function(event) {
+
+        $('.pos_submit_btn').prop('type', 'button');
+    });
+
+    var isAllowSubmit = true;
+    $(document).on('click', '.pos_submit_btn', function() {
+
+        var value = $(this).val();
+        $('#status').val(value);
+
+        if (isAllowSubmit) {
+
+            $(this).prop('type', 'submit');
+        } else {
+
+            $(this).prop('type', 'button');
+        }
+    });
 
     $('#pos_submit_form').on('submit', function(e) {
         e.preventDefault();
@@ -47,15 +56,23 @@
         var url = $(this).attr('action');
         $('.submit_preloader').show();
 
+        isAjaxIn = false;
+        isAllowSubmit = false;
         $.ajax({
+            beforeSend: function() {
+                isAjaxIn = true;
+            },
             url:url,
             type:'post',
             data: request,
             success:function(data){
+
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.submit_preloader').hide();
 
-                if(!$.isEmptyObject(data.errorMsg)){
+                if(!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg,'Attention');
                     return;
@@ -89,6 +106,8 @@
                 }
             },error: function(err) {
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
@@ -106,6 +125,11 @@
                 });
             }
         });
+
+        if (isAjaxIn == false) {
+
+            isAllowSubmit = true;
+        }
     });
 
     // After submitting form successfully this function will be executed.
@@ -121,12 +145,6 @@
         $('#pos_submit_form').attr('action', store_url);
         activeSelectedItems();
     }
-
-    $(document).keypress(".scanable", function (event) {
-        if (event.which == '10' || event.which == '13') {
-            event.preventDefault();
-        }
-    });
 
     $(".cat-button").on("click", function(){
 

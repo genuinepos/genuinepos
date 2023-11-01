@@ -12,15 +12,4 @@
             $('#' + id).addClass('ac_item');
         });
     }
-
-    function adjustSerial() {
-
-        var serials = document.querySelectorAll('#serial');
-        var serialsArray = Array.from(serials);
-
-        serials.forEach(function (element, index) {
-
-            element.innerHTML = index + 1;
-        });
-    }
 </script>

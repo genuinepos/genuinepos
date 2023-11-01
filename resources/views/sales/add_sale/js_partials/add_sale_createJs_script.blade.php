@@ -761,7 +761,7 @@
 
             if ($(this).val() != '' && $(this).val() > 0) {
 
-                $('#e_discount_type').focus();
+                $('#e_unit_discount_type').focus();
             } else {
 
                 $('#e_tax_ac_id').focus();
@@ -769,7 +769,7 @@
         }
     });
 
-    $('#e_discount_type').on('change keypress click', function(e) {
+    $('#e_unit_discount_type').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
 

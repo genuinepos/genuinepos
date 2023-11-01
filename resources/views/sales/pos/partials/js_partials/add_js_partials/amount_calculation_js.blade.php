@@ -87,8 +87,10 @@
     });
 
     // change purchase tax and calculate total amount
-    $(document).on('change', '#order_tax', function () {
+    $(document).on('change', '#sale_tax_ac_id', function () {
 
+        var orderTaxPercent = $(this).find('option:selected').data('order_tax_percent') ? $(this).find('option:selected').data('order_tax_percent') : 0;
+        $('#order_tax_percent').val(parseFloat(orderTaxPercent).toFixed(2));
         calculateTotalAmount();
     });
 

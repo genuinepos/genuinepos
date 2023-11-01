@@ -127,6 +127,6 @@ class PosSaleController extends Controller
 
     public function store(Request $request) {
 
-        return $request->all();
+        return $request->is_full_credit_sale;
     }
 }

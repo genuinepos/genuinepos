@@ -57,6 +57,7 @@
 
 <div class="head-pos">
     <input type="hidden" name="status" id="status">
+    <input type="hidden" name="is_full_credit_sale" id="is_full_credit_sale" value="0">
     <input type="text" class="d-hide" name="ex_sale_id" id="ex_sale_id">
     <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <input type="hidden" name="sale_account_id" value="{{ $openedCashRegister->sale_account_id }}">

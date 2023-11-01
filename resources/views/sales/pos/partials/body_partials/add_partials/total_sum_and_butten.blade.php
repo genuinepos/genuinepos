@@ -138,7 +138,7 @@
                             <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-6">
-                                        <select name="order_discount_type" id="order_discount_type" class="form-control pos-amounts">
+                                        <select name="order_discount_type" id="order_discount_type" class="form-control pos-amounts" data-next="order_discount">
                                             <option value="1">{{ __("Fixed") }}(0.00)</option>
                                             <option value="2">{{ __("Percentage") }}(%)</option>
                                         </select>
@@ -146,7 +146,7 @@
                                     </div>
 
                                     <div class="col-6">
-                                        <input name="order_discount" type="number" step="any" class="form-control pos-amounts fw-bold" id="order_discount" value="0.00">
+                                        <input name="order_discount" type="number" step="any" class="form-control pos-amounts fw-bold" id="order_discount" data-next="sale_tax_ac_id" value="0.00">
                                     </div>
                                 </div>
 
@@ -165,7 +165,7 @@
                             <div class="col-sm-7">
                                 <div class="row g-2">
                                     <div class="col-12">
-                                        <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
+                                        <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="received_amount">
                                             <option data-order_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
                                             @foreach ($taxAccounts as $taxAccount)
                                                 <option {{ $generalSettings['sale__default_tax_id'] == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
@@ -180,6 +180,7 @@
                             </div>
                         </div>
                     @else
+                        <input type="hidden" name="sale_tax_ac_id" id="sale_tax_ac_id" value="">
                         <input type="hidden" name="order_tax_percent" id="order_tax_percent" value="0.00">
                         <input type="hidden" name="order_tax_amount" id="order_tax_amount" value="0.00">
                     @endif
@@ -194,7 +195,7 @@
                     <div class="row">
                         <label class="col-sm-5 col-form-label text-white text-end">{{ __("Invoice Amount") }}</label>
                         <div class="col-sm-7">
-                            <input type="number" step="any" name="total_invoice_amount" class="form-control fw-bold" id="total_invoice_amount" value="0.00" tabindex="-1">
+                            <input readonly type="number" step="any" name="total_invoice_amount" class="form-control fw-bold" id="total_invoice_amount" value="0.00" tabindex="-1">
                         </div>
                     </div>
 

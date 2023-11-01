@@ -126,6 +126,7 @@
                                 tr += '<td id="serial">1</td>';
                                 tr += '<td class="text-start">';
                                 tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                                tr += '<input type="hidden" id="product_name" value="' + name + '">';
                                 tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product.id + '">';
                                 tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="noid">';
                                 tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '">';
@@ -273,9 +274,10 @@
 
                             tr += '<td class="text-start">';
                             tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + ' - ' + variant.variant_name + '</a><br/><input type="' + (variant.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                            tr += '<input type="hidden" id="product_name" value="' + name + ' - ' + variant.variant_name + '">';
                             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + variant.product.id + '">';
                             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant.id + '">';
-                            tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_ids" value="' + (variant.product.tax_ac_id != null ? variant.product.tax_ac_id : '') + '">';
+                            tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="' + (variant.product.tax_ac_id != null ? variant.product.tax_ac_id : '') + '">';
                             tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="' + variant.product.tax_type + '">';
                             tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="' + taxPercent + '">';
                             tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="' + parseFloat(tax_amount) + '">';
@@ -487,9 +489,10 @@
                         tr += '<td class="fw-bold" id="serial">1</td>';
                         tr += '<td class="text-start">';
                         tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + __name + '</a><br/><input type="' + (is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                        tr += '<input type="hidden" id="product_name" value="' + __name + '">';
                         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product_id + '">';
                         tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant_id + '">';
-                        tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_ids" value="' + p_tax_ac_id + '">';
+                        tr += '<input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="' + p_tax_ac_id + '">';
                         tr += '<input type="hidden" name="tax_types[]" id="tax_type" value="' + p_tax_type + '">';
                         tr += '<input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="' + tax_percent + '">';
                         tr += '<input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="' + parseFloat(tax_amount) + '">';
@@ -556,11 +559,6 @@
                 }
             }
         });
-    }
-
-    function editProduct(e) {
-
-        $('#editProductModal').modal('show');
     }
 
     $('body').keyup(function(e) {

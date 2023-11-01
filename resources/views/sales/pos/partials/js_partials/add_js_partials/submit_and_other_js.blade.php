@@ -36,6 +36,15 @@
     var isAllowSubmit = true;
     $(document).on('click', '.pos_submit_btn', function() {
 
+        var btnType = $(this).attr('id');
+        if (btnType == 'credit_and_final') {
+
+            $('#is_full_credit_sale').val(1);
+        }else {
+
+            $('#is_full_credit_sale').val(0);
+        }
+
         var value = $(this).val();
         $('#status').val(value);
 
@@ -145,6 +154,69 @@
         $('#pos_submit_form').attr('action', store_url);
         activeSelectedItems();
     }
+
+    $(document).on('click enter','#final_and_quick_cash_receive', function(e) {
+
+        $('#final').click();
+    });
+
+     $('select').on('select2:close', function(e) {
+
+        var nextId = $(this).data('next');
+
+        $('#' + nextId).focus();
+
+        setTimeout(function() {
+
+            $('#' + nextId).focus();
+        }, 100);
+    });
+
+    $(document).on('change keypress click', 'select', function(e) {
+
+        var nextId = $(this).data('next');
+
+        if (e.which == 0) {
+
+            // if ($(this).attr('id') == 'account_id') {
+
+            //     // if (status == 1 || status == '') {
+
+            //     //     $('#final_and_print').focus().select();
+            //     // } else if (status == 3) {
+
+            //     //     $('#order').focus().select();
+            //     // }
+
+            //     return;
+            // }
+
+            $('#' + nextId).focus().select();
+        }
+    });
+
+    $(document).on('change keypress', 'input', function(e) {
+
+        // var status = $('#status').val();
+        var nextId = $(this).data('next');
+
+        if (e.which == 13) {
+            e.preventDefault();
+            // if ($(this).attr('id') == 'order_discount' && ($('#order_discount').val() == '' || $('#order_discount').val() == 0)) {
+
+            //     $('#sale_tax_ac_id').focus();
+            //     return;
+            // }
+
+            // if ($(this).attr('id') == 'receive_amount' && ($('#receive_amount').val() == '' || $('#receive_amount').val() == 0)) {
+
+            //     $('#final_and_print').focus();
+            //     return;
+            // }
+
+            $('#' + nextId).focus().select();
+        }
+    });
 
     $(".cat-button").on("click", function(){
 

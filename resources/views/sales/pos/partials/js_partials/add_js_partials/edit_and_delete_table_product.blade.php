@@ -1,138 +1,257 @@
 <script>
-    // Show selling product's update modal
-    var tableRowIndex = 0;
-    $(document).on('click', '#edit_product', function (e) {
-        e.preventDefault();
+      function editProduct(e) {
 
-        $('#show_cost_section').hide();
-        var parentTableRow = $(this).closest('tr');
-        tableRowIndex = parentTableRow.index();
-        var quantity = parentTableRow.find('#quantity').val();
-        var product_name = parentTableRow.find('.product-name').html();
-        var product_variant = parentTableRow.find('.product_variant').html();
-        var product_code = parentTableRow.find('.product-name').attr('title');
-        var unit_price_exc_tax = parentTableRow.find('#unit_price_exc_tax').val();
-        var unit_cost_inc_tax = parentTableRow.find('#unit_cost_inc_tax').val();
-        var unit_tax_percent = parentTableRow.find('#unit_tax_percent').val();
-        var tax_type = parentTableRow.find('#tax_type').val();
-        var unit_tax_amount = parentTableRow.find('#unit_tax_amount').val();
-        var unit_discount_type = parentTableRow.find('#unit_discount_type').val();
-        var unit_discount = parentTableRow.find('#unit_discount').val();
-        var unit_discount_amount = parentTableRow.find('#unit_discount_amount').val();
-        var product_unit = parentTableRow.find('#unit').val();
-        // Set modal heading
-        var heading = product_name + (product_variant != undefined ? ' - ' + product_variant : '') + ' (' + product_code + ')';
-        $('#product_info').html(heading);
-        $('#unit_cost').html(bdFormat(unit_cost_inc_tax));
-        $('#e_quantity').val(parseFloat(quantity).toFixed(2));
-        $('#e_unit_price').val(parseFloat(unit_price_exc_tax).toFixed(2));
-        $('#e_unit_discount_type').val(unit_discount_type);
-        $('#e_unit_discount').val(unit_discount);
-        $('#e_discount_amount').val(unit_discount_amount);
-        $('#e_unit_tax').empty();
-        $('#e_unit_tax').append('<option value="0.00">No Tax</option>');
-
-        taxArray.forEach(function (tax) {
-
-            if (tax.tax_percent == unit_tax_percent) {
-
-                $('#e_unit_tax').append('<option SELECTED value="' + tax.tax_percent + '">' + tax
-                    .tax_name + '</option>');
-            } else {
-
-                $('#e_unit_tax').append('<option value="' + tax.tax_percent + '">' + tax.tax_name +
-                    '</option>');
-            }
-        });
-
-        $('#e_tax_type').val(tax_type);
-
-        $('#e_unit').empty();
-        unites.forEach(function (unit) {
-
-            if (unit == product_unit) {
-
-                $('#e_unit').append('<option SELECTED value="' + unit + '">' + unit + '</option>');
-            } else {
-
-                $('#e_unit').append('<option value="' + unit + '">' + unit + '</option>');
-            }
-        });
+        var tr = $(e).closest('tr');
+        var unique_id = tr.find('.unique_id').val();
+        var item_name = tr.find('#product_name').val();
+        var product_id = tr.find('#product_id').val();
+        var variant_id = tr.find('#variant_id').val();
+        var tax_ac_id = tr.find('#tax_ac_id').val();
+        var tax_type = tr.find('#tax_type').val();
+        var unit_tax_amount = tr.find('#unit_tax_amount').val();
+        var unit_discount_type = tr.find('#unit_discount_type').val();
+        var unit_discount = tr.find('#unit_discount').val();
+        var unit_discount_amount = tr.find('#unit_discount_amount').val();
+        var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
+        var quantity = tr.find('#quantity').val();
+        var unit_id = tr.find('#unit_id').val();
+        var unit_name = tr.find('#span_unit').html();
+        var unit_price_exc_tax = tr.find('#unit_price_exc_tax').val();
+        var unit_price_inc_tax = tr.find('#unit_price_inc_tax').val();
+        var subtotal = tr.find('#subtotal').val();
 
         $('#editProductModal').modal('show');
+
+        $('#e_unique_id').val(unique_id);
+        $('#e_product_name').html(item_name);
+        $('#e_product_id').val(product_id);
+        $('#e_variant_id').val(variant_id);
+        $('#e_unit_id').empty();
+        $('#e_unit_id').append('<option data-unit_name="'+unit_name+'" value="'+unit_id+'">'+unit_name+'</option>');
+        $('#e_quantity').val(parseFloat(quantity).toFixed(2));
+        $('#e_price_exc_tax').val(parseFloat(unit_price_exc_tax).toFixed(2));
+        $('#e_price_inc_tax').val(parseFloat(unit_price_inc_tax).toFixed(2));
+        $('#e_unit_discount_type').val(unit_discount_type);
+        $('#e_unit_discount').val(parseFloat(unit_discount).toFixed(2));
+        $('#e_discount_amount').val(parseFloat(unit_discount_amount).toFixed(2));
+        $('#e_tax_ac_id').val(tax_ac_id);
+        $('#e_tax_type').val(tax_type);
+        $('#e_tax_amount').val(parseFloat(unit_tax_amount).toFixed(2));
+        $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
+
+        setTimeout(function() {
+
+            $('#e_quantity').focus().select();
+        }, 500);
+    }
+
+    function calculateEditOrAddAmount() {
+
+        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0.00;
+        var e_tax_type = $('#e_tax_type').val();
+        var e_unit_discount_type = $('#e_unit_discount_type').val();
+        var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
+        var e_price_exc_tax = $('#e_price_exc_tax').val() ? $('#e_price_exc_tax').val() : 0;
+        var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0;
+
+        var discount_amount = 0;
+        if (e_unit_discount_type == 1) {
+
+            discount_amount = e_unit_discount;
+        } else {
+
+            discount_amount = (parseFloat(e_price_exc_tax) / 100) * parseFloat(e_unit_discount);
+        }
+
+        var unitPriceWithDiscount = parseFloat(e_price_exc_tax) - parseFloat(discount_amount);
+        var taxAmount = parseFloat(unitPriceWithDiscount) / 100 * parseFloat(e_tax_percent);
+        var unitPriceIncTax = parseFloat(unitPriceWithDiscount) + parseFloat(taxAmount);
+
+        if (e_tax_type == 2) {
+
+            var inclusiveTax = 100 + parseFloat(e_tax_percent);
+            var calcTax = parseFloat(unitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
+            taxAmount =  parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
+            unitPriceIncTax = parseFloat(unitPriceWithDiscount) + parseFloat(taxAmount);
+        }
+
+        $('#e_tax_amount').val(parseFloat(taxAmount).toFixed(2));
+        $('#e_discount_amount').val(parseFloat(parseFloat(discount_amount)).toFixed(2));
+        $('#e_price_inc_tax').val(parseFloat(parseFloat(unitPriceIncTax)).toFixed(2));
+
+        var subtotal = parseFloat(unitPriceIncTax) * parseFloat(e_quantity);
+        $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
+    }
+
+    $('#e_quantity').on('input keypress', function(e) {
+
+        calculateEditOrAddAmount();
+
+        if (e.which == 13) {
+            e.preventDefault();
+
+            if ($(this).val() != '') {
+
+                $('#e_unit_id').focus();
+            }
+        }
     });
 
-    //Update Selling product
-    $(document).on('submit', '#update_selling_product', function (e) {
-        e.preventDefault();
-        var inputs = $('.edit_input');
-        $('.error').html('');
-        var countErrorField = 0;
+    $('#e_unit_id').on('change keypress click', function(e) {
 
-        $.each(inputs, function (key, val) {
+        if (e.which == 0) {
 
-            var inputId = $(val).attr('id');
-            var idValue = $('#' + inputId).val();
-            if (idValue == '') {
+            $('#e_price_exc_tax').focus().select();
+        }
 
-                countErrorField += 1;
-                var fieldName = $('#' + inputId).data('name');
-                $('.error_' + inputId).html(fieldName + ' is required.');
+        calculateEditOrAddAmount();
+    });
+
+    $('#e_price_exc_tax').on('input keypress', function(e) {
+
+        calculateEditOrAddAmount();
+
+        if (e.which == 13) {
+
+            if ($(this).val() != '') {
+
+                $('#e_unit_discount_type').focus();
             }
-        });
+        }
+    });
 
-        if (countErrorField > 0) {
+    $('#e_unit_discount_type').on('change keypress click', function(e) {
 
+        calculateEditOrAddAmount();
+
+        if (e.which == 0) {
+
+            $('#e_unit_discount').focus().select();
+        }
+    });
+
+    $('#e_unit_discount').on('input keypress', function(e) {
+
+        calculateEditOrAddAmount();
+
+        if (e.which == 13) {
+
+            $('#e_tax_ac_id').focus();
+        }
+    });
+
+    $('#e_tax_ac_id').on('change keypress click', function(e) {
+
+        calculateEditOrAddAmount();
+        var val = $(this).val();
+
+        if (e.which == 0) {
+
+            if (val) {
+
+                $('#e_tax_type').focus();
+            } else {
+
+                $('#edit_product').focus();
+            }
+        }
+    });
+
+    $('#e_tax_type').on('change keypress click', function(e) {
+
+        calculateEditOrAddAmount();
+
+        if (e.which == 0) {
+
+            $('#edit_product').focus();
+        }
+    });
+
+    $('#edit_product').on('click', function(e) {
+        e.preventDefault();
+
+        var e_unique_id = $('#e_unique_id').val();
+        var e_product_id = $('#e_product_id').val();
+        var e_variant_id = $('#e_variant_id').val();
+        var e_unit_name = $('#e_unit_id').find('option:selected').data('unit_name');
+        var e_unit_id = $('#e_unit_id').val();
+        var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
+        var e_price_exc_tax = $('#e_price_exc_tax').val() ? $('#e_price_exc_tax').val() : 0;
+        var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0;
+        var e_unit_discount_type = $('#e_unit_discount_type').val();
+        var e_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0;
+        var e_tax_ac_id = $('#e_tax_ac_id').val();
+        var e_tax_percent = $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') ? $('#e_tax_ac_id').find('option:selected').data('product_tax_percent') : 0;
+        var e_tax_amount = $('#e_tax_amount').val() ? $('#e_tax_amount').val() : 0;
+        var e_tax_type = $('#e_tax_type').val();
+        var e_price_inc_tax = $('#e_price_inc_tax').val() ? $('#e_price_inc_tax').val() : 0;
+        var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
+
+        if (e_quantity == '') {
+
+            toastr.error("{{ __('Quantity field must not be empty.') }}");
             return;
         }
 
-        var e_quantity = $('#e_quantity').val();
-        var e_unit_price = $('#e_unit_price').val();
-        var e_unit_discount_type = $('#e_unit_discount_type').val() ? $('#e_unit_discount_type').val() : 1;
-        var e_unit_discount = $('#e_unit_discount').val() ? $('#e_unit_discount').val() : 0.00;
-        var e_unit_discount_amount = $('#e_discount_amount').val() ? $('#e_discount_amount').val() : 0.00;
-        var e_unit_tax_percent = $('#e_unit_tax').val() ? $('#e_unit_tax').val() : 0.00;
-        var e_unit_tax_type = $('#e_tax_type').val();
-        var e_unit = $('#e_unit').val();
+        var route = '';
+        if (e_variant_id != 'noid') {
 
-        var productTableRow = $('#product_list tr:nth-child(' + (tableRowIndex + 1) + ')');
-        // calculate unit tax
-        productTableRow.find('.span_unit').html(e_unit);
-        productTableRow.find('#unit').val(e_unit);
-        productTableRow.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
-        productTableRow.find('#unit_price_exc_tax').val(parseFloat(e_unit_price).toFixed(2));
-        productTableRow.find('#unit_discount_type').val(e_unit_discount_type);
-        productTableRow.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
-        productTableRow.find('#unit_discount_amount').val(parseFloat(e_unit_discount_amount).toFixed(2));
+            var url = "{{ route('general.product.search.variant.product.stock', [':product_id', ':variant_id']) }}";
+            route = url.replace(':product_id', e_product_id);
+            route = route.replace(':variant_id', e_variant_id);
+        } else {
 
-        var calcUnitPriceWithDiscount = parseFloat(e_unit_price) - parseFloat(e_unit_discount_amount);
-        var calcUnitTaxAmount = parseFloat(calcUnitPriceWithDiscount) / 100 * parseFloat(e_unit_tax_percent);
-
-        if (e_unit_tax_type == 2) {
-
-            var inclusiveTax = 100 + parseFloat(e_unit_tax_percent);
-            var calc = parseFloat(calcUnitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-            calcUnitTaxAmount = parseFloat(calcUnitPriceWithDiscount) - parseFloat(calc);
+            var url = "{{ route('general.product.search.single.product.stock', [':product_id']) }}";
+            route = url.replace(':product_id', e_product_id);
         }
 
-        productTableRow.find('#unit_tax_percent').val(parseFloat(e_unit_tax_percent).toFixed(2));
-        productTableRow.find('#tax_type').val(e_unit_tax_type);
-        productTableRow.find('#unit_tax_amount').val(parseFloat(calcUnitTaxAmount).toFixed(2));
+        $.ajax({
+            url: route,
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
 
-        var calcUnitPriceIncTax = parseFloat(calcUnitPriceWithDiscount) + parseFloat(calcUnitTaxAmount);
+                if (!$.isEmptyObject(data.errorMsg)) {
 
-        productTableRow.find('#unit_price_inc_tax').val(parseFloat(calcUnitPriceIncTax).toFixed(2));
-        productTableRow.find('.span_unit_price_inc_tax').html(parseFloat(calcUnitPriceIncTax).toFixed(2));
+                    toastr.error(data.errorMsg);
+                    return;
+                }
 
-        var calcSubtotal = parseFloat(calcUnitPriceIncTax) * parseFloat(e_quantity);
-        productTableRow.find('#subtotal').val(parseFloat(calcSubtotal).toFixed(2));
-        productTableRow.find('.span_subtotal').html(parseFloat(calcSubtotal).toFixed(2));
-        calculateTotalAmount();
-        $('#editProductModal').modal('hide');
+                var stockLocationMessage = ' in the Shop';
+                if (parseFloat(e_quantity) > parseFloat(data.stock)) {
+
+                    toastr.error('Current stock is ' + parseFloat(data.stock) + '/' + e_unit_name + stockLocationMessage);
+                    return;
+                }
+
+                var tr = $('#' + e_unique_id).closest('tr');
+
+                console.log(tr);
+
+                tr.find('#tax_ac_id').val(e_tax_ac_id);
+                tr.find('#tax_type').val(e_tax_type);
+                tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
+                tr.find('#unit_tax_amount').val(parseFloat(e_tax_amount).toFixed(2));
+                tr.find('#unit_discount_type').val(e_unit_discount_type);
+                tr.find('#unit_discount').val(parseFloat(e_unit_discount).toFixed(2));
+                tr.find('#unit_discount_amount').val(parseFloat(e_discount_amount).toFixed(2));
+                tr.find('#quantity').val(parseFloat(e_quantity).toFixed(2));
+                tr.find('#span_quantity').html(parseFloat(e_quantity).toFixed(2));
+                tr.find('#unit_price_exc_tax').val(parseFloat(e_price_exc_tax).toFixed(2));
+                tr.find('#unit_price_inc_tax').val(parseFloat(e_price_inc_tax).toFixed(2));
+                tr.find('#span_unit_price_inc_tax').html(parseFloat(e_price_inc_tax).toFixed(2));
+                tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
+                tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
+
+                $('#editProductModal').modal('hide');
+
+                calculateTotalAmount();
+            }
+        })
     });
 
-     // Remove product form purchase product list (Table)
-     $(document).on('click', '#remove_product_btn',function(e){
+    // Remove product form purchase product list (Table)
+    $(document).on('click', '#remove_product_btn',function(e){
         e.preventDefault();
 
         $(this).closest('tr').remove();

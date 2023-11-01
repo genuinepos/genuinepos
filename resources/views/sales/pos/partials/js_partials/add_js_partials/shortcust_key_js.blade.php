@@ -39,6 +39,10 @@
     shortcuts.add('ctrl+b', function () {
 
         $('#otherPaymentMethod').modal('show');
+        setTimeout(function () {
+
+            $('#payment_method_id').focus();
+        }, 500);
     });
 
     //Key shortcut for credit sale

@@ -59,7 +59,7 @@ class AccountingVoucher extends Model
 
     public function purchaseReturnRef()
     {
-        return $this->belongsTo(PurchaseReturn::class, 'sale_return_ref_id');
+        return $this->belongsTo(PurchaseReturn::class, 'purchase_return_ref_id');
     }
 
     public function stockAdjustmentRef()

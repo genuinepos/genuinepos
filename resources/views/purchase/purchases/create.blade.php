@@ -179,7 +179,7 @@
                                         <div class="searching_area" style="position: relative;">
                                             <label class="fw-bold">{{ __('Search Product') }}</label>
                                             <div class="input-group">
-                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Search Product By Name/Code') }}" autofocus>
+                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Search Product By Name/Code') }}">
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">

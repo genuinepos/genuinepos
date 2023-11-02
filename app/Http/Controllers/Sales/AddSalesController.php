@@ -213,11 +213,12 @@ class AddSalesController extends Controller
             paymentMethodService: $this->paymentMethodService,
             warehouseService: $this->warehouseService,
             priceGroupService: $this->priceGroupService,
+            managePriceGroupService: $this->managePriceGroupService,
         );
 
         extract($editMethodContainer);
 
-        return view('sales.add_sale.edit', compact('sale', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'warehouses', 'branchName'));
+        return view('sales.add_sale.edit', compact('sale', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName'));
     }
 
     public function update($id, Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)

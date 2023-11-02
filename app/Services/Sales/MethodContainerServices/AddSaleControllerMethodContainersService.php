@@ -258,6 +258,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         object $paymentMethodService,
         object $warehouseService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $sale = $saleService->singleSale(id: $id, with: [
@@ -303,6 +304,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
         $data['sale'] = $sale;

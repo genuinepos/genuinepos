@@ -68,7 +68,7 @@
                 @csrf
                 <section>
                     <div class="sale-content">
-                        <div class="row g-3">
+                        <div class="row g-1">
                             <div class="col-md-9">
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body p-1">
@@ -380,7 +380,7 @@
                                                                                         }
                                                                                     }else {
 
-                                                                                        $stockLocationName = json_decode($generalSettings->business, true)['shop_name'];
+                                                                                        $stockLocationName = $generalSettings['business__shop_name'];
                                                                                     }
                                                                                 }
                                                                             @endphp

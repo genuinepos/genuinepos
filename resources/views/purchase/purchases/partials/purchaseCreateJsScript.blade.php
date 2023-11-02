@@ -38,15 +38,15 @@
         // });
     });
 
-    $('#addSupplier').on('click', function () {
+    // $('#addSupplier').on('click', function () {
 
-        $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
+    //     $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
 
-            $('#add_supplier_modal_body').html(data);
-            $('#addSupplierModal').modal('show');
+    //         $('#add_supplier_modal_body').html(data);
+    //         $('#addSupplierModal').modal('show');
 
-        });
-    });
+    //     });
+    // });
 
     function calculateTotalAmount(){
 
@@ -1321,4 +1321,9 @@
             $('#list').empty();
         }
     });
+
+    setTimeout(function() {
+
+        $('#supplier_account_id').focus().select();
+    }, 1000);
 </script>

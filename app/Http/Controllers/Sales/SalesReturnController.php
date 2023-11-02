@@ -114,7 +114,7 @@ class SalesReturnController extends Controller
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $generalSettings = config('generalSettings');
-        $branchName = $this->branchService->branchName;
+        $branchName = $this->branchService->branchName();
 
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',

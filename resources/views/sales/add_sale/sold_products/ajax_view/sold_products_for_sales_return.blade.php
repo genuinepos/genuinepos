@@ -1,7 +1,7 @@
 @foreach ($saleProducts as $saleProduct)
     @php
         $variantName = $saleProduct?->variant ? ' - ' . $saleProduct?->variant?->variant_name : '';
-        $variantId = $saleProduct->variant_id ? ' - ' . $purchase_product->variant_id : 'noid';
+        $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
     @endphp
 
     <tr id="select_item">

@@ -421,14 +421,14 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                 // Adjust deleted product stock
                 $productStockService->adjustMainProductAndVariantStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id);
 
-                $productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updateSale->branch_id);
+                $productStockService->adjustBranchAllStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
 
                 if (isset($deletedUnusedSaleProduct->warehouse_id)) {
 
-                    $productStockService->adjustWarehouseStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id, $deletedUnusedSaleProduct->warehouse_id);
+                    $productStockService->adjustWarehouseStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, warehouseId: $deletedUnusedSaleProduct->warehouse_id);
                 } else {
 
-                    $productStockService->adjustBranchStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id, $updateSale->branch_id);
+                    $productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, ariantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
                 }
 
                 foreach ($deletedUnusedSaleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
@@ -453,16 +453,16 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $saleProducts = $sale->saleProducts;
         foreach ($saleProducts as $saleProduct) {
 
-            $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : null;
+            $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
 
-            $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $variantId);
+            $productStockService->adjustBranchAllStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $updateSale->branch_id);
 
             if ($saleProduct->warehouse_id) {
 
-                $productStockService->adjustWarehouseStock($saleProduct->product_id, $variantId, $saleProduct->warehouse_id);
+                $productStockService->adjustWarehouseStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, warehouseId: $saleProduct->warehouse_id);
             } else {
 
-                $productStockService->adjustBranchStock($saleProduct->product_id, $variantId, $saleProduct->branch_id);
+                $productStockService->adjustBranchStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $saleProduct->branch_id);
             }
         }
 

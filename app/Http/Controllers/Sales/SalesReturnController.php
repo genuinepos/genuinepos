@@ -213,7 +213,7 @@ class SalesReturnController extends Controller
                 $addSaleReturnProduct = $this->salesReturnProductService->addSalesReturnProduct(request: $request, saleReturnId: $addReturn->id, index: $index);
 
                 // Add Product Ledger Entry
-                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $request->date, productId: $productId, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: $addSaleReturnProduct->variant_id, warehouseId: (isset($addReturn->warehouse_count) ? $addReturn->warehouse_id : null));
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::SalesReturn->value, date: $request->date, productId: $productId, transId: $addSaleReturnProduct->id, rate: $addSaleReturnProduct->unit_price_inc_tax, quantityType: 'in', quantity: $addSaleReturnProduct->return_qty, subtotal: $addSaleReturnProduct->return_subtotal, variantId: $addSaleReturnProduct->variant_id, warehouseId: (isset($addReturn->warehouse_id) ? $addReturn->warehouse_id : null));
 
                 // Sales Return product tax will be go here
                 if ($addSaleReturnProduct->tax_ac_id) {
@@ -263,7 +263,7 @@ class SalesReturnController extends Controller
                     $this->productStockService->adjustWarehouseStock(productId: $productId, variantId: $variantId, warehouseId: $request->warehouse_id);
                 } else {
 
-                    $this->productStockService->adjustBranchStock($productId, $variantId, branchId: auth()->user()->branch_id);
+                    $this->productStockService->adjustBranchStock(productId: $productId, variantId: $variantId, branchId: auth()->user()->branch_id);
                 }
 
                 $__index++;

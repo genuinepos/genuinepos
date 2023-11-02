@@ -64,7 +64,7 @@
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text add_button" id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_account_id"></span>
@@ -74,7 +74,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" id="closing_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                            <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -519,22 +519,13 @@
         </div>
     </div>
 
-    <!-- Add Supplier Modal -->
-    <div class="modal fade" id="addSupplierModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_supplier')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_supplier_modal_body"></div>
-            </div>
+    @if(auth()->user()->can('supplier_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-    </div>
+    @endif
 
-    <!--Add Product Modal-->
     @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

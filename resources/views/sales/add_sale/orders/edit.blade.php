@@ -564,25 +564,13 @@
     </div>
 
     @if(auth()->user()->can('customer_add'))
-        <!--Add Customer Modal-->
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-        <!--Add Customer Modal-->
     @endif
 
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body"></div>
-            </div>
-        </div>
-    </div>
-    <!--Add Product Modal End-->
+    @if (auth()->user()->can('product_add'))
+        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @endif
 @endsection
 @push('scripts')
     @include('sales.add_sale.orders.js_partials.sales_order_edit_js_script')

@@ -316,7 +316,8 @@ class ProductService
         ]);
 
         $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')
-            ->where('product_ledgers.branch_id', auth()->user()->branch_id)->where('product_ledgers.product_id', $data['product']->id)
+            ->where('product_ledgers.branch_id', auth()->user()->branch_id)
+            ->where('product_ledgers.product_id', $data['product']->id)
             ->leftJoin('product_variants', 'product_ledgers.variant_id', 'product_variants.id')
             ->leftJoin('branches', 'product_ledgers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
@@ -328,6 +329,8 @@ class ProductService
                 'parentBranch.name as parent_branch_name',
                 'warehouses.warehouse_name',
                 'warehouses.is_global',
+                'product_ledgers.product_id',
+                'product_ledgers.variant_id',
                 'product_ledgers.branch_id',
                 'product_ledgers.warehouse_id',
                 'product_variants.variant_name',
@@ -343,8 +346,12 @@ class ProductService
                 DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
                 DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
                 DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
-            )
-            ->groupBy('product_ledgers.branch_id', 'product_ledgers.warehouse_id', 'product_ledgers.product_id', 'product_ledgers.variant_id');
+            )->groupBy(
+                'product_ledgers.branch_id',
+                'product_ledgers.warehouse_id',
+                'product_ledgers.product_id',
+                'product_ledgers.variant_id'
+            );
 
         $data['ownBranchAndWarehouseStocks'] = $ownBranchAndWarehouseStocksQ
             ->orderBy('product_ledgers.branch_id', 'asc')

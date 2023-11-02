@@ -66,6 +66,8 @@ class ProductController extends Controller
         $productShowQueries = $this->productService->productShowQueries(id: $id);
         extract($productShowQueries);
 
+        // return $ownBranchAndWarehouseStocks;
+
         return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks'));
     }
 

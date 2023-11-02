@@ -234,6 +234,7 @@
 
                     var closingBalance = (data.balanceType == 'cr' ? '-' : '') + data.balance;
                     $('#closing_balance').val(closingBalance);
+                    $('#previous_due').val(closingBalance);
 
                     var nextId = $('#customer_account_id').data('next');
                     $('#'+nextId).focus().select();

@@ -273,9 +273,9 @@ class RolePermissionSeeder extends Seeder
             ['id' => '182', 'name' => 'sales_ordered_products_report'],
             ['id' => '183', 'name' => 'sales_returned_products_report'],
             ['id' => '184', 'name' => 'received_against_sales_report'],
-            ['id' => '185', 'name' => 'create_add_sales_return'],
-            ['id' => '186', 'name' => 'edit_add_sales_return'],
-            ['id' => '187', 'name' => 'delete_add_sales_return'],
+            ['id' => '185', 'name' => 'create_sales_return'],
+            ['id' => '186', 'name' => 'edit_sales_return'],
+            ['id' => '187', 'name' => 'delete_sales_return'],
             ['id' => '188', 'name' => 'sales_return_index'],
             ['id' => '189', 'name' => 'sold_product_list'],
             ['id' => '190', 'name' => 'sales_order_list'],
@@ -332,7 +332,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '231', 'name' => 'selling_price_group_add'],
             ['id' => '232', 'name' => 'selling_price_group_edit'],
             ['id' => '233', 'name' => 'selling_price_group_delete'],
-           
+
 
         ];
 

@@ -23,15 +23,6 @@
         }
     });
 
-    $('#addSupplier').on('click', function () {
-
-        $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
-
-            $('#add_supplier_modal_body').html(data);
-            $('#addSupplierModal').modal('show');
-        });
-    });
-
     function calculateTotalAmount(){
 
         var quantities = document.querySelectorAll('#quantity');
@@ -904,101 +895,6 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    // Show add product modal with data
-    $('#add_product').on('click', function () {
-
-        $.ajax({
-            url:"{{route('purchases.add.product.modal.view')}}",
-            type:'get',
-            success:function(data){
-
-                $('#addQuickProductModal').html(data);
-                $('#addQuickProductModal').modal('show');
-            }
-        });
-    });
-
-    $(document).on('submit', '#add_quick_product_form', function(e) {
-        e.preventDefault();
-
-        $('.quick_product_loading_button').show();
-        var url = $(this).attr('action');
-        var request = $(this).serialize();
-
-        isAjaxIn = false;
-        isAllowSubmit = false;
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: request,
-            success: function(data) {
-
-                isAjaxIn = true;
-                isAllowSubmit = true;
-                $('.quick_product_loading_button').hide();
-                $('#addQuickProductModal').modal('hide');
-                toastr.success('Successfully product is added.');
-
-                var product = data;
-                var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
-                var taxPercent = product.tax != null ? product.tax.tax_percent : '';
-
-                $('#search_product').val(name);
-                $('#e_item_name').val(name);
-                $('#e_product_id').val(product.id);
-                $('#e_variant_id').val('noid');
-                $('#e_unit').val(product.unit.name);
-                $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
-                $('#e_unit_cost_exc_tax').val(parseFloat(product.product_cost).toFixed(2));
-                $('#e_discount').val(parseFloat(0).toFixed(2));
-                $('#e_discount_type').val(1);
-                $('#e_discount_amount').val(parseFloat(0).toFixed(2));
-                $('#e_tax_percent').val(taxPercent)
-                $('#e_tax_type').val(product.tax_type);
-                $('#e_profit_margin').val(parseFloat(product.profit).toFixed(2));
-                $('#e_selling_price').val(parseFloat(product.product_price).toFixed(2));
-                $('#e_description').val('');
-
-                calculateEditOrAddAmount();
-                $('#add_item').html('Add');
-            },error: function(err) {
-
-                isAjaxIn = true;
-                isAllowSubmit = true;
-                $('.quick_product_loading_button').hide();
-
-                $('.error').html('');
-
-                if (err.status == 0) {
-
-                    toastr.error('Net Connetion Error. Reload This Page.');
-                    return;
-                }else if (err.status == 500) {
-
-                    toastr.error('Server Error. Please contact to the support team.');
-                    return;
-                }else if (err.status == 403) {
-
-                    toastr.error('Assess denied.');
-                    return;
-                }
-
-                toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-
-                $.each(err.responseJSON.errors, function(key, error) {
-
-                    $('.error_quick_product_' + key + '').html(error[0]);
-                });
-            }
-        });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
-    });
-
     $('body').keyup(function(e) {
 
         if (e.keyCode == 13 || e.keyCode == 9){
@@ -1094,3 +990,86 @@
         }
     });
 </script>
+
+@if(auth()->user()->can('supplier_add'))
+    <script>
+        $('#addContact').on('click', function(e) {
+
+            e.preventDefault();
+
+            var url = "{{ route('contacts.create', App\Enums\ContactType::Supplier->value) }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+    </script>
+@endif
+
+@if(auth()->user()->can('product_add'))
+    <script>
+        $('#add_product').on('click', function () {
+
+            $.ajax({
+                url:"#",
+                type:'get',
+                success:function(data){
+
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
+        });
+
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form',function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    toastr.success('Successfully product is added.');
+                },error: function(err) {
+
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    $('.error').html('');
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+    </script>
+@endif

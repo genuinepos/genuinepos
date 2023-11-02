@@ -76,7 +76,7 @@
 
                             if (product.is_manage_stock == 1) {
 
-                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.stock).toFixed(2));
+                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.all_stock).toFixed(2));
                             }
 
                             var price = 0;
@@ -175,7 +175,7 @@
 
                         if (variant.product.is_manage_stock == 1) {
 
-                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.stock).toFixed(2));
+                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.all_stock).toFixed(2));
                         }
 
                         var price = 0;
@@ -250,11 +250,7 @@
                                 });
 
                                 $('#e_unit_id').append(
-                                    '<option value="' + unit.id +
-                                    '" data-is_base_unit="0" data-unit_name="' + unit.name +
-                                    '" data-base_unit_multiplier="' + unit
-                                    .base_unit_multiplier + '">' + unit.name +
-                                    multiplierDetails + '</option>'
+                                    '<option value="' + unit.id + '" data-is_base_unit="0" data-unit_name="' + unit.name + '" data-base_unit_multiplier="' + unit.base_unit_multiplier + '">' + unit.name + multiplierDetails + '</option>'
                                 );
                             });
                         }

@@ -35,9 +35,9 @@ class GeneralProductSearchService
                 'product',
                 'product.productAccessBranch',
                 'updateVariantCost',
-                'product.tax:id,name,tax_percent',
-                'product.unit:id,name,code_name',
-                'product.unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'product.tax:id,tax_percent',
+                'product.unit:id,name',
+                'product.unit.childUnits:id,name,base_unit_id,base_unit_multiplier',
                 'variantBranchStock',
             )->where('variant_code', $keyWord)
                 ->select([
@@ -92,33 +92,36 @@ class GeneralProductSearchService
         }
 
         $discountBrandCategoryWise = '';
-        $discountBrandCategoryWiseQ = DB::table('discounts')
-            ->where('discounts.is_active', 1)
-            //->where('discounts.price_group_id', $__priceGroupId)
-            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
+        if (isset($__brandId) || isset($__categoryId)) {
 
-        if ($__brandId && $__categoryId) {
+            $discountBrandCategoryWiseQ = DB::table('discounts')
+                ->where('discounts.is_active', 1)
+                //->where('discounts.price_group_id', $__priceGroupId)
+                ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
 
-            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
-            $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', $__categoryId);
-        } elseif ($__brandId && !$__categoryId) {
+            if (isset($__brandId) && isset($__categoryId)) {
 
-            $discountBrandCategoryWiseQ->where('discounts.category_id', null);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
-        } elseif (!$__brandId && $__categoryId) {
+                $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
+                $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
+                $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
+                $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
+            } elseif (isset($__brandId) && !($__categoryId)) {
 
-            $discountBrandCategoryWiseQ->where('discounts.brand_id', null);
-            $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
-            $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
+                $discountBrandCategoryWiseQ->where('discounts.category_id', null);
+                $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
+                $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
+            } elseif (!isset($__brandId) && isset($__categoryId)) {
+
+                $discountBrandCategoryWiseQ->where('discounts.brand_id', null);
+                $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
+                $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
+            }
+
+            $discountBrandCategoryWise = $discountBrandCategoryWiseQ
+                ->select('discounts.discount_type', 'discounts.discount_amount', 'discounts.apply_in_customer_group')
+                ->orderBy('discounts.priority', 'desc')
+                ->first();
         }
-
-        $discountBrandCategoryWise = $discountBrandCategoryWiseQ
-            ->select('discounts.discount_type', 'discounts.discount_amount', 'discounts.apply_in_customer_group')
-            ->orderBy('discounts.priority', 'desc')
-            ->first();
 
         return $this->setDiscount($discountBrandCategoryWise);
 
@@ -178,6 +181,37 @@ class GeneralProductSearchService
         return response()->json([
             'discount' => $this->productDiscount($productId, $priceGroupId, $product->brand_id, $product->category_id),
             'stock' => $this->getAvailableStock($productId, $variantId, $branchId),
+            'unit' => $product?->unit,
+        ]);
+    }
+
+    public function getProductDiscountByIdWithSingleOrVariantBranchStock($productId, $variantId, $priceGroupId, $branchId)
+    {
+        $__variantId = $variantId != 'noid' ? $variantId : null;
+        $stock = 0;
+        if ($__variantId) {
+
+            $variantStock = DB::table('product_stocks')->where('product_id', $productId)
+                ->where('variant_id', $variantId)->where('branch_id', $branchId)
+                ->where('warehouse_id', null)->select('stock')->first();
+
+            $stock = $variantStock ? $variantStock->stock : 0;
+        } else {
+
+            $productStock = DB::table('product_stocks')
+                ->where('product_id', $productId)->where('branch_id', $branchId)
+                ->where('warehouse_id', null)->select('stock')->first();
+
+            $stock = $productStock ? $productStock->stock : 0;
+        }
+
+        $product = Product::with(['unit:id,name', 'unit.childUnits:id,name,base_unit_id,base_unit_multiplier'])
+            ->where('id', $productId)
+            ->select('id', 'is_manage_stock', 'unit_id', 'brand_id', 'category_id', 'quantity')->first();
+
+        return response()->json([
+            'discount' => $this->productDiscount($productId, $priceGroupId, $product->brand_id, $product->category_id),
+            'stock' => $product->is_manage_stock == 1 ? $stock : PHP_INT_MAX,
             'unit' => $product?->unit,
         ]);
     }
@@ -248,7 +282,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This variant is not available in this Shop/Business.']);
+            return response()->json(['errorMsg' => __('This variant is not available in this Shop/Business.')]);
         }
     }
 
@@ -270,7 +304,7 @@ class GeneralProductSearchService
             return response()->json(['stock' => $productStock->stock, 'all_stock' => $product->quantity]);
         } else {
 
-            return response()->json(['errorMsg' => 'This variant is not available in the selected warehouse..']);
+            return response()->json(['errorMsg' => __('This variant is not available in the selected warehouse.')]);
         }
     }
 
@@ -306,6 +340,8 @@ class GeneralProductSearchService
 
     public function nameSearching($keyword, $isShowNotForSaleItem = 1, $branchId = null)
     {
+        $generalSettings = config('generalSettings');
+
         $namedProducts = '';
 
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
@@ -326,15 +362,47 @@ class GeneralProductSearchService
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+            ->leftJoin('purchase_products as updateProductCost', function ($join) use ($generalSettings) {
+
+                $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+
+                if ($stockAccountingMethod == 1) {
+
+                    $ordering = 'asc';
+                } else {
+
+                    $ordering = 'desc';
+                }
+
+                $join->on('products.id', 'updateProductCost.product_id')
+                    ->where('updateProductCost.left_qty', '>', '0')
+                    ->where('updateProductCost.variant_id', null)
+                    ->where('updateProductCost.branch_id', auth()->user()->branch_id)
+                    ->orderBy('updateProductCost.created_at', $ordering)->select('updateProductCost.product_id', 'updateProductCost.net_unit_cost')->limit(1);
+                // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
+            })->leftJoin('purchase_products as updateVariantCost', function ($join) use ($generalSettings) {
+
+                $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+
+                if ($stockAccountingMethod == 1) {
+
+                    $ordering = 'asc';
+                } else {
+
+                    $ordering = 'desc';
+                }
+
+                $join->on('product_variants.id', 'updateVariantCost.variant_id')
+                    ->where('updateVariantCost.left_qty', '>', '0')
+                    ->where('updateVariantCost.branch_id', auth()->user()->branch_id)
+                    ->orderBy('updateVariantCost.created_at', $ordering)->select('updateVariantCost.product_id', 'updateVariantCost.net_unit_cost')->limit(1);
+                // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
+            })
             ->select(
-                // 'product_branches.product_quantity as p_qty',
-                // 'product_branch_variants.variant_quantity as v_qty',
                 'products.id',
                 'products.name',
-                'products.product_code',
                 'products.is_combo',
                 'products.is_manage_stock',
-                // 'products.is_purchased',
                 'products.is_show_emi_on_pos',
                 'products.has_batch_no_expire_date',
                 'products.is_variant',
@@ -342,13 +410,11 @@ class GeneralProductSearchService
                 'products.product_cost_with_tax',
                 'products.product_price',
                 'products.profit',
-                'products.quantity',
                 'products.tax_ac_id',
                 'products.tax_type',
                 'products.thumbnail_photo',
                 'products.type',
                 'products.unit_id',
-                'taxes.name as tax_name',
                 'taxes.tax_percent',
                 'product_variants.id as variant_id',
                 'product_variants.variant_name',
@@ -357,9 +423,10 @@ class GeneralProductSearchService
                 'product_variants.variant_cost_with_tax',
                 'product_variants.variant_profit',
                 'product_variants.variant_price',
-                'product_variants.variant_quantity',
                 'units.name as unit_name',
-            )
+                'updateProductCost.net_unit_cost as update_product_cost',
+                'updateVariantCost.net_unit_cost as update_variant_cost',
+            )->distinct('product_access_branches.branch_id')
             // ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
             ->orderBy('products.name', 'asc')->limit(25)
             ->get();

@@ -3,7 +3,7 @@
 namespace App\Models\Contacts;
 
 use App\Models\BaseModel;
-use App\Models\Branch;
+use App\Models\Setups\Branch;
 
 class MoneyReceipt extends BaseModel
 {

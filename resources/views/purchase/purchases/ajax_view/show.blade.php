@@ -126,7 +126,7 @@
                                             <td class="text-start fw-bold" style="font-size:11px!important;">
                                                 {{ $purchaseProduct->product->name.' '.$variant }}
                                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                                    <small class="d-block text-muted"><strong>{{ __("Batch No") }} :</strong>  {{ $purchaseProduct->batch_number }}, <strong>{{ __("Expire Date") }} :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                                    <small class="d-block text-muted" style="font-size: 9px;">{{ __("Batch No") }} : {{ $purchaseProduct->batch_number }}, {{ __("Expire Date") }} :{{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                                 @endif
                                             </td>
                                             <td class="text-start fw-bold" style="font-size:11px!important;">{{ $purchaseProduct->quantity.'/'.$purchaseProduct?->unit?->code_name }}</td>
@@ -413,7 +413,7 @@
                                 <p>{{ Str::limit($purchaseProduct->product->name, 25).' '. $variant }}</p>
                                 <small class="d-block text-muted">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted"><strong>{{ __("Batch No") }} :</strong>  {{ $purchaseProduct->batch_number }}, <strong>{{ __("Expire Date") }} :</strong> {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                    <small class="d-block text-muted" style="font-size: 9px;">{{ __("Batch No") }} : {{ $purchaseProduct->batch_number }}, {{ __("Expire Date") }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity.'/'.$purchaseProduct?->unit?->code_name }}</td>

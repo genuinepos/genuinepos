@@ -39,6 +39,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->boolean('is_fixed')->default(0);
             $table->boolean('is_chain_shop_contact')->default(0);
+            $table->decimal('reward_point')->default(0);
             $table->timestamps();
 
             $table->foreign('customer_group_id')->references('id')->on('customer_groups')->onDelete('set null');

@@ -8,7 +8,6 @@
     var branch_id = "{{ auth()->user()->branch_id }}";
     var branch_name = "{{ $branchName }}";
 
-
     // Get all price group
     var priceGroups = @json($priceGroupProducts);
 
@@ -762,7 +761,7 @@
 
             if ($(this).val() != '' && $(this).val() > 0) {
 
-                $('#e_discount_type').focus();
+                $('#e_unit_discount_type').focus();
             } else {
 
                 $('#e_tax_ac_id').focus();
@@ -770,7 +769,7 @@
         }
     });
 
-    $('#e_discount_type').on('change keypress click', function(e) {
+    $('#e_unit_discount_type').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
 

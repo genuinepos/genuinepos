@@ -8,6 +8,7 @@ use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
 use App\Http\Controllers\Products\PriceGroupController;
 use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\OpeningStockController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\ProductSettingsController;
@@ -99,6 +100,10 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
             Route::get('index/{productId}/{type}', 'index')->name('selling.price.groups.manage.index');
             Route::post('store/or/update', 'storeOrUpdate')->name('selling.price.groups.manage.store.or.update');
         });
+    });
+
+    Route::controller(ExpiredProductController::class)->prefix('expired')->group(function () {
+        Route::get('/', 'index')->name('expired.products.index');
     });
 
     Route::controller(ProductSettingsController::class)->prefix('settings')->group(function () {

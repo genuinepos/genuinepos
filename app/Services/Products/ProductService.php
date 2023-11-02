@@ -391,6 +391,7 @@ class ProductService
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $addProduct->is_for_sale = $request->is_for_sale;
+        $addProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
         $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
         $addProduct->is_manage_stock = $request->is_manage_stock;
         $addProduct->product_details = isset($request->product_details) ? $request->product_details : null;
@@ -455,6 +456,7 @@ class ProductService
         $updateProduct->product_condition = $request->product_condition;
         $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $updateProduct->is_for_sale = $request->is_for_sale;
+        $updateProduct->has_batch_no_expire_date = $request->has_batch_no_expire_date;
         $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
         $updateProduct->is_manage_stock = $request->is_manage_stock;
         $updateProduct->product_details = isset($request->product_details) ? $request->product_details : null;

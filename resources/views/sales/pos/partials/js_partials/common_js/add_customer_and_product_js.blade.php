@@ -1,17 +1,9 @@
 <script>
     $('#customer_account_id').select2();
-    $('#addCustomer').on('click', function () {
 
-        $.get("{{ route('sales.pos.add.quick.customer.modal') }}", function(data) {
+    $('#customer_account_id').on('change', function () {
 
-            $('#add_customer_modal_body').html(data);
-            $('#addCustomerModal').modal('show');
-        });
-    });
-
-    $('#customer_id').on('change', function () {
-
-        var customerId = $(this).val();
+        var customerAccountId = $(this).val();
         $('#previous_due').val(parseFloat(0).toFixed(2));
         $('#earned_point').val(0);
         $('#pre_redeemed').val(0);
@@ -23,17 +15,17 @@
         $('#order_discount_amount').val(parseFloat(calcDiscount).toFixed(2));
         $('#pre_redeemed_amount').val(0);
 
-        var url = "{{ route('contacts.customer.amounts.branch.wise', ':customerId') }}";
-        var route = url.replace(':customerId', customerId);
+        var url = "{{ route('accounts.balance', ':customerAccountId') }}";
+        var route = url.replace(':customerAccountId', customerAccountId);
 
         $.get(route, function(data) {
 
-            $('#previous_due').val(data.total_sale_due);
+            $('#previous_due').val(0);
 
             if (rpayment_settings.enable_rp == '1') {
 
-                $('#earned_point').val(data.point);
-                var __point_amount = parseFloat(data.point) * parseFloat(rpayment_settings.redeem_amount_per_unit_rp);
+                $('#earned_point').val(data.reward_point);
+                var __point_amount = parseFloat(data.reward_point) * parseFloat(rpayment_settings.redeem_amount_per_unit_rp);
                 $('#trial_point_amount').val(parseFloat(__point_amount).toFixed(2));
             }
 

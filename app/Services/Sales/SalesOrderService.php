@@ -29,6 +29,7 @@ class SalesOrderService
             'sales.id',
             'sales.branch_id',
             'sales.order_id',
+            'sales.quotation_id',
             'sales.date',
             'sales.total_item',
             'sales.total_qty',

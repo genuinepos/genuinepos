@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProductAccessBranch extends Model
 {
     use HasFactory;
+    protected $hidden = ['created_at', 'updated_at', 'is_delete_in_update'];
 
     public function branch()
     {

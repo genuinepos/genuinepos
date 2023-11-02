@@ -143,7 +143,7 @@ Route::group(['prefix' => 'product'], function () {
         // Route::post('add/unit', [ProductController::class, 'addUnit'])->name('products.add.unit');
         // Route::post('add/warranty', [ProductController::class, 'addWarranty'])->name('products.add.warranty');
 
-        Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
+        // Route::get('expired/products', [ProductController::class, 'expiredProducts'])->name('products.expired.products');
 
         Route::group(['prefix' => 'import/price/group/products'], function () {
 

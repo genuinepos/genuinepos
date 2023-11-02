@@ -61,7 +61,7 @@
                     <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
-                            <p class="title">@lang('menu.product')</p>
+                            <p class="title">{{ __("Product") }}</p>
                         </a>
                     </li>
                 @endif
@@ -364,10 +364,10 @@
                                         </a>
                                     </div>
                                 @endif
-                                
+
                                 @if (auth()->user()->can('product_expired_list'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('products.expired.products') }}" class="switch-bar-wrap">
+                                        <a href="{{ route('expired.products.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span>

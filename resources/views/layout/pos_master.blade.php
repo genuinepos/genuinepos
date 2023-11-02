@@ -156,21 +156,21 @@
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
+                        <h6 class="modal-title" id="payment_heading">{{ __("Choose Payment Method") }}</h6>
                         <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __("Payment Method") }} </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                         @foreach ($methods as $method)
-                                            <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
+                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
                                         @endforeach
@@ -179,18 +179,23 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>@lang('menu.debit_account') </strong> </label>
+                                <label><strong>{{ __("Debit Account") }}</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="account_id" class="form-control" id="account_id">
+                                    <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
                                         @foreach ($accounts as $account)
+                                            @if ($account->is_bank_account == 1 && $account->has_bank_access_branch == 0)
+                                                @continue
+                                            @endif
+
                                             <option value="{{ $account->id }}">
                                                 @php
-                                                    $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/c)';
+                                                    $acNo = $account->account_number ? ', A/c No : ' . $account->account_number : '';
+                                                    $bank = $account?->bank ? ', Bank : ' . $account?->bank?->name : '';
                                                 @endphp
-                                                {{ $account->name . $accountType }}
+                                                {{ $account->name . $acNo . $bank }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -199,16 +204,16 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> @lang('menu.payment_note') </strong></label>
-                            <textarea name="payment_note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="@lang('menu.note')"></textarea>
+                            <label><strong>{{ __("Payment Note") }}</strong></label>
+                            <input name="payment_note" class="form-control form-control-sm" id="payment_note" data-next="choose_method_and_final" placeholder="{{ __("Payment Note") }}">
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')</span></button>
-                                    <button type="button" class="btn btn-sm btn-danger" id="cancel_pay_mathod">@lang('menu.close')</button>
-                                    <a href="#" class="btn btn-sm btn-success" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">@lang('menu.confirm') (F10)</a>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                    <button class="btn btn-success pos_submit_btn p-1" id="choose_method_and_final" tabindex="-1">{{ __("Confirm") }} (F10)</button>
+                                    <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __("Close") }}</button>
                                 </div>
                             </div>
                         </div>
@@ -224,34 +229,35 @@
                 <div class="modal-dialog col-40-modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.reedem_oint')</h6>
+                            <h6 class="modal-title" id="exampleModalLabel">{{ __("Redeem Point") }}</h6>
                             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                         </div>
+
                         <div class="modal-body">
                             <div class="form-group">
-                                <label><b>@lang('menu.available_point') </b> </label>
-                                <input type="number" step="any" name="available_point" id="available_point" class="form-control" value="0" readonly>
+                                <label><b>{{ __("Available Point") }}</b></label>
+                                <input readonly type="number" step="any" name="available_point" id="available_point" class="form-control fw-bold" data-next="total_redeem_point" value="0" tabindex="-1">
                             </div>
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeemed') </b> </label>
-                                    <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control">
+                                    <label><b>{{ __("Redeemed") }}</b></label>
+                                    <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control fw-bold" data-next="redeem_btn">
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-hide" value="0">
                                     <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-hide" value="0">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><b>@lang('menu.redeem_amount') </b> </label>
-                                    <input type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control">
+                                    <label><b>{{ __("Redeem Amount") }}</b></label>
+                                    <input readonly type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control fw-bold" tabindex="-1">
                                 </div>
                             </div>
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
-                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">@lang('menu.redeem')</a>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b>{{ __("Loading") }}</b></button>
+                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">{{ __("Redeem") }}</a>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">{{ __("Close") }}</button>
                                 </div>
                             </div>
                         </div>
@@ -271,14 +277,13 @@
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <div class="tab_list_area">
                         <div class="btn-group">
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> {{ __("Final") }}</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/quotations/2') }}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/quotations/2') }}" tabindex="-1"><i class="fas fa-scroll"></i> {{ __("Quotation") }}</a>
 
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/drafts/2') }}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
+                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/drafts/2') }}" tabindex="-1"><i class="fas fa-shopping-bag"></i> {{ __("Draft") }}</a>
                         </div>
                     </div>
 
@@ -397,82 +402,93 @@
         </div>
     </div>
     <!-- Edit selling product modal end-->
+
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">@lang('menu.samsung_a')</h6>
+                    <h6 class="modal-title" id="e_product_name">@lang('menu.samsung_a')</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <form id="update_selling_product">
+                        <div class="hidden_fields d-none">
+                            <input type="hidden" id="e_unique_id">
+                            <input type="hidden" id="e_product_id">
+                            <input type="hidden" id="e_variant_id">
+                            <input type="hidden" id="e_tax_amount">
+                            <input type="hidden" id="e_price_inc_tax">
+                        </div>
+
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ $generalSettings['business__currency'] }}</span>
-                                    <span id="unit_cost">1,200.00</span>
+                                    <span id="unit_cost">/span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">@lang('menu.cost')</span>
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __("Cost") }}</span>
                             </p>
                         @endif
 
-                        <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control edit_input" data-name="Quantity" id="e_quantity" placeholder="@lang('menu.quantity')" value="" />
-                            <span class="error error_e_quantity"></span>
-                        </div>
-
-                        <div class="form-group mt-1">
-                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen')? '': 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="@lang('menu.unit')" value="" />
-                            <span class="error error_e_unit_price"></span>
-                        </div>
-
-                        @if (auth()->user()->can('edit_discount_pos_screen'))
-                            <div class="form-group row mt-1">
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount_type')</strong> </label>
-                                    <select class="form-control" id="e_unit_discount_type">
-                                        <option value="2">@lang('menu.percentage')</option>
-                                        <option value="1">@lang('menu.fixed')</option>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label> <strong>{{ __("Quantity") }}</strong> : <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                    <select id="e_unit_id" class="form-control w-40">
+                                        <option value="">{{ __('Unit') }}</option>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6">
-                                    <label><strong>@lang('menu.discount')</strong> </label>
-                                    <input type="number" class="form-control" id="e_unit_discount" value="0.00" />
-                                    <input type="hidden" id="e_discount_amount" />
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
+                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}" value="0.00">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label><strong>{{ __("Unit Discount") }}</strong> </label>
+                                <div class="input-group">
+                                    <select class="form-control" id="e_unit_discount_type">
+                                        <option value="1">{{ __("Fixed") }}</option>
+                                        <option value="2">{{ __("Percentage") }}</option>
+                                    </select>
+
+                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00"/>
+                                    <input type="hidden" id="e_discount_amount"/>
                                 </div>
                             </div>
-                        @endif
-
-                        <div class="form-group row mt-1">
-                            <div class="col-md-6">
-                                <label><strong> @lang('menu.tax')</strong> </label>
-                                <select class="form-control" id="e_unit_tax"></select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.tax_type')</strong> </label>
-                                <select class="form-control" id="e_tax_type">
-                                    <option value="1">@lang('menu.exclusive')</option>
-                                    <option value="2">@lang('menu.inclusive')</option>
-                                </select>
-                            </div>
                         </div>
 
-                        <div class="form-group mt-1">
-                            <label><strong>@lang('menu.sale_unit')</strong> </label>
-                            <select class="form-control" id="e_unit"></select>
-                        </div>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label><strong>{{ __("Vat/Tax") }}</strong> </label>
+                                <div class="input-group">
+                                    <select id="e_tax_ac_id" class="form-control w-50">
+                                        <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
+                                        @foreach ($taxAccounts as $taxAccount)
+                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                {{ $taxAccount->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12 d-flex justify-content-end gap-2">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                                <button type="submit" class="btn btn-sm btn-success">@lang('menu.update')</button>
+                                    <select id="e_tax_type" class="form-control w-50" tabindex="-1">
+                                        <option value="1">{{ __('Exclusive') }}</option>
+                                        <option value="2">{{ __('Inclusive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Subtotal') }}</label>
+                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Edit') }}</a>
                             </div>
                         </div>
                     </form>
@@ -520,23 +536,22 @@
         <div class="modal-dialog col-45-modal" role="document">
             <div class="modal-content modal-middle">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="payment_heading">@lang('menu.quick_cash_receive')</h6>
+                    <h6 class="modal-title" id="payment_heading">{{ __("Quick Cash Receive") }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <div class="form-group row ">
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
-                                <label class="text-white big_label"><strong>@lang('menu.total_receivable') </strong> </label>
+                                <label class="text-white big_label"><strong>{{ __("Total Receivable") }}</strong> </label>
                                 <input readonly type="text" class="form-control big_field" id="modal_total_receivable" value="0">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-2 bg-info">
-                                <label class="text-white big_label"><strong>@lang('menu.change') </strong></label>
-                                <input type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
+                                <label class="text-white big_label"><strong>{{ __("Change") }}</strong></label>
+                                <input readonly type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
                             </div>
                         </div>
                     </div>
@@ -544,24 +559,24 @@
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
                             <div class="input-box bg-success">
-                                <label class="text-white big_label"><strong>@lang('menu.cash_receive') </strong> <span class="text-danger">*</span></label>
-                                <input type="text" name="modal_received_amount" class="form-control text-success big_field m-paying" id="modal_received_amount" value="0" autofocus>
+                                <label class="text-white big_label"><strong>{{ __("Cash Receive") }}</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="modal_received_amount" class="form-control text-success big_field m-paying" id="modal_received_amount" data-next="final_and_quick_cash_receive" value="0" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
-                                <label class="text-white big_label"><strong>@lang('menu.due') </strong> </label>
-                                <input type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
+                                <label class="text-white big_label"><strong>{{ __("Curr. Balance") }}</strong> </label>
+                                <input readonly type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')</b></button>
-                            <a href="#" class="c-btn button-success ms-1 float-end" id="submit_btn" data-button_type="1" data-action_id="1" tabindex="-1">@lang('menu.cash') (F10)</a>
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 pos_submit_btn float-end">{{ __("Close") }}</button>
+                            <button class="btn btn-success ms-1 pos_submit_btn float-end" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} (F10)</button>
                         </div>
                     </div>
                 </div>
@@ -715,25 +730,6 @@
             evt.preventDefault();
             scrollContainer.scrollLeft += evt.deltaY;
         });
-
-        $('#payment_method_id').on('change', function() {
-
-            var account_id = $(this).find('option:selected').data('account_id');
-            setMethodAccount(account_id);
-        });
-
-        function setMethodAccount(account_id) {
-
-            if (account_id) {
-
-                $('#account_id').val(account_id);
-            } else if (account_id === '') {
-
-                $('#account_id option:first-child').prop("selected", true);
-            }
-        }
-
-        setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
 
         function toggleFullscreen(elem) {
 

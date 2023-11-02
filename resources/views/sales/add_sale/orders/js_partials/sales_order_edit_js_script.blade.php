@@ -1075,50 +1075,6 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    @if(auth()->user()->can('product_add'))
-
-        $('#add_product').on('click', function () {
-
-            $.ajax({
-                url:"#",
-                type:'get',
-                success:function(data){
-
-                    $('#add_product_body').html(data);
-                    $('#addProductModal').modal('show');
-                }
-            });
-        });
-
-        // Add product by ajax
-        $(document).on('submit', '#add_product_form',function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-
-                    toastr.success('Successfully product is added.');
-                },error: function(err) {
-
-                    $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-                    $('.error').html('');
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-
-                        $('.error_sale_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
-    @endif
-
     $('body').keyup(function(e){
 
         if (e.keyCode == 13 || e.keyCode == 9){
@@ -1210,3 +1166,86 @@
 
     calculateTotalAmount();
 </script>
+
+@if(auth()->user()->can('customer_add'))
+    <script>
+        $('#addContact').on('click', function(e) {
+
+            e.preventDefault();
+
+            var url = "{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+    </script>
+@endif
+
+@if(auth()->user()->can('product_add'))
+    <script>
+        $('#add_product').on('click', function () {
+
+            $.ajax({
+                url:"#",
+                type:'get',
+                success:function(data){
+
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
+        });
+
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form',function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    toastr.success('Successfully product is added.');
+                },error: function(err) {
+
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    $('.error').html('');
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+    </script>
+@endif

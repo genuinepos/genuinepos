@@ -132,7 +132,7 @@ Route::group(['prefix' => 'product'], function () {
         // Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
         // Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
         Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
-        Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
+        // Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
         // Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
         // Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
         // Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');

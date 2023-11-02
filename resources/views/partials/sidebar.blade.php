@@ -26,18 +26,12 @@
                         auth()->user()->can('customer_add') ||
                         auth()->user()->can('customer_import') ||
                         auth()->user()->can('customer_group') ||
-                        (
-                            auth()->user()->can('supplier_report') &&
-                            auth()->user()->can('supplier_report')
-                        ) ||
-                        (
-                            auth()->user()->can('customer_report') &&
-                            auth()->user()->can('customer_report')
-                        )
+                        auth()->user()->can('supplier_report') ||
+                        auth()->user()->can('customer_report')
                     )
                         <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
                             <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
-                                <p class="title">@lang('menu.contacts')</p>
+                                <p class="title">{{ __("Contacts") }}</p>
                             </a>
                         </li>
                     @endif
@@ -664,24 +658,7 @@
                                 </div>
                             </div>
 
-                            @if (
-                                (
-                                    auth()->user()->can('supplier_report') &&
-                                    auth()->user()->can('supplier_report')
-                                )
-                                    ||
-                                (
-                                    auth()->user()->can('customer_report') &&
-                                    auth()->user()->can('customer_report')
-                                )
-                            )
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>Contact Reports</strong></p>
-                                        <hr class="p-0 m-0 mb-3">
-                                    </div>
-                                </div> --}}
-
+                            @if (auth()->user()->can('supplier_report') && auth()->user()->can('customer_report'))
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Contact Reports') }}</p>
                                     <div class="sub-menu-row">

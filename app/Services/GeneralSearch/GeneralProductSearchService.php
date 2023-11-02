@@ -3,8 +3,9 @@
 namespace App\Services\GeneralSearch;
 
 use App\Models\Product;
-use App\Models\Products\ProductVariant;
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Products\ProductVariant;
 
 class GeneralProductSearchService
 {
@@ -347,7 +348,7 @@ class GeneralProductSearchService
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $query = DB::table('products')
-            ->where('products.status', 1)
+            ->where('products.status', BooleanType::True->value)
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
             ->where('products.name', 'LIKE', '%' . $keyword . '%');
 

@@ -60,11 +60,15 @@
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
-                        <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary">
-                            <i class="fas fa-plus-square"></i> @lang('menu.add')
-                        </a>
-                        <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                        @if (auth()->user()->can('customer_add'))
+                            <a href="{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}" id="addContact" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add Customer") }}</a>
+                        @endif
+
+                        @if (auth()->user()->can('customer_import'))
+                            <a href="{{ route('contacts.customers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Import Customer") }}</a>
+                        @endif
+
+                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __("Print") }}</a>
                     </div>
                 </div>
 
@@ -146,7 +150,6 @@
             "ajax": {
                 "url": "{{ route('contacts.manage.customer.index', \App\Enums\ContactType::Customer->value) }}",
                 "data": function(d) {
-
                     d.branch_id = $('#branch_id').val();
                 }
             },

@@ -30,13 +30,38 @@ class ContactController extends Controller
 
     public function create($type)
     {
-        $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
+        if ($type == ContactType::Customer->value) {
+            if (!auth()->user()->can('customer_add')) {
 
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
+        $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
         return view('contacts.ajax_view.create', compact('type', 'customerGroups'));
     }
 
     public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
+        if ($type == ContactType::Customer->value) {
+            if (!auth()->user()->can('customer_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
         try {
 
             DB::beginTransaction();
@@ -88,11 +113,25 @@ class ContactController extends Controller
             DB::rollBack();
         }
 
-        return $addContact;
+        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type];
     }
 
     public function edit($contactId, $type)
     {
+        if ($type == ContactType::Customer->value) {
+
+            if (!auth()->user()->can('customer_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
         $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
         $contact = $this->contactService->singleContact(id: $contactId, with: ['openingBalance', 'customerGroup']);
 
@@ -101,6 +140,20 @@ class ContactController extends Controller
 
     public function update(Request $request, $contactId, $type)
     {
+        if ($type == ContactType::Customer->value) {
+
+            if (!auth()->user()->can('customer_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
         try {
 
             DB::beginTransaction();

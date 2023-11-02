@@ -205,7 +205,7 @@ class ProductService
 
             ->editColumn('status', function ($row) {
 
-                if ($row->status == 1) {
+                if ($row->status == BooleanType::True->value) {
                     $html = '<div class="form-check form-switch">';
                     $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
@@ -247,7 +247,7 @@ class ProductService
                 //         ->orderBy('product_branches.branch_id', 'asc')->get();
                 // }
 
-                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True) {
+                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
                     $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
@@ -395,14 +395,14 @@ class ProductService
         $addProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
         $addProduct->is_manage_stock = $request->is_manage_stock;
         $addProduct->product_details = isset($request->product_details) ? $request->product_details : null;
-        $addProduct->is_purchased = 0;
+        $addProduct->is_purchased = BooleanType::False->value;
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = isset($request->weight) ? $request->weight : null;
 
         if ($request->type == 1) {
 
-            $addProduct->is_variant = $request->is_variant ? 1 : 0;
+            $addProduct->is_variant = $request->is_variant ? BooleanType::True->value : BooleanType::False->value;
             $addProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
             $addProduct->profit = $request->profit ? $request->profit : 0;
             $addProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
@@ -460,14 +460,14 @@ class ProductService
         $updateProduct->is_show_emi_on_pos = $request->is_show_emi_on_pos;
         $updateProduct->is_manage_stock = $request->is_manage_stock;
         $updateProduct->product_details = isset($request->product_details) ? $request->product_details : null;
-        $updateProduct->is_purchased = 0;
+        $updateProduct->is_purchased = BooleanType::False->value;
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = isset($request->weight) ? $request->weight : null;
 
         if ($request->type == 1) {
 
-            $updateProduct->is_variant = $request->is_variant ? 1 : 0;
+            $updateProduct->is_variant = $request->is_variant ? BooleanType::True->value : BooleanType::False->value;
             $updateProduct->product_cost = $request->product_cost ? $request->product_cost : 0;
             $updateProduct->profit = $request->profit ? $request->profit : 0;
             $updateProduct->product_cost_with_tax = $request->product_cost_with_tax ? $request->product_cost_with_tax : 0;
@@ -514,11 +514,11 @@ class ProductService
         string $isLastEntry
     ) {
         $updateProduct = Product::where('id', $productId)->first();
-        $updateProduct->is_purchased = 1;
+        $updateProduct->is_purchased = BooleanType::True->value;
 
-        if ($updateProduct->is_variant == 0) {
+        if ($updateProduct->is_variant == BooleanType::False->value) {
 
-            if ($isLastEntry == 1) {
+            if ($isLastEntry == BooleanType::True->value) {
 
                 $updateProduct->product_cost = $unitCostWithDiscount;
                 $updateProduct->product_cost_with_tax = $unitCostIncTax;
@@ -539,7 +539,7 @@ class ProductService
                 ->where('product_id', $productId)
                 ->first();
 
-            if ($isLastEntry == 1) {
+            if ($isLastEntry == BooleanType::True->value) {
 
                 $updateVariant->variant_cost = $unitCostWithDiscount;
                 $updateVariant->variant_cost_with_tax = $unitCostIncTax;
@@ -551,8 +551,27 @@ class ProductService
                 $updateVariant->variant_price = $sellingPrice;
             }
 
-            $updateVariant->is_purchased = 1;
+            $updateVariant->is_purchased = BooleanType::True->value;
             $updateVariant->save();
+        }
+    }
+
+    public function changeProductStatus(int $id): array
+    {
+        $statusChange = $this->singleProduct(id: $id);
+
+        if ($statusChange->status == BooleanType::True->value) {
+
+            $statusChange->status = BooleanType::False->value;
+            $statusChange->save();
+
+            return ['msg' => __('Successfully Product is deactivated')];
+        } else {
+
+            $statusChange->status = BooleanType::True->value;
+            $statusChange->save();
+
+            return ['msg' => __('Successfully Product is activated')];
         }
     }
 

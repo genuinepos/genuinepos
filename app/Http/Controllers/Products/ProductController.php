@@ -248,6 +248,12 @@ class ProductController extends Controller
         return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
     }
 
+    public function changeStatus($id)
+    {
+        $changeStatus = $this->productService->changeProductStatus(id: $id);
+        return response()->json($changeStatus['msg']);
+    }
+
     public function delete($id)
     {
         try {

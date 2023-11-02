@@ -36,7 +36,7 @@ class ProductController extends Controller
     // index view
     public function expiredProducts(Request $request)
     {
-        if (! auth()->user()->can('product_all')) {
+        if (!auth()->user()->can('product_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -50,7 +50,7 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_all')) {
+        if (!auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -72,7 +72,7 @@ class ProductController extends Controller
     // Add product view
     public function create(Request $request)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -86,7 +86,7 @@ class ProductController extends Controller
                 ->orderBy('products.id', 'desc');
 
             return DataTables::of($products)
-                ->addColumn('action', fn ($row) => '<a href="'.route('products.edit', [$row->id]).'" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+                ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
                 ->editColumn('name', fn ($row) => Str::limit($row->name, 17))
                 ->rawColumns(['action'])->make(true);
         }
@@ -173,8 +173,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(600, 600)->save('uploads/product/'.$productImageName);
+                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(600, 600)->save('uploads/product/' . $productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $addProduct->id;
                     $addProductImage->image = $productImageName;
@@ -193,8 +193,8 @@ class ProductController extends Controller
             if ($request->file('photo')) {
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/'.$productThumbnailName);
+                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(600, 600)->save('uploads/product/thumbnail/' . $productThumbnailName);
                 $addProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -226,8 +226,8 @@ class ProductController extends Controller
                     if (isset($request->variant_image[$index])) {
 
                         $variantImage = $request->variant_image[$index];
-                        $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
-                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
+                        $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                        Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                         $addVariant->variant_image = $variantImageName;
                     }
 
@@ -289,7 +289,7 @@ class ProductController extends Controller
 
         session()->flash('successMsg', __('Product created Successfully'));
 
-        return response()->json( __("Product created Successfully"));
+        return response()->json(__("Product created Successfully"));
     }
 
     public function view($productId)
@@ -481,7 +481,7 @@ class ProductController extends Controller
     // Get opening stock
     public function openingStock($productId)
     {
-        if (! auth()->user()->can('openingStock_add')) {
+        if (!auth()->user()->can('openingStock_add')) {
             abort(403, 'Access Forbidden.');
         }
         $products = DB::table('products')->where('products.id', $productId)
@@ -565,7 +565,7 @@ class ProductController extends Controller
     // edit view of product
     public function edit($productId)
     {
-        if (! auth()->user()->can('product_edit')) {
+        if (!auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -670,8 +670,8 @@ class ProductController extends Controller
                 foreach ($request->file('image') as $image) {
 
                     $productImage = $image;
-                    $productImageName = uniqid().'.'.$productImage->getClientOriginalExtension();
-                    Image::make($productImage)->resize(250, 250)->save('uploads/product/'.$productImageName);
+                    $productImageName = uniqid() . '.' . $productImage->getClientOriginalExtension();
+                    Image::make($productImage)->resize(250, 250)->save('uploads/product/' . $productImageName);
                     $addProductImage = new ProductImage();
                     $addProductImage->product_id = $updateProduct->id;
                     $addProductImage->image = $productImageName;
@@ -692,15 +692,15 @@ class ProductController extends Controller
 
                 if ($updateProduct->thumbnail_photo != 'default.png') {
 
-                    if (file_exists(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo))) {
+                    if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
 
-                        unlink(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo));
+                        unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
                     }
                 }
 
                 $productThumbnailPhoto = $request->file('photo');
-                $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
-                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/'.$productThumbnailName);
+                $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+                Image::make($productThumbnailPhoto)->resize(250, 250)->save('uploads/product/thumbnail/' . $productThumbnailName);
                 $updateProduct->thumbnail_photo = $productThumbnailName;
             }
 
@@ -745,15 +745,15 @@ class ProductController extends Controller
 
                             if ($updateVariant->variant_image != null) {
 
-                                if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
+                                if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
 
-                                    unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
+                                    unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                                 }
                             }
 
                             $variantImage = $request->variant_image[$index];
-                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
+                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $updateVariant->variant_image = $variantImageName;
                         }
 
@@ -772,8 +772,8 @@ class ProductController extends Controller
                         if (isset($request->variant_image[$index])) {
 
                             $variantImage = $request->variant_image[$index];
-                            $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
-                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/'.$variantImageName);
+                            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+                            Image::make($variantImage)->resize(250, 250)->save('uploads/product/variant_image/' . $variantImageName);
                             $addVariant->variant_image = $variantImageName;
                         }
 
@@ -789,9 +789,9 @@ class ProductController extends Controller
 
                     if ($deleteNotFoundVariant->variant_image != null) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/'.$updateVariant->variant_image))) {
+                        if (file_exists(public_path('uploads/product/variant_image/' . $updateVariant->variant_image))) {
 
-                            unlink(public_path('uploads/product/thumbnail/'.$updateVariant->variant_image));
+                            unlink(public_path('uploads/product/thumbnail/' . $updateVariant->variant_image));
                         }
                     }
 
@@ -871,7 +871,7 @@ class ProductController extends Controller
     // delete product
     public function delete(Request $request, $productId)
     {
-        if (! auth()->user()->can('product_delete')) {
+        if (!auth()->user()->can('product_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -962,7 +962,7 @@ class ProductController extends Controller
     // multiple delete method
     public function multipleDelete(Request $request)
     {
-        if (! auth()->user()->can('product_delete')) {
+        if (!auth()->user()->can('product_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

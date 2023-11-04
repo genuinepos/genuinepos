@@ -3,8 +3,8 @@
 namespace App\Models\Contacts;
 
 use App\Enums\ContactType;
-use App\Models\CustomerGroup;
 use App\Models\Accounts\Account;
+use App\Models\Contacts\CustomerGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,7 +33,7 @@ class Contact extends Model
 
     public function customerGroup()
     {
-        return $this->belongsTo(CustomerGroup::class, 'contact_id');
+        return $this->belongsTo(CustomerGroup::class, 'customer_group_id');
     }
 
     public function moneyReceipts()

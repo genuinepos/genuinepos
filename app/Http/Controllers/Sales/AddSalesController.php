@@ -120,6 +120,8 @@ class AddSalesController extends Controller
 
         extract($createMethodContainer);
 
+        // return $priceGroupProducts;
+
         return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName'));
     }
 

@@ -20,7 +20,7 @@ class ManageCustomerService
                 'contacts.status',
                 'contacts.phone',
                 'contacts.credit_limit',
-                'customer_groups.group_name',
+                'customer_groups.name as group_name',
             )->where('contacts.type', ContactType::Customer->value);
 
         return DataTables::of($customers)

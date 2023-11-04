@@ -61,7 +61,7 @@
                                         <select name="customer_group_id" class="form-control" id="contact_customer_group_id" data-next="contact_date_of_birth">
                                             <option value="">{{ __("None") }}</option>
                                             @foreach ($customerGroups as $group)
-                                                <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                                <option value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

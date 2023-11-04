@@ -1039,7 +1039,6 @@ class ProductController extends Controller
     public function getAllFormVariants()
     {
         $variants = BulkVariant::with(['bulk_variant_child'])->get();
-
         return response()->json($variants);
     }
 

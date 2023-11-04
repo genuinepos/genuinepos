@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Contacts\ContactController;
+use App\Http\Controllers\Contacts\MoneyReceiptController;
+use App\Http\Controllers\Contacts\CustomerGroupController;
 use App\Http\Controllers\Contacts\ManageCustomerController;
 use App\Http\Controllers\Contacts\ManageSupplierController;
-use App\Http\Controllers\Contacts\MoneyReceiptController;
-use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'contacts'], function () {
 
@@ -37,5 +38,15 @@ Route::group(['prefix' => 'contacts'], function () {
         Route::post('update/{receiptId}', [MoneyReceiptController::class, 'update'])->name('contacts.money.receipts.update');
         Route::get('print/{receiptId}', [MoneyReceiptController::class, 'print'])->name('contacts.money.receipts.print');
         Route::delete('delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('contacts.money.receipts.delete');
+    });
+
+    Route::group(['prefix' => 'groups'], function () {
+
+        Route::get('/', [CustomerGroupController::class, 'index'])->name('contacts.customers.groups.index');
+        Route::get('create', [CustomerGroupController::class, 'create'])->name('contacts.customers.groups.create');
+        Route::post('store', [CustomerGroupController::class, 'store'])->name('contacts.customers.groups.store');
+        Route::get('edit/{id}', [CustomerGroupController::class, 'edit'])->name('contacts.customers.groups.edit');
+        Route::post('update/{id}', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
+        Route::delete('delete/{id}', [CustomerGroupController::class, 'delete'])->name('contacts.customers.groups.delete');
     });
 });

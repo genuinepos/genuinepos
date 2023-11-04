@@ -311,8 +311,10 @@ class ProductService
             'subcategory',
             'warranty',
             'variants',
+            'variants.priceGroups',
             'tax',
-            'unit'
+            'unit',
+            'priceGroups',
         ]);
 
         $ownBranchAndWarehouseStocksQ = DB::table('product_ledgers')

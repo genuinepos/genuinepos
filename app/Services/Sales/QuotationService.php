@@ -4,6 +4,7 @@ namespace App\Services\Sales;
 
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -187,14 +188,9 @@ class QuotationService
         return $updateQuotation;
     }
 
-    function updateQuotationStatus(object $request, int $id, object $codeGenerator, ?string $salesOrderPrefix = null): array
+    function updateQuotationStatus(object $request, int $id, object $codeGenerator, ?string $salesOrderPrefix = null): object
     {
         $quotation = $this->singleQuotation(id: $id);
-
-        if ($request->status == SaleStatus::Quotation->value && $quotation->total_delivered_qty > 0) {
-
-            return ['pass' => false, 'msg' =>  __('Quotation current status can not be changed from order to quotation. Invoice is exists against this quotation(Order).')];
-        }
 
         if ($request->status == SaleStatus::Order->value) {
 
@@ -202,17 +198,34 @@ class QuotationService
 
             $quotation->status = SaleStatus::Order->value;
             $quotation->order_id = $quotation->order_id == null ? $orderId : $quotation->order_id;
-            $quotation->order_status = 1;
+            $quotation->order_status = BooleanType::True->value;
             $quotation->total_ordered_qty = $quotation->total_quotation_qty;
-            $quotation->order_date_ts = $quotation->order_date == null ? date('Y-m-d H:i:s') : $quotation->order_date;
+            $quotation->order_date_ts = !isset($quotation->order_date) ? date('Y-m-d H:i:s') : $quotation->order_date;
             $quotation->save();
         } else {
 
             $quotation->status = SaleStatus::Quotation->value;
             $quotation->order_id = null;
-            $quotation->order_status = 0;
+            $quotation->order_status = BooleanType::False->value;
             $quotation->order_date_ts = null;
             $quotation->save();
+        }
+
+        return $quotation;
+    }
+
+    function restrictions(object $request, object $quotation) : array {
+
+        $currentStatus = SaleStatus::tryFrom($quotation->status)->value;
+        if ($currentStatus == SaleStatus::Order->value && $request->status == SaleStatus::Quotation->value) {
+
+            if ($quotation->total_delivered_qty > 0) {
+
+                return ['pass' => false, 'msg' => __('Quotation current status can not be changed to quotation again. Now current status is Order and Invoice is exists against the Order')];
+            } else if($quotation->paid > 0){
+
+                return ['pass' => false, 'msg' => __('Quotation current status can not be changed to quotation again. Now current status is order and receipt voucher is exists against the order')];
+            }
         }
 
         return ['pass' => true];

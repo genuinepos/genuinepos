@@ -14,6 +14,7 @@ use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
 use App\Services\Products\CategoryService;
 use App\Services\Products\WarrantyService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Products\BulkVariantService;
 use App\Services\Products\ProductVariantService;
 use App\Services\Products\ProductAccessBranchService;
@@ -31,6 +32,7 @@ class ProductController extends Controller
         private ProductAccessBranchService $productAccessBranchService,
         private AccountService $accountService,
         private BranchService $branchService,
+        private PriceGroupService $priceGroupService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
     }
@@ -68,7 +70,9 @@ class ProductController extends Controller
 
         // return $ownBranchAndWarehouseStocks;
 
-        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks'));
+        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
     }
 
     public function create(Request $request)

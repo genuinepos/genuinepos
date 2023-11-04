@@ -281,41 +281,13 @@
 
                                 if (product.is_variant == 1) {
 
-                                    var price = 0;
-                                    var __price = priceGroups.filter(function(value) {
-
-                                        return value.price_group_id == price_group_id && value.product_id == product.id && value.variant_id == product.variant_id;
-                                    });
-
-                                    if (__price.length != 0) {
-
-                                        price = __price[0].price ? __price[0].price : product.variant_price;
-                                    } else {
-
-                                        price = product.variant_price;
-                                    }
-
                                     li += '<li>';
-                                    li += '<a class="select_product" onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-v_name="' + product.variant_name + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_code="' + product.variant_code + '" data-p_price_exc_tax="' + price + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                    li += '<a class="select_product" onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-v_name="' + product.variant_name + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_code="' + product.variant_code + '" data-p_price_exc_tax="' + product.variant_price + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
                                     li += '</li>';
                                 } else {
 
-                                    var price = 0;
-                                    var __price = priceGroups.filter(function(value) {
-
-                                        return value.price_group_id == price_group_id && value.product_id == product.id;
-                                    });
-
-                                    if (__price.length != 0) {
-
-                                        price = __price[0].price ? __price[0].price : product.product_price;
-                                    } else {
-
-                                        price = product.product_price;
-                                    }
-
                                     li += '<li>';
-                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-v_name="" data-p_code="' + product.product_code + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_price_exc_tax="' + price + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-v_name="" data-p_code="' + product.product_code + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_price_exc_tax="' + product.product_price + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                     li += '</li>';
                                 }
                             });
@@ -342,7 +314,7 @@
     var keyName = 1;
     function selectProduct(e) {
 
-        var price_group_id = price_group_id ? price_group_id : 'no_id';
+        var price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
 
         $('.select_area').hide();
         $('#search_product').val('');
@@ -391,15 +363,23 @@
                         $('#e_descriptions').prop('readonly', false);
                     }
 
+                    console.log(priceGroups);
+
                     var price = 0;
                     var __price = priceGroups.filter(function(value) {
 
-                        return value.price_group_id == price_group_id && value.product_id == product_id;
+                         if (variant_id != 'noid') {
+
+                            return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
+                        }else {
+
+                            return value.price_group_id == price_group_id && value.product_id == product_id;
+                        }
                     });
 
                     if (__price.length != 0) {
 
-                        price = __price[0].price ? __price[0].price : product_price_exc_tax;
+                        price = __price[0].price && parseFloat(__price[0].price) > 0 ? parseFloat(__price[0].price) : product_price_exc_tax;
                     } else {
 
                         price = product_price_exc_tax;
@@ -973,6 +953,14 @@
             - parseFloat(productTotalTaxAmount);
 
         $('#sales_ledger_amount').val(salesLedgerAmount);
+
+        var status = $('#status').val() ? $('#status').val() : 1;
+
+        var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var invoice_amount = $('#status').val() == 1 ? calcInvoiceAmount : 0;
+        var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+        var currentBalance = parseFloat(invoice_amount) + parseFloat(closing_balance) - parseFloat(received_amount);
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     function clearEditItemFileds() {
@@ -1326,7 +1314,6 @@
             $('#order').hide();
             $('#draft').hide();
             $('.payment_body').show();
-            $('#received_amount').val(parseFloat(0).toFixed(2));
         } else if(status == 4){
 
             $('.payment_body').hide();
@@ -1335,7 +1322,6 @@
             $('#order').hide();
             $('#draft').hide();
             $('.warehouse_field').hide();
-            $('#received_amount').val(parseFloat(0).toFixed(2));
         }else if(status == 3){
 
             $('#quotation').hide();
@@ -1344,7 +1330,6 @@
             $('#final_and_print').hide();
             $('#draft').hide();
             $('.warehouse_field').hide();
-            $('#received_amount').val(parseFloat(0).toFixed(2));
         }else if(status == 2){
 
             $('#quotation').hide();
@@ -1353,8 +1338,10 @@
             $('#final_and_print').hide();
             $('#final').hide();
             $('.warehouse_field').hide();
-            $('#received_amount').val(parseFloat(0).toFixed(2));
         }
+
+        $('#received_amount').val(parseFloat(0).toFixed(2));
+        calculateTotalAmount();
     }
 
     // Set Default Setting

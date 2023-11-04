@@ -60,7 +60,7 @@
                                         <select name="customer_group_id" class="form-control" id="contact_customer_group_id" data-next="contact_date_of_birth">
                                             <option value="">@lang('menu.none')</option>
                                             @foreach ($customerGroups as $group)
-                                                <option {{ $group->id == $contact->id ? 'SELECTED' : '' }} value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                                <option {{ $group->id == $contact->id ? 'SELECTED' : '' }} value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -7,6 +7,7 @@ use App\Models\Sales\SaleProduct;
 use App\Models\Products\ProductStock;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseProduct;
+use App\Models\Products\PriceGroupProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductVariant extends Model
@@ -49,6 +50,11 @@ class ProductVariant extends Model
     public function saleVariants()
     {
         return $this->hasMany(SaleProduct::class, 'variant_id');
+    }
+
+    public function priceGroups()
+    {
+        return $this->hasMany(PriceGroupProduct::class, 'variant_id');
     }
 
     public function productLedgers()

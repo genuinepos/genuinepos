@@ -3,6 +3,7 @@
 <script>
     $('.select2').select2();
 
+    afterChangeStatusAcivity();
     var itemUnitsArray = @json($itemUnitsArray);
 
     var priceGroups = @json($priceGroupProducts);
@@ -11,7 +12,7 @@
         var timer = 0;
         return function(callback, ms) {
 
-            clearTimeout (timer);
+            clearTimeout(timer);
             timer = setTimeout(callback, ms);
         };
     })();
@@ -314,7 +315,8 @@
 
                     $('#search_product').addClass('is-invalid');
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -326,6 +328,7 @@
     }
 
     var keyName = 1;
+
     function selectProduct(e) {
 
         var price_group_id = price_group_id ? price_group_id : 'no_id';
@@ -499,7 +502,7 @@
             tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
             tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + e_unit_cost_inc_tax + '">';
             tr += '<input type="hidden" name="sale_product_ids[]">';
-            tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' +e_unit_name+ '">';
+            tr += '<input type="hidden" data-product_name="' + e_item_name + '" data-unit_name="' + e_unit_name + '">';
             tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + '" value="' + e_product_id + e_variant_id + '">';
             tr += '</td>';
 
@@ -775,7 +778,7 @@
 
             var inclusiveTax = 100 + parseFloat(e_tax_percent);
             var calcTax = parseFloat(unitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-            taxAmount =  parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
+            taxAmount = parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
             unitPriceIncTax = parseFloat(unitPriceWithDiscount) + parseFloat(taxAmount);
         }
 
@@ -796,7 +799,7 @@
         // Update Total Item
 
         var total_item = 0;
-        quantities.forEach(function(qty){
+        quantities.forEach(function(qty) {
 
             total_item += 1;
         });
@@ -807,7 +810,7 @@
         var netTotalAmount = 0;
         var productTotalTaxAmount = 0;
         var i = 0;
-        subtotals.forEach(function(subtotal){
+        subtotals.forEach(function(subtotal) {
 
             netTotalAmount += parseFloat(subtotal.value);
             productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
@@ -817,7 +820,7 @@
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
         var totalQty = 0;
-        quantities.forEach(function(qty){
+        quantities.forEach(function(qty) {
 
             totalQty += parseFloat(qty.value);
         });
@@ -829,7 +832,7 @@
 
             var orderDisAmount = (parseFloat(netTotalAmount) / 100) * parseFloat(orderDiscount);
             $('#order_discount_amount').val(parseFloat(orderDisAmount).toFixed(2));
-        } else{
+        } else {
 
             $('#order_discount_amount').val(parseFloat(orderDiscount).toFixed(2));
         }
@@ -838,19 +841,31 @@
         // Calc order tax amount
         var orderTax = $('#sale_tax_ac_id').find('option:selected').data('order_tax_percent') ? $('#sale_tax_ac_id').find('option:selected').data('order_tax_percent') : 0;
 
-        var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax) ;
+        var calcOrderTaxAmount = (parseFloat(netTotalAmount) - parseFloat(orderDiscountAmount)) / 100 * parseFloat(orderTax);
         $('#order_tax_amount').val(parseFloat(calcOrderTaxAmount).toFixed(2));
 
         // Update Total Invoice Amount
         var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
 
-        var calcInvoiceAmount = parseFloat(netTotalAmount)
-                                - parseFloat(orderDiscountAmount)
-                                + parseFloat(calcOrderTaxAmount)
-                                + parseFloat(shipmentCharge);
+        var calcInvoiceAmount = parseFloat(netTotalAmount) -
+            parseFloat(orderDiscountAmount) +
+            parseFloat(calcOrderTaxAmount) +
+            parseFloat(shipmentCharge);
 
         $('#total_invoice_amount').val(parseFloat(calcInvoiceAmount).toFixed(2));
+
+        var status = $('#status').val() ? $('#status').val() : 1;
+
+        var previous_received = $('#previous_received').val() ? $('#previous_received').val() : 0;
+        var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var invoice_amount = $('#status').val() == 1 ? parseFloat(calcInvoiceAmount) - parseFloat(previous_received) : 0;
+        var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+        var currentBalance = parseFloat(invoice_amount) +
+            parseFloat(closing_balance) -
+            parseFloat(received_amount);
+
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     function clearEditItemFileds() {
@@ -876,7 +891,7 @@
         $('#add_item').html('Add');
     }
 
-    $(document).on('click', '#remove_product_btn',function(e){
+    $(document).on('click', '#remove_product_btn', function(e) {
 
         e.preventDefault();
 
@@ -884,36 +899,42 @@
 
         calculateTotalAmount();
 
-        setTimeout(function () {
+        setTimeout(function() {
 
             clearEditItemFileds();
         }, 5);
     });
 
     // Input order discount and clculate total amount
-    $(document).on('input', '#order_discount', function(){
+    $(document).on('input', '#order_discount', function() {
 
         calculateTotalAmount();
     });
 
     // Input order discount type and clculate total amount
-    $(document).on('change', '#order_discount_type', function(){
+    $(document).on('change', '#order_discount_type', function() {
 
         calculateTotalAmount();
     });
 
     // Input shipment charge and clculate total amount
-    $(document).on('input', '#shipment_charge', function(){
+    $(document).on('input', '#shipment_charge', function() {
 
         calculateTotalAmount();
     });
 
     // chane purchase tax and clculate total amount
-    $(document).on('change', '#sale_tax_ac_id', function(){
+    $(document).on('change', '#sale_tax_ac_id', function() {
 
         calculateTotalAmount();
         var orderTaxPercent = $(this).find('option:selected').data('order_tax_percent') ? $(this).find('option:selected').data('order_tax_percent') : 0;
         $('#order_tax_percent').val(parseFloat(orderTaxPercent).toFixed(2));
+    });
+
+    // Input received amount and clculate due amount
+    $(document).on('input', '#received_amount', function() {
+
+        calculateTotalAmount();
     });
 
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
@@ -933,20 +954,20 @@
         }
     });
 
-    document.onkeyup = function () {
+    document.onkeyup = function() {
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        if(e.ctrlKey && e.which == 13) {
+        if (e.ctrlKey && e.which == 13) {
 
             $('#save_changes').click();
             return false;
-        }else if (e.altKey && e.which == 67) {
+        } else if (e.altKey && e.which == 67) {
 
             $('#received_amount').focus();
             $('#received_amount').select();
             return false;
-        }else if (e.which == 27) {
+        } else if (e.which == 27) {
 
             $('.variant_list_area').empty();
             $('.select_area').hide();
@@ -956,25 +977,25 @@
     }
 
     //Add purchase request by ajax
-    $('#edit_quotation_form').on('submit', function(e){
+    $('#edit_quotation_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
         var url = $(this).attr('action');
 
         $.ajax({
-            url:url,
-            type:'post',
+            url: url,
+            type: 'post',
             data: new FormData(this),
             contentType: false,
             cache: false,
             processData: false,
-            success:function(data) {
+            success: function(data) {
 
                 $('.error').html('');
                 $('.loading_button').hide();
 
-                if(!$.isEmptyObject(data.errorMsg)){
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg);
                     return;
@@ -982,7 +1003,8 @@
 
                 toastr.success(data);
                 window.location = "{{ url()->previous() }}";
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.loading_button').hide();
                 $('.error').html('');
@@ -991,7 +1013,7 @@
 
                     toastr.error('Net Connetion Error. Reload This Page.');
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error('Server Error. Please contact to the support team.');
                     return;
@@ -1046,19 +1068,19 @@
     });
 
     // Automatic remove searching product is found signal
-    setInterval(function(){
+    setInterval(function() {
 
         $('#search_product').removeClass('is-invalid');
     }, 500);
 
-    setInterval(function(){
+    setInterval(function() {
 
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    $('body').keyup(function(e){
+    $('body').keyup(function(e) {
 
-        if (e.keyCode == 13 || e.keyCode == 9){
+        if (e.keyCode == 13 || e.keyCode == 9) {
 
             if ($(".selectProduct").attr('href') == undefined) {
 
@@ -1085,7 +1107,7 @@
 
     $('#account_id').val({{ auth()->user()->branch ? auth()->user()->branch->default_account_id : '' }});
 
-    $(document).on('blur', '#received_amount', function () {
+    $(document).on('blur', '#received_amount', function() {
 
         var value = $(this).val();
 
@@ -1096,7 +1118,7 @@
     });
 
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-    var _expectedDateFormat = '' ;
+    var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
@@ -1114,7 +1136,7 @@
             one: 'night',
             other: 'nights'
         },
-        tooltipNumber : (totalDays) => {
+        tooltipNumber: (totalDays) => {
             return totalDays - 1;
         },
         format: _expectedDateFormat,
@@ -1125,10 +1147,33 @@
         $('#customer_account_id').focus().select();
     }, 1000);
 
+    $('#status').on('change', function() {
+
+        afterChangeStatusAcivity();
+    });
+
+    function afterChangeStatusAcivity() {
+
+        var status = $('#status').val();
+
+        $('.payment_body').show();
+
+        if (status == 4) {
+
+            $('.payment_body').hide();
+        } else if (status == 3) {
+
+            $('.payment_body').show();
+        }
+
+        $('#received_amount').val(parseFloat(0).toFixed(2));
+        calculateTotalAmount();
+    }
+
     calculateTotalAmount();
 </script>
 
-@if(auth()->user()->can('customer_add'))
+@if (auth()->user()->can('customer_add'))
     <script>
         $('#addContact').on('click', function(e) {
 
@@ -1144,18 +1189,19 @@
                     $('#addOrEditContactModal').html(data);
                     $('#addOrEditContactModal').modal('show');
 
-                    setTimeout(function(){
+                    setTimeout(function() {
 
                         $('#contact_name').focus();
                     }, 500);
 
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                         return;
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
@@ -1166,14 +1212,14 @@
     </script>
 @endif
 
-@if(auth()->user()->can('product_add'))
+@if (auth()->user()->can('product_add'))
     <script>
-        $('#add_product').on('click', function () {
+        $('#add_product').on('click', function() {
 
             $.ajax({
-                url:"#",
-                type:'get',
-                success:function(data){
+                url: "#",
+                type: 'get',
+                success: function(data) {
 
                     $('#add_product_body').html(data);
                     $('#addProductModal').modal('show');
@@ -1182,7 +1228,7 @@
         });
 
         // Add product by ajax
-        $(document).on('submit', '#add_product_form',function(e) {
+        $(document).on('submit', '#add_product_form', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
@@ -1195,7 +1241,8 @@
                 success: function(data) {
 
                     toastr.success('Successfully product is added.');
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').hide();
                     toastr.error('Please check again all form fields.', 'Some thing went wrong.');

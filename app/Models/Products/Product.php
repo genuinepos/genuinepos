@@ -18,6 +18,7 @@ use App\Models\Products\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Manufacturing\Production;
 use App\Models\Purchases\PurchaseProduct;
+use App\Models\Products\PriceGroupProduct;
 use App\Models\Products\ProductAccessBranch;
 use App\Models\Purchases\PurchaseOrderProduct;
 use App\Models\Manufacturing\ProcessIngredient;
@@ -40,6 +41,11 @@ class Product extends Model
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
+    }
+
+    public function priceGroups()
+    {
+        return $this->hasMany(PriceGroupProduct::class, 'product_id');
     }
 
     public function purchasedVariants()

@@ -530,9 +530,9 @@ class PurchaseReturnController extends Controller
 
                 $this->productStockService->adjustBranchAllStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->branch_id);
 
-                if ($deletePurchase->warehouse_id) {
+                if ($returnProduct->warehouse_id) {
 
-                    $this->productStockService->adjustWarehouseStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->warehouse_id);
+                    $this->productStockService->adjustWarehouseStock($returnProduct->product_id, $returnProduct->variant_id, $returnProduct->warehouse_id);
                 } else {
 
                     $this->productStockService->adjustBranchStock($returnProduct->product_id, $returnProduct->variant_id, $deletePurchaseReturn->branch_id);

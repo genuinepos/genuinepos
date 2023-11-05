@@ -351,9 +351,9 @@
 
                                 var taxPercent = product.tax_percent != null ? product.tax_percent : 0;
 
-                                var updateProductCost = product.update_product_cost != 0 || product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
+                                var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
 
-                                var updateVariantCost = product.update_variant_cost != 0 || product.update_variant_cost != null ? product.update_variant_cost : product.variant_cost_with_tax;;
+                                var updateVariantCost = product.update_variant_cost != 0 && product.update_variant_cost != null ? product.update_variant_cost : product.variant_cost_with_tax;;
 
                                 var __updateProductCost = product.is_variant == 1 ? updateVariantCost : updateProductCost;
 

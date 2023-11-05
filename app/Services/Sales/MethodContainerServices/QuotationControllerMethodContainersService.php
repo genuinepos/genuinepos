@@ -7,6 +7,7 @@ use App\Enums\SaleScreenType;
 use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\BooleanType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
@@ -43,6 +44,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         object $quotationService,
         object $accountService,
         object $accountFilterService,
+        object $paymentMethodService,
         object $priceGroupService,
         object $managePriceGroupService,
     ): array {
@@ -70,6 +72,8 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
             ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])->get();
 
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
+
+        $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $data['saleAccounts'] = $accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -101,21 +105,35 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         object $salesOrderService,
         object $quotationProductService,
         object $accountService,
+        object $accountLedgerService,
+        object $accountingVoucherService,
+        object $accountingVoucherDescriptionService,
+        object $accountingVoucherDescriptionReferenceService,
         object $userActivityLogUtil,
         object $codeGenerator,
     ): ?array {
 
+        $quotation = $quotationService->singleQuotation(id: $id, with: ['saleProducts', 'references']);
+
         $restrictions = $saleService->restrictions(request: $request, accountService: $accountService, checkCustomerChangeRestriction: true, saleId: $id);
+
+        $quotationRestrictions = $quotationService->restrictions(request: $request, quotation: $quotation);
 
         if ($restrictions['pass'] == false) {
 
             return ['pass' => false, 'msg' => $restrictions['msg']];
+        } else if ($quotationRestrictions['pass'] == false) {
+
+            return ['pass' => false, 'msg' => $quotationRestrictions['msg']];
         }
 
+        $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
+
+        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
 
-        $quotation = $quotationService->singleQuotation(id: $id, with: ['saleProducts']);
 
         $updateQuotation = $quotationService->updateQuotation(request: $request, updateQuotation: $quotation);
 
@@ -133,19 +151,34 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
             }
         }
 
-        if ($quotation->order_status == 1) {
+        $updateQuotationStatus = $quotationService->updateQuotationStatus(request: $request, id: $id, codeGenerator: $codeGenerator, salesOrderPrefix: $salesOrderPrefix);
 
-            $salesOrderService->calculateDeliveryLeftQty(order: $quotation);
+        if ($updateQuotationStatus->order_status == BooleanType::True->value) {
+
+            $salesOrderService->calculateDeliveryLeftQty(order: $updateQuotationStatus);
+
+            if ($request->received_amount) {
+
+                $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $updateQuotationStatus->id);
+
+                // Add Debit Account Accounting voucher Description
+                $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);
+
+                //Add Debit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+
+                // Add Payment Description Credit Entry
+                $addAccountingVoucherCreditDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->customer_account_id, paymentMethodId: null, amountType: 'cr', amount: $request->received_amount, note: $request->payment_note);
+
+                // Add Accounting VoucherDescription References
+                $accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->customer_account_id, amount: $request->received_amount, refIdColName: 'sale_id', refIds: [$updateQuotationStatus->id]);
+
+                //Add Credit Ledger Entry
+                $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->customer_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
+            }
         }
 
         $saleService->adjustSaleInvoiceAmounts(sale: $quotation);
-
-        $updateQuotationStatus = $quotationService->updateQuotationStatus(request: $request, id: $id, codeGenerator: $codeGenerator, salesOrderPrefix: $salesOrderPrefix);
-
-        if ($updateQuotationStatus['pass'] == false) {
-
-            return ['pass' => false, 'msg' => $restrictions['msg']];
-        }
 
         return null;
     }

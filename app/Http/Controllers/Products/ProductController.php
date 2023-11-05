@@ -14,6 +14,7 @@ use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
 use App\Services\Products\CategoryService;
 use App\Services\Products\WarrantyService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Products\BulkVariantService;
 use App\Services\Products\ProductVariantService;
 use App\Services\Products\ProductAccessBranchService;
@@ -31,6 +32,7 @@ class ProductController extends Controller
         private ProductAccessBranchService $productAccessBranchService,
         private AccountService $accountService,
         private BranchService $branchService,
+        private PriceGroupService $priceGroupService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
     }
@@ -66,7 +68,11 @@ class ProductController extends Controller
         $productShowQueries = $this->productService->productShowQueries(id: $id);
         extract($productShowQueries);
 
-        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks'));
+        // return $ownBranchAndWarehouseStocks;
+
+        $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
+        return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
     }
 
     public function create(Request $request)
@@ -246,6 +252,12 @@ class ProductController extends Controller
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
 
         return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
+    }
+
+    public function changeStatus($id)
+    {
+        $changeStatus = $this->productService->changeProductStatus(id: $id);
+        return response()->json($changeStatus['msg']);
     }
 
     public function delete($id)

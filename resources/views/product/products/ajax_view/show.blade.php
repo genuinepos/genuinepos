@@ -83,6 +83,9 @@
                                             <th style="font-size:11px!important;">{{ __("Default Profit Margin(%)") }}</th>
                                             <th style="font-size:11px!important;">{{ __("Default Unit Price (Exc. Tax)") }}</th>
                                             <th style="font-size:11px!important;">{{ __("Default Unit Price (Inx. Tax)") }}</th>
+                                            @if (count($priceGroups) > 0)
+                                                <th style="font-size:11px!important;">{{ __("Price Group") }}</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,6 +100,30 @@
                                                 $priceIncTax = $product->product_price + $taxAmount;
                                             @endphp
                                             <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
+                                            @if (count($priceGroups) > 0)
+                                                <td>
+                                                    @foreach ($priceGroups as $priceGroup)
+                                                        <p>
+                                                            <span class="fw-bold">{{ $priceGroup->name }} : </span>
+                                                            @php
+                                                                $groupPrice = 0;
+                                                            @endphp
+                                                            @foreach ($product->priceGroups as $productPriceGroup)
+                                                                @if (
+                                                                    $productPriceGroup->product_id == $product->id &&
+                                                                    $priceGroup->id == $productPriceGroup->price_group_id
+                                                                )
+                                                                    @php
+                                                                        $groupPrice = $productPriceGroup->price;
+                                                                    @endphp
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
+                                                            {{ App\Utils\Converter::format_in_bdt($groupPrice) }}
+                                                        </p>
+                                                    @endforeach
+                                                </td>
+                                            @endif
                                         </tr>
                                     </tbody>
                                 </table>
@@ -113,6 +140,9 @@
                                             <th style="font-size:11px!important;">{{ __("Defautl Unit Cost (Inc. Tax)") }}</th>
                                             <th style="font-size:11px!important;">{{ __("Defautl Unit Price (Exc. Tax)") }}</th>
                                             <th style="font-size:11px!important;">{{ __("Defautl Unit Price (Inc. Tax)") }}</th>
+                                            @if (count($priceGroups) > 0)
+                                                <th style="font-size:11px!important;">{{ __("Price Group") }}</th>
+                                            @endif
                                             <th style="font-size:11px!important;">{{ __("Variant Image") }}</th>
                                         </tr>
                                     </thead>
@@ -130,6 +160,30 @@
                                                     $priceIncTax = $variant->variant_price + $taxAmount;
                                                 @endphp
                                                 <td style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($priceIncTax) }}</td>
+                                                @if (count($priceGroups) > 0)
+                                                    <td>
+                                                        @foreach ($priceGroups as $priceGroup)
+                                                            <p style="font-size:11px!important;">
+                                                                <span class="fw-bold">{{ $priceGroup->name }} : </span>
+                                                                @php
+                                                                    $groupPrice = 0;
+                                                                @endphp
+                                                                @foreach ($variant->priceGroups as $variantPriceGroup)
+                                                                    @if (
+                                                                        $variantPriceGroup->variant_id == $variant->id &&
+                                                                        $priceGroup->id == $variantPriceGroup->price_group_id
+                                                                    )
+                                                                        @php
+                                                                            $groupPrice = $variantPriceGroup->price;
+                                                                        @endphp
+                                                                        @break
+                                                                    @endif
+                                                                @endforeach
+                                                                {{ App\Utils\Converter::format_in_bdt($groupPrice) }}
+                                                            </p>
+                                                        @endforeach
+                                                    </td>
+                                                @endif
                                                 <td style="font-size:11px!important;">
                                                     @if ($variant->variant_image)
                                                         <img style="width:30px;height:30px;" src="{{ asset('uploads/product/variant_image/'.$variant->variant_image) }}" alt="">

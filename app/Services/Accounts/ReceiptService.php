@@ -130,6 +130,7 @@ class ReceiptService
                 if ($row?->accountingVoucher?->saleRef) {
 
                     if ($row?->accountingVoucher?->saleRef?->status == SaleStatus::Final->value) {
+
                         return __("Sales") . ':' . '<a href="' . route('sales.show', [$row?->accountingVoucher?->saleRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->saleRef?->invoice_id . '</a>';
                     } else {
 

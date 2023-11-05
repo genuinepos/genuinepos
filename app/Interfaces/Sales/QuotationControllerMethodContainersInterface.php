@@ -19,6 +19,7 @@ interface QuotationControllerMethodContainersInterface
         object $quotationService,
         object $accountService,
         object $accountFilterService,
+        object $paymentMethodService,
         object $priceGroupService,
         object $managePriceGroupService
     ): array;
@@ -32,6 +33,10 @@ interface QuotationControllerMethodContainersInterface
         object $salesOrderService,
         object $quotationProductService,
         object $accountService,
+        object $accountLedgerService,
+        object $accountingVoucherService,
+        object $accountingVoucherDescriptionService,
+        object $accountingVoucherDescriptionReferenceService,
         object $userActivityLogUtil,
         object $codeGenerator,
     ): ?array;

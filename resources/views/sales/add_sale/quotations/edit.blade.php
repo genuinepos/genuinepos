@@ -55,7 +55,7 @@
                 @csrf
                 <section>
                     <div class="sale-content">
-                        <div class="row g-3">
+                        <div class="row g-1">
                             <div class="col-md-9">
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body p-1">
@@ -72,7 +72,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -107,6 +107,15 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="input-group">
                                                     <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}" data-next="price_group_id" autocomplete="off" id="date">
@@ -134,12 +143,9 @@
                                                     <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <select name="status" class="form-control" id="status" data-next="search_product">
-                                                            @php
-                                                                $status = array_slice(\App\Enums\SaleStatus::cases(), 2, 2)
-                                                            @endphp
-                                                            @foreach ($status as $status)
-                                                                <option {{ $quotation->status == $status->value ? 'SELECTED' : '' }} value="{{ $status->value }}">{{ $status->name }}</option>
-                                                            @endforeach
+                                                            <option {{ App\Enums\SaleStatus::Quotation->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Quotation->value }}">{{ App\Enums\SaleStatus::Quotation->name }}</option>
+
+                                                            <option {{ App\Enums\SaleStatus::Order->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Order->value }}">{{ App\Enums\SaleStatus::Order->name }}</option>
                                                         </select>
                                                         <span class="error error_status"></span>
                                                     </div>
@@ -233,7 +239,7 @@
                                         <div class="row g-2 align-items-end">
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __("IMEI/SL No./Other Info.") }}">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
@@ -472,6 +478,72 @@
                                             </div>
                                         </div>
 
+                                        <div class="payment_body">
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Received Amt.") }} >></b></label>
+                                                <div class="col-md-7">
+                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold big_amount_field" id="received_amount" data-next="payment_method_id" value="0.00" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Payment Method") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
+                                                        @foreach ($methods as $method)
+                                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
+                                                                {{ $method->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_payment_method_id"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
+                                                <div class="col-md-7">
+                                                    <select name="account_id" class="form-control" id="account_id" data-next="save_changes">
+                                                        @foreach ($accounts as $ac)
+                                                            @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
+                                                                @continue
+                                                            @endif
+
+                                                            <option value="{{ $ac->id }}">
+                                                                @php
+                                                                    $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
+                                                                    $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
+                                                                @endphp
+                                                                {{ $ac->name . $acNo . $bank }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_account_id"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Payment Note") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input type="number" step="any" class="form-control text-success" name="payment_note" id="payment_note" placeholder="{{ __("Payment Note") }}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Previous Received") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-success" name="previous_received" id="previous_received" value="{{ $quotation->paid }}" tabindex="-1">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end pt-3">
                                                 <div class="btn-loading d-flex flex-wrap gap-2 w-100 text-end justify-content-end">
@@ -490,33 +562,14 @@
         </div>
     </div>
 
-    <!--Add Customer Modal-->
-    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_customer_modal_body"></div>
-            </div>
+    @if(auth()->user()->can('customer_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-    </div>
-    <!--Add Customer Modal-->
+    @endif
 
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body"></div>
-            </div>
-        </div>
-    </div>
-    <!--Add Product Modal End-->
+    @if (auth()->user()->can('product_add'))
+        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @endif
 @endsection
 @push('scripts')
     @include('sales.add_sale.quotations.js_partials.quotation_edit_js_script')

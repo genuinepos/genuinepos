@@ -68,7 +68,7 @@
                 @csrf
                 <section>
                     <div class="sale-content">
-                        <div class="row g-3">
+                        <div class="row g-1">
                             <div class="col-md-9">
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="element-body p-1">
@@ -85,7 +85,7 @@
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text add_button" id="addCustomer"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -122,7 +122,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -380,7 +380,7 @@
                                                                                         }
                                                                                     }else {
 
-                                                                                        $stockLocationName = json_decode($generalSettings->business, true)['shop_name'];
+                                                                                        $stockLocationName = $generalSettings['business__shop_name'];
                                                                                     }
                                                                                 }
                                                                             @endphp
@@ -629,33 +629,14 @@
         </div>
     </div>
 
-    <!--Add Customer Modal-->
-    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_customer_modal_body"></div>
-            </div>
+    @if(auth()->user()->can('customer_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-    </div>
-    <!--Add Customer Modal-->
+    @endif
 
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body"></div>
-            </div>
-        </div>
-    </div>
-    <!--Add Product Modal End-->
+    @if (auth()->user()->can('product_add'))
+        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    @endif
 @endsection
 @push('scripts')
     @include('sales.add_sale.js_partials.add_sale_edit_js_script')

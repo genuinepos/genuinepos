@@ -4,8 +4,8 @@
     @foreach ($products as $product)
         @php
             $taxPercent = $product->tax_percent ? $product->tax_percent : 0;
-            $updateProductCost = $product->update_product_cost != 0 || $product->update_product_cost != null ? $product->update_product_cost : $product->product_cost_with_tax;
-            $updateVariantCost = $product->update_variant_cost != 0 || $product->update_variant_cost != null ? $product->update_variant_cost : $product->variant_cost_with_tax;;
+            $updateProductCost = $product->update_product_cost != 0 && $product->update_product_cost != null ? $product->update_product_cost : $product->product_cost_with_tax;
+            $updateVariantCost = $product->update_variant_cost != 0 && $product->update_variant_cost != null ? $product->update_variant_cost : $product->variant_cost_with_tax;;
 
             $__updateProductCost = $product->is_variant == 1 ? $updateVariantCost : $updateProductCost;
 

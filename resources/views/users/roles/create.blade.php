@@ -1084,20 +1084,20 @@
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="create_add_sales_return" id="create_add_sales_return" class="sales sales_reurn">
-                                                    <label for="create_add_sales_return">{{ __('Create Add Sale Return') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_add_sales_return" id="edit_add_sales_return" class="sales sales_reurn">
-                                                    <label for="edit_add_sales_return">{{ __('Edit Add Sale Return') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_add_sales_return" id="delete_add_sales_return" class="sales sales_reurn">
-                                                    <label for="delete_add_sales_return">{{ __('Delete Add Sale Return') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
                                                     <input type="checkbox" name="sales_return_index" id="sales_return_index" class="sales sales_reurn">
                                                     <label for="sales_return_index">{{ __('Sales Return List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="create_sales_return" id="create_sales_return" class="sales sales_reurn">
+                                                    <label for="create_sales_return">{{ __('Create Sales Return') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="edit_sales_return" id="edit_sales_return" class="sales sales_reurn">
+                                                    <label for="edit_sales_return">{{ __('Edit Sales Return') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="delete_add_sales_return" id="delete_sales_return" class="sales sales_reurn">
+                                                    <label for="delete_sales_return">{{ __('Delete Sales Return') }}</label>
                                                 </p>
                                             </div>
                                         </div>

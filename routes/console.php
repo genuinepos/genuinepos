@@ -25,36 +25,17 @@ Artisan::command('dev:m', function () {
     //     $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
     // });
 
-    Schema::create('cash_registers', function (Blueprint $table) {
+    Schema::create('customer_groups', function (Blueprint $table) {
         $table->bigIncrements('id');
-        $table->unsignedBigInteger('sale_account_id')->nullable()->index('cash_registers_sale_account_id_foreign');
-        $table->unsignedBigInteger('cash_counter_id')->nullable()->index('cash_registers_cash_counter_id_foreign');
-        $table->unsignedBigInteger('cash_account_id')->nullable()->index('cash_registers_cash_account_id_foreign');
-        $table->unsignedBigInteger('branch_id')->nullable()->index('cash_registers_branch_id_foreign');
-        $table->unsignedBigInteger('user_id')->nullable()->index('cash_registers_user_id_foreign');
-        $table->decimal('opening_cash', 22, 2)->default(0);
-        $table->string('date', 20)->nullable();
-        $table->timestamp('closed_at')->nullable();
-        $table->decimal('closing_cash', 22, 2)->default(0);
-        $table->boolean('status')->default(true)->comment('1=open;0=closed;');
-        $table->text('closing_note')->nullable();
+        $table->unsignedBigInteger('branch_id')->nullable();
+        $table->string('group_name');
+        $table->tinyInteger('price_calculation_type')->default(1)->comment('1=percentage,2=selling_price_group');
+        $table->decimal('calculation_percentage', 22, 2)->default(0);
+        $table->unsignedBigInteger('price_group_id')->nullable();
         $table->timestamps();
 
-        $table->foreign(['sale_account_id'])->references(['id'])->on('accounts')->onDelete('CASCADE');
-        $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
-        $table->foreign(['cash_counter_id'])->references(['id'])->on('cash_counters')->onDelete('SET NULL');
-        $table->foreign(['cash_account_id'])->references(['id'])->on('accounts')->onDelete('SET NULL');
-        $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('SET NULL');
-    });
-
-    Schema::create('cash_register_transactions', function (Blueprint $table) {
-        $table->bigIncrements('id');
-        $table->unsignedBigInteger('cash_register_id')->nullable()->index('cash_register_transactions_cash_register_id_foreign');
-        $table->unsignedBigInteger('sale_id')->nullable()->index('cash_register_transactions_sale_id_foreign');
-        $table->timestamps();
-
-        $table->foreign(['cash_register_id'])->references(['id'])->on('cash_registers')->onDelete('CASCADE');
-        $table->foreign(['sale_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
+        $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+        $table->foreign('price_group_id')->references('id')->on('price_groups')->onDelete('set null');
     });
 });
 

@@ -268,7 +268,12 @@
                             $.each(products, function(key, product) {
 
                                 product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
-                                var tax_percent = product.tax_percent != null ? product.tax_percent : 0;
+
+                                var updateProductCost = product.update_product_cost != 0 && product.update_product_cost != null ? product.update_product_cost : product.product_cost_with_tax;
+
+                                var updateVariantCost = product.update_variant_cost != 0 && product.update_variant_cost != null ? product.update_variant_cost : product.variant_cost_with_tax;
+
+                                var __updateProductCost = product.is_variant == 1 ? updateVariantCost : updateProductCost;
 
                                 if (product.is_variant == 1) {
 
@@ -287,7 +292,7 @@
                                     }
 
                                     li += '<li>';
-                                    li += '<a class="select_product" onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-v_name="' + product.variant_name + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_code="' + product.variant_code + '" data-p_price_exc_tax="' + price + '" data-p_cost_inc_tax="' + product.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                    li += '<a class="select_product" onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-v_name="' + product.variant_name + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_code="' + product.variant_code + '" data-p_price_exc_tax="' + price + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
                                     li += '</li>';
                                 } else {
 
@@ -306,7 +311,7 @@
                                     }
 
                                     li += '<li>';
-                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-v_name="" data-p_code="' + product.product_code + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_price_exc_tax="' + price + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_cost_inc_tax="' + product.product_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                    li += '<a class="select_single_product" onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-v_name="" data-p_code="' + product.product_code + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-p_price_exc_tax="' + price + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_cost_inc_tax="' + __updateProductCost + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                     li += '</li>';
                                 }
                             });
@@ -1208,67 +1213,6 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    @if(auth()->user()->can('product_add'))
-
-        $('#add_product').on('click', function () {
-
-            $.ajax({
-                url:"{{route('sales.add.product.modal.view')}}",
-                type:'get',
-                success:function(data){
-
-                    $('#add_product_body').html(data);
-                    $('#addProductModal').modal('show');
-                }
-            });
-        });
-
-        // Add product by ajax
-        $(document).on('submit', '#add_product_form',function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-
-                    toastr.success('Successfully product is added.');
-                    $.ajax({
-                        url:"{{url('sales/get/recent/product')}}"+"/"+data.id,
-                        type:'get',
-                        success:function(data){
-
-                            $('.loading_button').hide();
-                            $('#addProductModal').modal('hide');
-                            if (!$.isEmptyObject(data.errorMsg)) {
-
-                                toastr.error(data.errorMsg);
-                            }else{
-
-                                $('.sale-product-table tbody').prepend(data);
-                                calculateTotalAmount();
-                            }
-                        }
-                    });
-                },error: function(err) {
-
-                    $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
-                    $('.error').html('');
-
-                    $.each(err.responseJSON.errors, function(key, error) {
-
-                        $('.error_sale_' + key + '').html(error[0]);
-                    });
-                }
-            });
-        });
-    @endif
-
     $('body').keyup(function(e){
 
         if (e.keyCode == 13 || e.keyCode == 9){
@@ -1360,3 +1304,86 @@
 
     calculateTotalAmount();
 </script>
+
+@if(auth()->user()->can('customer_add'))
+    <script>
+        $('#addContact').on('click', function(e) {
+
+            e.preventDefault();
+
+            var url = "{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+    </script>
+@endif
+
+@if(auth()->user()->can('product_add'))
+    <script>
+        $('#add_product').on('click', function () {
+
+            $.ajax({
+                url:"#",
+                type:'get',
+                success:function(data){
+
+                    $('#add_product_body').html(data);
+                    $('#addProductModal').modal('show');
+                }
+            });
+        });
+
+        // Add product by ajax
+        $(document).on('submit', '#add_product_form',function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    toastr.success('Successfully product is added.');
+                },error: function(err) {
+
+                    $('.loading_button').hide();
+                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    $('.error').html('');
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_sale_' + key + '').html(error[0]);
+                    });
+                }
+            });
+        });
+    </script>
+@endif

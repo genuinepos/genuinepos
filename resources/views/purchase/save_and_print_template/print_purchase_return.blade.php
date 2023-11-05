@@ -96,7 +96,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Return Voucher") }}</strong></h4>
+                <h6 class="fw-bold" style="text-transform: uppercase;">{{ __("Purchase Return Voucher") }}</h6>
             </div>
         </div>
 

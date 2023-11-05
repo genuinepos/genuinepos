@@ -63,7 +63,7 @@
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text add_button" id="addSupplier"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_id"></span>
@@ -567,9 +567,13 @@
         </div>
     </div>
 
-    <!--Add Product Modal-->
+    @if(auth()->user()->can('supplier_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
+        </div>
+    @endif
+
     @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

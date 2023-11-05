@@ -132,7 +132,7 @@ Route::group(['prefix' => 'product'], function () {
         // Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
         // Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
         Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
-        Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
+        // Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
         // Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
         // Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
         // Route::get('add/price/groups/{productId}/{type}', [ProductController::class, 'addPriceGroup'])->name('products.add.price.groups');
@@ -263,14 +263,7 @@ Route::group(['prefix' => 'contacts'], function () {
         //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
         // });
 
-        Route::group(['prefix' => 'groups'], function () {
-            Route::get('/', [CustomerGroupController::class, 'index'])->name('contacts.customers.groups.index');
-            Route::post('store', [CustomerGroupController::class, 'store'])->name('contacts.customers.groups.store');
-            Route::get('edit/{id}', [CustomerGroupController::class, 'edit'])->name('contacts.customers.groups.edit');
-            Route::post('update/{id}', [CustomerGroupController::class, 'update'])->name('contacts.customers.groups.update');
-            Route::delete('delete/{id}', [CustomerGroupController::class, 'delete'])->name('customers.groups.delete');
-        });
-
+        
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
             Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');

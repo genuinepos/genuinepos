@@ -50,6 +50,7 @@ interface AddSaleControllerMethodContainersInterface
         object $accountFilterService,
         object $paymentMethodService,
         object $warehouseService,
+        object $priceGroupService,
         object $managePriceGroupService,
     ): array;
 

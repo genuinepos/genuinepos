@@ -1,38 +1,37 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title">{{ __("Edit Customer Group") }}</h6>
+            <h6 class="modal-title">{{ __("Add Customer Group") }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            <form id="edit_customer_group_form" action="{{ route('contacts.customers.groups.update', $customerGroup->id) }}" method="post">
+            <form id="add_customer_group_form" action="{{ route('contacts.customers.groups.store') }}" method="post">
                 @csrf
                 <div class="form-group mt-2">
                     <label><strong>{{ __("Name") }}</strong> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" data-next="cus_group_price_calculation_type" id="cus_group_name" value="{{ $customerGroup->name }}" placeholder="{{ __("Group name") }}"/>
+                    <input required type="text" name="name" class="form-control" data-next="cus_group_price_calculation_type" id="cus_group_name" placeholder="{{ __("Group name") }}"/>
                     <span class="error error_cus_group_name"></span>
                 </div>
 
                 <div class="form-group mt-2">
                     <label><strong>{{ __("Price Calculation Type") }}</strong></label>
                     <select name="price_calculation_type" class="form-control" id="cus_group_price_calculation_type" data-next="calculation_percentage">
-                    @foreach (\App\Enums\CustomerGroupPriceCalculationType::cases() as $priceCalculationType)
-                        <option {{ $priceCalculationType->value == $customerGroup->price_calculation_type ? 'SELECTED' : '' }} value="{{ $priceCalculationType->value }}">{{ $priceCalculationType->name }}</option>
-                    @endforeach
+                        <option value="1">{{ __("Percentage") }}</option>
+                        <option value="2">{{ __("Selling Price Group") }}</option>
                     </select>
                 </div>
 
-                <div class="form-group mt-2 calculation_percentage {{ $customerGroup->price_calculation_type == \App\Enums\CustomerGroupPriceCalculationType::SellingPriceGroup->value ? 'd-hide' : '' }}">
+                <div class="form-group mt-2 calculation_percentage">
                     <label><strong>{{ __("Price Calculation Percentage") }} (%) </strong></label>
-                    <input type="number" step="any" name="calculation_percentage" class="form-control fw-bold" id="cus_group_calculation_percentage" data-next="customer_group_save_changes" value="{{ $customerGroup->calculation_percentage }}" placeholder="{{ __("Price Calculation Percentage") }}" autocomplete="off" />
+                    <input type="number" step="any" name="calculation_percentage" class="form-control fw-bold" id="cus_group_calculation_percentage" data-next="customer_group_save" placeholder="{{ __("Price Calculation Percentage") }}" autocomplete="off" />
                 </div>
 
-                <div class="form-group mt-2 group_price_group_id {{ $customerGroup->price_calculation_type == \App\Enums\CustomerGroupPriceCalculationType::Percentage->value ? 'd-hide' : '' }}">
+                <div class="form-group mt-2 group_price_group_id d-hide">
                     <label><strong>{{ __("Selling Price Group") }}</strong></label>
-                    <select name="price_group_id" class="form-control" id="cus_group_price_group_id" data-next="customer_group_save_changes">
+                    <select name="price_group_id" class="form-control" id="cus_group_price_group_id" data-next="customer_group_save">
                         <option value="">{{ __("Default Selling Price") }}</option>
                         @foreach ($priceGroups as $priceGroup)
-                            <option {{ $priceGroup->id == $customerGroup->price_group_id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                            <option value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -42,7 +41,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button customer_group_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="customer_group_save_changes" class="btn btn-sm btn-success customer_group_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="submit" id="customer_group_save" class="btn btn-sm btn-success customer_group_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -105,13 +104,18 @@
         }
     });
 
-    $('#edit_customer_group_form').on('submit',function(e) {
+    $('#add_customer_group_form').on('submit',function(e) {
         e.preventDefault();
 
         $('.customer_group_loading_btn').show();
         var url = $(this).attr('action');
 
+        isAjaxIn = false;
+        isAllowSubmit = false;
         $.ajax({
+            beforeSend: function(){
+                isAjaxIn = true;
+            },
             url : url,
             type : 'post',
             data: new FormData(this),
@@ -120,6 +124,8 @@
             contentType: false,
             success:function(data){
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.customer_group_loading_btn').hide();
                 if(!$.isEmptyObject(data.errorMsg)){
 
@@ -132,6 +138,8 @@
                 customerGroupsTable.ajax.reload();
             }, error: function(err) {
 
+                isAjaxIn = true;
+                isAllowSubmit = true;
                 $('.customer_group_loading_btn').hide();
                 $('.error').html('');
 
@@ -151,9 +159,14 @@
 
                 $.each(err.responseJSON.errors, function(key, error) {
 
-                    $('.error_cus_group_' + key + '').html(error[0]);
+                    $('.error_brand_' + key + '').html(error[0]);
                 });
             }
         });
+
+        if (isAjaxIn == false) {
+
+            isAllowSubmit = true;
+        }
     });
 </script>

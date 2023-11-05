@@ -152,7 +152,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             // Add supplier A/c ledger Entry For Purchase
             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $addSale->id, amount: $request->total_invoice_amount, amount_type: 'debit');
 
-
             if ($request->sale_tax_ac_id) {
 
                 // Add Tax A/c ledger Entry For Purchase
@@ -258,6 +257,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         object $paymentMethodService,
         object $warehouseService,
         object $priceGroupService,
+        object $managePriceGroupService,
     ): array {
 
         $sale = $saleService->singleSale(id: $id, with: [
@@ -303,6 +303,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
+
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
         $data['sale'] = $sale;
@@ -389,7 +391,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         if ($request->received_amount > 0) {
 
-            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $updateSale->id);
+            $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->payment_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, saleRefId: $updateSale->id);
 
             // Add Debit Account Accounting voucher Description
             $addAccountingVoucherDebitDescription = $accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: $request->payment_method_id, amountType: 'dr', amount: $request->received_amount);
@@ -418,14 +420,14 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
                 // Adjust deleted product stock
                 $productStockService->adjustMainProductAndVariantStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id);
 
-                $productStockService->adjustBranchAllStock(productId: $productId, variantId: $variantId, branchId: $updateSale->branch_id);
+                $productStockService->adjustBranchAllStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
 
                 if (isset($deletedUnusedSaleProduct->warehouse_id)) {
 
-                    $productStockService->adjustWarehouseStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id, $deletedUnusedSaleProduct->warehouse_id);
+                    $productStockService->adjustWarehouseStock(productId: $deletedUnusedSaleProduct->product_id, variantId: $deletedUnusedSaleProduct->variant_id, warehouseId: $deletedUnusedSaleProduct->warehouse_id);
                 } else {
 
-                    $productStockService->adjustBranchStock($deletedUnusedSaleProduct->product_id, $deletedUnusedSaleProduct->variant_id, $updateSale->branch_id);
+                    $productStockService->adjustBranchStock(productId: $deletedUnusedSaleProduct->product_id, ariantId: $deletedUnusedSaleProduct->variant_id, branchId: $updateSale->branch_id);
                 }
 
                 foreach ($deletedUnusedSaleProduct->purchaseSaleProductChains as $purchaseSaleProductChain) {
@@ -450,16 +452,16 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $saleProducts = $sale->saleProducts;
         foreach ($saleProducts as $saleProduct) {
 
-            $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : null;
+            $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $saleProduct->variant_id);
 
-            $productStockService->adjustMainProductAndVariantStock($saleProduct->product_id, $variantId);
+            $productStockService->adjustBranchAllStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $updateSale->branch_id);
 
             if ($saleProduct->warehouse_id) {
 
-                $productStockService->adjustWarehouseStock($saleProduct->product_id, $variantId, $saleProduct->warehouse_id);
+                $productStockService->adjustWarehouseStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, warehouseId: $saleProduct->warehouse_id);
             } else {
 
-                $productStockService->adjustBranchStock($saleProduct->product_id, $variantId, $saleProduct->branch_id);
+                $productStockService->adjustBranchStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $saleProduct->branch_id);
             }
         }
 

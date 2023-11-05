@@ -193,7 +193,7 @@
             columns: [
                 {data: 'action'},
                 {data: 'date', name: 'date'},
-                {data: 'invoice_id',name: 'invoice_id'},
+                {data: 'invoice_id',name: 'invoice_id', className: 'fw-bold'},
                 {data: 'branch',name: 'branches.name'},
                 {data: 'supplier_name', name: 'suppliers.name'},
                 {data: 'payment_status',name: 'payment_status', className: 'fw-bold'},

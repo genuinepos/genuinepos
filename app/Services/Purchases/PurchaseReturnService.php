@@ -264,13 +264,13 @@ class PurchaseReturnService
         // get deleting purchase row
         $deletePurchaseReturn = $this->singlePurchaseReturn(id: $id, with: [
             'purchase',
-            'accountingVouchers',
             'purchaseReturnProducts',
             'purchaseReturnProducts.product',
             'purchaseReturnProducts.variant',
+            'references',
         ]);
 
-        if (count($deletePurchaseReturn->accountingVouchers) > 0) {
+        if (count($deletePurchaseReturn->references) > 0) {
 
             return ['pass' => false, 'msg' =>__("Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.")];
         }

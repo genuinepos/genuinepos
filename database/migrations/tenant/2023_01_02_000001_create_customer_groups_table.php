@@ -15,9 +15,15 @@ return new class extends Migration
     {
         Schema::create('customer_groups', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('group_name');
-            $table->decimal('calc_percentage', 22)->default(0);
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->string('name');
+            $table->tinyInteger('price_calculation_type')->default(1)->comment('1=percentage,2=selling_price_group');
+            $table->decimal('calculation_percentage', 22, 2)->default(0);
+            $table->unsignedBigInteger('price_group_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('price_group_id')->references('id')->on('price_groups')->onDelete('set null');
         });
     }
 

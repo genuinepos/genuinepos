@@ -3,6 +3,7 @@
 namespace App\Services\Purchases;
 
 use Carbon\Carbon;
+use App\Enums\BooleanType;
 use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
@@ -112,7 +113,7 @@ class PurchaseService
                 $html .= $row->invoice_id;
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
-                return $html;
+                return '<a href="' . route('purchases.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
             })->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -254,6 +255,7 @@ class PurchaseService
         $purchase->paid = $totalPurchasePaid->sum('total_paid');
         $purchase->due = $due;
         $purchase->purchase_return_amount = $totalReturn->sum('total_returned_amount');
+        $purchase->is_return_available = $totalReturn->sum('total_returned_amount') > 0 ? BooleanType::True->value : BooleanType::False->value;
         $purchase->save();
 
         return $purchase;

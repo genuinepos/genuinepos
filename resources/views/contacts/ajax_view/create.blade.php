@@ -61,7 +61,7 @@
                                         <select name="customer_group_id" class="form-control" id="contact_customer_group_id" data-next="contact_date_of_birth">
                                             <option value="">{{ __("None") }}</option>
                                             @foreach ($customerGroups as $group)
-                                                <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                                <option value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -220,11 +220,38 @@
                 isAjaxIn = true;
                 isAllowSubmit = true;
                 $('.error').html('');
-                toastr.success('Customer added successfully.');
                 $('.contact_loading_button').hide();
-                $('#addOrEditContactModal').modal('hide');
 
-                contactTable.ajax.reload();
+                toastr.success("{{ __('Customer added successfully.') }}");
+                $('#addOrEditContactModal').modal('hide');
+                var customer_account_id = $('#customer_account_id').val();
+                var supplier_account_id = $('#supplier_account_id').val();
+
+                if (customer_account_id != undefined) {
+
+                    $('#customer_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone +'</option>');
+                    $('#customer_account_id').val(data.id);
+
+                    var closingBalance = (data.balanceType == 'cr' ? '-' : '') + data.balance;
+                    $('#closing_balance').val(closingBalance);
+                    $('#previous_due').val(closingBalance);
+
+                    var nextId = $('#customer_account_id').data('next');
+                    $('#'+nextId).focus().select();
+                }else if (supplier_account_id != undefined) {
+
+                    $('#supplier_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone +'</option>');
+                    $('#supplier_account_id').val(data.id);
+
+                    var closingBalance = (data.balanceType == 'dr' ? '-' : '') + data.balance;
+                    $('#closing_balance').val(closingBalance);
+
+                    var nextId = $('#supplier_account_id').data('next');
+                    $('#'+nextId).focus().select();
+                } else {
+
+                    contactTable.ajax.reload();
+                }
             },error : function(err) {
 
                 isAjaxIn = true;

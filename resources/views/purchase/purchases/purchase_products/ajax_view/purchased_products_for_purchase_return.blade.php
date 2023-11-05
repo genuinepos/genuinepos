@@ -1,7 +1,7 @@
 @foreach ($purchaseProducts as $purchaseProduct)
     @php
         $variantName = $purchaseProduct?->variant ? ' - ' . $purchaseProduct?->variant?->variant_name : '';
-        $variantId = $purchaseProduct->variant_id ? ' - ' . $purchase_product->variant_id : 'noid';
+        $variantId = $purchaseProduct->variant_id ? $purchaseProduct->variant_id : 'noid';
     @endphp
 
     <tr id="select_item">
@@ -19,7 +19,7 @@
             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $purchaseProduct->unit_discount_amount }}">
             <input type="hidden" name="purchase_product_ids[]" value="{{ $purchaseProduct->id }}">
             <input type="hidden" name="purchase_return_product_ids[]">
-            <input type="hidden" class="unique_id" id="{{ $purchaseProduct->product_id . $variantId.$purchaseProduct?->purchase?->warehouse_id }}" value="{{ $purchaseProduct->product_id . $variantId . $purchaseProduct?->purchase?->warehouse_id }}">
+            <input type="hidden" class="unique_id" id="{{ $purchaseProduct->product_id . $variantId . $purchaseProduct?->purchase?->warehouse_id }}" value="{{ $purchaseProduct->product_id . $variantId . $purchaseProduct?->purchase?->warehouse_id }}">
         </td>
 
         <td class="text-start">

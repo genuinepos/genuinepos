@@ -2,6 +2,7 @@
 
 namespace App\Services\Sales;
 
+use App\Enums\BooleanType;
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
 use App\Models\Sales\Sale;
@@ -321,6 +322,7 @@ class SaleService
         $sale->paid = $totalSaleReceived->sum('total_received');
         $sale->due = $due;
         $sale->sale_return_amount = $totalReturn->sum('total_returned_amount');
+        $sale->is_return_available = $totalReturn->sum('total_returned_amount') > 0 ? BooleanType::True->value : BooleanType::False->value;
         $sale->save();
 
         return $sale;

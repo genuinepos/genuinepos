@@ -199,6 +199,13 @@
                                 </tr>
 
                                 <tr>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <td class="text-end" style="font-size:11px!important;">
+                                        {{ App\Utils\Converter::format_in_bdt($purchase->purchase_return_amount) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <th class="text-end">{{ __("Paid") }} : {{ $generalSettings['business__currency'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
@@ -471,9 +478,16 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Purchased Amount') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return') }} : {{ $generalSettings['business__currency'] }}</th>
+                            <td class="text-end" style="font-size:11px!important;">
+                                {{ App\Utils\Converter::format_in_bdt($purchase->purchase_return_amount) }}
                             </td>
                         </tr>
 

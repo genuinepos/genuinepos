@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Enums\ContactType;
+use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Accounts\AccountService;
+use App\Services\Contacts\ContactService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountService;
+use App\Services\Contacts\CustomerGroupService;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Contacts\ContactCreditLimitService;
 use App\Services\Contacts\ContactOpeningBalanceService;
-use App\Services\Contacts\ContactService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -21,6 +22,7 @@ class ContactController extends Controller
         private ContactService $contactService,
         private ContactOpeningBalanceService $contactOpeningBalanceService,
         private ContactCreditLimitService $contactCreditLimitService,
+        private CustomerGroupService $customerGroupService,
         private AccountService $accountService,
         private AccountGroupService $accountGroupService,
         private AccountLedgerService $accountLedgerService,
@@ -30,13 +32,38 @@ class ContactController extends Controller
 
     public function create($type)
     {
-        $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
+        if ($type == ContactType::Customer->value) {
+            if (!auth()->user()->can('customer_add')) {
 
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
+        $customerGroups = $this->customerGroupService->customerGroups()->get(['id', 'name']);
         return view('contacts.ajax_view.create', compact('type', 'customerGroups'));
     }
 
     public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
+        if ($type == ContactType::Customer->value) {
+            if (!auth()->user()->can('customer_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_add')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
         try {
 
             DB::beginTransaction();
@@ -88,12 +115,26 @@ class ContactController extends Controller
             DB::rollBack();
         }
 
-        return $addContact;
+        return ['id' => $addAccount->id, 'name' => $addAccount->name, 'phone' => $addAccount->phone, 'balance' => $request->opening_balance, 'balanceType' => $request->opening_balance_type];
     }
 
     public function edit($contactId, $type)
     {
-        $customerGroups = DB::table('customer_groups')->select('id', 'group_name')->get();
+        if ($type == ContactType::Customer->value) {
+
+            if (!auth()->user()->can('customer_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
+        $customerGroups = $this->customerGroupService->customerGroups()->get(['id', 'name']);
         $contact = $this->contactService->singleContact(id: $contactId, with: ['openingBalance', 'customerGroup']);
 
         return view('contacts.ajax_view.edit', compact('type', 'contact', 'customerGroups'));
@@ -101,6 +142,20 @@ class ContactController extends Controller
 
     public function update(Request $request, $contactId, $type)
     {
+        if ($type == ContactType::Customer->value) {
+
+            if (!auth()->user()->can('customer_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        } else if ($type == ContactType::Supplier->value) {
+
+            if (!auth()->user()->can('supplier_edit')) {
+
+                abort(403, 'Access Forbidden.');
+            }
+        }
+
         try {
 
             DB::beginTransaction();

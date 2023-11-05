@@ -106,7 +106,6 @@
                                                     <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
                                                 @endif
 
-
                                                 <div class="col-lg-3 col-md-6">
                                                     <label><strong>{{ __("From Date") }}</strong></label>
                                                     <div class="input-group">

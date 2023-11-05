@@ -243,7 +243,18 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $customerCopySaleProducts = $saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
-        $userActivityLogUtil->addLog(action: 1, subject_type: $request->status == SaleStatus::Final->value ? 7 : 8, data_obj: $sale);
+        $subjectType = '';
+        if ($request->status == SaleStatus::Final->value) {
+            $subjectType = 7;
+        } else if ($request->status == SaleStatus::Order->value) {
+            $subjectType = 8;
+        } else if ($request->status == SaleStatus::Quotation->value) {
+            $subjectType = 30;
+        } else if ($request->status == SaleStatus::Draft->value) {
+            $subjectType = 29;
+        }
+
+        $userActivityLogUtil->addLog(action: 1, subject_type: $subjectType, data_obj: $sale);
 
         return ['sale' => $sale, 'customerCopySaleProducts' => $customerCopySaleProducts];
     }
@@ -516,7 +527,18 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             }
         }
 
-        $userActivityLogUtil->addLog(action: 3, subject_type: $deleteSale->status == SaleStatus::Final->value ? 7 : 8, data_obj: $deleteSale);
+        $subjectType = '';
+        if ($deleteSale->status == SaleStatus::Final->value) {
+            $subjectType = 7;
+        } else if ($deleteSale->status == SaleStatus::Order->value) {
+            $subjectType = 8;
+        } else if ($deleteSale->status == SaleStatus::Quotation->value) {
+            $subjectType = 30;
+        } else if ($deleteSale->status == SaleStatus::Draft->value) {
+            $subjectType = 29;
+        }
+
+        $userActivityLogUtil->addLog(action: 3, subject_type: $subjectType, data_obj: $deleteSale);
 
         return $deleteSale;
     }

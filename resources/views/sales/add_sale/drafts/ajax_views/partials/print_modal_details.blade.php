@@ -152,11 +152,11 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Draft ID') }} : </strong> {{ $draft->draft_id }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) . ' ' . $draft->time }}
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) . ' ' . $draft->time }}
+                        <strong>{{ __('Draft ID') }} : </strong> {{ $draft->draft_id }}
                     </li>
 
                     <li style="font-size:11px!important;">

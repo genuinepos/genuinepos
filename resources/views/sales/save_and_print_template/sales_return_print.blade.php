@@ -103,8 +103,8 @@
         <div class="row mt-2">
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $return->voucher_no }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>{{ $return->date }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $return->voucher_no }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __("Customer") }} : </strong> {{ $return?->supplier?->name  }}</li>
                 </ul>
             </div>

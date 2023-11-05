@@ -157,11 +157,11 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Order ID') }} : </strong> {{ $quotation->quotation_id }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) . ' ' . $quotation->time }}
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) . ' ' . $quotation->time }}
+                        <strong>{{ __('Order ID') }} : </strong> {{ $quotation->quotation_id }}
                     </li>
 
                     <li style="font-size:11px!important;">

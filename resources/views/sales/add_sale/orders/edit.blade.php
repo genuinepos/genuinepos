@@ -36,6 +36,8 @@
         label.col-5,
         label.col-6 { text-align: right; padding-right: 10px; }
 
+        .side-number-field input { font-size: 14px;}
+
         .checkbox_input_wrap { text-align: right; }
 
         .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
@@ -92,6 +94,23 @@
                                                         <span class="error error_customer_account_id"></span>
                                                     </div>
                                                 </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <select name="status" class="form-control" id="status" data-next="date">
+                                                            <option value="{{ \App\Enums\SaleStatus::Order->value }}">{{ \App\Enums\SaleStatus::Order->name }}</option>
+                                                        </select>
+                                                        <span class="error error_status"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-4">
@@ -99,6 +118,14 @@
                                                     <label class="col-4"><b>{{ __("Order ID") }}</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control fw-bold" value="{{ $order->order_id }}" autocomplete="off" tabindex="-1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($order->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <span class="error error_date"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,30 +144,8 @@
                                                         <span class="error error_sale_account_id"></span>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
-                                                    <div class="col-8">
-                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {{-- Inv Schema --}}
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($order->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
-                                                        <span class="error error_date"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
+                                                <div class="input-group mt-1">
                                                     <label class="col-4"><b>{{ __("Price Group") }}</b></label>
                                                     <div class="col-8">
                                                         <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
@@ -149,18 +154,6 @@
                                                                 <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select name="status" class="form-control" id="status" data-next="date">
-                                                            <option value="{{ \App\Enums\SaleStatus::Order->value }}">{{ \App\Enums\SaleStatus::Order->name }}</option>
-                                                        </select>
-                                                        <span class="error error_status"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -306,7 +299,7 @@
                                                                             @php
                                                                                 $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
 
-                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->product_variant_id : 'noid';
+                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
                                                                                 $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
                                                                             @endphp
@@ -316,7 +309,7 @@
                                                                             <input type="hidden" id="is_show_emi_on_pos" value="{{ $saleProduct->product->is_show_emi_on_pos }}">
                                                                             <input type="hidden" name="descriptions[]" id="descriptions" value="{{ $saleProduct->description }}">
                                                                             <input type="hidden" name="product_ids[]" id="product_id" value="{{ $saleProduct->product_id }}">
-                                                                            <input type="hidden" value="{{ $variantId }}" id="variant_id" name="variant_ids[]">
+                                                                            <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
                                                                             <input type="hidden" name="tax_types[]" id="tax_type" value="{{ $saleProduct->tax_type }}">
                                                                             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $saleProduct->tax_ac_id }}">
                                                                             <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $saleProduct->unit_tax_percent }}">
@@ -432,7 +425,7 @@
 
                             <div class="col-md-3">
                                 <div class="form_element rounded m-0">
-                                    <div class="element-body">
+                                    <div class="element-body side-number-field">
                                         <div class="row gx-2">
                                             <label class="col-md-5 text-end"><b>{{ __("Total Item") }}</b></label>
                                             <div class="col-md-7">
@@ -541,6 +534,13 @@
                                                         @endforeach
                                                     </select>
                                                     <span class="error error_account_id"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>

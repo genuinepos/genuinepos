@@ -191,6 +191,7 @@ class SaleProductService
         $addSaleProduct->unit_discount = $request->unit_discounts[$index];
         $addSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
         $addSaleProduct->tax_ac_id = $request->tax_ac_ids[$index];
+        $addSaleProduct->tax_type = $request->tax_types[$index];
         $addSaleProduct->unit_tax_percent = $request->unit_tax_percents[$index];
         $addSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
         $addSaleProduct->unit_id = $request->unit_ids[$index];
@@ -208,7 +209,7 @@ class SaleProductService
     {
         $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $warehouseId = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
-        
+
         $saleProduct = $this->singleSaleProduct(id: $request->sale_product_ids[$index]);
 
         $currentTaxAcId = $saleProduct ? $saleProduct->tax_ac_id : null;
@@ -233,6 +234,7 @@ class SaleProductService
         $addOrUpdateSaleProduct->unit_discount = $request->unit_discounts[$index];
         $addOrUpdateSaleProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
         $addOrUpdateSaleProduct->tax_ac_id = $request->tax_ac_ids[$index];
+        $addOrUpdateSaleProduct->tax_type = $request->tax_types[$index];
         $addOrUpdateSaleProduct->unit_tax_percent = $request->unit_tax_percents[$index];
         $addOrUpdateSaleProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
         $addOrUpdateSaleProduct->unit_id = $request->unit_ids[$index];

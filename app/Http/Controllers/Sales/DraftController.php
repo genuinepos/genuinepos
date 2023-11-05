@@ -5,27 +5,52 @@ namespace App\Http\Controllers\Sales;
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
 use App\Services\Sales\DraftService;
 use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Setups\WarehouseService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\DraftProductService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Setups\BranchSettingService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Products\ProductStockService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ManagePriceGroupService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class DraftController extends Controller
 {
     public function __construct(
         private DraftService $draftService,
+        private SaleService $saleService,
+        private DayBookService $dayBookService,
+        private BranchSettingService $branchSettingService,
         private DraftProductService $draftProductService,
         private SaleProductService $saleProductService,
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
+        private AccountLedgerService $accountLedgerService,
+        private PaymentMethodService $paymentMethodService,
         private BranchService $branchService,
+        private ProductStockService $productStockService,
+        private ProductLedgerService $productLedgerService,
         private PriceGroupService $priceGroupService,
+        private PurchaseProductService $purchaseProductService,
+        private AccountingVoucherService $accountingVoucherService,
+        private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
+        private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
+        private WarehouseService $warehouseService,
         private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
@@ -71,23 +96,27 @@ class DraftController extends Controller
         return view('sales.add_sale.drafts.ajax_views.show', compact('draft', 'customerCopySaleProducts'));
     }
 
-    public function edit($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface){
+    public function edit($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    {
 
         $editMethodContainer = $draftControllerMethodContainersInterface->editMethodContainer(
             id: $id,
             draftService: $this->draftService,
+            branchService: $this->branchService,
             accountService: $this->accountService,
             accountFilterService: $this->accountFilterService,
+            paymentMethodService: $this->paymentMethodService,
             priceGroupService: $this->priceGroupService,
+            warehouseService: $this->warehouseService,
             managePriceGroupService: $this->managePriceGroupService
         );
 
         extract($editMethodContainer);
 
-        return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
+        return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'methods', 'warehouses', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'branchName'));
     }
 
-    function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
+    function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'status' => 'required',
@@ -101,8 +130,21 @@ class DraftController extends Controller
             $updateMethodContainer = $draftControllerMethodContainersInterface->updateMethodContainer(
                 id: $id,
                 request: $request,
+                saleService: $this->saleService,
                 draftService: $this->draftService,
                 draftProductService: $this->draftProductService,
+                branchSettingService: $this->branchSettingService,
+                dayBookService: $this->dayBookService,
+                accountLedgerService: $this->accountLedgerService,
+                productStockService: $this->productStockService,
+                productLedgerService: $this->productLedgerService,
+                purchaseProductService: $this->purchaseProductService,
+                accountService: $this->accountService,
+                accountingVoucherService: $this->accountingVoucherService,
+                accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
+                accountingVoucherDescriptionReferenceService: $this->accountingVoucherDescriptionReferenceService,
+                userActivityLogUtil: $this->userActivityLogUtil,
+                codeGenerator: $codeGenerator,
             );
 
             if (isset($updateMethodContainer['pass']) && $updateMethodContainer['pass'] == false) {

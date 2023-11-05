@@ -146,7 +146,7 @@
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . $sale->time }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}
                     </li>
 
                     <li style="font-size:11px!important;">

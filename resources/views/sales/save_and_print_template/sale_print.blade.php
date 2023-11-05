@@ -187,11 +187,11 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;">
-                            <strong>{{ __("Invoice ID") }} : </strong> {{ $sale->invoice_id }}
+                            <strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
                         </li>
 
                         <li style="font-size:11px!important;">
-                            <strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
+                            <strong>{{ __("Invoice ID") }} : </strong> {{ $sale->invoice_id }}
                         </li>
 
                         <li style="font-size:11px!important;">

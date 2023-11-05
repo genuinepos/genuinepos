@@ -83,12 +83,12 @@
                     <p>
                         @if ($order?->branch)
 
-                            <strong>@lang('menu.email') : </strong>{{ $order?->branch?->email }},
-                            <strong>@lang('menu.phone') : </strong>{{ $order?->branch?->phone }}
+                            <strong>{{ __("Email") }} : </strong>{{ $order?->branch?->email }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $order?->branch?->phone }}
                         @else
 
-                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }},
-                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}
+                            <strong>{{ __("Email") }} : </strong>{{ $generalSettings['business__email'] }},
+                            <strong>{{ __("Phone") }} : </strong>{{ $generalSettings['business__phone'] }}
                         @endif
                     </p>
                 </div>

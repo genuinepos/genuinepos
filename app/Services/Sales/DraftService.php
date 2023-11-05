@@ -3,6 +3,8 @@
 namespace App\Services\Sales;
 
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,7 +21,7 @@ class DraftService
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
-            ->where('sales.draft_status', 1);
+            ->where('sales.status', SaleStatus::Draft->value);
 
         $this->filteredQuery($request, $query);
 
@@ -124,7 +126,7 @@ class DraftService
             ->make(true);
     }
 
-    public function updateDraft(object $request, object $updateDraft): object
+    public function updateDraft(object $request, object $updateDraft, object $codeGenerator, ?string $salesOrderPrefix, ?string $invoicePrefix, ?string $quotationPrefix): object
     {
         foreach ($updateDraft->saleProducts as $saleProduct) {
 
@@ -132,12 +134,36 @@ class DraftService
             $saleProduct->save();
         }
 
+        $time = date(' H:i:s', strtotime($updateDraft->date_ts));
+
+        if ($request->status == SaleStatus::Order->value) {
+
+            $orderId = $codeGenerator->generateMonthWise(table: 'sales', column: 'order_id', prefix: $salesOrderPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+            $updateDraft->order_id = $orderId;
+            $updateDraft->order_status = BooleanType::True->value;
+            $updateDraft->total_ordered_qty = $updateDraft->total_qty;
+            $updateDraft->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        }else if($request->status == SaleStatus::Quotation->value) {
+
+            $quotationId = $codeGenerator->generateMonthWise(table: 'sales', column: 'quotation_id', prefix: $quotationPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+            $updateDraft->quotation_id = $quotationId;
+            $updateDraft->quotation_status = BooleanType::True->value;
+            $updateDraft->total_quotation_qty = $updateDraft->total_qty;
+            $updateDraft->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        }else if($request->status == SaleStatus::Final->value) {
+
+            $invoiceId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+            $updateDraft->invoice_id = $invoiceId;
+            $updateDraft->total_sold_qty = $updateDraft->total_qty;
+            $updateDraft->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        }
+
+        $updateDraft->status = $request->status;
         $updateDraft->sale_account_id = $request->sale_account_id;
         $updateDraft->customer_account_id = $request->customer_account_id;
         $updateDraft->pay_term = $request->pay_term;
         $updateDraft->pay_term_number = $request->pay_term_number;
         $updateDraft->date = $request->date;
-        $time = date(' H:i:s', strtotime($updateDraft->date_ts));
         $updateDraft->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateDraft->draft_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateDraft->total_item = $request->total_item;

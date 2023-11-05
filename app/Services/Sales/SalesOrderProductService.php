@@ -36,6 +36,7 @@ class SalesOrderProductService
             $addOrUpdateSalesOrderProduct->unit_discount = $request->unit_discounts[$index];
             $addOrUpdateSalesOrderProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
             $addOrUpdateSalesOrderProduct->tax_ac_id = $request->tax_ac_ids[$index];
+            $addOrUpdateSalesOrderProduct->tax_type = $request->tax_types[$index];
             $addOrUpdateSalesOrderProduct->unit_tax_percent = $request->unit_tax_percents[$index];
             $addOrUpdateSalesOrderProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
             $addOrUpdateSalesOrderProduct->unit_id = $request->unit_ids[$index];

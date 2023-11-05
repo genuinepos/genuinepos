@@ -13,7 +13,7 @@
         b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
         .border_red { border: 1px solid red !important; }
 
-        #display_pre_due { font-weight: 600; }
+        .big_amount_field { height: 36px; font-size: 24px; margin-bottom: 3px; }
 
         input[type=number]#quantity::-webkit-inner-spin-button,
         input[type=number]#quantity::-webkit-outer-spin-button { opacity: 1; margin: 0; }
@@ -65,7 +65,7 @@
                                                     <label class="col-4"><b>{{ __('Customer') }}</b></label>
                                                     <div class="col-8">
                                                         <div class="input-group flex-nowrap">
-                                                            <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="date">
+                                                            <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
 
                                                                     <option {{ $customerAccount->id == $quotation->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
@@ -78,6 +78,25 @@
                                                         <span class="error error_customer_account_id"></span>
                                                     </div>
                                                 </div>
+
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <select name="status" class="form-control" id="status" data-next="date">
+                                                            <option {{ App\Enums\SaleStatus::Quotation->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Quotation->value }}">{{ App\Enums\SaleStatus::Quotation->name }}</option>
+
+                                                            <option {{ App\Enums\SaleStatus::Order->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Order->value }}">{{ App\Enums\SaleStatus::Order->name }}</option>
+                                                        </select>
+                                                        <span class="error error_status"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-4">
@@ -87,13 +106,21 @@
                                                         <input readonly type="text" class="form-control fw-bold" value="{{ $quotation->quotation_id }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
+
+                                                <div class="input-group">
+                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <span class="error error_date"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Sales Account") }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="status">
+                                                        <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="price_group_id">
                                                             @foreach ($saleAccounts as $saleAccount)
                                                                 <option {{ $saleAccount->id == $quotation->sale_account_id ? 'SELECTED' : '' }} value="{{ $saleAccount->id }}">
                                                                     {{ $saleAccount->name }}
@@ -103,51 +130,16 @@
                                                         <span class="error error_sale_account_id"></span>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
-                                                    <div class="col-8">
-                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}" data-next="price_group_id" autocomplete="off" id="date">
-                                                        <span class="error error_date"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Price Group") }}</b></label>
                                                     <div class="col-8">
-                                                        <select name="price_group_id" class="form-control" id="price_group_id" data-next="sale_account_id">
+                                                        <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
                                                             <option value="">{{ __("Default Selling Price Group") }}</option>
                                                             @foreach ($priceGroups as $priceGroup)
                                                                 <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select name="status" class="form-control" id="status" data-next="search_product">
-                                                            <option {{ App\Enums\SaleStatus::Quotation->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Quotation->value }}">{{ App\Enums\SaleStatus::Quotation->name }}</option>
-
-                                                            <option {{ App\Enums\SaleStatus::Order->value == $quotation->status ? 'SELECTED' : '' }} value="{{ App\Enums\SaleStatus::Order->value }}">{{ App\Enums\SaleStatus::Order->name }}</option>
-                                                        </select>
-                                                        <span class="error error_status"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -293,7 +285,7 @@
                                                                             @php
                                                                                 $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
 
-                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->product_variant_id : 'noid';
+                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
                                                                                 $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
                                                                             @endphp
@@ -487,23 +479,9 @@
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Payment Method") }}</b></label>
-                                                <div class="col-md-7">
-                                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
-                                                        @foreach ($methods as $method)
-                                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
-                                                                {{ $method->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_payment_method_id"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-md-7">
-                                                    <select name="account_id" class="form-control" id="account_id" data-next="save_changes">
+                                                    <select name="account_id" class="form-control" id="account_id" data-next="payment_method_id">
                                                         @foreach ($accounts as $ac)
                                                             @if ($ac->is_bank_account == 1 && $ac->has_bank_access_branch == 0)
                                                                 @continue
@@ -523,9 +501,23 @@
                                             </div>
 
                                             <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Type/Method") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="payment_note">
+                                                        @foreach ($methods as $method)
+                                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
+                                                                {{ $method->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_payment_method_id"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Payment Note") }}</b></label>
                                                 <div class="col-md-7">
-                                                    <input type="number" step="any" class="form-control text-success" name="payment_note" id="payment_note" placeholder="{{ __("Payment Note") }}">
+                                                    <input type="number" step="any" class="form-control text-success" name="payment_note" id="payment_note" data-next="save_changes" placeholder="{{ __("Payment Note") }}">
                                                 </div>
                                             </div>
 

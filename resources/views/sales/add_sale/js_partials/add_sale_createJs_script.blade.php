@@ -142,24 +142,10 @@
 
                                 product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
-                                var price = 0;
-                                var __price = priceGroups.filter(function(value) {
-
-                                    return value.price_group_id == price_group_id && value.product_id == product.id && value.variant_id == variant.id;
-                                });
-
-                                if (__price.length != 0) {
-
-                                    price = __price[0].price ? __price[0].price : variant.variant_price;
-                                } else {
-
-                                    price = variant.variant_price;
-                                }
-
                                 var name = product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name;
 
                                 li += '<li>';
-                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_code="' + variant.variant_code + '" data-p_price_exc_tax="' + price + '" data-p_cost_inc_tax="' + (variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax) + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
+                                li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_tax_ac_id="' + (product.tax_ac_id != null ? product.tax_ac_id : '') + '" data-tax_type="' + product.tax_type + '" data-is_show_emi_on_pos="' + product.is_show_emi_on_pos + '" data-p_price_exc_tax="' + variant.variant_price + '" data-p_cost_inc_tax="' + (variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax) + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
                                 li += '</li>';
                             });
 
@@ -311,18 +297,12 @@
         });
     }
 
-    var keyName = 1;
     function selectProduct(e) {
 
         var price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
 
         $('.select_area').hide();
         $('#search_product').val('');
-
-        if (keyName == 13 || keyName == 1) {
-
-            document.getElementById('search_product').focus();
-        }
 
         var product_id = e.getAttribute('data-p_id');
         var variant_id = e.getAttribute('data-v_id') ? e.getAttribute('data-v_id') : 'noid';
@@ -362,8 +342,6 @@
 
                         $('#e_descriptions').prop('readonly', false);
                     }
-
-                    console.log(priceGroups);
 
                     var price = 0;
                     var __price = priceGroups.filter(function(value) {
@@ -745,7 +723,7 @@
 
             if ($(this).val() != '' && $(this).val() > 0) {
 
-                $('#e_unit_discount_type').focus();
+                $('#e_discount_type').focus();
             } else {
 
                 $('#e_tax_ac_id').focus();
@@ -753,7 +731,7 @@
         }
     });
 
-    $('#e_unit_discount_type').on('change keypress click', function(e) {
+    $('#e_discount_type').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
 
@@ -821,17 +799,10 @@
     $('#e_descriptions').on('input keypress', function(e) {
 
         calculateEditOrAddAmount();
-        var status = $('#status').val();
 
         if (e.which == 13) {
 
-            if (status == 1 || status == '') {
-
-                $('#e_warehouse_id').focus();
-            } else {
-
-                $('#add_item').focus();
-            }
+            $('#e_warehouse_id').focus();
         }
     });
 
@@ -957,7 +928,7 @@
         var status = $('#status').val() ? $('#status').val() : 1;
 
         var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
-        var invoice_amount = $('#status').val() == 1 ? calcInvoiceAmount : 0;
+        var invoice_amount = status == 1 ? calcInvoiceAmount : 0;
         var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
         var currentBalance = parseFloat(invoice_amount) + parseFloat(closing_balance) - parseFloat(received_amount);
         $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
@@ -1089,7 +1060,7 @@
     }
 
     //Add purchase request by ajax
-    $('#add_sale_form').on('submit', function(e){
+    $('#add_sale_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
@@ -1305,8 +1276,6 @@
         $('#final_and_print').show();
         $('#draft').show();
         $('.payment_body').show();
-        $('.warehouse_field').show();
-        $('#e_warehouse_id').val('');
 
         if (status == 1) {
 
@@ -1321,7 +1290,6 @@
             $('#final_and_print').hide();
             $('#order').hide();
             $('#draft').hide();
-            $('.warehouse_field').hide();
         }else if(status == 3){
 
             $('#quotation').hide();
@@ -1329,7 +1297,6 @@
             $('#final').hide();
             $('#final_and_print').hide();
             $('#draft').hide();
-            $('.warehouse_field').hide();
         }else if(status == 2){
 
             $('#quotation').hide();
@@ -1337,7 +1304,6 @@
             $('.payment_body').hide();
             $('#final_and_print').hide();
             $('#final').hide();
-            $('.warehouse_field').hide();
         }
 
         $('#received_amount').val(parseFloat(0).toFixed(2));
@@ -1511,12 +1477,21 @@
 
         if(parseFloat(quantity) > parseFloat(stock_limit)) {
 
-            toastr.error('Serial No: '+(index + 1)+', Product Name: '+productName+'. Only '+ stock_limit + '/' + unitName +' is available in shop.');
+            toastr.error("{{ __('Serial No: ') }} "+(index + 1) + ',' + " {{ __('Product Name: ') }}" + productName+ " {{ __('Only ') }}" + stock_limit + '/' + unitName + " {{ __('is available in the selected stock location.') }}");
             return false;
         }
 
         return true;
     }
+
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
 
     setTimeout(function() {
 

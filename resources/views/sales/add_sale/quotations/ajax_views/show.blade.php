@@ -28,7 +28,7 @@
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) . ' ' . date($timeFormat, strtotime($quotation->time)) }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}</li>
                              <li style="font-size:11px!important;"><strong>{{ __('Quotation ID') }} : </strong> {{ $quotation->quotation_id }}</li>
                              <li style="font-size:11px!important;"><strong>{{ __("Shipment Status") }} : </strong>
                                 @if ($quotation->shipment_status == App\Enums\ShipmentStatus::NoStatus->value)

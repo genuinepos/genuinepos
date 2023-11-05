@@ -27,8 +27,8 @@
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) . ' ' . date($timeFormat, strtotime($draft->time)) }}</li>
-                             <li style="font-size:11px!important;"><strong>{{ __('Draft ID') }} : </strong> {{ $draft->quotation_id }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __('Draft ID') }} : </strong> {{ $draft->draft_id }}</li>
                              <li style="font-size:11px!important;">
                                  <strong>{{ __("Created By") }} : </strong>
                                 {{ $draft?->createdBy?->prefix .' '. $draft?->createdBy?->name .' '. $draft?->createdBy?->last_name }}

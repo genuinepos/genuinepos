@@ -199,11 +199,11 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Quotation ID') }} : </strong> {{ $quotation->quotation_id }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) . ' ' . $quotation->time }}
+                        <strong>{{ __('Quotation ID') }} : </strong> {{ $quotation->quotation_id }}
                     </li>
 
                     <li style="font-size:11px!important;">
@@ -214,7 +214,7 @@
         </div>
 
         <div class="sale_product_table pt-3 pb-3">
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>

@@ -227,11 +227,11 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Order ID') }} : </strong> {{ $order->order_id }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($order->date)) . ' ' . $order->time }}
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($order->date)) . ' ' . $order->time }}
+                        <strong>{{ __('Order ID') }} : </strong> {{ $order->order_id }}
                     </li>
 
                     <li style="font-size:11px!important;">

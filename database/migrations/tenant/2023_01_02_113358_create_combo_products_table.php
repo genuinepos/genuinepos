@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('combo_products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('product_id')->nullable()->index('combo_products_product_id_foreign');
-            $table->unsignedBigInteger('combo_product_id')->nullable()->index('combo_products_combo_product_id_foreign');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('combo_product_id')->nullable();
             $table->decimal('quantity', 22)->nullable()->default(0);
-            $table->unsignedBigInteger('variant_id')->nullable()->index('combo_products_product_variant_id_foreign');
+            $table->unsignedBigInteger('product_variant_id')->nullable();
             $table->boolean('delete_in_update')->default(false);
             $table->timestamps();
 

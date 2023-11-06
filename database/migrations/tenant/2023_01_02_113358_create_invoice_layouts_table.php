@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('invoice_layouts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('name')->nullable();
             $table->tinyInteger('layout_design')->comment('1=normal_printer;2=pos_printer');
             $table->boolean('show_shop_logo')->default(false);

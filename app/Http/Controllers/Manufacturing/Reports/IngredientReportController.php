@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Manufacturing\Reports;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Enums\ProductionStatus;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class IngredientReportController extends Controller
@@ -19,7 +19,7 @@ class IngredientReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('manufacturing_report')) {
+        if (! auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }
@@ -72,10 +72,10 @@ class IngredientReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->area_name . ')';
+                            return $row->parent_branch_name.'('.$row->area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->area_name . ')';
+                            return $row->branch_name.'('.$row->area_name.')';
                         }
                     } else {
 
@@ -86,17 +86,17 @@ class IngredientReportController extends Controller
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name . '-(' . $row->warehouse_code . ')';
+                        return $row->warehouse_name.'-('.$row->warehouse_code.')';
                     } else {
 
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                return $row->parent_branch_name . '(' . $row->area_name . ')';
+                                return $row->parent_branch_name.'('.$row->area_name.')';
                             } else {
 
-                                return $row->branch_name . '(' . $row->area_name . ')';
+                                return $row->branch_name.'('.$row->area_name.')';
                             }
                         } else {
 
@@ -104,37 +104,39 @@ class IngredientReportController extends Controller
                         }
                     }
                 })
-                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('manufacturing.productions.show', [$row->production_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->voucher_no . '</a>')
+                ->editColumn('voucher_no', fn ($row) => '<a href="'.route('manufacturing.productions.show', [$row->production_id]).'" class="text-hover" id="details_btn" title="View">'.$row->voucher_no.'</a>')
                 ->editColumn('mfd_product', function ($row) {
 
-                    $variantName = $row->mfd_variant_name ? ' _ ' . $row->mfd_variant_name : '';
-                    $productCode = $row->mfd_variant_code ? ' (' . $row->mfd_variant_code . ')' : ' (' . $row->mfd_product_code . ')';
-                    return Str::limit($row->mfd_product_name, 35, '') . $variantName . $productCode;
+                    $variantName = $row->mfd_variant_name ? ' _ '.$row->mfd_variant_name : '';
+                    $productCode = $row->mfd_variant_code ? ' ('.$row->mfd_variant_code.')' : ' ('.$row->mfd_product_code.')';
+
+                    return Str::limit($row->mfd_product_name, 35, '').$variantName.$productCode;
                 })
                 ->editColumn('ingredient_product', function ($row) {
 
-                    $variantName = $row->ingredient_variant_name ? ' _ ' . $row->ingredient_variant_name : '';
-                    $productCode = $row->ingredient_variant_code ? ' (' . $row->ingredient_variant_code . ')' : ' (' . $row->ingredient_product_code . ')';
-                    return Str::limit($row->ingredient_product_name, 35, '') . $variantName . $productCode;
+                    $variantName = $row->ingredient_variant_name ? ' _ '.$row->ingredient_variant_name : '';
+                    $productCode = $row->ingredient_variant_code ? ' ('.$row->ingredient_variant_code.')' : ' ('.$row->ingredient_product_code.')';
+
+                    return Str::limit($row->ingredient_product_name, 35, '').$variantName.$productCode;
                 })
 
                 ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_exc_tax))
 
-                ->editColumn('unit_tax_amount', fn ($row) => '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '('.$row->unit_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
 
                 ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_inc_tax))
 
-                ->editColumn('final_qty', fn ($row) => '<span class="final_qty" data-value="' . $row->final_qty . '">' . \App\Utils\Converter::format_in_bdt($row->final_qty) . '/' . $row->unit_name . '</span>')
+                ->editColumn('final_qty', fn ($row) => '<span class="final_qty" data-value="'.$row->final_qty.'">'.\App\Utils\Converter::format_in_bdt($row->final_qty).'/'.$row->unit_name.'</span>')
 
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal)  . '</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->subtotal).'</span>')
 
                 ->editColumn('status', function ($row) {
                     if ($row->status == ProductionStatus::Final->value) {
 
-                        return '<span class="text-success">' . __("Final") . '</span>';
+                        return '<span class="text-success">'.__('Final').'</span>';
                     } else {
 
-                        return '<span class="text-danger">' . __("Hold") . '</span>';
+                        return '<span class="text-danger">'.__('Hold').'</span>';
                     }
                 })
                 ->rawColumns(['date', 'voucher_no', 'branch', 'mfd_product', 'ingredient_product', 'unit_cost_inc_tax', 'unit_cost_exc_tax', 'unit_tax_amount', 'unit_cost_inc_tax', 'final_qty', 'subtotal', 'status'])
@@ -151,7 +153,7 @@ class IngredientReportController extends Controller
 
     public function print(Request $request)
     {
-        if (!auth()->user()->can('manufacturing_report')) {
+        if (! auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }

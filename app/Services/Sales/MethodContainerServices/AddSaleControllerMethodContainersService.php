@@ -2,12 +2,12 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
-use App\Enums\SaleStatus;
-use App\Enums\SaleScreenType;
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
+use App\Enums\SaleScreenType;
+use App\Enums\SaleStatus;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
 
 class AddSaleControllerMethodContainersService implements AddSaleControllerMethodContainersInterface
@@ -68,7 +68,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -246,11 +246,11 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $subjectType = '';
         if ($request->status == SaleStatus::Final->value) {
             $subjectType = 7;
-        } else if ($request->status == SaleStatus::Order->value) {
+        } elseif ($request->status == SaleStatus::Order->value) {
             $subjectType = 8;
-        } else if ($request->status == SaleStatus::Quotation->value) {
+        } elseif ($request->status == SaleStatus::Quotation->value) {
             $subjectType = 30;
-        } else if ($request->status == SaleStatus::Draft->value) {
+        } elseif ($request->status == SaleStatus::Draft->value) {
             $subjectType = 29;
         }
 
@@ -259,7 +259,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         return ['sale' => $sale, 'customerCopySaleProducts' => $customerCopySaleProducts];
     }
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $branchService,
         object $saleService,
@@ -287,7 +287,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $sale->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -530,11 +530,11 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $subjectType = '';
         if ($deleteSale->status == SaleStatus::Final->value) {
             $subjectType = 7;
-        } else if ($deleteSale->status == SaleStatus::Order->value) {
+        } elseif ($deleteSale->status == SaleStatus::Order->value) {
             $subjectType = 8;
-        } else if ($deleteSale->status == SaleStatus::Quotation->value) {
+        } elseif ($deleteSale->status == SaleStatus::Quotation->value) {
             $subjectType = 30;
-        } else if ($deleteSale->status == SaleStatus::Draft->value) {
+        } elseif ($deleteSale->status == SaleStatus::Draft->value) {
             $subjectType = 29;
         }
 

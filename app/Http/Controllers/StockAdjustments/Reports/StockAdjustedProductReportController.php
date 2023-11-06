@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\StockAdjustments\Reports;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustedProductReportController extends Controller
@@ -18,7 +18,7 @@ class StockAdjustedProductReportController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('stock_adjustment_report')) {
+        if (! auth()->user()->can('stock_adjustment_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -67,12 +67,14 @@ class StockAdjustedProductReportController extends Controller
             return DataTables::of($adjustmentProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 35, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 35, '').$variant;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
                     $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -81,10 +83,10 @@ class StockAdjustedProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->branch_name.'('.$row->branch_area_name.')';
                         }
                     } else {
 
@@ -95,17 +97,17 @@ class StockAdjustedProductReportController extends Controller
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name . '(' . $row->warehouse_code . ')';
+                        return $row->warehouse_name.'('.$row->warehouse_code.')';
                     } else {
 
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                                return $row->parent_branch_name.'('.$row->branch_area_name.')';
                             } else {
 
-                                return $row->branch_name . '(' . $row->branch_area_name . ')';
+                                return $row->branch_name.'('.$row->branch_area_name.')';
                             }
                         } else {
 
@@ -114,16 +116,16 @@ class StockAdjustedProductReportController extends Controller
                     }
                 })
 
-                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('stock.adjustments.show', [$row->stock_adjustment_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->voucher_no . '</a>')
+                ->editColumn('voucher_no', fn ($row) => '<a href="'.route('stock.adjustments.show', [$row->stock_adjustment_id]).'" class="text-hover" id="details_btn" title="View">'.$row->voucher_no.'</a>')
 
                 ->editColumn('quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->quantity).'/<span class="quantity" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>';
                 })
 
                 ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_inc_tax))
 
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->subtotal).'</span>')
 
                 ->rawColumns(['product', 'date', 'branch', 'stock_location', 'quantity', 'voucher_no', 'unit_cost_inc_tax', 'subtotal'])
                 ->make(true);
@@ -145,42 +147,42 @@ class StockAdjustedProductReportController extends Controller
         $toDate = $request->to_date ? $request->to_date : $request->from_date;
 
         $adjustmentProducts = '';
-            $query = DB::table('stock_adjustment_products')
-                ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
-                ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
-                ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-                ->leftJoin('warehouses', 'stock_adjustment_products.warehouse_id', 'warehouses.id')
-                ->leftJoin('products', 'stock_adjustment_products.product_id', 'products.id')
-                ->leftJoin('product_variants', 'stock_adjustment_products.variant_id', 'product_variants.id')
-                ->leftJoin('units', 'stock_adjustment_products.unit_id', 'units.id');
+        $query = DB::table('stock_adjustment_products')
+            ->leftJoin('stock_adjustments', 'stock_adjustment_products.stock_adjustment_id', 'stock_adjustments.id')
+            ->leftJoin('branches', 'stock_adjustments.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('warehouses', 'stock_adjustment_products.warehouse_id', 'warehouses.id')
+            ->leftJoin('products', 'stock_adjustment_products.product_id', 'products.id')
+            ->leftJoin('product_variants', 'stock_adjustment_products.variant_id', 'product_variants.id')
+            ->leftJoin('units', 'stock_adjustment_products.unit_id', 'units.id');
 
-            $this->filter(request: $request, query: $query);
+        $this->filter(request: $request, query: $query);
 
-            $adjustmentProducts = $query->select(
-                'stock_adjustment_products.stock_adjustment_id',
-                'stock_adjustment_products.product_id',
-                'stock_adjustment_products.variant_id',
-                'stock_adjustment_products.quantity',
-                'stock_adjustment_products.unit_cost_inc_tax',
-                'stock_adjustment_products.subtotal',
-                'units.code_name as unit_code',
-                'stock_adjustments.id',
-                'stock_adjustments.branch_id',
-                'stock_adjustments.date',
-                'stock_adjustments.voucher_no',
-                'products.name',
-                'products.product_code',
-                'products.product_price',
-                'product_variants.variant_name',
-                'product_variants.variant_code',
-                'product_variants.variant_price',
-                'branches.name as branch_name',
-                'branches.area_name as branch_area_name',
-                'branches.branch_code',
-                'parentBranch.name as parent_branch_name',
-                'warehouses.warehouse_name',
-                'warehouses.warehouse_code',
-            )->orderBy('stock_adjustments.date_ts', 'desc')->get();
+        $adjustmentProducts = $query->select(
+            'stock_adjustment_products.stock_adjustment_id',
+            'stock_adjustment_products.product_id',
+            'stock_adjustment_products.variant_id',
+            'stock_adjustment_products.quantity',
+            'stock_adjustment_products.unit_cost_inc_tax',
+            'stock_adjustment_products.subtotal',
+            'units.code_name as unit_code',
+            'stock_adjustments.id',
+            'stock_adjustments.branch_id',
+            'stock_adjustments.date',
+            'stock_adjustments.voucher_no',
+            'products.name',
+            'products.product_code',
+            'products.product_price',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_price',
+            'branches.name as branch_name',
+            'branches.area_name as branch_area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+            'warehouses.warehouse_name',
+            'warehouses.warehouse_code',
+        )->orderBy('stock_adjustments.date_ts', 'desc')->get();
 
         return view('stock_adjustments.reports.stock_adjusted_products_reports.ajax_view.print', compact('adjustmentProducts', 'ownOrParentBranch', 'filteredBranchName', 'fromDate', 'toDate'));
     }

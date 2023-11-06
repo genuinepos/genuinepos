@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use Illuminate\Http\Request;
 use App\Enums\DayBookVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\ProductLedgerVoucherType;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Products\ProductStockService;
 use App\Services\Products\ProductLedgerService;
-use App\Services\TransferStocks\TransferStockService;
-use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\Products\ProductStockService;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\WarehouseService;
 use App\Services\TransferStocks\ReceiveStockFromWarehouseService;
+use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\TransferStocks\TransferStockService;
+use Illuminate\Http\Request;
 
 class ReceiveStockFromWarehouseController extends Controller
 {
@@ -29,7 +29,7 @@ class ReceiveStockFromWarehouseController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
 
@@ -42,7 +42,7 @@ class ReceiveStockFromWarehouseController extends Controller
         return view('transfer_stocks.receive_stocks.from_warehouse.index', compact('warehouses'));
     }
 
-    function create($transferStockId)
+    public function create($transferStockId)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $transferStockId,
@@ -65,7 +65,7 @@ class ReceiveStockFromWarehouseController extends Controller
         return view('transfer_stocks.receive_stocks.from_warehouse.create', compact('transferStock'));
     }
 
-    function receive($transferStockId, Request $request)
+    public function receive($transferStockId, Request $request)
     {
         try {
             DB::beginTransaction();
@@ -103,6 +103,6 @@ class ReceiveStockFromWarehouseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Stock is received successfully."));
+        return response()->json(__('Stock is received successfully.'));
     }
 }

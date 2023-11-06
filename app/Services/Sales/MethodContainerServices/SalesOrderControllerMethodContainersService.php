@@ -2,12 +2,9 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
-use App\Enums\SaleStatus;
-use App\Enums\SaleScreenType;
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
-use App\Enums\ProductLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
 
 class SalesOrderControllerMethodContainersService implements SalesOrderControllerMethodContainersInterface
@@ -47,7 +44,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         return $data;
     }
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $salesOrderService,
         object $accountService,
@@ -72,7 +69,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $order->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -100,7 +97,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
 
         $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
-        
+
         $data['order'] = $order;
 
         return $data;

@@ -6,5 +6,4 @@ use Modules\SAAS\Entities\Domain as SaasDomain;
 
 class Domain extends SaasDomain
 {
-
 }

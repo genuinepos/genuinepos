@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sale_returns', function (Blueprint $table) {
-            
+
             $table->bigIncrements('id');
             $table->string('voucher_no');
             $table->unsignedBigInteger('sale_id')->nullable()->index('sale_returns_sale_id_foreign');

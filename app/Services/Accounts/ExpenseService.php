@@ -2,16 +2,15 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\AccountingVoucherType;
+use App\Models\Accounts\AccountingVoucher;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use App\Enums\AccountingVoucherType;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\Accounts\AccountingVoucher;
 
 class ExpenseService
 {
-    function expensesTable(object $request): object
+    public function expensesTable(object $request): object
     {
         $generalSettings = config('generalSettings');
         $expenses = '';
@@ -64,15 +63,15 @@ class ExpenseService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('expenses.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
+                $html .= '<a href="'.route('expenses.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('edit_expense')) {
 
-                        $html .= '<a href="' . route('expenses.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editExpense">' . __("Edit") . '</a>';
+                        $html .= '<a href="'.route('expenses.edit', ['id' => $row->id]).'" class="dropdown-item" id="editExpense">'.__('Edit').'</a>';
                     }
                 }
 
@@ -80,7 +79,7 @@ class ExpenseService
 
                     if (auth()->user()->can('delete_expense')) {
 
-                        $html .= '<a href="' . route('expenses.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="'.route('expenses.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                     }
                 }
 
@@ -92,11 +91,12 @@ class ExpenseService
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                 return date($__date_format, strtotime($row?->date));
             })
             ->editColumn('voucher_no', function ($row) {
 
-                return '<a href="' . route('expenses.show', [$row?->id]) . '" id="details_btn">' . $row?->voucher_no . '</a>';
+                return '<a href="'.route('expenses.show', [$row?->id]).'" id="details_btn">'.$row?->voucher_no.'</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -104,10 +104,10 @@ class ExpenseService
 
                     if ($row?->branch?->parentBranch) {
 
-                        return $row?->branch?->parentBranch->name . '(' . $row?->branch?->area_name . ')';
+                        return $row?->branch?->parentBranch->name.'('.$row?->branch?->area_name.')';
                     } else {
 
-                        return $row?->branch?->name . '(' . $row?->branch?->area_name . ')';
+                        return $row?->branch?->name.'('.$row?->branch?->area_name.')';
                     }
                 } else {
 
@@ -115,9 +115,9 @@ class ExpenseService
                 }
             })
 
-            ->editColumn('remarks', fn ($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 25, '') . '</span>')
+            ->editColumn('remarks', fn ($row) => '<span title="'.$row?->remarks.'">'.Str::limit($row?->remarks, 25, '').'</span>')
 
-            ->editColumn('paid_from', fn ($row) => $row?->voucherCreditDescription?->account?->name.($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
+            ->editColumn('paid_from', fn ($row) => $row?->voucherCreditDescription?->account?->name.($row?->voucherCreditDescription?->account?->account_number ? ' / '.$row?->voucherCreditDescription?->account?->account_number : ''))
             ->editColumn('payment_method', fn ($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
             ->editColumn('transaction_no', fn ($row) => $row?->voucherCreditDescription?->transaction_no)
             ->editColumn('cheque_no', fn ($row) => $row?->voucherCreditDescription?->cheque_no)
@@ -129,28 +129,28 @@ class ExpenseService
                 foreach ($row->voucherDebitDescriptions as $index => $description) {
 
                     $amount = \App\Utils\Converter::format_in_bdt($description->amount);
-                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">'.($index + 1) . ' - ' . $description->account->name . ' : <strong>' . $amount .'</strong></p>';
+                    $html .= '<p class="p-0 m-0" style="line-height:1.3!important;font-size:11px;">'.($index + 1).' - '.$description->account->name.' : <strong>'.$amount.'</strong></p>';
                 }
 
                 return $html;
             })
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_amount) . '</span>')
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="'.$row?->total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_amount).'</span>')
 
             ->editColumn('created_by', function ($row) {
 
-                return $row?->createdBy?->prefix . ' ' . $row?->createdBy?->name . ' ' . $row?->createdBy?->last_name;
+                return $row?->createdBy?->prefix.' '.$row?->createdBy?->name.' '.$row?->createdBy?->last_name;
             })
 
             ->rawColumns(['action', 'date', 'voucher_no', 'branch', 'remarks', 'paid_from', 'expense_descriptions', 'payment_method', 'transaction_no', 'cheque_no', 'cheque_serial_no', 'total_amount', 'created_by'])
             ->make(true);
     }
 
-    function deleteExpense(int $id): ?object
+    public function deleteExpense(int $id): ?object
     {
         $deleteExpense = $this->singleExpense(id: $id);
 
-        if (!is_null($deleteExpense)) {
+        if (! is_null($deleteExpense)) {
 
             $deleteExpense->delete();
         }
@@ -177,7 +177,7 @@ class ExpenseService
             return ['pass' => false, 'msg' => __('Expense amount must be greater then 0')];
         }
 
-        if (!isset($request->debit_account_ids)) {
+        if (! isset($request->debit_account_ids)) {
 
             return ['pass' => false, 'msg' => __('Expense ledgers list must not be empty.')];
         }

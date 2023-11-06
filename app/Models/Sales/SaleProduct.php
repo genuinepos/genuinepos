@@ -3,13 +3,12 @@
 namespace App\Models\Sales;
 
 use App\Models\BaseModel;
-use App\Models\Sales\Sale;
-use App\Models\Products\Unit;
-use App\Models\Setups\Branch;
 use App\Models\Products\Product;
-use App\Models\Setups\Warehouse;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\Unit;
 use App\Models\Purchases\PurchaseSaleProductChain;
+use App\Models\Setups\Branch;
+use App\Models\Setups\Warehouse;
 
 class SaleProduct extends BaseModel
 {

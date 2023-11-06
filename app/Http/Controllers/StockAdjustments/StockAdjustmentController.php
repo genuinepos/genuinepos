@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\StockAdjustments;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\StockAdjustments\StockAdjustmentService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Setups\WarehouseService;
 use App\Services\StockAdjustments\StockAdjustmentProductService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
+use App\Services\StockAdjustments\StockAdjustmentService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StockAdjustmentController extends Controller
 {
@@ -48,7 +48,7 @@ class StockAdjustmentController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('adjustment_all')) {
+        if (! auth()->user()->can('adjustment_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class StockAdjustmentController extends Controller
 
     public function create(StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('adjustment_add_from_location')) {
+        if (! auth()->user()->can('adjustment_add_from_location')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -101,7 +101,7 @@ class StockAdjustmentController extends Controller
         StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface,
         CodeGenerationService $codeGenerator
     ) {
-        if (!auth()->user()->can('adjustment_add_from_location')) {
+        if (! auth()->user()->can('adjustment_add_from_location')) {
 
             return response()->json('Access Denied.');
         }
@@ -147,6 +147,7 @@ class StockAdjustmentController extends Controller
         }
 
         session()->flash('successMsg', __('Stock adjustment created successfully'));
+
         return response()->json(__('Stock adjustment created successfully'));
     }
 

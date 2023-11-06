@@ -2,8 +2,8 @@
 
 namespace App\Services\Products;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Products\PriceGroup;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PriceGroupService
@@ -16,8 +16,8 @@ class PriceGroupService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('selling.price.groups.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('selling.price.groups.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="'.route('selling.price.groups.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('selling.price.groups.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
 
                 // if ($row->status == "Active") {
                 //     $html .= '<a href="'.route('product.selling.price.groups.change.status', [$row->id]).'" class="btn btn-sm btn-danger ms-1" id="change_status">Deactivate</a>';
@@ -35,14 +35,14 @@ class PriceGroupService
                 if ($row->status == 'Active') {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('selling.price.groups.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="'.route('selling.price.groups.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
 
                     return $html;
                 } else {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('selling.price.groups.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('selling.price.groups.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;
@@ -74,7 +74,7 @@ class PriceGroupService
         $updatePriceGroup->save();
     }
 
-    function changeStatus(int $id) : array
+    public function changeStatus(int $id): array
     {
         $statusChange = $this->singlePriceGroup(id: $id);
 
@@ -83,13 +83,13 @@ class PriceGroupService
             $statusChange->status = 'Deactivate';
             $statusChange->save();
 
-            return ['msg' => __("Successfully Price group is deactivated")];
+            return ['msg' => __('Successfully Price group is deactivated')];
         } else {
 
             $statusChange->status = 'Active';
             $statusChange->save();
 
-            return ['msg' => __("Successfully Price group is activated")];
+            return ['msg' => __('Successfully Price group is activated')];
         }
     }
 

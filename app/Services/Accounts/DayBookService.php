@@ -8,7 +8,7 @@ class DayBookService
 {
     public static function voucherTypes()
     {
-        return  [
+        return [
             1 => 'Sales',
             2 => 'Sales Order',
             3 => 'Sales Return',
@@ -62,7 +62,7 @@ class DayBookService
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new DayBook();
         $add->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
-        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $add->date_ts = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $add->account_id = $accountId ? $accountId : null;
         $add->voucher_type = $voucherTypeId;
         $add->{$voucherType['id']} = $transId;
@@ -89,7 +89,7 @@ class DayBookService
         if ($update) {
 
             $previousTime = date(' H:i:s', strtotime($update->date));
-            $update->date_ts = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->date_ts = date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $update->account_id = $accountId ? $accountId : null;
             $update->amount = $amount;
             $update->amount_type = $amountType;
@@ -137,7 +137,7 @@ class DayBookService
         $note = '';
         if ($request->note == 1) {
 
-            $note = '<p class="m-0 p-0">' . $daybook?->sale?->sale_note . '</p>';
+            $note = '<p class="m-0 p-0">'.$daybook?->sale?->sale_note.'</p>';
         }
 
         $voucherDetails = '';
@@ -145,32 +145,32 @@ class DayBookService
 
             $voucherDetails .= '<table class="w-100 td_child_table" style="heigh:0px!important;">';
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;"><strong>(' . __('menu.as_per_details') . ')' . ' :</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"><strong>('.__('menu.as_per_details').')'.' :</strong></td>';
             $voucherDetails .= '</tr>';
             $totalQty = $voucherType == 1 ? $daybook?->sale?->total_sold_qty : $daybook?->sale?->total_ordered_qty;
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_qty') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($totalQty) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_qty').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($totalQty).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 1 ? __('menu.sale_discount') : __('menu.order_discount')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->sale?->order_discount_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 1 ? __('menu.sale_discount') : __('menu.order_discount')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->sale?->order_discount_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 1 ? __('menu.sale_tax') : __('menu.order_tax')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->sale?->order_tax_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 1 ? __('menu.sale_tax') : __('menu.order_tax')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->sale?->order_tax_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 1 ? __('menu.total_invoice_amount') : __('menu.total_ordered_amount')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->sale?->total_payable_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 1 ? __('menu.total_invoice_amount') : __('menu.total_ordered_amount')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->sale?->total_payable_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.payment_note') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . $daybook?->sale?->payment_note . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.payment_note').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.$daybook?->sale?->payment_note.'</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -183,9 +183,9 @@ class DayBookService
 
                 if ($saleProduct->quantity > 0 || $saleProduct->ordered_quantity > 0) {
 
-                    $variantName = $saleProduct->variant ? ' - ' . $saleProduct->variant->name : '';
+                    $variantName = $saleProduct->variant ? ' - '.$saleProduct->variant->name : '';
                     $inventoryDetails .= '<tr>';
-                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- ' . $saleProduct?->product?->name . $variantName . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- '.$saleProduct?->product?->name.$variantName.'</td>';
 
                     $baseUnitMultiplier = $saleProduct?->saleUnit?->base_unit_multiplier ? $saleProduct?->saleUnit?->base_unit_multiplier : 1;
                     $soldQty = $saleProduct->quantity / $baseUnitMultiplier;
@@ -193,21 +193,21 @@ class DayBookService
                     $showingQty = $soldQty > 0 ? $soldQty : $orderedQty;
                     $priceIncTax = $saleProduct->unit_price_inc_tax * $baseUnitMultiplier;
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">' . \App\Utils\Converter::format_in_bdt($showingQty) . '/' . $saleProduct?->saleUnit?->code_name . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">'.\App\Utils\Converter::format_in_bdt($showingQty).'/'.$saleProduct?->saleUnit?->code_name.'</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">(' . \App\Utils\Converter::format_in_bdt($showingQty) . 'X' . $priceIncTax . ')</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">('.\App\Utils\Converter::format_in_bdt($showingQty).'X'.$priceIncTax.')</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">=' . \App\Utils\Converter::format_in_bdt($saleProduct->subtotal) . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">='.\App\Utils\Converter::format_in_bdt($saleProduct->subtotal).'</td>';
                     $inventoryDetails .= '</tr>';
                 }
             }
             $inventoryDetails .= '</table>';
         }
 
-        $accountName = $showingAccountId ? '<a href="' . route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']) . '" target="_blank">' . $showingAccount . '</a>' : '';
+        $accountName = $showingAccountId ? '<a href="'.route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']).'" target="_blank">'.$showingAccount.'</a>' : '';
         $productName = $showingProduct ? $showingProduct : '';
 
-        return '<p class="m-0 p-0"><strong>' . $accountName . $productName . '</strong></p>' . $voucherDetails . $inventoryDetails . $note;
+        return '<p class="m-0 p-0"><strong>'.$accountName.$productName.'</strong></p>'.$voucherDetails.$inventoryDetails.$note;
     }
 
     public function salesReturnDetails($request, $daybook)
@@ -219,7 +219,7 @@ class DayBookService
         $note = '';
         if ($request->note == 1) {
 
-            $note = '<p class="m-0 p-0">' . $daybook?->salesReturn?->return_note . '</p>';
+            $note = '<p class="m-0 p-0">'.$daybook?->salesReturn?->return_note.'</p>';
         }
 
         $voucherDetails = '';
@@ -227,32 +227,32 @@ class DayBookService
 
             $voucherDetails .= '<table class="w-100 td_child_table">';
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;"><strong>(' . __('menu.as_per_details') . ')' . ':</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"><strong>('.__('menu.as_per_details').')'.':</strong></td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_qty') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->total_qty) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_qty').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->total_qty).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.net_total_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->net_total_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.net_total_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->net_total_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.return_discount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->return_discount_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.return_discount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->return_discount_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.return_tax') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->return_tax_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.return_tax').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->return_tax_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_returned_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->total_return_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_returned_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->salesReturn?->total_return_amount).'</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -265,19 +265,19 @@ class DayBookService
 
                 if ($returnProduct->return_qty) {
 
-                    $variantName = $returnProduct?->variant ? ' - ' . $returnProduct->variant->name : '';
+                    $variantName = $returnProduct?->variant ? ' - '.$returnProduct->variant->name : '';
                     $inventoryDetails .= '<tr>';
-                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- ' . $returnProduct?->product?->name . $variantName . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- '.$returnProduct?->product?->name.$variantName.'</td>';
 
                     $baseUnitMultiplier = $returnProduct?->returnUnit?->base_unit_multiplier ? $returnProduct?->returnUnit?->base_unit_multiplier : 1;
                     $returnedQty = $returnProduct->return_qty / $baseUnitMultiplier;
                     $unitPriceIncTax = $returnProduct->unit_price_inc_tax * $baseUnitMultiplier;
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">' . \App\Utils\Converter::format_in_bdt($returnedQty) . '/' . $returnProduct?->returnUnit?->code_name . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">'.\App\Utils\Converter::format_in_bdt($returnedQty).'/'.$returnProduct?->returnUnit?->code_name.'</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">(' . \App\Utils\Converter::format_in_bdt($returnedQty) . 'X' . $unitPriceIncTax . ')</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">('.\App\Utils\Converter::format_in_bdt($returnedQty).'X'.$unitPriceIncTax.')</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">=' . \App\Utils\Converter::format_in_bdt($returnProduct->return_subtotal) . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">='.\App\Utils\Converter::format_in_bdt($returnProduct->return_subtotal).'</td>';
                     $inventoryDetails .= '</tr>';
                 }
             }
@@ -285,10 +285,10 @@ class DayBookService
             $inventoryDetails .= '</table>';
         }
 
-        $accountName = $showingAccountId ? '<a href="' . route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']) . '" target="_blank">' . $showingAccount . '</a>' : '';
+        $accountName = $showingAccountId ? '<a href="'.route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']).'" target="_blank">'.$showingAccount.'</a>' : '';
         $productName = $showingProduct ? $showingProduct : '';
 
-        return '<p class="m-0 p-0"><strong>' . $accountName . $productName . '</strong></p>' . $voucherDetails . $inventoryDetails . $note;
+        return '<p class="m-0 p-0"><strong>'.$accountName.$productName.'</strong></p>'.$voucherDetails.$inventoryDetails.$note;
     }
 
     public function purchaseDetails($request, $voucherType, $daybook)
@@ -300,7 +300,7 @@ class DayBookService
         $note = '';
         if ($request->note == 1) {
 
-            $note = '<p class="m-0 p-0">' . $daybook?->purchase?->purchase_note . '</p>';
+            $note = '<p class="m-0 p-0">'.$daybook?->purchase?->purchase_note.'</p>';
         }
 
         $voucherDetails = '';
@@ -309,37 +309,37 @@ class DayBookService
             $voucherDetails .= '<table class="w-100">';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1.2 !important;"><strong>(' . __('menu.as_per_details') . ')' . ' :</strong></td>';
+            $voucherDetails .= '<td style="line-height:1.2 !important;"><strong>('.__('menu.as_per_details').')'.' :</strong></td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_qty') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchase?->total_qty) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_qty').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchase?->total_qty).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.net_total_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchase?->net_total_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.net_total_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchase?->net_total_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 4 ? __('menu.purchase_discount') : __('menu.order_discount')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchase?->order_discount_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 4 ? __('menu.purchase_discount') : __('menu.order_discount')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchase?->order_discount_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 4 ? __('menu.purchase_tax') : __('menu.order_tax')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchase?->purchase_tax_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 4 ? __('menu.purchase_tax') : __('menu.order_tax')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchase?->purchase_tax_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . ($voucherType == 4 ? __('menu.total_invoice_amount') : __('menu.total_ordered_amount')) . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchase?->total_purchase_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.($voucherType == 4 ? __('menu.total_invoice_amount') : __('menu.total_ordered_amount')).'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchase?->total_purchase_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.payment_note') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . $daybook?->purchase?->payment_note . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.payment_note').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.$daybook?->purchase?->payment_note.'</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -352,19 +352,19 @@ class DayBookService
 
                 foreach ($daybook->purchase->purchaseProducts as $purchaseProduct) {
 
-                    $variantName = $purchaseProduct?->variant ? ' - ' . $purchaseProduct->variant->name : '';
+                    $variantName = $purchaseProduct?->variant ? ' - '.$purchaseProduct->variant->name : '';
                     $inventoryDetails .= '<tr>';
-                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- ' . $purchaseProduct?->product?->name . $variantName . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- '.$purchaseProduct?->product?->name.$variantName.'</td>';
 
                     $baseUnitMultiplier = $purchaseProduct?->purchaseUnit?->base_unit_multiplier ? $purchaseProduct?->purchaseUnit?->base_unit_multiplier : 1;
                     $purchasedQty = $purchaseProduct->quantity / $baseUnitMultiplier;
                     $unitCostIncTax = $purchaseProduct->net_unit_cost * $baseUnitMultiplier;
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">' . \App\Utils\Converter::format_in_bdt($purchasedQty) . '/' . $purchaseProduct?->purchaseUnit?->code_name . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">'.\App\Utils\Converter::format_in_bdt($purchasedQty).'/'.$purchaseProduct?->purchaseUnit?->code_name.'</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">(' . \App\Utils\Converter::format_in_bdt($purchasedQty) . 'X' . $unitCostIncTax . ')</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">('.\App\Utils\Converter::format_in_bdt($purchasedQty).'X'.$unitCostIncTax.')</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">=' . \App\Utils\Converter::format_in_bdt($purchaseProduct->line_total) . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">='.\App\Utils\Converter::format_in_bdt($purchaseProduct->line_total).'</td>';
                     $inventoryDetails .= '</tr>';
                 }
             } elseif (count($daybook->purchase->orderedProducts) > 0) {
@@ -372,17 +372,17 @@ class DayBookService
                 foreach ($daybook->purchase->orderedProducts as $orderProduct) {
 
                     $inventoryDetails .= '<tr>';
-                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- ' . $orderProduct?->product?->name . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- '.$orderProduct?->product?->name.'</td>';
 
                     $baseUnitMultiplier = $orderProduct?->orderUnit?->base_unit_multiplier ? $orderProduct?->orderUnit?->base_unit_multiplier : 1;
                     $orderedQty = $orderProduct->order_quantity / $baseUnitMultiplier;
                     $unitCostIncTax = $orderProduct->net_unit_cost * $baseUnitMultiplier;
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">' . \App\Utils\Converter::format_in_bdt($orderedQty) . '/' . $orderProduct?->orderUnit?->code_name . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">'.\App\Utils\Converter::format_in_bdt($orderedQty).'/'.$orderProduct?->orderUnit?->code_name.'</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">(' . \App\Utils\Converter::format_in_bdt($orderedQty) . 'X' . $unitCostIncTax . ')</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">('.\App\Utils\Converter::format_in_bdt($orderedQty).'X'.$unitCostIncTax.')</td>';
 
-                    $inventoryDetails .= '<td style="line-height:1 !important;">=' . \App\Utils\Converter::format_in_bdt($orderProduct->line_total) . '</td>';
+                    $inventoryDetails .= '<td style="line-height:1 !important;">='.\App\Utils\Converter::format_in_bdt($orderProduct->line_total).'</td>';
                     $inventoryDetails .= '</tr>';
                 }
             }
@@ -390,10 +390,10 @@ class DayBookService
             $inventoryDetails .= '</table>';
         }
 
-        $accountName = $showingAccountId ? '<a href="' . route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']) . '" target="_blank">' . $showingAccount . '</a>' : '';
+        $accountName = $showingAccountId ? '<a href="'.route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']).'" target="_blank">'.$showingAccount.'</a>' : '';
         $productName = $showingProduct ? $showingProduct : '';
 
-        return '<p class="m-0 p-0"><strong>' . $accountName . $productName . '</strong></p>' . $voucherDetails . $inventoryDetails . $note;
+        return '<p class="m-0 p-0"><strong>'.$accountName.$productName.'</strong></p>'.$voucherDetails.$inventoryDetails.$note;
     }
 
     public function purchaseReturnDetails($request, $daybook)
@@ -405,7 +405,7 @@ class DayBookService
         $note = '';
         if ($request->note == 1) {
 
-            $note = '<p class="m-0 p-0">' . $daybook?->purchaseReturn?->note . '</p>';
+            $note = '<p class="m-0 p-0">'.$daybook?->purchaseReturn?->note.'</p>';
         }
 
         $voucherDetails = '';
@@ -413,32 +413,32 @@ class DayBookService
 
             $voucherDetails .= '<table class="w-100 td_child_table">';
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;"><strong>(' . __('menu.as_per_details') . ')' . ' :</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"><strong>('.__('menu.as_per_details').')'.' :</strong></td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_qty') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->total_qty) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_qty').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->total_qty).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.net_total_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->net_total_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.net_total_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->net_total_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.return_discount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->return_discount_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.return_discount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->return_discount_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.return_tax') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->return_tax_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.return_tax').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->return_tax_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_returned_amount') . '.</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->total_return_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_returned_amount').'.</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->purchaseReturn?->total_return_amount).'</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -449,29 +449,29 @@ class DayBookService
             $inventoryDetails .= '<table class="w-100 td_child_table">';
             foreach ($daybook->purchaseReturn->returnProducts as $returnProduct) {
 
-                $variantName = $returnProduct?->variant ? ' - ' . $returnProduct->variant->name : '';
+                $variantName = $returnProduct?->variant ? ' - '.$returnProduct->variant->name : '';
                 $inventoryDetails .= '<tr>';
-                $inventoryDetails .= '<td style="line-height:1!important;" class="w-50">- ' . $returnProduct?->product?->name . $variantName . '</td>';
+                $inventoryDetails .= '<td style="line-height:1!important;" class="w-50">- '.$returnProduct?->product?->name.$variantName.'</td>';
 
                 $baseUnitMultiplier = $returnProduct?->returnUnit?->base_unit_multiplier ? $returnProduct?->returnUnit?->base_unit_multiplier : 1;
                 $returnedQty = $returnProduct->return_qty / $baseUnitMultiplier;
                 $unitCostIncTax = $returnProduct->unit_cost_inc_tax * $baseUnitMultiplier;
 
-                $inventoryDetails .= '<td style="line-height:1!important;">' . \App\Utils\Converter::format_in_bdt($returnedQty) . '/' . $returnProduct?->returnUnit?->code_name . '</td>';
+                $inventoryDetails .= '<td style="line-height:1!important;">'.\App\Utils\Converter::format_in_bdt($returnedQty).'/'.$returnProduct?->returnUnit?->code_name.'</td>';
 
-                $inventoryDetails .= '<td style="line-height:1!important;">(' . \App\Utils\Converter::format_in_bdt($returnedQty) . 'X' . $unitCostIncTax . ')</td>';
+                $inventoryDetails .= '<td style="line-height:1!important;">('.\App\Utils\Converter::format_in_bdt($returnedQty).'X'.$unitCostIncTax.')</td>';
 
-                $inventoryDetails .= '<td style="line-height:1!important;">=' . \App\Utils\Converter::format_in_bdt($returnProduct->return_subtotal) . '</td>';
+                $inventoryDetails .= '<td style="line-height:1!important;">='.\App\Utils\Converter::format_in_bdt($returnProduct->return_subtotal).'</td>';
                 $inventoryDetails .= '</tr>';
             }
 
             $inventoryDetails .= '</table>';
         }
 
-        $accountName = $showingAccountId ? '<a href="' . route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']) . '" target="_blank">' . $showingAccount . '</a>' : '';
+        $accountName = $showingAccountId ? '<a href="'.route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']).'" target="_blank">'.$showingAccount.'</a>' : '';
         $productName = $showingProduct ? $showingProduct : '';
 
-        return '<p class="m-0 p-0"><strong>' . $accountName . $productName . '</strong></p>' . $voucherDetails . $inventoryDetails . $note;
+        return '<p class="m-0 p-0"><strong>'.$accountName.$productName.'</strong></p>'.$voucherDetails.$inventoryDetails.$note;
     }
 
     public function stockAdjustmentDetails($request, $daybook)
@@ -483,7 +483,7 @@ class DayBookService
         $note = '';
         if ($request->note == 1) {
 
-            $note = '<p class="m-0 p-0">' . $daybook?->stockAdjustment?->reason . '</p>';
+            $note = '<p class="m-0 p-0">'.$daybook?->stockAdjustment?->reason.'</p>';
         }
 
         $voucherDetails = '';
@@ -491,22 +491,22 @@ class DayBookService
 
             $voucherDetails .= '<table class="w-100 td_child_table">';
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;"><strong>(' . __('menu.as_per_details') . ')' . ' :</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"><strong>('.__('menu.as_per_details').')'.' :</strong></td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_qty') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->total_qty) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_qty').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->total_qty).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.net_total_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->net_total_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.net_total_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->net_total_amount).'</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '<tr>';
-            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('menu.total_recovered_amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->recovered_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>'.__('menu.total_recovered_amount').'</strong></td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : '.\App\Utils\Converter::format_in_bdt($daybook?->stockAdjustment?->recovered_amount).'</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -517,24 +517,24 @@ class DayBookService
             $inventoryDetails .= '<table class="w-100 td_child_table">';
             foreach ($daybook->stockAdjustment->adjustmentProducts as $adjustmentProduct) {
 
-                $variantName = $adjustmentProduct?->variant ? ' - ' . $adjustmentProduct->variant->name : '';
+                $variantName = $adjustmentProduct?->variant ? ' - '.$adjustmentProduct->variant->name : '';
 
                 $inventoryDetails .= '<tr>';
-                $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- ' . $adjustmentProduct?->product?->name . $variantName . '</td>';
-                $inventoryDetails .= '<td style="line-height:1 !important;">' . \App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity) . '/' . $adjustmentProduct->unit . '</td>';
+                $inventoryDetails .= '<td style="line-height:1 !important;" class="w-50">- '.$adjustmentProduct?->product?->name.$variantName.'</td>';
+                $inventoryDetails .= '<td style="line-height:1 !important;">'.\App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity).'/'.$adjustmentProduct->unit.'</td>';
 
-                $inventoryDetails .= '<td style="line-height:1 !important;">(' . \App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity) . 'X' . $adjustmentProduct->unit_cost_inc_tax . ')</td>';
+                $inventoryDetails .= '<td style="line-height:1 !important;">('.\App\Utils\Converter::format_in_bdt($adjustmentProduct->quantity).'X'.$adjustmentProduct->unit_cost_inc_tax.')</td>';
 
-                $inventoryDetails .= '<td style="line-height:1 !important;">=' . \App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal) . '</td>';
+                $inventoryDetails .= '<td style="line-height:1 !important;">='.\App\Utils\Converter::format_in_bdt($adjustmentProduct->subtotal).'</td>';
                 $inventoryDetails .= '</tr>';
             }
 
             $inventoryDetails .= '</table>';
         }
 
-        $accountName = $showingAccountId ? '<a href="' . route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']) . '" target="_blank">' . $showingAccount . '</a>' : '';
+        $accountName = $showingAccountId ? '<a href="'.route('accounting.accounts.ledger', [($showingAccountId ? $showingAccountId : 'null'), 'accountId']).'" target="_blank">'.$showingAccount.'</a>' : '';
         $productName = $showingProduct ? $showingProduct : '';
 
-        return '<p class="m-0 p-0"><strong>' . $accountName . $productName . '</strong></p>' . $voucherDetails . $inventoryDetails . $note;
+        return '<p class="m-0 p-0"><strong>'.$accountName.$productName.'</strong></p>'.$voucherDetails.$inventoryDetails.$note;
     }
 }

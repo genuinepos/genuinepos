@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use Yajra\DataTables\Facades\DataTables;
-use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\CustomerGroupService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Setups\BranchService;
+use Illuminate\Http\Request;
 
 class CustomerGroupController extends Controller
 {
@@ -31,9 +29,10 @@ class CustomerGroupController extends Controller
         return view('contacts.customer_group.index', compact('branches'));
     }
 
-    function create()
+    public function create()
     {
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
         return view('contacts.customer_group.ajax_view.create', compact('priceGroups'));
     }
 
@@ -52,13 +51,14 @@ class CustomerGroupController extends Controller
     {
         $customerGroup = $this->customerGroupService->singleCustomerGroup(id: $id);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
+
         return view('contacts.customer_group.ajax_view.edit', compact('customerGroup', 'priceGroups'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:customer_groups,name,' . $id,
+            'name' => 'required|unique:customer_groups,name,'.$id,
         ]);
 
         $this->customerGroupService->updateCustomerGroup(id: $id, request: $request);

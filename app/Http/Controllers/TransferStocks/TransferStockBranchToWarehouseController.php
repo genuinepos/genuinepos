@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use Illuminate\Http\Request;
-use App\Enums\TransferStockType;
 use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\CodeGenerationService;
+use App\Enums\TransferStockType;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Products\ProductStockService;
+use App\Services\CodeGenerationService;
 use App\Services\Products\ProductLedgerService;
-use App\Services\TransferStocks\TransferStockService;
+use App\Services\Products\ProductStockService;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\WarehouseService;
 use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\TransferStocks\TransferStockService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransferStockBranchToWarehouseController extends Controller
 {
@@ -30,7 +30,7 @@ class TransferStockBranchToWarehouseController extends Controller
     ) {
     }
 
-    function index($type = null, Request $request)
+    public function index($type, Request $request)
     {
         if ($request->ajax()) {
 
@@ -43,7 +43,7 @@ class TransferStockBranchToWarehouseController extends Controller
         return view('transfer_stocks.branch_to_warehouse.index', compact('branches'));
     }
 
-    function show($id)
+    public function show($id)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -70,23 +70,24 @@ class TransferStockBranchToWarehouseController extends Controller
             ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $branchName = $this->branchService->branchName();
+
         return view('transfer_stocks.branch_to_warehouse.create', compact('warehouses', 'branchName'));
     }
 
-    function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(Request $request, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_warehouse_id' => 'required',
         ], [
-            'receiver_warehouse_id.required' => __("Receiver Warehouse is required."),
+            'receiver_warehouse_id.required' => __('Receiver Warehouse is required.'),
         ]);
 
         try {
             DB::beginTransaction();
 
             $branchCode = auth()?->user()?->branch?->branch_code;
-            $voucherPrefix = 'TSSW' . auth()?->user()?->branch?->branch_code;
+            $voucherPrefix = 'TSSW'.auth()?->user()?->branch?->branch_code;
 
             $addTransferStock = $this->transferStockService->addTransferStock(request: $request, transferStockType: TransferStockType::BranchToWarehouse->value, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -128,11 +129,11 @@ class TransferStockBranchToWarehouseController extends Controller
             return view('transfer_stocks.save_and_print_template.print_transfer_stock_branch_to_warehouse', compact('transferStock'));
         } else {
 
-            return response()->json(['successMsg' => __("Successfully Transfer Stock is created.")]);
+            return response()->json(['successMsg' => __('Successfully Transfer Stock is created.')]);
         }
     }
 
-    function edit($id)
+    public function edit($id)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -155,13 +156,13 @@ class TransferStockBranchToWarehouseController extends Controller
         return view('transfer_stocks.warehouse_to_branch.edit', compact('transferStock', 'warehouses'));
     }
 
-    function update($id, Request $request)
+    public function update($id, Request $request)
     {
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_warehouse_id' => 'required',
         ], [
-            'receiver_warehouse_id.required' => __("Receiver Warehouse is required."),
+            'receiver_warehouse_id.required' => __('Receiver Warehouse is required.'),
         ]);
 
         try {
@@ -199,7 +200,7 @@ class TransferStockBranchToWarehouseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Transfer Stock is updated successfully."));
+        return response()->json(__('Transfer Stock is updated successfully.'));
     }
 
     public function delete($id)
@@ -225,6 +226,6 @@ class TransferStockBranchToWarehouseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Transfer Stock is deleted successfully."));
+        return response()->json(__('Transfer Stock is deleted successfully.'));
     }
 }

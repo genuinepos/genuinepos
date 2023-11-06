@@ -3,31 +3,30 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
-use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Sales\SaleProductService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AddSalesController extends Controller
 {
@@ -54,9 +53,9 @@ class AddSalesController extends Controller
     ) {
     }
 
-    public function index(Request $request, ?int $customerAccountId = null)
+    public function index(Request $request, int $customerAccountId = null)
     {
-        if (!auth()->user()->can('view_add_sale')) {
+        if (! auth()->user()->can('view_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -103,7 +102,7 @@ class AddSalesController extends Controller
 
     public function create(AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('create_add_sale')) {
+        if (! auth()->user()->can('create_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -178,30 +177,34 @@ class AddSalesController extends Controller
 
                 $changeAmount = 0;
                 $receivedAmount = $request->received_amount;
+
                 return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Draft->value) {
 
                 $draft = $sale;
+
                 return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Quotation->value) {
 
                 $quotation = $sale;
+
                 return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Order->value) {
 
                 $order = $sale;
                 $receivedAmount = $request->received_amount;
+
                 return view('sales.save_and_print_template.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts'));
             }
         } else {
 
-            return response()->json(['saleFinalMsg' => __("Sale created successfully")]);
+            return response()->json(['saleFinalMsg' => __('Sale created successfully')]);
         }
     }
 
     public function edit($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('edit_add_sale')) {
+        if (! auth()->user()->can('edit_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -269,7 +272,7 @@ class AddSalesController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Sale updated Successfully."));
+        return response()->json(__('Sale updated Successfully.'));
     }
 
     public function delete($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
@@ -303,7 +306,7 @@ class AddSalesController extends Controller
         return response()->json(__("${__voucherName} deleted Successfully."));
     }
 
-    function searchByInvoiceId($keyWord)
+    public function searchByInvoiceId($keyWord)
     {
         $sales = DB::table('sales')
             ->where('sales.invoice_id', 'like', "%{$keyWord}%")

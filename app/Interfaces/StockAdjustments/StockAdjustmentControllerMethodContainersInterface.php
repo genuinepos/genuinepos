@@ -7,7 +7,6 @@ interface StockAdjustmentControllerMethodContainersInterface
     /**
      * @return \App\Services\StockAdjustments\MethodContainerServices\StockAdjustmentControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $stockAdjustmentService,
@@ -37,7 +36,7 @@ interface StockAdjustmentControllerMethodContainersInterface
         object $codeGenerator
     ): ?array;
 
-    function deleteMethodContainer(
+    public function deleteMethodContainer(
         int $id,
         object $stockAdjustmentService,
         object $productStockService,

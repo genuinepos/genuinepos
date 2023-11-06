@@ -2,20 +2,19 @@
 
 namespace App\Models\Manufacturing;
 
-use App\Models\BaseModel;
-use App\Models\Products\Unit;
-use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
+use App\Models\BaseModel;
 use App\Models\Products\Product;
-use App\Models\Setups\Warehouse;
-use App\Models\Manufacturing\Process;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\Unit;
 use App\Models\Purchases\PurchaseProduct;
-use App\Models\Manufacturing\ProductionIngredient;
+use App\Models\Setups\Branch;
+use App\Models\Setups\Warehouse;
 
 class Production extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()

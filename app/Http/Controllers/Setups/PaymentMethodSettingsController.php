@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Setups\PaymentMethodSettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Setups\PaymentMethodSettingsService;
 
 class PaymentMethodSettingsController extends Controller
 {
@@ -25,15 +25,14 @@ class PaymentMethodSettingsController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])
-        
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('branch_id', auth()->user()->branch_id)
-        ->whereIn('account_groups.sub_sub_group_number', [2])
-        ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
-        ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
-        ->get();
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->whereIn('account_groups.sub_sub_group_number', [2])
+            ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+            ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])
+            ->get();
 
         $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
 
@@ -61,6 +60,6 @@ class PaymentMethodSettingsController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Payment method settings is updated successfully."));
+        return response()->json(__('Payment method settings is updated successfully.'));
     }
 }

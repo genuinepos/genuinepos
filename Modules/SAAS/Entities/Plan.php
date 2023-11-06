@@ -2,9 +2,9 @@
 
 namespace Modules\SAAS\Entities;
 
-use Modules\SAAS\Scope\IsActive;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\SAAS\Scope\IsActive;
 
 class Plan extends Model
 {
@@ -32,26 +32,27 @@ class Plan extends Model
     public function getPeriodTypeAttribute()
     {
         $periodType = '';
-        if($this->period_unit === 'month') {
+        if ($this->period_unit === 'month') {
             $periodType = match ($this->period_value) {
                 1 => __('Monthly'),
                 3 => __('Quarterly'),
                 6 => __('Half Yearly'),
                 12 => __('Yearly'),
-                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Month'),
+                default => __('Per').' '.$this->period_value.' '.__('Month'),
             };
         }
-        if($this->period_unit === 'year') {
+        if ($this->period_unit === 'year') {
             $periodType = match ($this->period_value) {
                 1 => __('Yearly'),
-                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Year'),
+                default => __('Per').' '.$this->period_value.' '.__('Year'),
             };
         }
-        if($this->period_unit === 'day') {
+        if ($this->period_unit === 'day') {
             $periodType = match ($this->period_value) {
-                default => __('Per') . ' ' . $this->period_value . ' ' .  __('Day'),
+                default => __('Per').' '.$this->period_value.' '.__('Day'),
             };
         }
+
         return $periodType;
     }
 

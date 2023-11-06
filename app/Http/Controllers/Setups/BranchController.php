@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Enums\BranchType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\CashCounterService;
 use App\Services\Setups\BranchSettingService;
+use App\Services\Setups\CashCounterService;
 use App\Services\Setups\InvoiceLayoutService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BranchController extends Controller
 {
@@ -23,7 +23,7 @@ class BranchController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -40,7 +40,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -53,7 +53,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -120,12 +120,12 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Shop created successfully"));
+        return response()->json(__('Shop created successfully'));
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -138,7 +138,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -173,7 +173,7 @@ class BranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Shop updated successfully"));
+        return response()->json(__('Shop updated successfully'));
     }
 
     public function delete(Request $request, $id)
@@ -185,6 +185,6 @@ class BranchController extends Controller
             return response()->json(['errorMsg' => $deleteBranch['msg']]);
         }
 
-        return response()->json(__("Shop deleted deleted successfully"));
+        return response()->json(__('Shop deleted deleted successfully'));
     }
 }

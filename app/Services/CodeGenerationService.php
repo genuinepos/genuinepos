@@ -118,6 +118,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
         $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
         $finalStr = $prefix.$splitter.$finalSuffix;
+
         return $finalStr;
     }
 
@@ -155,6 +156,7 @@ class CodeGenerationService implements CodeGenerationServiceInterface
         $finalSuffix = $suffixSeparator.$lastDigitsFinal;
         // $finalSuffix = $dateTimeStrPrefix.$suffixSeparator.$lastDigitsFinal;
         $finalStr = $prefix.$splitter.$finalSuffix;
+
         return $finalStr;
     }
 }

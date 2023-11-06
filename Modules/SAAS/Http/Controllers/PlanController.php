@@ -2,12 +2,12 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Modules\SAAS\Entities\Plan;
-use Illuminate\Routing\Controller;
-use Modules\SAAS\Entities\Feature;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
+use Modules\SAAS\Entities\Feature;
+use Modules\SAAS\Entities\Plan;
 
 class PlanController extends Controller
 {
@@ -71,6 +71,7 @@ class PlanController extends Controller
     public function show($id)
     {
         abort_unless(auth()->user()->can('plans_show'), 403);
+
         return view('saas::plans.show');
     }
 
@@ -107,6 +108,7 @@ class PlanController extends Controller
             'status' => $request->status,
         ]);
         $plan->features()->sync($request->feature_id);
+
         return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');
     }
 
@@ -120,6 +122,7 @@ class PlanController extends Controller
     {
         $plan = Plan::find($id);
         $plan->delete();
+
         return redirect(route('saas.plans.index'))->with('success', 'Plan deleted successfully!');
     }
 }

@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
-use App\Services\Products\BrandService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
+use App\Services\Products\BrandService;
 use App\Services\Products\CategoryService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\CashRegisterService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\UnitService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\CashRegisterService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
 
 class PosSaleController extends Controller
 {
@@ -59,7 +59,7 @@ class PosSaleController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,7 +88,7 @@ class PosSaleController extends Controller
             $accounts = $this->accountService->accounts(with: [
                 'bank:id,name',
                 'group:id,sorting_number,sub_sub_group_number',
-                'bankAccessBranch'
+                'bankAccessBranch',
             ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
                 ->where('branch_id', auth()->user()->branch_id)
                 ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -125,7 +125,8 @@ class PosSaleController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         return $request->is_full_credit_sale;
     }

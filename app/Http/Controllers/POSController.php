@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SaleMailJob;
-use App\Models\Sales\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Customer;
-use App\Models\Setups\PaymentMethod;
 use App\Models\ProductBranch;
 use App\Models\ProductBranchVariant;
 use App\Models\Sale;
 use App\Models\SaleProduct;
+use App\Models\Sales\CashRegister;
+use App\Models\Setups\PaymentMethod;
 use App\Utils\AccountUtil;
 use App\Utils\CustomerPaymentUtil;
 use App\Utils\CustomerUtil;

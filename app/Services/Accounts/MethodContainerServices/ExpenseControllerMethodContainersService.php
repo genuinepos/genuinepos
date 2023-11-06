@@ -2,9 +2,9 @@
 
 namespace App\Services\Accounts\MethodContainerServices;
 
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
 
 class ExpenseControllerMethodContainersService implements ExpenseControllerMethodContainersInterface
@@ -39,7 +39,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -74,7 +74,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
 
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $expenseVoucherPrefix = 'EV' . auth()->user()?->branch?->branch_code;
+        $expenseVoucherPrefix = 'EV'.auth()->user()?->branch?->branch_code;
 
         $restrictions = $expenseService->restrictions(request: $request);
 
@@ -138,7 +138,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $expense->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])

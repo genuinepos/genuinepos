@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\Accounts\DayBookVoucherService;
 use App\Services\Accounts\ReceiptService;
-use App\Services\Sales\SalesReturnService;
+use App\Services\CodeGenerationService;
+use App\Services\Purchases\PurchaseReturnService;
 use App\Services\Purchases\PurchaseService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\SalesReturnService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\DayBookVoucherService;
-use App\Services\Purchases\PurchaseReturnService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Accounts\ReceiptControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReceiptController extends Controller
 {
@@ -63,7 +63,7 @@ class ReceiptController extends Controller
         return view('accounting.accounting_vouchers.receipts.index', compact('branches', 'creditAccounts'));
     }
 
-    function show(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
+    public function show(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
     {
         $showMethodContainer = $receiptControllerMethodContainersInterface->showMethodContainer(
             id: $id,
@@ -133,11 +133,11 @@ class ReceiptController extends Controller
             return view('accounting.accounting_vouchers.save_and_print_template.print_receipt', compact('receipt'));
         } else {
 
-            return response()->json(['successMsg' => __("Receipt added successfully.")]);
+            return response()->json(['successMsg' => __('Receipt added successfully.')]);
         }
     }
 
-    function edit(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id, $creditAccountId = null)
+    public function edit(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id, $creditAccountId = null)
     {
         $editMethodContainer = $receiptControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -192,7 +192,7 @@ class ReceiptController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Receipt updated successfully."));
+        return response()->json(__('Receipt updated successfully.'));
     }
 
     public function delete(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
@@ -215,6 +215,6 @@ class ReceiptController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Receipt deleted successfully."));
+        return response()->json(__('Receipt deleted successfully.'));
     }
 }

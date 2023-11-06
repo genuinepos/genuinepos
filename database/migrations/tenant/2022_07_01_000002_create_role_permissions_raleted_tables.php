@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('guard_name');
             $table->timestamps();
-            
+
             $table->unique(['name', 'guard_name']);
         });
-		
+
         Schema::create('roles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -30,8 +30,8 @@ return new class extends Migration
 
             $table->unique(['name', 'guard_name']);
         });
-	
-		Schema::create('role_has_permissions', function (Blueprint $table) {
+
+        Schema::create('role_has_permissions', function (Blueprint $table) {
             $table->unsignedBigInteger('permission_id');
             $table->unsignedBigInteger('role_id')->index('role_has_permissions_role_id_foreign');
 
@@ -40,8 +40,8 @@ return new class extends Migration
             $table->foreign(['permission_id'])->references(['id'])->on('permissions')->onDelete('CASCADE');
             $table->foreign(['role_id'])->references(['id'])->on('roles')->onDelete('CASCADE');
         });
-		
-		 Schema::create('model_has_permissions', function (Blueprint $table) {
+
+        Schema::create('model_has_permissions', function (Blueprint $table) {
             $table->unsignedBigInteger('permission_id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');
@@ -51,8 +51,8 @@ return new class extends Migration
 
             $table->foreign(['permission_id'])->references(['id'])->on('permissions')->onDelete('CASCADE');
         });
-		
-		Schema::create('model_has_roles', function (Blueprint $table) {
+
+        Schema::create('model_has_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('role_id');
             $table->string('model_type');
             $table->unsignedBigInteger('model_id');

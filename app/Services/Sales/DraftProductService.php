@@ -2,10 +2,7 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Models\Sales\SaleProduct;
-use Illuminate\Support\Facades\DB;
 
 class DraftProductService
 {
@@ -46,7 +43,7 @@ class DraftProductService
         return $addOrUpdateDraftProduct;
     }
 
-    function draftProducts(?array $with = null): ?object
+    public function draftProducts(array $with = null): ?object
     {
         $query = SaleProduct::query();
 
@@ -58,7 +55,7 @@ class DraftProductService
         return $query;
     }
 
-    function singleDraftProduct(?int $id, array $with = null): ?object
+    public function singleDraftProduct(?int $id, array $with = null): ?object
     {
         $query = SaleProduct::query();
 

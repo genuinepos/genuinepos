@@ -2,10 +2,8 @@
 
 namespace Modules\SAAS\Database\Seeders;
 
-use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Database\Seeder;
 use Modules\SAAS\Entities\User;
-use Modules\SAAS\Enums\UserType;
 
 class UserTableSeeder extends Seeder
 {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setups\BarcodeSetting;
 use App\Models\Product;
 use App\Models\PurchaseProduct;
+use App\Models\Setups\BarcodeSetting;
 use App\Models\SupplierProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransferStocks\ReceiveStockFromBranchController;
 use App\Http\Controllers\TransferStocks\ReceiveStockFromWarehouseController;
 use App\Http\Controllers\TransferStocks\TransferStockBranchToBranchController;
 use App\Http\Controllers\TransferStocks\TransferStockBranchToWarehouseController;
 use App\Http\Controllers\TransferStocks\TransferStockWarehouseToBranchController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('transfer-stocks')->group(function () {
 

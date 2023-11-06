@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
+use App\Enums\ProductLedgerVoucherType;
+use App\Http\Controllers\Controller;
+use App\Services\Products\OpeningStockService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Setups\WarehouseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Enums\ProductLedgerVoucherType;
-use App\Services\Products\ProductService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Products\OpeningStockService;
-use App\Services\Products\ProductStockService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Purchases\PurchaseProductService;
 
 class OpeningStockController extends Controller
 {

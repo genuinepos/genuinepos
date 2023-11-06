@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
 use App\Services\GeneralSettingServiceInterface;
 use App\Services\Products\ProductSettingsService;
+use App\Services\Products\UnitService;
+use Illuminate\Http\Request;
 
 class ProductSettingsController extends Controller
 {
@@ -18,9 +18,9 @@ class ProductSettingsController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('product_settings')) {
+        if (! auth()->user()->can('product_settings')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $units = $this->unitService->units()->get();
@@ -30,13 +30,13 @@ class ProductSettingsController extends Controller
 
     public function update(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        if (!auth()->user()->can('product_settings')) {
+        if (! auth()->user()->can('product_settings')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
-        
+
         $updateProductSettings = $this->productSettingsService->updateProductSettings(request: $request, generalSettingService: $generalSettingService);
-        
-        return response()->json(__("Product settings updated successfully"));
+
+        return response()->json(__('Product settings updated successfully'));
     }
 }

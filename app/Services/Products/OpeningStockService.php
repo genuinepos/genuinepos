@@ -3,7 +3,6 @@
 namespace App\Services\Products;
 
 use App\Models\Products\ProductOpeningStock;
-use Illuminate\Support\Facades\DB;
 
 class OpeningStockService
 {
@@ -38,7 +37,7 @@ class OpeningStockService
         $addOrEditOpeningStock->subtotal = $request->subtotals[$index];
         $addOrEditOpeningStock->subtotal = $request->subtotals[$index];
         $addOrEditOpeningStock->date = $date;
-        $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
+        $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date.' 01:00:00'));
         $addOrEditOpeningStock->save();
 
         return $addOrEditOpeningStock;

@@ -6,21 +6,12 @@ use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BarcodeController;
-use App\Http\Controllers\BarcodeSettingController;
 use App\Http\Controllers\BranchReceiveStockController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\BulkVariantController;
-use App\Http\Controllers\CashRegisterController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommonAjaxCallController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerGroupController;
 use App\Http\Controllers\CustomerImportController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\EmailController;
-use App\Http\Controllers\ExpanseCategoryController;
-use App\Http\Controllers\ExpanseController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ImportPriceGroupProductController;
 use App\Http\Controllers\InvoiceSchemaController;
@@ -28,34 +19,22 @@ use App\Http\Controllers\LoanCompanyController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\MoneyReceiptController;
-use App\Http\Controllers\POSController;
 use App\Http\Controllers\PosShortMenuController;
-use App\Http\Controllers\PriceGroupController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Purchases\PurchaseController;
-use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PurchaseOrderReceiveController;
-use App\Http\Controllers\PurchaseReturnController;
+use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\RandomSaleReturnController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
-use App\Http\Controllers\ReleaseNoteController;
 use App\Http\Controllers\Report\CashRegisterReportController;
 use App\Http\Controllers\Report\CustomerReportController;
-use App\Http\Controllers\Report\ExpanseReportController;
-use App\Http\Controllers\Report\ExpenseReportCategoryWiseController;
 use App\Http\Controllers\Report\FinancialReportControllerReport;
-use App\Http\Controllers\Report\ProductPurchaseReportController;
 use App\Http\Controllers\Report\ProductSaleReportController;
 use App\Http\Controllers\Report\ProfitLossReportController;
-use App\Http\Controllers\Report\PurchasePaymentReportController;
-use App\Http\Controllers\Report\PurchaseStatementController;
 use App\Http\Controllers\Report\SalePaymentReportController;
-use App\Http\Controllers\Report\SalePurchaseReportController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 use App\Http\Controllers\Report\SaleReturnStatementController;
 use App\Http\Controllers\Report\SaleStatementController;
-use App\Http\Controllers\Report\StockAdjustmentReportController;
 use App\Http\Controllers\Report\StockInOutReportController;
 use App\Http\Controllers\Report\StockReportController;
 use App\Http\Controllers\Report\SupplierReportController;
@@ -66,19 +45,15 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleReturnController;
 use App\Http\Controllers\ShortMenuController;
 use App\Http\Controllers\SmsController;
-use App\Http\Controllers\StockAdjustmentController;
-use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierImportController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TransferStockBranchToBranchController;
 use App\Http\Controllers\TransferToBranchController;
 use App\Http\Controllers\TransferToWarehouseController;
-use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WarehouseReceiveStockController;
-use App\Http\Controllers\WarrantyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.dashboard');
@@ -150,7 +125,6 @@ Route::group(['prefix' => 'product'], function () {
             Route::get('export', [ImportPriceGroupProductController::class, 'export'])->name('products.export.price.group.products');
         });
     });
-
 
     // Barcode route group
     Route::group(['prefix' => 'barcode'], function () {
@@ -263,7 +237,6 @@ Route::group(['prefix' => 'contacts'], function () {
         //     Route::delete('voucher/delete/{receiptId}', [MoneyReceiptController::class, 'delete'])->name('money.receipt.voucher.delete');
         // });
 
-        
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', [CustomerImportController::class, 'create'])->name('contacts.customers.import.create');
             Route::post('store', [CustomerImportController::class, 'store'])->name('contacts.customers.import.store');

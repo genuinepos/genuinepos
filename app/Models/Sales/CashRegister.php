@@ -2,11 +2,10 @@
 
 namespace App\Models\Sales;
 
-use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
 use App\Models\Setups\CashCounter;
-use App\Models\Sales\CashRegisterTransaction;
+use App\Models\User;
 
 class CashRegister extends BaseModel
 {

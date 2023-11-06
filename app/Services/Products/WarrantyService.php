@@ -16,19 +16,19 @@ class WarrantyService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('warranties.edit', $row->id) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('warranties.delete', $row->id) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="'.route('warranties.edit', $row->id).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('warranties.delete', $row->id).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
             })
             ->editColumn('type', function ($row) {
 
-                $row->type == 1 ? __("Warranty") : __("Guaranty");
+                $row->type == 1 ? __('Warranty') : __('Guaranty');
             })
             ->editColumn('duration', function ($row) {
 
-                return $row->duration . ' ' . $row->duration_type;
+                return $row->duration.' '.$row->duration_type;
             })
             ->rawColumns(['action', 'type', 'duration_type'])
             ->smart(true)
@@ -61,11 +61,11 @@ class WarrantyService
         return $updateWarranty;
     }
 
-    function deleteWarranty(int $id): ?object
+    public function deleteWarranty(int $id): ?object
     {
         $deleteWarranty = $this->singleWarranty(id: $id);
 
-        if (!is_null($deleteWarranty)) {
+        if (! is_null($deleteWarranty)) {
 
             $deleteWarranty->delete();
         }

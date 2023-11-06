@@ -7,14 +7,13 @@ interface DraftControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $draftService,
         object $saleProductService
     ): ?array;
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $draftService,
         object $branchService,
@@ -26,7 +25,7 @@ interface DraftControllerMethodContainersInterface
         object $managePriceGroupService,
     ): array;
 
-    function updateMethodContainer(
+    public function updateMethodContainer(
         int $id,
         object $request,
         object $saleService,

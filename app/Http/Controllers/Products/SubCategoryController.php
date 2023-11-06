@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
-use DB;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Utils\UserActivityLogUtil;
 use App\Http\Controllers\Controller;
 use App\Services\Products\CategoryService;
 use App\Services\Products\SubCategoryService;
+use App\Utils\UserActivityLogUtil;
+use DB;
+use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {
@@ -21,9 +20,9 @@ class SubCategoryController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('categories')) {
+        if (! auth()->user()->can('categories')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         if ($request->ajax()) {
@@ -47,16 +46,16 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('categories')) {
+        if (! auth()->user()->can('categories')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
             'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => __("Parent category field is required.")]);
+        ], ['parent_category_id.required' => __('Parent category field is required.')]);
 
         try {
 
@@ -80,9 +79,9 @@ class SubCategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('categories')) {
+        if (! auth()->user()->can('categories')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $subcategory = $this->subCategoryService->singleSubcategory(id: $id);
@@ -93,16 +92,16 @@ class SubCategoryController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('categories')) {
+        if (! auth()->user()->can('categories')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
             'name' => 'required',
             'parent_category_id' => 'required',
             'photo' => 'sometimes|image|max:2048',
-        ], ['parent_category_id.required' => __("Parent category field is required")]);
+        ], ['parent_category_id.required' => __('Parent category field is required')]);
 
         try {
 
@@ -121,19 +120,20 @@ class SubCategoryController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Subcategory updated Successfully"));
+        return response()->json(__('Subcategory updated Successfully'));
     }
 
-    function subcategoriesByCategoryId($categoryId) {
+    public function subcategoriesByCategoryId($categoryId)
+    {
 
         return $this->subCategoryService->subcategories()->where('parent_category_id', $categoryId)->get();
     }
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('categories')) {
+        if (! auth()->user()->can('categories')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         try {
@@ -142,7 +142,7 @@ class SubCategoryController extends Controller
 
             $deleteSubcategory = $this->subCategoryService->deleteSubcategory(id: $id, request: $request);
 
-            if (!is_null($deleteSubcategory)) {
+            if (! is_null($deleteSubcategory)) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 21, data_obj: $deleteSubcategory);
             }
@@ -153,6 +153,6 @@ class SubCategoryController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Subcategory deleted Successfully"));
+        return response()->json(__('Subcategory deleted Successfully'));
     }
 }

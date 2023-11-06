@@ -7,14 +7,13 @@ interface SalesOrderControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\SalesOrderControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $salesOrderService,
         object $saleProductService
     ): ?array;
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $salesOrderService,
         object $accountService,
@@ -24,7 +23,7 @@ interface SalesOrderControllerMethodContainersInterface
         object $managePriceGroupService,
     ): array;
 
-    function updateMethodContainer(
+    public function updateMethodContainer(
         int $id,
         object $request,
         object $branchSettingService,

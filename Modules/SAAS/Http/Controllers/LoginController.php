@@ -22,12 +22,13 @@ class LoginController extends Controller
     {
         $userRequest = $request->validated();
         $user = User::where('email', $userRequest['email'])->first();
-        if (!$user || !Hash::check($userRequest['password'], $user->password)) {
+        if (! $user || ! Hash::check($userRequest['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
         Auth::guard()->login($user);
+
         return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
     }
 
@@ -36,6 +37,7 @@ class LoginController extends Controller
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->to(route('saas.welcome-page'));
     }
 }

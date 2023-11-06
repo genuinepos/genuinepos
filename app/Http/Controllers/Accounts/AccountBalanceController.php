@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountBalanceService;
+use Illuminate\Http\Request;
 
 class AccountBalanceController extends Controller
 {

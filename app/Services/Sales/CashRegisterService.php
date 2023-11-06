@@ -3,7 +3,6 @@
 namespace App\Services\Sales;
 
 use App\Models\Sales\CashRegister;
-use Illuminate\Support\Facades\DB;
 
 class CashRegisterService
 {
@@ -24,7 +23,7 @@ class CashRegisterService
 
         $addCashRegister = new CashRegister();
         $addCashRegister->user_id = auth()->user()->id;
-        $addCashRegister->date = date($dateFormat . $__timeFormat);
+        $addCashRegister->date = date($dateFormat.$__timeFormat);
         $addCashRegister->cash_counter_id = $request->cash_counter_id;
         $addCashRegister->cash_account_id = $request->cash_account_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
@@ -33,7 +32,7 @@ class CashRegisterService
         $addCashRegister->save();
     }
 
-    public function singleCashRegister(?array $with = null): ?object
+    public function singleCashRegister(array $with = null): ?object
     {
         $query = CashRegister::query();
 

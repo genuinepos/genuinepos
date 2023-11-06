@@ -31,18 +31,18 @@ class ProcessUtil
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="view" class="dropdown-item" href="'.route('manufacturing.process.show', [$row->id]).'"> ' . __("View") . '</a>';
+                $html .= '<a id="view" class="dropdown-item" href="'.route('manufacturing.process.show', [$row->id]).'"> '.__('View').'</a>';
 
                 if (auth()->user()->can('process_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('manufacturing.process.edit', [$row->id]).'"> ' . __("Edit") . '</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('manufacturing.process.edit', [$row->id]).'"> '.__('Edit').'</a>';
                 }
 
                 if (auth()->user()->can('process_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.process.delete', [$row->id]).'">' . __("Delete") . '</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.process.delete', [$row->id]).'">'.__('Delete').'</a>';
                 }
 
                 $html .= '</div>';
@@ -60,15 +60,16 @@ class ProcessUtil
 
                 $wastage = $row->total_output_qty / 100 * $row->wastage_percent;
                 $qtyWithWastage = $row->total_output_qty - $wastage;
+
                 return bcadd($qtyWithWastage, 0, 2).' '.$row->unit_code;
             })
-            ->editColumn('total_ingredient_cost', function ($row) use ($generalSettings) {
+            ->editColumn('total_ingredient_cost', function ($row) {
                 return $row->total_ingredient_cost;
             })
-            ->editColumn('production_cost', function ($row) use ($generalSettings) {
+            ->editColumn('production_cost', function ($row) {
                 return $row->production_cost;
             })
-            ->editColumn('net_cost', function ($row) use ($generalSettings) {
+            ->editColumn('net_cost', function ($row) {
                 return $row->total_cost;
             })
             ->rawColumns(['multiple_update', 'action', 'product', 'wastage_percent', 'total_output_qty', 'total_ingredient_cost', 'production_cost', 'total_cost'])

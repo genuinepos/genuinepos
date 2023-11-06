@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Sales\SalesOrderService;
-use App\Services\Sales\SaleProductService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\SalesOrderProductService;
+use App\Services\Sales\SalesOrderService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Sales\SalesOrderProductService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Sales\SalesOrderControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderController extends Controller
 {
@@ -50,7 +50,7 @@ class SalesOrderController extends Controller
 
     public function index(Request $request, $customerAccountId = null)
     {
-        if (!auth()->user()->can('view_add_sale')) {
+        if (! auth()->user()->can('view_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -83,7 +83,7 @@ class SalesOrderController extends Controller
         return view('sales.add_sale.orders.ajax_views.show', compact('order', 'customerCopySaleProducts'));
     }
 
-    function edit($id, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
+    public function edit($id, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface)
     {
         $editMethodContainer = $salesOrderControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -100,7 +100,7 @@ class SalesOrderController extends Controller
         return view('sales.add_sale.orders.edit', compact('order', 'customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts'));
     }
 
-    function update($id, Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    public function update($id, Request $request, SalesOrderControllerMethodContainersInterface $salesOrderControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'status' => 'required',
@@ -144,6 +144,6 @@ class SalesOrderController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Sales Order updated Successfully."));
+        return response()->json(__('Sales Order updated Successfully.'));
     }
 }

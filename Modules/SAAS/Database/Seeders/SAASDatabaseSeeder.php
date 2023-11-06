@@ -4,11 +4,6 @@ namespace Modules\SAAS\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\SAAS\Entities\Plan;
-use Modules\SAAS\Database\Seeders\PlanTableSeeder;
-use Modules\SAAS\Database\Seeders\UserTableSeeder;
-use Modules\SAAS\Database\Seeders\FeatureTableSeeder;
-use Modules\SAAS\Database\Seeders\PlanFeatureTableSeeder;
-use Modules\SAAS\Database\Seeders\RolePermissionTableSeeder;
 
 class SAASDatabaseSeeder extends Seeder
 {

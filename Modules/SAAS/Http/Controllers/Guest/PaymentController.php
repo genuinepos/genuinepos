@@ -2,15 +2,16 @@
 
 namespace Modules\SAAS\Http\Controllers\Guest;
 
-use Illuminate\Http\Request;
-use Modules\SAAS\Entities\Plan;
-use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Plan;
 
 class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @return Renderable
      */
     public function index(Request $request, Plan $plan)
@@ -20,6 +21,7 @@ class PaymentController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
      * @return Renderable
      */
     public function create()
@@ -29,7 +31,7 @@ class PaymentController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     *
      * @return Renderable
      */
     public function store(Request $request)
@@ -39,7 +41,8 @@ class PaymentController extends Controller
 
     /**
      * Show the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function show($id)
@@ -49,7 +52,8 @@ class PaymentController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function edit($id)
@@ -59,8 +63,8 @@ class PaymentController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function update(Request $request, $id)
@@ -70,7 +74,8 @@ class PaymentController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Renderable
      */
     public function destroy($id)

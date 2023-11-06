@@ -52,7 +52,7 @@ class TransferStockProductService
         return $addOrUpdateTransferStockProduct;
     }
 
-    public function updateTransferStockProductQty(object $request, int $transferStockProductId, int $index) : object
+    public function updateTransferStockProductQty(object $request, int $transferStockProductId, int $index): object
     {
         $transferStockProduct = $this->singleTransferStockProduct(id: $transferStockProductId);
         $receivedQty = $request->received_quantities[$index] ? $request->received_quantities[$index] : 0;

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Models\Discount;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\BrandService;
-use App\Services\Sales\DiscountService;
-use App\Services\Products\ProductService;
 use App\Services\Products\CategoryService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductService;
 use App\Services\Sales\DiscountProductService;
+use App\Services\Sales\DiscountService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DiscountController extends Controller
 {
@@ -125,12 +124,14 @@ class DiscountController extends Controller
     public function delete($id)
     {
         $this->discountService->deleteDiscount(discountId: $id);
+
         return response()->json(__('Discount deleted successfully'));
     }
 
     public function changeStatus($id)
     {
         $addDiscount = $this->discountService->changeDiscountStatus(id: $id);
+
         return response()->json(__('Discount status has been changed successfully'));
     }
 }

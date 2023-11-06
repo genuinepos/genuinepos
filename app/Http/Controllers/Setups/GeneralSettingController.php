@@ -20,7 +20,7 @@ class GeneralSettingController extends Controller
     public function index()
     {
         if (! auth()->user()->can('general_settings')) {
-            
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -127,7 +127,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__("Prefix settings updated Successfully"));
+        return response()->json(__('Prefix settings updated Successfully'));
     }
 
     public function systemSettings(Request $request)

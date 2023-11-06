@@ -2,9 +2,9 @@
 
 namespace App\Services\Products;
 
-use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Enums\IsDeleteInUpdate;
+use App\Enums\RoleType;
 use App\Models\Products\ProductAccessBranch;
 
 class ProductAccessBranchService
@@ -60,7 +60,7 @@ class ProductAccessBranchService
                     $productAssetBranch = $this->productAssetBranch()->where('branch_id', $branch_id)
                         ->where('product_id', $product->id)->first();
 
-                    if (!$productAssetBranch) {
+                    if (! $productAssetBranch) {
 
                         $addProductAccessBranch = new ProductAccessBranch();
                         $addProductAccessBranch->product_id = $product->id;

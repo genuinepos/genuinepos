@@ -2,17 +2,16 @@
 
 namespace App\Services\Purchases;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Enums\PaymentStatus;
 use App\Enums\PurchaseStatus;
 use App\Models\Purchases\Purchase;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseOrderService
 {
-    public function purchaseOrdersTable(object $request, ?int $supplierAccountId = null): object
+    public function purchaseOrdersTable(object $request, int $supplierAccountId = null): object
     {
         $generalSettings = config('generalSettings');
         $orders = '';
@@ -22,7 +21,7 @@ class PurchaseOrderService
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -48,10 +47,10 @@ class PurchaseOrderService
             if ($request->payment_status == PaymentStatus::Paid->value) {
 
                 $query->where('purchases.due', '=', 0);
-            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+            } elseif ($request->payment_status == PaymentStatus::Partial->value) {
 
                 $query->where('purchases.paid', '>', 0)->where('purchases.due', '>', 0);
-            } else if ($request->payment_status == PaymentStatus::Due->value) {
+            } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('purchases.paid', '=', 0);
             }
@@ -107,50 +106,50 @@ class PurchaseOrderService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name.'('.$row->area_name.')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name.'('.$row->area_name.')';
                     }
                 } else {
 
                     return $generalSettings['business__shop_name'];
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
 
             ->editColumn('receiving_status', function ($row) {
 
                 if ($row->po_receiving_status == 'Completed') {
 
-                    return '<span class="text-success"><b>' . __("Completed") . '</b></span>';
+                    return '<span class="text-success"><b>'.__('Completed').'</b></span>';
                 } elseif ($row->po_receiving_status == 'Pending') {
 
-                    return '<span class="text-danger"><b>' . __("Pending") . '</b></span>';
+                    return '<span class="text-danger"><b>'.__('Pending').'</b></span>';
                 } elseif ($row->po_receiving_status == 'Partial') {
 
-                    return '<span class="text-primary"><b>' . __("Partial") . '</b></span>';
+                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
                 }
             })->editColumn('payment_status', function ($row) {
 
                 $payable = $row->total_purchase_amount;
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>' . __("Paid") . '</b></span>';
+                    return '<span class="text-success"><b>'.__('Paid').'</b></span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
 
-                    return '<span class="text-primary"><b>' . __("Partial") . '</b></span>';
+                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
                 } elseif ($payable == $row->due) {
 
-                    return '<span class="text-danger"><b>' . __("Due") . '</b></span>';
+                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
                 }
             })->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'receiving_status', 'created_by'])
             ->make(true);
@@ -185,7 +184,7 @@ class PurchaseOrderService
         $addPurchase->purchase_note = $request->order_note;
         $addPurchase->purchase_status = PurchaseStatus::PurchaseOrder->value;
         $addPurchase->date = $request->date;
-        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchase->delivery_date = $request->delivery_date;
         $addPurchase->po_qty = $request->total_qty;
         $addPurchase->po_pending_qty = $request->total_qty;
@@ -196,7 +195,7 @@ class PurchaseOrderService
         return $addPurchase;
     }
 
-    function updatePurchaseOrder(object $request, object $updatePurchaseOrder): object
+    public function updatePurchaseOrder(object $request, object $updatePurchaseOrder): object
     {
         foreach ($updatePurchaseOrder->purchaseOrderProducts as $purchaseOrderProduct) {
 
@@ -223,7 +222,7 @@ class PurchaseOrderService
         $updatePurchaseOrder->purchase_note = $request->order_note;
         $updatePurchaseOrder->date = $request->date;
         $time = date(' H:i:s', strtotime($updatePurchaseOrder->report_date));
-        $updatePurchaseOrder->report_date = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updatePurchaseOrder->report_date = date('Y-m-d H:i:s', strtotime($request->date.$time));
         $updatePurchaseOrder->delivery_date = $request->delivery_date;
         $updatePurchaseOrder->is_last_created = 1;
         $updatePurchaseOrder->save();
@@ -241,7 +240,7 @@ class PurchaseOrderService
 
         if (count($deletePurchaseOrder->references) > 0) {
 
-            return ['pass' => false, 'msg' =>__("Purchase Order can not be deleted. There is one or more payment which is against this purchase order.")];
+            return ['pass' => false, 'msg' => __('Purchase Order can not be deleted. There is one or more payment which is against this purchase order.')];
         }
 
         $deletePurchaseOrder->delete();
@@ -249,14 +248,14 @@ class PurchaseOrderService
         return $deletePurchaseOrder;
     }
 
-    public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, ?int $purchaseOrderId = null): array
+    public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, int $purchaseOrderId = null): array
     {
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
-            return ['pass' => false, 'msg' => __("Product table is empty.")];
+            return ['pass' => false, 'msg' => __('Product table is empty.')];
         } elseif (count($request->product_ids) > 60) {
 
-            return ['pass' => false, 'msg' => __("Purchase order products must be less than 60 or equal.")];
+            return ['pass' => false, 'msg' => __('Purchase order products must be less than 60 or equal.')];
         }
 
         if ($checkSupplierChangeRestriction == true) {
@@ -267,7 +266,7 @@ class PurchaseOrderService
 
                 if ($purchase->supplier_account_id != $request->supplier_account_id) {
 
-                    return ['pass' => false, 'msg' => __("Supplier can not be changed. One or more payments is exists against this purchase order.")];
+                    return ['pass' => false, 'msg' => __('Supplier can not be changed. One or more payments is exists against this purchase order.')];
                 }
             }
         }
@@ -275,7 +274,7 @@ class PurchaseOrderService
         return ['pass' => true];
     }
 
-    public function singlePurchaseOrder(int $id, ?array $with = null): ?object
+    public function singlePurchaseOrder(int $id, array $with = null): ?object
     {
         $query = Purchase::query();
 
@@ -318,21 +317,21 @@ class PurchaseOrderService
     {
         $html = '<div class="btn-group" role="group">';
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" id="details_btn" href="' . route('purchase.orders.show', [$row->id]) . '">' . __('view') . '</a>';
+        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" id="details_btn" href="'.route('purchase.orders.show', [$row->id]).'">'.__('view').'</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            $html .= '<a class="dropdown-item" href="#">' . __('Add Receive Stock') . '</a>';
+            $html .= '<a class="dropdown-item" href="#">'.__('Add Receive Stock').'</a>';
         }
 
         if (auth()->user()->can('purchase_edit')) {
 
-            $html .= '<a class="dropdown-item" href="' . route('purchase.orders.edit', [$row->id]) . ' ">' . __('Edit') . '</a>';
+            $html .= '<a class="dropdown-item" href="'.route('purchase.orders.edit', [$row->id]).' ">'.__('Edit').'</a>';
         }
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.orders.delete', $row->id) . '">' . __('Delete') . '</a>';
+            $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.orders.delete', $row->id).'">'.__('Delete').'</a>';
         }
 
         $html .= '</div>';

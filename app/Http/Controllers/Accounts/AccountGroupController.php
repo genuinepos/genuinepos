@@ -65,7 +65,7 @@ class AccountGroupController extends Controller
     public function edit($id)
     {
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
-        ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
+            ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $group = $this->accountGroupService->singleAccountGroup(id: $id, with: ['parentGroup']);
 
         return view('accounting.groups.ajax_view.edit', compact('formGroups', 'group'));

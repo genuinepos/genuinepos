@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers\StockAdjustments\Reports;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Enums\StockAdjustmentType;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class StockAdjustmentReportController extends Controller
 {
-
     public function __construct(private BranchService $branchService)
     {
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_sale_report')) {
+        if (! auth()->user()->can('product_sale_report')) {
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');
@@ -56,7 +55,7 @@ class StockAdjustmentReportController extends Controller
                 })
                 ->editColumn('voucher_no', function ($row) {
 
-                    return '<a href="' . route('stock.adjustments.show', [$row->id]) . '" id="details_btn">' . $row->voucher_no . '</a>';
+                    return '<a href="'.route('stock.adjustments.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -64,10 +63,10 @@ class StockAdjustmentReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->area_name . ')';
+                            return $row->parent_branch_name.'('.$row->area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->area_name . ')';
+                            return $row->branch_name.'('.$row->area_name.')';
                         }
                     } else {
 
@@ -77,14 +76,14 @@ class StockAdjustmentReportController extends Controller
 
                 ->editColumn('type', function ($row) {
 
-                    return '<span class="fw-bold">' . StockAdjustmentType::tryFrom($row->type)->name . '</span>';
+                    return '<span class="fw-bold">'.StockAdjustmentType::tryFrom($row->type)->name.'</span>';
                 })
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
 
-                ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . \App\Utils\Converter::format_in_bdt($row->recovered_amount) . '</span>')
+                ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="'.$row->recovered_amount.'">'.\App\Utils\Converter::format_in_bdt($row->recovered_amount).'</span>')
 
-                ->editColumn('created_by', fn ($row) => $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name)
+                ->editColumn('created_by', fn ($row) => $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name)
 
                 ->rawColumns(['date', 'voucher_no', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
                 ->make(true);

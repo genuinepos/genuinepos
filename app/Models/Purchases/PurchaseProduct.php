@@ -3,15 +3,14 @@
 namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
-use App\Models\Products\Unit;
 use App\Models\Products\Product;
-use App\Models\Purchases\Purchase;
 use App\Models\Products\ProductVariant;
-use App\Models\Purchases\PurchaseSaleProductChain;
+use App\Models\Products\Unit;
 
 class PurchaseProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['updated_at'];
 
     public function purchase()

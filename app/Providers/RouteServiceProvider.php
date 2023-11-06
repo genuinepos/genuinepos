@@ -2,16 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
+
     /**
      * The path to the "home" route for your application.
      *

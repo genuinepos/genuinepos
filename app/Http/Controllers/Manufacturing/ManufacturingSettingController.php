@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\GeneralSettingServiceInterface;
 use App\Services\Manufacturing\ManufacturingSettingService;
+use Illuminate\Http\Request;
 
 class ManufacturingSettingController extends Controller
 {
@@ -16,7 +15,7 @@ class ManufacturingSettingController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('manufacturing_settings')) {
+        if (! auth()->user()->can('manufacturing_settings')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -29,13 +28,13 @@ class ManufacturingSettingController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        if (!auth()->user()->can('manufacturing_settings')) {
+        if (! auth()->user()->can('manufacturing_settings')) {
 
             return response()->json('Access Forbidden');
         }
 
         $this->manufacturingSettingService->manufacturingSettingAddOrUpdate(request: $request);
 
-        return response()->json(__("Manufacturing settings updated successfully"));
+        return response()->json(__('Manufacturing settings updated successfully'));
     }
 }

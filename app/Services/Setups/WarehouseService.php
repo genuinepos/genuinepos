@@ -51,8 +51,8 @@ class WarehouseService
                 }
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('warehouses.edit', [$row->id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="'.route('warehouses.edit', [$row->id]).'" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('warehouses.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -66,7 +66,7 @@ class WarehouseService
 
                     if ($row->b_name) {
 
-                        return $row->b_name . '/' . $row->b_code;
+                        return $row->b_name.'/'.$row->b_code;
                     } else {
 
                         return $generalSettings['business__shop_name'];
@@ -115,7 +115,7 @@ class WarehouseService
             return ['pass' => false, 'msg' => __('The warehouse can not be deleted. Product stocks belong under this warehouse.')];
         }
 
-        if (!is_null($deleteWarehouse)) {
+        if (! is_null($deleteWarehouse)) {
 
             $deleteWarehouse->delete();
         }

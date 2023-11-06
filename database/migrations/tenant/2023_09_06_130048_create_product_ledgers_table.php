@@ -50,7 +50,6 @@ return new class extends Migration
             $table->foreign('transfer_stock_product_id')->references('id')->on('transfer_stock_products')->onDelete('cascade');
         });
 
-
     }
 
     /**

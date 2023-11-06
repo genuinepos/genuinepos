@@ -3,7 +3,6 @@
 namespace App\Services\Sales;
 
 use App\Enums\IsDeleteInUpdate;
-use Illuminate\Support\Facades\DB;
 use App\Models\Sales\DiscountProduct;
 
 class DiscountProductService
@@ -19,7 +18,7 @@ class DiscountProductService
         }
     }
 
-    function updateDiscountProducts(object $request, object $discount): void
+    public function updateDiscountProducts(object $request, object $discount): void
     {
         if (isset($request->product_ids) && count($request->product_ids) > 0) {
 
@@ -53,14 +52,14 @@ class DiscountProductService
 
         // Unused discount product
         $deleteUnusedDiscountProducts = $this->discountProducts()->where('discount_id', $discount->id)
-            ->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();;
+            ->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();
         foreach ($deleteUnusedDiscountProducts as $deleteUnusedDiscountProduct) {
 
             $deleteUnusedDiscountProduct->delete();
         }
     }
 
-    public function singleDiscountProduct(int $id, ?array $with = null): ?object
+    public function singleDiscountProduct(int $id, array $with = null): ?object
     {
         $query = DiscountProduct::query();
 
@@ -72,7 +71,7 @@ class DiscountProductService
         return $query->where('id', $id)->first();
     }
 
-    public function discountProducts(?array $with = null): ?object
+    public function discountProducts(array $with = null): ?object
     {
         $query = DiscountProduct::query();
 

@@ -2,10 +2,9 @@
 
 namespace App\Models\Setups;
 
-use App\Models\Branch;
 use App\Models\Account;
 use App\Models\BaseModel;
-use App\Models\Setups\PaymentMethod;
+use App\Models\Branch;
 
 class PaymentMethodSetting extends BaseModel
 {

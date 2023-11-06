@@ -25,9 +25,9 @@ class UnitService
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('units.edit', $row->id) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('units.edit', $row->id).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
                 //
-                $html .= '<a href="' . route('units.delete', $row->id) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="'.route('units.delete', $row->id).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
 
                 $html .= '</div>';
 
@@ -37,22 +37,22 @@ class UnitService
                 $baseUnit = '';
                 if ($row->base_unit_name) {
 
-                    $baseUnit .= '(<strong>' . $row->base_unit_multiplier . ' ' . $row->base_unit_name . '</strong>)';
+                    $baseUnit .= '(<strong>'.$row->base_unit_multiplier.' '.$row->base_unit_name.'</strong>)';
                 }
 
-                return $row->name . $baseUnit;
+                return $row->name.$baseUnit;
             })->editColumn('base_unit_name', function ($row) {
 
                 if ($row->base_unit_name) {
 
-                    return $row->base_unit_name . '(' . $row->base_unit_code_name . ')';
+                    return $row->base_unit_name.'('.$row->base_unit_code_name.')';
                 }
             })->editColumn('multiplierUnitDetails', function ($row) {
 
                 $multipleUnitDetails = '';
                 if ($row->base_unit_name) {
 
-                    $multipleUnitDetails .= __('1') . ' ' . $row->name . ' = ' . $row->base_unit_multiplier . ' ' . $row->base_unit_code_name;
+                    $multipleUnitDetails .= __('1').' '.$row->name.' = '.$row->base_unit_multiplier.' '.$row->base_unit_code_name;
                 }
 
                 return $multipleUnitDetails;
@@ -87,16 +87,16 @@ class UnitService
         return $updateUnit;
     }
 
-    function deleteUnit(int $id): ?array
+    public function deleteUnit(int $id): ?array
     {
         $deleteUnit = $this->singleUnit(id: $id, with: ['childUnits']);
 
         if (count($deleteUnit->childUnits)) {
 
-            return ['pass' => false, 'msg' => __("Unit can not be deleted. This unit is a base unit for one or many units.")];
+            return ['pass' => false, 'msg' => __('Unit can not be deleted. This unit is a base unit for one or many units.')];
         }
 
-        if (!is_null($deleteUnit)) {
+        if (! is_null($deleteUnit)) {
 
             $deleteUnit->delete();
         }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BarcodeSettingService;
+use Illuminate\Http\Request;
 
 class BarcodeSettingController extends Controller
 {
@@ -16,7 +15,7 @@ class BarcodeSettingController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('barcode_settings')) {
+        if (! auth()->user()->can('barcode_settings')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -49,12 +48,14 @@ class BarcodeSettingController extends Controller
         ]);
 
         $addBarcodeSetting = $this->barcodeSettingService->addBarcodeSetting($request);
-        return response()->json(__("Barcode sticker setting created Successfully."));
+
+        return response()->json(__('Barcode sticker setting created Successfully.'));
     }
 
     public function edit($id)
     {
         $bs = $this->barcodeSettingService->singleBarcodeSetting(id: $id);
+
         return view('setups.barcode_settings.edit', compact('bs'));
     }
 
@@ -75,19 +76,22 @@ class BarcodeSettingController extends Controller
         ]);
 
         $updateBarcodeSetting = $this->barcodeSettingService->updateBarcodeSetting($id, $request);
-        return response()->json(__("Barcode sticker setting updated Successfully."));
+
+        return response()->json(__('Barcode sticker setting updated Successfully.'));
     }
 
     public function delete(Request $request, $id)
     {
         $this->barcodeSettingService->deleteBarcodeSetting($id);
-        return response()->json(__("Barcode sticker setting deleted Successfully."));
+
+        return response()->json(__('Barcode sticker setting deleted Successfully.'));
     }
 
     public function setDefault($id)
     {
         $this->barcodeSettingService->setAsDefaultBarcodeSetting(id: $id);
-        return response()->json(__("Default set successfully"));
+
+        return response()->json(__('Default set successfully'));
     }
 
     public function designPage()

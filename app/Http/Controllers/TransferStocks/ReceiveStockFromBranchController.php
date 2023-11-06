@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use Illuminate\Http\Request;
 use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\ProductLedgerVoucherType;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookService;
-use App\Services\Products\ProductStockService;
 use App\Services\Products\ProductLedgerService;
-use App\Services\TransferStocks\TransferStockService;
-use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\Products\ProductStockService;
+use App\Services\Setups\BranchService;
 use App\Services\TransferStocks\ReceiveStockFromBranchService;
+use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\TransferStocks\TransferStockService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReceiveStockFromBranchController extends Controller
 {
@@ -28,7 +28,7 @@ class ReceiveStockFromBranchController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
 
@@ -38,7 +38,7 @@ class ReceiveStockFromBranchController extends Controller
         return view('transfer_stocks.receive_stocks.from_branch.index');
     }
 
-    function create($transferStockId)
+    public function create($transferStockId)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $transferStockId,
@@ -60,7 +60,7 @@ class ReceiveStockFromBranchController extends Controller
         return view('transfer_stocks.receive_stocks.from_branch.create', compact('transferStock'));
     }
 
-    function receive($transferStockId, Request $request)
+    public function receive($transferStockId, Request $request)
     {
         try {
             DB::beginTransaction();
@@ -98,6 +98,6 @@ class ReceiveStockFromBranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Stock is received successfully."));
+        return response()->json(__('Stock is received successfully.'));
     }
 }

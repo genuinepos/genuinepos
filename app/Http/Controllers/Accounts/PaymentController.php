@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
-use App\Models\Setups\Branch;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\Accounts\DayBookVoucherService;
 use App\Services\Accounts\PaymentService;
-use App\Services\Sales\SalesReturnService;
+use App\Services\CodeGenerationService;
+use App\Services\Purchases\PurchaseReturnService;
 use App\Services\Purchases\PurchaseService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\SalesReturnService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\DayBookVoucherService;
-use App\Services\Purchases\PurchaseReturnService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -64,7 +63,7 @@ class PaymentController extends Controller
         return view('accounting.accounting_vouchers.payments.index', compact('branches', 'debitAccounts'));
     }
 
-    function show(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
+    public function show(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
         $showMethodContainer = $paymentControllerMethodContainersInterface->showMethodContainer(
             id: $id,
@@ -134,11 +133,11 @@ class PaymentController extends Controller
             return view('accounting.accounting_vouchers.save_and_print_template.print_payment', compact('payment'));
         } else {
 
-            return response()->json(['successMsg' => __("Payment added successfully.")]);
+            return response()->json(['successMsg' => __('Payment added successfully.')]);
         }
     }
 
-    function edit(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id, $debitAccountId = null)
+    public function edit(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id, $debitAccountId = null)
     {
         $editMethodContainer = $paymentControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -193,7 +192,7 @@ class PaymentController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Payment updated successfully."));
+        return response()->json(__('Payment updated successfully.'));
     }
 
     public function delete(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
@@ -216,6 +215,6 @@ class PaymentController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Payment deleted successfully."));
+        return response()->json(__('Payment deleted successfully.'));
     }
 }

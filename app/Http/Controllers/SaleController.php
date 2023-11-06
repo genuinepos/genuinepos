@@ -6,12 +6,12 @@ use App\Mail\FinalSaleCreated;
 use App\Mail\SaleOrderCreated;
 use App\Mail\SaleQuotationCreated;
 use App\Models\Customer;
-use App\Models\Setups\PaymentMethod;
 use App\Models\Product;
 use App\Models\ProductBranch;
 use App\Models\Sale;
 use App\Models\SalePayment;
 use App\Models\SaleProduct;
+use App\Models\Setups\PaymentMethod;
 use App\Models\User;
 use App\Utils\AccountUtil;
 use App\Utils\BranchWiseCustomerAmountUtil;
@@ -1145,7 +1145,7 @@ class SaleController extends Controller
         $sale->delivered_to = $request->delivered_to;
         $sale->save();
 
-        $this->userActivityLogUtil->addLog( action: 2, subject_type: $sale->status == 1 ? 7 : 8, data_obj: $sale);
+        $this->userActivityLogUtil->addLog(action: 2, subject_type: $sale->status == 1 ? 7 : 8, data_obj: $sale);
 
         return response()->json('Successfully shipment is updated.');
     }

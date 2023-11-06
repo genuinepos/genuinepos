@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Setups;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
-use App\Services\Accounts\AccountService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BranchSettingController extends Controller
 {
@@ -21,7 +20,7 @@ class BranchSettingController extends Controller
 
     public function edit($branchId)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -40,7 +39,7 @@ class BranchSettingController extends Controller
 
     public function update(Request $request, $branchId)
     {
-        if (!auth()->user()->can('branch')) {
+        if (! auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -57,6 +56,6 @@ class BranchSettingController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Shop settings updated successfully"));
+        return response()->json(__('Shop settings updated successfully'));
     }
 }

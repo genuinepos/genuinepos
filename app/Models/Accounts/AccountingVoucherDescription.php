@@ -2,11 +2,9 @@
 
 namespace App\Models\Accounts;
 
-use App\Models\Accounts\Account;
 use App\Models\Setups\PaymentMethod;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Accounts\AccountingVoucher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class AccountingVoucherDescription extends Model
 {

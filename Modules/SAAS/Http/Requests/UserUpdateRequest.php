@@ -2,8 +2,8 @@
 
 namespace Modules\SAAS\Http\Requests;
 
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$this->user->id,
             'phone' => 'nullable|max:255',
             'photo' => ['nullable', 'mimes:png,jpeg,jpg', 'max:2048'],
             'address' => 'nullable',

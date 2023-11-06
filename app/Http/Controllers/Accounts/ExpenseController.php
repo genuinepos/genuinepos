@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
-use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
-use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Enums\AccountLedgerVoucherType;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\ExpenseService;
+use App\Services\CodeGenerationService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
 {
@@ -37,9 +34,9 @@ class ExpenseController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
-        if (!auth()->user()->can('view_expense')) {
+        if (! auth()->user()->can('view_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -55,7 +52,7 @@ class ExpenseController extends Controller
         return view('accounting.accounting_vouchers.expenses.index', compact('branches'));
     }
 
-    function show(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
+    public function show(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
         $showMethodContainer = $expenseControllerMethodContainersInterface->showMethodContainer(
             id: $id,
@@ -67,9 +64,9 @@ class ExpenseController extends Controller
         return view('accounting.accounting_vouchers.expenses.ajax_view.show', compact('expense'));
     }
 
-    function create(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface)
+    public function create(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -87,7 +84,7 @@ class ExpenseController extends Controller
 
     public function store(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -131,13 +128,13 @@ class ExpenseController extends Controller
             return view('accounting.accounting_vouchers.save_and_print_template.print_expense', compact('expense'));
         } else {
 
-            return response()->json(['successMsg' => __("Expense added successfully.")]);
+            return response()->json(['successMsg' => __('Expense added successfully.')]);
         }
     }
 
     public function edit(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (!auth()->user()->can('edit_expense')) {
+        if (! auth()->user()->can('edit_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -157,7 +154,7 @@ class ExpenseController extends Controller
 
     public function update(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -194,12 +191,12 @@ class ExpenseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Expense updated successfully."));
+        return response()->json(__('Expense updated successfully.'));
     }
 
-    function delete($id)
+    public function delete($id)
     {
-        if (!auth()->user()->can('delete_expense')) {
+        if (! auth()->user()->can('delete_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -215,6 +212,6 @@ class ExpenseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Expense deleted successfully."));
+        return response()->json(__('Expense deleted successfully.'));
     }
 }

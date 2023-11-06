@@ -2,8 +2,6 @@
 
 namespace App\Services\Accounts;
 
-use Illuminate\Support\Facades\DB;
-
 class AccountFilterService
 {
     public function filterCashBankAccounts(object $accounts)

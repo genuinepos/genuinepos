@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
-use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
-use App\Services\CodeGenerationService;
-use App\Services\Accounts\ContraService;
+use App\Enums\DayBookVoucherType;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
+use App\Services\Accounts\ContraService;
 use App\Services\Accounts\DayBookService;
+use App\Services\CodeGenerationService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContraController extends Controller
 {
@@ -38,7 +38,7 @@ class ContraController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('view_expense')) {
+        if (! auth()->user()->can('view_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -75,7 +75,7 @@ class ContraController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -83,7 +83,7 @@ class ContraController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -120,7 +120,7 @@ class ContraController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $contraVoucherPrefix = 'CO' . auth()->user()?->branch?->branch_code;
+            $contraVoucherPrefix = 'CO'.auth()->user()?->branch?->branch_code;
 
             // Add Accounting Voucher
             $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Contra->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $contraVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount);
@@ -165,13 +165,13 @@ class ContraController extends Controller
             return view('accounting.accounting_vouchers.save_and_print_template.print_contra', compact('contra'));
         } else {
 
-            return response()->json(['successMsg' => __("Contra added successfully.")]);
+            return response()->json(['successMsg' => __('Contra added successfully.')]);
         }
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('add_expense')) {
+        if (! auth()->user()->can('add_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -184,7 +184,7 @@ class ContraController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -243,12 +243,12 @@ class ContraController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Contra updated successfully."));
+        return response()->json(__('Contra updated successfully.'));
     }
 
-    function delete($id)
+    public function delete($id)
     {
-        if (!auth()->user()->can('delete_expense')) {
+        if (! auth()->user()->can('delete_expense')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -264,6 +264,6 @@ class ContraController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Expense deleted successfully."));
+        return response()->json(__('Expense deleted successfully.'));
     }
 }

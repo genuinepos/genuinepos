@@ -6,7 +6,7 @@ use App\Models\Setups\PaymentMethodSetting;
 
 class PaymentMethodSettingsService
 {
-    public function paymentMethodSettings(int|null $branchId = null, array|null $with = null): ?object
+    public function paymentMethodSettings(int $branchId = null, array $with = null): ?object
     {
         $query = PaymentMethodSetting::query();
 
@@ -23,7 +23,7 @@ class PaymentMethodSettingsService
         return $query->first();
     }
 
-    public function addOrUpdatePaymentMethodSettings(object $request) : ?array
+    public function addOrUpdatePaymentMethodSettings(object $request): ?array
     {
         if (isset($request->payment_method_ids)) {
 
@@ -53,7 +53,7 @@ class PaymentMethodSettingsService
             }
         } else {
 
-            return ['pass' => false, 'msg' => __("Failed! Payment method is empty.")];
+            return ['pass' => false, 'msg' => __('Failed! Payment method is empty.')];
         }
 
         return ['pass' => true];

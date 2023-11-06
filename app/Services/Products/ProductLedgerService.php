@@ -9,7 +9,7 @@ class ProductLedgerService
 {
     public static function voucherTypes()
     {
-        return  [
+        return [
             0 => 'Opening Stock',
             1 => 'Sales',
             2 => 'Sales Return',
@@ -46,11 +46,11 @@ class ProductLedgerService
         string $quantityType,
         float $quantity,
         float $subtotal,
-        ?int $variantId = null,
-        ?string $optionalColName = null,
-        ?int $optionalColValue = null,
-        ?int $branchId = null,
-        ?int $warehouseId = null,
+        int $variantId = null,
+        string $optionalColName = null,
+        int $optionalColValue = null,
+        int $branchId = null,
+        int $warehouseId = null,
     ) {
         $voucherType = $this->voucherType($voucherTypeId);
         $add = new ProductLedger();
@@ -58,7 +58,7 @@ class ProductLedgerService
         $add->warehouse_id = $warehouseId;
         $add->date = $date;
         $time = $voucherTypeId == ProductLedgerVoucherType::OpeningStock->value ? ' 01:00:00' : date(' H:i:s');
-        $add->date_ts = date('Y-m-d H:i:s', strtotime($date . $time));
+        $add->date_ts = date('Y-m-d H:i:s', strtotime($date.$time));
         $add->product_id = $productId;
         $add->variant_id = $variantId ? $variantId : null;
         $add->voucher_type = $voucherTypeId;
@@ -85,12 +85,12 @@ class ProductLedgerService
         string $quantityType,
         float $quantity,
         float $subtotal,
-        ?int $variantId = null,
-        ?string $optionalColName = null,
-        ?int $optionalColValue = null,
-        ?int $branchId = null,
-        ?int $warehouseId = null,
-        ?int $currentWarehouseId = null,
+        int $variantId = null,
+        string $optionalColName = null,
+        int $optionalColValue = null,
+        int $branchId = null,
+        int $warehouseId = null,
+        int $currentWarehouseId = null,
     ) {
         $branchId = $branchId ? $branchId : auth()->user()->branch_id;
         $voucherType = $this->voucherType($voucherTypeId);
@@ -114,7 +114,7 @@ class ProductLedgerService
             $update->warehouse_id = $warehouseId;
             $update->date = $date;
             $previousTime = date(' H:i:s', strtotime($update->date));
-            $update->date_ts = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->date_ts = date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $update->product_id = $productId;
             $update->variant_id = $variantId ? $variantId : null;
             $update->voucher_type = $voucherTypeId;
@@ -149,11 +149,11 @@ class ProductLedgerService
         }
     }
 
-    function deleteUnusedProductionLedgerEntry(string $transColName, int $transId, int $productId, ?int $variantId = null): void
+    public function deleteUnusedProductionLedgerEntry(string $transColName, int $transId, int $productId, int $variantId = null): void
     {
         $deleteProductLedgerEntry = ProductLedger::where($transColName, $transId)->where('product_id', $productId)->where('variant_id', $variantId)->first();
 
-        if (!is_null($deleteProductLedgerEntry)) {
+        if (! is_null($deleteProductLedgerEntry)) {
 
             $deleteProductLedgerEntry->delete();
         }

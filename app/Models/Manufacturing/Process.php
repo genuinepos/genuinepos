@@ -3,11 +3,10 @@
 namespace App\Models\Manufacturing;
 
 use App\Models\BaseModel;
-use App\Models\Products\Unit;
-use App\Models\Setups\Branch;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
-use App\Models\Manufacturing\ProcessIngredient;
+use App\Models\Products\Unit;
+use App\Models\Setups\Branch;
 
 class Process extends BaseModel
 {

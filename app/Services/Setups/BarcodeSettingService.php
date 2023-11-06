@@ -2,9 +2,8 @@
 
 namespace App\Services\Setups;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Setups\BarcodeSetting;
-use Illuminate\Foundation\Mix;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class BarcodeSettingService
@@ -17,17 +16,17 @@ class BarcodeSettingService
             ->addIndexColumn()
             ->editColumn('name', function ($row) {
 
-                return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">' . __("Default") . '</span>' : '');
+                return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">'.__('Default').'</span>' : '');
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('barcode.settings.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('barcode.settings.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
 
                 if ($row->is_default == 0) {
 
-                    $html .= '<a href="' . route('barcode.settings.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                    $html .= '<a href="' . route('barcode.settings.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn"> ' . __("Set As Default") . '</a>';
+                    $html .= '<a href="'.route('barcode.settings.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="'.route('barcode.settings.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn"> '.__('Set As Default').'</a>';
                 }
 
                 $html .= '</div>';
@@ -78,7 +77,7 @@ class BarcodeSettingService
         }
     }
 
-    function updateBarcodeSetting(int $id, object $request): void
+    public function updateBarcodeSetting(int $id, object $request): void
     {
         if (isset($request->set_as_default)) {
 
@@ -111,17 +110,17 @@ class BarcodeSettingService
         ]);
     }
 
-    function deleteBarcodeSetting(int $id): void
+    public function deleteBarcodeSetting(int $id): void
     {
         $deleteBarcodeSetting = $this->singleBarcodeSetting(id: $id);
 
-        if (!is_null($deleteBarcodeSetting)) {
+        if (! is_null($deleteBarcodeSetting)) {
 
             $deleteBarcodeSetting->delete();
         }
     }
 
-    function setAsDefaultBarcodeSetting(int $id): void
+    public function setAsDefaultBarcodeSetting(int $id): void
     {
         $defaultBs = $this->singleBarcodeSetting(customColName: 'is_default', customColValue: 1);
 
@@ -137,8 +136,8 @@ class BarcodeSettingService
     }
 
     public function singleBarcodeSetting(
-        int|null $id = null,
-        string|null $customColName = null,
+        int $id = null,
+        string $customColName = null,
         string|int $customColValue = null,
         array $with = null
     ): ?object {

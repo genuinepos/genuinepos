@@ -5,11 +5,10 @@ namespace Modules\SAAS\Emails;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\URL;
 
 class CustomerRegistrationConfirmationMail extends Mailable
 {

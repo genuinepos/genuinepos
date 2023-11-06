@@ -56,28 +56,28 @@ class UserActivityLogUtil
     {
         return [
             1 => [ // Customers
-                'fields' => ['name', 'phone',  'contact_id',],
+                'fields' => ['name', 'phone',  'contact_id'],
                 'texts' => ['Name : ', 'Phone : ', 'Customer ID : '],
             ],
             2 => [ // Suppliers
-                'fields' => ['name', 'phone', 'contact_id',],
-                'texts' => ['Name : ', 'Phone : ', 'Supplier ID : ',],
+                'fields' => ['name', 'phone', 'contact_id'],
+                'texts' => ['Name : ', 'Phone : ', 'Supplier ID : '],
             ],
             3 => [ // Users
-                'fields' => ['prefix', 'name', 'last_name', 'username',],
+                'fields' => ['prefix', 'name', 'last_name', 'username'],
                 'texts' => ['prefix : ', 'Name : ', 'Last Lame : ', 'Username'],
             ],
             4 => [ // Purchase
-                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due',],
-                'texts' => ['Date : ', 'P.Invoice ID : ', 'Total Purchase Amount : ', 'Paid : ', 'Due : ',],
+                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due'],
+                'texts' => ['Date : ', 'P.Invoice ID : ', 'Total Purchase Amount : ', 'Paid : ', 'Due : '],
             ],
             5 => [ // Purchase Order
-                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due',],
-                'texts' => ['Order Date : ', 'Purchase Order ID : ', 'Total Ordered Amt : ', 'Paid : ', 'Due : ',],
+                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due'],
+                'texts' => ['Order Date : ', 'Purchase Order ID : ', 'Total Ordered Amt : ', 'Paid : ', 'Due : '],
             ],
             6 => [ // Purchase Return
-                'fields' => ['date', 'voucher_no', 'total_return_amount', 'received_amount',],
-                'texts' => ['Date : ', 'Return Invoice ID : ', 'Total Returned Amt : ', 'Received Amt. : ', 'Due : ',],
+                'fields' => ['date', 'voucher_no', 'total_return_amount', 'received_amount'],
+                'texts' => ['Date : ', 'Return Invoice ID : ', 'Total Returned Amt : ', 'Received Amt. : ', 'Due : '],
             ],
             29 => [ // Draft
                 'fields' => ['date', 'draft_id', 'total_invoice_amount'],
@@ -92,11 +92,11 @@ class UserActivityLogUtil
                 'texts' => ['Date : ', 'Invoice ID : ', 'Total Invoice Amount : ', 'Paid : ', 'Due : '],
             ],
             8 => [ // Sales Order
-                'fields' => ['date', 'order_id', 'total_invoice_amount', 'paid', 'due',],
-                'texts' => ['Date : ', 'Order ID : ', 'Total Ordered Amt', 'Advance Received', 'Due',],
+                'fields' => ['date', 'order_id', 'total_invoice_amount', 'paid', 'due'],
+                'texts' => ['Date : ', 'Order ID : ', 'Total Ordered Amt', 'Advance Received', 'Due'],
             ],
             9 => [ // Sales Return
-                'fields' => ['date', 'voucher_no', 'total_return_amount', 'paid', 'due',],
+                'fields' => ['date', 'voucher_no', 'total_return_amount', 'paid', 'due'],
                 'texts' => ['Date : ', 'Return Voucher No : ', 'Total Returned Amt. : ', 'Paid : ', 'Due : '],
             ],
             10 => [ // Transfer B.Location To Warehouse
@@ -104,7 +104,7 @@ class UserActivityLogUtil
                 'texts' => ['Date : ', 'Reference ID : ', 'Total Send Quantity : ', 'Total Received Quantity : '],
             ],
             13 => [ // Stock Adjustment
-                'fields' => ['date', 'voucher_no', 'net_total_amount', 'recovered_amount',],
+                'fields' => ['date', 'voucher_no', 'net_total_amount', 'recovered_amount'],
                 'texts' => ['Date : ', 'Voucher No : ', 'Total Adjusted Amt. : ', 'Total Recovered Amount : '],
             ],
             15 => [ // Expenses
@@ -117,7 +117,7 @@ class UserActivityLogUtil
             ],
             17 => [ // Accounts
                 'fields' => ['name', 'account_number', 'opening_balance', 'opening_balance_type'],
-                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : ',],
+                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : '],
             ],
             18 => [ // User login
                 'fields' => ['username'],
@@ -132,7 +132,7 @@ class UserActivityLogUtil
                 'texts' => ['Category ID : ', 'Category Name : '],
             ],
             21 => [ // Sub-Categories
-                'fields' => ['id', 'name',],
+                'fields' => ['id', 'name'],
                 'texts' => ['Sub-Category ID : ', 'Sub-Category Name : '],
             ],
             22 => [ // Brands
@@ -148,7 +148,7 @@ class UserActivityLogUtil
                 'texts' => ['ID : ', 'Variant Name : '],
             ],
             25 => [ // Warranties
-                'fields' => ['name', 'duration', 'duration_type',],
+                'fields' => ['name', 'duration', 'duration_type'],
                 'texts' => ['Warranty Name : ', 'Duration : ', 'Duration Type : '],
             ],
             26 => [ // Product
@@ -156,15 +156,15 @@ class UserActivityLogUtil
                 'texts' => ['Name : ', 'P.Code(SKU) : ', 'Cost.inc Tax : ', 'Price.Exc Tax : '],
             ],
             27 => [ // Receipt Voucher
-                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'fields' => ['date', 'voucher_no',   'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount'],
             ],
             28 => [ // Payment
-                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'fields' => ['date', 'voucher_no',   'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Paid Amount : '],
             ],
             31 => [ // Contra
-                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'fields' => ['date', 'voucher_no',   'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
             ],
         ];
@@ -191,7 +191,7 @@ class UserActivityLogUtil
         $index = 0;
         foreach ($descriptionModel[$subject_type]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index] . (isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A') . ', ';
+            $description .= $descriptionModel[$subject_type]['texts'][$index].(isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A').', ';
             $index++;
         }
 

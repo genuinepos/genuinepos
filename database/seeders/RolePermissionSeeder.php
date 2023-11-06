@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
@@ -332,7 +332,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '231', 'name' => 'selling_price_group_add'],
             ['id' => '232', 'name' => 'selling_price_group_edit'],
             ['id' => '233', 'name' => 'selling_price_group_delete'],
-
 
         ];
 

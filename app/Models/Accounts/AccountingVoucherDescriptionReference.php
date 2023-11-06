@@ -2,19 +2,18 @@
 
 namespace App\Models\Accounts;
 
+use App\Models\Purchases\Purchase;
+use App\Models\Purchases\PurchaseReturn;
 use App\Models\Sales\Sale;
 use App\Models\Sales\SaleReturn;
-use App\Models\Purchases\Purchase;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Purchases\PurchaseReturn;
 use App\Models\StockAdjustments\StockAdjustment;
-use App\Models\Accounts\AccountingVoucherDescription;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class AccountingVoucherDescriptionReference extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'voucher_description_references';
 
     public function voucherDescription()

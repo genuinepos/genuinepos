@@ -3,9 +3,9 @@
 namespace App\Services\Manufacturing;
 
 use App\Enums\IsDeleteInUpdate;
+use App\Models\Manufacturing\Process;
 use App\Models\Products\Product;
 use Illuminate\Support\Facades\DB;
-use App\Models\Manufacturing\Process;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProcessService
@@ -41,18 +41,18 @@ class ProcessService
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('manufacturing.process.show', [$row->id]) . '" class="dropdown-item" id="details_btn"> ' . __("View") . '</a>';
+                $html .= '<a href="'.route('manufacturing.process.show', [$row->id]).'" class="dropdown-item" id="details_btn"> '.__('View').'</a>';
 
                 if (auth()->user()->can('process_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('manufacturing.process.edit', [$row->id]) . '"> ' . __("Edit") . '</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('manufacturing.process.edit', [$row->id]).'"> '.__('Edit').'</a>';
                 }
 
                 if (auth()->user()->can('process_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('manufacturing.process.delete', [$row->id]) . '">' . __("Delete") . '</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="'.route('manufacturing.process.delete', [$row->id]).'">'.__('Delete').'</a>';
                 }
 
                 $html .= '</div>';
@@ -66,22 +66,23 @@ class ProcessService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name.'('.$row->area_name.')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name.'('.$row->area_name.')';
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'] . '(Business)';
+                    return $generalSettings['business__shop_name'].'(Business)';
                 }
             })
-            ->editColumn('product', fn ($row) => $row->p_name . ' ' . $row->v_name)
+            ->editColumn('product', fn ($row) => $row->p_name.' '.$row->v_name)
             ->editColumn('total_output_qty', function ($row) {
 
                 $wastage = $row->total_output_qty / 100 * $row->wastage_percent;
                 $qtyWithWastage = $row->total_output_qty - $wastage;
-                return \App\Utils\Converter::format_in_bdt($qtyWithWastage) . '/' . $row->unit_name;
+
+                return \App\Utils\Converter::format_in_bdt($qtyWithWastage).'/'.$row->unit_name;
             })
             ->editColumn('total_ingredient_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->total_ingredient_cost))
             ->editColumn('additional_production_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->additional_production_cost))
@@ -130,10 +131,10 @@ class ProcessService
         return $updateProcess;
     }
 
-    function deleteProcess(int $id): void
+    public function deleteProcess(int $id): void
     {
         $deleteProcess = $this->process()->where('id', $id)->first();
-        if (!is_null($deleteProcess)) {
+        if (! is_null($deleteProcess)) {
 
             $deleteProcess->delete();
         }

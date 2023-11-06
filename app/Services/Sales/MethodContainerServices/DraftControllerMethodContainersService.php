@@ -2,12 +2,11 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
-use App\Enums\SaleStatus;
-use App\Enums\SaleScreenType;
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
+use App\Enums\SaleStatus;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 
 class DraftControllerMethodContainersService implements DraftControllerMethodContainersInterface
@@ -38,7 +37,7 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         return $data;
     }
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $draftService,
         object $branchService,
@@ -69,7 +68,7 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $draft->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -244,10 +243,10 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
         if ($request->status == SaleStatus::Final->value) {
 
             $subjectType = 7;
-        } else if ($request->status == SaleStatus::Order->value) {
+        } elseif ($request->status == SaleStatus::Order->value) {
 
             $subjectType = 8;
-        } else if ($request->status == SaleStatus::Quotation->value) {
+        } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $subjectType = 30;
         }

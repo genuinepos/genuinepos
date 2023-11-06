@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
+use App\Http\Controllers\Controller;
+use App\Services\Products\ManagePriceGroupService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Products\ProductService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ManagePriceGroupService;
 
 class PriceGroupManageController extends Controller
 {
@@ -20,7 +20,7 @@ class PriceGroupManageController extends Controller
 
     public function index($productId, $type)
     {
-        if (!auth()->user()->can('manage_price_group')) {
+        if (! auth()->user()->can('manage_price_group')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -30,7 +30,7 @@ class PriceGroupManageController extends Controller
             id: $productId,
             with: [
                 'variants:id,product_id,variant_name,variant_price',
-                'tax:id,name,tax_percent'
+                'tax:id,name,tax_percent',
             ],
             firstWithSelect: [
                 'products.id',
@@ -47,11 +47,11 @@ class PriceGroupManageController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        if (!auth()->user()->can('manage_price_group')) {
+        if (! auth()->user()->can('manage_price_group')) {
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         try {
 
             DB::beginTransaction();
@@ -66,10 +66,10 @@ class PriceGroupManageController extends Controller
 
         if ($request->action_type == 'save') {
 
-            return response()->json(['saveMsg' => __("Product price group updated Successfully")]);
+            return response()->json(['saveMsg' => __('Product price group updated Successfully')]);
         } else {
 
-            return response()->json(['saveAndAnotherMsg' => __("Product price group updated Successfully")]);
+            return response()->json(['saveAndAnotherMsg' => __('Product price group updated Successfully')]);
         }
     }
 }

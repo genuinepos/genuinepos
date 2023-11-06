@@ -2,34 +2,29 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Carbon\Carbon;
-
-
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Mail\PurchaseReturnCreated;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
-use Yajra\DataTables\Facades\DataTables;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseReturnProductService;
+use App\Services\Purchases\PurchaseReturnService;
 use App\Services\Purchases\PurchaseService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Purchases\PurchaseReturnService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Purchases\PurchaseReturnProductService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\EmailServiceInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseReturnController extends Controller
 {
@@ -58,7 +53,7 @@ class PurchaseReturnController extends Controller
     // Sale return index view
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchase_return')) {
+        if (! auth()->user()->can('purchase_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -111,7 +106,7 @@ class PurchaseReturnController extends Controller
     // create purchase return view
     public function create()
     {
-        if (!auth()->user()->can('purchase_return')) {
+        if (! auth()->user()->can('purchase_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -124,7 +119,7 @@ class PurchaseReturnController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -165,10 +160,10 @@ class PurchaseReturnController extends Controller
             'purchase_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => __("Purchase A/c is required."),
-            'account_id.required' => __("Credit field must not be is empty."),
-            'payment_method_id.required' => __("Payment method field is required."),
-            'supplier_account_id.required' => __("Supplier is required."),
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit field must not be is empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_account_id.required' => __('Supplier is required.'),
         ]);
 
         try {
@@ -290,7 +285,7 @@ class PurchaseReturnController extends Controller
             return view('purchase.save_and_print_template.print_purchase_return', compact('return', 'receivedAmount'));
         } else {
 
-            return response()->json(['successMsg' => __("Purchase Return Created Successfully.")]);
+            return response()->json(['successMsg' => __('Purchase Return Created Successfully.')]);
         }
     }
 
@@ -320,7 +315,7 @@ class PurchaseReturnController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $return->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -361,10 +356,10 @@ class PurchaseReturnController extends Controller
             'purchase_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => __("Purchase A/c is required."),
-            'account_id.required' => __("Credit field must not be is empty."),
-            'payment_method_id.required' => __("Payment method field is required."),
-            'supplier_account_id.required' => __("Supplier is required."),
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit field must not be is empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_account_id.required' => __('Supplier is required.'),
         ]);
 
         $restrictions = $this->purchaseReturnService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseReturnId: $id);
@@ -507,7 +502,7 @@ class PurchaseReturnController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Purchase return updated Successfully."));
+        return response()->json(__('Purchase return updated Successfully.'));
     }
 
     //Deleted purchase return

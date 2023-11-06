@@ -6,7 +6,7 @@ use App\Models\Accounts\AccountingVoucher;
 
 class AccountingVoucherService
 {
-    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?string $reference = null, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null, ?int $branchId = null): ?object
+    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, string $reference = null, int $saleRefId = null, int $saleReturnRefId = null, int $purchaseRefId = null, int $purchaseReturnRefId = null, int $stockAdjustmentRefId = null, int $branchId = null): ?object
     {
         $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $voucherType, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-');
 
@@ -25,7 +25,7 @@ class AccountingVoucherService
         $addAccountingVoucher->date = $date;
         $addAccountingVoucher->remarks = $remarks;
         $addAccountingVoucher->reference = $reference;
-        $addAccountingVoucher->date_ts = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addAccountingVoucher->date_ts = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
         $addAccountingVoucher->created_by_id = auth()->user()->id;
         $addAccountingVoucher->is_transaction_details = $isTransactionDetails;
         $addAccountingVoucher->save();
@@ -33,7 +33,7 @@ class AccountingVoucherService
         return $addAccountingVoucher;
     }
 
-    public function updateAccountingVoucher(int $id, string $date, ?string $remarks, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?string $reference = null, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null)
+    public function updateAccountingVoucher(int $id, string $date, ?string $remarks, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, string $reference = null, int $saleRefId = null, int $saleReturnRefId = null, int $purchaseRefId = null, int $purchaseReturnRefId = null, int $stockAdjustmentRefId = null)
     {
         $updateAccountingVoucher = $this->singleAccountingVoucher(id: $id, with: [
             'voucherDescriptions',
@@ -66,7 +66,7 @@ class AccountingVoucherService
         $updateAccountingVoucher->remarks = $remarks;
         $updateAccountingVoucher->reference = $reference;
         $time = date(' H:i:s', strtotime($updateAccountingVoucher->date_ts));
-        $updateAccountingVoucher->date_ts = date('Y-m-d H:i:s', strtotime($date . $time));
+        $updateAccountingVoucher->date_ts = date('Y-m-d H:i:s', strtotime($date.$time));
         $updateAccountingVoucher->is_transaction_details = $isTransactionDetails;
         $updateAccountingVoucher->save();
 
@@ -89,7 +89,7 @@ class AccountingVoucherService
     {
         $deletePayment = AccountingVoucher::where('id', $id)->first();
 
-        if (!is_null($deletePayment)) {
+        if (! is_null($deletePayment)) {
 
             $deletePayment->delete();
         }

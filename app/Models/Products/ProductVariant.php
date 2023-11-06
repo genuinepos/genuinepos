@@ -2,13 +2,10 @@
 
 namespace App\Models\Products;
 
-use App\Models\Products\Product;
-use App\Models\Sales\SaleProduct;
-use App\Models\Products\ProductStock;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseProduct;
-use App\Models\Products\PriceGroupProduct;
+use App\Models\Sales\SaleProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductVariant extends Model
 {

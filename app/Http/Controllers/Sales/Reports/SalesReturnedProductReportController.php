@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
 
 class SalesReturnedProductReportController extends Controller
 {
@@ -24,7 +24,7 @@ class SalesReturnedProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sales_return_report')) {
+        if (! auth()->user()->can('sales_return_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -81,8 +81,9 @@ class SalesReturnedProductReportController extends Controller
             return DataTables::of($salesReturnProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 35, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 35, '').$variant;
                 })
                 ->editColumn('date', function ($row) {
 
@@ -94,10 +95,10 @@ class SalesReturnedProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->branch_name.'('.$row->branch_area_name.')';
                         }
                     } else {
 
@@ -108,17 +109,17 @@ class SalesReturnedProductReportController extends Controller
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name . '(' . $row->warehouse_code . ')';
+                        return $row->warehouse_name.'('.$row->warehouse_code.')';
                     } else {
 
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                                return $row->parent_branch_name.'('.$row->branch_area_name.')';
                             } else {
 
-                                return $row->branch_name . '(' . $row->branch_area_name . ')';
+                                return $row->branch_name.'('.$row->branch_area_name.')';
                             }
                         } else {
 
@@ -127,22 +128,22 @@ class SalesReturnedProductReportController extends Controller
                     }
                 })
 
-                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('sales.returns.show', [$row->sale_return_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->sales_return_voucher . '</a>')
+                ->editColumn('voucher_no', fn ($row) => '<a href="'.route('sales.returns.show', [$row->sale_return_id]).'" class="text-hover" id="details_btn" title="View">'.$row->sales_return_voucher.'</a>')
 
                 ->editColumn('sales_invoice_id', function ($row) {
 
                     if ($row->sale_id) {
 
-                        return '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details_btn">' . $row->sale_invoice_id . '</a>';
+                        return '<a href="'.route('sales.show', [$row->sale_id]).'" id="details_btn">'.$row->sale_invoice_id.'</a>';
                     }
                 })
 
-                ->editColumn('return_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_qty) . '/<span class="return_qty" data-value="' . $row->return_qty . '">' . $row->unit_code . '</span>')
+                ->editColumn('return_qty', fn ($row) => \App\Utils\Converter::format_in_bdt($row->return_qty).'/<span class="return_qty" data-value="'.$row->return_qty.'">'.$row->unit_code.'</span>')
                 ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-                ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '('.\App\Utils\Converter::format_in_bdt($row->unit_tax_percent).'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
                 ->editColumn('unit_price_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax))
-                ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="' . $row->return_subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->return_subtotal) . '</span>')
+                ->editColumn('return_subtotal', fn ($row) => '<span class="return_subtotal" data-value="'.$row->return_subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->return_subtotal).'</span>')
                 ->rawColumns(['product', 'date', 'branch', 'stored_location', 'return_qty', 'voucher_no', 'sales_invoice_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'return_subtotal'])
                 ->make(true);
         }
@@ -225,7 +226,7 @@ class SalesReturnedProductReportController extends Controller
         return view('sales.reports.sales_returned_products_report.ajax_view.print', compact('salesReturnProducts', 'ownOrParentBranch', 'filteredBranchName', 'filteredCustomerName', 'fromDate', 'toDate'));
     }
 
-    function filter($request, $query)
+    public function filter($request, $query)
     {
         if ($request->product_id) {
 

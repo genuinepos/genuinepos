@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Manufacturing\ProcessIngredientService;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\WarehouseService;
-use App\Services\Manufacturing\ProcessIngredientService;
 
 class ProcessIngredientController extends Controller
 {

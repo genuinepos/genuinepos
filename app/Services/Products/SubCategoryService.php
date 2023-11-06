@@ -18,17 +18,18 @@ class SubCategoryService
             ->orderBy('id', 'DESC');
 
         $imgUrl = asset('uploads/category/');
+
         return DataTables::of($subCategories)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use ($imgUrl) {
 
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $imgUrl . '/' . $row->photo . '">';
+                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$imgUrl.'/'.$row->photo.'">';
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('subcategories.edit', [$row->id]) . '" class="action-btn c-edit" id="editSubcategory"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('subcategories.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteSubcategory"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="'.route('subcategories.edit', [$row->id]).'" class="action-btn c-edit" id="editSubcategory"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('subcategories.delete', [$row->id]).'" class="action-btn c-delete" id="deleteSubcategory"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -47,8 +48,8 @@ class SubCategoryService
         if ($request->file('photo')) {
 
             $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
             $addSubCategory = $categoryPhotoName;
         }
 
@@ -68,15 +69,15 @@ class SubCategoryService
 
             if ($updateSubcategory->photo !== 'default.png') {
 
-                if (file_exists(public_path('uploads/category/' . $updateSubcategory->photo))) {
+                if (file_exists(public_path('uploads/category/'.$updateSubcategory->photo))) {
 
-                    unlink(public_path('uploads/category/' . $updateSubcategory->photo));
+                    unlink(public_path('uploads/category/'.$updateSubcategory->photo));
                 }
             }
 
             $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
             $updateSubcategory->photo = $categoryPhotoName;
         }
 
@@ -85,15 +86,15 @@ class SubCategoryService
         return $updateSubcategory;
     }
 
-    function deleteSubcategory(int $id, object $request): ?object
+    public function deleteSubcategory(int $id, object $request): ?object
     {
         $deleteSubcategory = $this->singleSubcategory(id: $id);
 
         if ($deleteSubcategory->photo !== 'default.png') {
 
-            if (file_exists(public_path('uploads/category/' . $deleteSubcategory->photo))) {
+            if (file_exists(public_path('uploads/category/'.$deleteSubcategory->photo))) {
 
-                unlink(public_path('uploads/category/' . $deleteSubcategory->photo));
+                unlink(public_path('uploads/category/'.$deleteSubcategory->photo));
             }
         }
 

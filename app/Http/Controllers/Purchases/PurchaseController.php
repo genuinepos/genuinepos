@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Illuminate\Http\Request;
-use App\Enums\PurchaseStatus;
-use App\Mail\PurchaseCreated;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
+use App\Enums\PurchaseStatus;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Mail\PurchaseCreated;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ProductService;
-use App\Services\Setups\WarehouseService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
 use App\Services\Purchases\PurchaseService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\EmailServiceInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseController extends Controller
 {
@@ -54,7 +54,7 @@ class PurchaseController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -81,7 +81,7 @@ class PurchaseController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
@@ -111,7 +111,7 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('purchase_add')) {
+        if (! auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -121,7 +121,7 @@ class PurchaseController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -156,7 +156,7 @@ class PurchaseController extends Controller
     // add purchase method
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_add')) {
+        if (! auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -168,10 +168,10 @@ class PurchaseController extends Controller
             'purchase_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => __("Purchase A/c is required."),
-            'account_id.required' => __("Credit field must not be is empty."),
-            'payment_method_id.required' => __("Payment method field is required."),
-            'supplier_account_id.required' => __("Supplier is required."),
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit field must not be is empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_account_id.required' => __('Supplier is required.'),
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -338,17 +338,18 @@ class PurchaseController extends Controller
 
         if ($request->action == 2) {
 
-            return response()->json(['successMsg' => __("Successfully purchase is created.")]);
+            return response()->json(['successMsg' => __('Successfully purchase is created.')]);
         } else {
 
             $payingAmount = $request->paying_amount;
+
             return view('purchase.save_and_print_template.print_purchase', compact('purchase', 'payingAmount'));
         }
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('purchase_edit')) {
+        if (! auth()->user()->can('purchase_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -371,7 +372,7 @@ class PurchaseController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $purchase->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -405,7 +406,7 @@ class PurchaseController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_edit')) {
+        if (! auth()->user()->can('purchase_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -417,10 +418,10 @@ class PurchaseController extends Controller
             'purchase_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'purchase_account_id.required' => __("Purchase A/c is required."),
-            'account_id.required' => __("Credit field must not be is empty."),
-            'payment_method_id.required' => __("Payment method field is required."),
-            'supplier_account_id.required' => __("Supplier is required."),
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit field must not be is empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_account_id.required' => __('Supplier is required.'),
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -590,13 +591,13 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Purchase updated Successfully."));
+        return response()->json(__('Purchase updated Successfully.'));
     }
 
     // delete purchase method
     public function delete($id)
     {
-        if (!auth()->user()->can('purchase_delete')) {
+        if (! auth()->user()->can('purchase_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -635,6 +636,6 @@ class PurchaseController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Purchase is deleted successfully"));
+        return response()->json(__('Purchase is deleted successfully'));
     }
 }

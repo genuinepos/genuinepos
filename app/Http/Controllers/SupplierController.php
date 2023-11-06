@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setups\PaymentMethod;
 use App\Models\Purchase;
 use App\Models\PurchasePayment;
 use App\Models\Purchases\PurchaseReturn;
+use App\Models\Setups\PaymentMethod;
 use App\Models\Supplier;
 use App\Models\SupplierOpeningBalance;
 use App\Models\SupplierPayment;

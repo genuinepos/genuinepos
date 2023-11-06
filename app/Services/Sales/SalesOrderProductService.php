@@ -2,11 +2,7 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Models\Sales\SaleProduct;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 
 class SalesOrderProductService
 {
@@ -52,7 +48,7 @@ class SalesOrderProductService
         }
     }
 
-    function salesOrderProducts(?array $with = null): ?object
+    public function salesOrderProducts(array $with = null): ?object
     {
         $query = SaleProduct::query();
 
@@ -64,7 +60,7 @@ class SalesOrderProductService
         return $query;
     }
 
-    function singleSalesOrderProduct(?int $id, array $with = null): ?object
+    public function singleSalesOrderProduct(?int $id, array $with = null): ?object
     {
         $query = SaleProduct::query();
 

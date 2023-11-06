@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Products\BulkVariantService;
 use App\Services\Products\BulkVariantChildService;
+use App\Services\Products\BulkVariantService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BulkVariantController extends Controller
 {
@@ -20,7 +20,7 @@ class BulkVariantController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_variant_index')) {
+        if (! auth()->user()->can('product_variant_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -40,7 +40,7 @@ class BulkVariantController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_variant_add')) {
+        if (! auth()->user()->can('product_variant_add')) {
 
             return response()->json('Access Denied');
         }
@@ -65,12 +65,13 @@ class BulkVariantController extends Controller
     public function edit($id)
     {
         $bulkVariant = $this->bulkVariantService->singleBulkVariant(id: $id, with: ['bulkVariantChild']);
+
         return view('product.bulk_variants.ajax_view.edit', compact('bulkVariant'));
     }
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('product_variant_edit')) {
+        if (! auth()->user()->can('product_variant_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -94,7 +95,7 @@ class BulkVariantController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('product_variant_delete')) {
+        if (! auth()->user()->can('product_variant_delete')) {
 
             return response()->json('Access Denied');
         }

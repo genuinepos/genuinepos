@@ -4,7 +4,7 @@ namespace App\Services\Products;
 
 class ProductSettingsService
 {
-    function updateProductSettings(object $request, object $generalSettingService): void
+    public function updateProductSettings(object $request, object $generalSettingService): void
     {
         $settings = [
             'product__product_code_prefix' => $request->product_code_prefix,

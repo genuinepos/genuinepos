@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\Contacts\ContactService;
 use App\Services\Contacts\ManageCustomerService;
+use App\Services\Setups\BranchService;
+use Illuminate\Http\Request;
 
 class ManageCustomerController extends Controller
 {
@@ -36,7 +35,7 @@ class ManageCustomerController extends Controller
         return view('contacts.manage_customers.index', compact('branches'));
     }
 
-    function manage($id)
+    public function manage($id)
     {
         $contact = $this->contactService->singleContact(id: $id, with: ['account:id,contact_id']);
         $branches = $this->branchService->branches(with: ['parentBranch'])

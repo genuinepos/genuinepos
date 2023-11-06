@@ -4,16 +4,17 @@ namespace Modules\SAAS\Listeners;
 
 use App\Models\User;
 use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\SAAS\Events\CustomerRegisteredEvent;
+use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Emails\CustomerRegistrationConfirmationMail;
+use Modules\SAAS\Events\CustomerRegisteredEvent;
 
 class CustomerRegisteredListener
 // class CustomerRegisteredListener implements ShouldQueue
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
     // public function __construct(public CustomerRegisteredEvent $event)
     // {
 
@@ -21,11 +22,8 @@ class CustomerRegisteredListener
 
     /**
      * Handle the event.
-     *
-     * @param  object  $event
-     * @return void
      */
-    public function handle(object $event) : void
+    public function handle(object $event): void
     {
         // Mail::to($event->user->email)->send(new CustomerRegistrationConfirmationMail($event->user));
         if ($event->user instanceof MustVerifyEmail && ! $event->user->hasVerifiedEmail()) {

@@ -2,12 +2,11 @@
 
 namespace App\Models\TransferStocks;
 
-
-use App\Models\Products\Unit;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Products\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class TransferStockProduct extends Model
 {

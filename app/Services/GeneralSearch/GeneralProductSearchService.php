@@ -2,10 +2,10 @@
 
 namespace App\Services\GeneralSearch;
 
-use App\Models\Product;
 use App\Enums\BooleanType;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 use App\Models\Products\ProductVariant;
+use Illuminate\Support\Facades\DB;
 
 class GeneralProductSearchService
 {
@@ -15,12 +15,12 @@ class GeneralProductSearchService
 
             if ($isShowNotForSaleItem == 0 && $product->is_for_sale == 0) {
 
-                return response()->json(['errorMsg' => __("Product is not for sale")]);
+                return response()->json(['errorMsg' => __('Product is not for sale')]);
             }
 
             if ($product->type == 2) {
 
-                return response()->json(['errorMsg' => __("Combo Product is not sellable in this demo")]);
+                return response()->json(['errorMsg' => __('Combo Product is not sellable in this demo')]);
             } else {
 
                 return response()->json(
@@ -56,7 +56,7 @@ class GeneralProductSearchService
 
                 if ($isShowNotForSaleItem == 0 && $variantProduct?->product?->is_for_sale == 0) {
 
-                    return response()->json(['errorMsg' => __("Product is not for sale")]);
+                    return response()->json(['errorMsg' => __('Product is not for sale')]);
                 }
 
                 return response()->json(
@@ -83,7 +83,7 @@ class GeneralProductSearchService
             ->leftJoin('discounts', 'discount_products.discount_id', 'discounts.id')
             ->where('discounts.is_active', 1)
             ->where('discounts.price_group_id', $__priceGroupId)
-            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
+            ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`')
             ->orderBy('discounts.priority', 'desc')
             ->first();
 
@@ -98,7 +98,7 @@ class GeneralProductSearchService
             $discountBrandCategoryWiseQ = DB::table('discounts')
                 ->where('discounts.is_active', 1)
                 //->where('discounts.price_group_id', $__priceGroupId)
-                ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
+                ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`');
 
             if (isset($__brandId) && isset($__categoryId)) {
 
@@ -106,12 +106,12 @@ class GeneralProductSearchService
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
                 $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
-            } elseif (isset($__brandId) && !($__categoryId)) {
+            } elseif (isset($__brandId) && ! ($__categoryId)) {
 
                 $discountBrandCategoryWiseQ->where('discounts.category_id', null);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
-            } elseif (!isset($__brandId) && isset($__categoryId)) {
+            } elseif (! isset($__brandId) && isset($__categoryId)) {
 
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', null);
                 $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
@@ -350,14 +350,14 @@ class GeneralProductSearchService
         $query = DB::table('products')
             ->where('products.status', BooleanType::True->value)
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
-            ->where('products.name', 'LIKE', '%' . $keyword . '%');
+            ->where('products.name', 'LIKE', '%'.$keyword.'%');
 
         if ($isShowNotForSaleItem == 0) {
 
             $query->where('is_for_sale', 1);
         }
 
-        $query->orWhere('product_variants.variant_name', 'LIKE', '%' . $keyword . '%');
+        $query->orWhere('product_variants.variant_name', 'LIKE', '%'.$keyword.'%');
 
         $namedProducts = $query->leftJoin('accounts as taxes', 'products.tax_ac_id', 'taxes.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')

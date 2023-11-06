@@ -2,19 +2,19 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\AccountingVoucherType;
 use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
-use App\Enums\AccountingVoucherType;
 
 class DayBookVoucherService
 {
-    function vouchersForPaymentReceipt(?int $accountId, $type): ?object
+    public function vouchersForPaymentReceipt(?int $accountId, $type): ?object
     {
         $voucherTypes = '';
         if ($type == AccountingVoucherType::Receipt->value) {
 
             $voucherTypes = [DayBookVoucherType::Sales->value, DayBookVoucherType::SalesOrder->value];
-        } else if ($type == AccountingVoucherType::Payment->value) {
+        } elseif ($type == AccountingVoucherType::Payment->value) {
 
             $voucherTypes = [DayBookVoucherType::Purchase->value, DayBookVoucherType::PurchaseOrder->value];
         }
@@ -68,7 +68,7 @@ class DayBookVoucherService
         return $vouchers;
     }
 
-    function filteredVoucher(?object $vouchers): ?array
+    public function filteredVoucher(?object $vouchers): ?array
     {
         $arr = [];
         foreach ($vouchers as $key => $voucher) {
@@ -81,10 +81,10 @@ class DayBookVoucherService
                     $paymentStatus = '';
                     if ($voucher->sale_due > 0 && $voucher->sale_due < $receivable) {
 
-                        $paymentStatus = __("Partial");
+                        $paymentStatus = __('Partial');
                     } elseif ($receivable == $voucher->sale_due) {
 
-                        $paymentStatus = __("Due");
+                        $paymentStatus = __('Due');
                     }
 
                     $arr[] = [
@@ -97,7 +97,7 @@ class DayBookVoucherService
                         'due' => $voucher->sale_due,
                     ];
                 }
-            } else if ($voucher->voucher_type == DayBookVoucherType::SalesOrder->value) {
+            } elseif ($voucher->voucher_type == DayBookVoucherType::SalesOrder->value) {
 
                 if ($voucher->sale_due > 0) {
 
@@ -105,10 +105,10 @@ class DayBookVoucherService
                     $paymentStatus = '';
                     if ($voucher->sale_due > 0 && $voucher->sale_due < $receivable) {
 
-                        $paymentStatus = __("Partial");
+                        $paymentStatus = __('Partial');
                     } elseif ($receivable == $voucher->sale_due) {
 
-                        $paymentStatus = __("Due");
+                        $paymentStatus = __('Due');
                     }
 
                     $arr[] = [
@@ -121,7 +121,7 @@ class DayBookVoucherService
                         'due' => $voucher->sale_due,
                     ];
                 }
-            } else if ($voucher->voucher_type == DayBookVoucherType::Purchase->value) {
+            } elseif ($voucher->voucher_type == DayBookVoucherType::Purchase->value) {
 
                 if ($voucher->purchase_due > 0) {
 
@@ -129,10 +129,10 @@ class DayBookVoucherService
                     $paymentStatus = '';
                     if ($voucher->purchase_due > 0 && $voucher->purchase_due < $payable) {
 
-                        $paymentStatus = __("Partial");
+                        $paymentStatus = __('Partial');
                     } elseif ($payable == $voucher->purchase_due) {
 
-                        $paymentStatus = __("Due");
+                        $paymentStatus = __('Due');
                     }
 
                     $arr[] = [
@@ -145,7 +145,7 @@ class DayBookVoucherService
                         'due' => $voucher->purchase_due,
                     ];
                 }
-            } else if ($voucher->voucher_type == DayBookVoucherType::PurchaseOrder->value) {
+            } elseif ($voucher->voucher_type == DayBookVoucherType::PurchaseOrder->value) {
 
                 if ($voucher->purchase_due > 0) {
 
@@ -153,10 +153,10 @@ class DayBookVoucherService
                     $paymentStatus = '';
                     if ($voucher->purchase_due > 0 && $voucher->purchase_due < $payable) {
 
-                        $paymentStatus = __("Partial");
+                        $paymentStatus = __('Partial');
                     } elseif ($payable == $voucher->purchase_due) {
 
-                        $paymentStatus = __("Due");
+                        $paymentStatus = __('Due');
                     }
 
                     $arr[] = [

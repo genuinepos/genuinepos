@@ -1029,28 +1029,50 @@
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        if(e.ctrlKey && e.which == 13) {
+        var status = $('#status').val() ? $('#status').val() : 1;
 
-            $('#final_and_print').click();
-            return false;
-        }else if (e.shiftKey && e.which == 13) {
+        if(e.ctrlKey && e.which == 13) { // Ctrl + Enter
 
-            $('#final').click();
+            if (status == 1) {
+
+                $('#final_and_print').click();
+            } else if (status == 2) {
+
+                $('#draft').click();
+            } else if (status == 3) {
+
+                $('#order').click();
+            } else if (status == 4) {
+
+                $('#quotation').click();
+            }
+
             return false;
-        }else if (e.ctrlKey && e.which == 81) {
+        } else if (e.shiftKey && e.which == 13) { // Shift + Enter
+
+            if (status == 1) {
+
+                $('#final').click();
+            }
+
+            return false;
+        } else if (e.altKey && e.which == 81) { // Alt + Q
 
             $('#quotation').click();
             return false;
-        } else if (e.altKey && e.which == 82) {
+        } else if (e.altKey && e.which == 79) { // Alt + O
 
             $('#order').click();
             return false;
-        }else if (e.altKey && e.which == 67) {
+        } else if (e.altKey && e.which == 82) { // Alt + R
 
-            $('#received_amount').focus();
-            $('#received_amount').select();
+            $('#received_amount').focus().select();
             return false;
-        }else if (e.which == 27) {
+        } else if (e.altKey && e.which == 90) { // Alt + Z
+
+            $('#shipment_details').focus().select();
+            return false;
+        } else if (e.which == 27) { //Esc
 
             $('.variant_list_area').empty();
             $('.select_area').hide();

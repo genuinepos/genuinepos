@@ -306,7 +306,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="purchases-table" class="display data_tbl data__table purchases-table w-100">
+                                        <table id="purchases-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -436,7 +436,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="purchase-orders-table" class="display data_tbl data__table purchase-orders-table w-100">
+                                        <table id="purchase-orders-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -564,7 +564,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="sales-table" class="display data_tbl data__table sales-table w-100">
+                                        <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -698,7 +698,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="sales-order-table" class="display data_tbl data__table sales-order-table w-100">
+                                        <table id="sales-order-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -827,7 +827,7 @@
                             <div class="col-md-12">
                                 <div class="widget_content table_area">
                                     <div class="table-responsive">
-                                        <table id="payments-table" class="display data_tbl data__table payments-table w-100">
+                                        <table id="payments-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -954,7 +954,7 @@
                             <div class="col-md-12">
                                 <div class="widget_content table_area">
                                     <div class="table-responsive">
-                                        <table id="receipts-table" class="display data_tbl data__table receipts-table w-100">
+                                        <table id="receipts-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -992,24 +992,19 @@
         </div>
     </div>
 
-    {{-- <form id="deleted_form" action="" method="post">
+    <form id="deleted_form" action="" method="post">
         @method('DELETE')
         @csrf
     </form>
-
-    <form id="payment_deleted_form" action="" method="post">
-        @method('DELETE')
-        @csrf
-    </form>--}}
-
-    <div id="details"></div>
-    <div id="extra_details"></div>
 
     <!-- Edit Shipping modal -->
     <div class="modal fade" id="editShipmentDetailsModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     <div class="modal fade" id="addOrEditReceiptModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+    <div id="details"></div>
+    <div id="extra_details"></div>
 @endsection
 @push('scripts')
     @include('contacts.manage_suppliers.js_partials.manage_js')

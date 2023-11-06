@@ -164,7 +164,15 @@
                 toastr.success(data);
                 $('#addOrEditPaymentModal').modal('hide');
                 $('#addOrEditPaymentModal').empty();
-                paymentTable.ajax.reload(null, false);
+
+                var commonReloaderClass = $('.common-reloader').html();
+                if (commonReloaderClass != undefined) {
+
+                    $('.common-reloader').DataTable().ajax.reload();
+                }else {
+
+                    paymentTable.ajax.reload();
+                }
             },
             error: function(err) {
 

@@ -265,14 +265,14 @@ class PurchaseService
     {
         // get deleting purchase row
         $deletePurchase = $this->singlePurchase(id: $id, with: [
-            'accountingVouchers',
+            'references',
             'purchaseProducts',
             'purchaseProducts.product',
             'purchaseProducts.variant',
             'purchaseProducts.purchaseSaleChains',
         ]);
 
-        if (count($deletePurchase->accountingVouchers) > 0) {
+        if (count($deletePurchase->references) > 0) {
 
             return ['pass' => false, 'msg' => __("Purchase can not be deleted. There is one or more payment which is against this purchase.")];
         }

@@ -236,10 +236,10 @@ class PurchaseOrderService
     public function deletePurchaseOrder(int $id): array|object
     {
         $deletePurchaseOrder = $this->singlePurchaseOrder(id: $id, with: [
-            'accountingVouchers',
+            'references',
         ]);
 
-        if (count($deletePurchaseOrder->accountingVouchers) > 0) {
+        if (count($deletePurchaseOrder->references) > 0) {
 
             return ['pass' => false, 'msg' =>__("Purchase Order can not be deleted. There is one or more payment which is against this purchase order.")];
         }

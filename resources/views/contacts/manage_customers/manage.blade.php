@@ -20,7 +20,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-people-arrows"></span>
-                    <h6><strong>{{ $contact->name }}</strong></h6>
+                    <h6>{{ __("Manage Customer") }} - (<strong>{{ $contact->name }}</strong>)</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
@@ -151,7 +151,7 @@
                             <div class="col-md-12">
                                 <div class="ledger_table_area">
                                     <div class="table-responsive" id="payment_list_table">
-                                        <table class="display data_tbl data__table ledger_table">
+                                        <table id="ledger-table" class="display data_tbl data__table ledger_table">
                                             <thead>
                                                 <tr>
                                                     <tr>
@@ -306,7 +306,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="sales-table" class="display data_tbl data__table w-100">
+                                        <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -440,7 +440,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="sales-order-table" class="display data_tbl data__table w-100">
+                                        <table id="sales-order-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -572,7 +572,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="purchases-table" class="display data_tbl data__table w-100">
+                                        <table id="purchases-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -702,7 +702,7 @@
                             <div class="col-md-12">
                                 <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="purchase-orders-table" class="display data_tbl data__table w-100">
+                                        <table id="purchase-orders-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -827,7 +827,7 @@
                             <div class="col-md-12">
                                 <div class="widget_content table_area">
                                     <div class="table-responsive">
-                                        <table id="receipts-table" class="display data_tbl data__table payments_table w-100">
+                                        <table id="receipts-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("Action") }}</th>
@@ -860,84 +860,150 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    {{-- <form id="deleted_form" action="" method="post">
-        @method('DELETE')
-        @csrf
-    </form>
+                    <div class="tab_contant payments d-hide">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-3">
+                                @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
+                            </div>
 
-    <form id="payment_deleted_form" action="" method="post">
-        @method('DELETE')
-        @csrf
-    </form>
+                            <div class="col-sm-12 col-lg-9">
+                                <div class="account_summary_area">
+                                    <div class="heading py-1">
+                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                    </div>
 
-    <!-- Details Modal -->
-    <div id="sale_details"></div> --}}
+                                    <div class="account_summary_table">
+                                        <div class="row mt-2">
+                                            <div class="col-md-10">
+                                                <div class="card pb-5">
+                                                    <form id="filter_payments" class="py-2 px-2 mt-2" method="get">
+                                                        <div class="form-group row align-items-end">
+                                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                                <div class="col-lg-3 col-md-6">
+                                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                    <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
+                                                                        <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                        @foreach ($branches as $branch)
+                                                                            @php
+                                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                                $branchCode = '-' . $branch->branch_code;
+                                                                            @endphp
+                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                                {{ $branchName . $areaName . $branchCode }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            @endif
 
-   {{-- <!-- Edit Shipping modal -->
-   <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
-            <div class="modal-content" id="edit_shipment_modal_content"></div>
-        </div>
-    </div> --}}
+                                                            <div class="col-lg-3 col-md-6">
+                                                                <label><strong>{{ __("From Date") }}</strong></label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                    </div>
+                                                                    <input type="text" name="from_date" id="payments_from_date" class="form-control" autocomplete="off">
+                                                                </div>
+                                                            </div>
 
-    @if(auth()->user()->can('sale_payment'))
-        {{-- <!--Payment View modal-->
-        <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_list')</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="payment_view_modal_body"> </div>
-                </div>
-            </div>
-        </div> --}}
+                                                            <div class="col-lg-3 col-md-6">
+                                                                <label><strong>{{ __("To Date") }}</strong></label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
+                                                                    </div>
+                                                                    <input type="text" name="to_date" id="payments_to_date" class="form-control" autocomplete="off">
+                                                                </div>
+                                                            </div>
 
-        {{-- <!--Add Payment modal-->
-        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+                                                            <div class="col-lg-3 col-md-6">
+                                                                <div class="row align-items-end">
+                                                                    <div class="col-md-6">
+                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                    </div>
 
-        <!--Payment list modal-->
-        <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details')(<span class="payment_invoice"></span>)</h6>
-                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body">
-                        <div class="payment_details_area"></div>
+                                                                    <div class="col-md-6">
+                                                                        <a href="#" class="btn btn-sm btn-primary" id="printPaymentReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 mt-md-0 mt-2">
+                                                <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <a href="{{ route('payments.create', ['debitAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addPayment"><i class="far fa-money-bill-alt text-white"></i> {{ __("Add Payment") }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row">
-                            <div class="col-md-6 text-right">
-                                <ul class="list-unstyled">
-                                    <li class="mt-3" id="payment_attachment"></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <ul class="list-unstyled">
-                                    <li class="mt-3"><a href="" id="print_payment" class="btn btn-sm btn-primary float-end">@lang('menu.print')</a></li>
-                                </ul>
+                            <div class="col-md-12">
+                                <div class="widget_content table_area">
+                                    <div class="table-responsive">
+                                        <table id="payments-table" class="display data_tbl data__table common-reloader w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{ __("Action") }}</th>
+                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Voucher') }}</th>
+                                                    <th>{{ __("Shop/Business") }}</th>
+                                                    <th>{{ __('Reference') }}</th>
+                                                    <th>{{ __('Remarks') }}</th>
+                                                    {{-- <th>{{ __("Received From") }}</th> --}}
+                                                    <th>{{ __("Paid From") }}</th>
+                                                    <th>{{ __("Type/Method") }}</th>
+                                                    <th>{{ __("Trans. No") }}</th>
+                                                    <th>{{ __("Cheque No") }}</th>
+                                                    {{-- <th>{{ __("Cheque S/L No") }}</th> --}}
+                                                    <th>{{ __("Paid Amount") }}</th>
+                                                    {{-- <th>{{ __("Created By") }}</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tfoot>
+                                                <tr class="bg-secondary">
+                                                    <th colspan="10" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th id="payments_total_amount" class="text-white"></th>
+                                                    {{-- <th></th> --}}
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> --}}
-    @endif
+        </div>
+    </div>
 
-    <div id="details"></div>
-    <div id="extra_details"></div>
+   <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
 
     <!-- Edit Shipping modal -->
     <div class="modal fade" id="editShipmentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
-
     <div class="modal fade" id="addOrEditReceiptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+    <div id="details"></div>
+    <div id="extra_details"></div>
 @endsection
 @push('scripts')
     @include('contacts.manage_customers.js_partials.manage_js')

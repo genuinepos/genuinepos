@@ -3,7 +3,10 @@
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
+
+    $__receivedAmount = isset($receivedAmount) ? $receivedAmount : 0;
 @endphp
+
 
 <!-- Sale print templete-->
 @if ($invoiceLayout->layout_design == 1)
@@ -371,8 +374,9 @@
 
                             <tr>
                                 <td class="text-end" style="font-size:11px!important;"><strong>{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }} </strong></td>
+
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($receivedAmount) }}
+                                    {{ App\Utils\Converter::format_in_bdt($__receivedAmount > 0 ? $__receivedAmount : $sale->paid) }}
                                 </td>
                             </tr>
 
@@ -648,7 +652,7 @@
                                 <th class="text-end" style="font-size:11px;">{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
-                                        {{ App\Utils\Converter::format_in_bdt($receivedAmount) }}
+                                        {{ App\Utils\Converter::format_in_bdt($__receivedAmount > 0 ? $__receivedAmount : $sale->paid) }}
                                     </span>
                                 </th>
                             </tr>

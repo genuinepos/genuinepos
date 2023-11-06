@@ -591,11 +591,14 @@ class AccountingVoucherDescriptionReferenceService
         $voucherDescriptions = DB::table('accounting_voucher_descriptions')
             ->leftJoin('voucher_description_references', 'accounting_voucher_descriptions.id', 'voucher_description_references.voucher_description_id')
             ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
+            ->leftJoin('sales', 'voucher_description_references.sale_id', 'sales.id')
+            ->leftJoin('purchases', 'voucher_description_references.purchase_id', 'purchases.id')
             ->where('accounting_voucher_descriptions.account_id', $accountId)
             ->where('accounting_vouchers.voucher_type', $accountingVoucherType)
             ->where('accounting_vouchers.branch_id', $branchId)
             ->select(
                 'accounting_vouchers.id as accounting_voucher_id',
+                'accounting_voucher_descriptions.account_id',
                 'accounting_voucher_descriptions.id as voucher_description_id',
                 // 'supplier_payments.account_id',
                 // 'supplier_payments.date',
@@ -603,10 +606,12 @@ class AccountingVoucherDescriptionReferenceService
                 'accounting_voucher_descriptions.amount as received_or_paid_amount',
                 // DB::raw('SUM(supplier_payment_invoices.paid_amount) as total_invoice_paid_amount'),
                 // DB::raw('SUM(- IFNULL(supplier_payment_invoices.paid_amount, 0)) + supplier_payments.paid_amount as left_amount')
-                DB::raw('SUM(- IFNULL(voucher_description_references.amount, 0)) + accounting_voucher_descriptions.amount as left_amount')
+                // DB::raw('SUM(- IFNULL(voucher_description_references.amount, 0)) + accounting_voucher_descriptions.amount as left_amount')
+                DB::raw("SUM(- CASE WHEN sales.status != 3 AND purchases.purchase_status != 2 THEN voucher_description_references.amount ELSE 0 END) + accounting_voucher_descriptions.amount as left_amount")
             )
-            ->having('left_amount', '!=', 0)
+            ->having('left_amount', '>', 0)
             ->groupBy('accounting_vouchers.id')
+            ->groupBy('accounting_voucher_descriptions.account_id')
             ->groupBy('accounting_voucher_descriptions.id')
             ->groupBy('accounting_voucher_descriptions.amount')
             ->get();

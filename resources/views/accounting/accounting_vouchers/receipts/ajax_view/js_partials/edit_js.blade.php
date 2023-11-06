@@ -164,7 +164,15 @@
                 toastr.success(data);
                 $('#addOrEditReceiptModal').modal('hide');
                 $('#addOrEditReceiptModal').empty();
-                receiptTable.ajax.reload(null, false);
+
+                var commonReloaderClass = $('.common-reloader').html();
+                if (commonReloaderClass != undefined) {
+
+                    $('.common-reloader').DataTable().ajax.reload();
+                }else {
+
+                    receiptTable.ajax.reload(null, false);
+                }
             },
             error: function(err) {
 

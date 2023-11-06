@@ -7,7 +7,7 @@ use App\Models\Products\Unit;
 use App\Models\Products\Product;
 use App\Models\Purchases\Purchase;
 use App\Models\Products\ProductVariant;
-use App\Models\PurchaseSaleProductChain;
+use App\Models\Purchases\PurchaseSaleProductChain;
 
 class PurchaseProduct extends BaseModel
 {

@@ -104,7 +104,7 @@
 
 <script>
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
-         
+
         $('.payment_submit_button').prop('type', 'button');
     });
 
@@ -186,7 +186,15 @@
                     toastr.success(data.successMsg);
                     $('#addOrEditPaymentModal').modal('hide');
                     $('#addOrEditPaymentModal').empty();
-                    paymentTable.ajax.reload();
+
+                    var commonReloaderClass = $('.common-reloader').html();
+                    if (commonReloaderClass != undefined) {
+
+                        $('.common-reloader').DataTable().ajax.reload();
+                    }else {
+
+                        paymentTable.ajax.reload();
+                    }
 
                     return;
                 } else {
@@ -205,8 +213,14 @@
                         printDelay: 1000
                     });
 
-                    paymentTable.ajax.reload();
-                    return;
+                    var commonReloaderClass = $('.common-reloader').html();
+                    if (commonReloaderClass != undefined) {
+
+                        $('.common-reloader').DataTable().ajax.reload();
+                    }else {
+
+                        paymentTable.ajax.reload();
+                    }
                 }
             }, error: function(err) {
 

@@ -188,7 +188,15 @@
                     toastr.success(data.successMsg);
                     $('#addOrEditReceiptModal').modal('hide');
                     $('#addOrEditReceiptModal').empty();
-                    receiptTable.ajax.reload();
+
+                    var commonReloaderClass = $('.common-reloader').html();
+                    if (commonReloaderClass != undefined) {
+
+                        $('.common-reloader').DataTable().ajax.reload();
+                    }else {
+
+                        receiptTable.ajax.reload();
+                    }
 
                     return;
                 } else {
@@ -207,7 +215,14 @@
                         printDelay: 1000
                     });
 
-                    receiptTable.ajax.reload();
+                    var commonReloaderClass = $('.common-reloader').html();
+                    if (commonReloaderClass != undefined) {
+
+                        $('.common-reloader').DataTable().ajax.reload();
+                    }else {
+
+                        receiptTable.ajax.reload();
+                    }
                     return;
                 }
             }, error: function(err) {

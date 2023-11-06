@@ -2,9 +2,6 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use Illuminate\Support\Facades\DB;
 
 class SalesHelperService
@@ -102,7 +99,7 @@ class SalesHelperService
             ]
         )->distinct('product_access_branches.branch_id');
 
-        if (!$request->category_id && !$request->brand_id) {
+        if (! $request->category_id && ! $request->brand_id) {
 
             $products = $query->orderBy('products.id', 'desc')->limit(90)->get();
         } else {

@@ -4,10 +4,10 @@ namespace Modules\SAAS\Http\Controllers\Guest;
 
 use DB;
 use Exception;
-use Modules\SAAS\Entities\Tenant;
 use Illuminate\Routing\Controller;
-use Modules\SAAS\Utils\UrlGenerator;
+use Modules\SAAS\Entities\Tenant;
 use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
+use Modules\SAAS\Utils\UrlGenerator;
 
 class GuestTenantController extends Controller
 {
@@ -28,23 +28,24 @@ class GuestTenantController extends Controller
             if ($tenant) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
-                DB::statement('use ' . $tenant->tenancy_db_name);
+                DB::statement('use '.$tenant->tenancy_db_name);
                 $admin = \App\Models\User::create($admin);
                 $adminRole = \App\Models\Role::first();
                 $admin->assignRole($adminRole);
                 DB::reconnect();
+
                 return response()->json($returningUrl, 200);
             }
         } catch (Exception $e) {
             if (config('app.debug')) {
-                return redirect()->back()->with('error', 'Tenant creation failed.' . $e->getMessage());
+                return redirect()->back()->with('error', 'Tenant creation failed.'.$e->getMessage());
             }
+
             return redirect()->back()->with('error', 'Something went wrong! please try again!');
         }
     }
 
-
-    public function getAdmin() : array
+    public function getAdmin(): array
     {
         $admin = [
             'id' => 1,
@@ -95,6 +96,7 @@ class GuestTenantController extends Controller
             'created_at' => '2021-04-07T07:04:03.000000Z',
             'updated_at' => '2022-12-31T10:36:37.000000Z',
         ];
+
         return $admin;
     }
 }

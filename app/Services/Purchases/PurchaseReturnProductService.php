@@ -2,10 +2,6 @@
 
 namespace App\Services\Purchases;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\Purchases\PurchaseReturnProduct;
 
 class PurchaseReturnProductService
@@ -44,10 +40,10 @@ class PurchaseReturnProductService
         $currentUnitTaxAcId = $returnProduct ? $returnProduct->tax_ac_id : null;
         $currentWarehouseId = $returnProduct ? $returnProduct->warehouse_id : null;
         $addOrEditPurchaseReturnProduct = '';
-        if($returnProduct){
+        if ($returnProduct) {
 
             $addOrEditPurchaseReturnProduct = $returnProduct;
-        }else {
+        } else {
 
             $addOrEditPurchaseReturnProduct = new PurchaseReturnProduct();
         }
@@ -79,7 +75,7 @@ class PurchaseReturnProductService
         return $addOrEditPurchaseReturnProduct;
     }
 
-    function purchaseReturnProducts(?array $with = null): ?object
+    public function purchaseReturnProducts(array $with = null): ?object
     {
         $query = PurchaseReturnProduct::query();
 

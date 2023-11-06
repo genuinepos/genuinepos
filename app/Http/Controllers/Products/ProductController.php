@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
-use App\Services\Products\BrandService;
 use App\Services\Accounts\AccountService;
-use App\Services\Products\ProductService;
-use App\Services\Products\CategoryService;
-use App\Services\Products\WarrantyService;
-use App\Services\Products\PriceGroupService;
+use App\Services\Products\BrandService;
 use App\Services\Products\BulkVariantService;
-use App\Services\Products\ProductVariantService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Products\ProductAccessBranchService;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductVariantService;
+use App\Services\Products\UnitService;
+use App\Services\Products\WarrantyService;
+use App\Services\Setups\BranchService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -39,7 +39,7 @@ class ProductController extends Controller
 
     public function index(Request $request, $isForCreatePage = 0)
     {
-        if (!auth()->user()->can('product_all')) {
+        if (! auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -63,7 +63,8 @@ class ProductController extends Controller
         return view('product.products.index', compact('categories', 'brands', 'units', 'taxAccounts', 'branches'));
     }
 
-    public function show($id) {
+    public function show($id)
+    {
 
         $productShowQueries = $this->productService->productShowQueries(id: $id);
         extract($productShowQueries);
@@ -77,7 +78,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -109,7 +110,7 @@ class ProductController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if (!auth()->user()->can('product_edit')) {
+        if (! auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -157,7 +158,7 @@ class ProductController extends Controller
             $this->validate(
                 $request,
                 [
-                    'variant_image.*' => 'sometimes|image|max:2048'
+                    'variant_image.*' => 'sometimes|image|max:2048',
                 ],
             );
         }
@@ -196,7 +197,7 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,' . $id,
+                'code' => 'sometimes|unique:products,product_code,'.$id,
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
             ],
@@ -257,6 +258,7 @@ class ProductController extends Controller
     public function changeStatus($id)
     {
         $changeStatus = $this->productService->changeProductStatus(id: $id);
+
         return response()->json($changeStatus['msg']);
     }
 

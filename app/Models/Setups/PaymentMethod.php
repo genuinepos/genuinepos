@@ -3,7 +3,6 @@
 namespace App\Models\Setups;
 
 use App\Models\BaseModel;
-use App\Models\Setups\PaymentMethodSetting;
 
 class PaymentMethod extends BaseModel
 {

@@ -4,8 +4,8 @@ namespace App\Services\Accounts;
 
 use App\Enums\BooleanType;
 use App\Enums\IsDeleteInUpdate;
-use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescription;
+use Illuminate\Support\Facades\DB;
 
 class AccountingVoucherDescriptionService
 {
@@ -15,11 +15,11 @@ class AccountingVoucherDescriptionService
         ?int $paymentMethodId,
         string $amountType,
         float $amount,
-        ?string $transactionNo = null,
-        ?string $chequeNo = null,
-        ?string $chequeSerialNo = null,
-        ?string $chequeIssueDate = null,
-        ?string $note = null,
+        string $transactionNo = null,
+        string $chequeNo = null,
+        string $chequeSerialNo = null,
+        string $chequeIssueDate = null,
+        string $note = null,
     ) {
         $accountGroup = DB::table('accounts')->where('accounts.id', $accountId)
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -56,11 +56,11 @@ class AccountingVoucherDescriptionService
         ?int $paymentMethodId,
         string $amountType,
         float $amount,
-        ?string $transactionNo = null,
-        ?string $chequeNo = null,
-        ?string $chequeSerialNo = null,
-        ?string $chequeIssueDate = null,
-        ?string $note = null
+        string $transactionNo = null,
+        string $chequeNo = null,
+        string $chequeSerialNo = null,
+        string $chequeIssueDate = null,
+        string $note = null
     ) {
         $accountingVoucherDescription = AccountingVoucherDescription::where('id', $accountingVoucherDescriptionId)->where('accounting_voucher_id', $accountingVoucherId)->first();
         $addOrUpdateAccountingVoucherDescription = '';
@@ -137,7 +137,7 @@ class AccountingVoucherDescriptionService
 
             if ($account->sub_sub_group_number == 1 || $account->sub_sub_group_number == 2 || $account->sub_sub_group_number == 11) {
 
-                if (!isset($cashBankAccountId)) {
+                if (! isset($cashBankAccountId)) {
 
                     $cashBankAccountId = $account->id;
                 }

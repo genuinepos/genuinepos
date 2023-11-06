@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Products;
 
-use DB;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use App\Http\Controllers\Controller;
 use App\Services\Products\BrandService;
+use App\Utils\UserActivityLogUtil;
+use DB;
+use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
@@ -18,8 +18,8 @@ class BrandController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_brand_index')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_index')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         if ($request->ajax()) {
@@ -31,8 +31,8 @@ class BrandController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('product_brand_add')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_add')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         return view('product.brands.ajax_view.create');
@@ -40,8 +40,8 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_brand_add')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_add')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->validate($request, [
@@ -67,19 +67,20 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_brand_edit')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_edit')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         $brand = $this->brandService->singleBrand(id: $id);
+
         return view('product.brands.ajax_view.edit', compact('brand'));
     }
 
     // Update Brand method
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('product_brand_edit')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_edit')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->validate($request, [
@@ -107,8 +108,8 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('product_brand_delete')) {
-            abort(403, __("Access Forbidden."));
+        if (! auth()->user()->can('product_brand_delete')) {
+            abort(403, __('Access Forbidden.'));
         }
 
         try {

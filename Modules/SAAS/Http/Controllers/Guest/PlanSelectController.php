@@ -3,8 +3,8 @@
 namespace Modules\SAAS\Http\Controllers\Guest;
 
 use Illuminate\Http\Request;
-use Modules\SAAS\Entities\Plan;
 use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Plan;
 
 class PlanSelectController extends Controller
 {
@@ -25,6 +25,7 @@ class PlanSelectController extends Controller
     public function subscribe(Request $request, Plan $plan)
     {
         $intent = auth()->user()->createSetupIntent();
+
         return view('saas::guest.subscribe', compact('plan', 'intent'));
     }
 }

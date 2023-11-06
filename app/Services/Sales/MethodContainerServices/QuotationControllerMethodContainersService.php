@@ -2,13 +2,9 @@
 
 namespace App\Services\Sales\MethodContainerServices;
 
-use App\Enums\SaleStatus;
-use App\Enums\SaleScreenType;
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\BooleanType;
-use App\Enums\ProductLedgerVoucherType;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 
 class QuotationControllerMethodContainersService implements QuotationControllerMethodContainersInterface
@@ -39,7 +35,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         return $data;
     }
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $quotationService,
         object $accountService,
@@ -64,7 +60,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $quotation->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -122,7 +118,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         if ($restrictions['pass'] == false) {
 
             return ['pass' => false, 'msg' => $restrictions['msg']];
-        } else if ($quotationRestrictions['pass'] == false) {
+        } elseif ($quotationRestrictions['pass'] == false) {
 
             return ['pass' => false, 'msg' => $quotationRestrictions['msg']];
         }
@@ -133,7 +129,6 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
 
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
-
 
         $updateQuotation = $quotationService->updateQuotation(request: $request, updateQuotation: $quotation);
 

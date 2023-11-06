@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use Carbon\Carbon;
-use App\Enums\SaleStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\SaleStatus;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
 
 class SalesOrderReportController extends Controller
 {
@@ -22,9 +22,9 @@ class SalesOrderReportController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
-        if (!auth()->user()->can('sales_report')) {
+        if (! auth()->user()->can('sales_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -75,10 +75,10 @@ class SalesOrderReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->branch_name.'('.$row->branch_area_name.')';
                         }
                     } else {
 
@@ -86,26 +86,26 @@ class SalesOrderReportController extends Controller
                     }
                 })
 
-                ->editColumn('order_id', function ($row) use ($generalSettings) {
+                ->editColumn('order_id', function ($row) {
 
-                    return '<a href="' . route('sale.orders.show', $row->id) . '" id="details_btn">' . $row->order_id . '</a>';
+                    return '<a href="'.route('sale.orders.show', $row->id).'" id="details_btn">'.$row->order_id.'</a>';
                 })
 
-                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
 
-                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->order_discount_amount) . '</span>')
+                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="'.$row->order_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->order_discount_amount).'</span>')
 
-                ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="' . $row->shipment_charge . '">' . \App\Utils\Converter::format_in_bdt($row->shipment_charge) . '</span>')
+                ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="'.$row->shipment_charge.'">'.\App\Utils\Converter::format_in_bdt($row->shipment_charge).'</span>')
 
-                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . $row->order_tax_amount . '">' . '(' . $row->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->order_tax_amount) . '</span>')
+                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="'.$row->order_tax_amount.'">'.'('.$row->order_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->order_tax_amount).'</span>')
 
-                ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+                ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
 
-                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
+                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="'.$row->received_amount.'">'.\App\Utils\Converter::format_in_bdt($row->received_amount).'</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
 
                 ->rawColumns(['date', 'branch', 'order_id', 'total_qty', 'net_total_amount', 'order_discount_amount', 'shipment_charge', 'order_tax_amount', 'total_invoice_amount', 'received_amount', 'due'])
                 ->make(true);
@@ -177,7 +177,7 @@ class SalesOrderReportController extends Controller
 
     private function filter($request, $query)
     {
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -206,10 +206,10 @@ class SalesOrderReportController extends Controller
             if ($request->payment_status == PaymentStatus::Paid->value) {
 
                 $query->where('sales.due', '=', 0);
-            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+            } elseif ($request->payment_status == PaymentStatus::Partial->value) {
 
                 $query->where('sales.paid', '>', 0)->where('sales.due', '>', 0);
-            } else if ($request->payment_status == PaymentStatus::Due->value) {
+            } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('sales.paid', '=', 0);
             }

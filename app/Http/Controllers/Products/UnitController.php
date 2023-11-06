@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Models\Unit;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UnitController extends Controller
 {
@@ -20,7 +19,7 @@ class UnitController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_unit_index')) {
+        if (! auth()->user()->can('product_unit_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -34,18 +33,19 @@ class UnitController extends Controller
 
     public function create($isAllowedMultipleUnit = 0)
     {
-        if (!auth()->user()->can('product_unit_add')) {
+        if (! auth()->user()->can('product_unit_add')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $baseUnits = $this->unitService->units()->where('base_unit_id', null)->get();
+
         return view('product.units.ajax_view.create', compact('baseUnits', 'isAllowedMultipleUnit'));
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_unit_add')) {
+        if (! auth()->user()->can('product_unit_add')) {
 
             return response()->json('Access Denied');
         }
@@ -84,7 +84,7 @@ class UnitController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
+        if (! auth()->user()->can('product_unit_edit')) {
             return response()->json('Access Denied');
         }
 
@@ -96,7 +96,7 @@ class UnitController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
+        if (! auth()->user()->can('product_unit_edit')) {
             return response()->json('Access Denied');
         }
 
@@ -130,12 +130,12 @@ class UnitController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Unit is updated Successfully"));
+        return response()->json(__('Unit is updated Successfully'));
     }
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_unit_delete')) {
+        if (! auth()->user()->can('product_unit_delete')) {
             return response()->json('Access Denied');
         }
 
@@ -158,6 +158,6 @@ class UnitController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Unit is deleted successfully"));
+        return response()->json(__('Unit is deleted successfully'));
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\WarrantyService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WarrantyController extends Controller
 {
@@ -18,9 +18,9 @@ class WarrantyController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_warranty_index')) {
+        if (! auth()->user()->can('product_warranty_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         if ($request->ajax()) {
@@ -38,9 +38,9 @@ class WarrantyController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_warranty_add')) {
+        if (! auth()->user()->can('product_warranty_add')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
@@ -71,14 +71,15 @@ class WarrantyController extends Controller
     public function edit($id)
     {
         $warranty = $this->warrantyService->singleWarranty(id: $id);
+
         return view('product.warranties.ajax_view.edit', compact('warranty'));
     }
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('product_warranty_edit')) {
+        if (! auth()->user()->can('product_warranty_edit')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
@@ -103,14 +104,14 @@ class WarrantyController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Warranty updated successfully"));
+        return response()->json(__('Warranty updated successfully'));
     }
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('product_warranty_delete')) {
+        if (! auth()->user()->can('product_warranty_delete')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         try {
@@ -119,7 +120,7 @@ class WarrantyController extends Controller
 
             $deleteWarranty = $this->warrantyService->deleteWarranty(id: $id);
 
-            if (!is_null($deleteWarranty)) {
+            if (! is_null($deleteWarranty)) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 25, data_obj: $deleteWarranty);
             }
@@ -130,6 +131,6 @@ class WarrantyController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Warranty deleted successfully"));
+        return response()->json(__('Warranty deleted successfully'));
     }
 }

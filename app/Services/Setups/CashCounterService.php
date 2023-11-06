@@ -14,8 +14,8 @@ class CashCounterService
         $cashCounters = '';
 
         $query = DB::table('cash_counters')
-        ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
-        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+            ->leftJoin('branches', 'cash_counters.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
         if (isset($request)) {
 
@@ -64,10 +64,10 @@ class CashCounterService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')-'.$row->branch_code;
+                        return $row->parent_branch_name.'('.$row->area_name.')-'.$row->branch_code;
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')-'.$row->branch_code;
+                        return $row->branch_name.'('.$row->area_name.')-'.$row->branch_code;
                     }
                 } else {
 

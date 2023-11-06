@@ -8,8 +8,9 @@ use Modules\SAAS\Database\factories\UserFactory;
 class User extends ModelsUser
 {
     protected $guard_name = 'web';
+
     protected $table = 'users';
-    
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -24,7 +25,7 @@ class User extends ModelsUser
         parent::boot();
         $customerRole = Role::where('name', 'Customer')->first();
         static::creating(function (ModelsUser $user) use ($customerRole) {
-            if (null === $user->roles->first()) {
+            if ($user->roles->first() === null) {
                 $user->assignRole($customerRole);
             }
         });

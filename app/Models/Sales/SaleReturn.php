@@ -2,19 +2,18 @@
 
 namespace App\Models\Sales;
 
-use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\Sales\Sale;
-use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
-use App\Models\Setups\Warehouse;
-use App\Models\Sales\SaleReturnProduct;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Setups\Warehouse;
+use App\Models\User;
 
 class SaleReturn extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function customer()

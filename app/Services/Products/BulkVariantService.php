@@ -3,23 +3,23 @@
 namespace App\Services\Products;
 
 use App\Enums\IsDeleteInUpdate;
-use Illuminate\Support\Facades\DB;
 use App\Models\Products\BulkVariant;
 use Yajra\DataTables\Facades\DataTables;
 
 class BulkVariantService
 {
-    function bulkVariantListTable(): object
+    public function bulkVariantListTable(): object
     {
         $bulkVariants = $this->bulkVariants(with: ['bulkVariantChild', 'createdBy:id,prefix,name,last_name'])->orderBy('id', 'desc')->get();
+
         return DataTables::of($bulkVariants)
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('product.bulk.variants.edit', [$row->id]) . '" class="dropdown-item" id="edit">' . __("Edit") . '</a>';
-                $html .= '<a href="' . route('product.bulk.variants.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                $html .= '<a href="'.route('product.bulk.variants.edit', [$row->id]).'" class="dropdown-item" id="edit">'.__('Edit').'</a>';
+                $html .= '<a href="'.route('product.bulk.variants.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -28,11 +28,10 @@ class BulkVariantService
 
             ->editColumn('bulk_variant_child', function ($row) {
 
-
                 $html = '<p class="m-0 p-0">';
                 foreach ($row->bulkVariantChild as $bulkVariantChild) {
 
-                    $html .= $bulkVariantChild->name . ', ';
+                    $html .= $bulkVariantChild->name.', ';
                 }
 
                 $html .= '</p>';
@@ -42,7 +41,7 @@ class BulkVariantService
 
             ->editColumn('created_by', function ($row) {
 
-                return $row?->createdBy?->prefix . ' ' . $row?->createdBy?->name . ' ' . $row?->createdBy?->last_name;
+                return $row?->createdBy?->prefix.' '.$row?->createdBy?->name.' '.$row?->createdBy?->last_name;
             })
 
             ->rawColumns(['action', 'bulk_variant_child', 'created_by'])
@@ -63,7 +62,7 @@ class BulkVariantService
     {
         $deleteBulkVariant = $this->singleBulkVariant(id: $id);
 
-        if (!is_null($deleteBulkVariant)) {
+        if (! is_null($deleteBulkVariant)) {
 
             $deleteBulkVariant->delete();
         }

@@ -4,12 +4,10 @@ namespace App\Services\Products;
 
 use App\Models\Products\PriceGroupProduct;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
-use Yajra\DataTables\Facades\DataTables;
 
 class ManagePriceGroupService
 {
-    function addOrUpdateManagePriceGroups(object $request)
+    public function addOrUpdateManagePriceGroups(object $request)
     {
         $variant_ids = $request->variant_ids;
         $index = 0;
@@ -39,7 +37,7 @@ class ManagePriceGroupService
         }
     }
 
-    function priceGroupProducts(int $productId = null, ?int $variantId = null, ?int $branchId = null)
+    public function priceGroupProducts(int $productId = null, int $variantId = null, int $branchId = null)
     {
         return DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
     }

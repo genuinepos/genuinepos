@@ -2,9 +2,9 @@
 
 namespace App\Services\Accounts\MethodContainerServices;
 
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
 
 class PaymentControllerMethodContainersService implements PaymentControllerMethodContainersInterface
@@ -34,7 +34,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
     }
 
     public function createMethodContainer(
-        ?int $debitAccountId = null,
+        int $debitAccountId = null,
         object $accountService,
         object $accountFilterService,
         object $dayBookVoucherService,
@@ -57,7 +57,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -68,7 +68,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
         $data['receivableAccounts'] = '';
-        if (!isset($creditAccountId)) {
+        if (! isset($creditAccountId)) {
 
             $data['receivableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -141,7 +141,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
 
     public function editMethodContainer(
         int $id,
-        ?int $debitAccountId = null,
+        int $debitAccountId = null,
         object $accountingVoucherService,
         object $accountService,
         object $accountFilterService,
@@ -177,7 +177,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $payment->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -187,10 +187,10 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
 
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
-        $data['methods']  = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
+        $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $data['payableAccounts'] = '';
-        if (!isset($debitAccountId)) {
+        if (! isset($debitAccountId)) {
 
             $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -239,7 +239,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
                 if ($reference->purchase) {
 
                     $purchaseService->adjustPurchaseInvoiceAmounts(purchase: $reference->purchase);
-                } else if ($reference->salesReturn) {
+                } elseif ($reference->salesReturn) {
 
                     $salesReturnService->adjustSalesReturnVoucherAmounts(salesReturn: $reference->salesReturn);
                 }
@@ -281,13 +281,13 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
                     if ($reference->sale) {
 
                         $saleService->adjustSaleInvoiceAmounts(sale: $reference->sale);
-                    } else if ($reference->purchase) {
+                    } elseif ($reference->purchase) {
 
                         $purchaseService->adjustPurchaseInvoiceAmounts(purchase: $reference->purchase);
-                    } else if ($reference->salesReturn) {
+                    } elseif ($reference->salesReturn) {
 
                         $salesReturnService->adjustSalesReturnVoucherAmounts(salesReturn: $reference->salesReturn);
-                    } else if ($reference->purchaseReturn) {
+                    } elseif ($reference->purchaseReturn) {
 
                         $purchaseReturnService->adjustPurchaseReturnVoucherAmounts(purchaseReturn: $reference->purchaseReturn);
                     }

@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Sales\DraftService;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
+use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\DraftProductService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\DraftProductService;
+use App\Services\Sales\DraftService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DraftController extends Controller
 {
@@ -58,7 +58,7 @@ class DraftController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sale_draft')) {
+        if (! auth()->user()->can('sale_draft')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -80,7 +80,7 @@ class DraftController extends Controller
 
     public function show($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('sale_draft')) {
+        if (! auth()->user()->can('sale_draft')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -116,7 +116,7 @@ class DraftController extends Controller
         return view('sales.add_sale.drafts.edit', compact('draft', 'customerAccounts', 'accounts', 'methods', 'warehouses', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'branchName'));
     }
 
-    function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    public function update($id, Request $request, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'status' => 'required',
@@ -158,6 +158,6 @@ class DraftController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Draft updated Successfully."));
+        return response()->json(__('Draft updated Successfully.'));
     }
 }

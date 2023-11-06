@@ -28,45 +28,45 @@ class InvoiceLayoutService
             }
         }
 
-        if(auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
             $query->where('invoice_layouts.branch_id', auth()->user()->branch_id);
         }
 
         $layouts = $query->select(
-                'invoice_layouts.id',
-                'invoice_layouts.name',
-                'invoice_layouts.is_default',
-                'invoice_layouts.is_header_less',
-                'branches.name as branch_name',
-                'branches.parent_branch_id',
-                'branches.branch_code',
-                'parentBranch.name as parent_branch_name',
-            )->orderBy('id', 'asc')->get();
+            'invoice_layouts.id',
+            'invoice_layouts.name',
+            'invoice_layouts.is_default',
+            'invoice_layouts.is_header_less',
+            'branches.name as branch_name',
+            'branches.parent_branch_id',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+        )->orderBy('id', 'asc')->get();
 
         return DataTables::of($layouts)
             ->addIndexColumn()
             ->editColumn('name', function ($row) {
 
-                return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">' . __('Default') . '</span>' : '');
+                return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">'.__('Default').'</span>' : '');
             })
             ->editColumn('is_header_less', function ($row) {
 
-                return $row->is_header_less == 1 ? '<span class="badge bg-info">' . __('Yes') . '</span>' : '<span class="badge bg-secondary">' . __('No') . '</span>';
+                return $row->is_header_less == 1 ? '<span class="badge bg-info">'.__('Yes').'</span>' : '<span class="badge bg-secondary">'.__('No').'</span>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                if($row->parent_branch_id){
+                if ($row->parent_branch_id) {
 
-                    return __("Chain Shop Of") . '  <span class="badge badge-sm bg-success">' . $row->parent_branch_name.'</span>-('.$row->branch_code.')';
-                }else {
+                    return __('Chain Shop Of').'  <span class="badge badge-sm bg-success">'.$row->parent_branch_name.'</span>-('.$row->branch_code.')';
+                } else {
 
                     if ($row->branch_name) {
 
                         return $row->branch_name.'-('.$row->branch_code.')';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>'. __("Business") . '</b>)';
+                        return $generalSettings['business__shop_name'].'(<b>'.__('Business').'</b>)';
                     }
                 }
             })
@@ -74,14 +74,14 @@ class InvoiceLayoutService
 
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('invoices.layouts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('invoices.layouts.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
 
                 if ($row->is_default == 0) {
 
-                    $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="'.route('invoices.layouts.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
 
-                    $html .= '<a href="' . route('invoices.layouts.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
-                    ' . __('Set As Default') . '
+                    $html .= '<a href="'.route('invoices.layouts.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn">
+                    '.__('Set As Default').'
                     </a>';
                 }
                 $html .= '</div>';
@@ -112,7 +112,7 @@ class InvoiceLayoutService
         $addLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
         $addLayout->branch_city = $request->branch_city ? $request->branch_city : 1;
         $addLayout->branch_state = $request->branch_state ? $request->branch_state : 1;
-        $addLayout->branch_zipcode =  $request->branch_zipcode ? $request->branch_zipcode : 1;
+        $addLayout->branch_zipcode = $request->branch_zipcode ? $request->branch_zipcode : 1;
         $addLayout->branch_phone = $request->branch_phone ? $request->branch_phone : 1;
         $addLayout->branch_alternate_number = $request->branch_alternate_number ? $request->branch_alternate_number : 1;
         $addLayout->branch_email = $request->branch_email ? $request->branch_email : 1;
@@ -124,12 +124,12 @@ class InvoiceLayoutService
         $addLayout->customer_address = $request->customer_address ? $request->customer_address : 1;
         $addLayout->customer_tax_no = $request->customer_tax_no ? $request->customer_tax_no : 1;
         $addLayout->customer_phone = $request->customer_phone ? $request->customer_phone : 1;
-        $addLayout->bank_name = isset($request->bank_name) ? $request->bank_name : NULL;
-        $addLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : NULL;
-        $addLayout->account_name = isset($request->account_name) ? $request->account_name : NULL;
-        $addLayout->account_no = isset($request->account_no) ? $request->account_no : NULL;
-        $addLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : NULL;
-        $addLayout->footer_text = isset($request->footer_text) ? $request->footer_text : NULL;
+        $addLayout->bank_name = isset($request->bank_name) ? $request->bank_name : null;
+        $addLayout->bank_branch = isset($request->bank_branch) ? $request->bank_branch : null;
+        $addLayout->account_name = isset($request->account_name) ? $request->account_name : null;
+        $addLayout->account_no = isset($request->account_no) ? $request->account_no : null;
+        $addLayout->invoice_notice = isset($request->invoice_notice) ? $request->invoice_notice : null;
+        $addLayout->footer_text = isset($request->footer_text) ? $request->footer_text : null;
         $addLayout->save();
 
         $invoiceLayouts = InvoiceLayout::where('branch_id', auth()->user()->branch_id)->get();

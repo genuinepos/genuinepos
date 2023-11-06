@@ -42,18 +42,18 @@ class RolePermissionSync extends Command
     {
         $roles = (new RolePermissionTableSeeder)->rolesArray();
         $permissions = (new RolePermissionTableSeeder)->permissionsArray();
-        foreach($roles as $roleName) {
+        foreach ($roles as $roleName) {
             $role = Role::where('name', $roleName)->first();
-            if(! isset($role)) {
-                Role::create(['name'=> $roleName, 'guard_name' => 'web']);
-                echo "Role Created: ". $roleName. "\n";
+            if (! isset($role)) {
+                Role::create(['name' => $roleName, 'guard_name' => 'web']);
+                echo 'Role Created: '.$roleName."\n";
             }
         }
-        foreach($permissions as $permissionName) {
-            $permission =  Permission::where('name', $permissionName)->first();
-            if(! isset($permission)) {
-                Permission::create(['name'=> $permissionName, 'guard_name' => 'web']);
-                echo "Permission Created: ". $permissionName. "\n";
+        foreach ($permissions as $permissionName) {
+            $permission = Permission::where('name', $permissionName)->first();
+            if (! isset($permission)) {
+                Permission::create(['name' => $permissionName, 'guard_name' => 'web']);
+                echo 'Permission Created: '.$permissionName."\n";
             }
         }
 

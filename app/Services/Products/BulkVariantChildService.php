@@ -3,7 +3,6 @@
 namespace App\Services\Products;
 
 use App\Enums\IsDeleteInUpdate;
-use Illuminate\Support\Facades\DB;
 use App\Models\Products\BulkVariantChild;
 
 class BulkVariantChildService

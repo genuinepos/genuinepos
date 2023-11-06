@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use Carbon\Carbon;
 use App\Enums\SaleStatus;
-use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
 
 class SalesOrderedProductReportController extends Controller
 {
@@ -25,7 +25,7 @@ class SalesOrderedProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sales_report')) {
+        if (! auth()->user()->can('sales_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -80,8 +80,9 @@ class SalesOrderedProductReportController extends Controller
             return DataTables::of($orderProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
-                    return Str::limit($row->name, 35, '') . $variant;
+                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+
+                    return Str::limit($row->name, 35, '').$variant;
                 })
                 ->editColumn('date', function ($row) {
 
@@ -93,10 +94,10 @@ class SalesOrderedProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->branch_name.'('.$row->branch_area_name.')';
                         }
                     } else {
 
@@ -106,16 +107,16 @@ class SalesOrderedProductReportController extends Controller
 
                 ->editColumn('ordered_quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->ordered_quantity) . '/<span class="quantity" data-value="' . $row->ordered_quantity . '">' . $row->unit_code . '</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->ordered_quantity).'/<span class="quantity" data-value="'.$row->ordered_quantity.'">'.$row->unit_code.'</span>';
                 })
-                ->editColumn('order_id', fn ($row) => '<a href="' . route('sale.orders.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->order_id . '</a>')
+                ->editColumn('order_id', fn ($row) => '<a href="'.route('sale.orders.show', [$row->sale_id]).'" class="text-hover" id="details_btn" title="View">'.$row->order_id.'</a>')
 
                 ->editColumn('unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-                ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '('.\App\Utils\Converter::format_in_bdt($row->unit_tax_percent).'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
                 ->editColumn('unit_price_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax))
 
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->subtotal).'</span>')
 
                 ->rawColumns(['product', 'product_code', 'date', 'branch', 'stock_location', 'ordered_quantity', 'order_id', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
                 ->make(true);
@@ -199,7 +200,7 @@ class SalesOrderedProductReportController extends Controller
         return view('sales.reports.sales_ordered_products_report.ajax_view.print', compact('orderProducts', 'fromDate', 'toDate', 'filteredBranchName', 'filteredCustomerName', 'filteredProductName', 'ownOrParentBranch'));
     }
 
-    function filter($request, $query)
+    public function filter($request, $query)
     {
         if ($request->product_id) {
 

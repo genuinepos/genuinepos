@@ -6,7 +6,8 @@ use App\Models\Manufacturing\ManufacturingSetting;
 
 class ManufacturingSettingService
 {
-    public function manufacturingSettingAddOrUpdate(object $request) : void {
+    public function manufacturingSettingAddOrUpdate(object $request): void
+    {
 
         $mfSetting = $this->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
 
@@ -14,7 +15,7 @@ class ManufacturingSettingService
         if ($mfSetting) {
 
             $addOrUpdateMfSetting = $mfSetting;
-        }else {
+        } else {
 
             $addOrUpdateMfSetting = new ManufacturingSetting();
         }

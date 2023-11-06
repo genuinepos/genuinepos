@@ -2,16 +2,16 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
-use App\Models\Sales\Sale;
-use App\Enums\PaymentStatus;
 use App\Enums\OrderDeliveryStatus;
+use App\Enums\PaymentStatus;
+use App\Models\Sales\Sale;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SalesOrderService
 {
-    public function salesOrderListTable(object $request, ?int $customerAccountId = null)
+    public function salesOrderListTable(object $request, int $customerAccountId = null)
     {
         $generalSettings = config('generalSettings');
         $orders = '';
@@ -50,15 +50,15 @@ class SalesOrderService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('sale.orders.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
+                $html .= '<a href="'.route('sale.orders.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('edit_add_sale')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sale.orders.edit', [$row->id]) . '">' . __("Edit") . '</a>';
+                        $html .= '<a class="dropdown-item" href="'.route('sale.orders.edit', [$row->id]).'">'.__('Edit').'</a>';
                     }
                 }
 
@@ -66,13 +66,13 @@ class SalesOrderService
 
                     if (auth()->user()->can('delete_add_sale')) {
 
-                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="'.route('sales.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                     }
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="'. route('sale.shipments.edit', [$row->id]) .'">' . __("Edit Shipment Details") .'</a>';
+                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="'.route('sale.shipments.edit', [$row->id]).'">'.__('Edit Shipment Details').'</a>';
                 }
 
                 $html .= '</div>';
@@ -88,7 +88,7 @@ class SalesOrderService
             })
             ->editColumn('order_id', function ($row) {
 
-                return '<a href="' . route('sale.orders.show', [$row->id]) . '" id="details_btn">' . $row->order_id . '</a>';
+                return '<a href="'.route('sale.orders.show', [$row->id]).'" id="details_btn">'.$row->order_id.'</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -96,10 +96,10 @@ class SalesOrderService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name.'('.$row->area_name.')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name.'('.$row->area_name.')';
                     }
                 } else {
 
@@ -108,15 +108,15 @@ class SalesOrderService
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
+            ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="'.$row->received_amount.'">'.\App\Utils\Converter::format_in_bdt($row->received_amount).'</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -124,19 +124,19 @@ class SalesOrderService
 
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>' . __("Paid") . '</span>';
+                    return '<span class="text-success"><b>'.__('Paid').'</span>';
                 } elseif ($row->due > 0 && $row->due < $receivable) {
 
-                    return '<span class="text-primary"><b>' . __("Partial") . '</b></span>';
+                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
                 } elseif ($receivable == $row->due) {
 
-                    return '<span class="text-danger"><b>' . __("Due") . '</b></span>';
+                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
                 }
             })
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'order_id', 'branch', 'customer', 'due', 'payment_status', 'created_by'])
@@ -157,8 +157,8 @@ class SalesOrderService
         $updateSalesOrder->pay_term_number = $request->pay_term_number;
         $updateSalesOrder->date = $request->date;
         $time = date(' H:i:s', strtotime($updateSalesOrder->date_ts));
-        $updateSalesOrder->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
-        $updateSalesOrder->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSalesOrder->date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+        $updateSalesOrder->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
         $updateSalesOrder->total_item = $request->total_item;
         $updateSalesOrder->total_qty = $request->total_qty;
         $updateSalesOrder->total_ordered_qty = $request->total_qty;
@@ -225,7 +225,7 @@ class SalesOrderService
         $order->save();
     }
 
-    private function filteredQuery(object $request, object $query, ?int $customerAccountId = null)
+    private function filteredQuery(object $request, object $query, int $customerAccountId = null)
     {
         if ($request->branch_id) {
 
@@ -259,10 +259,10 @@ class SalesOrderService
             if ($request->payment_status == PaymentStatus::Paid->value) {
 
                 $query->where('sales.due', '=', 0);
-            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+            } elseif ($request->payment_status == PaymentStatus::Partial->value) {
 
                 $query->where('sales.paid', '>', 0)->where('sales.due', '>', 0);
-            } else if ($request->payment_status == PaymentStatus::Due->value) {
+            } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('sales.paid', '=', 0);
             }
@@ -295,7 +295,7 @@ class SalesOrderService
         return $query;
     }
 
-    public function singleSalesOrder(int $id, ?array $with = null): ?object
+    public function singleSalesOrder(int $id, array $with = null): ?object
     {
         $query = Sale::query();
 

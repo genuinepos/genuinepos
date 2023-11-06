@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Purchases\Reports;
 
-use Carbon\Carbon;
 use App\Enums\PaymentStatus;
-use Illuminate\Http\Request;
 use App\Enums\PurchaseStatus;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Setups\WarehouseService;
 use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\WarehouseService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReportController extends Controller
 {
@@ -24,7 +24,7 @@ class PurchaseReportController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
 
@@ -82,10 +82,10 @@ class PurchaseReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->branch_area_name . ')';
+                            return $row->branch_name.'('.$row->branch_area_name.')';
                         }
                     } else {
 
@@ -98,28 +98,28 @@ class PurchaseReportController extends Controller
                 //     return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
                 // })
 
-                ->editColumn('invoice_id', function ($row) use ($generalSettings) {
+                ->editColumn('invoice_id', function ($row) {
 
-                    return '<a href="' . route('purchases.show', $row->id) . '" id="details_btn">' . $row->invoice_id . '</a>';
+                    return '<a href="'.route('purchases.show', $row->id).'" id="details_btn">'.$row->invoice_id.'</a>';
                 })
 
-                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
 
-                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
 
-                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->order_discount_amount) . '</span>')
+                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="'.$row->order_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->order_discount_amount).'</span>')
 
-                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->purchase_tax_amount . '">' . '(' . $row->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->purchase_tax_amount) . '</span>')
+                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->purchase_tax_amount.'">'.'('.$row->purchase_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->purchase_tax_amount).'</span>')
 
-                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
+                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
 
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
 
-                ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . $row->purchase_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_amount) . '</span>')
+                ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="'.$row->purchase_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->purchase_return_amount).'</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
 
                 ->rawColumns(['date', 'branch', 'invoice_id', 'total_item', 'total_qty', 'net_total_amount', 'order_discount_amount', 'purchase_tax_amount', 'total_purchase_amount', 'paid', 'purchase_return_amount', 'due'])
                 ->make(true);
@@ -201,7 +201,7 @@ class PurchaseReportController extends Controller
 
     private function filter(object $request, object $query): object
     {
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -212,7 +212,7 @@ class PurchaseReportController extends Controller
             }
         }
 
-        if (!empty($request->warehouse_id)) {
+        if (! empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }
@@ -235,10 +235,10 @@ class PurchaseReportController extends Controller
             if ($request->payment_status == PaymentStatus::Paid->value) {
 
                 $query->where('purchases.due', '=', 0);
-            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+            } elseif ($request->payment_status == PaymentStatus::Partial->value) {
 
                 $query->where('purchases.paid', '>', 0)->where('purchases.due', '>', 0);
-            } else if ($request->payment_status == PaymentStatus::Due->value) {
+            } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('purchases.paid', '=', 0);
             }

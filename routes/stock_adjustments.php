@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\StockAdjustments\StockAdjustmentController;
-use App\Http\Controllers\StockAdjustments\Reports\StockAdjustmentReportController;
 use App\Http\Controllers\StockAdjustments\Reports\StockAdjustedProductReportController;
+use App\Http\Controllers\StockAdjustments\Reports\StockAdjustmentReportController;
+use App\Http\Controllers\StockAdjustments\StockAdjustmentController;
 
 Route::controller(StockAdjustmentController::class)->prefix('stock/adjustments')->group(function () {
 
@@ -19,7 +19,6 @@ Route::controller(StockAdjustmentController::class)->prefix('stock/adjustments')
 
     // Route::get('check/variant/product/stock/{product_id}/{variant_id}', [StockAdjustmentController::class, 'checkVariantProductStock']);
     // Route::get('check/variant/product/stock/in/warehouse/{product_id}/{variant_id}/{warehouse_id}', [StockAdjustmentController::class, 'checkVariantProductStockInWarehouse']);
-
 
     Route::group(['prefix' => 'reports'], function () {
 

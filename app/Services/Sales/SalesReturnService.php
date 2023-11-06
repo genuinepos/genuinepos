@@ -2,15 +2,15 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
 use App\Enums\PaymentStatus;
 use App\Models\Sales\SaleReturn;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SalesReturnService
 {
-    function salesReturnListTable(object $request)
+    public function salesReturnListTable(object $request)
     {
         $generalSettings = config('generalSettings');
         $returns = '';
@@ -60,15 +60,15 @@ class SalesReturnService
 
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('sales.returns.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
+                $html .= '<a href="'.route('sales.returns.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('return_access')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('sales.returns.edit', [$row->id]) . '">' . __("Edit") . '</a>';
+                        $html .= '<a class="dropdown-item" href="'.route('sales.returns.edit', [$row->id]).'">'.__('Edit').'</a>';
                     }
                 }
 
@@ -76,7 +76,7 @@ class SalesReturnService
 
                     if (auth()->user()->can('return_access')) {
 
-                        $html .= '<a href="' . route('sales.returns.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __("Delete") . '</a>';
+                        $html .= '<a href="'.route('sales.returns.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                     }
                 }
 
@@ -88,17 +88,18 @@ class SalesReturnService
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('voucher_no', function ($row) {
 
-                return '<a href="' . route('sales.returns.show', [$row->id]) . '" id="details_btn">' . $row->voucher_no . '</a>';
+                return '<a href="'.route('sales.returns.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
             })
             ->editColumn('invoice_id', function ($row) {
 
                 if ($row->sale_id) {
 
-                    return '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
+                    return '<a href="'.route('sales.show', [$row->sale_id]).'" id="details_btn">'.$row->invoice_id.'</a>';
                 }
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -107,10 +108,10 @@ class SalesReturnService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name.'('.$row->area_name.')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name.'('.$row->area_name.')';
                     }
                 } else {
 
@@ -119,19 +120,19 @@ class SalesReturnService
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
+            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
 
-            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . $row->return_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->return_discount_amount) . '</span>')
+            ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="'.$row->return_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->return_discount_amount).'</span>')
 
-            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . $row->return_tax_amount . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->return_tax_amount) . '</span>')
+            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="'.$row->return_tax_amount.'">'.'('.$row->return_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->return_tax_amount).'</span>')
 
-            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . $row->total_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_return_amount) . '</span>')
+            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="'.$row->total_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_return_amount).'</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -139,33 +140,33 @@ class SalesReturnService
 
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>' . __("Paid") . '</span>';
+                    return '<span class="text-success"><b>'.__('Paid').'</span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
 
-                    return '<span class="text-primary"><b>' . __("Partial") . '</b></span>';
+                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
                 } elseif ($payable == $row->due) {
 
-                    return '<span class="text-danger"><b>' . __("Due") . '</b></span>';
+                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
                 }
             })
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'voucher_no', 'invoice_id', 'total_qty', 'net_total_amount', 'return_discount_amount', 'return_tax_amount', 'total_return_amount', 'paid', 'due', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by'])
             ->make(true);
     }
 
-    public function addSalesReturn(object $request, object $codeGenerator, ?string $voucherPrefix = null): object
+    public function addSalesReturn(object $request, object $codeGenerator, string $voucherPrefix = null): object
     {
         // generate invoice ID
         $voucherNo = $codeGenerator->generateMonthWise(table: 'sale_returns', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
 
         $addSalesReturn = new SaleReturn();
         $addSalesReturn->branch_id = auth()->user()->branch_id;
-        $addSalesReturn->warehouse_id =  $request->warehouse_id;
+        $addSalesReturn->warehouse_id = $request->warehouse_id;
         $addSalesReturn->voucher_no = $voucherNo;
         $addSalesReturn->sale_id = $request->sale_id;
         $addSalesReturn->customer_account_id = $request->customer_account_id;
@@ -182,7 +183,7 @@ class SalesReturnService
         $addSalesReturn->total_return_amount = $request->total_return_amount;
         $addSalesReturn->due = $request->total_return_amount;
         $addSalesReturn->date = $request->date;
-        $addSalesReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addSalesReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addSalesReturn->note = $request->note;
         $addSalesReturn->created_by_id = auth()->user()->id;
         $addSalesReturn->save();
@@ -190,19 +191,19 @@ class SalesReturnService
         return $addSalesReturn;
     }
 
-    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, ?int $saleReturnId = null): array
+    public function restrictions(object $request, bool $checkCustomerChangeRestriction = false, int $saleReturnId = null): array
     {
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
-            return ['pass' => false, 'msg' => __("Product table is empty.")];
+            return ['pass' => false, 'msg' => __('Product table is empty.')];
         } elseif (count($request->product_ids) > 60) {
 
-            return ['pass' => false, 'msg' => __("Sales Return products must be less than 60 or equal.")];
+            return ['pass' => false, 'msg' => __('Sales Return products must be less than 60 or equal.')];
         }
 
         if ($request->total_qty == 0) {
 
-            return ['pass' => false, 'msg' => __("All product`s quantity is 0.")];
+            return ['pass' => false, 'msg' => __('All product`s quantity is 0.')];
         }
 
         if ($checkCustomerChangeRestriction == true) {
@@ -213,7 +214,7 @@ class SalesReturnService
 
                 if ($salesReturn->customer_account_id != $request->customer_account_id) {
 
-                    return ['pass' => false, 'msg' => __("Customer can not be changed. One or more payments is exists against this sales return voucher.")];
+                    return ['pass' => false, 'msg' => __('Customer can not be changed. One or more payments is exists against this sales return voucher.')];
                 }
             }
         }
@@ -235,7 +236,7 @@ class SalesReturnService
         $salesReturn->save();
     }
 
-    public function singleSalesReturn(int $id, ?array $with = null): ?object
+    public function singleSalesReturn(int $id, array $with = null): ?object
     {
         $query = SaleReturn::query();
 
@@ -281,10 +282,10 @@ class SalesReturnService
             if ($request->payment_status == PaymentStatus::Paid->value) {
 
                 $query->where('sale_returns.due', '=', 0);
-            } else if ($request->payment_status == PaymentStatus::Partial->value) {
+            } elseif ($request->payment_status == PaymentStatus::Partial->value) {
 
                 $query->where('sale_returns.paid', '>', 0)->where('sale_returns.due', '>', 0);
-            } else if ($request->payment_status == PaymentStatus::Due->value) {
+            } elseif ($request->payment_status == PaymentStatus::Due->value) {
 
                 $query->where('sale_returns.paid', '=', 0);
             }

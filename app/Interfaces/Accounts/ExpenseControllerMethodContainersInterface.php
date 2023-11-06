@@ -7,7 +7,6 @@ interface ExpenseControllerMethodContainersInterface
     /**
      * @return \App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $accountingVoucherService,

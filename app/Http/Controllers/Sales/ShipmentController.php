@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Sales;
 
 use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\Sales\ShipmentService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\ShipmentService;
+use App\Services\Setups\BranchService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShipmentController extends Controller
 {
@@ -27,7 +27,7 @@ class ShipmentController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('shipment_access')) {
+        if (! auth()->user()->can('shipment_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -50,12 +50,13 @@ class ShipmentController extends Controller
     public function edit($id)
     {
         $sale = $this->saleService->singleSale(id: $id);
+
         return view('sales.add_sale.shipments.ajax_views.edit', compact('sale'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('shipment_access')) {
+        if (! auth()->user()->can('shipment_access')) {
 
             return response()->json('Access Denied');
         }
@@ -79,7 +80,7 @@ class ShipmentController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Shipment is updated successfully."));
+        return response()->json(__('Shipment is updated successfully.'));
     }
 
     public function printPackingSlip($id)

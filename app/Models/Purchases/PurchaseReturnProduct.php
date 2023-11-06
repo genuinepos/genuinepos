@@ -3,11 +3,9 @@
 namespace App\Models\Purchases;
 
 use App\Models\BaseModel;
-use App\Models\Products\Unit;
 use App\Models\Products\Product;
 use App\Models\Products\ProductVariant;
-use App\Models\Purchases\PurchaseReturn;
-use App\Models\Purchases\PurchaseProduct;
+use App\Models\Products\Unit;
 use App\Models\Setups\Branch;
 use App\Models\Setups\Warehouse;
 

@@ -4,12 +4,11 @@ namespace App\Models\Products;
 
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
-use App\Models\Products\Product;
-use App\Models\Products\ProductVariant;
 
 class ProductOpeningStock extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function branch()

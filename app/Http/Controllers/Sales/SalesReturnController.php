@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\CodeGenerationService;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Sales\SalesReturnService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\SalesReturnProductService;
+use App\Services\Sales\SalesReturnService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Sales\SalesReturnProductService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesReturnController extends Controller
 {
@@ -59,7 +59,7 @@ class SalesReturnController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('return_access')) {
+        if (! auth()->user()->can('return_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -106,7 +106,7 @@ class SalesReturnController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('return_access')) {
+        if (! auth()->user()->can('return_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -119,7 +119,7 @@ class SalesReturnController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -164,10 +164,10 @@ class SalesReturnController extends Controller
             'sale_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'sale_account_id.required' => __("Sale A/c is required."),
-            'account_id.required' => __("Credit field must not be empty."),
-            'payment_method_id.required' => __("Payment method field is required."),
-            'customer_account_id.required' => __("Customer is required."),
+            'sale_account_id.required' => __('Sale A/c is required.'),
+            'account_id.required' => __('Credit field must not be empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'customer_account_id.required' => __('Customer is required.'),
         ]);
 
         if (isset($request->warehouse_count)) {
@@ -296,10 +296,11 @@ class SalesReturnController extends Controller
         if ($request->action == 'save_and_print') {
 
             $paidAmount = $request->paying_amount;
+
             return view('sales.save_and_print_template.sales_return_print', compact('return', 'paidAmount'));
         } else {
 
-            return response()->json(['successMsg' => __("Sales Return Created Successfully.")]);
+            return response()->json(['successMsg' => __('Sales Return Created Successfully.')]);
         }
     }
 }

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use Illuminate\Http\Request;
-use App\Enums\IsDeleteInUpdate;
-use App\Enums\TransferStockType;
 use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\CodeGenerationService;
+use App\Enums\TransferStockType;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookService;
-use App\Services\Products\ProductStockService;
+use App\Services\CodeGenerationService;
 use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\WarehouseService;
-use App\Services\TransferStocks\TransferStockService;
 use App\Services\TransferStocks\TransferStockProductService;
+use App\Services\TransferStocks\TransferStockService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransferStockBranchToBranchController extends Controller
 {
@@ -31,7 +31,7 @@ class TransferStockBranchToBranchController extends Controller
     ) {
     }
 
-    function index($type = null, Request $request)
+    public function index($type, Request $request)
     {
         if ($request->ajax()) {
 
@@ -44,7 +44,7 @@ class TransferStockBranchToBranchController extends Controller
         return view('transfer_stocks.branch_to_branch.index', compact('branches'));
     }
 
-    function show($id)
+    public function show($id)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -78,20 +78,20 @@ class TransferStockBranchToBranchController extends Controller
         return view('transfer_stocks.branch_to_branch.create', compact('branches', 'warehouses', 'branchName'));
     }
 
-    function store(Request $request, CodeGenerationService $codeGenerator)
+    public function store(Request $request, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_branch_id' => 'required',
         ], [
-            'receiver_branch_id.required' => __("Receiver branch is required."),
+            'receiver_branch_id.required' => __('Receiver branch is required.'),
         ]);
 
         try {
             DB::beginTransaction();
 
             $branchCode = auth()?->user()?->branch?->branch_code;
-            $voucherPrefix = 'TSSS' . auth()?->user()?->branch?->branch_code;
+            $voucherPrefix = 'TSSS'.auth()?->user()?->branch?->branch_code;
 
             $addTransferStock = $this->transferStockService->addTransferStock(request: $request, transferStockType: TransferStockType::BranchToBranch->value, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -146,11 +146,11 @@ class TransferStockBranchToBranchController extends Controller
             return view('transfer_stocks.save_and_print_template.print_transfer_stock_branch_to_branch', compact('transferStock'));
         } else {
 
-            return response()->json(['successMsg' => __("Successfully Transfer Stock is created.")]);
+            return response()->json(['successMsg' => __('Successfully Transfer Stock is created.')]);
         }
     }
 
-    function edit($id)
+    public function edit($id)
     {
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -182,13 +182,13 @@ class TransferStockBranchToBranchController extends Controller
         return view('transfer_stocks.branch_to_branch.edit', compact('transferStock', 'branches', 'warehouses', 'selectedBranchWarehouses'));
     }
 
-    function update($id, Request $request)
+    public function update($id, Request $request)
     {
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_branch_id' => 'required',
         ], [
-            'receiver_branch_id.required' => __("Receiver branch is required."),
+            'receiver_branch_id.required' => __('Receiver branch is required.'),
         ]);
 
         try {
@@ -240,7 +240,7 @@ class TransferStockBranchToBranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Transfer Stock is updated successfully."));
+        return response()->json(__('Transfer Stock is updated successfully.'));
     }
 
     public function delete($id)
@@ -272,6 +272,6 @@ class TransferStockBranchToBranchController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Transfer Stock is deleted successfully."));
+        return response()->json(__('Transfer Stock is deleted successfully.'));
     }
 }

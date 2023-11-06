@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\CategoryService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -19,9 +19,9 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_category_index')) {
+        if (! auth()->user()->can('product_category_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         if ($request->ajax()) {
@@ -34,9 +34,9 @@ class CategoryController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('product_category_add')) {
+        if (! auth()->user()->can('product_category_add')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         return view('product.categories.ajax_view.category.create');
@@ -44,9 +44,9 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_category_add')) {
+        if (! auth()->user()->can('product_category_add')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
@@ -78,9 +78,9 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_category_edit')) {
+        if (! auth()->user()->can('product_category_edit')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $category = $this->categoryService->singleCategory($id);
@@ -90,9 +90,9 @@ class CategoryController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('product_category_edit')) {
+        if (! auth()->user()->can('product_category_edit')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         $this->validate($request, [
@@ -119,14 +119,14 @@ class CategoryController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Category updated successfully"));
+        return response()->json(__('Category updated successfully'));
     }
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_category_delete')) {
+        if (! auth()->user()->can('product_category_delete')) {
 
-            return response()->json(__("Access Denied"));
+            return response()->json(__('Access Denied'));
         }
 
         try {
@@ -151,6 +151,6 @@ class CategoryController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Category deleted Successfully"));
+        return response()->json(__('Category deleted Successfully'));
     }
 }

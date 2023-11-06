@@ -7,14 +7,13 @@ interface PaymentControllerMethodContainersInterface
     /**
      * @return \App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $accountingVoucherService,
     ): ?array;
 
     public function createMethodContainer(
-        ?int $debitAccountId = null,
+        int $debitAccountId = null,
         object $accountService,
         object $accountFilterService,
         object $dayBookVoucherService,
@@ -35,7 +34,7 @@ interface PaymentControllerMethodContainersInterface
 
     public function editMethodContainer(
         int $id,
-        ?int $debitAccountId = null,
+        int $debitAccountId = null,
         object $accountingVoucherService,
         object $accountService,
         object $accountFilterService,

@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Products\UnitController;
 use App\Http\Controllers\Products\BrandController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Products\CategoryController;
-use App\Http\Controllers\Products\WarrantyController;
-use App\Http\Controllers\Products\PriceGroupController;
 use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\OpeningStockController;
-use App\Http\Controllers\Products\SubCategoryController;
-use App\Http\Controllers\Products\ProductSettingsController;
+use App\Http\Controllers\Products\PriceGroupController;
 use App\Http\Controllers\Products\PriceGroupManageController;
+use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Products\ProductSettingsController;
+use App\Http\Controllers\Products\SubCategoryController;
+use App\Http\Controllers\Products\UnitController;
+use App\Http\Controllers\Products\WarrantyController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 

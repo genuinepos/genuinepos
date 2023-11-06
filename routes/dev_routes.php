@@ -1,16 +1,10 @@
 <?php
 
-use Illuminate\Support\Arr;
-use App\Models\Setups\Branch;
-use App\Models\Accounts\Account;
-use App\Models\Products\Product;
-use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
-use App\Models\Accounts\AccountGroup;
-use App\Models\Products\ProductStock;
-use Illuminate\Support\Facades\Route;
+use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucherDescription;
+use App\Models\Setups\Branch;
+use Illuminate\Support\Facades\Route;
 
 Route::get('my-test', function () {
 

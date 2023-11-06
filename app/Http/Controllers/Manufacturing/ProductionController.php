@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
-use App\Models\Manufacturing\Production;
+use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Products\ProductService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Manufacturing\ProcessService;
-use App\Services\Products\ProductStockService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Manufacturing\ProductionService;
-use App\Services\Purchases\PurchaseProductService;
+use App\Services\CodeGenerationService;
 use App\Services\Manufacturing\ManufacturingSettingService;
+use App\Services\Manufacturing\ProcessService;
 use App\Services\Manufacturing\ProductionIngredientService;
-use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
+use App\Services\Manufacturing\ProductionService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\WarehouseService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductionController extends Controller
 {
@@ -41,7 +40,7 @@ class ProductionController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('production_view')) {
+        if (! auth()->user()->can('production_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -59,7 +58,7 @@ class ProductionController extends Controller
 
     public function show($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_view')) {
+        if (! auth()->user()->can('production_view')) {
 
             return response()->json('Access Denied');
         }
@@ -76,7 +75,7 @@ class ProductionController extends Controller
 
     public function create(ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_add')) {
+        if (! auth()->user()->can('production_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,7 +87,7 @@ class ProductionController extends Controller
         );
         extract($createMethodContainer);
 
-        return view('manufacturing.production.create', compact('warehouses', 'processes', 'taxAccounts',));
+        return view('manufacturing.production.create', compact('warehouses', 'processes', 'taxAccounts'));
     }
 
     public function store(
@@ -96,7 +95,7 @@ class ProductionController extends Controller
         CodeGenerationService $codeGenerator,
         ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface
     ) {
-        if (!auth()->user()->can('production_add')) {
+        if (! auth()->user()->can('production_add')) {
 
             return response()->json('Access Denied');
         }
@@ -149,13 +148,13 @@ class ProductionController extends Controller
             return view('manufacturing.production.save_and_print_template.print', compact('production'));
         } else {
 
-            return response()->json(['successMsg' => __("Production is added Successfully")]);
+            return response()->json(['successMsg' => __('Production is added Successfully')]);
         }
     }
 
     public function edit($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_edit')) {
+        if (! auth()->user()->can('production_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -175,7 +174,7 @@ class ProductionController extends Controller
 
     public function update($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_edit')) {
+        if (! auth()->user()->can('production_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -220,12 +219,12 @@ class ProductionController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Production is updated successfully."));
+        return response()->json(__('Production is updated successfully.'));
     }
 
     public function delete($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_delete')) {
+        if (! auth()->user()->can('production_delete')) {
 
             return response()->json('Access Denied');
         }
@@ -250,6 +249,6 @@ class ProductionController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Production is deleted successfully"));
+        return response()->json(__('Production is deleted successfully'));
     }
 }

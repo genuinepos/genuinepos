@@ -2,9 +2,8 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Registered;
+use App\Models\User;
 use Modules\SAAS\Events\CustomerRegisteredEvent;
 use Modules\SAAS\Http\Requests\RegistrationRequest;
 use Modules\SAAS\Notifications\VerifyEmail;
@@ -26,6 +25,7 @@ class RegistrationController extends Controller
         ]);
 
         $user->notify(new VerifyEmail);
+
         // event(new CustomerRegisteredEvent($user));
         return redirect()->to(route('saas.login'))->with('success', 'Successfully registered. Check your email and verify your account.');
     }

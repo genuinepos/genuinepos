@@ -1,19 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\PlanController;
-use Modules\SAAS\Http\Controllers\RoleController;
-use Modules\SAAS\Http\Controllers\UserController;
-use Modules\SAAS\Http\Controllers\LoginController;
-use Modules\SAAS\Http\Controllers\TenantController;
-use Modules\SAAS\Http\Controllers\ProfileController;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
-use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
+use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\PlanController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
+use Modules\SAAS\Http\Controllers\RoleController;
+use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\UserController;
 
 Route::view('welcome', 'saas::guest.welcome-page')->name('welcome-page');
 
@@ -36,10 +36,10 @@ Route::prefix('saas')->group(function () {
     Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 
     // Auth User **Not-Verified
-    Route::middleware('is_auth')->group(function() {
-        Route::get('/email/verify', [VerificationController::class,'show'])->name('verification.notice');
-        Route::get('/email/verify/{id}/{hash}', [VerificationController::class,'verify'])->middleware(['signed'])->name('verification.verify');
-        Route::post('/email/verify/resend', [VerificationController::class,'resend'])->name('verification.resend');
+    Route::middleware('is_auth')->group(function () {
+        Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+        Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
+        Route::post('/email/verify/resend', [VerificationController::class, 'resend'])->name('verification.resend');
     });
 
     // Auth and Verified

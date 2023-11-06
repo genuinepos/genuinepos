@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Illuminate\Http\Request;
-use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
-use App\Services\CodeGenerationService;
+use App\Enums\DayBookVoucherType;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\CodeGenerationService;
+use App\Services\Purchases\PurchaseOrderProductService;
+use App\Services\Purchases\PurchaseOrderService;
 use App\Services\Purchases\PurchaseService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Purchases\PurchaseOrderService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Purchases\PurchaseOrderProductService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseOrderController extends Controller
 {
@@ -46,7 +46,7 @@ class PurchaseOrderController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -114,7 +114,7 @@ class PurchaseOrderController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -213,7 +213,7 @@ class PurchaseOrderController extends Controller
 
         if ($request->action == 2) {
 
-            return response()->json(['successMsg' => __("Purchase order is created successfully.")]);
+            return response()->json(['successMsg' => __('Purchase order is created successfully.')]);
         } else {
 
             $order = $this->purchaseOrderService->singlePurchaseOrder(
@@ -231,13 +231,14 @@ class PurchaseOrderController extends Controller
             );
 
             $payingAmount = $request->paying_amount;
+
             return view('purchase.save_and_print_template.print_purchase_order', compact('order', 'payingAmount'));
         }
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('purchase_edit')) {
+        if (! auth()->user()->can('purchase_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -258,7 +259,7 @@ class PurchaseOrderController extends Controller
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $order->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -403,6 +404,6 @@ class PurchaseOrderController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Purchase order is deleted successfully"));
+        return response()->json(__('Purchase order is deleted successfully'));
     }
 }

@@ -7,14 +7,13 @@ interface ReceiptControllerMethodContainersInterface
     /**
      * @return \App\Services\Accounts\MethodContainerServices\ReceiptControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id = null,
         object $accountingVoucherService,
     ): ?array;
 
     public function createMethodContainer(
-        ?int $creditAccountId = null,
+        int $creditAccountId = null,
         object $accountService,
         object $accountFilterService,
         object $dayBookVoucherService,
@@ -35,7 +34,7 @@ interface ReceiptControllerMethodContainersInterface
 
     public function editMethodContainer(
         int $id,
-        ?int $creditAccountId = null,
+        int $creditAccountId = null,
         object $accountingVoucherService,
         object $accountService,
         object $accountFilterService,

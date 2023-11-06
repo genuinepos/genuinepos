@@ -16,7 +16,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('warehouse')) {
+        if (! auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -34,7 +34,7 @@ class WarehouseController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('warehouse')) {
+        if (! auth()->user()->can('warehouse')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -114,9 +114,11 @@ class WarehouseController extends Controller
         return response()->json(__('Successfully warehouse is deleted'));
     }
 
-    function warehousesByBranch($branchId) {
+    public function warehousesByBranch($branchId)
+    {
 
         $__branchId = $branchId == 'NULL' ? null : $branchId;
+
         return $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->get();
     }
 }

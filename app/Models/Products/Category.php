@@ -3,7 +3,6 @@
 namespace App\Models\Products;
 
 use App\Models\BaseModel;
-use App\Models\Products\Category;
 
 class Category extends BaseModel
 {

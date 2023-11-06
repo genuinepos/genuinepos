@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Products\Unit;
-use App\Models\Products\Brand;
 use App\Models\Accounts\Account;
-use App\Models\Products\Warranty;
 use App\Models\Manufacturing\Process;
-use App\Models\Manufacturing\Production;
-use App\Models\Products\ProductAccessBranch;
 use App\Models\Manufacturing\ProcessIngredient;
+use App\Models\Manufacturing\Production;
+use App\Models\Products\Brand;
+use App\Models\Products\ProductAccessBranch;
+use App\Models\Products\Unit;
+use App\Models\Products\Warranty;
 
 class Product extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function ComboProducts()
@@ -150,6 +151,7 @@ class Product extends BaseModel
     public function productAccessBranch()
     {
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
         return $this->hasOne(ProductAccessBranch::class)->where('branch_id', $ownBranchIdOrParentBranchId);
     }
 }

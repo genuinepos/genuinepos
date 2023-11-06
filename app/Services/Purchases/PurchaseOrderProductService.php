@@ -2,10 +2,6 @@
 
 namespace App\Services\Purchases;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use App\Models\Purchases\PurchaseOrderProduct;
 
 class PurchaseOrderProductService
@@ -55,10 +51,10 @@ class PurchaseOrderProductService
             $addOrUpdatePurchaseProduct = '';
 
             $purchaseOrderProduct = PurchaseOrderProduct::where('id', $request->purchase_order_product_ids[$index])->first();
-            if($purchaseOrderProduct){
+            if ($purchaseOrderProduct) {
 
                 $addOrUpdatePurchaseProduct = $purchaseOrderProduct;
-            }else{
+            } else {
 
                 $addOrUpdatePurchaseProduct = new PurchaseOrderProduct();
             }
@@ -83,7 +79,6 @@ class PurchaseOrderProductService
             $addOrUpdatePurchaseProduct->net_unit_cost = $request->net_unit_costs[$index];
             $addOrUpdatePurchaseProduct->line_total = $request->linetotals[$index];
 
-
             if ($isEditProductPrice == '1') {
 
                 $addOrUpdatePurchaseProduct->profit_margin = $request->profits[$index];
@@ -96,7 +91,7 @@ class PurchaseOrderProductService
         }
     }
 
-    function purchaseOrderProducts(?array $with = null): ?object
+    public function purchaseOrderProducts(array $with = null): ?object
     {
         $query = PurchaseOrderProduct::query();
 

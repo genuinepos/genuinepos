@@ -2,15 +2,14 @@
 
 namespace App\Services\Purchases;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
 use App\Models\Purchases\PurchaseReturn;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnService
 {
-    function purchaseReturnsTable(object $request): object
+    public function purchaseReturnsTable(object $request): object
     {
         $returns = '';
         $generalSettings = config('generalSettings');
@@ -70,26 +69,26 @@ class PurchaseReturnService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="' . route('purchase.returns.show', $row->id) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
+                $html .= '<a href="'.route('purchase.returns.show', $row->id).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 if (auth()->user()->can('purchase_return')) {
 
-                    $html .= '<a href="' . route('purchase.returns.edit', $row->id) . '" class="dropdown-item">' . __('Edit') . '</a>';
+                    $html .= '<a href="'.route('purchase.returns.edit', $row->id).'" class="dropdown-item">'.__('Edit').'</a>';
                 }
 
                 if (auth()->user()->can('purchase_return')) {
 
                     if ($row->due > 0) {
 
-                        $html .= '<a class="dropdown-item" href="#">' . __('Add Receipt') . '</a>';
+                        $html .= '<a class="dropdown-item" href="#">'.__('Add Receipt').'</a>';
                     }
                 }
 
                 if (auth()->user()->can('purchase_return')) {
 
-                    $html .= '<a href="' . route('purchase.returns.delete', $row->id) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    $html .= '<a href="'.route('purchase.returns.delete', $row->id).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                 }
 
                 $html .= '</div>';
@@ -100,19 +99,20 @@ class PurchaseReturnService
             ->editColumn('date', function ($row) use ($generalSettings) {
 
                 $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+
                 return date($__date_format, strtotime($row->date));
             })
 
-            ->editColumn('voucher', function ($row) use ($generalSettings) {
+            ->editColumn('voucher', function ($row) {
 
-                return '<a href="' . route('purchase.returns.show', $row->id) . '" id="details_btn">' . $row->voucher_no . '</a>';
+                return '<a href="'.route('purchase.returns.show', $row->id).'" id="details_btn">'.$row->voucher_no.'</a>';
             })
 
-            ->editColumn('parent_invoice_id', function ($row) use ($generalSettings) {
+            ->editColumn('parent_invoice_id', function ($row) {
 
                 if ($row->purchase_id) {
 
-                    return '<a href="' . route('purchases.show', [$row->purchase_id]) . '" id="details_btn">' . $row->parent_invoice_id . '</a>';
+                    return '<a href="'.route('purchases.show', [$row->purchase_id]).'" id="details_btn">'.$row->parent_invoice_id.'</a>';
                 }
             })
 
@@ -122,10 +122,10 @@ class PurchaseReturnService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        return $row->parent_branch_name.'('.$row->area_name.')';
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $row->branch_name.'('.$row->area_name.')';
                     }
                 } else {
 
@@ -138,13 +138,13 @@ class PurchaseReturnService
                 $totalReturnAmount = $row->total_return_amount;
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>' . __("Paid") . '</b></span>';
+                    return '<span class="text-success"><b>'.__('Paid').'</b></span>';
                 } elseif ($row->due > 0 && $row->due < $totalReturnAmount) {
 
-                    return '<span class="text-primary"><b>' . __("Partial") . '</b></span>';
+                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
                 } elseif ($totalReturnAmount == $row->due) {
 
-                    return '<span class="text-danger"><b>' . __("Due") . '</b></span>';
+                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
                 }
             })
 
@@ -158,26 +158,26 @@ class PurchaseReturnService
 
             ->editColumn('createdBy', function ($row) {
 
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
+                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'voucher', 'parent_invoice_id', 'branch', 'payment_status', 'total_qty', 'net_total_amount', 'return_discount', 'return_tax_amount', 'total_return_amount', 'received', 'due', 'createdBy'])
             ->make(true);
     }
 
-    public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, ?int $purchaseReturnId = null): array
+    public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, int $purchaseReturnId = null): array
     {
-        if (!isset($request->product_ids)) {
+        if (! isset($request->product_ids)) {
 
-            return ['pass' => false, 'msg' => __("Product table is empty.")];
+            return ['pass' => false, 'msg' => __('Product table is empty.')];
         } elseif (count($request->product_ids) > 60) {
 
-            return ['pass' => false, 'msg' => __("Purchase Return products must be less than 60 or equal.")];
+            return ['pass' => false, 'msg' => __('Purchase Return products must be less than 60 or equal.')];
         }
 
         if ($request->total_qty == 0) {
 
-            return ['pass' => false, 'msg' => __("All product`s quantity is 0.")];
+            return ['pass' => false, 'msg' => __('All product`s quantity is 0.')];
         }
 
         if ($checkSupplierChangeRestriction == true) {
@@ -188,7 +188,7 @@ class PurchaseReturnService
 
                 if ($purchaseReturn->supplier_account_id != $request->supplier_account_id) {
 
-                    return ['pass' => false, 'msg' => __("Supplier can not be changed. One or more receipts is exists against this purchase return voucher.")];
+                    return ['pass' => false, 'msg' => __('Supplier can not be changed. One or more receipts is exists against this purchase return voucher.')];
                 }
             }
         }
@@ -196,7 +196,7 @@ class PurchaseReturnService
         return ['pass' => true];
     }
 
-    public function addPurchaseReturn(object $request, object $codeGenerator, ?string $voucherPrefix = null): object
+    public function addPurchaseReturn(object $request, object $codeGenerator, string $voucherPrefix = null): object
     {
         // generate invoice ID
         $voucherNo = $codeGenerator->generateMonthWise(table: 'purchase_returns', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
@@ -219,7 +219,7 @@ class PurchaseReturnService
         $addPurchaseReturn->total_return_amount = $request->total_return_amount;
         $addPurchaseReturn->due = $request->total_return_amount;
         $addPurchaseReturn->date = $request->date;
-        $addPurchaseReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addPurchaseReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
         $addPurchaseReturn->note = $request->note;
         $addPurchaseReturn->created_by_id = auth()->user()->id;
         $addPurchaseReturn->save();
@@ -250,7 +250,7 @@ class PurchaseReturnService
         $updatePurchaseReturn->total_return_amount = $request->total_return_amount;
         $updatePurchaseReturn->date = $request->date;
         $time = date(' H:i:s', strtotime($updatePurchaseReturn->date_ts));
-        $updatePurchaseReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updatePurchaseReturn->date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
         $updatePurchaseReturn->note = $request->note;
         $updatePurchaseReturn->save();
 
@@ -272,7 +272,7 @@ class PurchaseReturnService
 
         if (count($deletePurchaseReturn->references) > 0) {
 
-            return ['pass' => false, 'msg' =>__("Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.")];
+            return ['pass' => false, 'msg' => __('Purchase Return can not be deleted. There is one or more receipt which is against this purchase return.')];
         }
 
         $deletePurchaseReturn->delete();
@@ -280,7 +280,7 @@ class PurchaseReturnService
         return $deletePurchaseReturn;
     }
 
-    public function singlePurchaseReturn(int $id, ?array $with = null): ?object
+    public function singlePurchaseReturn(int $id, array $with = null): ?object
     {
         $query = PurchaseReturn::query();
 

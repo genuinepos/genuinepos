@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookVoucherService;
 
@@ -13,9 +12,10 @@ class DayBookController extends Controller
     ) {
     }
 
-    function vouchersForReceiptOrPayment($accountId = null, $type = null)
+    public function vouchersForReceiptOrPayment($accountId = null, $type = null)
     {
         $trans = $this->dayBookVoucherService->vouchersForPaymentReceipt(accountId: $accountId, type: $type);
+
         return $vouchers = $this->dayBookVoucherService->filteredVoucher(vouchers: $trans);
     }
 }

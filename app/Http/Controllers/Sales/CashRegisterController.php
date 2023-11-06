@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Carbon\Carbon;
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\CashRegisterService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CashRegisterController extends Controller
 {
@@ -24,7 +24,7 @@ class CashRegisterController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -53,7 +53,7 @@ class CashRegisterController extends Controller
 
         $branchName = $this->branchService->branchName();
 
-        if (!$openedCashRegister) {
+        if (! $openedCashRegister) {
 
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName'));
         } else {
@@ -64,7 +64,7 @@ class CashRegisterController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -86,7 +86,7 @@ class CashRegisterController extends Controller
     // cash register Details
     public function show()
     {
-        if (!auth()->user()->can('register_view')) {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -112,7 +112,7 @@ class CashRegisterController extends Controller
     // Cash Register Details For Report
     public function cashRegisterDetailsForReport($crId)
     {
-        if (!auth()->user()->can('register_view')) {
+        if (! auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -196,7 +196,7 @@ class CashRegisterController extends Controller
                 'branches.branch_code as b_name',
             );
 
-        if (!$crId) {
+        if (! $crId) {
 
             $activeCashRegister = $activeCashRegisterQuery
                 ->where('users.id', auth()->user()->id)

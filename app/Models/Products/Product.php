@@ -2,28 +2,19 @@
 
 namespace App\Models\Products;
 
-use App\Models\ComboProduct;
-use App\Models\ProductImage;
-use App\Models\Products\Unit;
-use App\Models\Products\Brand;
-use App\Models\Accounts\Account;
-use App\Models\Products\Category;
-use App\Models\Products\Warranty;
-use App\Models\Sales\SaleProduct;
-use App\Models\Manufacturing\Process;
-use App\Models\Products\ProductStock;
-use App\Models\Products\ProductLedger;
 use App\Enums\ProductLedgerVoucherType;
-use App\Models\Products\ProductVariant;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Manufacturing\Production;
-use App\Models\Purchases\PurchaseProduct;
-use App\Models\Products\PriceGroupProduct;
-use App\Models\Products\ProductAccessBranch;
-use App\Models\Purchases\PurchaseOrderProduct;
+use App\Models\Accounts\Account;
+use App\Models\ComboProduct;
+use App\Models\Manufacturing\Process;
 use App\Models\Manufacturing\ProcessIngredient;
+use App\Models\Manufacturing\Production;
+use App\Models\ProductImage;
+use App\Models\Purchases\PurchaseOrderProduct;
+use App\Models\Purchases\PurchaseProduct;
+use App\Models\Sales\SaleProduct;
 use App\Models\TransferStocks\TransferStockProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
@@ -114,7 +105,7 @@ class Product extends Model
 
     public function tax()
     {
-        return $this->belongsTo(Account::class, 'tax_ac_id')->select(['id', 'name', 'tax_percent']);;
+        return $this->belongsTo(Account::class, 'tax_ac_id')->select(['id', 'name', 'tax_percent']);
     }
 
     public function unit()

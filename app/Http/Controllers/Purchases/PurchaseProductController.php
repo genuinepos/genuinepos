@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\CategoryService;
 use App\Services\Purchases\PurchaseProductService;
+use App\Services\Setups\BranchService;
+use Illuminate\Http\Request;
 
 class PurchaseProductController extends Controller
 {
@@ -21,7 +21,7 @@ class PurchaseProductController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -45,7 +45,7 @@ class PurchaseProductController extends Controller
 
     public function purchaseProductsForPurchaseReturn($purchaseId)
     {
-        $purchaseProducts = $this->purchaseProductService->purchaseProducts(with:[
+        $purchaseProducts = $this->purchaseProductService->purchaseProducts(with: [
             'purchase:id,warehouse_id',
             'purchase.warehouse:id,warehouse_name,warehouse_code',
             'product:id,name,product_code,unit_id',
@@ -75,7 +75,7 @@ class PurchaseProductController extends Controller
 
                 foreach ($purchaseProduct?->product?->unit?->childUnits as $unit) {
 
-                    $multiplierDetails = '(1 ' . $unit->name . ' = ' . $unit->base_unit_multiplier . '/' . $purchaseProduct?->product?->unit?->name . ')';
+                    $multiplierDetails = '(1 '.$unit->name.' = '.$unit->base_unit_multiplier.'/'.$purchaseProduct?->product?->unit?->name.')';
 
                     array_push($itemUnitsArray[$purchaseProduct->product_id], [
                         'unit_id' => $unit->id,

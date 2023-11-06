@@ -1,13 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Manufacturing\ProcessController;
-use App\Http\Controllers\Manufacturing\SettingsController;
-use App\Http\Controllers\Manufacturing\ProductionController;
-use App\Http\Controllers\Manufacturing\ProcessIngredientController;
 use App\Http\Controllers\Manufacturing\ManufacturingSettingController;
+use App\Http\Controllers\Manufacturing\ProcessController;
+use App\Http\Controllers\Manufacturing\ProcessIngredientController;
+use App\Http\Controllers\Manufacturing\ProductionController;
 use App\Http\Controllers\Manufacturing\Reports\IngredientReportController;
 use App\Http\Controllers\Manufacturing\Reports\ProductionReportController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'manufacturing'], function () {
 

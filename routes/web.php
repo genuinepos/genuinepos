@@ -1,11 +1,11 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Providers\RouteServiceProvider;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +47,7 @@ Route::middleware([
 */
 Route::get('/', function (Request $request) {
     $isTenant = tenant();
+
     return isset($isTenant) ?
         redirect(RouteServiceProvider::HOME) :
         redirect()->route('saas.welcome-page');

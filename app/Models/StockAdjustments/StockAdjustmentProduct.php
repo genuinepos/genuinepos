@@ -3,16 +3,16 @@
 namespace App\Models\StockAdjustments;
 
 use App\Models\BaseModel;
+use App\Models\Products\Product;
+use App\Models\Products\ProductVariant;
 use App\Models\Products\Unit;
 use App\Models\Setups\Branch;
-use App\Models\Products\Product;
 use App\Models\Setups\Warehouse;
-use App\Models\Products\ProductVariant;
-use App\Models\StockAdjustments\StockAdjustment;
 
 class StockAdjustmentProduct extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function product()

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
+use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountService;
 use App\Services\Sales\SaleProductService;
-use App\Services\Accounts\AccountFilterService;
+use App\Services\Setups\BranchService;
+use Illuminate\Http\Request;
 
 class SoldProductController extends Controller
 {
@@ -21,7 +21,7 @@ class SoldProductController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('view_add_sale')) {
+        if (! auth()->user()->can('view_add_sale')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -43,7 +43,7 @@ class SoldProductController extends Controller
 
     public function soldProductsForSalesReturn($saleId)
     {
-        $saleProducts = $this->saleProductService->saleProducts(with:[
+        $saleProducts = $this->saleProductService->saleProducts(with: [
             'sale:id',
             'product:id,name,product_code,unit_id',
             'product.unit:id,name,code_name',
@@ -72,7 +72,7 @@ class SoldProductController extends Controller
 
                 foreach ($saleProduct?->product?->unit?->childUnits as $unit) {
 
-                    $multiplierDetails = '(1 ' . $unit->name . ' = ' . $unit->base_unit_multiplier . '/' . $saleProduct?->product?->unit?->name . ')';
+                    $multiplierDetails = '(1 '.$unit->name.' = '.$unit->base_unit_multiplier.'/'.$saleProduct?->product?->unit?->name.')';
 
                     array_push($itemUnitsArray[$saleProduct->product_id], [
                         'unit_id' => $unit->id,

@@ -32,7 +32,7 @@ class PlanSubscriptionController extends Controller
 
     public function store(Request $request, Plan $plan)
     {
-        $user          = $request->user();
+        $user = $request->user();
         $paymentMethod = $request->input('payment_method');
 
         try {

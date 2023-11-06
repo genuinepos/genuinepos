@@ -2,12 +2,11 @@
 
 namespace App\Services\StockAdjustments;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\StockAdjustments\StockAdjustmentProduct;
 
 class StockAdjustmentProductService
 {
-    function addStockAdjustmentProduct(object $request, int $stockAdjustmentId, int $index): object
+    public function addStockAdjustmentProduct(object $request, int $stockAdjustmentId, int $index): object
     {
         $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
         $warehouseId = $request->warehouse_ids[$index] != 'noid' ? $request->warehouse_ids[$index] : null;

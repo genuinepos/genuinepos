@@ -7,14 +7,13 @@ interface QuotationControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $quotationService,
         object $saleProductService
     ): ?array;
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $quotationService,
         object $accountService,
@@ -24,7 +23,7 @@ interface QuotationControllerMethodContainersInterface
         object $managePriceGroupService
     ): array;
 
-    function updateMethodContainer(
+    public function updateMethodContainer(
         int $id,
         object $request,
         object $branchSettingService,

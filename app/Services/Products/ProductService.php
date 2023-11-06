@@ -2,15 +2,14 @@
 
 namespace App\Services\Products;
 
-use App\Enums\RoleType;
 use App\Enums\BooleanType;
-use Illuminate\Support\Str;
-use App\Models\ProductImage;
 use App\Enums\IsDeleteInUpdate;
+use App\Enums\RoleType;
 use App\Models\Products\Product;
-use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use App\Models\Products\ProductVariant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductService
@@ -128,27 +127,27 @@ class ProductService
         return DataTables::of($products)
             ->addColumn('multiple_delete', function ($row) {
 
-                return '<input id="' . $row->id . '" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="' . $row->id . '"/>';
+                return '<input id="'.$row->id.'" class="data_id sorting_disabled" type="checkbox" name="data_ids[]" value="'.$row->id.'"/>';
             })->editColumn('photo', function ($row) use ($img_url) {
 
-                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="' . $img_url . '/' . $row->thumbnail_photo . '">';
+                return '<img loading="lazy" class="rounded" style="height:30px; width:30px; padding:2px 0px;" src="'.$img_url.'/'.$row->thumbnail_photo.'">';
             })->addColumn('action', function ($row) use ($countPriceGroup, $isForCreatePage) {
 
                 if ($isForCreatePage == BooleanType::False->value) {
 
                     $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> ' . __("Action") . '</button>';
+                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> '.__('Action').'</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a href="' . route('products.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __("View") . '</a>';
+                    $html .= '<a href="'.route('products.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                     if (auth()->user()->can('product_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="' . route('products.edit', [$row->id]) . '">Edit</a>';
+                        $html .= '<a class="dropdown-item" href="'.route('products.edit', [$row->id]).'">Edit</a>';
                     }
 
                     if (auth()->user()->can('product_delete')) {
 
-                        $html .= '<a class="dropdown-item" id="delete" href="' . route('products.delete', [$row->id]) . '">' . __("Delete") . '</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="'.route('products.delete', [$row->id]).'">'.__('Delete').'</a>';
                     }
 
                     // if ($row->status == 1) {
@@ -159,25 +158,25 @@ class ProductService
                     //     $html .= '<a class="dropdown-item" id="change_status" href="' . route('products.change.status', [$row->id]) . '"><i class="far fa-thumbs-down text-danger"></i> Change Status</a>';
                     // }
 
-                    $html .= '<a href="#" class="dropdown-item">' . __("Product Ledger") . '</a>';
+                    $html .= '<a href="#" class="dropdown-item">'.__('Product Ledger').'</a>';
 
                     if ($countPriceGroup > 0) {
 
-                        $html .= '<a href="' . route('selling.price.groups.manage.index', [$row->id, $row->is_variant]) . '" class="dropdown-item"> ' . __("Manage Price Group") . '</a>';
+                        $html .= '<a href="'.route('selling.price.groups.manage.index', [$row->id, $row->is_variant]).'" class="dropdown-item"> '.__('Manage Price Group').'</a>';
                     }
 
                     if (auth()->user()->can('openingStock_add')) {
 
-                        $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __("Add or edit opening stock") . '</a>';
+                        $html .= '<a href="'.route('product.opening.stocks.create', [$row->id]).'" class="dropdown-item" id="openingStock">'.__('Add or edit opening stock').'</a>';
                     }
 
                     $html .= ' </div>';
                     $html .= '</div>';
 
                     return $html;
-                } else if ($isForCreatePage == BooleanType::True->value) {
+                } elseif ($isForCreatePage == BooleanType::True->value) {
 
-                    return '<a class="action-btn c-edit" href="' . route('products.edit', [$row->id]) . '">' . __("Edit") . '</a>';
+                    return '<a class="action-btn c-edit" href="'.route('products.edit', [$row->id]).'">'.__('Edit').'</a>';
                 }
             })->editColumn('name', function ($row) {
                 $html = '';
@@ -189,31 +188,31 @@ class ProductService
 
                 if ($row->type == 1 && $row->is_variant == 1) {
 
-                    return '<span class="text-primary">' . __("Variant") . '</span>';
+                    return '<span class="text-primary">'.__('Variant').'</span>';
                 } elseif ($row->type == 1 && $row->is_variant == 0) {
 
-                    return '<span class="text-success">' . __("Single") . '</span>';
+                    return '<span class="text-success">'.__('Single').'</span>';
                 } elseif ($row->type == 2) {
 
-                    return '<span class="text-info">' . __("Combo") . '</span>';
+                    return '<span class="text-info">'.__('Combo').'</span>';
                 } elseif ($row->type == 3) {
 
-                    return '<span class="text-info">' . __("Digital") . '</span>';
+                    return '<span class="text-info">'.__('Digital').'</span>';
                 }
             })
-            ->editColumn('cate_name', fn ($row) => '<p class="p-0">' . ($row->cate_name ? $row->cate_name : '...') . '</p><p class="p-0">' . ($row->sub_cate_name ? ' --- ' . $row->sub_cate_name : '') . '</p>')
+            ->editColumn('cate_name', fn ($row) => '<p class="p-0">'.($row->cate_name ? $row->cate_name : '...').'</p><p class="p-0">'.($row->sub_cate_name ? ' --- '.$row->sub_cate_name : '').'</p>')
 
             ->editColumn('status', function ($row) {
 
                 if ($row->status == BooleanType::True->value) {
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="'.route('products.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
 
                     return $html;
                 } else {
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('products.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('products.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;
@@ -259,9 +258,9 @@ class ProductService
 
                     $__branchName = isset($branchName) ? $branchName : $generalSettings['business__shop_name'];
 
-                    $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
+                    $areaName = $productAccessBranch?->branch?->area_name ? '('.$productAccessBranch?->branch?->area_name.')' : '';
 
-                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">' . $__branchName . ',</p>';
+                    $text .= '<p class="m-0 p-0" style="font-size: 9px; line-height: 11px; font-weight: 600; letter-spacing: 1px;">'.$__branchName.',</p>';
                 }
 
                 return $text;
@@ -290,10 +289,10 @@ class ProductService
                         $branchAllStock += $stock->stock;
                     }
 
-                    return \App\Utils\Converter::format_in_bdt($branchAllStock) . '/' . $row->unit_name;
+                    return \App\Utils\Converter::format_in_bdt($branchAllStock).'/'.$row->unit_name;
                 }
 
-                return \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_name;
+                return \App\Utils\Converter::format_in_bdt($row->quantity).'/'.$row->unit_name;
             })
             ->editColumn('brand_name', fn ($row) => $row->brand_name ? $row->brand_name : '...')
             ->editColumn('tax_name', fn ($row) => $row->tax_name ? $row->tax_name : '...')
@@ -301,7 +300,7 @@ class ProductService
             ->smart(true)->make(true);
     }
 
-    function productShowQueries(int $id): array
+    public function productShowQueries(int $id): array
     {
         $data = [];
 
@@ -347,7 +346,7 @@ class ProductService
                 DB::raw('IFNULL(SUM(case when voucher_type = 5 then product_ledgers.out end), 0) as total_stock_adjustment'),
                 DB::raw('IFNULL(SUM(case when voucher_type = 2 then product_ledgers.in end), 0) as total_sales_return'),
                 DB::raw('IFNULL(SUM(case when voucher_type = 1 then product_ledgers.out end), 0) as total_sale'),
-                DB::raw("SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost"),
+                DB::raw('SUM(case when product_ledgers.in != 0 then product_ledgers.subtotal end) as total_cost'),
             )->groupBy(
                 'product_ledgers.branch_id',
                 'product_ledgers.warehouse_id',
@@ -379,8 +378,8 @@ class ProductService
             ->orderBy('products.id', 'desc');
 
         return DataTables::of($products)
-            ->addColumn('action', fn ($row) => '<a href="' . route('products.edit', [$row->id]) . '" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
-            ->editColumn('name', fn ($row) => '<span title="' . $row->name . '">' . Str::limit($row->name, 25) . '</span>')
+            ->addColumn('action', fn ($row) => '<a href="'.route('products.edit', [$row->id]).'" class="action-btn c-edit" title="Edit"><span class="fas fa-edit"></span></a>')
+            ->editColumn('name', fn ($row) => '<span title="'.$row->name.'">'.Str::limit($row->name, 25).'</span>')
             ->rawColumns(['action', 'name'])->make(true);
     }
 
@@ -421,16 +420,16 @@ class ProductService
         if ($request->file('photo')) {
 
             $productThumbnailPhoto = $request->file('photo');
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+            $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
 
             $path = public_path('uploads/product/thumbnail');
 
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
 
                 mkdir($path);
             }
 
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path.'/'.$productThumbnailName);
             $addProduct->thumbnail_photo = $productThumbnailName;
         }
 
@@ -487,23 +486,23 @@ class ProductService
 
             if ($updateProduct->thumbnail_photo != 'default.png') {
 
-                if (file_exists(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo))) {
+                if (file_exists(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo))) {
 
-                    unlink(public_path('uploads/product/thumbnail/' . $updateProduct->thumbnail_photo));
+                    unlink(public_path('uploads/product/thumbnail/'.$updateProduct->thumbnail_photo));
                 }
             }
 
             $productThumbnailPhoto = $request->file('photo');
-            $productThumbnailName = uniqid() . '.' . $productThumbnailPhoto->getClientOriginalExtension();
+            $productThumbnailName = uniqid().'.'.$productThumbnailPhoto->getClientOriginalExtension();
 
             $path = public_path('uploads/product/thumbnail');
 
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
 
                 mkdir($path);
             }
 
-            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path . '/' . $productThumbnailName);
+            Image::make($productThumbnailPhoto)->resize(600, 600)->save($path.'/'.$productThumbnailName);
             $updateProduct->thumbnail_photo = $productThumbnailName;
         }
 
@@ -588,7 +587,7 @@ class ProductService
     {
         $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries', 'variants']);
 
-        if (!is_null($deleteProduct)) {
+        if (! is_null($deleteProduct)) {
 
             if (count($deleteProduct->ledgerEntries) > 0) {
 
@@ -601,9 +600,9 @@ class ProductService
 
                     if ($variant->variant_image) {
 
-                        if (file_exists(public_path('uploads/product/variant_image/' . $variant->variant_image))) {
+                        if (file_exists(public_path('uploads/product/variant_image/'.$variant->variant_image))) {
 
-                            unlink(public_path('uploads/product/variant_image/' . $variant->variant_image));
+                            unlink(public_path('uploads/product/variant_image/'.$variant->variant_image));
                         }
                     }
                 }
@@ -657,7 +656,7 @@ class ProductService
                 ->where('product_access_branches.branch_id', $branchId)
                 ->select('products.*')
                 ->get();
-        } else if ($withVariant == true) {
+        } elseif ($withVariant == true) {
 
             return DB::table('products')
                 ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')

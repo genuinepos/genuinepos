@@ -65,7 +65,7 @@ class ProductionIngredientService
         return $addOrUpdateProductionIngredient;
     }
 
-    function productionIngredients(?array $with = null): object
+    public function productionIngredients(array $with = null): object
     {
         $query = ProductionIngredient::query();
 
@@ -77,7 +77,7 @@ class ProductionIngredientService
         return $query;
     }
 
-    function singleProductionIngredient(?array $with = null): object
+    public function singleProductionIngredient(array $with = null): object
     {
         $query = ProductionIngredient::query();
 

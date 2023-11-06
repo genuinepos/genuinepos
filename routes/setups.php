@@ -1,16 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Setups\BarcodeSettingController;
 use App\Http\Controllers\Setups\BranchController;
-use App\Http\Controllers\Setups\WarehouseController;
-use App\Http\Controllers\Setups\CashCounterController;
-use App\Http\Controllers\Setups\ReleaseNoteController;
 use App\Http\Controllers\Setups\BranchSettingController;
+use App\Http\Controllers\Setups\CashCounterController;
+use App\Http\Controllers\Setups\GeneralSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
-use App\Http\Controllers\Setups\BarcodeSettingController;
-use App\Http\Controllers\Setups\GeneralSettingController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
+use App\Http\Controllers\Setups\ReleaseNoteController;
+use App\Http\Controllers\Setups\WarehouseController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('setups')->group(function () {
 

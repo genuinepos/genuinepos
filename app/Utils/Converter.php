@@ -43,6 +43,7 @@ class Converter
     {
         if (\extension_loaded('intl')) {
             $fmt = new \NumberFormatter('bn_BDT', \NumberFormatter::SPELLOUT);
+
             // return \ucwords($fmt->format($number)); // Ten Million Two Thousand Three Hundred Forty-five Point Eight Nine
             return \ucfirst($fmt->format($number)); // Ten million two thousand three hundred forty-five point eight nine
         }

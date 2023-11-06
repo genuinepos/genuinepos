@@ -7,7 +7,6 @@ interface AddSaleControllerMethodContainersInterface
     /**
      * @return \App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService
      */
-
     public function createMethodContainer(
         object $branchService,
         object $accountService,
@@ -42,7 +41,7 @@ interface AddSaleControllerMethodContainersInterface
         object $saleProductService
     ): ?array;
 
-    function editMethodContainer(
+    public function editMethodContainer(
         int $id,
         object $branchService,
         object $saleService,
@@ -54,7 +53,7 @@ interface AddSaleControllerMethodContainersInterface
         object $managePriceGroupService,
     ): array;
 
-    function updateMethodContainer(
+    public function updateMethodContainer(
         int $id,
         object $request,
         object $branchSettingService,
@@ -73,7 +72,7 @@ interface AddSaleControllerMethodContainersInterface
         object $codeGenerator
     ): ?array;
 
-    function deleteMethodContainer(
+    public function deleteMethodContainer(
         int $id,
         object $saleService,
         object $productStockService,

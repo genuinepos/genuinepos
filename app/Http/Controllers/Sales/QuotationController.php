@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\Sales;
 
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\CodeGenerationService;
-use App\Services\Sales\QuotationService;
+use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
-use App\Services\Sales\SalesOrderService;
-use App\Services\Sales\SaleProductService;
+use App\Services\CodeGenerationService;
+use App\Services\Products\ManagePriceGroupService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Sales\QuotationProductService;
+use App\Services\Sales\QuotationService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Sales\SalesOrderService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Sales\QuotationProductService;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuotationController extends Controller
 {
@@ -50,7 +50,7 @@ class QuotationController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('sale_quotation')) {
+        if (! auth()->user()->can('sale_quotation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -72,7 +72,7 @@ class QuotationController extends Controller
 
     public function show($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('sale_quotation')) {
+        if (! auth()->user()->can('sale_quotation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,7 +88,7 @@ class QuotationController extends Controller
         return view('sales.add_sale.quotations.ajax_views.show', compact('quotation', 'customerCopySaleProducts'));
     }
 
-    function edit($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
+    public function edit($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
         $editMethodContainer = $quotationControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -105,7 +105,7 @@ class QuotationController extends Controller
         return view('sales.add_sale.quotations.edit', compact('quotation', 'customerAccounts', 'accounts', 'saleAccounts', 'taxAccounts', 'methods', 'priceGroups', 'priceGroupProducts'));
     }
 
-    function update($id, Request $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
+    public function update($id, Request $request, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
         $this->validate($request, [
             'status' => 'required',
@@ -144,7 +144,7 @@ class QuotationController extends Controller
             DB::rollBack();
         }
 
-        return response()->json(__("Quotation updated Successfully."));
+        return response()->json(__('Quotation updated Successfully.'));
     }
 
     public function editStatus($id)

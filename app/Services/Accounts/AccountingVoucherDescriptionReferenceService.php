@@ -2,14 +2,14 @@
 
 namespace App\Services\Accounts;
 
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use App\Enums\PurchaseStatus;
-use App\Models\Sales\SaleReturn;
-use App\Models\Purchases\Purchase;
-use Illuminate\Support\Facades\DB;
-use App\Models\Purchases\PurchaseReturn;
+use App\Enums\SaleStatus;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\Purchases\Purchase;
+use App\Models\Purchases\PurchaseReturn;
+use App\Models\Sales\Sale;
+use App\Models\Sales\SaleReturn;
+use Illuminate\Support\Facades\DB;
 
 class AccountingVoucherDescriptionReferenceService
 {
@@ -18,8 +18,8 @@ class AccountingVoucherDescriptionReferenceService
         ?int $accountId,
         float $amount,
         string $refIdColName,
-        ?array $refIds = null,
-        ?int $branchId = null,
+        array $refIds = null,
+        int $branchId = null,
     ) {
 
         if ($refIdColName == 'stock_adjustment_id' && count($refIds) > 0) {
@@ -48,7 +48,7 @@ class AccountingVoucherDescriptionReferenceService
         float $amount,
         string $refIdColName,
         array $refIds,
-        ?int $branchId = null
+        int $branchId = null
     ) {
 
         $saleService = new \App\Services\Sales\SaleService();
@@ -285,7 +285,7 @@ class AccountingVoucherDescriptionReferenceService
                 if ($refIdColName = 'sale_id') {
 
                     $refIdColName = 'purchase_return_id';
-                } else if ($refIdColName = 'purchase_id') {
+                } elseif ($refIdColName = 'purchase_id') {
 
                     $refIdColName = 'sale_return_id';
                 }
@@ -369,7 +369,7 @@ class AccountingVoucherDescriptionReferenceService
         int $accountId,
         float $amount,
         string $refIdColName,
-        ?int $branchId = null
+        int $branchId = null
     ) {
 
         $saleService = new \App\Services\Sales\SaleService();
@@ -496,7 +496,7 @@ class AccountingVoucherDescriptionReferenceService
             if ($refIdColName = 'sale_id') {
 
                 $refIdColName = 'purchase_return_id';
-            } else if ($refIdColName = 'purchase_id') {
+            } elseif ($refIdColName = 'purchase_id') {
 
                 $refIdColName = 'sale_return_id';
             }
@@ -578,8 +578,8 @@ class AccountingVoucherDescriptionReferenceService
         int $accountId,
         int $accountingVoucherType,
         string $refIdColName,
-        ?object $purchase = null,
-        ?object $sale = null,
+        object $purchase = null,
+        object $sale = null,
     ): void {
 
         $saleService = new \App\Services\Sales\SaleService();
@@ -686,7 +686,7 @@ class AccountingVoucherDescriptionReferenceService
         }
     }
 
-    private function dueSpecificInvoices(int $accountId, string $refIdColName, array $refIds, ?int $branchId = null)
+    private function dueSpecificInvoices(int $accountId, string $refIdColName, array $refIds, int $branchId = null)
     {
         $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
 
@@ -729,7 +729,7 @@ class AccountingVoucherDescriptionReferenceService
         }
     }
 
-    private function dueRandomInvoices(int $accountId, string $refIdColName, ?int $branchId = null)
+    private function dueRandomInvoices(int $accountId, string $refIdColName, int $branchId = null)
     {
         $__branchId = $branchId ? $branchId : auth()->user()->branch_id;
         if ($refIdColName == 'purchase_id') {

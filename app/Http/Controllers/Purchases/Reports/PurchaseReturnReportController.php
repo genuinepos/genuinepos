@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Purchases\Reports;
 
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
 
 class PurchaseReturnReportController extends Controller
 {
@@ -20,7 +20,7 @@ class PurchaseReturnReportController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
         if ($request->ajax()) {
 
@@ -77,58 +77,53 @@ class PurchaseReturnReportController extends Controller
             )->orderBy('purchase_returns.date_ts', 'desc');
 
             return DataTables::of($returns)
+                ->editColumn('date', function ($row) use ($generalSettings) {
 
-            ->editColumn('date', function ($row) use ($generalSettings) {
+                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
-                return date($__date_format, strtotime($row->date));
-            })
+                    return date($__date_format, strtotime($row->date));
+                })
+                ->editColumn('voucher_no', function ($row) {
 
-            ->editColumn('voucher_no', function ($row) use ($generalSettings) {
+                    return '<a href="'.route('purchase.returns.show', $row->id).'" id="details_btn">'.$row->voucher_no.'</a>';
+                })
+                ->editColumn('parent_invoice_id', function ($row) {
 
-                return '<a href="' . route('purchase.returns.show', $row->id) . '" id="details_btn">' . $row->voucher_no . '</a>';
-            })
+                    if ($row->purchase_id) {
 
-            ->editColumn('parent_invoice_id', function ($row) use ($generalSettings) {
+                        return '<a href="'.route('purchases.show', [$row->purchase_id]).'" id="details_btn">'.$row->parent_invoice_id.'</a>';
+                    }
+                })
+                ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                if ($row->purchase_id) {
+                    if ($row->branch_id) {
 
-                    return '<a href="' . route('purchases.show', [$row->purchase_id]) . '" id="details_btn">' . $row->parent_invoice_id . '</a>';
-                }
-            })
+                        if ($row->parent_branch_name) {
 
-            ->editColumn('branch', function ($row) use ($generalSettings) {
+                            return $row->parent_branch_name.'('.$row->area_name.')';
+                        } else {
 
-                if ($row->branch_id) {
-
-                    if ($row->parent_branch_name) {
-
-                        return $row->parent_branch_name . '(' . $row->area_name . ')';
+                            return $row->branch_name.'('.$row->area_name.')';
+                        }
                     } else {
 
-                        return $row->branch_name . '(' . $row->area_name . ')';
+                        return $generalSettings['business__shop_name'];
                     }
-                } else {
+                })
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
+                ->editColumn('return_discount', fn ($row) => '<span class="return_discount" data-value="'.$row->return_discount.'">'.\App\Utils\Converter::format_in_bdt($row->return_discount).'</span>')
+                ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="'.$row->return_tax_amount.'">'.\App\Utils\Converter::format_in_bdt($row->return_tax_amount).'</span>')
+                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="'.$row->total_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_return_amount).'</span>')
+                ->editColumn('received_amount', fn ($row) => '<span class="received_amount" data-value="'.$row->received_amount.'">'.\App\Utils\Converter::format_in_bdt($row->received_amount).'</span>')
+                ->editColumn('due', fn ($row) => '<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
+                ->editColumn('createdBy', function ($row) {
 
-                    return $generalSettings['business__shop_name'];
-                }
-            })
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
-            ->editColumn('return_discount', fn ($row) => '<span class="return_discount" data-value="' . $row->return_discount . '">' . \App\Utils\Converter::format_in_bdt($row->return_discount) . '</span>')
-            ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . $row->return_tax_amount . '">' . \App\Utils\Converter::format_in_bdt($row->return_tax_amount) . '</span>')
-            ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . $row->total_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_return_amount) . '</span>')
-            ->editColumn('received_amount', fn ($row) => '<span class="received_amount" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
-            ->editColumn('due', fn ($row) => '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
-
-            ->editColumn('createdBy', function ($row) {
-
-                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
-            })
-
-            ->rawColumns(['action', 'date', 'voucher_no', 'parent_invoice_id', 'branch', 'total_item', 'total_qty', 'net_total_amount', 'return_discount', 'return_tax_amount', 'total_return_amount', 'received_amount', 'due', 'createdBy'])
-            ->make(true);
+                    return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                })
+                ->rawColumns(['action', 'date', 'voucher_no', 'parent_invoice_id', 'branch', 'total_item', 'total_qty', 'net_total_amount', 'return_discount', 'return_tax_amount', 'total_return_amount', 'received_amount', 'due', 'createdBy'])
+                ->make(true);
         }
 
         $branches = $this->branchService->branches(with: ['parentBranch'])

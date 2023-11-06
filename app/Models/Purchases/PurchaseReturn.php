@@ -2,19 +2,18 @@
 
 namespace App\Models\Purchases;
 
-use App\Models\User;
+use App\Models\Accounts\Account;
+use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
-use App\Models\Accounts\Account;
 use App\Models\Setups\Warehouse;
-use App\Models\Purchases\Purchase;
-use App\Models\Accounts\AccountingVoucher;
-use App\Models\Purchases\PurchaseReturnProduct;
-use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\User;
 
 class PurchaseReturn extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function purchase()

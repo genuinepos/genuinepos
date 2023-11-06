@@ -2,17 +2,16 @@
 
 namespace App\Models\StockAdjustments;
 
-use App\Models\User;
+use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
-use App\Models\Setups\Warehouse;
-use App\Models\Accounts\AccountingVoucher;
-use App\Models\StockAdjustments\StockAdjustmentProduct;
-use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\User;
 
 class StockAdjustment extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function branch()

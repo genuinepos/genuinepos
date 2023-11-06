@@ -14,17 +14,18 @@ class CategoryService
         $categories = DB::table('categories')->where('parent_category_id', null)->orderBy('name', 'asc')->get();
 
         $img_url = asset('uploads/category/');
+
         return DataTables::of($categories)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use ($img_url) {
 
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="' . $img_url . '/' . $row->photo . '">';
+                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;"  src="'.$img_url.'/'.$row->photo.'">';
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('categories.edit', [$row->id]) . '" class="action-btn c-edit" id="editCategory" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('categories.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteCategory" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="'.route('categories.edit', [$row->id]).'" class="action-btn c-edit" id="editCategory" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="'.route('categories.delete', [$row->id]).'" class="action-btn c-delete" id="deleteCategory" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -46,8 +47,8 @@ class CategoryService
         if ($request->file('photo')) {
 
             $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
 
             $addCategory->photo = $categoryPhotoName;
         }
@@ -57,7 +58,7 @@ class CategoryService
         return $addCategory;
     }
 
-    function updateCategory(int $id, object $request): object
+    public function updateCategory(int $id, object $request): object
     {
         $updateCategory = $this->singleCategory(id: $id);
         $updateCategory->name = $request->name;
@@ -67,15 +68,15 @@ class CategoryService
 
             if ($updateCategory->photo !== 'default.png') {
 
-                if (file_exists(public_path('uploads/category/' . $updateCategory->photo))) {
+                if (file_exists(public_path('uploads/category/'.$updateCategory->photo))) {
 
-                    unlink(public_path('uploads/category/' . $updateCategory->photo));
+                    unlink(public_path('uploads/category/'.$updateCategory->photo));
                 }
             }
 
             $categoryPhoto = $request->file('photo');
-            $categoryPhotoName = uniqid() . '.' . $categoryPhoto->getClientOriginalExtension();
-            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/' . $categoryPhotoName);
+            $categoryPhotoName = uniqid().'.'.$categoryPhoto->getClientOriginalExtension();
+            Image::make($categoryPhoto)->resize(250, 250)->save('uploads/category/'.$categoryPhotoName);
             $updateCategory->phone = $categoryPhotoName;
         }
 
@@ -84,7 +85,7 @@ class CategoryService
         return $updateCategory;
     }
 
-    function deleteCategory(int $id): array
+    public function deleteCategory(int $id): array
     {
         $deleteCategory = $this->singleCategory(id: $id, with: ['subCategories']);
 
@@ -95,13 +96,13 @@ class CategoryService
 
         if ($deleteCategory->photo !== 'default.png') {
 
-            if (file_exists(public_path('uploads/category/' . $deleteCategory->photo))) {
+            if (file_exists(public_path('uploads/category/'.$deleteCategory->photo))) {
 
-                unlink(public_path('uploads/category/' . $deleteCategory->photo));
+                unlink(public_path('uploads/category/'.$deleteCategory->photo));
             }
         }
 
-        if (!is_null($deleteCategory)) {
+        if (! is_null($deleteCategory)) {
 
             $deleteCategory->delete();
         }

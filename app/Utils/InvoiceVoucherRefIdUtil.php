@@ -54,7 +54,7 @@ class InvoiceVoucherRefIdUtil
     {
         $id = 1;
         $lastEntry = DB::table($table)->orderBy('id', 'desc')->first(['id']);
-        
+
         if ($lastEntry) {
 
             $id = ++$lastEntry->id;

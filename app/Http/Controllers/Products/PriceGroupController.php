@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\PriceGroupService;
+use Illuminate\Http\Request;
 
 class PriceGroupController extends Controller
 {
@@ -16,9 +15,9 @@ class PriceGroupController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         if ($request->ajax()) {
@@ -31,9 +30,9 @@ class PriceGroupController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         return view('product.price_group.ajax_view.create');
@@ -41,9 +40,9 @@ class PriceGroupController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->validate($request, [
@@ -57,9 +56,9 @@ class PriceGroupController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $priceGroup = $this->priceGroupService->singlePriceGroup(id: $id);
@@ -69,37 +68,37 @@ class PriceGroupController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->validate($request, [
-            'name' => 'required|unique:price_groups,name,' . $id,
+            'name' => 'required|unique:price_groups,name,'.$id,
         ]);
 
         $this->priceGroupService->updatePriceGroup(id: $id, request: $request);
 
-        return response()->json(__("Price group updated Successfully"));
+        return response()->json(__('Price group updated Successfully'));
     }
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->priceGroupService->deletePriceGroup(id: $id);
 
-        return response()->json(__("Price group delete Successfully."));
+        return response()->json(__('Price group delete Successfully.'));
     }
 
     public function changeStatus($id)
     {
-        if (!auth()->user()->can('selling_price_group_index')) {
+        if (! auth()->user()->can('selling_price_group_index')) {
 
-            abort(403, __("Access Forbidden."));
+            abort(403, __('Access Forbidden.'));
         }
 
         $changeStatus = $this->priceGroupService->changeStatus(id: $id);

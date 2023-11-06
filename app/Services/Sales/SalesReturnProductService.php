@@ -2,10 +2,7 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Models\Sales\SaleReturnProduct;
-use Yajra\DataTables\Facades\DataTables;
 
 class SalesReturnProductService
 {

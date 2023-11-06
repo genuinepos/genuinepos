@@ -2,13 +2,13 @@
 
 namespace App\Models\Products;
 
-use App\Models\User;
 use App\Models\BaseModel;
-use App\Models\Products\BulkVariantChild;
+use App\Models\User;
 
 class BulkVariant extends BaseModel
 {
     protected $guarded = [];
+
     protected $hidden = ['created_at', 'updated_at'];
 
     public function bulkVariantChild()

@@ -2,9 +2,9 @@
 
 namespace App\Services\StockAdjustments\MethodContainerServices;
 
-use App\Enums\DayBookVoucherType;
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 
@@ -26,7 +26,7 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
-            'bankAccessBranch'
+            'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
             ->whereIn('account_groups.sub_sub_group_number', [2])
@@ -132,7 +132,7 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
         return null;
     }
 
-    function deleteMethodContainer(
+    public function deleteMethodContainer(
         int $id,
         object $stockAdjustmentService,
         object $productStockService,

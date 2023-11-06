@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Manufacturing;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountService;
-use App\Services\Products\ProductService;
-use App\Services\Manufacturing\ProcessService;
 use App\Services\Manufacturing\ProcessIngredientService;
+use App\Services\Manufacturing\ProcessService;
+use App\Services\Products\ProductService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProcessController extends Controller
 {
@@ -22,7 +22,7 @@ class ProcessController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('process_view')) {
+        if (! auth()->user()->can('process_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -37,7 +37,7 @@ class ProcessController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('process_view')) {
+        if (! auth()->user()->can('process_view')) {
 
             return response()->json('Access Denied');
         }
@@ -57,15 +57,16 @@ class ProcessController extends Controller
         return view('manufacturing.process.ajax_view.show', compact('process'));
     }
 
-    function selectProductModal()
+    public function selectProductModal()
     {
         $products = $this->productService->branchProducts(branchId: auth()->user()->branch_id, withVariant: true);
+
         return view('manufacturing.process.ajax_view.process_select_product_modal', compact('products'));
     }
 
     public function create(Request $request)
     {
-        if (!auth()->user()->can('process_add')) {
+        if (! auth()->user()->can('process_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -93,7 +94,7 @@ class ProcessController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('process_add')) {
+        if (! auth()->user()->can('process_add')) {
 
             return response()->json('Access Denied.');
         }
@@ -125,7 +126,7 @@ class ProcessController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('process_edit')) {
+        if (! auth()->user()->can('process_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -149,9 +150,9 @@ class ProcessController extends Controller
         return view('manufacturing.process.edit', compact('process', 'taxAccounts'));
     }
 
-    public function update($id, Request $request,)
+    public function update($id, Request $request)
     {
-        if (!auth()->user()->can('process_edit')) {
+        if (! auth()->user()->can('process_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -179,7 +180,7 @@ class ProcessController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('process_delete')) {
+        if (! auth()->user()->can('process_delete')) {
 
             return response()->json('Access Denied');
         }

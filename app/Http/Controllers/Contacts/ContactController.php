@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Enums\ContactType;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
-use App\Services\Contacts\ContactService;
+use App\Interfaces\CodeGenerationServiceInterface;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\AccountLedgerService;
-use App\Services\Contacts\CustomerGroupService;
-use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Accounts\AccountService;
 use App\Services\Contacts\ContactCreditLimitService;
 use App\Services\Contacts\ContactOpeningBalanceService;
+use App\Services\Contacts\ContactService;
+use App\Services\Contacts\CustomerGroupService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -33,32 +33,33 @@ class ContactController extends Controller
     public function create($type)
     {
         if ($type == ContactType::Customer->value) {
-            if (!auth()->user()->can('customer_add')) {
+            if (! auth()->user()->can('customer_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
-        } else if ($type == ContactType::Supplier->value) {
+        } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_add')) {
+            if (! auth()->user()->can('supplier_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
         }
 
         $customerGroups = $this->customerGroupService->customerGroups()->get(['id', 'name']);
+
         return view('contacts.ajax_view.create', compact('type', 'customerGroups'));
     }
 
     public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
         if ($type == ContactType::Customer->value) {
-            if (!auth()->user()->can('customer_add')) {
+            if (! auth()->user()->can('customer_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
-        } else if ($type == ContactType::Supplier->value) {
+        } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_add')) {
+            if (! auth()->user()->can('supplier_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -122,13 +123,13 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (!auth()->user()->can('customer_edit')) {
+            if (! auth()->user()->can('customer_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
-        } else if ($type == ContactType::Supplier->value) {
+        } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_edit')) {
+            if (! auth()->user()->can('supplier_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -144,13 +145,13 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (!auth()->user()->can('customer_edit')) {
+            if (! auth()->user()->can('customer_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
-        } else if ($type == ContactType::Supplier->value) {
+        } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_edit')) {
+            if (! auth()->user()->can('supplier_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -221,7 +222,7 @@ class ContactController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('supplier_delete')) {
+        if (! auth()->user()->can('supplier_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

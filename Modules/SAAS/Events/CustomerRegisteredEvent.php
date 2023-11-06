@@ -2,7 +2,6 @@
 
 namespace Modules\SAAS\Events;
 
-
 use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 

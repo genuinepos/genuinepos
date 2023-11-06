@@ -2,10 +2,7 @@
 
 namespace App\Models\Setups;
 
-use App\Models\Setups\Branch;
-use App\Models\Setups\InvoiceLayout;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BranchSetting extends Model
 {

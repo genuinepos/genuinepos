@@ -7,7 +7,6 @@ interface ProductionControllerMethodContainersInterface
     /**
      * @return \App\Services\Manufacturing\MethodContainerServices\ProductionControllerMethodContainersService
      */
-
     public function showMethodContainer(
         int $id,
         object $productionService,

@@ -2,8 +2,8 @@
 
 namespace App\Services\Accounts;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use Illuminate\Support\Facades\DB;
 
 class DueInvoiceOrVoucherDistributeService
 {
@@ -11,8 +11,8 @@ class DueInvoiceOrVoucherDistributeService
         int $accountId,
         int $accountingVoucherType,
         int $refIdColName,
-        ?object $purchase = null,
-        ?object $sale = null,
+        object $purchase = null,
+        object $sale = null,
     ): void {
 
         $saleService = new \App\Services\Sales\SaleService();

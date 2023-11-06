@@ -2,12 +2,11 @@
 
 namespace Modules\SAAS\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Modules\SAAS\Notifications\VerifyEmail;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Modules\SAAS\Notifications\VerifyEmail;
 
 class VerificationController extends Controller
 {

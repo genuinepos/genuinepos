@@ -2,13 +2,12 @@
 
 namespace App\Models\Sales;
 
-use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
-use App\Models\Sales\SaleProduct;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\User;
 
 class Sale extends BaseModel
 {
@@ -47,4 +46,3 @@ class Sale extends BaseModel
         return $this->belongsTo(User::class, 'created_by_id');
     }
 }
-

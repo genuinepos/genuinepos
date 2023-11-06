@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setups\PaymentMethod;
 use App\Models\Purchase;
 use App\Models\PurchaseOrderProduct;
 use App\Models\PurchaseOrderProductReceive;
 use App\Models\PurchaseProduct;
+use App\Models\Setups\PaymentMethod;
 use App\Utils\AccountUtil;
 use App\Utils\InvoiceVoucherRefIdUtil;
 use App\Utils\ProductStockUtil;

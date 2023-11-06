@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('leave_type_id')->references('id')->on('hrm_leavetypes')->onDelete('SET NULL');
+            $table->foreign('leave_type_id')->references('id')->on('hrm_leave_types')->onDelete('SET NULL');
         });
     }
 

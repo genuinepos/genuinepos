@@ -147,7 +147,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
+                        <h6 class="fw-bold" style="text-transform: uppercase;">{{ __("Sales Order") }}</h6>
                     </div>
                 @endif
 

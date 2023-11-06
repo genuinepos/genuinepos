@@ -121,7 +121,7 @@
                                     <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
+                                    <table id="sales-table" class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __("Action") }}</th>
@@ -180,7 +180,7 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        var table = $('.data_tbl').DataTable({
+        var shipmentsTable = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
@@ -252,7 +252,7 @@
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
-            table.ajax.reload();
+            shipmentsTable.ajax.reload();
         });
 
         $(document).on('click', '#editShipmentDetails', function(e) {
@@ -411,37 +411,6 @@
                 }
             });
         });
-
-        $(document).on('click', '#delete',function(e){
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $('#deleted_form').attr('action', url);
-            $.confirm({
-                'title': 'Confirmation',
-                'content': 'Are you sure?',
-                'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
-                }
-            });
-        });
-
-        //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
-                    salesTable.ajax.reload();
-                    toastr.error(data);
-                }
-            });
-        });
-
     </script>
 
     <script type="text/javascript">

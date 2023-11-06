@@ -15,20 +15,20 @@ class UserActivityLogUtil
             3 => 'Users',
             18 => 'User Login',
             19 => 'User Logout',
-            27 => 'Receive Payment',
+            27 => 'Receipt',
             28 => 'Payment',
+            31 => 'Contra',
             4 => 'Purchase',
             5 => 'Purchase Order',
             6 => 'Purchase Return',
             7 => 'Sales',
+            29 => 'Draft',
+            30 => 'Quotation',
             8 => 'Sales Order',
             9 => 'Sale Return',
             20 => 'POS Sale',
-            10 => 'Transfer B.Location To Warehouse',
-            11 => 'Transfer Warehouse To B.Location',
-            12 => 'Transfer B.Location To B.Location',
-            13 => 'Stock Adjustment From B.Location',
-            14 => 'Stock Adjustment From Warehouse',
+            10 => 'Transfer Stock',
+            13 => 'Stock Adjustment',
             15 => 'Expense',
             16 => 'Bank',
             17 => 'Accounts',
@@ -56,374 +56,116 @@ class UserActivityLogUtil
     {
         return [
             1 => [ // Customers
-                'fields' => [
-                    'name',
-                    'phone',
-                    'contact_id',
-                ],
-                'texts' => [
-                    'Name : ',
-                    'Phone : ',
-                    'Customer ID : ',
-                ],
+                'fields' => ['name', 'phone',  'contact_id',],
+                'texts' => ['Name : ', 'Phone : ', 'Customer ID : '],
             ],
             2 => [ // Suppliers
-                'fields' => [
-                    'name',
-                    'phone',
-                    'contact_id',
-                ],
-                'texts' => [
-                    'Name : ',
-                    'Phone : ',
-                    'Supplier ID : ',
-                ],
+                'fields' => ['name', 'phone', 'contact_id',],
+                'texts' => ['Name : ', 'Phone : ', 'Supplier ID : ',],
             ],
             3 => [ // Users
-                'fields' => [
-                    'prefix',
-                    'name',
-                    'last_name',
-                    'username',
-                ],
-                'texts' => [
-                    'prefix : ',
-                    'Name : ',
-                    'Last Lame : ',
-                    'Username',
-                ],
+                'fields' => ['prefix', 'name', 'last_name', 'username',],
+                'texts' => ['prefix : ', 'Name : ', 'Last Lame : ', 'Username'],
             ],
             4 => [ // Purchase
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'total_purchase_amount',
-                    'paid',
-                    'due',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'P.Invoice ID : ',
-                    'Total Purchase Amount : ',
-                    'Paid : ',
-                    'Due : ',
-                ],
+                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due',],
+                'texts' => ['Date : ', 'P.Invoice ID : ', 'Total Purchase Amount : ', 'Paid : ', 'Due : ',],
             ],
             5 => [ // Purchase Order
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'total_purchase_amount',
-                    'paid',
-                    'due',
-                ],
-                'texts' => [
-                    'Order Date : ',
-                    'Purchase Order ID : ',
-                    'Total Ordered Amt : ',
-                    'Paid : ',
-                    'Due : ',
-                ],
+                'fields' => ['date', 'invoice_id', 'total_purchase_amount', 'paid', 'due',],
+                'texts' => ['Order Date : ', 'Purchase Order ID : ', 'Total Ordered Amt : ', 'Paid : ', 'Due : ',],
             ],
             6 => [ // Purchase Return
-                'fields' => [
-                    'date',
-                    'voucher_no',
-                    'total_return_amount',
-                    'received_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Return Invoice ID : ',
-                    'Total Returned Amt : ',
-                    'Received Amt. : ',
-                    'Due : ',
-                ],
+                'fields' => ['date', 'voucher_no', 'total_return_amount', 'received_amount',],
+                'texts' => ['Date : ', 'Return Invoice ID : ', 'Total Returned Amt : ', 'Received Amt. : ', 'Due : ',],
+            ],
+            29 => [ // Draft
+                'fields' => ['date', 'draft_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Draft ID : ', 'Total Amount : '],
+            ],
+            30 => [ // Quotation
+                'fields' => ['date', 'quotation_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Quotation ID : ', 'Total Amount : '],
             ],
             7 => [ // Sales
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'total_invoice_amount',
-                    'paid',
-                    'due',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Invoice ID : ',
-                    'Total Invoice Amount : ',
-                    'Paid : ',
-                    'Due : ',
-                ],
+                'fields' => ['date', 'invoice_id', 'total_invoice_amount', 'paid', 'due'],
+                'texts' => ['Date : ', 'Invoice ID : ', 'Total Invoice Amount : ', 'Paid : ', 'Due : '],
             ],
             8 => [ // Sales Order
-                'fields' => [
-                    'date',
-                    'order_id',
-                    'total_invoice_amount',
-                    'paid',
-                    'due',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Order ID : ',
-                    'Total Ordered Amt',
-                    'Paid',
-                    'Due',
-                ],
+                'fields' => ['date', 'order_id', 'total_invoice_amount', 'paid', 'due',],
+                'texts' => ['Date : ', 'Order ID : ', 'Total Ordered Amt', 'Advance Received', 'Due',],
             ],
             9 => [ // Sales Return
-                'fields' => [
-                    'date',
-                    'voucher_no',
-                    'total_return_amount',
-                    'paid',
-                    'due',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Return Voucher No : ',
-                    'Total Returned Amt. : ',
-                    'Paid : ',
-                    'Due : ',
-                ],
+                'fields' => ['date', 'voucher_no', 'total_return_amount', 'paid', 'due',],
+                'texts' => ['Date : ', 'Return Voucher No : ', 'Total Returned Amt. : ', 'Paid : ', 'Due : '],
             ],
             10 => [ // Transfer B.Location To Warehouse
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'total_send_qty',
-                    'total_received_qty',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Reference ID : ',
-                    'Total Send Quantity : ',
-                    'Total Received Quantity : ',
-                ],
+                'fields' => ['date', 'invoice_id', 'total_send_qty', 'total_received_qty'],
+                'texts' => ['Date : ', 'Reference ID : ', 'Total Send Quantity : ', 'Total Received Quantity : '],
             ],
-            11 => [ // Transfer Warehouse To B.Location
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'total_send_qty',
-                    'total_received_qty',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Reference ID : ',
-                    'Total Send Quantity : ',
-                    'Total Received Quantity : ',
-                ],
-            ],
-            12 => [ // Transfer B.Location To Warehouse
-                'fields' => [
-                    'date',
-                    'ref_id',
-                    'total_send_qty',
-                    'total_received_qty',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Reference ID : ',
-                    'Total Send Quantity : ',
-                    'Total Received Quantity : ',
-                ],
-            ],
-            13 => [ // Stock Adjustment From B.Location
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'net_total_amount',
-                    'recovered_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Reference ID : ',
-                    'Total Adjusted Amt. : ',
-                    'Total Recovered Amount : ',
-                ],
-            ],
-            14 => [ // Stock Adjustment From Warehouse
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'net_total_amount',
-                    'recovered_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Reference ID : ',
-                    'Total Adjusted Amt. : ',
-                    'Total Recovered Amount : ',
-                ],
+            13 => [ // Stock Adjustment
+                'fields' => ['date', 'voucher_no', 'net_total_amount', 'recovered_amount',],
+                'texts' => ['Date : ', 'Voucher No : ', 'Total Adjusted Amt. : ', 'Total Recovered Amount : '],
             ],
             15 => [ // Expenses
-                'fields' => [
-                    'date',
-                    'invoice_id',
-                    'net_total_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Expense Voucher No : ',
-                    'Net Total Amt. : ',
-                ],
+                'fields' => ['date', 'voucher_no', 'total_amount'],
+                'texts' => ['Date : ', 'Expense Voucher No : ', 'Total Expense Amt. : '],
             ],
             16 => [ // Bank
-                'fields' => [
-                    'name',
-                ],
-                'texts' => [
-                    'Bank Name : ',
-                ],
+                'fields' => ['name'],
+                'texts' => ['Bank Name : '],
             ],
             17 => [ // Accounts
-                'fields' => [
-                    'name',
-                    'account_number',
-                    'opening_balance',
-                    'opening_balance_type',
-
-                ],
-                'texts' => [
-                    'Account Name : ',
-                    'Account Number : ',
-                    'Opening Balance : ',
-                    'Balance : ',
-                ],
+                'fields' => ['name', 'account_number', 'opening_balance', 'opening_balance_type'],
+                'texts' => ['Account Name : ', 'Account Number : ', 'Opening Balance : ', 'Type : ',],
             ],
             18 => [ // User login
-                'fields' => [
-                    'username',
-                ],
-                'texts' => [
-                    'Username : ',
-                ],
+                'fields' => ['username'],
+                'texts' => ['Username : '],
             ],
             19 => [ // User Logout
-                'fields' => [
-                    'username',
-                ],
-                'texts' => [
-                    'Username : ',
-                ],
+                'fields' => ['username'],
+                'texts' => ['Username : '],
             ],
             20 => [ // Categories
-                'fields' => [
-                    'id',
-                    'name',
-                ],
-                'texts' => [
-                    'Category ID : ',
-                    'Category Name : ',
-                ],
+                'fields' => ['id', 'name'],
+                'texts' => ['Category ID : ', 'Category Name : '],
             ],
             21 => [ // Sub-Categories
-                'fields' => [
-                    'id',
-                    'name',
-                ],
-                'texts' => [
-                    'Sub-Category ID : ',
-                    'Sub-Category Name : ',
-                ],
+                'fields' => ['id', 'name',],
+                'texts' => ['Sub-Category ID : ', 'Sub-Category Name : '],
             ],
             22 => [ // Brands
-                'fields' => [
-                    'id',
-                    'name',
-                ],
-                'texts' => [
-                    'Brand ID: ',
-                    'Brand Name : ',
-                ],
+                'fields' => ['id', 'name'],
+                'texts' => ['Brand ID: ', 'Brand Name : '],
             ],
             23 => [ // UNITS
-                'fields' => [
-                    'name',
-                    'code_name',
-                ],
-                'texts' => [
-                    'Unit Name : ',
-                    'Short Name : ',
-                ],
+                'fields' => ['name', 'code_name'],
+                'texts' => ['Unit Name : ', 'Short Name : '],
             ],
             24 => [ // Variants
-                'fields' => [
-                    'id',
-                    'bulk_variant_name',
-                ],
-                'texts' => [
-                    'ID : ',
-                    'Variant Name : ',
-                ],
+                'fields' => ['id', 'name'],
+                'texts' => ['ID : ', 'Variant Name : '],
             ],
             25 => [ // Warranties
-                'fields' => [
-                    'name',
-                    'duration',
-                    'duration_type',
-                ],
-                'texts' => [
-                    'Warranty Name : ',
-                    'Duration : ',
-                    'Duration Type : ',
-                ],
+                'fields' => ['name', 'duration', 'duration_type',],
+                'texts' => ['Warranty Name : ', 'Duration : ', 'Duration Type : '],
             ],
             26 => [ // Product
-                'fields' => [
-                    'name',
-                    'product_code',
-                    'product_cost_with_tax',
-                    'product_price',
-                ],
-                'texts' => [
-                    'Name : ',
-                    'P.Code(SKU) : ',
-                    'Cost.inc Tax : ',
-                    'Price.Exc Tax : ',
-                ],
+                'fields' => ['name', 'product_code', 'product_cost_with_tax', 'product_price'],
+                'texts' => ['Name : ', 'P.Code(SKU) : ', 'Cost.inc Tax : ', 'Price.Exc Tax : '],
             ],
-            27 => [ // Receive Payment
-                'fields' => [
-                    'date',
-                    'voucher_no',
-                    'ags',
-                    'customer',
-                    'phone',
-                    'method',
-                    'paid_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Voucher : ',
-                    'AGS : ',
-                    'Customer : ',
-                    'Phn No : ',
-                    'Type : ',
-                    'Paid : ',
-                ],
+            27 => [ // Receipt Voucher
+                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount'],
             ],
             28 => [ // Payment
-                'fields' => [
-                    'date',
-                    'voucher_no',
-                    'agp',
-                    'supplier',
-                    'phone',
-                    'method',
-                    'paid_amount',
-                ],
-                'texts' => [
-                    'Date : ',
-                    'Voucher : ',
-                    'AGP : ',
-                    'Supplier : ',
-                    'Phn No : ',
-                    'Type : ',
-                    'Paid : ',
-                ],
+                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'texts' => ['Date : ', 'VoucherNo : ', 'Paid Amount : '],
+            ],
+            31 => [ // Contra
+                'fields' => ['date', 'voucher_no',   'total_amount',],
+                'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
             ],
         ];
     }
@@ -449,7 +191,7 @@ class UserActivityLogUtil
         $index = 0;
         foreach ($descriptionModel[$subject_type]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index].(isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A').', ';
+            $description .= $descriptionModel[$subject_type]['texts'][$index] . (isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A') . ', ';
             $index++;
         }
 

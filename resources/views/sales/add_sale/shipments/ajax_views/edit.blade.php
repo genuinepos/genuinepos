@@ -121,7 +121,13 @@
 
                 toastr.success(data);
                 $('#editShipmentDetailsModal').modal('hide');
-                table.ajax.reload();
+
+                if ($('#sales-order-table').html() != undefined) {
+
+                    $('#sales-order-table').DataTable().ajax.reload();
+                }
+
+                $('#sales-table').DataTable().ajax.reload();
             }, error: function(err) {
 
                 $('.shipment_details_loading_btn').hide();

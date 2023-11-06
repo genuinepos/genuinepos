@@ -17,16 +17,32 @@ interface DraftControllerMethodContainersInterface
     function editMethodContainer(
         int $id,
         object $draftService,
+        object $branchService,
         object $accountService,
         object $accountFilterService,
+        object $paymentMethodService,
         object $priceGroupService,
+        object $warehouseService,
         object $managePriceGroupService,
     ): array;
 
     function updateMethodContainer(
         int $id,
         object $request,
+        object $saleService,
         object $draftService,
         object $draftProductService,
+        object $branchSettingService,
+        object $dayBookService,
+        object $accountLedgerService,
+        object $productStockService,
+        object $productLedgerService,
+        object $purchaseProductService,
+        object $accountService,
+        object $accountingVoucherService,
+        object $accountingVoucherDescriptionService,
+        object $accountingVoucherDescriptionReferenceService,
+        object $userActivityLogUtil,
+        object $codeGenerator,
     ): ?array;
 }

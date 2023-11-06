@@ -107,7 +107,7 @@
                                     <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
+                                    <table id="sales-table" class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __("Action") }}</th>
@@ -163,7 +163,7 @@
             toastr.success('{{ session('successMsg') }}');
         @endif
 
-        var table = $('.data_tbl').DataTable({
+        var quotationsTable = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
@@ -228,7 +228,7 @@
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
-            table.ajax.reload();
+            quotationsTable.ajax.reload();
         });
 
         $(document).on('click', '#changeQuotationStatusBtn', function(e) {
@@ -366,7 +366,14 @@
                 type:'post',
                 data:request,
                 success:function(data){
-                    salesOrderTable.ajax.reload();
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+                    
+                    quotationsTable.ajax.reload();
                     toastr.error(data);
                 }
             });

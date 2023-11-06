@@ -36,6 +36,7 @@ class QuotationProductService
             $addOrUpdateQuotationProduct->unit_discount = $request->unit_discounts[$index];
             $addOrUpdateQuotationProduct->unit_discount_amount = $request->unit_discount_amounts[$index];
             $addOrUpdateQuotationProduct->tax_ac_id = $request->tax_ac_ids[$index];
+            $addOrUpdateQuotationProduct->tax_type = $request->tax_types[$index];
             $addOrUpdateQuotationProduct->unit_tax_percent = $request->unit_tax_percents[$index];
             $addOrUpdateQuotationProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
             $addOrUpdateQuotationProduct->unit_id = $request->unit_ids[$index];

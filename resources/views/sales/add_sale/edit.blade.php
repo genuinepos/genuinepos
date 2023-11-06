@@ -36,6 +36,10 @@
         label.col-5,
         label.col-6 { text-align: right; padding-right: 10px; }
 
+        .side-number-field input { font-size: 14px;}
+
+        .big_amount_field { height: 36px;  font-size: 24px; margin-bottom: 3px; }
+
         .checkbox_input_wrap { text-align: right; }
 
         .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
@@ -91,6 +95,23 @@
                                                         <span class="error error_customer_account_id"></span>
                                                     </div>
                                                 </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
+                                                    <div class="col-8">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
+                                                    <div class="col-8">
+                                                        <select name="status" class="form-control" id="status" data-next="date">
+                                                            <option value="{{ \App\Enums\SaleStatus::Final->value }}">{{ \App\Enums\SaleStatus::Final->name }}</option>
+                                                        </select>
+                                                        <span class="error error_status"></span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-md-4">
@@ -98,6 +119,14 @@
                                                     <label class="col-4"><b>{{ __("Invoice ID") }}</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" name="invoice_id" id="invoice_id" class="form-control fw-bold" value="{{ $sale->invoice_id }}" placeholder="{{ __("Invoice ID") }}" autocomplete="off" tabindex="-1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group mt-1">
+                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
+                                                    <div class="col-8">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <span class="error error_date"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,30 +145,8 @@
                                                         <span class="error error_sale_account_id"></span>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
-                                                    <div class="col-8">
-                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {{-- Inv Schema --}}
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
-                                                    <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
-                                                        <span class="error error_date"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
+                                                <div class="input-group mt-1">
                                                     <label class="col-4"><b>{{ __("Price Group") }}</b></label>
                                                     <div class="col-8">
                                                         <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
@@ -148,18 +155,6 @@
                                                                 <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Status') }}</b> <span class="text-danger">*</span></label>
-                                                    <div class="col-8">
-                                                        <select name="status" class="form-control" id="status" data-next="date">
-                                                            <option value="{{ \App\Enums\SaleStatus::Final->value }}">{{ \App\Enums\SaleStatus::Final->name }}</option>
-                                                        </select>
-                                                        <span class="error error_status"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,7 +248,7 @@
                                         <div class="row g-2 align-items-end">
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="IMEI/SL No./Other Info.">
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __("IMEI/SL No./Other Info.") }}">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6 warehouse_field">
@@ -331,7 +326,7 @@
                                                                             @php
                                                                                 $variant = $saleProduct->variant_id ? ' -' . $saleProduct->variant->variant_name : '';
 
-                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->product_variant_id : 'noid';
+                                                                                $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : 'noid';
 
                                                                                 $currentStock = $generalProductSearchService->getAvailableStock(productId: $saleProduct->product_id, variantId: $saleProduct->variant_id, branchId: $sale->branch_id);
 
@@ -491,7 +486,7 @@
 
                             <div class="col-md-3">
                                 <div class="form_element rounded m-0">
-                                    <div class="element-body">
+                                    <div class="element-body side-number-field">
                                         <div class="row gx-2">
                                             <label class="col-md-5 text-end"><b>{{ __("Total Item") }}</b></label>
                                             <div class="col-md-7">
@@ -499,21 +494,21 @@
                                             </div>
                                         </div>
 
-                                        <div class="row gx-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Total Qty") }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" name="total_qty" id="total_qty" class="form-control fw-bold" value="{{ $sale->total_qty }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row g-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Net Total Amount") }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" class="form-control fw-bold" name="net_total_amount" id="net_total_amount" value="{{ $sale->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
-                                        <div class="row g-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Sale Discount") }}</b></label>
                                             <div class="col-md-7">
                                                 <div class="input-group">
@@ -528,7 +523,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row g-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Sale Tax") }}</b></label>
                                             <div class="col-md-7">
                                                 <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
@@ -544,14 +539,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="row g-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Shipment Charge") }}</b></label>
                                             <div class="col-md-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" data-next="received_amount" value="{{ $sale->shipment_charge }}">
                                             </div>
                                         </div>
 
-                                        <div class="row g-2">
+                                        <div class="row gx-2 mt-1">
                                             <label class="col-md-5 text-end"><b>{{ __("Total Invoice Amt.") }}</b></label>
                                             <div class="col-md-7">
                                                 <input type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="{{ $sale->total_invoice_amount }}" tabindex="-1">
@@ -560,14 +555,14 @@
                                         </div>
 
                                         <div class="payment_body">
-                                            <div class="row g-2">
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Received Amt.") }} >></b></label>
                                                 <div class="col-md-7">
-                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" data-next="payment_method_id" value="0.00" autocomplete="off">
+                                                    <input type="number" step="any" name="received_amount" class="form-control big_amount_field fw-bold" id="received_amount" data-next="payment_method_id" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
-                                            <div class="row g-2">
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Payment Method") }}</b></label>
                                                 <div class="col-md-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
@@ -581,7 +576,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row g-2">
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-md-7">
                                                     <select name="account_id" class="form-control" id="account_id" data-next="save_changes">
@@ -603,7 +598,14 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row g-2">
+                                            <div class="row gx-2 mt-1">
+                                                <label class="col-md-5 text-end"><b>{{ __("Previous Received") }}</b></label>
+                                                <div class="col-md-7">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-success" name="previous_received" id="previous_received" value="{{ $sale->paid }}" tabindex="-1">
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
                                                 <div class="col-md-7">
                                                     <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
@@ -613,7 +615,7 @@
 
                                         <div class="row justify-content-center">
                                             <div class="col-12 d-flex justify-content-end pt-3">
-                                                <div class="btn-loading d-flex flex-wrap gap-2 w-100 text-end">
+                                                <div class="btn-loading d-flex flex-wrap gap-2 w-100 text-end justify-content-end">
                                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
                                                     <button type="submit" id="save_changes" class="btn btn-sale btn-success submit_button">{{ __('Save Changes') }}</button>
                                                 </div>

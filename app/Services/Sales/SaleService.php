@@ -293,7 +293,12 @@ class SaleService
 
         if (count($deleteSale->references) > 0) {
 
-            return ['pass' => false, 'msg' => __("Sale can not be deleted. There is one or more receipt which is against this ${__voucherName}.")];
+            return ['pass' => false, 'msg' => __("Data can not be deleted. There is one or more receipt which is against this ${__voucherName}.")];
+        }
+
+        if ($deleteSale->status == SaleStatus::Order->value && $deleteSale->total_delivered_qty > 0) {
+
+            return ['pass' => false, 'msg' => __("Data can not be deleted. Invoice is exists against this ${__voucherName}.")];
         }
 
         $deleteSale->delete();

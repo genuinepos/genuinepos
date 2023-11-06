@@ -1164,6 +1164,15 @@
         $('#customer_account_id').focus().select();
     }, 1000);
 
+    $(document).on('click', function(e) {
+
+        if ($(e.target).closest(".select_area").length === 0) {
+
+            $('.select_area').hide();
+            $('#list').empty();
+        }
+    });
+
     calculateTotalAmount();
 </script>
 

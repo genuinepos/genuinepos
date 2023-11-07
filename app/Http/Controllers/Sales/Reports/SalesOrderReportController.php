@@ -24,7 +24,7 @@ class SalesOrderReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sales_report')) {
+        if (! auth()->user()->can('sales_order_report')) {
 
             abort(403, 'Access Forbidden.');
         }

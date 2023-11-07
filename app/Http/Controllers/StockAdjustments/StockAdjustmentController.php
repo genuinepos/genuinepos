@@ -48,7 +48,7 @@ class StockAdjustmentController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('adjustment_all')) {
+        if (! auth()->user()->can('stock_adjustment_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class StockAdjustmentController extends Controller
 
     public function create(StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('adjustment_add_from_location')) {
+        if (! auth()->user()->can('stock_adjustment_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -101,7 +101,7 @@ class StockAdjustmentController extends Controller
         StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface,
         CodeGenerationService $codeGenerator
     ) {
-        if (! auth()->user()->can('adjustment_add_from_location')) {
+        if (! auth()->user()->can('stock_adjustment_add')) {
 
             return response()->json('Access Denied.');
         }
@@ -153,6 +153,11 @@ class StockAdjustmentController extends Controller
 
     public function delete($id, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
+        if (! auth()->user()->can('stock_adjustment_delete')) {
+
+            return response()->json('Access Denied.');
+        }
+
         try {
             DB::beginTransaction();
 

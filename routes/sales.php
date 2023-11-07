@@ -1,25 +1,26 @@
 <?php
 
-use App\Http\Controllers\Sales\AddSalesController;
-use App\Http\Controllers\Sales\AddSaleSettingController;
-use App\Http\Controllers\Sales\CashRegisterController;
-use App\Http\Controllers\Sales\DiscountController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Sales\DraftController;
 use App\Http\Controllers\Sales\PosSaleController;
-use App\Http\Controllers\Sales\PosSaleSettingController;
+use App\Http\Controllers\Sales\AddSalesController;
+use App\Http\Controllers\Sales\DiscountController;
+use App\Http\Controllers\Sales\ShipmentController;
 use App\Http\Controllers\Sales\QuotationController;
-use App\Http\Controllers\Sales\Reports\SalesOrderedProductReportController;
-use App\Http\Controllers\Sales\Reports\SalesOrderReportController;
+use App\Http\Controllers\Sales\SalesOrderController;
+use App\Http\Controllers\Sales\SalesHelperController;
+use App\Http\Controllers\Sales\SalesReturnController;
+use App\Http\Controllers\Sales\SoldProductController;
+use App\Http\Controllers\Sales\CashRegisterController;
+use App\Http\Controllers\Sales\AddSaleSettingController;
+use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
-use App\Http\Controllers\Sales\Reports\SalesReturnedProductReportController;
+use App\Http\Controllers\Sales\Reports\SalesOrderReportController;
 use App\Http\Controllers\Sales\Reports\SalesReturnReportController;
 use App\Http\Controllers\Sales\Reports\SoldProductReportController;
-use App\Http\Controllers\Sales\SalesHelperController;
-use App\Http\Controllers\Sales\SalesOrderController;
-use App\Http\Controllers\Sales\SalesReturnController;
-use App\Http\Controllers\Sales\ShipmentController;
-use App\Http\Controllers\Sales\SoldProductController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Sales\Reports\SalesOrderedProductReportController;
+use App\Http\Controllers\Sales\Reports\ReceivedAgainstSalesReportController;
+use App\Http\Controllers\Sales\Reports\SalesReturnedProductReportController;
 
 Route::prefix('sales')->group(function () {
 
@@ -179,6 +180,12 @@ Route::prefix('sales')->group(function () {
 
             Route::get('/', 'index')->name('reports.sales.returned.products.report.index');
             Route::get('print', 'print')->name('reports.sales.returned.products.report.print');
+        });
+
+        Route::controller(ReceivedAgainstSalesReportController::class)->prefix('received-against-sales-report')->group(function () {
+
+            Route::get('/', 'index')->name('reports.receive.against.sales.report');
+            Route::get('print', 'print')->name('reports.receive.against.sales.report.print');
         });
     });
 });

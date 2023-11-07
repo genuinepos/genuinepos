@@ -44,7 +44,7 @@ class StockAdjustmentService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('adjustment_delete')) {
+                    if (auth()->user()->can('stock_adjustment_delete')) {
 
                         $html .= '<a class="dropdown-item" id="delete" href="'.route('stock.adjustments.delete', $row->id).'">'.__('Delete').'</a>';
                     }

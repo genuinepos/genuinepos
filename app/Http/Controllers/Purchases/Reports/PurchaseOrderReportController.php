@@ -26,6 +26,11 @@ class PurchaseOrderReportController extends Controller
 
     public function index(Request $request)
     {
+        if (! auth()->user()->can('purchase_order_report')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');

@@ -27,7 +27,13 @@ class PurchaseProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
+        if (! auth()->user()->can('product_purchase_report')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
+
             $generalSettings = config('generalSettings');
             $purchaseProducts = '';
             $query = DB::table('purchase_products')

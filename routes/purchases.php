@@ -1,19 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseOrderController;
-use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
+use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
-use App\Http\Controllers\Report\PurchasePaymentReportController;
 use App\Http\Controllers\Report\SalePurchaseReportController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Report\PurchasePaymentReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
+use App\Http\Controllers\Purchases\Reports\PaymentAgainstPurchaseReportController;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -90,9 +91,10 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
             Route::get('print', 'print')->name('reports.purchase.returned.products.print');
         });
 
-        Route::group(['prefix' => 'purchase/payments'], function () {
-            Route::get('/', [PurchasePaymentReportController::class, 'index'])->name('reports.purchase.payments.index');
-            Route::get('print', [PurchasePaymentReportController::class, 'print'])->name('reports.purchase.payments.print');
+        Route::controller(PaymentAgainstPurchaseReportController::class)->prefix('payments-against-purchase')->group(function () {
+
+            Route::get('/', 'index')->name('reports.payment.against.purchase.report');
+            Route::get('print', 'print')->name('reports.payment.against.purchase.report.print');
         });
 
         Route::group(['prefix' => 'sales/purchase'], function () {

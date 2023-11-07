@@ -23,10 +23,15 @@ class PurchaseOrderProductReportController extends Controller
     ) {
     }
 
-    // Index view of supplier report
     public function index(Request $request)
     {
+        if (!auth()->user()->can('purchase_ordered_product_report')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
+
             $generalSettings = config('generalSettings');
             $purchaseOrderProducts = '';
             $query = DB::table('purchase_order_products')
@@ -125,9 +130,9 @@ class PurchaseOrderProductReportController extends Controller
             return DataTables::of($purchaseOrderProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                    return Str::limit($row->name, 35, '').$variant;
+                    return Str::limit($row->name, 35, '') . $variant;
                 })
                 ->editColumn('date', function ($row) {
 
@@ -139,10 +144,10 @@ class PurchaseOrderProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->branch_area_name.')';
+                            return $row->branch_name . '(' . $row->branch_area_name . ')';
                         }
                     } else {
 
@@ -151,24 +156,24 @@ class PurchaseOrderProductReportController extends Controller
                 })
                 ->editColumn('ordered_quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->ordered_quantity).'/<span class="ordered_quantity" data-value="'.$row->ordered_quantity.'">'.$row->unit_code.'</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->ordered_quantity) . '/<span class="ordered_quantity" data-value="' . $row->ordered_quantity . '">' . $row->unit_code . '</span>';
                 })
                 ->editColumn('received_quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->received_quantity).'/<span class="received_quantity" data-value="'.$row->received_quantity.'">'.$row->unit_code.'</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->received_quantity) . '/<span class="received_quantity" data-value="' . $row->received_quantity . '">' . $row->unit_code . '</span>';
                 })
                 ->editColumn('pending_quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->pending_quantity).'/<span class="pending_quantity" data-value="'.$row->pending_quantity.'">'.$row->unit_code.'</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->pending_quantity) . '/<span class="pending_quantity" data-value="' . $row->pending_quantity . '">' . $row->unit_code . '</span>';
                 })
-                ->editColumn('invoice_id', fn ($row) => '<a href="'.route('purchase.orders.show', [$row->purchase_id]).'" class="text-hover" id="details_btn" title="View">'.$row->invoice_id.'</a>')
+                ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchase.orders.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
                 ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-                ->editColumn('unit_tax_amount', fn ($row) => '('.\App\Utils\Converter::format_in_bdt($row->unit_tax_percent).'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
                 ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_unit_cost))
 
-                ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="'.$row->line_total.'">'.\App\Utils\Converter::format_in_bdt($row->line_total).'</span>')
+                ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt($row->line_total) . '</span>')
 
                 ->rawColumns(['product', 'product_code', 'date', 'branch', 'ordered_quantity', 'received_quantity', 'pending_quantity', 'invoice_id', 'unit_cost_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'net_unit_cost', 'line_total'])
                 ->make(true);

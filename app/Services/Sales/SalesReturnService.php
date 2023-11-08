@@ -66,7 +66,7 @@ class SalesReturnService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('return_access')) {
+                    if (auth()->user()->can('edit_sales_return')) {
 
                         $html .= '<a class="dropdown-item" href="'.route('sales.returns.edit', [$row->id]).'">'.__('Edit').'</a>';
                     }
@@ -74,7 +74,7 @@ class SalesReturnService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('return_access')) {
+                    if (auth()->user()->can('delete_sales_return')) {
 
                         $html .= '<a href="'.route('sales.returns.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
                     }

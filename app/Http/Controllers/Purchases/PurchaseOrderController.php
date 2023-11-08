@@ -46,7 +46,7 @@ class PurchaseOrderController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (! auth()->user()->can('purchase_all')) {
+        if (! auth()->user()->can('purchase_order_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -109,6 +109,11 @@ class PurchaseOrderController extends Controller
 
     public function create()
     {
+        if (! auth()->user()->can('purchase_order_add')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $accounts = $this->accountService->accounts(with: [
@@ -145,6 +150,11 @@ class PurchaseOrderController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('purchase_order_add')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'date' => 'required|date',
@@ -238,7 +248,7 @@ class PurchaseOrderController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('purchase_edit')) {
+        if (! auth()->user()->can('purchase_order_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -290,6 +300,11 @@ class PurchaseOrderController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('purchase_order_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'date' => 'required|date',
@@ -385,6 +400,11 @@ class PurchaseOrderController extends Controller
     // delete purchase method
     public function delete($id)
     {
+        if (! auth()->user()->can('purchase_order_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
             DB::beginTransaction();
 

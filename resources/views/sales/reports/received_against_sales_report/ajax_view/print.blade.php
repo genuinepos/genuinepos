@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Sold Products Report") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Received Against Sales Report") }}</strong></h6>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
     </div>
 
     <div class="row mt-2">
-        <div class="col-4">
+        <div class="col-6">
             @php
                 $ownOrParentbranchName = $generalSettings['business__shop_name'];
                 if (auth()->user()?->branch) {
@@ -133,11 +133,7 @@
             <p><strong>{{ __("Shop/Business") }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
 
-        <div class="col-4">
-            <p><strong>{{ __("Product") }} : </strong> {{ $filteredProductName ? $filteredProductName : __("All") }} </p>
-        </div>
-
-        <div class="col-4">
+        <div class="col-6">
             <p><strong>{{ __("Customer") }} : </strong> {{ $filteredCustomerName }} </p>
         </div>
     </div>
@@ -145,9 +141,7 @@
     @php
         $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-
-        $totalQty = 0;
-        $totalSubtotal = 0;
+        $totalReceivedAmount = 0;
     @endphp
 
     <div class="row mt-1">
@@ -155,94 +149,113 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-start">{{ __("Product") }}</th>
-                        <th class="text-start">{{ __("P. Code(SKU)") }}</th>
-                        <th class="text-start">{{ __("Shop") }}</th>
-                        <th class="text-start">{{ __("Stock Location") }}</th>
-                        <th class="text-start">{{ __("Customer") }}</th>
-                        <th class="text-start">{{ __("Invoice ID") }}</th>
-                        <th class="text-end">{{ __("Quantity") }}</th>
-                        <th class="text-end">{{ __("Unit Price Exc. Tax") }}</th>
-                        <th class="text-end">{{ __("Unit Discount") }}</th>
-                        <th class="text-end">{{ __("Vat/Tax") }}</th>
-                        <th class="text-end">{{ __("Unit Price Inc. Tax") }}</th>
-                        <th class="text-end">{{ __("Subtotal") }}</th>
+                        <th>{{ __("Receipt Voucher") }}</th>
+                        <th>{{ __("Receipt Date") }}</th>
+                        <th>{{ __("Shop/Business") }}</th>
+                        <th>{{ __('Sales/Order') }}</th>
+                        <th>{{ __('date') }}</th>
+                        <th>{{ __("Customer") }}</th>
+                        <th class="text-end">{{ __("Total Invoice Amount") }}</th>
+                        <th>{{ __("Debit A/c") }}</th>
+                        <th>{{ __("Type/Method") }}</th>
+                        <th class="text-end">{{ __("Received Amount") }}</th>
                     </tr>
                 </thead>
                 <tbody class="sale_print_product_list">
-                    @php
-                        $previousDate = '';
-                    @endphp
-                    @foreach ($saleProducts as $saleProduct)
-                        @php
-                           $date = date($__date_format, strtotime($saleProduct->date))
-                        @endphp
-                        @if ($previousDate != $date)
-
-                            @php
-                                $previousDate = $date;
-                            @endphp
-
-                            <tr>
-                                <th class="text-start" colspan="12">{{ $date }}</th>
-                            </tr>
-                        @endif
-
+                    @foreach ($receivedAgainstSales as $receivedAgainstSale)
                         <tr>
+                            <td class="text-start fw-bold">{{ $receivedAgainstSale->voucherDescription?->accountingVoucher?->voucher_no }}</td>
+
                             <td class="text-start">
                                 @php
-                                    $variant = $saleProduct->variant_name ? ' - ' . $saleProduct->variant_name : '';
-                                    $totalQty += $saleProduct->quantity;
-                                    $totalSubtotal += $saleProduct->subtotal;
+                                    $receiptDate = $receivedAgainstSale->voucherDescription?->accountingVoucher?->date;
                                 @endphp
-                               {{ $saleProduct->name . $variant }}
-                            </td>
-
-                            <td class="text-start">{{ $saleProduct->variant_code ? $saleProduct->variant_code : $saleProduct->product_code}}</td>
-                            <td class="text-start">
-                                @if ($saleProduct->branch_id)
-
-                                    @if ($saleProduct->parent_branch_name)
-
-                                        {{ $saleProduct->parent_branch_name . '(' . $purchase->branch_area_name . ')' }}
-                                    @else
-
-                                        {{ $saleProduct->branch_name . '(' . $saleProduct->branch_area_name . ')' }}
-                                    @endif
-                                @else
-
-                                    {{$generalSettings['business__shop_name']}}
-                                @endif
+                                {{ date($__date_format, strtotime($receiptDate)) }}
                             </td>
 
                             <td class="text-start">
-                                @if ($saleProduct->warehouse_name)
+                                @php
+                                    $branchName = '';
+                                    $branch_id = $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch_id;
+                                    if ($branch_id) {
 
-                                    {{ $saleProduct->warehouse_name . '-(' . $saleProduct->warehouse_code . ')' }}
-                                @else
-                                    @if ($saleProduct->branch_id)
+                                        $branch = $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch;
+                                        $parentBranch = $receivedAgainstSale?->voucherDescription?->accountingVoucher?->branch?->parentBranch;
+                                        if ($parentBranch) {
 
-                                        @if ($saleProduct->parent_branch_name)
+                                            $branchName = $parentBranch->name . '(' . $branch->area_name . ')';
+                                        } else {
 
-                                            {{ $saleProduct->parent_branch_name . '(' . $saleProduct->branch_area_name . ')' }}
-                                        @else
+                                            $branchName = $branch->name . '(' . $branch->area_name . ')';
+                                        }
+                                    } else {
 
-                                            {{ $saleProduct->branch_name . '(' . $saleProduct->branch_area_name . ')' }}
-                                        @endif
-                                    @else
+                                        $branchName = $generalSettings['business__shop_name'];
+                                    }
+                                @endphp
 
-                                        {{$generalSettings['business__shop_name']}}
-                                    @endif
-                                @endif
+                                {{ $branchName }}
                             </td>
-                            <td class="text-start">{{ $saleProduct->customer_name }}</td>
-                            <td class="text-start">{{ $saleProduct->invoice_id }}</td>
-                            <td class="text-start fw-bold">{!! App\Utils\Converter::format_in_bdt($saleProduct->quantity)  .'/'.$saleProduct->unit_code !!}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_exc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_discount_amount) }}</td>
-                            <td class="text-end fw-bold">{{ '('.$saleProduct->unit_tax_percent.'%)='.App\Utils\Converter::format_in_bdt($saleProduct->unit_tax_amount) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</td>
-                            <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($saleProduct->subtotal) }}</td>
+
+                            <td class="text-start fw-bold">
+                                @php
+                                    $saleId = $receivedAgainstSale?->sale?->id;
+                                    $invoiceId = $receivedAgainstSale?->sale?->invoice_id;
+                                    $salesOrderId = $receivedAgainstSale?->sale?->order_id;
+                                    $saleStatus = $receivedAgainstSale?->sale?->status;
+
+                                    $salesVoucherNo = '';
+                                    if ($saleStatus == App\Enums\SaleStatus::Final->value) {
+
+                                        $salesVoucherNo = __('Sales') . ':' .  $invoiceId;
+                                    } else if ($saleStatus == App\Enums\SaleStatus::Order->value) {
+
+                                        $salesVoucherNo = __('Order') . ':' . $salesOrderId;
+                                    }
+                                @endphp
+
+                                {{ $salesVoucherNo }}
+                            </td>
+
+                            <td class="text-start">
+                                @php
+                                    $saleDate = $receivedAgainstSale?->sale?->date;
+                                @endphp
+
+                                {{ date($__date_format, strtotime($saleDate)) }}
+                            </td>
+
+                            <td class="text-start">
+                                {{ $receivedAgainstSale?->sale?->customer?->name; }}
+                            </td>
+
+                            <td class="text-end fw-bold">
+                                @php
+                                    $salesAmount = $receivedAgainstSale?->sale ? $receivedAgainstSale?->sale?->total_invoice_amount : 0;
+                                @endphp
+                                {{ App\Utils\Converter::format_in_bdt($salesAmount) }}
+                            </td>
+
+                            <td class="text-end fw-bold">
+                                @php
+                                    $accountName = $receivedAgainstSale?->voucherDescription?->accountingVoucher?->voucherDebitDescription?->account?->name;
+                                    $accountNumber = $receivedAgainstSale?->voucherDescription?->accountingVoucher?->voucherDebitDescription?->account?->account_number;
+
+                                    $__accountNumber = $accountNumber ? ' / ' . $accountNumber : '';
+                                @endphp
+                                {{ $accountName . $__accountNumber }}
+                            </td>
+
+                            <td class="text-end fw-bold">
+                                {{ $receivedAgainstSale?->voucherDescription?->accountingVoucher?->voucherDebitDescription?->paymentMethod?->name }}
+                            </td>
+
+                            <td class="text-end fw-bold">
+                                {{ App\Utils\Converter::format_in_bdt($receivedAgainstSale->amount) }}
+                                @php
+                                    $totalReceivedAmount += $receivedAgainstSale->amount;
+                                @endphp
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -255,16 +268,9 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th class="text-end">{{ __("Total Qty") }} : </th>
+                        <th class="text-end">{{ __("Total Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                         <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalQty) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __("Net Total Amount") }} : </th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalSubtotal) }}
+                            {{ App\Utils\Converter::format_in_bdt($totalReceivedAmount) }}
                         </td>
                     </tr>
                 </thead>

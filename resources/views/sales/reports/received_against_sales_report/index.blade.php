@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Sales Report - ')
+@section('title', 'Received Against Sales Report - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>{{ __('Sales Report') }}</h5>
+                                <h5>{{ __('Received Against Sales Report') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
@@ -26,8 +26,8 @@
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                    <div class="col-md-2">
-                                                        <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                    <div class="col-md-3">
+                                                        <label><strong>{{ __("Shop/Business") }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
                                                             <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
@@ -114,34 +114,23 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Date") }}</th>
-                                                <th>{{ __('Invoice ID') }}</th>
+                                                <th>{{ __("Receipt Voucher") }}</th>
+                                                <th>{{ __("Receipt Date") }}</th>
                                                 <th>{{ __("Shop/Business") }}</th>
+                                                <th>{{ __('Sales/Order') }}</th>
+                                                <th>{{ __('date') }}</th>
                                                 <th>{{ __("Customer") }}</th>
-                                                <th>{{ __("Total Qty") }}</th>
-                                                <th>{{ __('Net total Amt') }}.</th>
-                                                <th>{{ __("Sale Discount") }}</th>
-                                                <th>{{ __("Shipment Charge") }}</th>
-                                                <th>{{ __("Sale Tax") }}</th>
                                                 <th>{{ __("Total Invoice Amount") }}</th>
-                                                <th>{{ __("Received") }}</th>
-                                                <th>{{ __("Return") }}</th>
-                                                <th>{{ __("Due") }}</th>
+                                                <th>{{ __("Debit A/c") }}</th>
+                                                <th>{{ __("Type/Method") }}</th>
+                                                <th>{{ __("Received Amount") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="4" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
-                                                <th id="total_qty" class="text-white"></th>
-                                                <th id="net_total_amount" class="text-white"></th>
-                                                <th id="order_discount_amount" class="text-white"></th>
-                                                <th id="shipment_charge" class="text-white"></th>
-                                                <th id="order_tax_amount" class="text-white"></th>
-                                                <th id="total_invoice_amount" class="text-white"></th>
+                                                <th colspan="9" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
                                                 <th id="received_amount" class="text-white"></th>
-                                                <th id="sale_return_amount" class="text-white"></th>
-                                                <th id="due" class="text-white"></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -177,7 +166,7 @@
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('reports.sales.report.index') }}",
+                "url": "{{ route('reports.receive.against.sales.report') }}",
                 "data": function(d) {
                     d.branch_id = $('#branch_id').val();
                     d.customer_account_id = $('#customer_account_id').val();
@@ -185,45 +174,22 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [{ data: 'date', name: 'date' },
-                { data: 'invoice_id', name: 'sales.invoice_id', className: 'fw-bold' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'customer_name', name: 'customers.name' },
-                { data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold' },
-                { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end fw-bold' },
-                { data: 'order_discount_amount', name: 'order_discount_amount', className: 'text-end fw-bold' },
-                { data: 'shipment_charge', name: 'shipment_charge', className: 'text-end fw-bold' },
-                { data: 'order_tax_amount', name: 'order_tax_amount', className: 'text-end fw-bold' },
-                { data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold' },
-                { data: 'received_amount', name: 'paid', className: 'text-end fw-bold' },
-                { data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end fw-bold' },
-                { data: 'due', name: 'due', className: 'text-end fw-bold' },
+            columns: [
+                { data: 'receipt_voucher', name: 'voucherDescription.accountingVoucher.voucher_no', className: 'fw-bold' },
+                { data: 'receipt_date', name: 'voucherDescription.accountingVoucher.voucher_no' },
+                { data: 'branch', name: 'voucherDescription.accountingVoucher.branch.name' },
+                { data: 'sales_or_order_id', name: 'sale.invoice_id', className: 'fw-bold' },
+                { data: 'sales_date', name: 'sale.date' },
+                { data: 'customer', name: 'sale.customer.name' },
+                { data: 'total_invoice_amount', name: 'sale.order_id', className: 'text-end fw-bold' },
+                { data: 'debit_account', name: 'voucherDescription.accountingVoucher.voucherDebitDescription.account.name', },
+                { data: 'payment_method', name: 'voucherDescription.accountingVoucher.voucherDebitDescription.paymentMethod.name', },
+                { data: 'received_amount', name: 'voucherDescription.accountingVoucher.branch.parentBranch.name', className: 'text-end fw-bold' },
             ],
             fnDrawCallback: function() {
 
-                var net_total_amount = sum_table_col($('.data_tbl'), 'net_total_amount');
-                $('#net_total_amount').text(bdFormat(net_total_amount));
-
-                var order_discount_amount = sum_table_col($('.data_tbl'), 'order_discount_amount');
-                $('#order_discount_amount').text(bdFormat(order_discount_amount));
-
-                var shipment_charge = sum_table_col($('.data_tbl'), 'shipment_charge');
-                $('#shipment_charge').text(bdFormat(shipment_charge));
-
-                var order_tax_amount = sum_table_col($('.data_tbl'), 'order_tax_amount');
-                $('#order_tax_amount').text(bdFormat(order_tax_amount));
-
-                var total_invoice_amount = sum_table_col($('.data_tbl'), 'total_invoice_amount');
-                $('#total_invoice_amount').text(bdFormat(total_invoice_amount));
-
                 var received_amount = sum_table_col($('.data_tbl'), 'received_amount');
                 $('#received_amount').text(bdFormat(received_amount));
-
-                var sale_return_amount = sum_table_col($('.data_tbl'), 'sale_return_amount');
-                $('#sale_return_amount').text(bdFormat(sale_return_amount));
-
-                var due = sum_table_col($('.data_tbl'), 'due');
-                $('#due').text(bdFormat(due));
 
                 $('.data_preloader').hide();
             }
@@ -254,7 +220,7 @@
         $(document).on('click', '#print_report', function(e) {
             e.preventDefault();
 
-            var url = "{{ route('reports.sales.report.print') }}";
+            var url = "{{ route('reports.receive.against.sales.report.print') }}";
 
             var branch_id = $('#branch_id').val();
             var branch_name = $('#branch_id').find('option:selected').data('branch_name');

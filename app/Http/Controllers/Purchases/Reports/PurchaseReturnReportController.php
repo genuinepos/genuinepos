@@ -22,6 +22,11 @@ class PurchaseReturnReportController extends Controller
 
     public function index(Request $request)
     {
+        if (! auth()->user()->can('purchase_return_report')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');

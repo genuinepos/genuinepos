@@ -26,6 +26,11 @@ class PurchaseReturnProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
+        if (! auth()->user()->can('purchase_returned_product_report')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
 
             $generalSettings = config('generalSettings');

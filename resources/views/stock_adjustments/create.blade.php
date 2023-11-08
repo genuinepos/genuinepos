@@ -41,7 +41,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Expense Ledger') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-7">
-                                            <select name="expense_account_id" class="form-control" id="expense_account_id" data-next="date" autofocus>
+                                            <select required name="expense_account_id" class="form-control" id="expense_account_id" data-next="date" autofocus>
                                                 <option value="">{{ __("Select Expense Ledger A/c") }}</option>
                                                 @foreach ($expenseAccounts as $expenseAccount)
                                                     <option value="{{ $expenseAccount->id }}">{{ $expenseAccount->name }}</option>

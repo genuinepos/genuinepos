@@ -261,6 +261,14 @@
                                                 <tbody id="vouchers_list">
                                                     @if (count($vouchers))
                                                         @foreach ($vouchers as $voucher)
+                                                            @php
+                                                                $route = '';
+                                                                if ($voucher['voucherType'] == App\Enums\DayBookVoucherType::SalesOrder->value) {
+                                                                    $route = route('sale.orders.show', $voucher['refId']);
+                                                                }else if ($voucher['voucherType'] == App\Enums\DayBookVoucherType::Sales->value) {
+                                                                    $route = route('sales.show', $voucher['refId']);
+                                                                }
+                                                            @endphp
                                                             <tr id="selectable_tr">
                                                                 <td class="text-start">
                                                                     <input type="checkbox" onchange="selectVoucher(this)" class="select_voucher" id="{{ $voucher['voucherId'].$voucher['refId'] }}"  value="{{ $voucher['voucherId'].$voucher['refId'] }}">
@@ -271,7 +279,7 @@
                                                                     <input type="hidden" id="db_ref_id" value="{{ $voucher['refId'] }}">
                                                                     <input type="hidden" id="db_amount" value="{{ $voucher['due'] }}">
                                                                 </td>
-                                                                <td class="text-start"><a href="#">{{ $voucher['voucherNo'] }}</a></td>
+                                                                <td class="text-start"><a href="{{ $route }}" id="details_btn">{{ $voucher['voucherNo'] }}</a></td>
                                                                 <td class="text-start">{{ $voucher['voucherTypeStr'] }}</td>
                                                                 <td class="text-start {{ $voucher['paymentStatus'] == 'Partial' ? 'text-primary' : 'text-danger' }}">{{ $voucher['paymentStatus'] }}</td>
                                                                 <td class="text-start text-danger fw-bold">{{ App\Utils\Converter::format_in_bdt($voucher['due']) }}</td>

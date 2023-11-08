@@ -2,11 +2,12 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\PaymentStatus;
-use App\Enums\SaleStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
+use App\Enums\PaymentStatus;
+use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -56,6 +57,7 @@ class SaleService
             'sales.paid as received_amount',
             'sales.due',
             'sales.is_return_available',
+            'sales.shipment_status',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -116,7 +118,8 @@ class SaleService
 
                 $html = '';
                 $html .= $row->invoice_id;
-                $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo mr-1 text-white"></i></span>' : '';
+                $html .= $row->shipment_status != ShipmentStatus::NoStatus->value && $row->shipment_status != ShipmentStatus::Cancelled->value ? ' <i class="fas fa-shipping-fast text-dark"></i>' : '';
+                $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
                 return '<a href="'.route('sales.show', [$row->id]).'" id="details_btn">'.$html.'</a>';
             })

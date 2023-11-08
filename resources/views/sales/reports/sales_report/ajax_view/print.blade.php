@@ -9,7 +9,7 @@
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px;margin-right: 5px;}
-    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
 
     .print_table th { font-size:11px!important; font-weight: 550!important; line-height: 12px!important}
     .print_table tr td{color: black; font-size:10px!important; line-height: 12px!important}

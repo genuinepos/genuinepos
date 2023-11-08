@@ -59,7 +59,7 @@ class SalesReturnController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('return_access')) {
+        if (! auth()->user()->can('sales_return_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -106,7 +106,7 @@ class SalesReturnController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('return_access')) {
+        if (! auth()->user()->can('create_sales_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -157,6 +157,11 @@ class SalesReturnController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('create_sales_return')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+        
         $this->validate($request, [
             'customer_account_id' => 'required',
             'date' => 'required|date',

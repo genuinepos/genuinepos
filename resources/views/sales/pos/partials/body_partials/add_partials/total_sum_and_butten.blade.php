@@ -36,10 +36,10 @@
                             @if ($generalSettings['pos__is_enabled_quotation'] == '1')
                                 <button type="button" id="quotation" value="{{ App\Enums\SaleStatus::Quotation->value }}" class="function-card pos_submit_btn btn" tabindex="-1">
                                     <span class="d-block">{{ __("Quotation") }}</span>
-                                    <span class="d-block">{{ __("F4") }}</span>
+                                     <span class="d-block">{{ __("Alt+Q") }}</span>  {{--F4 --}}
                                 </button>
                             @else
-                                <a href="#" id="quotation_disabled" onclick="event.preventDefault(); toastr.error('Creating quotaion is disabled in POS');"  class="function-card">{{ __("Quotation") }}<p>{{ __("F4") }}</p>
+                                <a href="#" id="quotation_disabled" onclick="event.preventDefault(); toastr.error('Creating quotaion is disabled in POS');"  class="function-card">{{ __("Quotation") }}<p>{{ __("Alt+Q") }}</p>
                                 </a>
                             @endif
                         </div>
@@ -196,6 +196,7 @@
                         <label class="col-sm-5 col-form-label text-white text-end">{{ __("Invoice Amount") }}</label>
                         <div class="col-sm-7">
                             <input readonly type="number" step="any" name="total_invoice_amount" class="form-control fw-bold" id="total_invoice_amount" value="0.00" tabindex="-1">
+                            <input type="number" step="any" class="d-none" name="sales_ledger_amount" id="sales_ledger_amount" value="0.00">
                         </div>
                     </div>
 
@@ -227,7 +228,7 @@
                     <div class="row">
                         <label class="col-sm-5 col-5 col-form-label text-danger text-end"><b>{{ __("Curr. Balance") }}</b></label>
                         <div class="col-sm-7 col-7">
-                            <input type="text" readonly name="total_due" id="total_due" class="form-control pos-amounts text-danger fw-bold" value="0.00" tabindex="-1">
+                            <input type="text" readonly name="current_balance" id="current_balance" class="form-control pos-amounts text-danger fw-bold" value="0.00" tabindex="-1">
                         </div>
                     </div>
                 </div>

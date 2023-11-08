@@ -350,9 +350,21 @@ class SaleService
 
     public function restrictions(object $request, object $accountService, $checkCustomerChangeRestriction = false, int $saleId = null): ?array
     {
+        $customer = $accountService->singleAccount(id: $request->customer_account_id);
+
         if (! isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Products table must not be empty.')];
+        }
+
+        if($customer->is_walk_in_customer == 1 && $request->current_balance > 0){
+
+            return ['pass' => false, 'msg' => __('Due or partial sale is not allowed for walk-in-customer . Please select a listed customer.')];
+        }
+
+        if (isset($request->is_full_credit_sale) && $request->is_full_credit_sale == 0 && $request->received_amount == 0) {
+
+            return ['pass' => false, 'msg' => __('If you want to sale in full credit, so click credit sale button.')];
         }
 
         if ($checkCustomerChangeRestriction == true) {
@@ -366,9 +378,14 @@ class SaleService
                     return ['pass' => false, 'msg' => __('Customer can not be changed. One or more receipts is exists against this sales.')];
                 }
             }
+
+            if ($sale->status == SaleStatus::Final->value && $request->status != SaleStatus::Final->value) {
+
+                return ['pass' => false, 'msg' => __('Final sale status can not be changed to quotation, draft, hold or suspend.')];
+            }
         }
 
-        if (($request->status == SaleStatus::Order->value || $request->status == SaleStatus::Quotation->value) && ! $request->customer_account_id) {
+        if (($request->status == SaleStatus::Order->value || $request->status == SaleStatus::Quotation->value) && $customer->is_walk_in_customer == 1) {
 
             return ['pass' => false, 'msg' => __('Listed customer is required for sales order and quotation.')];
         }

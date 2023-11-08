@@ -78,6 +78,16 @@ class ContactService
         return $updateContact;
     }
 
+    public function updateRewardPoint(?int $contactId = null, int $currentPoint = 0): void
+    {
+        if (isset($contactId)) {
+
+            $updateRewardPoint = $this->singleContact(id: $contactId);
+            $updateRewardPoint->reward_point = $currentPoint;
+            $updateRewardPoint->save();
+        }
+    }
+
     public function changeStatus($contactId)
     {
         $statusChange = Contact::where('id', $contactId)->first();
@@ -100,7 +110,7 @@ class ContactService
     {
         $deleteContact = $this->singleContact(id: $id);
 
-        if (! is_null($deleteContact)) {
+        if (!is_null($deleteContact)) {
 
             $deleteContact->delete();
         }

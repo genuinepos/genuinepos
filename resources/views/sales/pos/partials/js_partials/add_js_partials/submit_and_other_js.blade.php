@@ -1,20 +1,22 @@
 <script>
-    var actionMessage = 'Data inserted Successfull.';
 
     function saveAndPrintSuccessMsg() {
 
         var status = $('status').val();
 
+        var actionMessage = 'Data inserted Successfull.';
         if (status == 1) {
 
-           return actionMessage = 'Sale created Successfully.';
+            actionMessage = "{{ __('Sale created Successfully.') }}";
         } else if (status == 2) {
 
-           return actionMessage = 'Draft created successfully.';
+            actionMessage = "{{ __('Draft created successfully.') }}";
         } else if (status == 4) {
 
-           return actionMessage = 'Quotation created Successfully.';
+            actionMessage = "{{ __('Quotation created Successfully.') }}";
         }
+
+        return actionMessage;
     }
 
     $(document).on('click', '#credit_and_final', function (e) {
@@ -97,7 +99,9 @@
                     document.getElementById('search_product').focus();
                 }else {
 
-                    toastr.success(actionMessage);
+                    var msg = saveAndPrintSuccessMsg();
+
+                    toastr.success(msg);
 
                     afterSubmitForm();
 
@@ -113,7 +117,7 @@
 
                     document.getElementById('search_product').focus();
                 }
-            },error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;

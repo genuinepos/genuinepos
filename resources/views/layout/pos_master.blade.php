@@ -212,7 +212,7 @@
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                    <button class="btn btn-success pos_submit_btn p-1" id="choose_method_and_final" tabindex="-1">{{ __("Confirm") }} (F10)</button>
+                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __("Confirm") }} (F10)</button>
                                     <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __("Close") }}</button>
                                 </div>
                             </div>
@@ -567,7 +567,7 @@
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
                                 <label class="text-white big_label"><strong>{{ __("Curr. Balance") }}</strong> </label>
-                                <input readonly type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
+                                <input readonly type="text" class="form-control text-danger big_field" id="modal_current_balance" value="0">
                             </div>
                         </div>
                     </div>

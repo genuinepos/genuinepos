@@ -2,6 +2,7 @@
 
 namespace App\Services\Sales;
 
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 
 class SalesHelperService
@@ -14,48 +15,50 @@ class SalesHelperService
         $products = '';
 
         $query = DB::table('products')
-            ->where('products.is_for_sale', 1)
+            ->where('products.is_for_sale', BooleanType::True->value)
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
             ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
-            ->leftJoin('units', 'products.unit_id', 'units.id')
-            ->leftJoin('purchase_products as updateProductCost', function ($join) use ($generalSettings) {
+            ->leftJoin('units', 'products.unit_id', 'units.id');
+        // ->leftJoin('purchase_products as updateProductCost', function ($join) use ($generalSettings) {
 
-                $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
-                if ($stockAccountingMethod == 1) {
+        //     if ($stockAccountingMethod == 1) {
 
-                    $ordering = 'asc';
-                } else {
+        //         $ordering = 'asc';
+        //     } else {
 
-                    $ordering = 'desc';
-                }
+        //         $ordering = 'desc';
+        //     }
 
-                $join->on('products.id', 'updateProductCost.product_id')
-                    ->where('updateProductCost.left_qty', '>', '0')
-                    ->where('updateProductCost.variant_id', null)
-                    ->where('updateProductCost.branch_id', auth()->user()->branch_id)
-                    ->orderBy('updateProductCost.created_at', $ordering)->select('updateProductCost.product_id', 'updateProductCost.net_unit_cost')->limit(1);
-                // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
-            })->leftJoin('purchase_products as updateVariantCost', function ($join) use ($generalSettings) {
+        //     return $join->on('products.id', 'updateProductCost.product_id')
+        //         ->where('updateProductCost.left_qty', '>', '0')
+        //         ->where('updateProductCost.variant_id', null)
+        //         ->where('updateProductCost.branch_id', auth()->user()->branch_id)
+        //         ->orderBy('updateProductCost.created_at', $ordering)
+        //         ->select('updateProductCost.product_id', 'updateProductCost.net_unit_cost')->take(1);
+        //     // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
+        // })->leftJoin('purchase_products as updateVariantCost', function ($join) use ($generalSettings) {
 
-                $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
-                if ($stockAccountingMethod == 1) {
+        //     if ($stockAccountingMethod == 1) {
 
-                    $ordering = 'asc';
-                } else {
+        //         $ordering = 'asc';
+        //     } else {
 
-                    $ordering = 'desc';
-                }
+        //         $ordering = 'desc';
+        //     }
 
-                $join->on('product_variants.id', 'updateVariantCost.variant_id')
-                    ->where('updateVariantCost.left_qty', '>', '0')
-                    ->where('updateVariantCost.branch_id', auth()->user()->branch_id)
-                    ->orderBy('updateVariantCost.created_at', $ordering)->select('updateVariantCost.product_id', 'updateVariantCost.net_unit_cost')->limit(1);
-                // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
-            });
+        //     return $join->on('product_variants.id', 'updateVariantCost.variant_id')
+        //         ->where('updateVariantCost.left_qty', '>', '0')
+        //         ->where('updateVariantCost.branch_id', auth()->user()->branch_id)
+        //         ->orderBy('updateVariantCost.created_at', $ordering)
+        //         ->select('updateVariantCost.product_id', 'updateVariantCost.net_unit_cost')->take(1);
+        //     // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
+        // });
 
         if ($request->category_id) {
 
@@ -94,19 +97,35 @@ class SalesHelperService
                 'units.name as unit_name',
                 'tax.id as tax_ac_id',
                 'tax.tax_percent',
-                'updateProductCost.net_unit_cost as update_product_cost',
-                'updateVariantCost.net_unit_cost as update_variant_cost',
+                // 'updateProductCost.net_unit_cost as update_product_cost',
+                // 'updateVariantCost.net_unit_cost as update_variant_cost',
             ]
         )->distinct('product_access_branches.branch_id');
 
-        if (! $request->category_id && ! $request->brand_id) {
+        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
-            $products = $query->orderBy('products.id', 'desc')->limit(90)->get();
+
+        if ($stockAccountingMethod == 1) {
+
+            $ordering = 'asc';
         } else {
 
-            $products = $query->orderBy('products.id', 'desc')->get();
+            $ordering = 'desc';
         }
 
-        return $products;
+        $products = $query->addSelect([
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
+        ]);
+
+        if (! $request->category_id && ! $request->brand_id) {
+
+            $query->orderBy('products.id', 'desc')->limit(90);
+        } else {
+
+            $query->orderBy('products.id', 'desc');
+        }
+
+        return $products->get();
     }
 }

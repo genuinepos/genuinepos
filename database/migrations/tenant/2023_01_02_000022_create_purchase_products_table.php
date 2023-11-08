@@ -46,18 +46,20 @@ return new class extends Migration
             $table->unsignedBigInteger('production_id')->nullable()->index('purchase_products_production_id_foreign');
             $table->unsignedBigInteger('opening_stock_id')->nullable()->index('purchase_products_opening_stock_id_foreign');
             $table->unsignedBigInteger('sale_return_product_id')->nullable()->index('purchase_products_sale_return_product_id_foreign');
+            $table->unsignedBigInteger('transfer_stock_product_id')->nullable()->index('purchase_products_transfer_stock_product_id_foreign');
             $table->timestamps();
 
-            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['unit_id'])->references(['id'])->on('units')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign(['tax_ac_id'])->references(['id'])->on('accounts')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign(['opening_stock_id'])->references(['id'])->on('product_opening_stocks')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['production_id'])->references(['id'])->on('productions')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['product_id'])->references(['id'])->on('products')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['purchase_order_product_id'])->references(['id'])->on('purchase_order_products')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['purchase_id'])->references(['id'])->on('purchases')->onUpdate('NO ACTION')->onDelete('CASCADE');
-            $table->foreign(['sale_return_product_id'])->references(['id'])->on('sale_return_products')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['unit_id'])->references(['id'])->on('units')->onDelete('SET NULL');
+            $table->foreign(['tax_ac_id'])->references(['id'])->on('accounts')->onDelete('SET NULL');
+            $table->foreign(['opening_stock_id'])->references(['id'])->on('product_opening_stocks')->onDelete('CASCADE');
+            $table->foreign(['production_id'])->references(['id'])->on('productions')->onDelete('CASCADE');
+            $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
+            $table->foreign(['purchase_order_product_id'])->references(['id'])->on('purchase_order_products')->onDelete('CASCADE');
+            $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
+            $table->foreign(['purchase_id'])->references(['id'])->on('purchases')->onDelete('CASCADE');
+            $table->foreign(['sale_return_product_id'])->references(['id'])->on('sale_return_products')->onDelete('CASCADE');
+            $table->foreign(['transfer_stock_product_id'])->references(['id'])->on('transfer_stock_products')->onDelete('CASCADE');
         });
     }
 

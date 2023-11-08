@@ -54,7 +54,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-5"><b>{{ __("Send At") }}</b></label>
                                         <div class="col-7">
-                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="date" autofocus>
+                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
                                                 <option value="">{{ __("Select Warehouse") }}</option>
                                                 @foreach ($warehouses as $w)
                                                     <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
@@ -68,7 +68,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __("Receiver Shop/Business") }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-7">
-                                            <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="date" autofocus>
+                                            <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                 <option value="" class="fw-bold">{{ __("Select Receiver Shop/Business") }}</option>
                                                 <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
                                                 @foreach ($branches as $branch)
@@ -375,7 +375,7 @@
                                     product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                     li += '<li>';
-                                    li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_code="' + variant.variant_code + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
+                                    li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
                                     li += '</li>';
                                 });
 
@@ -421,13 +421,13 @@
                                     if (product.is_variant == 1) {
 
                                         li += '<li>';
-                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-v_name="' + product.variant_name + '" data-p_code="' + product.variant_code + '" data-p_cost_inc_tax="' + product.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-v_name="' + product.variant_name + '" data-p_cost_inc_tax="' + product.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
                                         li += '</li>';
 
                                     } else {
 
                                         li += '<li>';
-                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-v_name="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-p_code="' + product.product_code + '" data-p_cost_inc_tax="' + product.product_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-v_name="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-p_cost_inc_tax="' + product.product_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                         li += '</li>';
                                     }
                                 });
@@ -456,7 +456,6 @@
             var is_manage_stock = e.getAttribute('data-is_manage_stock');
             var product_name = e.getAttribute('data-p_name');
             var variant_name = e.getAttribute('data-v_name');
-            var product_code = e.getAttribute('data-p_code');
             var product_cost_inc_tax = e.getAttribute('data-p_cost_inc_tax');
 
             $('#search_product').val('');

@@ -108,4 +108,26 @@
 
         cancel();
     });
+
+    document.onkeyup = function () {
+
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.which == 46) { // Ctrl + Enter
+
+            var preTr = $('.active_tr').prev();
+            var next = $('.active_tr').next();
+            $('.active_tr #remove_product_btn').click();
+
+            if (preTr.length > 0) {
+
+                $(preTr).find('#edit_product_link').focus();
+            }else if (next.length > 0) {
+
+                $(next).find('#edit_product_link').focus();
+            }
+
+            return false;
+        }
+    }
 </script>

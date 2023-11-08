@@ -1029,6 +1029,8 @@
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
+        console.log(e.which);
+
         var status = $('#status').val() ? $('#status').val() : 1;
 
         if(e.ctrlKey && e.which == 13) { // Ctrl + Enter

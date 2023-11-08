@@ -244,7 +244,7 @@
                 tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
 
                 $('#editProductModal').modal('hide');
-
+                tr.find('#edit_product_link').focus();
                 calculateTotalAmount();
             }
         })

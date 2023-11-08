@@ -1167,3 +1167,8 @@ tbody#product_list td {
     outline: 0;
     box-shadow: 0 0 0 0.0rem rgba(13,110,253,.25);
 }
+
+.active_tr {
+    background: #a5abff !important;
+    color: black;
+}

@@ -2063,19 +2063,6 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('tax'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('settings.taxes.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-percentage"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.taxes')</p>
-                                        </a>
-                                    </div>
-                                @endif
-
                                 @if (auth()->user()->can('payment_settings'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('payment.methods.index') }}" class="switch-bar-wrap">

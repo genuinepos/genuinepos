@@ -259,30 +259,6 @@ Route::group(['prefix' => 'contacts'], function () {
 // Purchase route group
 Route::group(['prefix' => 'purchases'], function () {
 
-    Route::get('editable/purchase/{purchaseId}/{editType}', [PurchaseController::class, 'editablePurchase'])->name('purchases.get.editable.purchase');
-    Route::post('update/{purchaseId}', [PurchaseController::class, 'update'])->name('purchases.update');
-    Route::get('get/all/supplier', [PurchaseController::class, 'getAllSupplier'])->name('purchases.get.all.supplier');
-    Route::get('get/all/unit', [PurchaseController::class, 'getAllUnit'])->name('purchases.get.all.unites');
-    Route::get('get/all/tax', [PurchaseController::class, 'getAllTax'])->name('purchases.get.all.taxes');
-    Route::get('search/product/{product_code}', [PurchaseController::class, 'searchProduct']);
-    Route::delete('delete/{purchaseId}', [PurchaseController::class, 'delete'])->name('purchase.delete');
-    Route::post('add/supplier', [PurchaseController::class, 'addSupplier'])->name('purchases.add.supplier');
-    Route::get('add/product/modal/view', [PurchaseController::class, 'addProductModalView'])->name('purchases.add.product.modal.view');
-    Route::post('add/product', [PurchaseController::class, 'addProduct'])->name('purchases.add.product');
-    Route::get('recent/product/{productId}', [PurchaseController::class, 'getRecentProduct']);
-    Route::get('add/quick/supplier/modal', [PurchaseController::class, 'addQuickSupplierModal'])->name('purchases.add.quick.supplier.modal');
-    Route::get('payment/modal/{purchaseId}', [PurchaseController::class, 'paymentModal'])->name('purchases.payment.modal');
-    Route::post('payment/store/{purchaseId}', [PurchaseController::class, 'paymentStore'])->name('purchases.payment.store');
-    Route::get('payment/edit/{paymentId}', [PurchaseController::class, 'paymentEdit'])->name('purchases.payment.edit');
-    Route::post('payment/update/{paymentId}', [PurchaseController::class, 'paymentUpdate'])->name('purchases.payment.update');
-    Route::get('return/payment/modal/{purchaseId}', [PurchaseController::class, 'returnPaymentModal'])->name('purchases.return.payment.modal');
-    Route::post('return/payment/store/{purchaseId}', [PurchaseController::class, 'returnPaymentStore'])->name('purchases.return.payment.store');
-    Route::get('return/payment/edit/{paymentId}', [PurchaseController::class, 'returnPaymentEdit'])->name('purchases.return.payment.edit');
-    Route::post('return/payment/update/{paymentId}', [PurchaseController::class, 'returnPaymentUpdate'])->name('purchases.return.payment.update');
-    Route::get('payment/details/{paymentId}', [PurchaseController::class, 'paymentDetails'])->name('purchases.payment.details');
-    Route::delete('payment/delete/{paymentId}', [PurchaseController::class, 'paymentDelete'])->name('purchases.payment.delete');
-    Route::get('payment/list/{purchaseId}', [PurchaseController::class, 'paymentList'])->name('purchase.payment.list');
-
     Route::group(['prefix' => '/'], function () {
         Route::get('po/process/receive/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceive'])->name('purchases.po.receive.process');
         Route::post('po/process/receive/store/{purchaseId}', [PurchaseOrderReceiveController::class, 'processReceiveStore'])->name('purchases.po.receive.process.store');

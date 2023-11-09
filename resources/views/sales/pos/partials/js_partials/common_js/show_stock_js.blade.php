@@ -4,8 +4,9 @@
         $('#stock_preloader').show();
         $('#showStockModal').modal('show');
 
+        // sales.pos.branch.stock
         $.ajax({
-            url:"{{ route('sales.pos.branch.stock') }}",
+            url:"#",
             type:'get',
             success:function(data){
 

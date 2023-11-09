@@ -265,7 +265,7 @@
                             <div class="btn-bg">
                                 <button type="button" id="final" value="{{ App\Enums\SaleStatus::Final->value }}" class="function-card cash-btn pos_submit_btn btn" tabindex="-1">
                                     <span>{{ __("Cash") }}</span>
-                                    <p>{{ __("F10") }}</p>
+                                    <p>{{ __("Ctrl+Enter") }}</p>
                                 </button>
                             </div>
                         </div>

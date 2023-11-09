@@ -9,17 +9,12 @@
 @endphp
 
 <!-- Sale print templete-->
-
 <style>
     @media print {
         table { page-break-after: auto }
-
         tr { page-break-inside: avoid; page-break-after: auto }
-
         td { page-break-inside: avoid; page-break-after: auto }
-
         thead { display: table-header-group; }
-
         tfoot { display: table-footer-group; }
     }
 
@@ -47,7 +42,6 @@
 <div class="sale_print_template">
     <style>
         @page { size: a4; margin-top: 0.8cm; /* margin-bottom: 35px;  */ margin-left: 10px; margin-right: 10px; }
-
         div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
     <div class="details_area">
@@ -121,11 +115,11 @@
                         @endphp
 
                         @if ($invoiceLayout->branch_email)
-                            <strong>{{ __('Email') }} : </strong> <b>{{ $email }}</b>,
+                            <strong>{{ __('Email') }} : </strong> {{ $email }},
                         @endif
 
                         @if ($invoiceLayout->branch_phone)
-                            <strong>{{ __('Phone') }} : </strong> <b>{{ $phone }}</b>
+                            <strong>{{ __('Phone') }} : </strong> {{ $phone }}
                         @endif
                     </p>
                 </div>
@@ -135,7 +129,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;"><strong>{{ $invoiceLayout->quotation_heading }}</strong></h5>
+                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ $invoiceLayout->quotation_heading }}</h5>
                 </div>
             </div>
         @endif
@@ -177,19 +171,6 @@
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
                         <h5 style="text-transform: uppercase;">{{ $invoiceLayout->quotation_heading }}</h5>
-                        {{-- <h6>
-                                @php
-                                    $payable = $quotation->total_payable_amount - $quotation->sale_return_amount;
-                                @endphp
-
-                                @if ($quotation->due <= 0)
-                                    @lang('menu.paid')
-                                @elseif ($quotation->due > 0 && $quotation->due < $payable)
-                                    @lang('menu.partial')
-                                @elseif($payable == $quotation->due)
-                                    @lang('menu.due')
-                                @endif
-                            </h6> --}}
                     </div>
                 @endif
 

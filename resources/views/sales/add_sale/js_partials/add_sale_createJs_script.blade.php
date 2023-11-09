@@ -1029,7 +1029,7 @@
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        console.log(e.which);
+        // console.log(e.which);
 
         var status = $('#status').val() ? $('#status').val() : 1;
 

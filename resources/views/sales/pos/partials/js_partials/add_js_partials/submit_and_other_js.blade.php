@@ -145,6 +145,17 @@
         }
     });
 
+    document.onkeyup = function () {
+
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.ctrlKey && e.which == 13) { // Ctrl + Enter
+
+            $('#final').click();
+            return false;
+        }
+    }
+
     // After submitting form successfully this function will be executed.
     function afterSubmitForm() {
 

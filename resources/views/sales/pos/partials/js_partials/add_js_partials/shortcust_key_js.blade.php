@@ -35,11 +35,11 @@
     });
 
     //Key shortcut for Final
-    shortcuts.add('f10', function () {
+    // shortcuts.add('f10', function () {
 
-        $('#final').click();
-    });
-
+    //     $('#final').click();
+    // });
+    
     //Key shortcut for all payment method
     shortcuts.add('ctrl+b', function () {
 

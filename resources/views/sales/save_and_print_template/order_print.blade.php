@@ -149,11 +149,11 @@
                         @endphp
 
                         @if ($invoiceLayout->branch_email)
-                            <strong>{{ __('Email') }} : </strong> <b>{{ $email }}</b>,
+                            <strong>{{ __('Email') }} : </strong> {{ $email }},
                         @endif
 
                         @if ($invoiceLayout->branch_phone)
-                            <strong>{{ __('Phone') }} : </strong> <b>{{ $phone }}</b>
+                            <strong>{{ __('Phone') }} : </strong> {{ $phone }}
                         @endif
                     </p>
                 </div>
@@ -163,7 +163,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;"><strong>{{ __("Sales Order") }}</strong></h5>
+                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
                 </div>
             </div>
         @endif

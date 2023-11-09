@@ -108,8 +108,9 @@
         $('#suspendedSalesModal').modal('show');
         $('#suspend_preloader').show();
 
+        // sales.pos.suspended.list
         $.ajax({
-            url:"{{ route('sales.pos.suspended.list') }}",
+            url:"#",
             async:true,
             success:function(data){
 

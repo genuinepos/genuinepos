@@ -212,7 +212,7 @@
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __("Confirm") }} (F10)</button>
+                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __("Confirm") }} ({{ __("Ctrl+Enter") }})</button>
                                     <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __("Close") }}</button>
                                 </div>
                             </div>
@@ -269,60 +269,7 @@
     </form>
 
     <!-- Recent transection list modal-->
-    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="tab_list_area">
-                        <div class="btn-group">
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> {{ __("Final") }}</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/quotations/2') }}" tabindex="-1"><i class="fas fa-scroll"></i> {{ __("Quotation") }}</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/drafts/2') }}" tabindex="-1"><i class="fas fa-shopping-bag"></i> {{ __("Draft") }}</a>
-                        </div>
-                    </div>
-
-                    <div class="tab_contant">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="recent_sale_table_area">
-                                    <div class="data_preloader" id="recent_trans_preloader">
-                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table modal-table table-sm table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start fw-bold">@lang('menu.sl')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.date')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.customer')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.total')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.actions')</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="data-list" id="transection_list"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Recent transection list modal end-->
 
     <!-- Hold invoice list modal -->
@@ -573,10 +520,10 @@
                     </div>
 
                     <div class="form-group row mt-3">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 pos_submit_btn float-end">{{ __("Close") }}</button>
-                            <button class="btn btn-success ms-1 pos_submit_btn float-end" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} (F10)</button>
+                            <button class="btn btn-success ms-1 p-1 pos_submit_btn" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} ({{ __("Ctrl+Enter") }})</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __("Close") }}</button>
                         </div>
                     </div>
                 </div>

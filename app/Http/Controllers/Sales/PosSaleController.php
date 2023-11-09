@@ -168,7 +168,6 @@ class PosSaleController extends Controller
                 $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::Sales->value, date: date('Y-m-d'), accountId: $request->customer_account_id, transId: $addPosSale->id, amount: $request->total_invoice_amount, amountType: 'debit');
             }
 
-
             if ($request->status == SaleStatus::Final->value) {
 
                 // Add Sale A/c Ledger Entry

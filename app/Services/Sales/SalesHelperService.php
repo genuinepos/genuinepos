@@ -118,7 +118,7 @@ class SalesHelperService
             DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (! $request->category_id && ! $request->brand_id) {
+        if (!$request->category_id && !$request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {
@@ -127,5 +127,23 @@ class SalesHelperService
         }
 
         return $products->get();
+    }
+
+    public function recentSales(int $status, int $saleScreenType, ?int $limit = null): ?object
+    {
+        $sales = '';
+        $query = DB::table('sales')
+            ->leftJoin('accounts as customer', 'sales.customer_account_id', 'customer.id')
+            ->where('sales.status', $status)
+            ->where('sales.sale_screen', $saleScreenType);
+
+        if (isset($limit)) {
+
+            $query->limit($limit);
+        }
+
+        $sales = $query->select('sales.id', 'sales.invoice_id', 'sales.draft_id', 'sales.quotation_id', 'sales.status', 'sales.sale_screen', 'sales.total_invoice_amount', 'sales.date', 'customer.name as customer_name')->get();
+
+        return $sales;
     }
 }

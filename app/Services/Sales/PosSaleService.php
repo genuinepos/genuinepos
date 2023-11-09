@@ -7,6 +7,7 @@ use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
 use App\Enums\PaymentStatus;
+use App\Enums\SaleScreenType;
 use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -66,6 +67,7 @@ class PosSaleService
         $addSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0.00;
         $addSale->total_invoice_amount = $request->total_invoice_amount;
         $addSale->due = $request->total_invoice_amount;
+        $addSale->sale_screen = $saleScreenType;
         $addSale->save();
 
         return $addSale;

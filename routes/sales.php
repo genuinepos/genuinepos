@@ -46,21 +46,17 @@ Route::prefix('sales')->group(function () {
     Route::controller(SalesHelperController::class)->prefix('helper')->group(function () {
 
         Route::get('pos/selectable/products', 'posSelectableProducts')->name('sales.helper.pos.selectable.products');
+        Route::get('recent/transaction/modal/{initialStatus}/{saleScreenType}/{limit?}', 'recentTransactionModal')->name('sales.helper.recent.transaction.modal');
+        Route::get('recent/transaction/sales/{status}/{saleScreenType}/{limit?}', 'recentSales')->name('sales.helper.recent.transaction.sales');
+        Route::get('sales/print/{id}', 'salesPrint')->name('sales.print');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
 
         Route::get('create', 'create')->name('sales.pos.create');
         Route::post('store', 'store')->name('sales.pos.store');
-        Route::get('pick/hold/invoice', 'pickHoldInvoice');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
-        Route::get('invoice/products/{saleId}', 'invoiceProducts')->name('sales.pos.invoice.products');
         Route::post('update', 'update')->name('sales.pos.update');
-        Route::get('suspended/sale/list', 'suspendedList')->name('sales.pos.suspended.list');
-        Route::get('branch/stock', 'branchStock')->name('sales.pos.branch.stock');
-        Route::get('add/customer/modal', 'addQuickCustomerModal')->name('sales.pos.add.quick.customer.modal');
-        Route::post('add/customer', 'addCustomer')->name('sales.pos.add.customer');
-        Route::get('get/recent/product/{product_id}', 'getRecentProduct');
         Route::get('search/exchangeable/invoice', 'searchExchangeableInv')->name('sales.pos.search.exchange.invoice');
         Route::post('prepare/exchange', 'prepareExchange')->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', 'exchangeConfirm')->name('sales.pos.exchange.confirm');

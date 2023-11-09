@@ -55,6 +55,8 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->moduleNamespace)
                 ->domain($domain)
+                ->prefix('saas')
+                ->domain('app.pos.test')
                 ->as('saas.')
                 ->group(module_path('SAAS', '/Routes/web.php'));
         }

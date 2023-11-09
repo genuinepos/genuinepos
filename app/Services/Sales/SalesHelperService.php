@@ -3,6 +3,7 @@
 namespace App\Services\Sales;
 
 use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
 use Illuminate\Support\Facades\DB;
 
 class SalesHelperService
@@ -134,6 +135,8 @@ class SalesHelperService
         $sales = '';
         $query = DB::table('sales')
             ->leftJoin('accounts as customer', 'sales.customer_account_id', 'customer.id')
+            ->where('sales.branch_id', auth()->user()->branch_id)
+            ->where('sales.created_by_id', auth()->user()->id)
             ->where('sales.status', $status)
             ->where('sales.sale_screen', $saleScreenType);
 
@@ -142,8 +145,35 @@ class SalesHelperService
             $query->limit($limit);
         }
 
-        $sales = $query->select('sales.id', 'sales.invoice_id', 'sales.draft_id', 'sales.quotation_id', 'sales.status', 'sales.sale_screen', 'sales.total_invoice_amount', 'sales.date', 'customer.name as customer_name')->get();
+        $sales = $query->select(
+            'sales.id',
+            'sales.total_item',
+            'sales.total_qty',
+            'sales.invoice_id',
+            'sales.draft_id',
+            'sales.quotation_id',
+            'sales.hold_invoice_id',
+            'sales.suspend_id',
+            'sales.status',
+            'sales.sale_screen',
+            'sales.total_invoice_amount',
+            'sales.date',
+            'customer.name as customer_name'
+        )->get();
 
         return $sales;
+    }
+
+    public function sale(int $saleId): ?object
+    {
+        return Sale::where('id', $saleId)->with([
+            'branch',
+            'branch.parentBranch',
+            'branch.branchSetting:id,add_sale_invoice_layout_id',
+            'branch.branchSetting.addSaleInvoiceLayout',
+            'customer',
+            'saleProducts',
+            'saleProducts.product',
+        ])->first();
     }
 }

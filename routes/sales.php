@@ -49,6 +49,7 @@ Route::prefix('sales')->group(function () {
         Route::get('recent/transaction/modal/{initialStatus}/{saleScreenType}/{limit?}', 'recentTransactionModal')->name('sales.helper.recent.transaction.modal');
         Route::get('recent/transaction/sales/{status}/{saleScreenType}/{limit?}', 'recentSales')->name('sales.helper.recent.transaction.sales');
         Route::get('sales/print/{id}', 'salesPrint')->name('sales.print');
+        Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
@@ -64,7 +65,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
 
-        Route::get('create', 'create')->name('cash.register.create');
+        Route::get('create/{saleId?}', 'create')->name('cash.register.create');
         Route::post('store', 'store')->name('cash.register.store');
         Route::get('show', 'show')->name('cash.register.show');
         Route::get('close', 'close')->name('cash.register.close');

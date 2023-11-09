@@ -273,34 +273,7 @@
     <!-- Recent transection list modal end-->
 
     <!-- Hold invoice list modal -->
-    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table_area">
-                                <div class="data_preloader" id="hold_invoice_preloader">
-                                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                                </div>
-                                <div class="table-responsive" id="hold_invoices"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Hold invoice list modal End-->
 
     @if (auth()->user()->can('product_add'))
@@ -333,22 +306,9 @@
     </div>
     <!--Add Customer Modal-->
 
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader" id="suspend_preloader">
-                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="suspended_sale_list"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit selling product modal end-->
+    <!-- Suspended sales modal-->
+    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Suspended modal end-->
 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">

@@ -22,7 +22,7 @@ class CashRegisterController extends Controller
     ) {
     }
 
-    public function create()
+    public function create($saleId = null)
     {
         if (! auth()->user()->can('pos_add')) {
 
@@ -55,7 +55,7 @@ class CashRegisterController extends Controller
 
         if (! $openedCashRegister) {
 
-            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName'));
+            return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName', 'saleId'));
         } else {
 
             return redirect()->route('sales.pos.create');

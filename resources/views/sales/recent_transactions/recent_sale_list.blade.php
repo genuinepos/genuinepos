@@ -5,7 +5,6 @@
     @foreach ($sales as $sale)
         <tr>
             <td class="text-start fw-bold">{{ $loop->index + 1 }}</td>
-            <td class="text-start">{{ date($__date_format, strtotime($sale->date)) }}</td>
             <td class="text-start fw-bold">
                 @if ($sale->status == \App\Enums\SaleStatus::Final->value)
                     {{ $sale->invoice_id }}
@@ -15,6 +14,7 @@
                     {{ $sale->draft_id }}
                 @endif
             </td>
+            <td class="text-start">{{ date($__date_format, strtotime($sale->date)) }}</td>
             <td class="text-start">{{ $sale->customer_name }}</td>
             <td class="text-start fw-bold">{{ \App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}</td>
             <td class="text-start">
@@ -47,8 +47,7 @@
                     @endif
                 @endif
                 
-
-                <a href="{{ route('sales.print', $sale->id) }}" id="printSale" title="Print"> <i class="fas fa-print text-secondary"></i></a>
+                <a href="{{ route('sales.print', $sale->id) }}" onclick="printSale(this); return false;" title="Print"> <i class="fas fa-print text-secondary"></i></a>
             </td>
         </tr>
     @endforeach

@@ -104,8 +104,7 @@
     //Key shorcut for pic hold invoice
     shortcuts.add('f9',function() {
 
-        $('#hold_invoice_preloader').show();
-        pickHoldInvoice();
+        $('#pick_hold_btn').click();
     });
 
     //Key shortcut for cancel

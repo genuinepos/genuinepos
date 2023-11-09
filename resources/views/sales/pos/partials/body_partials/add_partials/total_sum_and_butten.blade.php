@@ -75,8 +75,8 @@
 
                     <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#"
-                            @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
+                            <a href="{{ route('sales.helper.hold.invoices.modal', ['limit' => 20]) }}"
+                                @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
                                     id="pick_hold_btn"
                                 @else
                                     onclick="

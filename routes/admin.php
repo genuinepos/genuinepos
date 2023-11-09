@@ -47,7 +47,6 @@ use App\Http\Controllers\ShortMenuController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SupplierImportController;
-use App\Http\Controllers\TaxController;
 use App\Http\Controllers\TransferStockBranchToBranchController;
 use App\Http\Controllers\TransferToBranchController;
 use App\Http\Controllers\TransferToWarehouseController;
@@ -626,15 +625,6 @@ Route::group(['prefix' => 'accounting'], function () {
 });
 
 Route::group(['prefix' => 'settings'], function () {
-
-    Route::group(['prefix' => 'taxes'], function () {
-
-        Route::get('/', [TaxController::class, 'index'])->name('settings.taxes.index');
-        Route::get('get/all/vat', [TaxController::class, 'getAllVat'])->name('settings.taxes.get.all.tax');
-        Route::post('store', [TaxController::class, 'store'])->name('settings.taxes.store');
-        Route::post('update', [TaxController::class, 'update'])->name('settings.taxes.update');
-        Route::delete('delete/{taxId}', [TaxController::class, 'delete'])->name('settings.taxes.delete');
-    });
 
     Route::group(['prefix' => 'invoices'], function () {
 

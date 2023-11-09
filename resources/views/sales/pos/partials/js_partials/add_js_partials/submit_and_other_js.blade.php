@@ -109,7 +109,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 1000,
                         header: null,
@@ -125,11 +125,11 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact the support team.');
+                    toastr.error("{{ __('Server error. Please contact the support team.') }}");
                     return;
                 }
 

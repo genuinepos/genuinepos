@@ -11,19 +11,19 @@
                         <section class="col-md-3 mt-1" id="suspended_transaction_section">
                             <div class="card bg-primary text-white pt-1">
                                 <div class="card-title text-center">
-                                    <h6>{{ $suspendedInvoice->suspended_id }}</h6>
-                                    <h6>{{ date('d/m/Y', strtotime($suspendedInvoice->date)) }}</h6>
-                                    <h6><i class="fas fa-user"></i> {{ $suspendedInvoice?->customer_name }}</h6>
+                                    <p>{{ $suspendedInvoice->suspend_id }}</p>
+                                    <p>{{ date('d/m/Y', strtotime($suspendedInvoice->date)) }}</p>
+                                    <p><i class="fas fa-user pe-1"></i> {{ $suspendedInvoice?->customer_name }}</p>
                                 </div>
                                 <div class="card-body text-center">
-                                    <h6><i class="fas fa-cubes"></i>{{ __("Total Item") }} : {{ $suspendedInvoice->total_item }}</h6>
-                                    <h6><i class="far fa-money-bill-alt"></i>{{ __("Total Amount") }}: {{ $suspendedInvoice->total_invoice_amount }}</h6>
-            
+                                    <p><i class="fas fa-cubes pe-1"></i>{{ __("Total Item") }} : {{ (int)$suspendedInvoice->total_item }}</p>
+                                    <p><i class="far fa-money-bill-alt pe-1"></i>{{ __("Total Amount") }} : {{ \App\Utils\Converter::format_in_bdt($suspendedInvoice->total_invoice_amount) }}</p>
+
                                     <div class="row mt-1">
                                         <div class="col-md-3 offset-3">
                                             <a href="{{ route('sales.pos.edit', $suspendedInvoice->id) }}" class="a btn btn-sm btn-primary" tabindex="-1">{{ __("Edit") }}</a>
                                         </div>
-            
+
                                         <div class="col-md-3">
                                             <a id="delete" href="{{ route('sales.delete', $suspendedInvoice->id) }}" class="a btn btn-sm btn-danger" tabindex="-1">{{ __("Delete") }}</a>
                                         </div>

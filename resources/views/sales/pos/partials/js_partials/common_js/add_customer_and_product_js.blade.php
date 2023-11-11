@@ -97,26 +97,4 @@
             });
         });
     @endif
-
-    $(document).on('click', '#suspends',function (e) {
-        e.preventDefault();
-        allSuspends();
-    });
-
-    function allSuspends() {
-
-        $('#suspendedSalesModal').modal('show');
-        $('#suspend_preloader').show();
-
-        // sales.pos.suspended.list
-        $.ajax({
-            url:"#",
-            async:true,
-            success:function(data){
-
-                $('#suspended_sale_list').html(data);
-                $('#suspend_preloader').hide();
-            }
-        });
-    }
 </script>

@@ -315,7 +315,7 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="e_product_name">@lang('menu.samsung_a')</h6>
+                    <h6 class="modal-title" id="e_product_name">{{ __("Item Name") }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -332,7 +332,7 @@
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ $generalSettings['business__currency'] }}</span>
-                                    <span id="unit_cost">/span>
+                                    <span id="unit_cost"></span>
                                 </span>
 
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __("Cost") }}</span>
@@ -422,20 +422,9 @@
     </div>
     <!-- Show stock modal end-->
 
-    <!-- Close Register modal -->
-    <div class="modal fade" id="closeRegisterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="close_register_content"></div>
-        </div>
-    </div>
-    <!-- Close Register modal End-->
 
     <!-- Cash Register Details modal -->
-    <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content"></div>
-        </div>
-    </div>
+    <div class="modal fade" id="cashRegisterDetailsAndCloseModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Cash Register Details modal End-->
 
     <!--Quick Cash receive modal-->
@@ -570,34 +559,6 @@
             });
         }
         allPosShortcutMenus();
-
-        $('#cash_register_details').on('click', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: "{{ route('cash.register.show') }}",
-                type: 'get',
-                success: function(data) {
-
-                    $('#cash_register_details_content').html(data);
-                    $('#cashRegisterDetailsModal').modal('show');
-                }
-            });
-        });
-
-        $('#close_register').on('click', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: "{{ route('cash.register.close') }}",
-                type: 'get',
-                success: function(data) {
-
-                    $('#close_register_content').html(data);
-                    $('#closeRegisterModal').modal('show');
-                }
-            });
-        });
 
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();

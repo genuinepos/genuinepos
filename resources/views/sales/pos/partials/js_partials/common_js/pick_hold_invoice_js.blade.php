@@ -1,5 +1,5 @@
-<script>
-    @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
+@if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
+    <script>
         // Pick hold invoice
         $(document).on('click', '#pick_hold_btn', function (e) {
             e.preventDefault();
@@ -10,7 +10,7 @@
                 url:url,
                 type:'get',
                 success:function(data){
-                    
+
                     $('#holdInvoiceModal').empty();
                     $('#holdInvoiceModal').html(data);
                     $('#holdInvoiceModal').modal('show');
@@ -28,5 +28,5 @@
                 }
             });
         });
-    @endif
-</script>
+    </script>
+@endif

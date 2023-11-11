@@ -167,6 +167,9 @@
         $('.submit_preloader').hide();
         var store_url = $('#store_url').val();
         $('#pos_submit_form').attr('action', store_url);
+
+        $("#customer_account_id").select2("destroy");
+        $("#customer_account_id").select2();
         activeSelectedItems();
     }
 

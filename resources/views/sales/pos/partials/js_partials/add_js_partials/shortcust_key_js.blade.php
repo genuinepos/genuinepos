@@ -39,7 +39,7 @@
 
     //     $('#final').click();
     // });
-    
+
     //Key shortcut for all payment method
     shortcuts.add('ctrl+b', function () {
 
@@ -59,7 +59,7 @@
     //Key shortcut for pic hold invoice
     shortcuts.add('alt+z', function () {
 
-        allSuspends();
+        $('#suspendedInvoiceBtn').click();
     });
 
     //Key shortcut for focus search product input

@@ -38,17 +38,29 @@ class SalesHelperController extends Controller
     public function holdInvoicesModal($limit = null) {
 
         $holdInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Hold->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
-        
+
         if (count($holdInvoices) == 0) {
-            
+
             return response()->json(['errorMsg' => __('Hold Invoice is not available right now.')]);
-        } 
-        
+        }
+
         return view('sales.hold_invoices.index_modal', compact('holdInvoices'));
     }
 
+    public function suspendedModal($limit = null) {
+
+        $suspendedInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Suspended->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
+
+        if (count($suspendedInvoices) == 0) {
+
+            return response()->json(['errorMsg' => __('Suspended Invoice is not available right now.')]);
+        }
+
+        return view('sales.suspended_invoices.index_modal', compact('suspendedInvoices'));
+    }
+
     function salesPrint($saleId) {
-        
+
         $sale = $this->salesHelperService->sale(saleId:$saleId);
 
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);

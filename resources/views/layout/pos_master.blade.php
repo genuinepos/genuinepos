@@ -473,29 +473,21 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.exchange')</h6>
+                    <h6 class="modal-title">{{ __("Exchange") }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
 
                 <div class="modal-body">
                     <div class="form-area">
-                        <form id="search_inv_form" action="{{ route('sales.pos.search.exchange.invoice') }}" method="GET">
+                        <form id="search_inv_form" action="{{ route('sales.pos.exchange.search.invoice') }}" method="GET">
                             <div class="form-group row">
                                 <div class="col-md-3">
                                     <input required type="text" name="invoice_id" id="invoice_id" class="form-control" placeholder="Search invoice">
                                 </div>
 
-                                <div class="col-md-3">
-                                    <input required type="text" name="customer_id" id="customer_id" class="form-control" placeholder="Search By customer">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <input required type="text" name="customer_phone" id="customer_phone" class="form-control" placeholder="Search By phone number">
-                                </div>
-
                                 <div class="col-md-2">
                                     <div class="btn_30_blue m-0">
-                                        <a id="submit_form_btn" href="#" tabindex="-1"><i class="fas fa-plus-square"></i> @lang('menu.search')</a>
+                                        <button type="submit" class="btn btn-sm btn-primary" tabindex="-1"><i class="fas fa-plus-square"></i> {{ __("Search") }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -503,7 +495,7 @@
 
                         <div class="preloader_area">
                             <div class="data_preloader" id="get_inv_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
                             </div>
                         </div>
                     </div>

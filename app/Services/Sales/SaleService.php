@@ -348,6 +348,18 @@ class SaleService
         return $query->where('id', $id)->first();
     }
 
+    public function singleSaleByAnyCondition(array $with = null): ?object
+    {
+        $query = Sale::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function restrictions(object $request, object $accountService, $checkCustomerChangeRestriction = false, int $saleId = null): ?array
     {
         $customer = $accountService->singleAccount(id: $request->customer_account_id);

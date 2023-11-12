@@ -173,7 +173,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button close_cash_register_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __("Save") }}</button>
+                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __("Close Cash Register") }}</button>
                         </div>
                     </div>
                 </div>

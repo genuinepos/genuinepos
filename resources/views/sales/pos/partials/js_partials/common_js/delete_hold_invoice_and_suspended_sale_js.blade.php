@@ -1,10 +1,21 @@
 <script>
-    var tableRowIndex = 0;
+    var removableDom = '';
     $(document).on('click', '#delete', function (e) {
 
         e.preventDefault();
-        var parentTableRow = $(this).closest('tr');
-        tableRowIndex = parentTableRow.index();
+        // var parentTableRow = $(this).closest('tr');
+        // tableRowIndex = parentTableRow.index();
+        var parentTr = $(this).closest('tr');
+        var parentSection = $(this).closest('section');
+
+        if (parentTr.length > 0) {
+
+            removableDom = parentTr;
+        }else if (parentSection.length > 0) {
+
+            removableDom = parentSection;
+        }
+
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
         $.confirm({
@@ -13,7 +24,7 @@
             'buttons': {
                 'Yes': {
                     'class': 'yes btn-modal-primary',
-                    'action': function () { $('#deleted_form').submit(); $('#recent_trans_preloader').show(); }
+                    'action': function () { $('#deleted_form').submit(); }
                 },
                 'No': { 'class': 'no btn-danger', 'action': function () { console.log('Deleted canceled.') } }
             }
@@ -31,12 +42,25 @@
             data: request,
             success: function (data) {
 
-                toastr.error(data);
+                if (!$.isEmptyObject(data.errorMsg)) {
 
-                $('#transection_list tr:nth-child(' + (tableRowIndex + 1) + ')').remove();
-                $('#recent_trans_preloader').hide();
-                $('#suspendedSalesModal').modal('hide');
-                $('#holdInvoiceModal').modal('hide');
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                toastr.error("{{ __('Data deleted successfully') }}");
+                $(removableDom).remove();
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
     });

@@ -176,4 +176,35 @@ class SalesHelperService
             'saleProducts.product',
         ])->first();
     }
+
+    public function productStocks(): array
+    {
+        $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+        $productBranchStock = DB::table('products')
+            ->leftJoin('units', 'products.unit_id', 'units.id')
+            ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+            ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+            ->leftJoin('product_stocks', function ($query) {
+                return $query->on('products.id', 'product_stocks.product_id')
+                    ->where('product_stocks.branch_id', auth()->user()->branch_id)
+                    ->where('product_stocks.warehouse_id', NULL)
+                    ->select('product_stocks.stock');
+            })
+            ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
+            ->select(
+                'products.id',
+                'products.name as product_name',
+                'products.product_code',
+                'units.name as unit_name',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                'product_stocks.stock',
+            )
+            ->distinct('product_access_branches.branch_id')
+            ->orderBy('products.name', 'asc')
+            ->get();
+
+        return ['productBranchStock' => $productBranchStock];
+    }
 }

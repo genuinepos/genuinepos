@@ -536,6 +536,10 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             $subjectType = 30;
         } elseif ($deleteSale->status == SaleStatus::Draft->value) {
             $subjectType = 29;
+        }elseif ($deleteSale->status == SaleStatus::Hold->value) {
+            $subjectType = 32;
+        }elseif ($deleteSale->status == SaleStatus::Suspended->value) {
+            $subjectType = 33;
         }
 
         $userActivityLogUtil->addLog(action: 3, subject_type: $subjectType, data_obj: $deleteSale);

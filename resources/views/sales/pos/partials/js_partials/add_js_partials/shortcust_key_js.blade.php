@@ -98,7 +98,7 @@
     //Key shortcut for show current stock
     shortcuts.add('alt+c', function () {
 
-        showStock();
+        $('#showStockBtn').click();
     });
 
     //Key shorcut for pic hold invoice

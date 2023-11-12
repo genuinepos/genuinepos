@@ -27,6 +27,7 @@
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
+    <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
     <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
@@ -406,22 +407,8 @@
     <!-- Edit selling product modal end-->
 
     <!-- Show stock modal-->
-    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="stock_modal_body"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Show stock modal end-->
-
 
     <!-- Cash Register Details modal -->
     <div class="modal fade" id="cashRegisterDetailsAndCloseModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
@@ -541,6 +528,12 @@
         </div>
     </div>
 
+    <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+
+    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}

@@ -42,7 +42,7 @@
 
                 setTimeout(function() {
 
-                    $('#closing_cash').focus().select();
+                    $('#closing_note').focus().select();
                 }, 500);
             }, error: function(err) {
 

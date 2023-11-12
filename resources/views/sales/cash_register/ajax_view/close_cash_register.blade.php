@@ -155,7 +155,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="fw-bold">{{ __("Closing Cash") }}</label>
-                        <input type="number" step="any" name="closing_cash" class="form-control fw-bold" id="closing_cash" data-next="closing_note" value="{{ $totalCashBalance }}">
+                        <input readonly type="text" step="any" name="closing_cash" class="form-control fw-bold" id="closing_cash" data-next="closing_note" value="{{ $totalCashBalance }}">
                         <span class="error error_colsing_cash_register_closing_cash"></span>
                     </div>
                 </div>

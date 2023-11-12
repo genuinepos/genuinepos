@@ -23,19 +23,22 @@ class SalesHelperController extends Controller
         return view('sales.pos.ajax_view.selectable_product_list', compact('products'));
     }
 
-    public function recentTransactionModal($initialStatus, $saleScreenType, $limit = null) {
+    public function recentTransactionModal($initialStatus, $saleScreenType, $limit = null)
+    {
 
         $sales = $this->salesHelperService->recentSales(status: $initialStatus, saleScreenType: $saleScreenType, limit: $limit);
         return view('sales.recent_transactions.index_modal', compact('sales', 'saleScreenType'));
     }
 
-    public function recentSales($status, $saleScreenType, $limit = null) {
+    public function recentSales($status, $saleScreenType, $limit = null)
+    {
 
         $sales = $this->salesHelperService->recentSales(status: $status, saleScreenType: $saleScreenType, limit: $limit);
         return view('sales.recent_transactions.recent_sale_list', compact('sales'));
     }
 
-    public function holdInvoicesModal($limit = null) {
+    public function holdInvoicesModal($limit = null)
+    {
 
         $holdInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Hold->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
 
@@ -47,7 +50,8 @@ class SalesHelperController extends Controller
         return view('sales.hold_invoices.index_modal', compact('holdInvoices'));
     }
 
-    public function suspendedModal($limit = null) {
+    public function suspendedModal($limit = null)
+    {
 
         $suspendedInvoices = $this->salesHelperService->recentSales(status: SaleStatus::Suspended->value, saleScreenType: SaleScreenType::PosSale->value, limit: $limit);
 
@@ -59,10 +63,16 @@ class SalesHelperController extends Controller
         return view('sales.suspended_invoices.index_modal', compact('suspendedInvoices'));
     }
 
-    function salesPrint($saleId) {
+    public function productStockModal()
+    {
 
-        $sale = $this->salesHelperService->sale(saleId:$saleId);
+        $productStocks = $this->salesHelperService->productStocks();
+        return view('sales.product_stocks.index_modal', compact('productStocks'));
+    }
 
+    function salesPrint($saleId)
+    {
+        $sale = $this->salesHelperService->sale(saleId: $saleId);
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
         if ($sale->status == SaleStatus::Final->value) {
@@ -81,7 +91,7 @@ class SalesHelperController extends Controller
 
             $order = $sale;
             return view('sales.save_and_print_template.order_print', compact('order', 'customerCopySaleProducts'));
-        }elseif ($sale->status == SaleStatus::Hold->value) {
+        } elseif ($sale->status == SaleStatus::Hold->value) {
 
             $holdInvoice = $sale;
             return view('sales.save_and_print_template.hold_invoice_print', compact('holdInvoice', 'customerCopySaleProducts'));

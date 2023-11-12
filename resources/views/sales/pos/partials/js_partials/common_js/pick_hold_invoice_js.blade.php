@@ -11,6 +11,12 @@
                 type:'get',
                 success:function(data){
 
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
                     $('#holdInvoiceModal').empty();
                     $('#holdInvoiceModal').html(data);
                     $('#holdInvoiceModal').modal('show');

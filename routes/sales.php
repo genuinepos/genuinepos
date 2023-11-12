@@ -51,6 +51,7 @@ Route::prefix('sales')->group(function () {
         Route::get('sales/print/{id}', 'salesPrint')->name('sales.print');
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
+        Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {

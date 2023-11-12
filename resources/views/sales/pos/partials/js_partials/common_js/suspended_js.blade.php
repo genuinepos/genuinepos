@@ -10,6 +10,12 @@
             type:'get',
             success:function(data){
 
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
                 $('#suspendedSalesModal').empty();
                 $('#suspendedSalesModal').html(data);
                 $('#suspendedSalesModal').modal('show');

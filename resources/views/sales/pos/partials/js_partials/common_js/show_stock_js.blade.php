@@ -1,23 +1,28 @@
 <script>
-     function showStock() {
+    $(document).on('click', '#showStockBtn', function (e) {
+        e.preventDefault();
 
-        $('#stock_preloader').show();
-        $('#showStockModal').modal('show');
-
-        // sales.pos.branch.stock
+        var url = $(this).attr('href');
         $.ajax({
-            url:"#",
+            url : url,
             type:'get',
             success:function(data){
 
-                $('#stock_modal_body').html(data);
-                $('#stock_preloader').hide();
+                $('#showStockModal').empty();
+                $('#showStockModal').html(data);
+                $('#showStockModal').modal('show');
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
         });
-    }
-    
-    $(document).on('click', '#show_stock', function (e) {
-        e.preventDefault();
-        showStock();
     });
 </script>

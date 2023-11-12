@@ -54,7 +54,7 @@
 
                     <div class="col-4">
                         <div class="btn-bg">
-                            <a href="#" class="function-card" id="show_stock" tabindex="-1">{{ __("Stock") }}<p>{{ __("Alt+C") }}</p>
+                            <a href="{{ route('sales.helper.product.stock.modal') }}" class="function-card" id="showStockBtn" tabindex="-1">{{ __("Stock") }}<p>{{ __("Alt+C") }}</p>
                             </a>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
 
-                                <input name="order_discount_amount" type="number" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
+                                <input type="number" step="any" name="order_discount_amount" class="d-hide" id="order_discount_amount" value="0.00" tabindex="-1">
                             </div>
                         </div>
                     @else

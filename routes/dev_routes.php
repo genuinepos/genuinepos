@@ -79,32 +79,6 @@ Route::get('my-test', function () {
     // ->join('accounting_voucher_descriptions', 'voucher_description_references.voucher_description_id', 'accounting_voucher_descriptions.id')
     // ->join('accounting_voucher_descriptions', 'voucher_description_references.voucher_description_id', 'accounting_voucher_descriptions.id')
     // ->join('sales', 'voucher_description_references.sale_id', 'sales.id')
-
-    // return $data = AccountingVoucherDescriptionReference::query()->with([
-    //     'voucherDescription:id,accounting_voucher_id',
-    //     'voucherDescription.accountingVoucher:id,voucher_no,branch_id,reference,remarks,date,date_ts',
-    //     'voucherDescription.accountingVoucher.branch:id,name,branch_code,area_name,parent_branch_id',
-    //     'voucherDescription.accountingVoucher.branch.parentBranch:id,name',
-    //     'voucherDescription.accountingVoucher.voucherDebitDescription:id,accounting_voucher_id,account_id,payment_method_id,cheque_no,cheque_serial_no',
-    //     'voucherDescription.accountingVoucher.voucherDebitDescription.account:id,name,account_number',
-    //     'sale:id,invoice_id,order_id,customer_account_id,status,total_invoice_amount,sale_date_ts',
-    //     'sale.customer:id,name,phone',
-    // ])->where('sale_id', '!=', null)
-    //     ->leftJoin('accounting_voucher_descriptions', 'voucher_description_references.voucher_description_id', 'accounting_voucher_descriptions.id')
-    //     ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
-    //     ->where('accounting_vouchers.branch_id', null)
-    //     ->select(
-    //         'voucher_description_references.id',
-    //         'voucher_description_references.voucher_description_id',
-    //         'voucher_description_references.sale_id',
-    //         'voucher_description_references.amount',
-    //         'accounting_voucher_descriptions.id as accounting_voucher_description_id',
-    //         'accounting_voucher_descriptions.accounting_voucher_id',
-    //         'accounting_voucher_descriptions.account_id as customer_account_id',
-    //         'accounting_vouchers.id',
-    //     )->orderBy('accounting_vouchers.date_ts', 'desc')->get();
-
- 
 });
 
 Route::get('t-id', function () {

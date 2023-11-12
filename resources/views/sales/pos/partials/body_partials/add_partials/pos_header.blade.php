@@ -274,7 +274,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="pos-btn status" id="suspends" title="Suspended Invoice" tabindex="-1">
+                        <a href="{{ route('sales.helper.suspended.modal', 20) }}" class="pos-btn status" id="suspendedInvoiceBtn" title="Suspended Invoice" tabindex="-1">
                             <i class="fas text-warning fa-pause"></i>
                         </a>
 
@@ -326,12 +326,13 @@
                         </div>
 
                         @if (auth()->user()->can('register_view'))
-                            <a href="#" class="pos-btn text-info" id="cash_register_details" title="{{ __("Register Details") }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
+
+                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __("Cash Register Details") }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
                         @endif
 
                         @if (auth()->user()->can('register_close'))
-                            <a href="#" class="pos-btn text-danger" id="close_register" title="{{ __("Close Register") }}" tabindex="-1">
-                                <span class="fas fa-times"></span></a>
+
+                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __("Close Register") }}" tabindex="-1"> <span class="fas fa-times"></span></a>
                         @endif
 
                         <a href="#" class="pos-btn" tabindex="-1">

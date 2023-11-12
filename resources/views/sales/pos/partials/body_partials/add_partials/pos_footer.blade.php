@@ -2,12 +2,12 @@
     <div class="col-12">
         <div class="pos-footer">
             <div class="logo_wrapper d-block w-100 text-center">
-                <img src="{{asset(config('speeddigit.app_logo'))}}" style="max-width: 100%; height: 20px; width: auto;margin-top: 12px;">
+                <img src="{{ asset(config('speeddigit.app_logo')) }}" style="max-width: 100%; height: 20px; width: auto;margin-top: 12px;">
             </div>
 
             @if ($generalSettings['pos__is_show_recent_transactions'] == '1')
                 <div class="pos-foot-con d-inline-block position-absolute" style="right: -10px; top: 50%; transform: translateY(-41%)">
-                    <a href="#" class="btn btn-sm btn-primary resent-tn h-auto py-1" tabindex="-1">{{ __("Recent Transactions") }}</a>
+                    <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => App\Enums\SaleScreenType::PosSale->value, 'limit' => 20]) }}" class="btn btn-sm btn-primary resent-tn h-auto py-1" id="recentTransactionsBtn" tabindex="-1">{{ __('Recent Transactions') }}</a>
                 </div>
             @endif
         </div>
@@ -44,5 +44,4 @@
         </div>
     </div>
 </div> --}}
-<script src="{{asset('backend/asset/js/SimpleCalculadorajQuery.js')}}" defer></script>
-
+<script src="{{ asset('backend/asset/js/SimpleCalculadorajQuery.js') }}" defer></script>

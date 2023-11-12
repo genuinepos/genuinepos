@@ -93,13 +93,21 @@ class UserActivityLogUtil
             ],
             8 => [ // Sales Order
                 'fields' => ['date', 'order_id', 'total_invoice_amount', 'paid', 'due'],
-                'texts' => ['Date : ', 'Order ID : ', 'Total Ordered Amt', 'Advance Received', 'Due'],
+                'texts' => ['Date : ', 'Order ID : ', 'Total Ordered Amt : ', 'Advance Received : ', 'Due : '],
+            ],
+            32 => [ // Hold Invoice
+                'fields' => ['date', 'hold_invoice_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Hold Invoice ID : ', 'Total Amt : '],
+            ],
+            33 => [ // Suspended
+                'fields' => ['date', 'suspend_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Suspend ID : ', 'Total Amt : '],
             ],
             9 => [ // Sales Return
                 'fields' => ['date', 'voucher_no', 'total_return_amount', 'paid', 'due'],
                 'texts' => ['Date : ', 'Return Voucher No : ', 'Total Returned Amt. : ', 'Paid : ', 'Due : '],
             ],
-            10 => [ // Transfer B.Location To Warehouse
+            10 => [ // Transfer Stock
                 'fields' => ['date', 'invoice_id', 'total_send_qty', 'total_received_qty'],
                 'texts' => ['Date : ', 'Reference ID : ', 'Total Send Quantity : ', 'Total Received Quantity : '],
             ],

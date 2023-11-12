@@ -12,13 +12,15 @@
 
         var quantities = document.querySelectorAll('#quantity');
         var subtotals = document.querySelectorAll('#subtotal');
+        var unitTaxAmounts = document.querySelectorAll('#unit_tax_amount');
+
         // Update Total Item
         var total_item = 0;
         var total_qty = 0;
 
         quantities.forEach(function (qty) {
             total_item += 1;
-            total_qty += parseFloat(qty.value)
+            total_qty += parseFloat(qty.value);
         });
 
         $('#total_item').val(parseFloat(total_item));
@@ -26,9 +28,13 @@
 
         // Update Net total Amount
         var netTotalAmount = 0;
+        var productTotalTaxAmount = 0;
+        var i = 0;
         subtotals.forEach(function (subtotal) {
 
             netTotalAmount += parseFloat(subtotal.value);
+            productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
+            i++;
         });
 
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
@@ -63,6 +69,13 @@
 
         $('#total_invoice_amount').val(parseFloat(calcTotalInvoiceAmount).toFixed(2));
 
+        var salesLedgerAmount = parseFloat(netTotalAmount)
+            + parseFloat(shipmentCharge)
+            - parseFloat(orderDiscountAmount)
+            - parseFloat(productTotalTaxAmount);
+
+        $('#sales_ledger_amount').val(parseFloat(salesLedgerAmount).toFixed(2));
+
         var calcTotalReceivableAmount = parseFloat(netTotalAmount) -
             parseFloat(orderDiscountAmount) +
             parseFloat(calcOrderTaxAmount) +
@@ -77,8 +90,9 @@
         var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
         var changeAmount = parseFloat(receivedAmount) - parseFloat(calcTotalReceivableAmount);
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
-        $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
+        var currentBalance = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
+        var __currentBalance = parseFloat(currentBalance) >= 0 ? parseFloat(currentBalance) : 0
+        $('#current_balance').val(parseFloat(__currentBalance).toFixed(2));
     }
 
     $(document).on('change', '#order_discount_type', function () {
@@ -114,11 +128,11 @@
         var receivedAmount = $(this).val() ? $(this).val() : 0;
         var changeAmount = parseFloat(receivedAmount) - parseFloat(totalReceivable);
         $('#modal_change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var calcTotalDue = parseFloat(totalReceivable) - parseFloat(receivedAmount);
-        $('#modal_total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
+        var currentBalance = parseFloat(totalReceivable) - parseFloat(receivedAmount);
+        $('#modal_current_balance').val(parseFloat(currentBalance >= 0 ? currentBalance : 0).toFixed(2));
 
         $('#received_amount').val(parseFloat(receivedAmount).toFixed(2));
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        $('#total_due').val(parseFloat(calcTotalDue >= 0 ? calcTotalDue : 0).toFixed(2));
+        $('#current_balance').val(parseFloat(currentBalance >= 0 ? currentBalance : 0).toFixed(2));
     });
 </script>

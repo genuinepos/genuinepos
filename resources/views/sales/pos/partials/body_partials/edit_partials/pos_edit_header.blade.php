@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="btn-sec">
-                        <a href="{{ route('sales.pos.suspended.list') }}" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
+                        <a href="#" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
                         <a href="#" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
                             <span class="fas fa-calculator"></span>
                         </a>

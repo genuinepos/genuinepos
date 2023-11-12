@@ -38,16 +38,6 @@
         // });
     });
 
-    // $('#addSupplier').on('click', function () {
-
-    //     $.get("{{route('purchases.add.quick.supplier.modal')}}", function(data) {
-
-    //         $('#add_supplier_modal_body').html(data);
-    //         $('#addSupplierModal').modal('show');
-
-    //     });
-    // });
-
     function calculateTotalAmount(){
 
         var quantities = document.querySelectorAll('#quantity');

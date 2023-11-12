@@ -1,25 +1,38 @@
-<script>
-    @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
+@if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
+    <script>
         // Pick hold invoice
-        $(document).on('click', '#pick_hold_btn',function (e) {
+        $(document).on('click', '#pick_hold_btn', function (e) {
             e.preventDefault();
 
-            $('#hold_invoice_preloader').show();
-            pickHoldInvoice();
-        });
-
-        function pickHoldInvoice() {
-            $('#holdInvoiceModal').modal('show');
+            var url = $(this).attr('href');
 
             $.ajax({
-                url:"{{url('sales/pos/pick/hold/invoice/')}}",
+                url:url,
                 type:'get',
                 success:function(data){
 
-                    $('#hold_invoices').html(data);
-                    $('#hold_invoice_preloader').hide();
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    $('#holdInvoiceModal').empty();
+                    $('#holdInvoiceModal').html(data);
+                    $('#holdInvoiceModal').modal('show');
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
                 }
             });
-        }
-    @endif
-</script>
+        });
+    </script>
+@endif

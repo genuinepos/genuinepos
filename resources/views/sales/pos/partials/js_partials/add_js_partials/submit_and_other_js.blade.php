@@ -1,20 +1,22 @@
 <script>
-    var actionMessage = 'Data inserted Successfull.';
 
     function saveAndPrintSuccessMsg() {
 
         var status = $('status').val();
 
+        var actionMessage = 'Data inserted Successfull.';
         if (status == 1) {
 
-           return actionMessage = 'Sale created Successfully.';
+            actionMessage = "{{ __('Sale created Successfully.') }}";
         } else if (status == 2) {
 
-           return actionMessage = 'Draft created successfully.';
+            actionMessage = "{{ __('Draft created successfully.') }}";
         } else if (status == 4) {
 
-           return actionMessage = 'Quotation created Successfully.';
+            actionMessage = "{{ __('Quotation created Successfully.') }}";
         }
+
+        return actionMessage;
     }
 
     $(document).on('click', '#credit_and_final', function (e) {
@@ -97,7 +99,9 @@
                     document.getElementById('search_product').focus();
                 }else {
 
-                    toastr.success(actionMessage);
+                    var msg = saveAndPrintSuccessMsg();
+
+                    toastr.success(msg);
 
                     afterSubmitForm();
 
@@ -105,7 +109,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 1000,
                         header: null,
@@ -113,7 +117,7 @@
 
                     document.getElementById('search_product').focus();
                 }
-            },error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -121,11 +125,11 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
                     return;
                 }else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact the support team.');
+                    toastr.error("{{ __('Server error. Please contact the support team.') }}");
                     return;
                 }
 
@@ -141,6 +145,17 @@
         }
     });
 
+    document.onkeyup = function () {
+
+        var e = e || window.event; // for IE to cover IEs window event-object
+
+        if(e.ctrlKey && e.which == 13) { // Ctrl + Enter
+
+            $('#final').click();
+            return false;
+        }
+    }
+
     // After submitting form successfully this function will be executed.
     function afterSubmitForm() {
 
@@ -152,6 +167,9 @@
         $('.submit_preloader').hide();
         var store_url = $('#store_url').val();
         $('#pos_submit_form').attr('action', store_url);
+
+        $("#customer_account_id").select2("destroy");
+        $("#customer_account_id").select2();
         activeSelectedItems();
     }
 

@@ -1,5 +1,4 @@
 <script>
-
     $('.other_payment_method').on('click', function (e) {
 
         e.preventDefault();
@@ -14,25 +13,26 @@
     $(document).on('click', '#cancel_pay_mathod', function (e) {
         e.preventDefault();
 
-        $('#payment_method_id option').prop('selected', function() {
-            return this.defaultSelected;
-        });
+        var firstPaymentMethod = $("#payment_method_id option:first").val()
+        $("#payment_method_id").val(firstPaymentMethod);
+        var accountId = $("#payment_method_id").find('option:selected').data('account_id');
+        setMethodAccount(accountId);
 
         $('#otherPaymentMethod').modal('hide');
     });
 
     $('#payment_method_id').on('change', function () {
 
-        var account_id = $(this).find('option:selected').data('account_id');
-        setMethodAccount(account_id);
+        var accountId = $(this).find('option:selected').data('account_id');
+        setMethodAccount(accountId);
     });
 
-    function setMethodAccount(account_id) {
+    function setMethodAccount(accountId) {
 
-        if (account_id) {
+        if (accountId) {
 
-            $('#account_id').val(account_id);
-        }else if(account_id === ''){
+            $('#account_id').val(accountId);
+        }else if(accountId === ''){
 
             // $('#account_id option:first-child').prop("selected", true);
             return;

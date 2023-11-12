@@ -75,9 +75,9 @@
                                             <a class="menu_btn menu_active" data-form="business_settings_form" href="#">@lang('menu.business_settings')</a>
                                         </li>
 
-                                        <li class="menu_list">
+                                        {{-- <li class="menu_list">
                                             <a class="menu_btn" data-form="tax_settings_form" href="#">@lang('menu.tax_settings')</a>
-                                        </li>
+                                        </li> --}}
 
                                         <li class="menu_list">
                                             <a class="menu_btn" data-form="dashboard_settings_form" href="#">@lang('menu.dashboard_settings')</a>
@@ -238,7 +238,7 @@
                                     </div>
                                 </form>
 
-                                <form id="tax_settings_form" class="setting_form hide-all" action="{{ route('settings.tax.settings') }}" method="post">
+                                {{-- <form id="tax_settings_form" class="setting_form hide-all" action="{{ route('settings.tax.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -284,7 +284,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </form> --}}
 
                                 <form id="dashboard_settings_form" class="setting_form hide-all" action="{{ route('settings.dashboard.settings') }}" method="post">
                                     <div class="form-group">
@@ -859,7 +859,7 @@
             var inputs = $('.bs_input');
             inputs.removeClass('is-invalid');
             $('.error').html('');
-            
+
             var countErrorField = 0;
             $.each(inputs, function(key, val) {
 
@@ -894,41 +894,41 @@
             });
         });
 
-        $('#tax_settings_form').on('submit', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.bs_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val()
-                if (idValue == '') {
-                    countErrorField += 1;
-                    $('#' + inputId).addClass('is-invalid');
-                    var fieldName = $('#' + inputId).data('name');
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
+        // $('#tax_settings_form').on('submit', function(e) {
+        //     e.preventDefault();
+        //     $('.loading_button').show();
+        //     var url = $(this).attr('action');
+        //     var request = $(this).serialize();
+        //     var inputs = $('.bs_input');
+        //     inputs.removeClass('is-invalid');
+        //     $('.error').html('');
+        //     var countErrorField = 0;
+        //     $.each(inputs, function(key, val) {
+        //         var inputId = $(val).attr('id');
+        //         var idValue = $('#' + inputId).val()
+        //         if (idValue == '') {
+        //             countErrorField += 1;
+        //             $('#' + inputId).addClass('is-invalid');
+        //             var fieldName = $('#' + inputId).data('name');
+        //             $('.error_' + inputId).html(fieldName + ' is required.');
+        //         }
+        //     });
 
-            if (countErrorField > 0) {
-                $('.loading_button').hide();
-                return;
-            }
+        //     if (countErrorField > 0) {
+        //         $('.loading_button').hide();
+        //         return;
+        //     }
 
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                }
-            });
-        });
+        //     $.ajax({
+        //         url: url,
+        //         type: 'post',
+        //         data: request,
+        //         success: function(data) {
+        //             toastr.success(data);
+        //             $('.loading_button').hide();
+        //         }
+        //     });
+        // });
 
         $('#dashboard_settings_form').on('submit', function(e) {
             e.preventDefault();
@@ -1050,6 +1050,7 @@
                 }
             });
         });
+
         $('#s_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();

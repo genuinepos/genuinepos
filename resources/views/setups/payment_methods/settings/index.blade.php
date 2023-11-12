@@ -44,7 +44,7 @@
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <table class="display table table-sm">
+                                                    <table class="modal-table table table-sm">
                                                         <thead>
                                                             <th class="text-start">{{ __("S/L") }}</th>
                                                             <th class="text-start">{{ __("Payment Method") }}</th>
@@ -60,9 +60,9 @@
                                                                         {{ $method->name }}
                                                                         <input type="hidden" name="payment_method_ids[]" value="{{ $method->id }}">
                                                                     </td>
-                                                                    
+
                                                                     <td class="text-start">
-                                                                        <select name="account_ids[]" class="form-control">
+                                                                        <select name="account_ids[]" id="account_id" class="form-control" autofocus>
                                                                             <option value="">{{ __("None") }}</option>
                                                                             @foreach ($accounts as $ac)
                                                                                 @php
@@ -142,6 +142,7 @@
                     }
 
                     toastr.success(data);
+                    $('#account_id').focus();
                 },
                 error: function(err) {
 
@@ -163,6 +164,24 @@
                     }
                 }
             });
+        });
+
+        $(document).on('change keypress click', '#account_id', function(e) {
+
+            var next = $(this).closest('tr').next();
+
+            console.log({next});
+
+            if (e.which == 0) {
+
+                if (next.length > 0) {
+
+                    next.find('#account_id').focus();
+                }else {
+
+                    $('.submit_button').focus();
+                }
+            }
         });
     </script>
 @endpush

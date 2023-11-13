@@ -123,7 +123,7 @@
     //     $('#order_discount').focus().select();
     // });
 
-    document.onkeyup = function () {
+    $(document).on('keyup', '#product_list', function (e) {
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
@@ -143,5 +143,5 @@
 
             return false;
         }
-    }
+    });
 </script>

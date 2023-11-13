@@ -14,6 +14,7 @@ use App\Http\Controllers\Sales\SoldProductController;
 use App\Http\Controllers\Sales\CashRegisterController;
 use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\PosSaleSettingController;
+use App\Http\Controllers\Sales\PosSaleExchangeController;
 use App\Http\Controllers\Sales\Reports\SalesReportController;
 use App\Http\Controllers\Sales\Reports\SalesOrderReportController;
 use App\Http\Controllers\Sales\Reports\SalesReturnReportController;
@@ -60,9 +61,13 @@ Route::prefix('sales')->group(function () {
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
         Route::post('update', 'update')->name('sales.pos.update');
-        Route::get('search/exchangeable/invoice', 'searchExchangeableInv')->name('sales.pos.search.exchange.invoice');
-        Route::post('prepare/exchange', 'prepareExchange')->name('sales.pos.prepare.exchange');
-        Route::post('exchange/confirm', 'exchangeConfirm')->name('sales.pos.exchange.confirm');
+
+        Route::controller(PosSaleExchangeController::class)->prefix('pos-exchange')->group(function () {
+
+            Route::get('search/invoice', 'searchInvoice')->name('sales.pos.exchange.search.invoice');
+            Route::post('prepare', 'prepareExchange')->name('sales.pos.exchange.prepare');
+            Route::post('confirm', 'exchangeConfirm')->name('sales.pos.exchange.confirm');
+        });
     });
 
     Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {

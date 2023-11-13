@@ -319,7 +319,6 @@ class SaleProductService
 
     public function singleSaleProduct(?int $id, array $with = null): ?object
     {
-
         $query = SaleProduct::query();
 
         if (isset($with)) {

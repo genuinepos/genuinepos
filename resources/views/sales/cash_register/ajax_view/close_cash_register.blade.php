@@ -39,7 +39,7 @@
                                                 $totalReceivedByAccount += $receivedByAccount->total_received;
                                             @endphp
                                             <tr>
-                                                <td class="text-end fw-bold" style="font-size: 11px!important;">{{ $receivedByAccount->name . $accountNumber }} : {{ $generalSettings['business__currency'] }}</td>
+                                                <td class="text-end fw-bold" style="font-size: 11px!important;">{{ $receivedByAccount->name . $accountNumber }} : </td>
                                                 <td class="text-end" style="font-size: 11px!important;">
                                                     {{ App\Utils\Converter::format_in_bdt($receivedByAccount->total_received) }}
                                                 </td>
@@ -67,7 +67,7 @@
                                                 $totalReceivedByPaymentMethod += $receivedByPaymentMethod->total_received;
                                             @endphp
                                             <tr>
-                                                <td class="text-end fw-bold" style="font-size: 11px!important;">{{ $receivedByPaymentMethod->name }} : {{ $generalSettings['business__currency'] }}</td>
+                                                <td class="text-end fw-bold" style="font-size: 11px!important;">{{ $receivedByPaymentMethod->name }} : </td>
                                                 <td class="text-end" style="font-size: 11px!important;">
                                                     {{ App\Utils\Converter::format_in_bdt($receivedByPaymentMethod->total_received) }}
                                                 </td>
@@ -118,7 +118,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
-                                                {{ __('Opening Cash') }} : {{ $generalSettings['business__currency'] }}
+                                                {{ __('Opening Cash') }} :
                                             </td>
                                             <td class="text-end" style="font-size: 11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($openedCashRegister->opening_cash) }}
@@ -127,7 +127,7 @@
 
                                         <tr>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
-                                                {{ __('Total Cash Received') }} : {{ $generalSettings['business__currency'] }}
+                                                {{ __('Total Cash Received') }} :
                                             </td>
                                             <td class="text-end" style="font-size: 11px!important;">
                                                 @php
@@ -173,7 +173,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button close_cash_register_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __("Save") }}</button>
+                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __("Close Cash Register") }}</button>
                         </div>
                     </div>
                 </div>

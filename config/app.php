@@ -16,6 +16,7 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     'domain' => (string) env('DOMAIN', 'pos.test'),
+    'app_domain' => (string) env('APP_DOMAIN', 'app.pos.test'),
 
     /*
     |--------------------------------------------------------------------------

@@ -13,8 +13,6 @@ class DomainAvailabilityController extends Controller
         $request->validate(['domain' => 'required|string|max:191']);
         $isAvailable = Domain::isAvailable($request->domain);
         $responseCode = $isAvailable ? 200 : 404;
-        \Log::debug($isAvailable);
-
         return response()->json(['isAvailable' => $isAvailable], $responseCode);
     }
 }

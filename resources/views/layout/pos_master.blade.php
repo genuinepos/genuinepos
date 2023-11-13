@@ -142,16 +142,6 @@
         html.sf-js-enabled {
             overflow: hidden;
         }
-
-        /* Draft Css */
-        /* .form-control:focus {
-            box-shadow: 0 0;
-            background-color: #f9f6c4 !important;
-        }
-
-        select.form-control:focus option {
-            background: #ffffff !important;
-        } */
     </style>
 </head>
 
@@ -486,7 +476,7 @@
 
     <!-- Exchange modal -->
     <div class="modal fade" id="exchangeModal"tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
+        <div class="modal-dialog four-col-modal" role="document">
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
                     <h6 class="modal-title">{{ __('Exchange') }}</h6>

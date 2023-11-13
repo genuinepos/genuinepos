@@ -364,6 +364,11 @@ class SaleService
     {
         $customer = $accountService->singleAccount(id: $request->customer_account_id);
 
+        if ($request->ex_sale_id && $request->status != SaleStatus::Final->value) {
+
+            return ['pass' => false, 'msg' => __('Can not create another entry when exchange in going on.')];
+        }
+
         if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Products table must not be empty.')];

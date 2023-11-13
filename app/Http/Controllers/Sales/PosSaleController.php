@@ -46,6 +46,7 @@ class PosSaleController extends Controller
         private PosSaleService $posSaleService,
         private SaleProductService $saleProductService,
         private CashRegisterService $cashRegisterService,
+        private CashRegisterTransactionService $cashRegisterTransactionService,
         private BrandService $brandService,
         private CategoryService $categoryService,
         private PurchaseProductService $purchaseProductService,
@@ -63,7 +64,6 @@ class PosSaleController extends Controller
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
-        private CashRegisterTransactionService $cashRegisterTransactionService,
         private ContactService $contactService,
         private RewardPointService $rewardPointService,
         private UnitService $unitService,
@@ -301,10 +301,10 @@ class PosSaleController extends Controller
 
             $quotation = $sale;
             return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
-        }elseif ($request->status == SaleStatus::Hold->value) {
+        } elseif ($request->status == SaleStatus::Hold->value) {
 
             return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);
-        }elseif ($request->status == SaleStatus::Suspended->value) {
+        } elseif ($request->status == SaleStatus::Suspended->value) {
 
             return response()->json(['holdInvoiceMsg' => __('Invoice is suspended.')]);
         }

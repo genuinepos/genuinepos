@@ -24,9 +24,12 @@ class UserActivityLogUtil
             7 => 'Sales',
             29 => 'Draft',
             30 => 'Quotation',
+            32 => 'Hold Invoice',
+            33 => 'Suspend Invoice',
             8 => 'Sales Order',
             9 => 'Sale Return',
             20 => 'POS Sale',
+            34 => 'Exchange Invoice',
             10 => 'Transfer Stock',
             13 => 'Stock Adjustment',
             15 => 'Expense',
@@ -106,6 +109,10 @@ class UserActivityLogUtil
             9 => [ // Sales Return
                 'fields' => ['date', 'voucher_no', 'total_return_amount', 'paid', 'due'],
                 'texts' => ['Date : ', 'Return Voucher No : ', 'Total Returned Amt. : ', 'Paid : ', 'Due : '],
+            ],
+            34 => [ // Sale Exchange
+                'fields' => ['date', 'invoice_id', 'total_invoice_amount'],
+                'texts' => ['Date : ', 'Invoice ID : ', 'Total Amt : '],
             ],
             10 => [ // Transfer Stock
                 'fields' => ['date', 'invoice_id', 'total_send_qty', 'total_received_qty'],

@@ -14,17 +14,17 @@ class UnitController extends Controller
         private UnitService $unitService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->userActivityLogUtil = $userActivityLogUtil;
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_unit_index')) {
+        if (!auth()->user()->can('product_unit_index')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         if ($request->ajax()) {
+
             return $this->unitService->unitsTable();
         }
 
@@ -33,7 +33,7 @@ class UnitController extends Controller
 
     public function create($isAllowedMultipleUnit = 0)
     {
-        if (! auth()->user()->can('product_unit_add')) {
+        if (!auth()->user()->can('product_unit_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -45,7 +45,7 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_unit_add')) {
+        if (!auth()->user()->can('product_unit_add')) {
 
             return response()->json('Access Denied');
         }
@@ -70,7 +70,9 @@ class UnitController extends Controller
             DB::beginTransaction();
 
             $addUnit = $this->unitService->addUnit($request);
+
             if ($addUnit) {
+
                 $this->userActivityLogUtil->addLog(action: 1, subject_type: 23, data_obj: $addUnit);
             }
 
@@ -84,7 +86,8 @@ class UnitController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('product_unit_edit')) {
+        if (!auth()->user()->can('product_unit_edit')) {
+
             return response()->json('Access Denied');
         }
 
@@ -96,7 +99,8 @@ class UnitController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('product_unit_edit')) {
+        if (!auth()->user()->can('product_unit_edit')) {
+
             return response()->json('Access Denied');
         }
 
@@ -122,6 +126,7 @@ class UnitController extends Controller
             $updateUnit = $this->unitService->updateUnit(id: $id, request: $request);
 
             if ($updateUnit) {
+
                 $this->userActivityLogUtil->addLog(action: 2, subject_type: 23, data_obj: $updateUnit);
             }
 
@@ -135,7 +140,8 @@ class UnitController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('product_unit_delete')) {
+        if (!auth()->user()->can('product_unit_delete')) {
+
             return response()->json('Access Denied');
         }
 
@@ -146,10 +152,12 @@ class UnitController extends Controller
             $deleteUnit = $this->unitService->deleteUnit(id: $id);
 
             if ($deleteUnit['pass'] == false) {
+
                 return response()->json(['errorMsg' => $deleteUnit['msg']]);
             }
 
             if ($deleteUnit) {
+
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 23, data_obj: $deleteUnit['data']);
             }
 

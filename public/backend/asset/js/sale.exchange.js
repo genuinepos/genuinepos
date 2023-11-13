@@ -95,8 +95,8 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
 
                 var productId = exProduct.product_id;
                 var variantId = exProduct.variant_id != null ? exProduct.variant_id : 'noid';
-                
-                tr += '<tr class="product_row">';
+
+                tr += '<tr class="product_row" data-is_exchange_product="1">';
                 tr += '<td class="fw-bold" id="serial">'+(key + 1)+'</td>';
                 tr += '<td class="text-start">';
                 tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + __name + '</a><br/><input type="' + (exProduct.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input" placeholder="IMEI, Serial number or other info." value="'+(exProduct.description ? exProduct.description : '')+'">';
@@ -141,51 +141,6 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
                 tr += '</td>';
                 tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
                 tr += '</tr>';
-
-
-
-                // tr += '<tr>';
-                // tr += '<td class="serial">'+(key + 1)+'</td>';
-                // tr += '<td class="text-start">';
-                // tr += '<p class="product-name text-dark" title="'+'SKU-'+(item.variant ? item.variant.variant_code : item.product.product_code )+'">' + name +(item.variant ? ' - '+item.variant.variant_name : '') +'</p><input type="hidden" name="descriptions[]" class="form-control description_input scanable" placeholder="IMEI, Serial number or other info" value="'+(item.description ? item.description : '')+'">';
-                // tr += '<input value="'+item.product_id+'" type="hidden" name="product_ids[]">';
-                // tr +='<input value="'+(item.product_variant_id ? item.product_variant_id : 'noid')+'" type="hidden" name="variant_ids[]">';
-                // tr += '<input value="'+ item.product.tax_type +'" type="hidden" id="tax_type">';
-                // tr +='<input name="unit_tax_percents[]" type="hidden" id="unit_tax_percent" value="'+item.unit_tax_percent+'">';
-                // tr +='<input name="unit_tax_amounts[]" type="hidden" id="unit_tax_amount" value="'+item.unit_tax_amount+'">';
-                // tr +='<input value="'+item.unit_discount_type+'" name="unit_discount_types[]" type="hidden" id="unit_discount_type">';
-                // tr +='<input value="'+item.unit_discount+'" name="unit_discounts[]" type="hidden" id="unit_discount">';
-                // tr +='<input value="'+item.unit_discount_amount+'" name="unit_discount_amounts[]" type="hidden" id="unit_discount_amount">';
-                // tr += '<input value="'+item.unit_cost_inc_tax+'" name="unit_costs_inc_tax[]" type="hidden" id="unit_costs_inc_tax">';
-                // tr += '<input type="hidden" id="previous_qty" value="'+item.quantity+'">';
-                // tr += '<input type="hidden" id="qty_limit" value="'+qty_limits[key]+'">';
-                // tr += '<input class="index-'+(key + 1)+'" type="hidden" id="index">';
-                // tr += '</td>';
-
-                // tr += '<td>';
-                // tr +='<input type="number" name="quantities[]" value="'+item.ex_quantity+'" class="form-control text-center" id="quantity">';
-                // tr += '</td>';
-
-                // tr += '<td>';
-                // tr += '<b><span class="span_unit">'+item.unit+'</span></b>';
-                // tr += '<input name="units[]" type="hidden" id="unit" value="'+item.unit+'">';
-                // tr += '</td>';
-
-                // tr += '<td>';
-                // tr += '<input name="unit_prices_exc_tax[]" type="hidden" value="'+item.unit_price_exc_tax +'" id="unit_price_exc_tax">';
-
-                // tr +='<input name="unit_prices_inc_tax[]" type="hidden" id="unit_price_inc_tax" value="'+item.unit_price_inc_tax+'">';
-                // tr += '<b><span class="span_unit_price_inc_tax">' + parseFloat(item.unit_price_inc_tax).toFixed(2) + '</span> </b>';
-                // tr += '</td>';
-
-                // tr += '<td>';
-                // var ex_quantity = parseFloat(item.ex_quantity);
-                // var subtotal = parseFloat(item.unit_price_inc_tax) * parseFloat(ex_quantity);
-                // tr += '<input value="'+parseFloat(subtotal).toFixed(2)+'" name="subtotals[]" type="hidden" id="subtotal">';
-                // tr += '<b><span class="span_subtotal">' + parseFloat(subtotal).toFixed(2) + '</span></b>';
-                // tr += '</td>';
-                // tr +='<td><a href="#" class="action-btn c-delete"><span class="fas fa-trash text-dark"></span></a></td>';
-                // tr += '</tr>';
             });
 
             $('#product_list').empty();
@@ -217,3 +172,5 @@ $(document).on('submit', '#prepare_to_exchange',function (e) {
     });
 });
 
+var calc = (1000 / 100) * -10;
+console.log(calc);

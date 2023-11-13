@@ -106,7 +106,7 @@ class PosSaleController extends Controller
             ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
                 ->where('branch_id', auth()->user()->branch_id)
                 ->whereIn('account_groups.sub_sub_group_number', [2])
-                ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id')
+                ->select('accounts.id', 'accounts.name', 'accounts.account_number', 'accounts.bank_id', 'accounts.account_group_id', 'account_groups.sub_sub_group_number')
                 ->orWhereIn('account_groups.sub_sub_group_number', [1, 11])->get();
 
             $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);

@@ -202,9 +202,18 @@ a.action-btn {
 
 /* ==============================================input======================== */
 
-.form-control:focus {
+/* .form-control:focus {
     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-    /* border: var(--title-color); */
+} */
+
+.select2-selection:focus,
+.form-control:focus {
+    box-shadow: 0 0;
+    background-color: #f9f6c4 !important;
+}
+
+select.form-control:focus option {
+    background: #ffffff !important;
 }
 
 /* ============================canva================================ */
@@ -278,13 +287,11 @@ canvas#chart {
 
 .modal-header {
     padding: 1px 12px;
-    background: -webkit-linear-gradient(
-        top,
-        #19a6d3 0%,
-        #0853a1 50%,
-        #064492 51%,
-        #02286e 100%
-    );
+    background: -webkit-linear-gradient(top,
+            #19a6d3 0%,
+            #0853a1 50%,
+            #064492 51%,
+            #02286e 100%);
     color: #fff;
 }
 
@@ -412,10 +419,12 @@ tr.clickable_row {
 span.product_name {
     font-size: 12px;
 }
+
 span.product_code {
     font-size: 10px;
     font-weight: 600;
 }
+
 span.product_variant {
     font-size: 10px;
     font-weight: 700;
@@ -424,13 +433,16 @@ span.product_variant {
 .add_button {
     cursor: pointer;
 }
+
 a.dashboard_icon {
     padding: 3px 0px !important;
     border-radius: 4px;
 }
+
 label {
     font-size: 11px;
 }
+
 .t {
     padding-bottom: 41px !important;
 }
@@ -443,6 +455,7 @@ select {
 .tp {
     color: #3cb7dd;
 }
+
 .modal-table td {
     color: black;
 }
@@ -450,11 +463,13 @@ select {
 .text-1 {
     color: #064492 !important;
 }
+
 .btn-1 {
     color: #fff;
     background-color: #064492;
     border-color: #064492;
 }
+
 .bg-1 {
     background-color: #064492;
 }
@@ -488,7 +503,7 @@ select {
     color: white !important;
 }
 
-.red-label-notice{
-    color: red!important;
-    font-size: 9px!important;
+.red-label-notice {
+    color: red !important;
+    font-size: 9px !important;
 }

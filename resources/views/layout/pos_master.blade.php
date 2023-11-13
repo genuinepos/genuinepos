@@ -139,7 +139,19 @@
             outline: 0;
         }
 
-        html.sf-js-enabled { overflow: hidden;}
+        html.sf-js-enabled {
+            overflow: hidden;
+        }
+
+        /* Draft Css */
+        /* .form-control:focus {
+            box-shadow: 0 0;
+            background-color: #f9f6c4 !important;
+        }
+
+        select.form-control:focus option {
+            background: #ffffff !important;
+        } */
     </style>
 </head>
 
@@ -157,14 +169,14 @@
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">{{ __("Choose Payment Method") }}</h6>
+                        <h6 class="modal-title" id="payment_heading">{{ __('Choose Payment Method') }}</h6>
                         <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body">
                         <!--begin::Form-->
                         <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>{{ __("Payment Method") }} </strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __('Payment Method') }} </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -180,7 +192,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>{{ __("Debit Account") }}</strong> </label>
+                                <label><strong>{{ __('Debit Account') }}</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
@@ -191,13 +203,17 @@
                                                 @continue
                                             @endif
 
-                                            <option value="{{ $account->id }}">
-                                                @php
-                                                    $acNo = $account->account_number ? ', A/c No : ' . $account->account_number : '';
-                                                    $bank = $account?->bank ? ', Bank : ' . $account?->bank?->name : '';
-                                                @endphp
-                                                {{ $account->name . $acNo . $bank }}
-                                            </option>
+                                            @if ($account->sub_sub_group_number == 2 && $openedCashRegister->cash_account_id != $account->id)
+                                                @continue
+                                            @else
+                                                <option value="{{ $account->id }}">
+                                                    @php
+                                                        $acNo = $account->account_number ? ', A/c No : ' . $account->account_number : '';
+                                                        $bank = $account?->bank ? ', Bank : ' . $account?->bank?->name : '';
+                                                    @endphp
+                                                    {{ $account->name . $acNo . $bank }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -205,16 +221,16 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong>{{ __("Payment Note") }}</strong></label>
-                            <input name="payment_note" class="form-control form-control-sm" id="payment_note" data-next="choose_method_and_final" placeholder="{{ __("Payment Note") }}">
+                            <label><strong>{{ __('Payment Note') }}</strong></label>
+                            <input name="payment_note" class="form-control form-control-sm" id="payment_note" data-next="choose_method_and_final" placeholder="{{ __('Payment Note') }}">
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __("Confirm") }} ({{ __("Ctrl+Enter") }})</button>
-                                    <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __("Close") }}</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __('Confirm') }} ({{ __('Ctrl+Enter') }})</button>
+                                    <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __('Close') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -230,35 +246,35 @@
                 <div class="modal-dialog col-40-modal" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel">{{ __("Redeem Point") }}</h6>
+                            <h6 class="modal-title" id="exampleModalLabel">{{ __('Redeem Point') }}</h6>
                             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                         </div>
 
                         <div class="modal-body">
                             <div class="form-group">
-                                <label><b>{{ __("Available Point") }}</b></label>
+                                <label><b>{{ __('Available Point') }}</b></label>
                                 <input readonly type="number" step="any" name="available_point" id="available_point" class="form-control fw-bold" data-next="total_redeem_point" value="0" tabindex="-1">
                             </div>
 
                             <div class="form-group row mt-1">
                                 <div class="col-md-6">
-                                    <label><b>{{ __("Redeemed") }}</b></label>
+                                    <label><b>{{ __('Redeemed') }}</b></label>
                                     <input type="number" step="any" name="total_redeem_point" id="total_redeem_point" class="form-control fw-bold" data-next="redeem_btn">
                                     <input type="number" step="any" name="pre_redeemed" id="pre_redeemed" class="d-hide" value="0">
                                     <input type="number" step="any" name="pre_redeemed_amount" id="pre_redeemed_amount" class="d-hide" value="0">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label><b>{{ __("Redeem Amount") }}</b></label>
+                                    <label><b>{{ __('Redeem Amount') }}</b></label>
                                     <input readonly type="number" step="any" name="redeem_amount" id="redeem_amount" class="form-control fw-bold" tabindex="-1">
                                 </div>
                             </div>
 
                             <div class="form-group row mt-3">
                                 <div class="col-md-12">
-                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b>{{ __("Loading") }}</b></button>
-                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">{{ __("Redeem") }}</a>
-                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">{{ __("Close") }}</button>
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b>{{ __('Loading') }}</b></button>
+                                    <a href="#" class="c-btn button-success ms-1 float-end" id="redeem_btn" tabindex="-1">{{ __('Redeem') }}</a>
+                                    <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">{{ __('Close') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -316,7 +332,7 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="e_product_name">{{ __("Item Name") }}</h6>
+                    <h6 class="modal-title" id="e_product_name">{{ __('Item Name') }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -336,13 +352,13 @@
                                     <span id="unit_cost"></span>
                                 </span>
 
-                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __("Cost") }}</span>
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __('Cost') }}</span>
                             </p>
                         @endif
 
                         <div class="row g-2 align-items-end">
                             <div class="col-md-4">
-                                <label> <strong>{{ __("Quantity") }}</strong> : <span class="text-danger">*</span></label>
+                                <label> <strong>{{ __('Quantity') }}</strong> : <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
                                     <select id="e_unit_id" class="form-control w-40">
@@ -353,26 +369,26 @@
 
                             <div class="col-md-4">
                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}" value="0.00">
+                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                             </div>
 
                             <div class="col-md-4">
-                                <label><strong>{{ __("Unit Discount") }}</strong> </label>
+                                <label><strong>{{ __('Unit Discount') }}</strong> </label>
                                 <div class="input-group">
                                     <select class="form-control" id="e_unit_discount_type">
-                                        <option value="1">{{ __("Fixed") }}</option>
-                                        <option value="2">{{ __("Percentage") }}</option>
+                                        <option value="1">{{ __('Fixed') }}</option>
+                                        <option value="2">{{ __('Percentage') }}</option>
                                     </select>
 
-                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00"/>
-                                    <input type="hidden" id="e_discount_amount"/>
+                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
+                                    <input type="hidden" id="e_discount_amount" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="row g-2 align-items-end">
                             <div class="col-md-4">
-                                <label><strong>{{ __("Vat/Tax") }}</strong> </label>
+                                <label><strong>{{ __('Vat/Tax') }}</strong> </label>
                                 <div class="input-group">
                                     <select id="e_tax_ac_id" class="form-control w-50">
                                         <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
@@ -419,21 +435,21 @@
         <div class="modal-dialog col-45-modal" role="document">
             <div class="modal-content modal-middle">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="payment_heading">{{ __("Quick Cash Receive") }}</h6>
+                    <h6 class="modal-title" id="payment_heading">{{ __('Quick Cash Receive') }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
                     <div class="form-group row ">
                         <div class="col-md-6">
                             <div class="input-box-4 bg-dark">
-                                <label class="text-white big_label"><strong>{{ __("Total Receivable") }}</strong> </label>
+                                <label class="text-white big_label"><strong>{{ __('Total Receivable') }}</strong> </label>
                                 <input readonly type="text" class="form-control big_field" id="modal_total_receivable" value="0">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-2 bg-info">
-                                <label class="text-white big_label"><strong>{{ __("Change") }}</strong></label>
+                                <label class="text-white big_label"><strong>{{ __('Change') }}</strong></label>
                                 <input readonly type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
                             </div>
                         </div>
@@ -442,14 +458,14 @@
                     <div class="form-group row mt-1">
                         <div class="col-md-6">
                             <div class="input-box bg-success">
-                                <label class="text-white big_label"><strong>{{ __("Cash Receive") }}</strong> <span class="text-danger">*</span></label>
+                                <label class="text-white big_label"><strong>{{ __('Cash Receive') }}</strong> <span class="text-danger">*</span></label>
                                 <input type="text" name="modal_received_amount" class="form-control text-success big_field m-paying" id="modal_received_amount" data-next="final_and_quick_cash_receive" value="0" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
-                                <label class="text-white big_label"><strong>{{ __("Curr. Balance") }}</strong> </label>
+                                <label class="text-white big_label"><strong>{{ __('Curr. Balance') }}</strong> </label>
                                 <input readonly type="text" class="form-control text-danger big_field" id="modal_current_balance" value="0">
                             </div>
                         </div>
@@ -457,9 +473,9 @@
 
                     <div class="form-group row mt-3">
                         <div class="col-md-12 text-end">
-                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
-                            <button class="btn btn-success ms-1 p-1 pos_submit_btn" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} ({{ __("Ctrl+Enter") }})</button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __("Close") }}</button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __('Loading') }}...</b></button>
+                            <button class="btn btn-success ms-1 p-1 pos_submit_btn" id="final_and_quick_cash_receive" tabindex="-1">{{ __('Cash') }} ({{ __('Ctrl+Enter') }})</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __('Close') }}</button>
                         </div>
                     </div>
                 </div>
@@ -473,7 +489,7 @@
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content" id="exchange_body">
                 <div class="modal-header">
-                    <h6 class="modal-title">{{ __("Exchange") }}</h6>
+                    <h6 class="modal-title">{{ __('Exchange') }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
 
@@ -487,7 +503,7 @@
 
                                 <div class="col-md-2">
                                     <div class="btn_30_blue m-0">
-                                        <button type="submit" class="btn btn-sm btn-primary" tabindex="-1"><i class="fas fa-plus-square"></i> {{ __("Search") }}</button>
+                                        <button type="submit" class="btn btn-sm btn-primary" tabindex="-1"><i class="fas fa-plus-square"></i> {{ __('Search') }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -495,7 +511,7 @@
 
                         <div class="preloader_area">
                             <div class="data_preloader" id="get_inv_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}</h6>
                             </div>
                         </div>
                     </div>
@@ -525,7 +541,7 @@
         @csrf
     </form>
 
-    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('backend/asset/cdn/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}

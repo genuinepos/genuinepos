@@ -598,4 +598,31 @@
         $('.product_row').removeClass('active_tr');
         $(this).closest('tr').addClass('active_tr');
     });
+
+    $(document).on('click', '.product_row', function() {
+
+        $('.product_row').removeClass('active_tr');
+        $(this).addClass('active_tr');
+        $(this).find('#edit_product_link').focus();
+    });
+
+    $(document).on('keyup', '#edit_product_link', function(e) {
+
+        var tr = $(this).closest('tr');
+        var preTr = $(tr).prev();
+        var next = $(tr).next();
+        if (e.which == 40) {
+
+            if (next.length > 0) {
+
+                next.find('#edit_product_link').focus();
+            }
+        }else if(e.which == 38) {
+
+            if (preTr.length > 0) {
+
+                preTr.find('#edit_product_link').focus();
+            }
+        }
+    });
 </script>

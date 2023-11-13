@@ -6,12 +6,14 @@ use App\Models\Sales\Sale;
 use Illuminate\Http\Request;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
+use App\Services\Sales\SaleExchange;
 use App\Services\Sales\PosSaleService;
 use App\Services\Sales\SaleProductService;
 
 class PosSaleExchangeController extends Controller
 {
     public function __construct(
+        private SaleExchange $saleExchange,
         private SaleService $saleService,
         private PosSaleService $posSaleService,
         private SaleProductService $saleProductService,
@@ -52,14 +54,11 @@ class PosSaleExchangeController extends Controller
                 $soldProduct->ex_quantity = $__exQty;
                 $soldProduct->ex_status = 1;
                 $soldProduct->save();
+            } else {
+
+                $soldProduct->ex_status = 0;
+                $soldProduct->save();
             }
-
-            $soldProduct;
-            // else {
-
-            //     $soldProduct->ex_status = 0;
-            //     $soldProduct->save();
-            // }
         }
 
         $exchangeableProducts = $this->saleProductService->saleProducts(with: ['product', 'variant', 'sale', 'unit'])

@@ -1,6 +1,5 @@
 <script>
-    $('.other_payment_method').on('click', function (e) {
-
+    $('.other_payment_method').on('click', function(e) {
         e.preventDefault();
         $('#otherPaymentMethod').modal('show');
 
@@ -10,7 +9,7 @@
         }, 500);
     });
 
-    $(document).on('click', '#cancel_pay_mathod', function (e) {
+    $(document).on('click', '#cancel_pay_mathod', function(e) {
         e.preventDefault();
 
         var firstPaymentMethod = $("#payment_method_id option:first").val()
@@ -21,7 +20,7 @@
         $('#otherPaymentMethod').modal('hide');
     });
 
-    $('#payment_method_id').on('change', function () {
+    $('#payment_method_id').on('change', function() {
 
         var accountId = $(this).find('option:selected').data('account_id');
         setMethodAccount(accountId);
@@ -32,9 +31,14 @@
         if (accountId) {
 
             $('#account_id').val(accountId);
-        }else if(accountId === ''){
 
-            // $('#account_id option:first-child').prop("selected", true);
+            if ($('#account_id').val() == null) {
+
+                $('#account_id option:first-child').prop("selected", true);
+            }
+        } else if (accountId === '') {
+
+            $('#account_id option:first-child').prop("selected", true);
             return;
         }
     }

@@ -7,7 +7,7 @@
             <div class="card-body">
                 @php
                 $domain = $tenant?->domains()?->first()?->domain;
-                $domain = (str_contains($domain,'.')) ? $domain : $domain . '.pos.test';
+                $domain = (str_contains($domain,'.')) ? $domain : $domain . '.' . config('app.domain');
                 $domain = 'http://' . $domain;
                 @endphp
                 <span class="me-4"><b>{{ $domain }}</b></span> <a href="{{ $domain }}" target="_blank">{{ __("Access the App") }}</a>

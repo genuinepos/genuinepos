@@ -46,21 +46,20 @@ Route::prefix('sales')->group(function () {
     Route::controller(SalesHelperController::class)->prefix('helper')->group(function () {
 
         Route::get('pos/selectable/products', 'posSelectableProducts')->name('sales.helper.pos.selectable.products');
+        Route::get('recent/transaction/modal/{initialStatus}/{saleScreenType}/{limit?}', 'recentTransactionModal')->name('sales.helper.recent.transaction.modal');
+        Route::get('recent/transaction/sales/{status}/{saleScreenType}/{limit?}', 'recentSales')->name('sales.helper.recent.transaction.sales');
+        Route::get('sales/print/{id}', 'salesPrint')->name('sales.print');
+        Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
+        Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
+        Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
     });
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
 
         Route::get('create', 'create')->name('sales.pos.create');
         Route::post('store', 'store')->name('sales.pos.store');
-        Route::get('pick/hold/invoice', 'pickHoldInvoice');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
-        Route::get('invoice/products/{saleId}', 'invoiceProducts')->name('sales.pos.invoice.products');
         Route::post('update', 'update')->name('sales.pos.update');
-        Route::get('suspended/sale/list', 'suspendedList')->name('sales.pos.suspended.list');
-        Route::get('branch/stock', 'branchStock')->name('sales.pos.branch.stock');
-        Route::get('add/customer/modal', 'addQuickCustomerModal')->name('sales.pos.add.quick.customer.modal');
-        Route::post('add/customer', 'addCustomer')->name('sales.pos.add.customer');
-        Route::get('get/recent/product/{product_id}', 'getRecentProduct');
         Route::get('search/exchangeable/invoice', 'searchExchangeableInv')->name('sales.pos.search.exchange.invoice');
         Route::post('prepare/exchange', 'prepareExchange')->name('sales.pos.prepare.exchange');
         Route::post('exchange/confirm', 'exchangeConfirm')->name('sales.pos.exchange.confirm');
@@ -68,11 +67,11 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(CashRegisterController::class)->prefix('cash-register')->group(function () {
 
-        Route::get('create', 'create')->name('cash.register.create');
+        Route::get('create/{saleId?}', 'create')->name('cash.register.create');
         Route::post('store', 'store')->name('cash.register.store');
-        Route::get('show', 'show')->name('cash.register.show');
-        Route::get('close', 'close')->name('cash.register.close');
-        Route::post('closed', 'closed')->name('cash.register.closed');
+        Route::get('show/{id}', 'show')->name('cash.register.show');
+        Route::get('close/{id}', 'close')->name('cash.register.close');
+        Route::post('closed/{id}', 'closed')->name('cash.register.closed');
     });
 
     Route::controller(SalesOrderController::class)->prefix('orders')->group(function () {

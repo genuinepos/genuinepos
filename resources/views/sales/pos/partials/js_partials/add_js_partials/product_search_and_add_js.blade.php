@@ -122,10 +122,10 @@
                                 var name = product.name.length > 30 ? product.name.substring(0, 30) + '...' : product.name;
 
                                 var tr = '';
-                                tr += '<tr>';
+                                tr += '<tr class="product_row">';
                                 tr += '<td id="serial">1</td>';
                                 tr += '<td class="text-start">';
-                                tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                                tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
                                 tr += '<input type="hidden" id="product_name" value="' + name + '">';
                                 tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product.id + '">';
                                 tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="noid">';
@@ -269,11 +269,11 @@
 
                             var name = variant.product.name.length > 30 ? variant.product.name.substring(0, 30) + '...' : variant.product.name;
                             var tr = '';
-                            tr += '<tr>';
+                            tr += '<tr class="product_row">';
                             tr += '<td id="serial">1</td>';
 
                             tr += '<td class="text-start">';
-                            tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + name + ' - ' + variant.variant_name + '</a><br/><input type="' + (variant.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                            tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + name + ' - ' + variant.variant_name + '</a><br/><input type="' + (variant.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
                             tr += '<input type="hidden" id="product_name" value="' + name + ' - ' + variant.variant_name + '">';
                             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + variant.product.id + '">';
                             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant.id + '">';
@@ -310,7 +310,7 @@
                             tr += '<span class="fw-bold" id="span_subtotal">' + parseFloat(unitPriceIncTax).toFixed(2) + '</span>';
                             tr += '<input name="subtotals[]" type="hidden" id="subtotal" value="' + parseFloat(unitPriceIncTax).toFixed(2) + '">';
                             tr += '</td>';
-                            tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
+                            tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
                             tr += '</tr>';
 
                             $('#product_list').prepend(tr);
@@ -485,10 +485,10 @@
                         var __name = name + ( variant_name ? ' - ' + variant_name : '');
 
                         var tr = '';
-                        tr += '<tr>';
+                        tr += '<tr class="product_row">';
                         tr += '<td class="fw-bold" id="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a href="#" onclick="editProduct(this); return false;" tabindex="-1">' + __name + '</a><br/><input type="' + (is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                        tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + __name + '</a><br/><input type="' + (is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
                         tr += '<input type="hidden" id="product_name" value="' + __name + '">';
                         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product_id + '">';
                         tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant_id + '">';
@@ -525,7 +525,7 @@
                         tr += '<span class="fw-bold" id="span_subtotal">' + parseFloat(unitPriceIncTax).toFixed(2) + '</span>';
                         tr += '<input name="subtotals[]" type="hidden" id="subtotal" value="' + parseFloat(unitPriceIncTax).toFixed(2) + '">';
                         tr += '</td>';
-                        tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn"><span class="fas fa-trash "></span></a></td>';
+                        tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';
                         tr += '</tr>';
 
                         $('#product_list').append(tr);
@@ -591,5 +591,11 @@
     $(document).on('click', '#hard_reload', function() {
 
         window.location.reload(true);
+    });
+
+    $(document).on('focus', '#edit_product_link', function() {
+
+        $('.product_row').removeClass('active_tr');
+        $(this).closest('tr').addClass('active_tr');
     });
 </script>

@@ -178,7 +178,7 @@ class SaleProductService
     public function addSaleProduct(object $request, object $sale, int $index): object
     {
         $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-        $warehouseId = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
+        $warehouseId = isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null;
         $addSaleProduct = new SaleProduct();
         $addSaleProduct->sale_id = $sale->id;
         $addSaleProduct->warehouse_id = $warehouseId;

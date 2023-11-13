@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
-    <title>{{ __('GPOSS - Create Mode') }}</title>
+    <title>{{ __('Point Of Sale - GPOSS') }}</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
@@ -27,6 +27,7 @@
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
+    <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
     <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
@@ -212,7 +213,7 @@
                             <div class="col-md-12 d-flex justify-content-end">
                                 <div class="btn-loading">
                                     <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                    <button class="btn btn-success pos_submit_btn p-1" id="choose_method_and_final" tabindex="-1">{{ __("Confirm") }} (F10)</button>
+                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __("Confirm") }} ({{ __("Ctrl+Enter") }})</button>
                                     <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __("Close") }}</button>
                                 </div>
                             </div>
@@ -269,91 +270,11 @@
     </form>
 
     <!-- Recent transection list modal-->
-    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <div class="tab_list_area">
-                        <div class="btn-group">
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> {{ __("Final") }}</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/quotations/2') }}" tabindex="-1"><i class="fas fa-scroll"></i> {{ __("Quotation") }}</a>
-
-                            <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{ url('common/ajax/call/recent/drafts/2') }}" tabindex="-1"><i class="fas fa-shopping-bag"></i> {{ __("Draft") }}</a>
-                        </div>
-                    </div>
-
-                    <div class="tab_contant">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="recent_sale_table_area">
-                                    <div class="data_preloader" id="recent_trans_preloader">
-                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table modal-table table-sm table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-start fw-bold">@lang('menu.sl')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.date')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.customer')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.total')</th>
-                                                    <th class="text-start fw-bold">@lang('menu.actions')</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="data-list" id="transection_list"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Recent transection list modal end-->
 
     <!-- Hold invoice list modal -->
-    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table_area">
-                                <div class="data_preloader" id="hold_invoice_preloader">
-                                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                                </div>
-                                <div class="table-responsive" id="hold_invoices"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Hold invoice list modal End-->
 
     @if (auth()->user()->can('product_add'))
@@ -386,29 +307,16 @@
     </div>
     <!--Add Customer Modal-->
 
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader" id="suspend_preloader">
-                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="suspended_sale_list"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit selling product modal end-->
+    <!-- Suspended sales modal-->
+    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Suspended modal end-->
 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="e_product_name">@lang('menu.samsung_a')</h6>
+                    <h6 class="modal-title" id="e_product_name">{{ __("Item Name") }}</h6>
                     <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
@@ -425,7 +333,7 @@
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
                                     <span>{{ $generalSettings['business__currency'] }}</span>
-                                    <span id="unit_cost">/span>
+                                    <span id="unit_cost"></span>
                                 </span>
 
                                 <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __("Cost") }}</span>
@@ -499,36 +407,11 @@
     <!-- Edit selling product modal end-->
 
     <!-- Show stock modal-->
-    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="stock_modal_body"></div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Show stock modal end-->
 
-    <!-- Close Register modal -->
-    <div class="modal fade" id="closeRegisterModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="close_register_content"></div>
-        </div>
-    </div>
-    <!-- Close Register modal End-->
-
     <!-- Cash Register Details modal -->
-    <div class="modal fade" id="cashRegisterDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content" id="cash_register_details_content"></div>
-        </div>
-    </div>
+    <div class="modal fade" id="cashRegisterDetailsAndCloseModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Cash Register Details modal End-->
 
     <!--Quick Cash receive modal-->
@@ -567,16 +450,16 @@
                         <div class="col-md-6">
                             <div class="input-box-3 bg-danger">
                                 <label class="text-white big_label"><strong>{{ __("Curr. Balance") }}</strong> </label>
-                                <input readonly type="text" class="form-control text-danger big_field" id="modal_total_due" value="0">
+                                <input readonly type="text" class="form-control text-danger big_field" id="modal_current_balance" value="0">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group row mt-3">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-end">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 pos_submit_btn float-end">{{ __("Close") }}</button>
-                            <button class="btn btn-success ms-1 pos_submit_btn float-end" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} (F10)</button>
+                            <button class="btn btn-success ms-1 p-1 pos_submit_btn" id="final_and_quick_cash_receive" tabindex="-1">{{ __("Cash") }} ({{ __("Ctrl+Enter") }})</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __("Close") }}</button>
                         </div>
                     </div>
                 </div>
@@ -645,6 +528,12 @@
         </div>
     </div>
 
+    <form id="deleted_form" action="" method="post">
+        @method('DELETE')
+        @csrf
+    </form>
+
+    <script type="text/javascript"  src="{{asset('backend/asset/cdn/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('') }}assets/plugins/custom/select_li/selectli.js"></script>
     <script src="{{ asset('backend/asset/js/pos.js') }}"></script>
     {{-- <script src="{{ asset('backend/asset/js/pos-amount-calculation.js') }}"></script> --}}
@@ -663,34 +552,6 @@
             });
         }
         allPosShortcutMenus();
-
-        $('#cash_register_details').on('click', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: "{{ route('cash.register.show') }}",
-                type: 'get',
-                success: function(data) {
-
-                    $('#cash_register_details_content').html(data);
-                    $('#cashRegisterDetailsModal').modal('show');
-                }
-            });
-        });
-
-        $('#close_register').on('click', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: "{{ route('cash.register.close') }}",
-                type: 'get',
-                success: function(data) {
-
-                    $('#close_register_content').html(data);
-                    $('#closeRegisterModal').modal('show');
-                }
-            });
-        });
 
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();

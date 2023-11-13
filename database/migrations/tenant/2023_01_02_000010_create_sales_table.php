@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->tinyInteger('status')->default(1)->comment('1=final;2=draft;3=order;4=quotation;5=hold;6=suspended');
-            $table->string('invoice_id', 100)->nullable();
-            $table->string('order_id', 100)->nullable();
-            $table->string('quotation_id', 100)->nullable();
-            $table->string('draft_id', 100)->nullable();
+            $table->string('invoice_id', 255)->nullable();
+            $table->string('order_id', 255)->nullable();
+            $table->string('quotation_id', 255)->nullable();
+            $table->string('draft_id', 255)->nullable();
+            $table->string('hold_invoice_id', 255)->nullable();
+            $table->string('suspend_id', 255)->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('customer_account_id')->nullable();
             $table->unsignedBigInteger('sale_account_id')->nullable();

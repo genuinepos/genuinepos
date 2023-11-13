@@ -1,5 +1,6 @@
 <script>
-    $(document).on('click', '#recentTransactionsBtn', function (e) {
+    // Pick hold invoice
+    $(document).on('click', '#suspendedInvoiceBtn', function (e) {
         e.preventDefault();
 
         var url = $(this).attr('href');
@@ -8,10 +9,16 @@
             url:url,
             type:'get',
             success:function(data){
-                
-                $('#recentTransModal').empty();
-                $('#recentTransModal').html(data);
-                $('#recentTransModal').modal('show');
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $('#suspendedSalesModal').empty();
+                $('#suspendedSalesModal').html(data);
+                $('#suspendedSalesModal').modal('show');
             }, error: function(err) {
 
                 if (err.status == 0) {

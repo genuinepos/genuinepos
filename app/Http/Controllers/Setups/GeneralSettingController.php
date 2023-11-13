@@ -85,19 +85,19 @@ class GeneralSettingController extends Controller
     }
 
     // Add tax settings
-    public function taxSettings(Request $request)
-    {
-        $settings = [
-            'tax__tax_1_name' => $request->tax_1_name,
-            'tax__tax_1_no' => $request->tax_1_no,
-            'tax__tax_2_name' => $request->tax_2_name,
-            'tax__tax_2_no' => $request->tax_2_no,
-            'tax__is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
-        ];
-        $this->generalSettingService->updateAndSync($settings);
+    // public function taxSettings(Request $request)
+    // {
+    //     $settings = [
+    //         'tax__tax_1_name' => $request->tax_1_name,
+    //         'tax__tax_1_no' => $request->tax_1_no,
+    //         'tax__tax_2_name' => $request->tax_2_name,
+    //         'tax__tax_2_no' => $request->tax_2_no,
+    //         'tax__is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
+    //     ];
+    //     $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Tax settings updated successfully');
-    }
+    //     return response()->json('Tax settings updated successfully');
+    // }
 
     public function dashboardSettings(Request $request)
     {

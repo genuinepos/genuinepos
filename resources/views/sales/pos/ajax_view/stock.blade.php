@@ -1,6 +1,5 @@
-<link href="{{asset('backend/css/data-table.min.css')}}" rel="stylesheet" type="text/css">
 <p>
-    <b>@lang('menu.stock_location') :
+    <b>{{ __("Shop") }} :
     {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business__shop_name'].'' !!}
     </b>
 </p>
@@ -45,13 +44,12 @@
         @endif
     </tbody>
 </table>
-<style>
+{{-- <style>
     #data_table_length{display: none!important;}
     .dataTables_wrapper {margin-top: 0px!important;}
     div#data_table_filter input {height: 23px!important;width: 68%!important;}
     .dataTables_info{display: none!important;}
-</style>
-<script src="{{asset('backend/js/data-table.jquery.min.js')}}"></script>
+</style> --}}
 <script>
     $('#data_table').DataTable();
 </script>

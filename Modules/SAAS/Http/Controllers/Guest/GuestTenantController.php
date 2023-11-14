@@ -35,7 +35,7 @@ class GuestTenantController extends Controller
                 $admin->assignRole($adminRole);
                 DB::reconnect();
 
-                return response()->json($returningUrl, 302);
+                return response()->json($returningUrl, 201);
             }
         } catch (Exception $e) {
             if (config('app.debug')) {

@@ -2,12 +2,13 @@
 
 namespace Modules\SAAS\Http\Controllers\Guest;
 
-use DB;
+
 use Exception;
-use Illuminate\Routing\Controller;
 use Modules\SAAS\Entities\Tenant;
-use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\SAAS\Utils\UrlGenerator;
+use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
 
 class GuestTenantController extends Controller
 {
@@ -34,13 +35,12 @@ class GuestTenantController extends Controller
                 $admin->assignRole($adminRole);
                 DB::reconnect();
 
-                return response()->json($returningUrl, 200);
+                return response()->json($returningUrl, 302);
             }
         } catch (Exception $e) {
             if (config('app.debug')) {
                 return redirect()->back()->with('error', 'Tenant creation failed.'.$e->getMessage());
             }
-
             return redirect()->back()->with('error', 'Something went wrong! please try again!');
         }
     }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Products;
 
+use Exception;
+use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\CategoryService;
 use App\Services\Products\SubCategoryService;
-use App\Utils\UserActivityLogUtil;
-use DB;
-use Illuminate\Http\Request;
 
 class SubCategoryController extends Controller
 {

@@ -726,6 +726,8 @@
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text('{{ __("Successfully created! Redirecting you to your Domain...") }}');
+                        console.log(res);
+                        alert(res);
                         window.location = res;
                     },
                     error: function(err) {

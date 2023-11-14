@@ -2,8 +2,9 @@
 
 namespace Modules\Communication\Sms\SmsTemplates;
 
-use DB;
-use Modules\Communication\Entities\User;
+use App\Models\User;
+
+use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\SmsServiceInterface;
 
 class PriceUpdateTemplate

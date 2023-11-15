@@ -20,4 +20,5 @@ enum AccountLedgerVoucherType: int
     case PurchaseProductTax = 17;
     case SalesReturnProductTax = 18;
     case PurchaseReturnProductTax = 19;
+    case Exchange = 20;
 }

@@ -506,7 +506,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-2" id="invoice_description"></div>
+                    <div class="mt-2" id="exchange_invoice_description"></div>
                 </div>
             </div>
         </div>

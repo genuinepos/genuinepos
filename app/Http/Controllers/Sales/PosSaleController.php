@@ -258,7 +258,7 @@ class PosSaleController extends Controller
                     $this->purchaseProductService->addPurchaseSaleProductChain(sale: $sale, stockAccountingMethod: $stockAccountingMethod);
                 }
 
-                $this->cashRegisterTransactionService->addCashRegisterTransaction(request: $request, sale: $sale, voucherDebitDescriptionId: $voucherDebitDescriptionId);
+                $this->cashRegisterTransactionService->addCashRegisterTransaction(request: $request, saleId: $sale->id, voucherDebitDescriptionId: $voucherDebitDescriptionId, saleRefId: $sale->id);
             }
 
             $customerCurrentRewardPoint = $this->rewardPointService->calculateCustomerPoint(generalSettings: $generalSettings, totalAmount: $request->total_invoice_amount);

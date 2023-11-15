@@ -7,10 +7,10 @@ require_once base_path('dev/db.php');
 
 Artisan::command('dev:m', function () {
 
-    Schema::table('purchase_products', function (Blueprint $table) {
+    Schema::table('cash_register_transactions', function (Blueprint $table) {
 
-        $table->unsignedBigInteger('transfer_stock_product_id')->after('sale_return_product_id')->nullable()->index('purchase_products_transfer_stock_product_id_foreign');
-        $table->foreign('transfer_stock_product_id')->references('id')->on('transfer_stock_products')->onDelete('CASCADE');
+        $table->unsignedBigInteger('sale_ref_id')->nullable()->after('voucher_description_id')->index('cash_register_transactions_sale_ref_id_foreign');
+        $table->foreign(['sale_ref_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
     });
 });
 

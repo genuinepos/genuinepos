@@ -85,7 +85,7 @@
 
                 if(!$.isEmptyObject(data.errorMsg)) {
 
-                    toastr.error(data.errorMsg,'Attention');
+                    toastr.error(data.errorMsg, 'Attention');
                     return;
                 }else if(data.suspendMsg){
 

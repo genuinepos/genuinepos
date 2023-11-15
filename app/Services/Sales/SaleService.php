@@ -364,9 +364,24 @@ class SaleService
     {
         $customer = $accountService->singleAccount(id: $request->customer_account_id);
 
-        if ($request->ex_sale_id && $request->status != SaleStatus::Final->value) {
+        if ($request->ex_sale_id) {
 
-            return ['pass' => false, 'msg' => __('Can not create another entry when exchange in going on.')];
+            if ($request->status != SaleStatus::Final->value) {
+
+                return ['pass' => false, 'msg' => __('Can not create another entry when exchange in going on.')];
+            }
+
+            if ($request->total_invoice_amount < 0) {
+
+                return ['pass' => false, 'msg' => __('Net Exchange amount must not be less then 0 (-). Net Exchange amount must be greater then or equal main invoice.')];
+            }
+
+            $sale = $this->singleSale(id: $saleId);
+
+            if ($sale->customer_account_id != $request->customer_account_id) {
+
+                return ['pass' => false, 'msg' => __('Customer can not be changed when exchange in going on.')];
+            }
         }
 
         if (!isset($request->product_ids)) {

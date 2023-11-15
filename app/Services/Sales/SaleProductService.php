@@ -270,7 +270,8 @@ class SaleProductService
                 'sale_products.unit_discount_amount',
                 'sale_products.unit_tax_percent',
                 'sale_products.unit_tax_amount',
-                'sale_products.subtotal',
+                // 'sale_products.subtotal',
+                // 'sale_products.ex_status',
                 'products.name as p_name',
                 'products.product_code',
                 'products.warranty_id',
@@ -281,7 +282,8 @@ class SaleProductService
                 'warranties.description as w_description',
                 'warranties.type as w_type',
                 'units.code_name as unit_code_name',
-                DB::raw('SUM(sale_products.quantity) as quantity')
+                DB::raw('SUM(sale_products.quantity) as quantity'),
+                DB::raw('SUM(sale_products.subtotal) as subtotal'),
             )
             ->groupBy('sale_products.product_id')
             ->groupBy('sale_products.variant_id')
@@ -291,7 +293,8 @@ class SaleProductService
             ->groupBy('sale_products.unit_discount_amount')
             ->groupBy('sale_products.unit_tax_percent')
             ->groupBy('sale_products.unit_tax_amount')
-            ->groupBy('sale_products.subtotal')
+            // ->groupBy('sale_products.subtotal')
+            // ->groupBy('sale_products.ex_status')
             ->groupBy('products.warranty_id')
             ->groupBy('products.name')
             ->groupBy('products.product_code')

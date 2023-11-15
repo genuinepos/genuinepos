@@ -10,6 +10,13 @@
     $(document).on('click', '#reedem_point_button', function (e) {
         e.preventDefault();
 
+        var exchangSaleId = $('#ex_sale_id').val();
+        if (exchangSaleId) {
+
+            toastr.error("{{ __('Reedem pointing system is not allowed when exchange is going on.') }}");
+            return;
+        }
+
         if (rpayment_settings.enable_rp == '1') {
 
             if ($('#customer_account_id').val()) {

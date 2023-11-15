@@ -4,6 +4,7 @@ namespace App\Services\Sales\MethodContainerServices;
 
 use App\Enums\AccountingVoucherType;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Enums\SaleScreenType;
@@ -386,12 +387,18 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             $updateSaleProduct = $saleProductService->updateSaleProduct(request: $request, sale: $updateSale, index: $index);
 
             // Add Product Ledger Entry
-            $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $request->date, productId: $productId, transId: $updateSaleProduct->id, rate: $updateSaleProduct->unit_price_inc_tax, quantityType: 'out', quantity: $updateSaleProduct->quantity, subtotal: $updateSaleProduct->subtotal, variantId: $updateSaleProduct->variant_id, warehouseId: (isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null), currentWarehouseId: $updateSaleProduct->current_warehouse_id, branchId: $updateSale->branch_id);
+            $quantity = $updateSaleProduct->quantity;
+            $absQuantity = abs($updateSaleProduct->quantity);
+            $voucherType = $updateSaleProduct->ex_status == BooleanType::True->value ? ProductLedgerVoucherType::Exchange->value : ProductLedgerVoucherType::Sales->value;
+            $productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::Sales->value, date: $request->date, productId: $productId, transId: $updateSaleProduct->id, rate: $updateSaleProduct->unit_price_inc_tax, quantityType: ($quantity >= 0 ? 'out' : 'in'), quantity: $absQuantity, subtotal: $updateSaleProduct->subtotal, variantId: $updateSaleProduct->variant_id, warehouseId: (isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null), currentWarehouseId: $updateSaleProduct->current_warehouse_id, branchId: $updateSale->branch_id);
 
             if ($updateSaleProduct->tax_ac_id) {
 
                 // Add Tax A/c ledger Entry
-                $accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::SaleProductTax->value, date: $request->date, account_id: $updateSaleProduct->tax_ac_id, trans_id: $updateSaleProduct->id, amount: ($updateSaleProduct->unit_tax_amount * $updateSaleProduct->quantity), amount_type: 'credit', current_account_id: $updateSaleProduct->current_tax_ac_id, branch_id: $updateSale->branch_id);
+                $voucherType = $updateSaleProduct->ex_status == BooleanType::True->value ? AccountLedgerVoucherType::Exchange->value : AccountLedgerVoucherType::SaleProductTax->value;
+                $ledgerTaxAmount = $updateSaleProduct->unit_tax_amount * $updateSaleProduct->quantity;
+                $absLedgerTaxAmount = abs($ledgerTaxAmount);
+                $accountLedgerService->updateAccountLedgerEntry(voucher_type_id: $voucherType, date: $request->date, account_id: $updateSaleProduct->tax_ac_id, trans_id: $updateSaleProduct->id, amount: $absLedgerTaxAmount, amount_type: ($ledgerTaxAmount >= 0 ? 'credit' : 'debit'), current_account_id: $updateSaleProduct->current_tax_ac_id, branch_id: $updateSale->branch_id);
             } else {
 
                 $accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::SaleProductTax->value, transId: $updateSaleProduct->id, accountId: $updateSaleProduct->current_tax_ac_id);

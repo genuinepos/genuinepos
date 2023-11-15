@@ -2,15 +2,21 @@
 
 namespace Modules\SAAS\Providers;
 
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
+use Modules\SAAS\Services\TenantService;
+use Illuminate\Console\Scheduling\Schedule;
 use Modules\SAAS\Console\RolePermissionSync;
+use Modules\SAAS\Events\CustomerRegisteredEvent;
+use Modules\SAAS\Providers\EventServiceProvider;
+use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
-use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
+use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
+use Modules\SAAS\Listeners\CustomerRegisteredListener;
+use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
 
 class SAASServiceProvider extends ServiceProvider
@@ -64,6 +70,8 @@ class SAASServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);
+
+        $this->app->bind(TenantServiceInterface::class, TenantService::class);
     }
 
     /**

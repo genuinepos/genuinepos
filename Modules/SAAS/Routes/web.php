@@ -1,26 +1,28 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\Auth\VerificationController;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
-use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
-use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\PlanController;
-use Modules\SAAS\Http\Controllers\ProfileController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\RoleController;
-use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\UserController;
+use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
+use Modules\SAAS\Http\Controllers\Auth\VerificationController;
+use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 
-Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
+Route::get('welcome', fn() => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm') )->name('welcome-page');
+// Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
 
 // Guest User
 Route::middleware('is_guest')->group(function () {
-    Route::get('register', [RegistrationController::class, 'showForm'])->name('register.showForm');
-    Route::post('register', [RegistrationController::class, 'register'])->name('register');
+    // Route::get('register', [RegistrationController::class, 'showForm'])->name('register.showForm');
+    // Route::post('register', [RegistrationController::class, 'register'])->name('register');
     Route::get('login', [LoginController::class, 'showForm'])->name('login.showForm');
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });

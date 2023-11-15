@@ -54,6 +54,7 @@ class RouteServiceProvider extends ServiceProvider
         foreach ($this->centralDomains() as $domain) {
             Route::middleware('web')
                 ->namespace($this->moduleNamespace)
+                ->namespace($this->moduleNamespace)
                 ->domain($domain)
                 ->prefix('saas')
                 ->domain(config('app.app_domain'))

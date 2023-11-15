@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseOrderController;
-use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
+use App\Http\Controllers\Purchases\PurchaseReturnController;
 use App\Http\Controllers\Purchases\PurchaseSettingController;
-use App\Http\Controllers\Report\SalePurchaseReportController;
-use App\Http\Controllers\Report\PurchasePaymentReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
-use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
 use App\Http\Controllers\Purchases\Reports\PaymentAgainstPurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
+use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
+use App\Http\Controllers\Report\SalePurchaseReportController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
 
@@ -62,7 +61,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
     Route::group(['prefix' => 'reports'], function () {
 
         Route::controller(PurchaseReportController::class)->prefix('purchases')->group(function () {
-            
+
             Route::get('/', 'index')->name('reports.purchases.index');
             Route::get('print', 'print')->name('reports.purchases.print');
         });

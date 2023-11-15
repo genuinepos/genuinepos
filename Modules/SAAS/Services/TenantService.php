@@ -3,25 +3,26 @@
 namespace Modules\SAAS\Services;
 
 use Exception;
-use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SAAS\Database\factories\AdminFactory;
-use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Entities\Tenant;
 
 class TenantService implements TenantServiceInterface
 {
-    public function create(array $tenantRequest) : ?Tenant
+    public function create(array $tenantRequest): ?Tenant
     {
         try {
             $tenant = Tenant::create(['id' => $tenantRequest['domain'], 'name' => $tenantRequest['name']]);
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+
                 return $tenant;
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
+
             return null;
         }
     }
@@ -42,6 +43,7 @@ class TenantService implements TenantServiceInterface
         $admin['username'] = $tenantRequest['email']; // TODO:: resolve username and email for same field now, change later
         $admin['email'] = $tenantRequest['email'];
         $admin['password'] = bcrypt($tenantRequest['password']);
+
         return $admin;
     }
 }

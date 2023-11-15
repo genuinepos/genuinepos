@@ -2,8 +2,8 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
 use App\Models\Sales\CashRegister;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class CashRegisterService
@@ -25,7 +25,7 @@ class CashRegisterService
 
         $addCashRegister = new CashRegister();
         $addCashRegister->user_id = auth()->user()->id;
-        $addCashRegister->date = date($dateFormat . $__timeFormat);
+        $addCashRegister->date = date($dateFormat.$__timeFormat);
         $addCashRegister->cash_counter_id = $request->cash_counter_id;
         $addCashRegister->cash_account_id = $request->cash_account_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;
@@ -34,7 +34,7 @@ class CashRegisterService
         $addCashRegister->save();
     }
 
-    function closeCashRegister(int $id, object $request): void
+    public function closeCashRegister(int $id, object $request): void
     {
         $closeCashRegister = $this->singleCashRegister()->where('id', $id)->first();
         $closeCashRegister->closing_cash = $request->closing_cash;
@@ -44,7 +44,7 @@ class CashRegisterService
         $closeCashRegister->save();
     }
 
-    function cashRegisterData($id): array
+    public function cashRegisterData($id): array
     {
         $receivedByAccounts = DB::table('cash_register_transactions')
             ->leftJoin('accounting_voucher_descriptions', 'cash_register_transactions.voucher_description_id', 'accounting_voucher_descriptions.id')

@@ -3,7 +3,6 @@
 use App\Enums\AccountingVoucherType;
 use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucherDescription;
-use App\Models\Accounts\AccountingVoucherDescriptionReference;
 use App\Models\Setups\Branch;
 use Illuminate\Support\Facades\Route;
 

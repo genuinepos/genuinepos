@@ -2,15 +2,8 @@
 
 namespace App\Services\Sales;
 
-use Carbon\Carbon;
 use App\Enums\SaleStatus;
-use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
-use App\Enums\PaymentStatus;
-use App\Enums\SaleScreenType;
-use App\Enums\ShipmentStatus;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 
 class PosSaleService
 {

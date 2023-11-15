@@ -69,6 +69,7 @@ class AdminFactory extends Factory
             'created_at' => '2021-04-07T07:04:03.000000Z',
             'updated_at' => '2022-12-31T10:36:37.000000Z',
         ];
+
         return $admin;
 
         // return [

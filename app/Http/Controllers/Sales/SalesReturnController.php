@@ -161,7 +161,7 @@ class SalesReturnController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
-        
+
         $this->validate($request, [
             'customer_account_id' => 'required',
             'date' => 'required|date',

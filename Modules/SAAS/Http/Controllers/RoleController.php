@@ -47,7 +47,6 @@ class RoleController extends Controller
         ]);
     }
 
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -89,7 +88,6 @@ class RoleController extends Controller
         ]);
     }
 
-   
     public function update(Request $request, Role $role)
     {
         $request->validate([

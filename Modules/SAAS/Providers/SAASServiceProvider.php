@@ -2,22 +2,18 @@
 
 namespace Modules\SAAS\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
-use Modules\SAAS\Services\TenantService;
-use Illuminate\Console\Scheduling\Schedule;
 use Modules\SAAS\Console\RolePermissionSync;
-use Modules\SAAS\Events\CustomerRegisteredEvent;
-use Modules\SAAS\Providers\EventServiceProvider;
-use Modules\SAAS\Providers\RouteServiceProvider;
 use Modules\SAAS\Http\Middleware\IsAuthenticated;
-use Modules\SAAS\Services\TenantServiceInterface;
-use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
-use Modules\SAAS\Listeners\CustomerRegisteredListener;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
+use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
+use Modules\SAAS\Services\TenantService;
+use Modules\SAAS\Services\TenantServiceInterface;
 
 class SAASServiceProvider extends ServiceProvider
 {

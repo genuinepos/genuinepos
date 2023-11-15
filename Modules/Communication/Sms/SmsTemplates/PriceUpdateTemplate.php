@@ -3,7 +3,6 @@
 namespace Modules\Communication\Sms\SmsTemplates;
 
 use App\Models\User;
-
 use Illuminate\Support\Facades\DB;
 use Modules\Communication\Interface\SmsServiceInterface;
 

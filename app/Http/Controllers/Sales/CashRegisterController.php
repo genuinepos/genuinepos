@@ -8,9 +8,7 @@ use App\Services\Accounts\AccountService;
 use App\Services\Sales\CashRegisterService;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CashRegisterController extends Controller
 {
@@ -104,7 +102,7 @@ class CashRegisterController extends Controller
 
     public function close($id)
     {
-       if (! auth()->user()->can('register_close')) {
+        if (! auth()->user()->can('register_close')) {
 
             return 'Access Forbidden';
         }

@@ -18,7 +18,7 @@ class UnitController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_unit_index')) {
+        if (! auth()->user()->can('product_unit_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -33,7 +33,7 @@ class UnitController extends Controller
 
     public function create($isAllowedMultipleUnit = 0)
     {
-        if (!auth()->user()->can('product_unit_add')) {
+        if (! auth()->user()->can('product_unit_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -45,7 +45,7 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_unit_add')) {
+        if (! auth()->user()->can('product_unit_add')) {
 
             return response()->json('Access Denied');
         }
@@ -86,7 +86,7 @@ class UnitController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
+        if (! auth()->user()->can('product_unit_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -99,7 +99,7 @@ class UnitController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
+        if (! auth()->user()->can('product_unit_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -140,7 +140,7 @@ class UnitController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_unit_delete')) {
+        if (! auth()->user()->can('product_unit_delete')) {
 
             return response()->json('Access Denied');
         }

@@ -43,7 +43,13 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                
+                            </tfoot>
                         </table>
+                        <div class="pt-1">
+                            {{ $tenants->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -177,19 +177,23 @@ class AddSalesController extends Controller
 
                 $changeAmount = 0;
                 $receivedAmount = $request->received_amount;
+
                 return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Draft->value) {
 
                 $draft = $sale;
+
                 return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Quotation->value) {
 
                 $quotation = $sale;
+
                 return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
             } elseif ($request->status == SaleStatus::Order->value) {
 
                 $order = $sale;
                 $receivedAmount = $request->received_amount;
+
                 return view('sales.save_and_print_template.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts'));
             }
         } else {

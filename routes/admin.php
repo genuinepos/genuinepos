@@ -23,7 +23,6 @@ use App\Http\Controllers\PosShortMenuController;
 use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\PurchaseOrderReceiveController;
-use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\RandomSaleReturnController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\CashRegisterReportController;

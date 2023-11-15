@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\CodeGenerationServiceInterface;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class CodeGenerationService implements CodeGenerationServiceInterface
 {

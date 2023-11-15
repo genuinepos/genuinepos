@@ -6,7 +6,6 @@ use App\Jobs\SaleMailJob;
 use App\Models\CashRegisterTransaction;
 use App\Models\Customer;
 use App\Models\ProductBranch;
-use App\Models\ProductBranchVariant;
 use App\Models\Sale;
 use App\Models\SaleProduct;
 use App\Models\Sales\CashRegister;

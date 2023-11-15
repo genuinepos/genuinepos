@@ -1,12 +1,11 @@
 <?php
 
-use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
-use App\Services\Sales\SaleProductService;
 use App\Models\Accounts\AccountingVoucherDescription;
-use App\Models\Accounts\AccountingVoucherDescriptionReference;
+
+
 
 Route::get('my-test', function () {
 

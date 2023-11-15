@@ -2,42 +2,42 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
-use App\Enums\SaleScreenType;
-use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Sales\PosSaleService;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\Products\BrandService;
+use App\Enums\SaleScreenType;
+use App\Enums\SaleStatus;
+use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Contacts\ContactService;
-use App\Services\Products\CategoryService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\CashRegisterService;
-use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\RewardPointService;
+use App\Services\Products\BrandService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\ManagePriceGroupService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\UnitService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\CashRegisterService;
+use App\Services\Sales\CashRegisterTransactionService;
+use App\Services\Sales\PosSaleService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Interfaces\CodeGenerationServiceInterface;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Sales\CashRegisterTransactionService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PosSaleController extends Controller
 {
@@ -73,7 +73,7 @@ class PosSaleController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -292,14 +292,17 @@ class PosSaleController extends Controller
 
             $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $receivedAmount = $request->received_amount;
+
             return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
+
             return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $quotation = $sale;
+
             return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Hold->value) {
 

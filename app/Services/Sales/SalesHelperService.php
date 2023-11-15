@@ -105,7 +105,6 @@ class SalesHelperService
 
         $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
-
         if ($stockAccountingMethod == 1) {
 
             $ordering = 'asc';
@@ -115,11 +114,11 @@ class SalesHelperService
         }
 
         $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (!$request->category_id && !$request->brand_id) {
+        if (! $request->category_id && ! $request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {
@@ -130,7 +129,7 @@ class SalesHelperService
         return $products->get();
     }
 
-    public function recentSales(int $status, int $saleScreenType, ?int $limit = null): ?object
+    public function recentSales(int $status, int $saleScreenType, int $limit = null): ?object
     {
         $sales = '';
         $query = DB::table('sales')
@@ -188,7 +187,7 @@ class SalesHelperService
             ->leftJoin('product_stocks', function ($query) {
                 return $query->on('products.id', 'product_stocks.product_id')
                     ->where('product_stocks.branch_id', auth()->user()->branch_id)
-                    ->where('product_stocks.warehouse_id', NULL)
+                    ->where('product_stocks.warehouse_id', null)
                     ->select('product_stocks.stock');
             })
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)

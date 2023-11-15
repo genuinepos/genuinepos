@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Services\Products\CategoryService;
 use App\Services\Products\SubCategoryService;
 use App\Utils\UserActivityLogUtil;
-use DB;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoryController extends Controller
 {

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use Carbon\Carbon;
 use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use Yajra\DataTables\Facades\DataTables;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountFilterService;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ReceivedAgainstSalesReportController extends Controller
 {
@@ -21,9 +21,9 @@ class ReceivedAgainstSalesReportController extends Controller
     ) {
     }
 
-    function index(Request $request)
+    public function index(Request $request)
     {
-        if (!auth()->user()->can('received_against_sales_report')) {
+        if (! auth()->user()->can('received_against_sales_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -61,16 +61,18 @@ class ReceivedAgainstSalesReportController extends Controller
 
             return DataTables::of($receivedAgainstSales)
 
-                ->editColumn('receipt_voucher', function ($row) use ($generalSettings) {
+                ->editColumn('receipt_voucher', function ($row) {
 
                     $receiptVoucherNo = $row->voucherDescription?->accountingVoucher?->voucher_no;
                     $receiptVoucherId = $row->voucherDescription?->accountingVoucher?->id;
-                    return '<a href="' . route('receipts.show', $receiptVoucherId) . '" id="details_btn">' . $receiptVoucherNo . '</a>';
+
+                    return '<a href="'.route('receipts.show', $receiptVoucherId).'" id="details_btn">'.$receiptVoucherNo.'</a>';
                 })
 
                 ->editColumn('receipt_date', function ($row) use ($generalSettings) {
 
                     $date = $row->voucherDescription?->accountingVoucher?->date;
+
                     return date($generalSettings['business__date_format'], strtotime($date));
                 })
 
@@ -83,10 +85,10 @@ class ReceivedAgainstSalesReportController extends Controller
                         $parentBranch = $row?->voucherDescription?->accountingVoucher?->branch?->parentBranch;
                         if ($parentBranch) {
 
-                            return $parentBranch->name . '(' . $branch->area_name . ')';
+                            return $parentBranch->name.'('.$branch->area_name.')';
                         } else {
 
-                            return $branch->name . '(' . $branch->area_name . ')';
+                            return $branch->name.'('.$branch->area_name.')';
                         }
                     } else {
 
@@ -103,16 +105,17 @@ class ReceivedAgainstSalesReportController extends Controller
 
                     if ($saleStatus == SaleStatus::Final->value) {
 
-                        return __('Sales') . ':<a href="' . route('sales.show', $saleId) . '" id="details_btn">' . $invoiceId . '</a>';
-                    } else if ($saleStatus == SaleStatus::Order->value) {
+                        return __('Sales').':<a href="'.route('sales.show', $saleId).'" id="details_btn">'.$invoiceId.'</a>';
+                    } elseif ($saleStatus == SaleStatus::Order->value) {
 
-                        return __('Sales-Order') . ':<a href="' . route('sale.orders.show', $saleId) . '" id="details_btn">' . $salesOrderId . '</a>';
+                        return __('Sales-Order').':<a href="'.route('sale.orders.show', $saleId).'" id="details_btn">'.$salesOrderId.'</a>';
                     }
                 })
 
                 ->editColumn('sales_date', function ($row) use ($generalSettings) {
 
                     $saleDate = $row?->sale?->date;
+
                     return date($generalSettings['business__date_format'], strtotime($saleDate));
                 })
 
@@ -131,16 +134,17 @@ class ReceivedAgainstSalesReportController extends Controller
                     $accountName = $row->voucherDescription?->accountingVoucher?->voucherDebitDescription?->account?->name;
                     $accountNumber = $row->voucherDescription?->accountingVoucher?->voucherDebitDescription?->account?->account_number;
 
-                    $__accountNumber = $accountNumber ? ' / ' . $accountNumber : '';
-                    return  $accountName . $__accountNumber;
+                    $__accountNumber = $accountNumber ? ' / '.$accountNumber : '';
+
+                    return $accountName.$__accountNumber;
                 })
 
                 ->editColumn('payment_method', function ($row) {
 
-                    return  $row->voucherDescription?->accountingVoucher?->voucherDebitDescription?->paymentMethod?->name;
+                    return $row->voucherDescription?->accountingVoucher?->voucherDebitDescription?->paymentMethod?->name;
                 })
 
-                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
+                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="'.$row->amount.'">'.\App\Utils\Converter::format_in_bdt($row->amount).'</span>')
 
                 ->rawColumns(['receipt_voucher', 'receipt_date', 'branch', 'sales_or_order_id', 'sales_date', 'customer', 'total_invoice_amount', 'debit_account', 'payment_method', 'received_amount'])
                 ->make(true);
@@ -208,7 +212,7 @@ class ReceivedAgainstSalesReportController extends Controller
 
     private function filter(object $request, object $query): object
     {
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 

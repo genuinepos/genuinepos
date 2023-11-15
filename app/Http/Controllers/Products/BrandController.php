@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Services\Products\BrandService;
 use App\Utils\UserActivityLogUtil;
-use DB;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {

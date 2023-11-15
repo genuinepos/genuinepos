@@ -12,7 +12,7 @@
                 @csrf
                 <div class="input-group mb-30">
                     <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ config('app.debug') ? 'admin@gmail.com' : old('email') }}" required autocomplete="email" placeholder="{{ __('Email Address') }}">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" placeholder="{{ __('Email Address') }}">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="input-group mb-20">
                     <span class="input-group-text"><i class="fa-regular fa-lock"></i></span>
-                    <input id="password" type="password" class="form-control rounded-end @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="{{ __('Password') }}" value="{{ config('app.debug') ? 'password' : '' }}">
+                    <input id="password" type="password" class="form-control rounded-end @error('password') is-invalid @enderror" name="password" required placeholder="{{ __('Password') }}">
                     <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                     @error('password')
                         <span class="invalid-feedback" role="alert">
@@ -40,16 +40,15 @@
                 </div>
                 <button class="btn btn-primary w-100 login-btn">{{ __('Sign in') }}</button>
             </form>
-            <div class="other-option">
-                <p>{{ __('Don\'t have an account? ') }} <a href="{{ route('saas.register') }}">{{ __('Register here') }}</a></p>
-                {{-- <p>{{ __('Or continue with') }}</p>
+            <!-- <div class="other-option">
+                
                 <div class="social-box d-flex justify-content-center gap-20">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="#"><i class="fa-brands fa-twitter"></i></a>
                     <a href="#"><i class="fa-brands fa-google"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                </div> --}}
-            </div>
+                </div> 
+            </div> -->
         </div>
     </div>
 </x-saas::guest-layout>

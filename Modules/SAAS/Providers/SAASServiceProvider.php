@@ -12,6 +12,8 @@ use Modules\SAAS\Http\Middleware\IsAuthenticated;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
+use Modules\SAAS\Services\TenantService;
+use Modules\SAAS\Services\TenantServiceInterface;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -64,6 +66,8 @@ class SAASServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);
+
+        $this->app->bind(TenantServiceInterface::class, TenantService::class);
     }
 
     /**

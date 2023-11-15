@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Sales;
 
 use App\Enums\SaleScreenType;
 use App\Enums\SaleStatus;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SalesHelperService;
+use Illuminate\Http\Request;
 
 class SalesHelperController extends Controller
 {
@@ -20,6 +20,7 @@ class SalesHelperController extends Controller
     public function posSelectableProducts(Request $request)
     {
         $products = $this->salesHelperService->getPosSelectableProducts($request);
+
         return view('sales.pos.ajax_view.selectable_product_list', compact('products'));
     }
 
@@ -27,6 +28,7 @@ class SalesHelperController extends Controller
     {
 
         $sales = $this->salesHelperService->recentSales(status: $initialStatus, saleScreenType: $saleScreenType, limit: $limit);
+
         return view('sales.recent_transactions.index_modal', compact('sales', 'saleScreenType'));
     }
 
@@ -34,6 +36,7 @@ class SalesHelperController extends Controller
     {
 
         $sales = $this->salesHelperService->recentSales(status: $status, saleScreenType: $saleScreenType, limit: $limit);
+
         return view('sales.recent_transactions.recent_sale_list', compact('sales'));
     }
 
@@ -67,10 +70,11 @@ class SalesHelperController extends Controller
     {
 
         $productStocks = $this->salesHelperService->productStocks();
+
         return view('sales.product_stocks.index_modal', compact('productStocks'));
     }
 
-    function salesPrint($saleId)
+    public function salesPrint($saleId)
     {
         $sale = $this->salesHelperService->sale(saleId: $saleId);
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
@@ -78,22 +82,27 @@ class SalesHelperController extends Controller
         if ($sale->status == SaleStatus::Final->value) {
 
             $changeAmount = 0;
+
             return view('sales.save_and_print_template.sale_print', compact('sale', 'changeAmount', 'customerCopySaleProducts'));
         } elseif ($sale->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
+
             return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
         } elseif ($sale->status == SaleStatus::Quotation->value) {
 
             $quotation = $sale;
+
             return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
         } elseif ($sale->status == SaleStatus::Order->value) {
 
             $order = $sale;
+
             return view('sales.save_and_print_template.order_print', compact('order', 'customerCopySaleProducts'));
         } elseif ($sale->status == SaleStatus::Hold->value) {
 
             $holdInvoice = $sale;
+
             return view('sales.save_and_print_template.hold_invoice_print', compact('holdInvoice', 'customerCopySaleProducts'));
         }
     }

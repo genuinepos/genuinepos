@@ -47,11 +47,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Renderable
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -64,7 +59,7 @@ class RoleController extends Controller
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions(array_keys($permissionsArray));
 
-        return redirect()->route('saas.roles.index')->with('success', 'Role created successfully!');
+        return redirect()->route('saas.roles.index')->with('success', __('Role created successfully!'));
     }
 
     /**
@@ -93,12 +88,6 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function update(Request $request, Role $role)
     {
         $request->validate([

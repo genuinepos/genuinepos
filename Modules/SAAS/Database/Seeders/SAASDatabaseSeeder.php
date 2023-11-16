@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Modules\SAAS\Entities\Plan;
 
@@ -14,8 +15,10 @@ class SAASDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserTableSeeder::class);
-        $this->call(RolePermissionTableSeeder::class);
+        if(User::count() === 0) {
+            $this->call(UserTableSeeder::class);
+            $this->call(RolePermissionTableSeeder::class);
+        }
         if (Plan::count() == 0) {
             $this->call(FeatureTableSeeder::class);
             $this->call(PlanTableSeeder::class);

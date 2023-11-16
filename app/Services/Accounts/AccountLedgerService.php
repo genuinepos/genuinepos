@@ -45,7 +45,7 @@ class AccountLedgerService
         $voucherType = $this->voucherType($voucher_type_id);
         $add = new AccountLedger();
         $time = $voucher_type_id == 0 ? ' 01:00:00' : date(' H:i:s');
-        $add->date = date('Y-m-d H:i:s', strtotime($date . $time));
+        $add->date = date('Y-m-d H:i:s', strtotime($date.$time));
         $add->account_id = $account_id;
         $add->voucher_type = $voucher_type_id;
         $add->{$voucherType['id']} = $trans_id;
@@ -85,7 +85,7 @@ class AccountLedgerService
             $update->credit = 0;
             $previousAccountId = $update->account_id;
             $previousTime = date(' H:i:s', strtotime($update->date));
-            $update->date = date('Y-m-d H:i:s', strtotime($date . $previousTime));
+            $update->date = date('Y-m-d H:i:s', strtotime($date.$previousTime));
             $update->account_id = $account_id;
             $update->{$amount_type} = $amount;
             $update->amount_type = $amount_type;
@@ -112,7 +112,7 @@ class AccountLedgerService
         $deleteAccountLedger = AccountLedger::where('voucher_type', $voucherType)
             ->where($voucherTypeArray['id'], $transId)->where('account_id', $accountId)->first();
 
-        if (!is_null($deleteAccountLedger)) {
+        if (! is_null($deleteAccountLedger)) {
 
             $deleteAccountLedger->delete();
         }
@@ -121,6 +121,7 @@ class AccountLedgerService
     public function singleLedgerEntry($voucherType, $transId, $accountId)
     {
         $voucherTypeArray = $this->voucherType($voucherType);
+
         return AccountLedger::where('voucher_type', $voucherType)
             ->where($voucherTypeArray['id'], $transId)
             ->where('account_id', $accountId)->first();

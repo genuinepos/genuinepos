@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\DayBookVoucherType;
-use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\CodeGenerationService;
-use App\Services\Accounts\AccountService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\SaleExchangeProduct;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
+use App\Services\CodeGenerationService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ProductStockService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Sales\CashRegisterService;
 use App\Services\Sales\CashRegisterTransactionService;
-use App\Services\Sales\PosSaleService;
 use App\Services\Sales\SaleExchange;
+use App\Services\Sales\SaleExchangeProduct;
+use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
 use App\Services\Setups\BranchSettingService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PosSaleExchangeController extends Controller
 {
@@ -51,7 +50,7 @@ class PosSaleExchangeController extends Controller
 
     public function searchInvoice(Request $request)
     {
-        $sale = $this->saleService->singleSaleByAnyCondition(with: [ 'customer' ])->where('invoice_id', $request->invoice_id)->first();
+        $sale = $this->saleService->singleSaleByAnyCondition(with: ['customer'])->where('invoice_id', $request->invoice_id)->first();
 
         $saleProducts = DB::table('sale_products')
             ->where('sale_products.sale_id', $sale->id)
@@ -114,7 +113,7 @@ class PosSaleExchangeController extends Controller
     public function prepareExchange(Request $request)
     {
         $saleId = $request->sale_id;
-        $sale = $this->saleService->singleSale(id: $saleId, with: ['saleProducts' => function($query){
+        $sale = $this->saleService->singleSale(id: $saleId, with: ['saleProducts' => function ($query) {
             return $query->where('ex_status', 0)->orderBy('product_id')->get();
         }, 'saleProducts.product', 'saleProducts.variant', 'saleProducts.unit']);
 
@@ -265,7 +264,6 @@ class PosSaleExchangeController extends Controller
 
             $this->purchaseProductService->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
 
-
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 34, data_obj: $sale);
 
             $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
@@ -277,6 +275,7 @@ class PosSaleExchangeController extends Controller
         }
 
         $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
+
         return view('sales.save_and_print_template.sale_print', compact('sale', 'changeAmount', 'customerCopySaleProducts'));
     }
 }

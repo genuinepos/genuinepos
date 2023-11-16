@@ -15,7 +15,7 @@ class SAASDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if(User::count() === 0) {
+        if (User::count() === 0) {
             $this->call(UserTableSeeder::class);
             $this->call(RolePermissionTableSeeder::class);
         }

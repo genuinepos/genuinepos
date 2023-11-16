@@ -18,6 +18,7 @@ class IsAuthenticatedMiddleware
         if (! Auth::check()) {
             return \redirect()->to(route('saas.login'));
         }
+
         return $next($request);
     }
 }

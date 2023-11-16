@@ -122,6 +122,7 @@ class PlanController extends Controller
     {
         $plan = Plan::find($id);
         $plan->delete();
+
         return response()->json(__('Plan deleted successfully!'), 201);
     }
 }

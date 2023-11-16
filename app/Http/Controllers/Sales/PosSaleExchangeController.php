@@ -2,28 +2,31 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\AccountingVoucherType;
-use App\Enums\AccountLedgerVoucherType;
+use Illuminate\Http\Request;
 use App\Enums\DayBookVoucherType;
-use App\Enums\ProductLedgerVoucherType;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
+use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountLedgerService;
+use App\Services\Sales\SaleExchange;
+use App\Enums\AccountLedgerVoucherType;
+use App\Enums\ProductLedgerVoucherType;
+use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Sales\CashRegisterService;
-use App\Services\Sales\CashRegisterTransactionService;
-use App\Services\Sales\SaleExchange;
-use App\Services\Sales\SaleExchangeProduct;
 use App\Services\Sales\SaleProductService;
-use App\Services\Sales\SaleService;
+use App\Services\Sales\CashRegisterService;
+use App\Services\Sales\SaleExchangeProduct;
 use App\Services\Setups\BranchSettingService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Products\ProductStockService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Sales\CashRegisterTransactionService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PosSaleExchangeController extends Controller
 {

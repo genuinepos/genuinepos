@@ -18,11 +18,13 @@ return new class extends Migration
             $table->unsignedBigInteger('cash_register_id')->nullable()->index('cash_register_transactions_cash_register_id_foreign');
             $table->unsignedBigInteger('sale_id')->nullable()->index('cash_register_transactions_sale_id_foreign');
             $table->unsignedBigInteger('voucher_description_id')->nullable()->index('cash_register_transactions_voucher_description_id_foreign');
+            $table->unsignedBigInteger('sale_ref_id')->nullable()->index('cash_register_transactions_sale_ref_id_foreign');
             $table->timestamps();
 
             $table->foreign(['cash_register_id'])->references(['id'])->on('cash_registers')->onDelete('CASCADE');
             $table->foreign(['sale_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
             $table->foreign(['voucher_description_id'])->references(['id'])->on('accounting_voucher_descriptions')->onDelete('CASCADE');
+            $table->foreign(['sale_ref_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
         });
     }
 

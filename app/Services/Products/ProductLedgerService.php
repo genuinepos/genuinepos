@@ -17,6 +17,9 @@ class ProductLedgerService
             4 => 'Purchase Return',
             5 => 'Stock Adjustment',
             6 => 'Production',
+            7 => 'TransferStock',
+            8 => 'ReceiveStock',
+            9 => 'Exchange',
         ];
     }
 
@@ -32,6 +35,7 @@ class ProductLedgerService
             6 => ['name' => 'Production', 'id' => 'production_id', 'voucher_no' => 'production_voucher', 'details_id' => 'production_id', 'link' => null],
             7 => ['name' => 'TransferStock', 'id' => 'transfer_stock_product_id', 'voucher_no' => 'transfer_stock_voucher', 'details_id' => 'transfer_stock_id', 'link' => null],
             8 => ['name' => 'ReceiveStock', 'id' => 'transfer_stock_product_id', 'voucher_no' => 'transfer_stock_voucher', 'details_id' => 'transfer_stock_id', 'link' => null],
+            9 => ['name' => 'Exchange', 'id' => 'sale_product_id', 'voucher_no' => 'sales_voucher', 'details_id' => 'sale_id', 'link' => null],
         ];
 
         return $data[$voucherTypeId];

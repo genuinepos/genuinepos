@@ -189,6 +189,7 @@
 
                                 exTr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
                                 exTr.find('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
+                                calculateTotalAmount();
                             }
                         } else {
 
@@ -336,6 +337,7 @@
 
                             exTr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
                             exTr.find('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
+                            calculateTotalAmount();
                         }
                     } else if (!$.isEmptyObject(product.namedProducts)) {
 
@@ -552,6 +554,7 @@
 
                         exTr.find('#subtotal').val(parseFloat(subtotal).toFixed(2));
                         exTr.find('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
+                        calculateTotalAmount();
                     }
                 } else {
 

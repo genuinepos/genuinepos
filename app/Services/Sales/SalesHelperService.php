@@ -158,7 +158,7 @@ class SalesHelperService
             'sales.total_invoice_amount',
             'sales.date',
             'customer.name as customer_name'
-        )->get();
+        )->orderBy('sales.date_ts', 'desc')->get();
 
         return $sales;
     }

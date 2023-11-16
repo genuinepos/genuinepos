@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Console\RolePermissionSync;
-use Modules\SAAS\Http\Middleware\IsAuthenticated;
+use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
 use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
@@ -63,7 +63,7 @@ class SAASServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
 
         app()->make('router')->aliasMiddleware('plan_subscription', PlanSubscriptionMiddleware::class);
-        app()->make('router')->aliasMiddleware('is_auth', IsAuthenticated::class);
+        app()->make('router')->aliasMiddleware('is_auth', IsAuthenticatedMiddleware::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);
 

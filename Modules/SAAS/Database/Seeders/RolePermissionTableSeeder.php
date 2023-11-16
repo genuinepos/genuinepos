@@ -52,6 +52,14 @@ class RolePermissionTableSeeder extends Seeder
             'users_destroy',
             'users_trash',
             'users_restore',
+            // Roles
+            'roles_index',
+            'roles_create',
+            'roles_store',
+            'roles_show',
+            'roles_update',
+            'roles_destroy',
+            'roles_trash',
             // Plan
             'plans_index',
             'plans_create',

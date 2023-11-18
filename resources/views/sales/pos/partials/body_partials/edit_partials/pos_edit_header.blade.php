@@ -107,7 +107,7 @@
                                     </div>
                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                         @foreach ($customerAccounts as $customerAccount)
-                                            <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                            <option {{ $sale->customer_account_id == $customerAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">

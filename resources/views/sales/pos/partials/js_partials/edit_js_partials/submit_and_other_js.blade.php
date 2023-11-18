@@ -100,7 +100,9 @@
                         header: null,
                     });
 
-                    window.location = "{{ url()->previous() }}";
+                    setTimeout(function () {
+                        window.location = "{{ url()->previous(); }}";
+                    }, 2000);
                 }
             }, error: function(err) {
 

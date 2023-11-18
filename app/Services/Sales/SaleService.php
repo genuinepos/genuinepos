@@ -413,7 +413,7 @@ class SaleService
 
                 if ($sale->customer_account_id != $request->customer_account_id) {
 
-                    return ['pass' => false, 'msg' => __('Customer can not be changed. One or more receipts is exists against this sales.')];
+                    return ['pass' => false, 'msg' => __('Customer can not be changed. One or more receipts is exists against this sales.'.$sale->customer_account_id.$request->customer_account_id)];
                 }
             }
 

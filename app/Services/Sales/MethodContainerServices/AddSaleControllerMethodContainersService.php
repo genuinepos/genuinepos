@@ -462,9 +462,11 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'saleProducts.purchaseSaleProductChains.purchaseProduct',
         ]);
 
+        $adjustedSale = $saleService->adjustSaleInvoiceAmounts(sale: $sale);
+
         if ($sale->due > 0 && $sale->status == SaleStatus::Final->value) {
 
-            $accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $sale);
+            $accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $adjustedSale);
         }
 
         $saleProducts = $sale->saleProducts;
@@ -484,8 +486,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         }
 
         $purchaseProductService->updatePurchaseSaleProductChain($sale, $stockAccountingMethod);
-
-        $saleService->adjustSaleInvoiceAmounts(sale: $sale);
 
         // Add user Log
         $userActivityLogUtil->addLog(action: 2, subject_type: 7, data_obj: $sale);

@@ -27,7 +27,7 @@
         var total_receivable_amount = $('#total_receivable_amount').val();
         $('#received_amount').val(parseFloat(0).toFixed(2));
         $('#change_amount').val(parseFloat(0).toFixed(2));
-        $('#total_due').val(parseFloat(total_receivable_amount).toFixed(2));
+        $('#current_balance').val(parseFloat(total_receivable_amount).toFixed(2));
     }
 
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
@@ -196,19 +196,6 @@
 
         if (e.which == 0) {
 
-            // if ($(this).attr('id') == 'account_id') {
-
-            //     // if (status == 1 || status == '') {
-
-            //     //     $('#final_and_print').focus().select();
-            //     // } else if (status == 3) {
-
-            //     //     $('#order').focus().select();
-            //     // }
-
-            //     return;
-            // }
-
             $('#' + nextId).focus().select();
         }
     });
@@ -220,17 +207,6 @@
 
         if (e.which == 13) {
             e.preventDefault();
-            // if ($(this).attr('id') == 'order_discount' && ($('#order_discount').val() == '' || $('#order_discount').val() == 0)) {
-
-            //     $('#sale_tax_ac_id').focus();
-            //     return;
-            // }
-
-            // if ($(this).attr('id') == 'receive_amount' && ($('#receive_amount').val() == '' || $('#receive_amount').val() == 0)) {
-
-            //     $('#final_and_print').focus();
-            //     return;
-            // }
 
             $('#' + nextId).focus().select();
         }

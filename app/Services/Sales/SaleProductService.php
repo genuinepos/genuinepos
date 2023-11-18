@@ -209,7 +209,7 @@ class SaleProductService
     public function updateSaleProduct(object $request, object $sale, int $index): object
     {
         $variantId = $request->variant_ids[$index] != 'noid' ? $request->variant_ids[$index] : null;
-        $warehouseId = $request->warehouse_ids[$index] == 'NULL' ? null : $request->warehouse_ids[$index];
+        $warehouseId = isset($request->warehouse_ids[$index]) ? $request->warehouse_ids[$index] : null;
 
         $saleProduct = $this->singleSaleProduct(id: $request->sale_product_ids[$index]);
 

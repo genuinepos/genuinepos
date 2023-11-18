@@ -78,12 +78,12 @@ class ContactService
         return $updateContact;
     }
 
-    public function updateRewardPoint(int $contactId = null, int $currentPoint = 0): void
+    public function updateRewardPoint(?int $contactId = null, int $pointOnInvoice = 0, int $currentRedeemedPoint = 0): void
     {
         if (isset($contactId)) {
 
             $updateRewardPoint = $this->singleContact(id: $contactId);
-            $updateRewardPoint->reward_point = $currentPoint;
+            $updateRewardPoint->reward_point = ($updateRewardPoint->reward_point + $pointOnInvoice) - $currentRedeemedPoint;
             $updateRewardPoint->save();
         }
     }
@@ -96,13 +96,13 @@ class ContactService
             $statusChange->status = 0;
             $statusChange->save();
 
-            return response()->json('Contact deactivated successfully');
+            return response()->json(__('Contact deactivated successfully'));
         } else {
 
             $statusChange->status = 1;
             $statusChange->save();
 
-            return response()->json('Contact activated successfully');
+            return response()->json(__('Contact activated successfully'));
         }
     }
 

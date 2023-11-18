@@ -1,5 +1,4 @@
 <script>
-
     function cancel() {
 
         $.confirm({

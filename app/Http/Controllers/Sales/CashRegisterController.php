@@ -72,13 +72,20 @@ class CashRegisterController extends Controller
             'sale_account_id' => 'required',
             'cash_account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'Sale A/c is required',
-            'cash_account_id.required' => 'Cash A/c is required',
+            'sale_account_id.required' => __('Sale A/c is required'),
+            'cash_account_id.required' => __('Cash A/c is required'),
         ]);
 
         $this->cashRegisterService->addCashRegister(request: $request);
 
-        return redirect()->route('sales.pos.create');
+        if ($request->sale_id) {
+
+            return redirect()->route('sales.pos.edit', $request->sale_id);
+        }else {
+
+            return redirect()->route('sales.pos.create');
+        }
+
     }
 
     public function show($id)

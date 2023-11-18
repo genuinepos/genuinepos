@@ -160,8 +160,8 @@
                                             <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                         @endforeach
                                     </select>
-                                    <div class="input-group-append add_button" id="addCustomer">
-                                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
 
@@ -198,7 +198,6 @@
 
                                     <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">
                                 </div>
-
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">

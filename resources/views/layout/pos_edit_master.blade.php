@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
-    <title>Genuine POS</title>
+    <title>{{ __('Edit Point Of Sale - GPOSS') }}</title>
     <!-- Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     @stack('css')
     <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
     <!--Toaster.js js link-->
@@ -45,12 +46,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
     <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+
     {{-- creat pate link end --}}
 
     <style>
         .d-hide {
             display: none;
         }
+
         @media (min-width: 576px) {
             .modal-full-display {
                 max-width: 93% !important;
@@ -122,7 +125,6 @@
 
         /*# sourceMappingURL=bootstrap.min.css.map  background:linear-gradient(#f7f3f3, #c3c0c0);*/
 
-
         .widget_content .table-responsive {
             min-height: 80vh !important;
         }
@@ -130,7 +132,7 @@
 </head>
 
 <body class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}">
-    <form id="pos_submit_form" action="{{ route('sales.pos.update') }}" method="POST">
+    <form id="pos_submit_form" action="{{ route('sales.pos.update', $sale->id) }}" method="POST">
         @csrf
         <div class="pos-body">
             <div class="main-wraper">
@@ -142,43 +144,52 @@
         <div class="modal fade in" id="otherPaymentMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog col-50-modal" role="document">
                 <div class="modal-content">
-
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">@lang('menu.choose_payment_method')</h6>
-                        <a href="" class="close-btn" id="cancel_pay_mathod"><span class="fas fa-times"></span></a>
+                        <h6 class="modal-title" id="payment_heading">{{ __('Choose Payment Method') }}</h6>
+                        <a href="#" class="close-btn" id="cancel_pay_mathod" tabindex="-1"><span class="fas fa-times"></span></a>
                     </div>
-
                     <div class="modal-body">
                         <!--begin::Form-->
-                        <div class="form-group row">
+                        <div class="form-group row single_payment">
                             <div class="col-md-4">
-                                <label><strong>@lang('menu.payment_method') </strong> <span class="text-danger">*</span></label>
+                                <label><strong>{{ __('Payment Method') }} </strong> <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="payment_method_id" class="form-control" id="payment_method_id">
+                                    <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="account_id">
                                         @foreach ($methods as $method)
-                                        <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                            <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">
+                                                {{ $method->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-md-8">
-                                <label><strong>@lang('menu.debit_account') </strong> </label>
+                                <label><strong>{{ __('Debit Account') }}</strong> </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check text-dark"></i></span>
                                     </div>
-                                    <select name="account_id" class="form-control" id="account_id">
+                                    <select name="account_id" class="form-control" id="account_id" data-next="payment_note">
                                         @foreach ($accounts as $account)
-                                        <option value="{{ $account->id }}">
-                                            @php
-                                            $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            @endphp
-                                            {{ $account->name.$accountType}}
-                                        </option>
+                                            @if ($account->is_bank_account == 1 && $account->has_bank_access_branch == 0)
+                                                @continue
+                                            @endif
+
+                                            @if ($account->sub_sub_group_number == 2 && $openedCashRegister->cash_account_id != $account->id)
+                                                @continue
+                                            @else
+                                                <option value="{{ $account->id }}">
+                                                    @php
+                                                        $acNo = $account->account_number ? ', A/c No : ' . $account->account_number : '';
+                                                        $bank = $account?->bank ? ', Bank : ' . $account?->bank?->name : '';
+                                                    @endphp
+                                                    {{ $account->name . $acNo . $bank }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -186,238 +197,148 @@
                         </div>
 
                         <div class="form-group mt-2">
-                            <label><strong> @lang('menu.payment_note') </strong></label>
-                            <textarea name="note" class="form-control form-control-sm" id="note" cols="30" rows="3" placeholder="Note"></textarea>
+                            <label><strong>{{ __('Payment Note') }}</strong></label>
+                            <input name="payment_note" class="form-control form-control-sm" id="payment_note" data-next="choose_method_and_final" placeholder="{{ __('Payment Note') }}">
                         </div>
 
                         <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> @lang('menu.loading')...</b></button>
-                                <a href="" class="c-btn button-success me-0 float-end" id="submit_btn" data-action_id="1">@lang('menu.confirm') (F10)</a>
-                                <button type="button" class="c-btn btn_orange float-end" id="cancel_pay_mathod">@lang('menu.close')</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent transection list modal-->
-        <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog col-60-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.recent_transaction')</h6>
-                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body">
-                        <!--begin::Form-->
-                        <div class="tab_list_area">
-                            <div class="btn-group">
-                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn tab_active text-white" href="{{ url('common/ajax/call/recent/sales/2') }}" tabindex="-1"><i class="fas fa-info-circle"></i> @lang('menu.final')</a>
-
-                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/quotations/2')}}" tabindex="-1"><i class="fas fa-scroll"></i>@lang('menu.quotation')</a>
-
-                                <a id="tab_btn" class="btn btn-sm btn-dark tab_btn text-white" href="{{url('common/ajax/call/recent/drafts/2')}}" tabindex="-1"><i class="fas fa-shopping-bag"></i> @lang('menu.draft')</a>
-                            </div>
-                        </div>
-
-                        <div class="tab_contant">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="recent_sale_table_area">
-                                        <div class="data_preloader" id="recent_trans_preloader">
-                                            <h6><i class="fas fa-spinner"></i> @lang('menu.processing')</h6>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="table modal-table table-sm table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-start fw-bold">@lang('menu.sl')</th>
-                                                        <th class="text-start fw-bold">@lang('menu.date')</th>
-                                                        <th class="text-start fw-bold">@lang('menu.reference')/@lang('menu.invoice_id')</th>
-                                                        <th class="text-start fw-bold">@lang('menu.customer')</th>
-                                                        <th class="text-start fw-bold">@lang('menu.total')</th>
-                                                        <th class="text-start fw-bold">@lang('menu.actions')</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="data-list" id="transection_list"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <div class="btn-loading">
+                                    <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                    <button id="choose_method_and_final" value="1" class="btn btn-success pos_submit_btn p-1" tabindex="-1">{{ __('Confirm') }} ({{ __('Ctrl+Enter') }})</button>
+                                    <button type="button" class="btn btn-danger p-1" id="cancel_pay_mathod">{{ __('Close') }}</button>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">@lang('menu.close')</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Recent transection list modal end-->
     </form>
 
-    <!-- Hold invoice list modal -->
-    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.hold_invoices')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body">
-                    <!--begin::Form-->
-                    <div class="tab_contant">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table_area">
-                                    <div class="data_preloader" id="hold_invoice_preloader">
-                                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
-                                    </div>
-                                    <div class="table-responsive" id="hold_invoices"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Recent transection list modal-->
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Recent transection list modal end-->
 
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end me-0">@lang('menu.close')</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Hold invoice list modal -->
+    <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Hold invoice list modal End-->
 
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader" id="stock_preloader">
-                    <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
-                </div>
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="stock_modal_body"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit selling product modal end-->
-
     @if(auth()->user()->can('product_add'))
-    <!--Add Product Modal-->
-    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_product_body">
-                    <!--begin::Form-->
+        <!--Add Product Modal-->
+        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog four-col-modal" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
+                        <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    </div>
+                    <div class="modal-body" id="add_product_body">
+                        <!--begin::Form-->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!--Add Product Modal End-->
+        <!--Add Product Modal End-->
     @endif
 
     <!--Add Customer Modal-->
-    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_customer_modal_body"></div>
-            </div>
+    @if(auth()->user()->can('customer_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-    </div>
+    @endif
     <!--Add Customer Modal-->
 
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.suspended_sales')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="suspended_sale_list">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Edit selling product modal end-->
+    <!-- Suspended sales modal-->
+    <div class="modal fade" id="suspendedSalesModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Suspended modal end-->
 
     <!-- Edit selling product modal-->
     <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog double-col-modal" role="document">
+        <div class="modal-dialog col-60-modal" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title" id="product_info">Samsung A30</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    <h6 class="modal-title" id="e_product_name">{{ __('Item Name') }}</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body">
-                    <!--begin::Form-->
                     <form id="update_selling_product">
-                        <div class="form-group">
-                            <label> <strong>@lang('menu.quantity')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" readonly class="form-control form-control-sm edit_input" data-name="Quantity" id="e_quantity" placeholder="Quantity" value="" />
-                            <span class="error error_e_quantity"></span>
+                        <div class="hidden_fields d-none">
+                            <input type="hidden" id="e_unique_id">
+                            <input type="hidden" id="e_product_id">
+                            <input type="hidden" id="e_variant_id">
+                            <input type="hidden" id="e_tax_amount">
+                            <input type="hidden" id="e_price_inc_tax">
                         </div>
 
-                        <div class="form-group">
-                            <label> <strong>@lang('menu.unit_price_exc_tax')</strong> : <span class="text-danger">*</span></label>
-                            <input type="number" {{ auth()->user()->can('edit_price_pos_screen') ? '' : 'readonly' }} step="any" class="form-control form-control-sm edit_input" data-name="Unit price" id="e_unit_price" placeholder="Unit price" value="" />
-                            <span class="error error_e_unit_price"></span>
-                        </div>
+                        @if (auth()->user()->can('view_product_cost_is_sale_screed'))
+                            <p>
+                                <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
+                                    <span>{{ $generalSettings['business__currency'] }}</span>
+                                    <span id="unit_cost"></span>
+                                </span>
 
-                        @if(auth()->user()->can('edit_discount_pos_screen'))
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.discount_type')</strong> </label>
-                                <select class="form-control form-control-sm" id="e_unit_discount_type">
-                                    <option value="2">@lang('menu.percentage')</option>
-                                    <option value="1">@lang('menu.fixed')</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label><strong>@lang('menu.discount')</strong> </label>
-                                <input type="number" class="form-control form-control-sm" id="e_unit_discount" value="0.00" />
-                                <input type="hidden" id="e_discount_amount" />
-                            </div>
-                        </div>
+                                <span class="btn btn-sm btn-info text-white" id="show_cost_button">{{ __('Cost') }}</span>
+                            </p>
                         @endif
 
-                        <div class="form-group">
-                            <label><strong>@lang('menu.tax')</strong> </label>
-                            <select class="form-control form-control-sm" id="e_unit_tax">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label> <strong>{{ __('Quantity') }}</strong> : <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                    <select id="e_unit_id" class="form-control w-40">
+                                        <option value="">{{ __('Unit') }}</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                            </select>
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
+                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label><strong>{{ __('Unit Discount') }}</strong> </label>
+                                <div class="input-group">
+                                    <select class="form-control" id="e_unit_discount_type">
+                                        <option value="1">{{ __('Fixed') }}</option>
+                                        <option value="2">{{ __('Percentage') }}</option>
+                                    </select>
+
+                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" class="form-control fw-bold" id="e_unit_discount" value="0.00" />
+                                    <input type="hidden" id="e_discount_amount" />
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label><strong>@lang('menu.sale_unit')</strong> </label>
-                            <select class="form-control form-control-sm" id="e_unit"></select>
-                        </div>
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-4">
+                                <label><strong>{{ __('Vat/Tax') }}</strong> </label>
+                                <div class="input-group">
+                                    <select id="e_tax_ac_id" class="form-control w-50">
+                                        <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
+                                        @foreach ($taxAccounts as $taxAccount)
+                                            <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                {{ $taxAccount->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
-                        <div class="form-group row mt-3">
-                            <div class="col-md-12">
-                                <button type="submit" class="c-btn button-success me-0 float-end">@lang('menu.update')</button>
-                                <button type="reset" data-bs-dismiss="modal" class="c-btn btn_orange float-end">@lang('menu.close')</button>
+                                    <select id="e_tax_type" class="form-control w-50" tabindex="-1">
+                                        <option value="1">{{ __('Exclusive') }}</option>
+                                        <option value="2">{{ __('Inclusive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="fw-bold">{{ __('Subtotal') }}</label>
+                                <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="#" class="btn btn-sm btn-success" id="edit_product">{{ __('Edit') }}</a>
                             </div>
                         </div>
                     </form>
@@ -427,22 +348,67 @@
     </div>
     <!-- Edit selling product modal end-->
 
-    <!-- Edit selling product modal-->
-    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-40-modal" role="document">
-            <div class="modal-content">
-                <div class="data_preloader mt-5" id="stock_preloader">
-                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
-                </div>
+    <!-- Show stock modal-->
+    <div class="modal fade" id="showStockModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Show stock modal end-->
+
+    <!-- Cash Register Details modal -->
+    <div class="modal fade" id="cashRegisterDetailsAndCloseModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Cash Register Details modal End-->
+
+    <!--Quick Cash receive modal-->
+    <div class="modal fade in" id="cashReceiveMethod" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog col-45-modal" role="document">
+            <div class="modal-content modal-middle">
                 <div class="modal-header">
-                    <h6 class="modal-title">@lang('menu.item_stocks')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+                    <h6 class="modal-title" id="payment_heading">{{ __('Quick Cash Receive') }}</h6>
+                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
                 </div>
-                <div class="modal-body" id="stock_modal_body"></div>
+                <div class="modal-body">
+                    <div class="form-group row ">
+                        <div class="col-md-6">
+                            <div class="input-box-4 bg-dark">
+                                <label class="text-white big_label"><strong>{{ __('Total Receivable') }}</strong> </label>
+                                <input readonly type="text" class="form-control big_field" id="modal_total_receivable" value="0">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="input-box-2 bg-info">
+                                <label class="text-white big_label"><strong>{{ __('Change') }}</strong></label>
+                                <input readonly type="text" class="form-control big_field text-info" id="modal_change_amount" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-1">
+                        <div class="col-md-6">
+                            <div class="input-box bg-success">
+                                <label class="text-white big_label"><strong>{{ __('Cash Receive') }}</strong> <span class="text-danger">*</span></label>
+                                <input type="text" name="modal_received_amount" class="form-control text-success big_field m-paying" id="modal_received_amount" data-next="final_and_quick_cash_receive" value="0" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="input-box-3 bg-danger">
+                                <label class="text-white big_label"><strong>{{ __('Curr. Balance') }}</strong> </label>
+                                <input readonly type="text" class="form-control text-danger big_field" id="modal_current_balance" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                        <div class="col-md-12 text-end">
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __('Loading') }}...</b></button>
+                            <button class="btn btn-success ms-1 p-1 pos_submit_btn" id="final_and_quick_cash_receive" tabindex="-1">{{ __('Cash') }} ({{ __('Ctrl+Enter') }})</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-danger ms-1 p-1">{{ __('Close') }}</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- Edit selling product modal end-->
+    <!--Quick Cash receive modal End-->
 
     <!--Data delete form-->
     <form id="deleted_form" action="" method="post">
@@ -451,6 +417,7 @@
     </form>
     <!--Data delete form end-->
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
@@ -463,14 +430,6 @@
             });
         }
         allPosShortcutMenus();
-
-        $(document).keypress(".scanable", function(event) {
-
-            if (event.which == '10' || event.which == '13') {
-
-                event.preventDefault();
-            }
-        });
 
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
@@ -492,6 +451,30 @@
                     }
                 }
             });
+        });
+
+        $(window).scroll(function() {
+
+            if ($('.select2').is(':visible')) {
+                $('.select2-dropdown').css({
+                    "display": "none"
+                });
+            }
+        });
+
+        $(document).on('click', '.select2', function(e) {
+            e.preventDefault();
+            $('.select2-dropdown').css({
+                "display": ""
+            });
+        });
+
+        $(document).on('select2:open', () => {
+
+            if ($('.select2-search--dropdown .select2-search__field').length > 0) {
+
+                document.querySelector('.select2-search--dropdown .select2-search__field').focus();
+            }
         });
     </script>
     @stack('js')

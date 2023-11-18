@@ -2,29 +2,34 @@
 
 namespace App\Http\Controllers\Sales;
 
+use App\Enums\BooleanType;
+use Illuminate\Http\Request;
+use App\Enums\SaleScreenType;
 use App\Enums\DayBookVoucherType;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
+use App\Services\Sales\SaleExchange;
+use App\Services\Sales\PosSaleService;
 use App\Enums\AccountLedgerVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\SaleExchangeProduct;
-use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\DayBookService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\SaleProductService;
 use App\Services\Sales\CashRegisterService;
-use App\Services\Sales\CashRegisterTransactionService;
-use App\Services\Sales\PosSaleService;
-use App\Services\Sales\SaleExchange;
-use App\Services\Sales\SaleService;
+use App\Services\Sales\SaleExchangeProduct;
 use App\Services\Setups\BranchSettingService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
+use App\Services\Products\ProductStockService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Sales\CashRegisterTransactionService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PosSaleExchangeController extends Controller
 {
@@ -51,7 +56,7 @@ class PosSaleExchangeController extends Controller
 
     public function searchInvoice(Request $request)
     {
-        $sale = $this->saleService->singleSaleByAnyCondition(with: [ 'customer' ])->where('invoice_id', $request->invoice_id)->first();
+        $sale = $this->saleService->singleSaleByAnyCondition(with: ['customer'])->where('invoice_id', $request->invoice_id)->first();
 
         $saleProducts = DB::table('sale_products')
             ->where('sale_products.sale_id', $sale->id)
@@ -99,9 +104,14 @@ class PosSaleExchangeController extends Controller
 
         if ($sale) {
 
-            if ($sale->exchange_status == 1) {
+            if ($sale->exchange_status == BooleanType::True->value) {
 
                 return response()->json(['errorMsg' => __('Exchange Limit is 1 for per invoice.')]);
+            }
+
+            if ($sale->sale_screen == SaleScreenType::AddSale->value) {
+
+                return response()->json(['errorMsg' => __('Sale is created by add sale. If you want to make any exchange on this invoice, Please go to the add sale.')]);
             }
 
             return view('sales.pos.ajax_view.exchange_able_invoice', compact('sale', 'saleProducts'));

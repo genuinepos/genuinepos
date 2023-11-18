@@ -163,3 +163,11 @@ $(document).on('submit', '#prepare_to_exchange', function (e) {
 $('#exchangeModal').on('hidden.bs.modal', function () {
     $('#exchange_invoice_description').empty();
 });
+
+$('#exchangeModal').on('show.bs.modal', function () {
+
+    setTimeout(function () {
+
+        $('#invoice_id').focus();
+    }, 500);
+});

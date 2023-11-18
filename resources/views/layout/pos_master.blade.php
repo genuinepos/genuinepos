@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <link href="{{ asset('backend/css/data-table.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     @stack('css')
     <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
@@ -42,7 +43,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
     <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
         .d-hide {
             display: none;
@@ -300,17 +300,10 @@
     @endif
 
     <!--Add Customer Modal-->
-    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_customer')</h6>
-                    <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="add_customer_modal_body"></div>
-            </div>
+    @if(auth()->user()->can('customer_add'))
+        <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
-    </div>
+    @endif
     <!--Add Customer Modal-->
 
     <!-- Suspended sales modal-->
@@ -540,7 +533,6 @@
     <script>
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
-
             $.ajax({
                 url: "{{ route('pos.short.menus.show') }}",
                 type: 'get',

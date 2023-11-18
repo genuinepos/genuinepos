@@ -20,6 +20,15 @@
         $('#quotation_disabled').click();
     });
 
+    shortcuts.add('f6', function () {
+
+        $('#exchangeModal').modal('show');
+        setTimeout(function () {
+
+            $('#invoice_id').focus();
+        }, 500);
+    });
+
     //Key shortcut for hold invoice
     shortcuts.add('f8', function () {
 

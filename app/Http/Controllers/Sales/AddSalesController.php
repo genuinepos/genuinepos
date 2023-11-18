@@ -53,7 +53,7 @@ class AddSalesController extends Controller
     ) {
     }
 
-    public function index(Request $request, int $customerAccountId = null)
+    public function index(Request $request, $customerAccountId = null, $saleScreen = null)
     {
         if (! auth()->user()->can('view_add_sale')) {
 
@@ -62,7 +62,8 @@ class AddSalesController extends Controller
 
         if ($request->ajax()) {
 
-            return $this->saleService->addSalesListTable(request: $request, customerAccountId: $customerAccountId);
+            $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
+            return $this->saleService->salesListTable(request: $request, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;

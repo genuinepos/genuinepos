@@ -269,7 +269,12 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
+                            @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
+                                <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
+                            @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
+                                <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
+                            @endif
+
                             <a href="{{ route('sale.shipments.print.packing.slip', [$sale->id]) }}" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn">{{ __("Print Packing Slip") }}</a>
                             <a href="{{ route('sales.print.challan', [$sale->id]) }}" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn">{{ __("Print Challan") }}</a>
                             <button type="button" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __("Print Invoice") }}</button>

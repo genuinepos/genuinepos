@@ -92,8 +92,8 @@ Route::group(['prefix' => 'product'], function () {
 
         // Route::get('all', [ProductController::class, 'allProduct'])->name('products.all.product');
         // Route::get('view/{productId}', [ProductController::class, 'view'])->name('products.view');
-        Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
-        Route::get('add', [ProductController::class, 'create'])->name('products.add.view');
+        // Route::get('get/all/product', [ProductController::class, 'getAllProduct'])->name('products.get.all.product');
+        // Route::get('add', [ProductController::class, 'create'])->name('products.add.view');
         // Route::post('store', [ProductController::class, 'store'])->name('products.add.store');
         // Route::get('edit/{productId}', [ProductController::class, 'edit'])->name('products.edit');
         // Route::get('product/variants/{productId}', [ProductController::class, 'getProductVariants'])->name('products.get.product.variants');
@@ -104,7 +104,7 @@ Route::group(['prefix' => 'product'], function () {
         // Route::delete('multiple/delete', [ProductController::class, 'multipleDelete'])->name('products.multiple.delete');
         // Route::get('all/form/variant', [ProductController::class, 'getAllFormVariants'])->name('products.add.get.all.from.variant');
         // Route::get('search/product/{productCode}', [ProductController::class, 'searchProduct']);
-        Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
+        // Route::get('get/product/stock/{productId}', [ProductController::class, 'getProductStock']);
         // Route::get('change/status/{productId}', [ProductController::class, 'changeStatus'])->name('products.change.status');
         // Route::get('check/purchase/generate/barcode/{productId}', [ProductController::class, 'chackPurchaseAndGenerateBarcode'])->name('products.check.purchase.and.generate.barcode');
         // Route::get('get/opening/stock/{productId}', [ProductController::class, 'openingStock'])->name('products.opening.stock');
@@ -148,21 +148,6 @@ Route::group(['prefix' => 'product'], function () {
         Route::get('create', [ProductImportController::class, 'create'])->name('product.import.create');
         Route::post('store', [ProductImportController::class, 'store'])->name('product.import.store');
     });
-
-    Route::group(['prefix' => 'reports'], function () {
-
-        Route::group(['prefix' => 'stock'], function () {
-            Route::get('/', [StockReportController::class, 'index'])->name('reports.stock.index');
-            Route::get('print/branch/stocks', [StockReportController::class, 'printBranchStock'])->name('reports.stock.print.branch.stock');
-            Route::get('warehouse/stock', [StockReportController::class, 'warehouseStock'])->name('reports.stock.warehouse.stock');
-            Route::get('all/parent/categories', [StockReportController::class, 'allParentCategories'])->name('reports.stock.all.parent.categories');
-        });
-
-        Route::group(['prefix' => 'stock/in/out'], function () {
-            Route::get('/', [StockInOutReportController::class, 'index'])->name('reports.stock.in.out.index');
-            Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
-        });
-    });
 });
 
 // Contact route group
@@ -200,28 +185,28 @@ Route::group(['prefix' => 'contacts'], function () {
     // Customers route group
     Route::group(['prefix' => 'customers'], function () {
 
-        Route::get('/', [CustomerController::class, 'index'])->name('contacts.customer.index');
-        Route::get('add', [CustomerController::class, 'create'])->name('contacts.customer.create');
-        Route::post('store', [CustomerController::class, 'store'])->name('contacts.customer.store');
-        Route::post('addOpeningBalance', [CustomerController::class, 'addOpeningBalance'])->name('contacts.customer.add.opening.balance');
-        Route::get('edit/{customerId}', [CustomerController::class, 'edit'])->name('contacts.customer.edit');
-        Route::post('update', [CustomerController::class, 'update'])->name('contacts.customer.update');
-        Route::delete('delete/{customerId}', [CustomerController::class, 'delete'])->name('contacts.customer.delete');
-        Route::get('change/status/{customerId}', [CustomerController::class, 'changeStatus'])->name('contacts.customer.change.status');
-        Route::get('view/{customerId}', [CustomerController::class, 'view'])->name('contacts.customer.view');
-        Route::get('ledgers/list/{customerId}', [CustomerController::class, 'ledgerList'])->name('contacts.customer.ledger.list');
-        Route::get('print/ledger/{customerId}', [CustomerController::class, 'ledgerPrint'])->name('contacts.customer.ledger.print');
-        Route::get('payment/{customerId}', [CustomerController::class, 'payment'])->name('customers.payment');
-        Route::post('payment/{customerId}', [CustomerController::class, 'paymentAdd'])->name('customers.payment.add');
+        // Route::get('/', [CustomerController::class, 'index'])->name('contacts.customer.index');
+        // Route::get('add', [CustomerController::class, 'create'])->name('contacts.customer.create');
+        // Route::post('store', [CustomerController::class, 'store'])->name('contacts.customer.store');
+        // Route::post('addOpeningBalance', [CustomerController::class, 'addOpeningBalance'])->name('contacts.customer.add.opening.balance');
+        // Route::get('edit/{customerId}', [CustomerController::class, 'edit'])->name('contacts.customer.edit');
+        // Route::post('update', [CustomerController::class, 'update'])->name('contacts.customer.update');
+        // Route::delete('delete/{customerId}', [CustomerController::class, 'delete'])->name('contacts.customer.delete');
+        // Route::get('change/status/{customerId}', [CustomerController::class, 'changeStatus'])->name('contacts.customer.change.status');
+        // Route::get('view/{customerId}', [CustomerController::class, 'view'])->name('contacts.customer.view');
+        // Route::get('ledgers/list/{customerId}', [CustomerController::class, 'ledgerList'])->name('contacts.customer.ledger.list');
+        // Route::get('print/ledger/{customerId}', [CustomerController::class, 'ledgerPrint'])->name('contacts.customer.ledger.print');
+        // Route::get('payment/{customerId}', [CustomerController::class, 'payment'])->name('customers.payment');
+        // Route::post('payment/{customerId}', [CustomerController::class, 'paymentAdd'])->name('customers.payment.add');
 
-        Route::get('return/payment/{customerId}', [CustomerController::class, 'returnPayment'])->name('customers.return.payment');
-        Route::post('return/payment/{customerId}', [CustomerController::class, 'returnPaymentAdd'])->name('customers.return.payment.add');
+        // Route::get('return/payment/{customerId}', [CustomerController::class, 'returnPayment'])->name('customers.return.payment');
+        // Route::post('return/payment/{customerId}', [CustomerController::class, 'returnPaymentAdd'])->name('customers.return.payment.add');
 
-        Route::get('all/payment/list/{customerId}', [CustomerController::class, 'allPaymentList'])->name('customers.all.payment.list');
-        Route::get('all/payment/print/{customerId}', [CustomerController::class, 'allPaymentPrint'])->name('customers.all.payment.print');
-        Route::get('payment/details/{paymentId}', [CustomerController::class, 'paymentDetails'])->name('customers.view.details');
-        Route::delete('payment/delete/{paymentId}', [CustomerController::class, 'paymentDelete'])->name('customers.payment.delete');
-        Route::get('amountsBranchWise/{customerId}', [CustomerController::class, 'customerAmountsBranchWise'])->name('contacts.customer.amounts.branch.wise');
+        // Route::get('all/payment/list/{customerId}', [CustomerController::class, 'allPaymentList'])->name('customers.all.payment.list');
+        // Route::get('all/payment/print/{customerId}', [CustomerController::class, 'allPaymentPrint'])->name('customers.all.payment.print');
+        // Route::get('payment/details/{paymentId}', [CustomerController::class, 'paymentDetails'])->name('customers.view.details');
+        // Route::delete('payment/delete/{paymentId}', [CustomerController::class, 'paymentDelete'])->name('customers.payment.delete');
+        // Route::get('amountsBranchWise/{customerId}', [CustomerController::class, 'customerAmountsBranchWise'])->name('contacts.customer.amounts.branch.wise');
 
         // Route::group(['prefix' => 'money/receipt'], function () {
         //     Route::get('/voucher/list/{customerId}', [MoneyReceiptController::class, 'moneyReceiptList'])->name('money.receipt.voucher.list');

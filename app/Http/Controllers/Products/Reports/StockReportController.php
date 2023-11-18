@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers\Products\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Utils\Converter;
@@ -126,7 +126,7 @@ class StockReportController extends Controller
         $units = DB::table('units')->get(['id', 'name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
 
-        return view('reports.stock_report.index', compact('branches', 'brands', 'taxes', 'units', 'categories'));
+        return view('product.reports.stock_report.index', compact('branches', 'brands', 'taxes', 'units', 'categories'));
     }
 
     // Get all product stock **requested by ajax**

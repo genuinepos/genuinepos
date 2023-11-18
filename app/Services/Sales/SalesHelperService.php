@@ -114,11 +114,11 @@ class SalesHelperService
         }
 
         $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (! $request->category_id && ! $request->brand_id) {
+        if (!$request->category_id && !$request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {
@@ -181,24 +181,47 @@ class SalesHelperService
         $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $productBranchStock = DB::table('products')
+            // ->leftJoin('product_stocks', 'products.id', 'product_stocks.product_id')
+
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
-            ->leftJoin('product_stocks', function ($query) {
-                return $query->on('products.id', 'product_stocks.product_id')
-                    ->where('product_stocks.branch_id', auth()->user()->branch_id)
-                    ->where('product_stocks.warehouse_id', null)
-                    ->select('product_stocks.stock');
-            })
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
+            ->leftJoin('product_stocks', function ($query) {
+                $query->on('products.id', 'product_stocks.product_id')
+                    ->where('product_stocks.variant_id', NULL)
+                    ->where('product_stocks.branch_id', auth()->user()->branch_id)
+                    ->where('product_stocks.warehouse_id', NULL);
+            })
+            ->leftJoin('product_stocks as variant_stocks', function ($query) {
+                $query->on('product_variants.id', 'variant_stocks.variant_id')
+                    ->where('variant_stocks.branch_id', auth()->user()->branch_id)
+                    ->where('variant_stocks.warehouse_id', NULL);
+            })
             ->select(
-                'products.id',
+                'products.id as product_id',
                 'products.name as product_name',
                 'products.product_code',
                 'units.name as unit_name',
+                'product_variants.id as variant_id',
                 'product_variants.variant_name',
                 'product_variants.variant_code',
-                'product_stocks.stock',
+                // 'product_stocks.variant_id',
+                DB::raw('SUM(CASE WHEN product_stocks.branch_id is null AND product_stocks.warehouse_id is null THEN product_stocks.stock END) as product__stock'),
+                DB::raw('SUM(CASE WHEN variant_stocks.branch_id is null AND variant_stocks.warehouse_id is null THEN variant_stocks.stock END) as variant__stock'),
+            )
+
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.product_code',
+                'units.name',
+                'product_variants.id',
+                'product_variants.variant_name',
+                'product_variants.variant_code',
+                // 'product_stocks.product_id',
+                // 'product_stocks.variant_id',
+                'product_stocks.branch_id',
             )
             ->distinct('product_access_branches.branch_id')
             ->orderBy('products.name', 'asc')

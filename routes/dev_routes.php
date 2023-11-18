@@ -77,6 +77,65 @@ Route::get('my-test', function () {
     // ->join('accounting_voucher_descriptions', 'voucher_description_references.voucher_description_id', 'accounting_voucher_descriptions.id')
     // ->join('accounting_voucher_descriptions', 'voucher_description_references.voucher_description_id', 'accounting_voucher_descriptions.id')
     // ->join('sales', 'voucher_description_references.sale_id', 'sales.id')
+
+    // $ownBranchIdOrParentBranchId = auth()?->user()?->branch?->parent_branch_id ? auth()?->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+
+    // $branchId = auth()->user()->branch_id;
+
+    // return DB::table('products')
+    //     ->leftJoin('units', 'products.unit_id', 'units.id')
+    //     ->leftJoin('product_variants', 'products.id', 'product_variants.product_id')
+    //     ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
+    //     ->leftJoin('branches', 'product_access_branches.branch_id', 'branches.id')
+    //     ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+    //     ->leftJoin('product_stocks', 'products.id', 'product_stocks.product_id')
+    //     ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
+    //     ->select(
+    //         'products.name as product_name',
+    //         'products.product_code',
+    //         'units.name as unit_name',
+    //         'product_variants.variant_name',
+    //         'product_variants.variant_code',
+    //         'branches.name as branch_name',
+    //         'branches.branch_code',
+    //         'parentBranch.name as parent_branch_name',
+    //         DB::raw('SUM(CASE WHEN product_stocks.branch_id is null AND product_stocks.warehouse_id is null THEN product_stocks.stock END) as current_stock')
+    //     )
+    //     ->distinct('products.id')
+    //     // ->distinct('product_access_branches.branch_id')
+    //     ->orderBy('products.name', 'asc')
+    //     ->groupBy(
+    //         'products.name',
+    //         'products.product_code',
+    //         'units.name',
+    //         'product_variants.variant_name',
+    //         'product_variants.variant_code',
+    //         'branches.id',
+    //         'branches.name',
+    //         'branches.branch_code',
+    //         'parentBranch.name',
+    //         'product_stocks.product_id',
+    //         'product_stocks.variant_id',
+    //     )
+    //     ->get();
+
+
+    return $stock = DB::table('product_stocks')
+        ->leftJoin('products', 'product_stocks.product_id', 'products.id')
+        ->leftJoin('product_variants', 'product_stocks.variant_id', 'product_variants.id')
+        ->leftJoin('branches', 'product_stocks.branch_id', 'branches.id')
+        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+        ->where('product_stocks.warehouse_id', null)
+        ->select(
+            'products.name as product_name',
+            'products.product_code',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'branches.name as branch_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
+            'product_stocks.stock',
+        )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->orderBy('products.name', 'asc')->get();
 });
 
 Route::get('t-id', function () {

@@ -14,7 +14,7 @@
         </div>
         <div class="modal-header">
             <h6 class="modal-title">
-                {{ __("Product Stock") }} | 
+                {{ __("Product Stock") }} |
                 <b>
                     {{ __('Shop') }} :
                     @if (auth()->user()?->branch)
@@ -58,7 +58,13 @@
                                     {{ $productBranchStock->product_name . $variantName }}
                                 </td>
                                 <td class="text-start">{{ $productCode }}</td>
-                                <td class="text-start">{{ $productBranchStock->stock }}</td>
+
+                                @if ($productBranchStock->variant_id)
+                                    <td class="text-start">{{ App\Utils\Converter::format_in_bdt($productBranchStock->variant__stock) }}</td>
+                                @else
+                                    <td class="text-start">{{ App\Utils\Converter::format_in_bdt($productBranchStock->product__stock) }}</td>
+                                @endif
+
                                 <td class="text-start">{{ $productBranchStock->unit_name }}</td>
                             </tr>
                         @endforeach

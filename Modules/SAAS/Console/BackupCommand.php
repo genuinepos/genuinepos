@@ -13,7 +13,7 @@ class BackupCommand extends Command
      *
      * @var string
      */
-    protected $name = 'backup:tenants';
+    protected $name = 'saas:tenants';
 
     /**
      * The console command description.

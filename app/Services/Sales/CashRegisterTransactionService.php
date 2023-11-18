@@ -6,7 +6,7 @@ use App\Models\Sales\CashRegisterTransaction;
 
 class CashRegisterTransactionService
 {
-    function addCashRegisterTransaction(object $request, ?int $saleId, ?int $voucherDebitDescriptionId = null, ?int $saleRefId = null): void
+    public function addCashRegisterTransaction(object $request, ?int $saleId, int $voucherDebitDescriptionId = null, int $saleRefId = null): void
     {
         $cashRegisterTransaction = $this->singleCashRegisterTransaction()->where('sale_id', $saleId)->first();
 

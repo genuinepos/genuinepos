@@ -4,6 +4,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\CheckTenantForMaintenanceMode;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -18,6 +19,7 @@ Route::middleware([
     // 'plan_subscription',
     InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
+    CheckTenantForMaintenanceMode::class,
 ])->group(function () {
     // Guest User
     Auth::routes(['register' => false, 'verify' => true]);

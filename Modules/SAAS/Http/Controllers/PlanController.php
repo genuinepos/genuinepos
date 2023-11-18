@@ -123,6 +123,6 @@ class PlanController extends Controller
         $plan = Plan::find($id);
         $plan->delete();
 
-        return redirect(route('saas.plans.index'))->with('success', 'Plan deleted successfully!');
+        return response()->json(__('Plan deleted successfully!'), 201);
     }
 }

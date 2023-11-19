@@ -908,14 +908,14 @@
         $(document).on('click', '#receiver_branch_id', function(e) {
             e.preventDefault();
 
-            var branchId = $(this).val();
+            var branchId = $(this).val() ? $(this).val() : 'noid';
 
-            if (branchId == '') {
-                return;
-            }
+            // if (branchId == '') {
+            //     return;
+            // }
 
             var route = '';
-            var url = "{{ route('warehouses.by.branch', ':branchId') }}";
+            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
             route = url.replace(':branchId', branchId);
 
             $.ajax({

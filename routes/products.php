@@ -115,12 +115,13 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
 
     Route::group(['prefix' => 'reports'], function () {
 
-        Route::controller(StockReportController::class)->prefix('stock')->group(function () {
+        Route::controller(StockReportController::class)->prefix('product-stock')->group(function () {
 
             Route::get('/', 'index')->name('reports.stock.index');
-            Route::get('print/branch/stocks', 'printBranchStock')->name('reports.stock.print.branch.stock');
-            Route::get('warehouse/stock', 'warehouseStock')->name('reports.stock.warehouse.stock');
-            Route::get('all/parent/categories', 'allParentCategories')->name('reports.stock.all.parent.categories');
+            Route::get('branch/stocks', 'branchStock')->name('reports.product.stock.branch.stock');
+            Route::get('branch/stocks/print', 'branchStockPrint')->name('reports.product.stock.branch.stock.print');
+            Route::get('warehouse/stock', 'warehouseStock')->name('reports.product.stock.warehouse.stock');
+            Route::get('warehouse/stock/print', 'warehouseStockPrint')->name('reports.product.stock.warehouse.stock.print');
         });
 
         Route::group(['prefix' => 'stock/in/out'], function () {

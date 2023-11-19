@@ -514,9 +514,12 @@ class PurchaseController extends Controller
             }
 
             $purchase = $this->purchaseService->purchaseByAnyConditions(with: ['purchaseProducts'])->where('id', $updatePurchase->id)->first();
+
+            $adjustedPurchase = $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
+
             if ($purchase->due > 0) {
 
-                $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: 9, refIdColName: 'purchase_id', purchase: $purchase);
+                $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->supplier_account_id, accountingVoucherType: 9, refIdColName: 'purchase_id', purchase: $adjustedPurchase);
             }
 
             $deletedUnusedPurchaseProducts = $purchase->purchaseProducts->where('delete_in_update', 1);
@@ -579,8 +582,6 @@ class PurchaseController extends Controller
 
                 $loop++;
             }
-
-            $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
 
             // Add user Log
             $this->userActivityLogUtil->addLog(action: 1, subject_type: PurchaseStatus::PurchaseOrder->value == 2 ? 5 : 4, data_obj: $purchase);

@@ -13,9 +13,8 @@
 </style>
 
 <div class="head-pos">
-    <input type="hidden" name="sale_id" value="{{ $sale->id }}">
-    <input type="hidden" name="sale_account_id" value="{{ $sale->sale_account_id }}">
-    <input type="hidden" name="action" id="action" value="">
+    <input type="hidden" name="status" id="status">
+    <input type="hidden" name="cash_register_id" value="{{ $openedCashRegister->id }}">
     <nav class="pos-navigation">
         <div class="col-lg-9 nav-left-sec">
             <div class="row g-1 align-items-center">
@@ -23,16 +22,32 @@
                     <div class="row g-1">
                         <div class="col-xl-4 logo-sec">
                             <div class="pos-logo d-flex justify-content-center">
-                                @if (auth()->user()->branch)
-                                    @if (auth()->user()->branch->logo != 'default.png')
-                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}">
+                                @if (auth()->user()?->branch)
+                                    @if (auth()->user()?->branch?->parent_branch_id)
+
+                                        @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
+
+                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
+                                        @else
+
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
+                                        @endif
                                     @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()->branch->name }}</span>
+
+                                        @if (auth()->user()?->branch?->logo != 'default.png')
+
+                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
+                                        @else
+
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->name }}</span>
+                                        @endif
                                     @endif
                                 @else
                                     @if ($generalSettings['business__business_logo'] != null)
-                                        <img style="height: 40px; width:100px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+
+                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
+
                                         <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
                                     @endif
                                 @endif
@@ -40,33 +55,44 @@
                         </div>
 
                         <div class="col-lg-8 col-sm-12 col-12 address">
-                            <p class="store-name">
-                                {{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))
-                            </p>
-                            <p class="address-name">
-                                @if ($sale->branch)
-                                    {{ $sale->branch->name.'-'.$sale->branch->branch_code }}
-                                    {{ $sale->branch->city ? ','.$sale->branch->city : ''}}
-                                    {{ $sale->branch->state ? ','.$sale->branch->state : ''}}
-                                    {{ $sale->branch->country ? ','.$sale->branch->country : ''}}
+                            @if ($openedCashRegister?->branch_id)
+                                @if ($openedCashRegister?->branch->parent_branch_id)
+
+                                    <p class="store-name">{{ $openedCashRegister?->branch->parentBranch?->name }}</p>
                                 @else
-                                    {{ $generalSettings['business__address'] }}
+
+                                    <p class="store-name">{{ $openedCashRegister?->branch?->name }}</p>
                                 @endif
-                            </p>
+
+                                <p class="address-name">
+                                    {{ $openedCashRegister->branch->city ? $openedCashRegister->branch->city . ', ' : '' }}
+                                    {{ $openedCashRegister->branch->state ? $openedCashRegister->branch->state . ', ' : '' }}
+                                    {{ $openedCashRegister->branch->country ? ', ' . $openedCashRegister->branch->country : '' }}
+                                </p>
+                            @else
+
+                                <p class="store-name">
+                                    {{ $generalSettings['business__shop_name'] }}
+                                </p>
+
+                                <p class="address-name">
+                                    {{ Str::limit($generalSettings['business__address'], 45) }}
+                                </p>
+                            @endif
+
                             <small class="login-user-name">
-                                <span class="text-highlight">{{ __('Loggedin') }} </span> {{ $sale->admin ? $sale->admin->prefix.' '.$sale->admin->name.' '.$sale->admin->last_name : 'N/A' }}
-                                <span>
-                                    <span class="text-highlight">{{ __('C.Register') }} </span>
-                                    @if ($sale->admin)
-                                        @if ($sale->admin->role_type == 1)
-                                            Super-Admin
-                                        @elseif($sale->admin->role_type == 2)
-                                            Admin
+                                <span class="fw-bold">{{ __('C.Register') }}: </span>
+                                    @if ($openedCashRegister->user)
+                                        @if ($openedCashRegister->user->role_type == 1)
+                                            {{ __("SuperAdmin.") }}
+                                        @elseif($openedCashRegister->user->role_type == 2)
+                                            {{ __("Admin.") }}
                                         @else
-                                            {{ $sale->admin->role->name }}
+                                            {{ $openedCashRegister->user?->roles()?->first()?->name }}.
                                         @endif
                                     @endif
                                 </span>
+                                <span> <span class="fw-bold">{{ __("Cash Counter") }}: </span> {{ $openedCashRegister->cashCounter ? $openedCashRegister->cashCounter->counter_name : 'N/A' }}.</span>
                             </small>
                         </div>
                     </div>
@@ -75,21 +101,26 @@
                     <div class="input-sec">
                         <div class="row g-1">
                             <div class="col-lg-6 col-12 sm-input-sec-w">
-                                <div class="input-group mb-1">
+                                <div class="input-group flex-nowrap mb-1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input readonly type="text" class="form-control" value="{{ $sale->customer ? $sale->customer->name.' ('.$sale->customer->phone.')' : 'Walk-In-Customer' }}">
-                                    <div class="input-group-append add_button" id="addCustomer">
-                                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                    <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
+                                        @foreach ($customerAccounts as $customerAccount)
+                                            <option {{ $sale->customer_account_id == $customerAccount->id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
+
                                 <div class="search_item_area">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus>
+                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus autocomplete="off">
                                         @if (auth()->user()->can('product_add'))
                                             <div class="input-group-append add_button" id="add_product">
                                                 <span class="input-group-text"><i class="fas fa-plus"></i></span>
@@ -102,28 +133,31 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-6 input-value-sec">
-                                @if ($generalSettings['reward_point_settings__enable_cus_point'] == '1')
-                                    <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text valus">Point</span>
-                                        </div>
-                                        <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point">
-                                        <div class="input-group-prepend ms-1">
-                                            <span class="input-group-text valus"> = {{ $generalSettings['business__currency'] }}</span>
-                                        </div>
-                                        <input readonly type="text" class="form-control" id="trial_point_amount">
+                                <div class="input-group mb-1">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text valus">{{ __("Reedem Point") }}</span>
                                     </div>
-                                @endif
+
+                                    <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text valus"> = {{ $generalSettings['business__currency'] }}</span>
+                                    </div>
+
+                                    <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">
+                                </div>
+
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">SQ</span>
+                                        <span class="input-group-text valus">{{ __("Curr. Stock") }}</span>
                                     </div>
-                                    <input type="text" class="form-control" id="stock_quantity">
+                                    <input readonly type="text" class="form-control" id="stock_quantity" tabindex="-1">
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
-                                            <option value="">@lang('menu.default_selling_price')</option>
+                                            <option value="">{{ __("Default Price Group") }}</option>
                                             @foreach ($priceGroups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
@@ -144,12 +178,21 @@
                     </div>
 
                     <div class="btn-sec">
-                        <a href="#" class="pos-btn status" id="suspends" tabindex="-1"><i class="fas text-warning fa-pause"></i></a>
+                        <a href="{{ route('sales.helper.suspended.modal', 20) }}" class="pos-btn status" id="suspendedInvoiceBtn" title="Suspended Invoice" tabindex="-1">
+                            <i class="fas text-warning fa-pause"></i>
+                        </a>
                         <a href="#" class="pos-btn mr-1" data-bs-toggle="modal" data-bs-target="#calculatorModal" tabindex="-1">
                             <span class="fas fa-calculator"></span>
                         </a>
-                        {{-- <a href="#" class="pos-btn"><span class="fas fa-briefcase"></span></a>
-                        <a href="#" class="pos-btn text-danger"><span class="fas fa-times"></span></a> --}}
+                        @if (auth()->user()->can('register_view'))
+
+                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __("Cash Register Details") }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
+                        @endif
+
+                        @if (auth()->user()->can('register_close'))
+
+                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __("Close Register") }}" tabindex="-1"> <span class="fas fa-times"></span></a>
+                        @endif
                         <a href="#" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
                         <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>
                     </div>

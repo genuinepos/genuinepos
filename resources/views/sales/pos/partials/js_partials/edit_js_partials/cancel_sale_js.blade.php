@@ -20,6 +20,6 @@
     function cancel() {
 
         toastr.error('Sale is cancelled.');
-        window.location = "{{ route('sales.pos.create') }}";
+        window.location = "{{ url()->previous() }}";
     }
 </script>

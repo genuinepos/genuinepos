@@ -27,7 +27,7 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(AddSalesController::class)->prefix('add-sale')->group(function () {
 
-        Route::get('index/{customerAccountId?}', 'index')->name('sales.index');
+        Route::get('index/{customerAccountId?}/{saleScreen?}', 'index')->name('sales.index');
         Route::get('show/{id}', 'show')->name('sales.show');
         Route::get('create', 'create')->name('sales.create');
         Route::post('store', 'store')->name('sales.store');
@@ -57,10 +57,11 @@ Route::prefix('sales')->group(function () {
 
     Route::controller(PosSaleController::class)->prefix('pos')->group(function () {
 
+        Route::get('/', 'index')->name('sales.pos.index');
         Route::get('create', 'create')->name('sales.pos.create');
         Route::post('store', 'store')->name('sales.pos.store');
         Route::get('edit/{saleId}', 'edit')->name('sales.pos.edit');
-        Route::post('update', 'update')->name('sales.pos.update');
+        Route::post('update/{saleId}', 'update')->name('sales.pos.update');
 
         Route::controller(PosSaleExchangeController::class)->prefix('pos-exchange')->group(function () {
 

@@ -372,7 +372,7 @@ class PurchaseService
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a href="'.route('purchase.delete', $row->id).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+            $html .= '<a href="'.route('purchases.delete', $row->id).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
         }
 
         $html .= '</div>';

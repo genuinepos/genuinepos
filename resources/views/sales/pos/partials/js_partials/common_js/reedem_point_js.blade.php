@@ -21,10 +21,14 @@
 
             if ($('#customer_account_id').val()) {
 
+                var pre_redeemed = $('#pre_redeemed').val() ? $('#pre_redeemed').val() : 0;
+                var pre_redeemed_amount = $('#pre_redeemed_amount').val() ? $('#pre_redeemed_amount').val() : 0;
+
                 var earned_point = $('#earned_point').val() ? $('#earned_point').val() : 0;
                 $('#available_point').val(parseFloat(earned_point));
-                $('#redeem_amount').val('');
-                $('#total_redeem_point').val('')
+
+                $('#redeem_amount').val(parseFloat(pre_redeemed));
+                $('#total_redeem_point').val(parseFloat(pre_redeemed_amount))
                 $('#pointReedemModal').modal('show');
 
                 setTimeout(function() {
@@ -65,19 +69,19 @@
         var total_invoice_payable = $('#total_invoice_payable').val();
         if (rpayment_settings.min_order_total_for_redeem && total_invoice_payable < parseFloat(rpayment_settings.min_order_total_for_redeem)) {
 
-            toastr.error("{{ __('Minimum sale amount is ') }}"+rpayment_settings.min_order_total_for_redeem+"{{ __('to redeem the points.') }}");
+            toastr.error("{{ __('Minimum sale amount is') }} "+rpayment_settings.min_order_total_for_redeem+"{{ __('to redeem the points.') }}");
             return;
         }
 
         if (rpayment_settings.min_redeem_point && parseFloat(total_redeem_point) < parseFloat(rpayment_settings.min_redeem_point)) {
 
-            toastr.error("{{ __('Minimum redeem points is ') }}"+rpayment_settings.min_redeem_point);
+            toastr.error("{{ __('Minimum redeem points is') }} "+rpayment_settings.min_redeem_point);
             return;
         }
 
         if (rpayment_settings.max_redeem_point && parseFloat(total_redeem_point) > parseFloat(rpayment_settings.max_redeem_point)) {
 
-            toastr.error("{{ __('Maximum redeem points is ') }}"+rpayment_settings.max_redeem_point);
+            toastr.error("{{ __('Maximum redeem points is') }} "+rpayment_settings.max_redeem_point);
             return;
         }
 
@@ -92,11 +96,8 @@
         var calcLastAmount = parseFloat(calcLastPoint) * parseFloat(parseFloat(rpayment_settings.redeem_amount_per_unit_rp));
         $('#trial_point_amount').val(parseFloat(calcLastAmount).toFixed(2));
         var pre_redeemed = $('#pre_redeemed').val() ? $('#pre_redeemed').val() : 0;
-        var calcPreRedeemPoint = parseFloat(pre_redeemed) + parseFloat(total_redeem_point);
-        $('#pre_redeemed').val(parseFloat(calcPreRedeemPoint));
-        var pre_redeemed_amount = $('#pre_redeemed_amount').val() ? $('#pre_redeemed_amount').val() : 0;
-        var calcPreRedeemAmount = parseFloat(pre_redeemed_amount) + parseFloat(redeem_amount);
-        $('#pre_redeemed_amount').val(parseFloat(calcPreRedeemAmount).toFixed(2));
+        $('#pre_redeemed').val(parseFloat(total_redeem_point));
+        $('#pre_redeemed_amount').val(parseFloat(redeem_amount).toFixed(2));
         calculateTotalAmount();
         $('#pointReedemModal').modal('hide');
     });

@@ -23,6 +23,7 @@
 
         <div class="modal-body">
             <form id="close_cash_register_form" action="{{ route('cash.register.closed', $openedCashRegister->id) }}" method="post">
+                @csrf
                 <div class="row">
                     <div class="col-md-6" style="border-right: 1px solid black;">
                         <div class="row">
@@ -164,7 +165,6 @@
                     <div class="col-md-12">
                         <label class="fw-bold">{{ __("Closing Note") }}</label>
                         <input type="text" name="closing_note" class="form-control" id="closing_note" data-next="close_btn" placeholder="{{ __("Closing Note") }}">
-
                     </div>
                 </div>
 

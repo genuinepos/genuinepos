@@ -1022,7 +1022,7 @@
 
                                     @if (auth()->user()->can('pos_all'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.pos.list') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('sales.pos.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-list"></i></span>

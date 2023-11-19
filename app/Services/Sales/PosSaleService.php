@@ -3,6 +3,7 @@
 namespace App\Services\Sales;
 
 use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use App\Models\Sales\Sale;
 
 class PosSaleService
@@ -64,5 +65,63 @@ class PosSaleService
         $addSale->save();
 
         return $addSale;
+    }
+
+    public function updatePosSale(object $updateSale, object $request, object $codeGenerator, ?string $invoicePrefix, ?string $quotationPrefix, ?string $dateFormat): object
+    {
+        foreach ($updateSale->saleProducts as $saleProduct) {
+
+            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->save();
+        }
+
+        $transId = '';
+        if ($request->status == SaleStatus::Final->value) {
+
+            $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($request->status == SaleStatus::Quotation->value) {
+
+            $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'quotation_id', prefix: $quotationPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($request->status == SaleStatus::Draft->value) {
+
+            $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'draft_id', prefix: 'DRF', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($request->status == SaleStatus::Hold->value) {
+
+            $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'hold_invoice_id', prefix: 'HINV', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        } elseif ($request->status == SaleStatus::Suspended->value) {
+
+            $transId = $codeGenerator->generateMonthWise(table: 'sales', column: 'suspend_id', prefix: 'SPND', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        }
+
+        $updateSale->invoice_id = $request->status == SaleStatus::Final->value && !isset($updateSale->invoice_id) ? $transId : $updateSale->invoice_id;
+        $updateSale->quotation_id = ($request->status == SaleStatus::Quotation->value && !isset($updateSale->quotation_id) ? $transId : $updateSale->quotation_id);
+        $updateSale->draft_id = $request->status == SaleStatus::Draft->value && !isset($updateSale->draft_id) ? $transId : $updateSale->draft_id;
+        $updateSale->hold_invoice_id = $request->status == SaleStatus::Hold->value && !isset($updateSale->hold_invoice_id) ? $transId : $updateSale->hold_invoice_id;
+        $updateSale->suspend_id = $request->status == SaleStatus::Suspended->value && !isset($updateSale->suspend_id) ? $transId : $updateSale->suspend_id;
+        $updateSale->customer_account_id = $request->customer_account_id;
+        $updateSale->status = $request->status;
+        $updateSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value && !isset($updateSale->quotation_date_ts) ? date('Y-m-d H:i:s') : $updateSale->quotation_date_ts;
+        $updateSale->sale_date_ts = $request->status == SaleStatus::Final->value && !isset($updateSale->sale_date_ts) ? date('Y-m-d H:i:s') : $updateSale->sale_date_ts;
+        $updateSale->draft_date_ts = $request->status == SaleStatus::Draft->value && !isset($updateSale->draft_date_ts) ? date('Y-m-d H:i:s') : $updateSale->draft_date_ts;
+        $updateSale->draft_status = $request->status == SaleStatus::Draft->value ? BooleanType::True->value : $updateSale->draft_status;
+        $updateSale->quotation_status = $request->status == SaleStatus::Quotation->value ? BooleanType::True->value : $updateSale->quotation_status;
+        $updateSale->total_item = $request->total_item;
+        $updateSale->total_qty = $request->total_qty;
+        $updateSale->total_sold_qty = $request->status == SaleStatus::Final->value ? $request->total_qty : $updateSale->total_sold_qty;
+        $updateSale->total_quotation_qty = $request->status == SaleStatus::Quotation->value ? $request->total_qty : $updateSale->total_quotation_qty;
+        $updateSale->total_quotation_qty = $updateSale->quotation_status == BooleanType::True->value ? $request->total_qty : $updateSale->total_quotation_qty;
+        $updateSale->net_total_amount = $request->net_total_amount;
+        $updateSale->order_discount_type = $request->order_discount_type;
+        $updateSale->order_discount = $request->order_discount;
+        $updateSale->order_discount_amount = $request->order_discount_amount;
+        $updateSale->sale_tax_ac_id = $request->sale_tax_ac_id;
+        $updateSale->order_tax_percent = $request->order_tax_percent ? $request->order_tax_percent : 0;
+        $updateSale->order_tax_amount = $request->order_tax_amount ? $request->order_tax_amount : 0;
+        $updateSale->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
+        $updateSale->change_amount = $request->change_amount > 0 ? $request->change_amount : 0;
+        $updateSale->total_invoice_amount = $request->total_invoice_amount ? $request->total_invoice_amount : 0;
+        $updateSale->save();
+        
+        return $updateSale;
     }
 }

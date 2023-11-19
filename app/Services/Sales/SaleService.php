@@ -2,18 +2,19 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\BooleanType;
-use App\Enums\PaymentStatus;
-use App\Enums\SaleStatus;
-use App\Enums\ShipmentStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
+use App\Enums\PaymentStatus;
+use App\Enums\SaleScreenType;
+use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleService
 {
-    public function addSalesListTable(object $request, int $customerAccountId = null): object
+    public function salesListTable(object $request, ?int $customerAccountId = null, ?int $saleScreen = null): object
     {
         $generalSettings = config('generalSettings');
         $sales = '';
@@ -25,25 +26,8 @@ class SaleService
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
             ->where('sales.status', SaleStatus::Final->value);
 
-        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId);
 
-        // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
-        //     $sales = $this->filteredQuery($request, $query)->where('sales.status', 1)
-        //         ->where('sales.created_by', 1)
-        //         ->orderBy('sales.report_date', 'desc');
-        // } else {
-
-        //     if (auth()->user()->can('view_own_sale')) {
-
-        //         $query->where('sales.admin_id', auth()->user()->id);
-        //     }
-
-        //     $sales = $this->filteredQuery($request, $query)->where('sales.branch_id', auth()->user()->branch_id)
-        //         ->where('sales.status', 1)
-        //         ->where('created_by', 1)
-        //         ->orderBy('sales.report_date', 'desc');
-        // }
+        $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
 
         $sales = $query->select(
             'sales.id',
@@ -58,6 +42,7 @@ class SaleService
             'sales.due',
             'sales.is_return_available',
             'sales.shipment_status',
+            'sales.sale_screen',
             'branches.name as branch_name',
             'branches.area_name as branch_area_name',
             'branches.branch_code',
@@ -73,15 +58,24 @@ class SaleService
 
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="'.route('sales.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+                $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('edit_add_sale')) {
+                    if ($row->sale_screen == SaleScreenType::AddSale->value) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'">'.__('Edit').'</a>';
+                        if (auth()->user()->can('edit_add_sale')) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        }
+                    } else if ($row->sale_screen == SaleScreenType::PosSale->value) {
+
+                        if (auth()->user()->can('pos_edit')) {
+
+                            $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                        }
                     }
                 }
 
@@ -89,18 +83,18 @@ class SaleService
 
                     if (auth()->user()->can('delete_add_sale')) {
 
-                        $html .= '<a href="'.route('sales.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="'.route('sale.shipments.edit', [$row->id]).'">'.__('Edit Shipment Details').'</a>';
+                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a href="'.route('sale.shipments.print.packing.slip', [$row->id]).'" class="dropdown-item" id="printPackingSlipBtn">'.__('Print Packing Slip').'</a>';
+                    $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -121,7 +115,7 @@ class SaleService
                 $html .= $row->shipment_status != ShipmentStatus::NoStatus->value && $row->shipment_status != ShipmentStatus::Cancelled->value ? ' <i class="fas fa-shipping-fast text-dark"></i>' : '';
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
-                return '<a href="'.route('sales.show', [$row->id]).'" id="details_btn">'.$html.'</a>';
+                return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -129,10 +123,10 @@ class SaleService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
@@ -141,17 +135,17 @@ class SaleService
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
+            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 
-            ->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="'.$row->received_amount.'">'.\App\Utils\Converter::format_in_bdt($row->received_amount).'</span>')
+            ->editColumn('received_amount', fn ($row) => '<span class="paid received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
 
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="'.$row->sale_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->sale_return_amount).'</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->sale_return_amount) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
             ->editColumn('payment_status', function ($row) {
 
@@ -159,19 +153,19 @@ class SaleService
 
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>'.__('Paid').'</span>';
+                    return '<span class="text-success"><b>' . __('Paid') . '</span>';
                 } elseif ($row->due > 0 && $row->due < $receivable) {
 
-                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
+                    return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
                 } elseif ($receivable == $row->due) {
 
-                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
+                    return '<span class="text-danger"><b>' . __('Due') . '</b></span>';
                 }
             })
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'received_amount', 'invoice_id', 'branch', 'customer', 'due', 'sale_return_amount', 'payment_status', 'created_by'])
@@ -208,11 +202,11 @@ class SaleService
         $addSale->pay_term = $request->pay_term;
         $addSale->pay_term_number = $request->pay_term_number;
         $addSale->date = $request->date;
-        $addSale->date_ts = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
-        $addSale->sale_date_ts = $request->status == SaleStatus::Final->value ? date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))) : null;
-        $addSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value ? date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))) : null;
-        $addSale->order_date_ts = $request->status == SaleStatus::Order->value ? date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))) : null;
-        $addSale->draft_date_ts = $request->status == SaleStatus::Draft->value ? date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s'))) : null;
+        $addSale->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
+        $addSale->sale_date_ts = $request->status == SaleStatus::Final->value ? date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))) : null;
+        $addSale->quotation_date_ts = $request->status == SaleStatus::Quotation->value ? date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))) : null;
+        $addSale->order_date_ts = $request->status == SaleStatus::Order->value ? date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))) : null;
+        $addSale->draft_date_ts = $request->status == SaleStatus::Draft->value ? date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s'))) : null;
         $addSale->quotation_status = $request->status == SaleStatus::Quotation->value ? 1 : 0;
         $addSale->order_status = $request->status == SaleStatus::Order->value ? 1 : 0;
         $addSale->draft_status = $request->status == SaleStatus::Draft->value ? 1 : 0;
@@ -256,8 +250,8 @@ class SaleService
         $updateSale->pay_term_number = $request->pay_term_number;
         $updateSale->date = $request->date;
         $time = date(' H:i:s', strtotime($updateSale->date_ts));
-        $updateSale->date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
-        $updateSale->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+        $updateSale->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateSale->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateSale->total_item = $request->total_item;
         $updateSale->total_qty = $request->total_qty;
         $updateSale->total_sold_qty = $request->total_qty;
@@ -336,6 +330,13 @@ class SaleService
         return $sale;
     }
 
+    function updateInvoiceRewardPoint(object $sale, int $earnedPoint = 0, int $redeemedPoint = 0): void
+    {
+        $sale->earned_point += $earnedPoint;
+        $sale->redeemed_point += $redeemedPoint;
+        $sale->save();
+    }
+
     public function singleSale(int $id, array $with = null): ?object
     {
         $query = Sale::query();
@@ -360,7 +361,7 @@ class SaleService
         return $query;
     }
 
-    public function restrictions(object $request, object $accountService, $checkCustomerChangeRestriction = false, int $saleId = null): ?array
+    public function restrictions(object $request, object $accountService, bool $checkCustomerChangeRestriction = false, int $saleId = null): ?array
     {
         $customer = $accountService->singleAccount(id: $request->customer_account_id);
 
@@ -384,7 +385,7 @@ class SaleService
             }
         }
 
-        if (! isset($request->product_ids)) {
+        if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Products table must not be empty.')];
         }
@@ -412,7 +413,7 @@ class SaleService
 
                 if ($sale->customer_account_id != $request->customer_account_id) {
 
-                    return ['pass' => false, 'msg' => __('Customer can not be changed. One or more receipts is exists against this sales.')];
+                    return ['pass' => false, 'msg' => __('Customer can not be changed. One or more receipts is exists against this sales.'.$sale->customer_account_id.$request->customer_account_id)];
                 }
             }
 
@@ -450,7 +451,7 @@ class SaleService
         return ['pass' => true];
     }
 
-    private function filteredQuery(object $request, object $query, int $customerAccountId = null)
+    private function filteredQuery(object $request, object $query, ?int $customerAccountId = null, ?int $saleScreen = null)
     {
         if ($request->branch_id) {
 
@@ -505,6 +506,11 @@ class SaleService
         if (isset($customerAccountId)) {
 
             $query->where('sales.customer_account_id', $customerAccountId);
+        }
+
+        if (isset($saleScreen)) {
+
+            $query->where('sales.sale_screen', $saleScreen);
         }
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {

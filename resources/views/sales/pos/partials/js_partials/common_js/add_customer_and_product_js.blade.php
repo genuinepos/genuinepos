@@ -36,8 +36,43 @@
         document.getElementById('search_product').focus();
     });
 
-    @if (auth()->user()->can('product_add'))
+    @if(auth()->user()->can('customer_add'))
+        $('#addContact').on('click', function(e) {
 
+            e.preventDefault();
+
+            var url = "{{ route('contacts.create', App\Enums\ContactType::Customer->value) }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#addOrEditContactModal').html(data);
+                    $('#addOrEditContactModal').modal('show');
+
+                    setTimeout(function(){
+
+                        $('#contact_name').focus();
+                    }, 500);
+
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+    @endif
+
+    @if (auth()->user()->can('product_add'))
         // sales.add.product.modal.view
         $('#add_product').on('click', function() {
             $.ajax({

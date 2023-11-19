@@ -22,6 +22,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
     Route::get('create', 'create')->name('purchases.create');
     Route::post('store', 'store')->name('purchases.store');
     Route::get('edit/{id}', 'edit')->name('purchases.edit');
+    Route::delete('delete/{id}', 'delete')->name('purchases.delete');
     Route::get('search/by/invoice/id/{keyword}', 'searchPurchasesByInvoiceId')->name('purchases.search.by.invoice.id');
 
     Route::controller(PurchaseProductController::class)->prefix('products')->group(function () {

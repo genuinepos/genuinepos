@@ -11,6 +11,7 @@ use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
 use App\Http\Controllers\Products\ExpiredProductController;
+use App\Http\Controllers\Report\StockInOutReportController;
 use App\Http\Controllers\Products\ProductSettingsController;
 use App\Http\Controllers\Products\PriceGroupManageController;
 use App\Http\Controllers\Products\Reports\StockReportController;

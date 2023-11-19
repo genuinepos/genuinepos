@@ -3,10 +3,12 @@
 namespace Modules\SAAS\Services;
 
 use Exception;
+use App\Models\Role;
+use App\Models\User;
+use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SAAS\Database\factories\AdminFactory;
-use Modules\SAAS\Entities\Tenant;
 
 class TenantService implements TenantServiceInterface
 {
@@ -16,13 +18,13 @@ class TenantService implements TenantServiceInterface
             $tenant = Tenant::create(['id' => $tenantRequest['domain'], 'name' => $tenantRequest['name']]);
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
-                $this->makeSuperAdminForTenant($tenant, $tenantRequest);
-
-                return $tenant;
+                if($domain) {
+                    $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+                    return $tenant;
+                }
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
-
             return null;
         }
     }
@@ -31,8 +33,8 @@ class TenantService implements TenantServiceInterface
     {
         $admin = $this->getAdmin($tenantRequest);
         DB::statement('use '.$tenant->tenancy_db_name);
-        $admin = \App\Models\User::create($admin);
-        $adminRole = \App\Models\Role::first();
+        $admin = User::create($admin);
+        $adminRole = Role::first();
         $admin->assignRole($adminRole);
         DB::reconnect();
     }

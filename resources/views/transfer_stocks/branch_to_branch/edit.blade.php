@@ -1002,9 +1002,9 @@
 
             var branchId = $(this).val();
 
-            if (branchId == '') {
-                return;
-            }
+            // if (branchId == '') {
+            //     return;
+            // }
 
             var route = '';
             var url = "{{ route('warehouses.by.branch', ':branchId') }}";

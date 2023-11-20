@@ -114,11 +114,19 @@ class WarehouseController extends Controller
         return response()->json(__('Successfully warehouse is deleted'));
     }
 
-    public function warehousesByBranch($branchId)
+    public function warehousesByBranch($branchId, $isAllowGlobalWarehouse = 0)
     {
-
         $__branchId = $branchId == 'NULL' ? null : $branchId;
 
-        return $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->get();
+        $query = $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->where('is_global', 0);
+
+        if ($isAllowGlobalWarehouse == 1) {
+
+            $query->orWhere('is_global', 1);
+        }
+
+        $warehouses = $query->get();
+
+        return $warehouses;
     }
 }

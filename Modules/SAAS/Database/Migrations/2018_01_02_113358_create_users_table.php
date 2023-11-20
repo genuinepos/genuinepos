@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('language', 50)->nullable();
             $table->string('currency', 10)->nullable();
             $table->boolean('status')->default(true);
+            $table->string('primary_tenant_id')->nullable();
             $table->timestamps();
         });
     }

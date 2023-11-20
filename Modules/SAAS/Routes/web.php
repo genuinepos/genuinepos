@@ -41,11 +41,12 @@ Route::middleware('is_auth')->group(function () {
     Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
     Route::post('/email/verify/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+    Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 // Auth and Verified
 Route::middleware(['is_verified'])->group(function () {
-    Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
+
 
     Route::prefix('dashboard')->group(function () {
         Route::controller(DashboardController::class)->group(function () {

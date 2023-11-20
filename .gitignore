@@ -21,3 +21,4 @@ storage/debugbar
 /public/uploads
 packages
 public/modules
+mailhog.exe

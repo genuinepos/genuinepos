@@ -2,14 +2,15 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\ValidationException;
 use Modules\SAAS\Http\Requests\LoginRequest;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -27,8 +28,17 @@ class LoginController extends Controller
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
+        // Impersonate user logic
         Auth::guard()->login($user);
-
+        if(isset($user->primary_tenant_id)) {
+            $redirectUrl = '/home';
+            $tenant = \App\Models\Tenant::find($user->primary_tenant_id);
+            $token = tenancy()->impersonate($tenant, $user->id, $redirectUrl);
+            $domain = UrlGenerator::generateFullUrlFromDomain($tenant->domains()?->first()?->domain);
+            if(isset($token) && isset($domain)) {
+                return redirect("$domain/impersonate/{$token->token}");
+            }
+        }
         return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
     }
 

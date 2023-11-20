@@ -19,6 +19,14 @@ class TenantService implements TenantServiceInterface
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 if($domain) {
+                    // Shared user
+                    $user = User::create([
+                        'name' => $tenantRequest['fullname'],
+                        'email' => $tenantRequest['email'],
+                        'password' => bcrypt($tenantRequest['password']),
+                        'phone' => $tenantRequest['phone'],
+                        'primary_tenant_id' => $tenant->id,
+                    ]);
                     $this->makeSuperAdminForTenant($tenant, $tenantRequest);
                     return $tenant;
                 }

@@ -27,7 +27,8 @@ class TenantService implements TenantServiceInterface
                         'phone' => $tenantRequest['phone'],
                         'primary_tenant_id' => $tenant->id,
                     ]);
-                    $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+                    $tenantAdminUserId = $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+                    $tenant->update(['impersonate_user' => $tenantAdminUserId]);
                     return $tenant;
                 }
             }
@@ -37,14 +38,15 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    private function makeSuperAdminForTenant(Tenant $tenant, array $tenantRequest): void
+    private function makeSuperAdminForTenant(Tenant $tenant, array $tenantRequest): int
     {
         $admin = $this->getAdmin($tenantRequest);
         DB::statement('use '.$tenant->tenancy_db_name);
-        $admin = User::create($admin);
+        $tenantAdminUser = User::create($admin);
         $adminRole = Role::first();
-        $admin->assignRole($adminRole);
+        $tenantAdminUser->assignRole($adminRole);
         DB::reconnect();
+        return $tenantAdminUser->id;
     }
 
     public function getAdmin(array $tenantRequest): array

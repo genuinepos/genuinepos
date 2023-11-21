@@ -90,7 +90,7 @@ class AccountService
                 '
             ),
         )
-            ->orWhere('accounts.is_global', 1)
+            // ->orWhere('accounts.is_global', 1)
             ->groupBy(
                 'accounts.id',
                 'accounts.branch_id',
@@ -173,7 +173,6 @@ class AccountService
 
                     return '<span class="cr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
                 }
-                \App\Utils\Converter::format_in_bdt(0.00);
             })
             ->editColumn('debit', function ($row) {
 

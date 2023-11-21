@@ -22,7 +22,6 @@ class ContactOpeningBalanceService
 
     public function updateContactOpeningBalance(object $contactOpeningBalance, ?float $openingBalance, string $openingBalanceType)
     {
-
         $contactOpeningBalance->amount = $openingBalance ? $openingBalance : 0;
         $contactOpeningBalance->amount_type = $openingBalanceType;
         $contactOpeningBalance->save();

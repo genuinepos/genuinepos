@@ -11,6 +11,7 @@ use App\Http\Controllers\Accounts\ReceiptController;
 use App\Http\Controllers\Accounts\AccountGroupController;
 use App\Http\Controllers\Accounts\AccountLedgerController;
 use App\Http\Controllers\Accounts\AccountBalanceController;
+use App\Http\Controllers\Accounts\CapitalAccountController;
 
 Route::group(['prefix' => 'accounting'], function () {
 
@@ -43,6 +44,11 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::get('edit/{id}', 'edit')->name('accounts.edit');
         Route::post('update/{id}', 'update')->name('accounts.update');
         Route::delete('delete/{accountId}', 'delete')->name('accounts.delete');
+
+        Route::controller(CapitalAccountController::class)->prefix('capitals')->group(function () {
+
+            Route::get('/', 'index')->name('accounts.capitals.index');
+        });
 
         Route::controller(AccountBalanceController::class)->prefix('balance')->group(function () {
 

@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Controllers\Accounts;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\AccountGroupService;
+use App\Services\Accounts\CapitalAccountService;
+
+class CapitalAccountController extends Controller
+{
+    public function __construct(
+        private CapitalAccountService $capitalAccountService,
+        private AccountGroupService $accountGroupService,
+    ) {
+    }
+
+    public function index(Request $request)
+    {
+        if (!auth()->user()->can('accounting_access')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        if ($request->ajax()) {
+
+            return $this->capitalAccountService->capitalAccountListTable($request);
+        }
+
+        $accountGroups = $this->accountGroupService->singleAccountGroupByAnyCondition(with: ['parentGroup'])
+            ->where('main_group_number', 2)
+            ->where('sub_group_number', 6)
+            ->get();
+
+        return view('accounting.accounts.capital_accounts.index', compact('accountGroups'));
+    }
+}

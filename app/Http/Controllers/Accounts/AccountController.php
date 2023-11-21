@@ -158,7 +158,8 @@ class AccountController extends Controller
         $account = $this->accountService->singleAccountById(id: $accountId, with: ['group', 'bankAccessBranches', 'openingBalance']);
         $groups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $banks = $this->bankService->banks()->get();
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+        ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('accounting.accounts.ajax_view.edit', compact('account', 'groups', 'banks', 'branches'));
     }

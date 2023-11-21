@@ -20,13 +20,22 @@
                             <select required name="account_group_id" class="form-control select2 form-select" id="account_group_id">
                                 <option value="">{{ __("Select Account Group") }}</option>
                                 @foreach ($groups as $group)
-                                    <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
-                                        {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
-                                    </option>
+                                    @if (
+                                        ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11)
+                                        && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                    )
+
+                                        <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
+                                            {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
+                                        </option>
+                                    @else
+                                        <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
+                                            {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                             <span class="error error_account_group_id"></span>
-
 
                             <div style="display: inline-block;" class="style-btn">
                                 <div class="input-group-prepend">
@@ -137,19 +146,19 @@
                     <label><strong>{{ __("Opening Balance") }}</strong></label>
                     <div class="input-group">
                         @php
-                            $openingBalanceAmount = $account?->openingBalance->debit + $account?->openingBalance->credit;
-                            $openingBalanceType = $account?->openingBalance->amount_type == 'debit' ? 'dr' : 'cr';
+                            $openingBalanceAmount = $account?->openingBalance?->debit + $account?->openingBalance?->credit;
+                            $openingBalanceType = $account?->openingBalance?->amount_type == 'debit' ? 'dr' : 'cr';
                         @endphp
                         <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__start_date'])) }}" tabindex="-1"/>
                         <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" value="{{ $openingBalanceAmount }}" data-next="opening_balance_type"/>
                         <select name="opening_balance_type" class="form-control w-25 text-end" id="opening_balance_type" data-next="remarks">
-                            <option value="dr">@lang('menu.debit')</option>
-                            <option {{  $openingBalanceType == 'cr' ? 'SELECTED' : '' }} value="cr">@lang('menu.credit')</option>
+                            <option value="dr">{{ __("Debit") }}</option>
+                            <option {{ $openingBalanceType == 'cr' ? 'SELECTED' : '' }} value="cr">{{ __("Credit") }}</option>
                         </select>
                     </div>
                 </div>
 
-                @if (!auth()->user()->branch_id)
+                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
                     <div class="form-group mt-1 {{ ($account->group->sub_sub_group_number == 1 || $account->group->sub_sub_group_number == 11) && $account->group->is_allowed_bank_details == 1 ? '' : 'd-hide' }}" id="access_branches">
                         <label><strong>{{ __('Access Shop') }}</strong></label>
@@ -162,7 +171,12 @@
                                     @endforeach
                                     value="{{ $branch->id }}"
                                 >
-                                    {{ $branch->name . '/' . $branch->branch_code }}
+                                    @php
+                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                        $branchCode = '-' . $branch->branch_code;
+                                    @endphp
+                                    {{ $branchName . $areaName . $branchCode }}
                                 </option>
                             @endforeach
                         </select>

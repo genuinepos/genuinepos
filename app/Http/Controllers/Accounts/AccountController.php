@@ -34,7 +34,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (!auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -54,7 +54,7 @@ class AccountController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (!auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -70,7 +70,7 @@ class AccountController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (!auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -158,14 +158,15 @@ class AccountController extends Controller
         $account = $this->accountService->singleAccountById(id: $accountId, with: ['group', 'bankAccessBranches', 'openingBalance']);
         $groups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $banks = $this->bankService->banks()->get();
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         return view('accounting.accounts.ajax_view.edit', compact('account', 'groups', 'banks', 'branches'));
     }
 
     public function update(Request $request, $accountId, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (!auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -281,7 +282,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (!auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }

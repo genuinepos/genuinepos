@@ -25,7 +25,7 @@ class AccountLedgerService
             16 => ['name' => 'Sales', 'id' => 'sale_product_id', 'voucher_no' => 'product_sale_voucher', 'details_id' => 'product_sale_id', 'link' => 'sales.show'],
             17 => ['name' => 'Purchase', 'id' => 'purchase_product_id', 'voucher_no' => 'product_purchase_voucher', 'details_id' => 'product_purchase_id', 'link' => 'purchases.show'],
             18 => ['name' => 'Sales Return', 'id' => 'sale_return_product_id', 'voucher_no' => 'product_sale_return_voucher', 'details_id' => 'product_sale_return_id', 'link' => 'sales.returns.show'],
-            19 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'product_purchase_return_voucher', 'details_id' => 'product_purchase_return_id', 'link' => 'purchases.returns.show'],
+            19 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'product_purchase_return_voucher', 'details_id' => 'product_purchase_return_id', 'link' => 'purchase.returns.show'],
             20 => ['name' => 'Exchange', 'id' => 'sale_product_id', 'voucher_no' => 'product_sale_voucher', 'details_id' => 'product_sale_id', 'link' => 'sales.show'],
         ];
 

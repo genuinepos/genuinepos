@@ -15,6 +15,6 @@ class AccountBalanceController extends Controller
 
     public function accountBalance(Request $request, $accountId)
     {
-        return $this->accountBalanceService->accountBalance(request: $request, accountId: $accountId);
+        return $this->accountBalanceService->accountBalance(accountId: $accountId, fromDate: $request->from_date, toDate: $request->to_date, branchId: $request->branch_id);
     }
 }

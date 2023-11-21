@@ -9,13 +9,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AccountLedgerEntryService
 {
-    public function ledgerTable($request, $id)
+    public function ledgerTable(object $request, int $id, object $account): ?object
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
         $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__start_date']));
 
-        $ledgers = $this->ledgerEntriesQuery($request, $id);
+        $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
         $accountStartDateYmd = '';
         $fromDateYmd = '';
@@ -36,6 +36,14 @@ class AccountLedgerEntryService
             if ($request->branch_id) {
 
                 $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
+            }
+
+            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+                if ($account?->group?->sub_sub_group_number != 6) {
+
+                    $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+                }
             }
 
             $accountOpeningBalance = $accountOpeningBalanceQ->select(
@@ -140,7 +148,7 @@ class AccountLedgerEntryService
             ->make(true);
     }
 
-    public function ledgerEntriesPrint($request, $id)
+    public function ledgerEntriesPrint(object $request, int $id, object $account): ?object
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
@@ -167,6 +175,14 @@ class AccountLedgerEntryService
             if ($request->branch_id) {
 
                 $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
+            }
+
+            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+                if ($account?->group?->sub_sub_group_number != 6) {
+
+                    $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+                }
             }
 
             $accountOpeningBalance = $accountOpeningBalanceQ->select(
@@ -230,7 +246,7 @@ class AccountLedgerEntryService
         return $ledgers;
     }
 
-    public function ledgerEntriesQuery($request, $id)
+    public function ledgerEntriesQuery(object $request, int $id, object $account): ?object
     {
         $query = AccountLedger::query()
             ->whereRaw('concat(account_ledgers.debit,account_ledgers.credit) > 0')
@@ -262,7 +278,10 @@ class AccountLedgerEntryService
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+            if ($account?->group?->sub_sub_group_number != 6) {
+
+                $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+            }
         }
 
         $query->leftJoin('sales', 'account_ledgers.sale_id', 'sales.id')

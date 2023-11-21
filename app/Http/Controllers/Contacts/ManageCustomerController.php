@@ -19,7 +19,6 @@ class ManageCustomerController extends Controller
 
     public function index(Request $request)
     {
-
         if ($request->ajax()) {
 
             return $this->manageCustomerService->customerListTable($request);
@@ -37,7 +36,11 @@ class ManageCustomerController extends Controller
 
     public function manage($id)
     {
-        $contact = $this->contactService->singleContact(id: $id, with: ['account:id,contact_id']);
+        $contact = $this->contactService->singleContact(id: $id, with: [
+            'account:id,contact_id,branch_id',
+            'account.branch:id,name,branch_code,parent_branch_id'
+        ]);
+        
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 

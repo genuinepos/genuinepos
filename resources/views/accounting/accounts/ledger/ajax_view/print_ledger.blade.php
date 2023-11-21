@@ -165,6 +165,9 @@
     @php
         $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+        $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+        $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: $request->from_date, toDate: $request->to_date, branchId: $request->branch_id);
     @endphp
 
     <div class="row mt-1">
@@ -258,36 +261,30 @@
                     <tr>
                         <td class="text-end fw-bold">{{ __('Opening Balance') }}</td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['opening_balance'] > 0 ? ($amounts['opening_balance_side'] == 'dr' ? App\Utils\Converter::format_in_bdt($amounts['opening_balance']) : '') : '' }} --}}
-                            0.00
+                            {{ $amounts['opening_balance'] > 0 ? ($amounts['opening_balance_side'] == 'dr' ? App\Utils\Converter::format_in_bdt($amounts['opening_balance']) : '') : '' }}
                         </td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['opening_balance'] > 0 ? ($amounts['opening_balance_side'] == 'cr' ? App\Utils\Converter::format_in_bdt($amounts['opening_balance']) : '') : '' }} --}}
-                            0.00
+                            {{ $amounts['opening_balance'] > 0 ? ($amounts['opening_balance_side'] == 'cr' ? App\Utils\Converter::format_in_bdt($amounts['opening_balance']) : '') : '' }}
                         </td>
                     </tr>
 
                     <tr>
                         <td class="text-end fw-bold">{{ __('Current Total') }}</td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['curr_total_debit'] > 0 ? App\Utils\Converter::format_in_bdt($amounts['curr_total_debit']) : '' }} --}}
-                            0.00
+                            {{ $amounts['curr_total_debit'] > 0 ? App\Utils\Converter::format_in_bdt($amounts['curr_total_debit']) : '' }}
                         </td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['curr_total_credit'] > 0 ? App\Utils\Converter::format_in_bdt($amounts['curr_total_credit']) : '' }} --}}
-                            0.00
+                            {{ $amounts['curr_total_credit'] > 0 ? App\Utils\Converter::format_in_bdt($amounts['curr_total_credit']) : '' }}
                         </td>
                     </tr>
 
                     <tr>
                         <td class="text-end fw-bold">{{ __('Closing Balance') }}</td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['closing_balance'] > 0 ? ($amounts['closing_balance_side'] == 'dr' ? App\Utils\Converter::format_in_bdt($amounts['closing_balance']) : '') : '' }} --}}
-                            0.00
+                            {{ $amounts['closing_balance'] > 0 ? ($amounts['closing_balance_side'] == 'dr' ? App\Utils\Converter::format_in_bdt($amounts['closing_balance']) : '') : '' }}
                         </td>
                         <td class="text-end fw-bold">
-                            {{-- {{ $amounts['closing_balance'] > 0 ? ($amounts['closing_balance_side'] == 'cr' ? App\Utils\Converter::format_in_bdt($amounts['closing_balance']) : '') : '' }} --}}
-                            0.00
+                            {{ $amounts['closing_balance'] > 0 ? ($amounts['closing_balance_side'] == 'cr' ? App\Utils\Converter::format_in_bdt($amounts['closing_balance']) : '') : '' }}
                         </td>
                     </tr>
                 </tbody>

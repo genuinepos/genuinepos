@@ -21,6 +21,11 @@ class Sale extends BaseModel
         return $this->hasMany(SaleProduct::class, 'sale_id');
     }
 
+    public function salesAccount()
+    {
+        return $this->belongsTo(Account::class, 'sale_account_id');
+    }
+
     public function customer()
     {
         return $this->belongsTo(Account::class, 'customer_account_id');

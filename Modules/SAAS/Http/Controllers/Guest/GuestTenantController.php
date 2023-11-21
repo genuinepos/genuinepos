@@ -21,7 +21,6 @@ class GuestTenantController extends Controller
         if (isset($tenant)) {
             $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
-
             return response()->json($returningUrl, 201);
         }
 

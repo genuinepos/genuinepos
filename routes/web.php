@@ -1,12 +1,13 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Providers\RouteServiceProvider;
+use Modules\SAAS\Http\Controllers\UserImpersonateController;
 use Stancl\Tenancy\Middleware\CheckTenantForMaintenanceMode;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::middleware([
     Route::middleware('auth')->group(base_path('routes/general_searches.php'));
     Route::middleware('auth')->group(base_path('routes/stock_adjustments.php'));
     Route::middleware('auth')->group(base_path('routes/transfer_stocks.php'));
+    Route::get('impersonate/{token}', [UserImpersonateController::class, 'impersonate'])->name('users.impersonate');
 });
 
 /*

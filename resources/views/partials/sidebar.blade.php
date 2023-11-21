@@ -1555,7 +1555,29 @@
                                                         <span><i class="fas fa-money-check-alt"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.accounts')</p>
+                                                <p class="switch_text">{{ __("Accounts") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-check-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Capital Accoounts") }}</p>
+                                            </a>
+                                        </div>
+
+                                        <div class="sub-menu-col">
+                                            <a href="#" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="fas fa-money-check-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Duties And Taxes") }}</p>
                                             </a>
                                         </div>
                                     </div>

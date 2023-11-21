@@ -10,7 +10,7 @@
                     <span class="fas fa-money-check-alt"></span>
                     <h5>{{ __("Accounts") }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
@@ -21,25 +21,23 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                                    @if ($generalSettings['addons__branches'] == 1)
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
-                                            <div class="col-md-4">
-                                                <label><strong>{{ __("Shop/Business") }} </strong></label>
-                                                <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
-                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            @php
-                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                $branchCode = '-' . $branch->branch_code;
-                                                            @endphp
-                                                            {{  $branchName.$areaName.$branchCode }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
+                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __("Shop/Business") }} </strong></label>
+                                            <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                            $branchCode = '-' . $branch->branch_code;
+                                                        @endphp
+                                                        {{  $branchName . $areaName . $branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     @endif
 
                                     <div class="col-md-4">
@@ -70,17 +68,17 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>@lang('menu.all_accounts')</h6>
+                        <h6>{{ __("List Of Accounts") }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
+                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add Accounts") }}</a>
                     </div>
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -99,6 +97,16 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <th colspan="5" class="text-white text-end">{{ __("Current Total") }} :</th>
+                                    <th id="total_opening_balance" class="text-white">0.00 Cr.</th>
+                                    <th id="total_debit" class="text-white">0.00</th>
+                                    <th id="total_credit" class="text-white">0.00</th>
+                                    <th id="total_closing_balance" class="text-white text-start">0.00 Cr.</th>
+                                    <th class="text-white text-start">---</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -126,11 +134,12 @@
             "serverSide": true,
             dom: "lBfrtip",
             buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
             ],
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
                 "url": "{{ route('accounts.index') }}",
                 "data": function(d) {
@@ -138,26 +147,78 @@
                     d.account_group_id = $('#f_account_group_id').val();
                 }
             },
-            columnDefs: [
-                {targets:[5,6,7, 8, 9], orderable:false}
-            ],
             columns: [
                 {data: 'group', name: 'account_groups.name'},
                 {data: 'name', name: 'accounts.name'},
                 {data: 'ac_number', name: 'accounts.account_number'},
                 {data: 'bank', name: 'banks.name'},
                 {data: 'branch', name: 'branches.name', className: 'fw-bold'},
-                {data: 'opening_balance', className: 'text-end fw-bold'},
-                {data: 'debit', className: 'text-end fw-bold'},
-                {data: 'credit', className: 'text-end fw-bold'},
-                {data: 'balance', className: 'text-end fw-bold'},
-                {data: 'action'},
-
+                {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end fw-bold'},
+                {data: 'debit', name: 'accounts.account_number', className: 'text-end fw-bold'},
+                {data: 'credit', name: 'accounts.account_number', className: 'text-end fw-bold'},
+                {data: 'closing_balance', name: 'accounts.account_number', className: 'text-end fw-bold'},
+                {data: 'action', name: 'accounts.account_number'},
             ],fnDrawCallback: function() {
+
+                var dr_opening_balance = sum_table_col($('.data_tbl'), 'dr_opening_balance');
+                var cr_opening_balance = sum_table_col($('.data_tbl'), 'cr_opening_balance');
+
+                var totalOpeningBalance = 0;
+                var totalOpeningBalanceSide = 'Dr.';
+                if (dr_opening_balance > cr_opening_balance) {
+
+                    totalOpeningBalance = dr_opening_balance - cr_opening_balance;
+                    totalOpeningBalanceSide = 'Dr.';
+                }else if (cr_opening_balance > dr_opening_balance) {
+
+                    totalOpeningBalance = cr_opening_balance - dr_opening_balance;
+                    totalOpeningBalanceSide = 'Cr.';
+                }
+
+                $('#total_opening_balance').html(bdFormat(totalOpeningBalance) + ' ' + totalOpeningBalanceSide);
+
+                var total_debit = sum_table_col($('.data_tbl'), 'debit');
+                $('#total_debit').html(bdFormat(total_debit));
+                var total_credit = sum_table_col($('.data_tbl'), 'credit');
+                $('#total_credit').html(bdFormat(total_credit));
+
+                var dr_closing_balance = sum_table_col($('.data_tbl'), 'dr_closing_balance');
+                var cr_closing_balance = sum_table_col($('.data_tbl'), 'cr_closing_balance');
+
+                var totalClosingBalance = 0;
+                var totalClosingBalanceSide = 'Dr.';
+                if (dr_closing_balance > cr_closing_balance) {
+
+                    totalClosingBalance = dr_closing_balance - cr_closing_balance;
+                    totalClosingBalanceSide = 'Dr.';
+                }else if (cr_closing_balance > dr_closing_balance) {
+
+                    totalClosingBalance = cr_closing_balance - dr_closing_balance;
+                    totalClosingBalanceSide = 'Cr.';
+                }
+
+                $('#total_closing_balance').html(bdFormat(totalClosingBalance) + ' ' + totalClosingBalanceSide);
 
                 $('.data_preloader').hide();
             }
         });
+
+        function sum_table_col(table, class_name) {
+
+            var sum = 0;
+
+            table.find('tbody').find('tr').each(function() {
+
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+
+            return sum;
+        }
 
         //Submit filter form by select input changing
         $(document).on('submit', '#filter_form', function (e) {

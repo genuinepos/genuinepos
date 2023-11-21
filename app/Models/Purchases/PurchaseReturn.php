@@ -36,6 +36,11 @@ class PurchaseReturn extends BaseModel
         return $this->belongsTo(Account::class, 'supplier_account_id');
     }
 
+    public function purchaseAccount()
+    {
+        return $this->belongsTo(Account::class, 'purchase_account_id');
+    }
+
     public function purchaseReturnProducts()
     {
         return $this->hasMany(PurchaseReturnProduct::class, 'purchase_return_id');

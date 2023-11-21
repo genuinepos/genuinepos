@@ -11,12 +11,16 @@ class AccountService
 {
     public function accountListTable($request)
     {
+        // echo $request->all();
         $generalSettings = config('generalSettings');
         $accounts = '';
         $query = DB::table('accounts')
             ->leftJoin('banks', 'accounts.bank_id', 'banks.id')
             ->leftJoin('branches', 'accounts.branch_id', 'branches.id')
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id');
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
+            ->where('accounts.is_global', 0);
 
         if ($request->branch_id) {
 
@@ -41,51 +45,189 @@ class AccountService
 
         $accounts = $query->select(
             'accounts.id',
+            'accounts.branch_id',
             'accounts.name',
             'accounts.account_number',
-            'accounts.opening_balance',
             'accounts.is_global',
             'banks.name as b_name',
+            'account_groups.default_balance_type',
             'account_groups.name as group_name',
             'account_groups.sub_sub_group_number',
             'branches.name as branch_name',
             'branches.branch_code',
-        )->orWhere('accounts.is_global', 1)
+            'branches.area_name',
+            'parentBranch.name as parent_branch_name',
+            DB::raw(
+                '
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS opening_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type = 0
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS opening_total_credit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                            THEN account_ledgers.debit
+                            ELSE 0
+                        END
+                    ) AS curr_total_debit,
+                    SUM(
+                        CASE
+                            WHEN account_ledgers.voucher_type != 0
+                            THEN account_ledgers.credit
+                            ELSE 0
+                        END
+                    ) AS curr_total_credit
+                '
+            ),
+        )
+            ->orWhere('accounts.is_global', 1)
+            ->groupBy(
+                'accounts.id',
+                'accounts.branch_id',
+                'accounts.name',
+                'accounts.account_number',
+                'accounts.is_global',
+                'banks.name',
+                'account_groups.default_balance_type',
+                'account_groups.name',
+                'account_groups.sub_sub_group_number',
+                'branches.name',
+                'branches.branch_code',
+                'branches.area_name',
+                'parentBranch.name',
+            )
             ->orderBy('account_groups.sorting_number', 'asc')
-            ->orderBy('accounts.name', 'asc')->get();
+            ->orderBy('accounts.name', 'asc');
 
         return DataTables::of($accounts)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="editAccount" class="dropdown-item" href="'.route('accounts.edit', [$row->id]).'" > '.__('Edit').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.ledger', [$row->id]).'">'.__('Ledger').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.delete', [$row->id]).'" id="delete">'.__('Delete').'</a>';
+                $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id]) . '" > ' . __('Edit') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.ledger.index', [$row->id]) . '">' . __('Ledger') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __('Delete') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
                 return $html;
             })
-            ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
-            ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
-            ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')
+            ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'N/A')
+            ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'N/A')
+            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->is_global == 0) {
 
-                    return $row->branch_name ? $row->branch_name.'/'.$row->branch_code : $generalSettings['business__shop_name'];
+                    if ($row->branch_id) {
+
+                        if ($row->parent_branch_name) {
+
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
+                        } else {
+
+                            return $row->branch_name . '(' . $row->area_name . ')';
+                        }
+                    } else {
+
+                        return $generalSettings['business__shop_name'];
+                    }
+                    // return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name'];
                 } else {
 
                     return __('Global Access');
                 }
             })
-            ->editColumn('opening_balance', fn ($row) => \App\Utils\Converter::format_in_bdt(0.00))
-            ->editColumn('debit', fn ($row) => \App\Utils\Converter::format_in_bdt(0.00))
-            ->editColumn('credit', fn ($row) => \App\Utils\Converter::format_in_bdt(0.00))
-            ->editColumn('balance', fn ($row) => \App\Utils\Converter::format_in_bdt(0.00))
-            ->rawColumns(['action', 'ac_number', 'bank', 'group', 'branch', 'opening_balance', 'debit', 'credit', 'balance'])
+            ->editColumn('opening_balance', function ($row) {
+                $openingBalanceDebit = isset($row->opening_total_debit) ? (float) $row->opening_total_debit : 0;
+                $openingBalanceCredit = isset($row->opening_total_credit) ? (float) $row->opening_total_credit : 0;
+
+                $currOpeningBalance = 0;
+                $currOpeningBalanceSide = $row->default_balance_type;
+
+                if ($openingBalanceDebit > $openingBalanceCredit) {
+
+                    $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
+                    $currOpeningBalanceSide = 'dr';
+                } elseif ($openingBalanceCredit > $openingBalanceDebit) {
+
+                    $currOpeningBalance = $openingBalanceCredit - $openingBalanceDebit;
+                    $currOpeningBalanceSide = 'cr';
+                }
+
+                if ($currOpeningBalanceSide == 'dr') {
+
+                    return '<span class="dr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
+                } else if ($currOpeningBalanceSide == 'cr') {
+
+                    return '<span class="cr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
+                }
+                \App\Utils\Converter::format_in_bdt(0.00);
+            })
+            ->editColumn('debit', function ($row) {
+
+                return '<span class="debit" data-value="' . $row->curr_total_debit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_debit) . '</span>';
+            })
+            ->editColumn('credit', function ($row) {
+
+                return '<span class="credit" data-value="' . $row->curr_total_credit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_credit) . '</span>';
+            })
+            ->editColumn('closing_balance', function ($row) {
+
+                $openingBalanceDebit = isset($row->opening_total_debit) ? (float) $row->opening_total_debit : 0;
+                $openingBalanceCredit = isset($row->opening_total_credit) ? (float) $row->opening_total_credit : 0;
+
+                $CurrTotalDebit = (float) $row->curr_total_debit;
+                $CurrTotalCredit = (float) $row->curr_total_credit;
+
+                $currOpeningBalance = 0;
+                $currOpeningBalanceSide = 'dr';
+
+                if ($openingBalanceDebit > $openingBalanceCredit) {
+
+                    $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
+                    $currOpeningBalanceSide = 'dr';
+                } elseif ($openingBalanceCredit > $openingBalanceDebit) {
+
+                    $currOpeningBalance = $openingBalanceCredit - $openingBalanceDebit;
+                    $currOpeningBalanceSide = 'cr';
+                }
+
+                $CurrTotalDebit += $currOpeningBalanceSide == 'dr' ? $currOpeningBalance : 0;
+                $CurrTotalCredit += $currOpeningBalanceSide == 'cr' ? $currOpeningBalance : 0;
+
+                $closingBalance = 0;
+                $closingBalanceSide = 'dr';
+                if ($CurrTotalDebit > $CurrTotalCredit) {
+
+                    $closingBalance = $CurrTotalDebit - $CurrTotalCredit;
+                    $closingBalanceSide = 'dr';
+                } elseif ($CurrTotalCredit > $CurrTotalDebit) {
+
+                    $closingBalance = $CurrTotalCredit - $CurrTotalDebit;
+                    $closingBalanceSide = 'cr';
+                }
+
+                if ($closingBalanceSide == 'dr') {
+
+                    return '<span class="dr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
+                } else if ($closingBalanceSide == 'cr') {
+
+                    return '<span class="cr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
+                }
+            })
+            ->rawColumns(['action', 'ac_number', 'bank', 'group', 'branch', 'opening_balance', 'debit', 'credit', 'closing_balance'])
             ->make(true);
     }
 
@@ -153,7 +295,7 @@ class AccountService
             return ['success' => false, 'msg' => __('Account can not be deleted. One or more ledger entries are belonging in this account.')];
         }
 
-        if (! is_null($deleteAccount)) {
+        if (!is_null($deleteAccount)) {
 
             $deleteAccount->delete();
             $deleteAccount?->contact?->delete();
@@ -319,7 +461,7 @@ class AccountService
             count($account->accountLedgersWithOutOpeningBalances) > 0
         ) {
 
-            return ['pass' => false, 'msg' => $account?->group->name.' '.__('can be changed to other account group. One or more ledger entries are belonging in this account')];
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
         }
 
         if (
@@ -328,7 +470,7 @@ class AccountService
             count($account->accountLedgersWithOutOpeningBalances) > 0
         ) {
 
-            return ['pass' => false, 'msg' => $account?->group->name.' '.__('can be changed to other account group. One or more ledger entries are belonging in this account')];
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
         }
 
         return ['pass' => true];

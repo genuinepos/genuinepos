@@ -1,7 +1,7 @@
 <div class="modal-dialog col-50-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_account')</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Account") }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -17,9 +17,12 @@
                     <label><strong>{{ __('Account Group') }} <span class="text-danger">*</span></strong></label>
                     <div class="input-group flex-nowrap">
                         <select required name="account_group_id" class="form-control select2" id="account_group_id">
-                            <option value="">@lang('menu.select') @lang('menu.account_group')</option>
+                            <option value="">{{ __("Select Account Group") }}</option>
                             @foreach ($groups as $group)
-                                @if (($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) && !auth()->user()->branch_id)
+                                @if (
+                                    ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11)
+                                    && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                )
 
                                     <option value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                         {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
@@ -45,39 +48,39 @@
                 <div class="form-group row mt-1 customer_account_field d-hide">
                     <div class="col-md-12">
                         <label><strong>{{ __('Phone No') }}</strong><span class="text-danger">*</span></label>
-                        <input required type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" data-next="customer_credit_limit" placeholder="Phone number" />
+                        <input required type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" data-next="customer_credit_limit" placeholder="{{ __("Phone numbe") }}r" />
                         <span class="error error_customer_phone_no"></span>
                     </div>
 
                     <div class="col-md-12">
                         <label><strong>{{ __('Credit Limit') }}</strong></label>
-                        <input type="number" name="customer_credit_limit" class="form-control" id="customer_credit_limit" data-next="customer_address" placeholder="Credit Limit" />
+                        <input type="number" name="customer_credit_limit" class="form-control" id="customer_credit_limit" data-next="customer_address" placeholder="{{ __("Credit Limit") }}" />
                         <span class="error error_customer_credit_limit"></span>
                     </div>
 
                     <div class="col-md-12">
                         <label><strong>{{ __('Address') }}</strong></label>
-                        <input type="text" name="customer_address" class="form-control" id="customer_address" placeholder="Address" />
+                        <input type="text" name="customer_address" class="form-control" id="customer_address" placeholder="{{ __("Address") }}" />
                     </div>
                 </div>
 
                 <div class="form-group row mt-1 supplier_account_field d-hide">
                     <div class="col-md-12">
                         <label><strong>{{ __('Phone No') }}</strong><span class="text-danger">*</span></label>
-                        <input required type="text" name="supplier_phone_no" class="form-control hidden_required" id="supplier_phone_no" data-next="supplier_address" placeholder="Phone number" />
+                        <input required type="text" name="supplier_phone_no" class="form-control hidden_required" id="supplier_phone_no" data-next="supplier_address" placeholder="{{ __("Phone number") }}" />
                         <span class="error error_supplier_phone_no"></span>
                     </div>
 
                     <div class="col-md-12">
                         <label><strong>{{ __('Address') }}</strong></label>
-                        <input type="text" name="supplier_address" class="form-control" id="supplier_address" data-next="opening_balance" placeholder="Address" />
+                        <input type="text" name="supplier_address" class="form-control" id="supplier_address" data-next="opening_balance" placeholder="{{ __("Address") }}" />
                     </div>
                 </div>
 
                 <div class="form-group row mt-1 duties_and_tax_account_field d-hide">
                     <div class="col-md-12">
                         <label><strong>{{ __('Duties And Tax Calculation Percent') }} </strong><span class="text-danger">*</span></label>
-                        <input type="number" step="any" name="tax_percent" class="form-control" id="tax_percent" data-next="opening_balance" placeholder="Duties & Tax Calculation Percent" />
+                        <input type="number" step="any" name="tax_percent" class="form-control" id="tax_percent" data-next="opening_balance" placeholder="{{ __("Duties & Tax Calculation Percent") }}" />
                         <span class="error error_tax_percent"></span>
                     </div>
                 </div>
@@ -143,14 +146,21 @@
                     </div>
                 </div>
 
-                @if (!auth()->user()->branch_id)
+                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
 
                     <div class="form-group mt-1 d-hide" id="access_branches">
                         <label><strong>{{ __('Access Shop') }}</strong></label>
                         <input type="hidden" name="branch_count" id="branch_count" value="yes">
                         <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                             @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->name . '/' . $branch->branch_code }}</option>
+                                <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
+                                    @php
+                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                        $branchCode = '-' . $branch->branch_code;
+                                    @endphp
+                                    {{ $branchName . $areaName . $branchCode }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -164,9 +174,9 @@
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button account_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" id="account_save" class="btn btn-sm btn-success account_submit_button">@lang('menu.save')</button>
+                            <button type="button" class="btn loading_button account_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
+                            <button type="submit" id="account_save" class="btn btn-sm btn-success account_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>

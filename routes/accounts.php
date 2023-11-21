@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Accounts\AccountBalanceController;
-use App\Http\Controllers\Accounts\AccountController;
-use App\Http\Controllers\Accounts\AccountGroupController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Accounts\BankController;
 use App\Http\Controllers\Accounts\ContraController;
+use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\DayBookController;
 use App\Http\Controllers\Accounts\ExpenseController;
 use App\Http\Controllers\Accounts\PaymentController;
 use App\Http\Controllers\Accounts\ReceiptController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Accounts\AccountGroupController;
+use App\Http\Controllers\Accounts\AccountLedgerController;
+use App\Http\Controllers\Accounts\AccountBalanceController;
 
 Route::group(['prefix' => 'accounting'], function () {
 
@@ -38,8 +39,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('accounts.index');
         Route::get('create', 'create')->name('accounts.create');
-        Route::get('ledger/{accountId}', 'ledger')->name('accounts.ledger');
-        Route::get('ledger/print/{accountId}', 'ledgerPrint')->name('accounts.ledger.print');
         Route::post('store', 'store')->name('accounts.store');
         Route::get('edit/{id}', 'edit')->name('accounts.edit');
         Route::post('update/{id}', 'update')->name('accounts.update');
@@ -48,6 +47,12 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::controller(AccountBalanceController::class)->prefix('balance')->group(function () {
 
             Route::get('account/balance/{accountId}', 'accountBalance')->name('accounts.balance');
+        });
+
+        Route::controller(AccountLedgerController::class)->prefix('ledger')->group(function () {
+
+            Route::get('index/{id}/{fromDate?}/{toDate?}/{branchId?}', 'index')->name('accounts.ledger.index');
+            Route::get('print/{id}', 'print')->name('accounts.ledger.print');
         });
     });
 

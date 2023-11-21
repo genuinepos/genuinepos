@@ -2,6 +2,7 @@
 
 namespace App\Models\StockAdjustments;
 
+use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescriptionReference;
 use App\Models\BaseModel;
@@ -17,6 +18,11 @@ class StockAdjustment extends BaseModel
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function expenseAccount()
+    {
+        return $this->belongsTo(Account::class, 'expense_account_id');
     }
 
     public function createdBy()

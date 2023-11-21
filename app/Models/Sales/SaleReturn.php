@@ -21,6 +21,11 @@ class SaleReturn extends BaseModel
         return $this->belongsTo(Account::class, 'customer_account_id');
     }
 
+    public function salesAccount()
+    {
+        return $this->belongsTo(Account::class, 'sale_account_id');
+    }
+
     public function sale()
     {
         return $this->belongsTo(Sale::class, 'sale_id');

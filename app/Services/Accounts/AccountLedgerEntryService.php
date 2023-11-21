@@ -163,7 +163,7 @@ class AccountLedgerEntryService
             $accountOpeningBalance = '';
 
             $accountOpeningBalanceQ = DB::table('account_ledgers')->where('account_ledgers.account_id', $id);
-            
+
             if ($request->branch_id) {
 
                 $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
@@ -312,7 +312,7 @@ class AccountLedgerEntryService
                     'salesReturn.saleReturnProducts.variant:id,variant_name',
                     'salesReturn.saleReturnProducts.unit:id,code_name,base_unit_multiplier',
 
-                    'purchase:id,supplier_account_id,total_qty,net_total_amount,order_discount_amount,purchase_tax_amount,total_purchase_amount,purchase_note,payment_note,purchase_account_id',
+                    'purchase:id,supplier_account_id,total_qty,net_total_amount,order_discount_amount,purchase_tax_amount,total_purchase_amount,purchase_note,purchase_account_id',
                     'purchase.purchaseAccount:id,name',
                     'purchase.purchaseProducts:id,purchase_id,product_id,variant_id,unit_id,quantity,net_unit_cost,line_total',
                     'purchase.purchaseProducts.product:id,name',
@@ -320,7 +320,7 @@ class AccountLedgerEntryService
                     'purchase.purchaseProducts.unit:id,code_name,base_unit_multiplier',
 
                     'purchaseProduct:id,purchase_id,tax_ac_id',
-                    'purchaseProduct.purchase:id,supplier_account_id,total_purchase_amount,purchase_note,payment_note,purchase_account_id,total_qty,net_total_amount,order_discount_amount,purchase_tax_amount',
+                    'purchaseProduct.purchase:id,supplier_account_id,total_purchase_amount,purchase_note,purchase_account_id,total_qty,net_total_amount,order_discount_amount,purchase_tax_amount',
                     'purchaseProduct.purchase.purchaseAccount:id,name',
                     'purchaseProduct.purchase.supplier:id,name',
                     'purchaseProduct.purchase.purchaseProducts:id,purchase_id,product_id,variant_id,quantity,unit_id,tax_ac_id,unit_tax_percent,unit_tax_amount,net_unit_cost,line_total',
@@ -344,7 +344,7 @@ class AccountLedgerEntryService
                     'stockAdjustment:adjustmentProducts.unit:id,code_name,base_unit_multiplier',
 
                     'saleProduct:id,sale_id,tax_ac_id',
-                    'saleProduct.sale:id,customer_account_id,total_payable_amount,note,payment_note,sale_account_id,total_sold_qty,order_discount_amount,order_tax_amount',
+                    'saleProduct.sale:id,customer_account_id,total_invoice_amount,note,sale_account_id,total_sold_qty,order_discount_amount,order_tax_amount',
                     'saleProduct.sale.salesAccount:id,name',
                     'saleProduct.sale.customer:id,name',
                     'saleProduct.sale.saleProducts:id,sale_id,product_id,variant_id,quantity,unit_id,tax_ac_id,unit_tax_percent,unit_tax_amount,unit_price_inc_tax,subtotal',

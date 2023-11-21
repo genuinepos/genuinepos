@@ -12,6 +12,7 @@ use App\Http\Controllers\Accounts\AccountGroupController;
 use App\Http\Controllers\Accounts\AccountLedgerController;
 use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
+use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 
 Route::group(['prefix' => 'accounting'], function () {
 
@@ -48,6 +49,11 @@ Route::group(['prefix' => 'accounting'], function () {
         Route::controller(CapitalAccountController::class)->prefix('capitals')->group(function () {
 
             Route::get('/', 'index')->name('accounts.capitals.index');
+        });
+
+        Route::controller(DutyAndTaxAccountController::class)->prefix('duties-and-taxes')->group(function () {
+
+            Route::get('/', 'index')->name('accounts.duties.taxes.index');
         });
 
         Route::controller(AccountBalanceController::class)->prefix('balance')->group(function () {

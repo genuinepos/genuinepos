@@ -92,7 +92,7 @@ class AccountLedgerParticularService
 
             $voucherDetails .= '<tr>';
             $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('Total Invoice Amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($ledger?->sale?->total_payable_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($ledger?->sale?->total_invoice_amount) . '</td>';
             $voucherDetails .= '</tr>';
             $voucherDetails .= '</table>';
         }
@@ -609,7 +609,7 @@ class AccountLedgerParticularService
 
             $voucherDetails .= '<tr>';
             $voucherDetails .= '<td style="line-height:1 !important;" class="w-60"><strong>' . __('Total Invoice Amount') . '</strong></td>';
-            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($saleProduct?->sale?->total_payable_amount) . '</td>';
+            $voucherDetails .= '<td style="line-height:1 !important;"> : ' . \App\Utils\Converter::format_in_bdt($saleProduct?->sale?->total_invoice_amount) . '</td>';
             $voucherDetails .= '</tr>';
 
             $voucherDetails .= '</table>';

@@ -293,10 +293,10 @@
             /* @ckeditor/ckeditor5-image/theme/image.css */
             .ck-content .image-inline {
                 /*
-             * Normally, the .image-inline would have "display: inline-block" and "img { width: 100% }" (to follow the wrapper while resizing).;
-             * Unfortunately, together with "srcset", it gets automatically stretched up to the width of the editing root.
-             * This strange behavior does not happen with inline-flex.
-             */
+                                 * Normally, the .image-inline would have "display: inline-block" and "img { width: 100% }" (to follow the wrapper while resizing).;
+                                 * Unfortunately, together with "srcset", it gets automatically stretched up to the width of the editing root.
+                                 * This strange behavior does not happen with inline-flex.
+                                 */
                 display: inline-flex;
                 max-width: 100%;
                 align-items: flex-start;
@@ -588,8 +588,8 @@
         @endif
         <div class="row mt-1">
             <div class="col-md-4">
-                <a class="btn btn-sm btn-primary" href="{{ route('saas.plan.select', ['plan' => $plan]) }}"
-                    type="button" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                <a class="btn btn-sm btn-primary" href="{{ route('saas.plan.confirm', ['plan' => $plan]) }}"
+                    type="button">
                     {{ __('Select This Plan') }}
                 </a>
             </div>
@@ -597,97 +597,6 @@
     </div>
     </div>
     </div>
-
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalToggleLabel">{{ __("Create Business") }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('saas.guest.tenants.store') }}" id="tenantStoreForm">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-2">
-                                    <label for="fullname" class="form-label text-bold">
-                                        <b>{{ __('Full Name') }}</b>
-                                    </label>
-                                    <input type="text" name="fullname" id="fullname"
-                                        class="form-control @error('fullname') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Full Name') }}" required />
-                                </div>
-                                <div class="mb-2">
-                                    <label for="email" class="form-label text-bold">
-                                        <b>{{ __('Email Address') }}</b>
-                                    </label>
-                                    <input type="email" name="email" id="email"
-                                        class="form-control @error('email') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Email Address') }}" required />
-                                </div>
-                                <div class="mb-2">
-                                    <label for="password" class="form-label text-bold">
-                                        <b>{{ __('Password') }}</b>
-                                    </label>
-                                    <input type="password" name="password" id="password"
-                                        class="form-control @error('password') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Password') }}" required />
-                                </div>
-                                <div class="mb-2">
-                                    <label for="phone" class="form-label text-bold">
-                                        <b>{{ __('Phone Number') }}</b>
-                                    </label>
-                                    <input type="text" phone="phone" id="phone"
-                                        class="form-control @error('phone') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Phone Number') }}" required />
-                                </div>
-                                <hr />
-                                <div class="mb-2">
-                                    <label for="name" class="form-label text-bold">
-                                        <b>{{ __('Business Name') }}</b>
-                                    </label>
-                                    <input type="text" name="name" id="name"
-                                        class="form-control @error('name') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Business Name') }}" required />
-                                </div>
-                                <div class="mb-2">
-                                    <label for="name"
-                                        class="form-label text-bold"><b>{{ __('Domain Name') }}</b></label>
-                                    <input type="text" name="domain" id="domain"
-                                        class="form-control @error('name') is-invalid  @enderror"
-                                        placeholder="{{ __('Enter Domain Name') }}"
-                                        {{-- placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()" --}}
-                                        required />
-                                    <p class="mt-2">
-                                       <span id="domainPreview" class="monospace"></span>
-                                    </p>
-                                </div>
-                                <div class="mb-2">
-                                    <input type="submit" class="btn btn-primary" value="{{ __('Create') }}" id="submitBtn" />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div id="response-message" class="mt-3 d-none text-start" style="height: 100px;">
-                        <div class="mt-2">
-                            <h6 id="response-message-text">
-                                {{ __("Creating your Business. It can take a while, please wait...") }}
-                                Elapsed Time: <span id="timespan"></span> Seconds.
-                            </h3>
-                        </div>
-                       <div class="mt-3">
-                            <div class="spinner-border text-dark" role="status">
-                                <span class="visually-hidden">{{ __("Loading") }}...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @push('js')
         <script>
             $('table').addClass('table table-striped');
@@ -708,7 +617,7 @@
                 $('#timespan').text(0);
                 setInterval(function() {
                     let currentValue = parseInt($('#timespan').text() || 0);
-                    $('#timespan').text(currentValue+1);
+                    $('#timespan').text(currentValue + 1);
                 }, 1000);
 
                 $.ajax({
@@ -725,7 +634,8 @@
                     },
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');
-                        $('#response-message-text').text('{{ __("Successfully created! Redirecting you to your Domain...") }}');
+                        $('#response-message-text').text(
+                            '{{ __('Successfully created! Redirecting you to your Domain...') }}');
                         window.location = res;
                     },
                     error: function(err) {
@@ -736,33 +646,33 @@
             });
 
             // Domain Check
-            var typingTimer;                //timer identifier
-            var doneTypingInterval = 800;  //time in ms, 5 seconds for example
+            var typingTimer; //timer identifier
+            var doneTypingInterval = 800; //time in ms, 5 seconds for example
             var $input = $('#domain');
 
             //on keyup, start the countdown
-            $input.on('keyup', function () {
+            $input.on('keyup', function() {
                 clearTimeout(typingTimer);
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             });
 
             //on keydown, clear the countdown
-            $input.on('keydown', function () {
+            $input.on('keydown', function() {
                 clearTimeout(typingTimer);
             });
 
             //user is "finished typing," do something
-            function doneTyping () {
+            function doneTyping() {
                 $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
                 var domain = $('#domain').val();
                 $.ajax({
-                    url: "{{ route('saas.domain.checkAvailability')}}",
+                    url: "{{ route('saas.domain.checkAvailability') }}",
                     type: 'GET',
                     data: {
                         domain: domain
                     },
                     success: function(res) {
-                        if(res.isAvailable) {
+                        if (res.isAvailable) {
                             isAvailable = true;
                             $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
                         }

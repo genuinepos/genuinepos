@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\SAAS\Enums\UserType;
 
 return new class extends Migration
 {
@@ -28,6 +27,7 @@ return new class extends Migration
             $table->string('currency', 10)->nullable();
             $table->boolean('status')->default(true);
             $table->string('primary_tenant_id')->nullable();
+            $table->ipAddress()->nullable();
             $table->timestamps();
         });
     }

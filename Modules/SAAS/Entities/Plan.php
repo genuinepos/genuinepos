@@ -32,24 +32,23 @@ class Plan extends Model
     public function getPeriodTypeAttribute()
     {
         $periodType = '';
+        $this->period_unit = strtolower($this->period_unit);
         if ($this->period_unit === 'month') {
             $periodType = match ($this->period_value) {
                 1 => __('Monthly'),
-                3 => __('Quarterly'),
-                6 => __('Half Yearly'),
                 12 => __('Yearly'),
-                default => __('Per').' '.$this->period_value.' '.__('Month'),
+                default => $this->period_value.' '.__('Months'),
             };
         }
         if ($this->period_unit === 'year') {
             $periodType = match ($this->period_value) {
                 1 => __('Yearly'),
-                default => __('Per').' '.$this->period_value.' '.__('Year'),
+                default => $this->period_value.' '.__('Years'),
             };
         }
         if ($this->period_unit === 'day') {
             $periodType = match ($this->period_value) {
-                default => __('Per').' '.$this->period_value.' '.__('Day'),
+                default => $this->period_value.' '.__('Days'),
             };
         }
 

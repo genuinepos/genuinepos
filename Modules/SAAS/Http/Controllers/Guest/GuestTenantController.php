@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Http\Controllers\Guest;
 
+use Exception;
 use Illuminate\Routing\Controller;
 use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
 use Modules\SAAS\Services\TenantServiceInterface;
@@ -21,9 +22,10 @@ class GuestTenantController extends Controller
         if (isset($tenant)) {
             $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
+
             return response()->json($returningUrl, 201);
         }
 
-        return response()->json('Something went wrong, please try again!', 500);
+        throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
     }
 }

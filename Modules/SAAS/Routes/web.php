@@ -32,7 +32,7 @@ Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all')
 Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
 Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
 Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
-Route::get('plan/{plan:slug}/select', [PlanSelectController::class, 'select'])->name('plan.select');
+Route::get('plan/{plan:slug}/confirm', [PlanSelectController::class, 'confirm'])->name('plan.confirm');
 Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 

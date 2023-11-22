@@ -11,13 +11,13 @@
                             <div class="card border-dark mb-3" style="max-width: 18rem;">
                                 <div class="card-header">{{ $plan->name }}</div>
                                 <div class="card-body text-dark">
-                                    <h5 class="card-title">Type: {{ $plan->periodType }}</h5>
+                                    <h5 class="card-title">{{ $plan->periodType }} {{ __('Plan') }}</h5>
                                     <p class="card-text" style="height: 80px;">
-                                        {!! strip_tags(Str::limit($plan->description, 120, '...')) !!}</p>
+                                        {!! strip_tags(Str::limit($plan->description, 110, '...')) !!}</p>
                                 </div>
                                 <div class="card-footer">
                                     <a href="{{ route('saas.plan.detail', $plan->slug) }}"
-                                        class="btn btn-primary btn-sm">{{ __('Details') }}</a>
+                                        class="btn btn-primary btn-sm">{{ __('See Plan Details') }}</a>
                                 </div>
                             </div>
                         </div>

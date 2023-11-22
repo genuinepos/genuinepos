@@ -186,17 +186,6 @@
                     toastr.success(data.successMsg);
                     $('#addOrEditPaymentModal').modal('hide');
                     $('#addOrEditPaymentModal').empty();
-
-                    var commonReloaderClass = $('.common-reloader').html();
-                    if (commonReloaderClass != undefined) {
-
-                        $('.common-reloader').DataTable().ajax.reload();
-                    }else {
-
-                        paymentTable.ajax.reload();
-                    }
-
-                    return;
                 } else {
 
                     toastr.success("{{ __('Payment added successfully.') }}");
@@ -212,15 +201,21 @@
                         removeInline: false,
                         printDelay: 1000
                     });
+                }
 
-                    var commonReloaderClass = $('.common-reloader').html();
-                    if (commonReloaderClass != undefined) {
+                var commonReloaderClass = $('.common-reloader').html();
+                var forPayments = $('#for_payments').html();
+                if (commonReloaderClass != undefined) {
 
-                        $('.common-reloader').DataTable().ajax.reload();
-                    }else {
+                    $('.common-reloader').DataTable().ajax.reload();
 
-                        paymentTable.ajax.reload();
+                    if (forPayments != undefined) {
+
+                        reloadAllAccountSummaryArea();
                     }
+                }else {
+
+                    paymentTable.ajax.reload();
                 }
             }, error: function(err) {
 

@@ -85,6 +85,39 @@
                                         <form id="filter_customer_ledgers" method="get" class="px-2">
                                             <div class="form-group row align-items-end g-3">
                                                 <div class="col-lg-3 col-md-3">
+                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                    <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
+                                                        @if (!$branch)
+                                                            <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                        @else
+
+                                                            @php
+                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $branchCode = '-' . $branch->branch_code;
+                                                            @endphp
+
+                                                            <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                            <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                {{ $branchName . $areaName . $branchCode }}
+                                                            </option>
+                                                            @if (count($branch->childBranches) > 0)
+                                                                @foreach ($branch->childBranches as $childBranch)
+                                                                    @php
+                                                                        $branchName = $branch->name;
+                                                                        $areaName = '('.$branch->area_name.')';
+                                                                        $branchCode = '-' . $childBranch->branch_code;
+                                                                    @endphp
+                                                                    <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                        {{  $branchName.$areaName.$branchCode }}
+                                                                    </option>
+                                                                @endforeach
+                                                            @endif
+                                                        @endif
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __("From Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -146,7 +179,7 @@
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_ledger"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printLedger"><i class="fas fa-print"></i> {{ __("Print") }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -161,7 +194,7 @@
                             <div class="col-md-12">
                                 <div class="ledger_table_area">
                                     <div class="table-responsive" id="payment_list_table">
-                                        <table id="ledger-table" class="display data_tbl data__table ledger_table">
+                                        <table id="ledger-table" class="display data_tbl data__table ledger_table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <tr>
@@ -237,25 +270,37 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                            <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                            <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
+                                                                @if (!$branch)
                                                                     <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                    @foreach ($branches as $branch)
-                                                                        @php
-                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-' . $branch->branch_code;
-                                                                        @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                            {{  $branchName.$areaName.$branchCode }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        @endif
+                                                                @else
+
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $branchCode = '-' . $branch->branch_code;
+                                                                    @endphp
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                        {{ $branchName . $areaName . $branchCode }}
+                                                                    </option>
+                                                                    @if (count($branch->childBranches) > 0)
+                                                                        @foreach ($branch->childBranches as $childBranch)
+                                                                            @php
+                                                                                $branchName = $branch->name;
+                                                                                $areaName = '('.$branch->area_name.')';
+                                                                                $branchCode = '-' . $childBranch->branch_code;
+                                                                            @endphp
+                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                {{  $branchName.$areaName.$branchCode }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endif
+                                                            </select>
+                                                        </div>
 
                                                         <div class="col-lg-6 col-md-6">
                                                             <label><strong>{{ __("Payment Status") }}</strong></label>
@@ -371,25 +416,38 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                            <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                            <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
+                                                                @if (!$branch)
                                                                     <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                    @foreach ($branches as $branch)
-                                                                        @php
-                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-' . $branch->branch_code;
-                                                                        @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                            {{ $branchName . $areaName . $branchCode }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        @endif
+                                                                @else
+
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $branchCode = '-' . $branch->branch_code;
+                                                                    @endphp
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                        {{ $branchName . $areaName . $branchCode }}
+                                                                    </option>
+                                                                    @if (count($branch->childBranches) > 0)
+                                                                        @foreach ($branch->childBranches as $childBranch)
+                                                                            @php
+                                                                                $branchName = $branch->name;
+                                                                                $areaName = '('.$branch->area_name.')';
+                                                                                $branchCode = '-' . $childBranch->branch_code;
+                                                                            @endphp
+                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                {{  $branchName.$areaName.$branchCode }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endif
+                                                            </select>
+                                                        </div>
+
 
                                                         <div class="col-lg-6 col-md-6">
                                                             <label><strong>{{ __("Payment Status") }}</strong></label>
@@ -503,25 +561,37 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                            <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                            <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
+                                                                @if (!$branch)
                                                                     <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                    @foreach ($branches as $branch)
-                                                                        @php
-                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-' . $branch->branch_code;
-                                                                        @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                            {{ $branchName . $areaName . $branchCode }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        @endif
+                                                                @else
+
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $branchCode = '-' . $branch->branch_code;
+                                                                    @endphp
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                        {{ $branchName . $areaName . $branchCode }}
+                                                                    </option>
+                                                                    @if (count($branch->childBranches) > 0)
+                                                                        @foreach ($branch->childBranches as $childBranch)
+                                                                            @php
+                                                                                $branchName = $branch->name;
+                                                                                $areaName = '('.$branch->area_name.')';
+                                                                                $branchCode = '-' . $childBranch->branch_code;
+                                                                            @endphp
+                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                {{  $branchName.$areaName.$branchCode }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endif
+                                                            </select>
+                                                        </div>
 
                                                         <div class="col-lg-6 col-md-6">
                                                             <label><strong>{{ __("Payment Status") }}</strong></label>
@@ -633,25 +703,37 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                            <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                            <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
+                                                                @if (!$branch)
                                                                     <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                    @foreach ($branches as $branch)
-                                                                        @php
-                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                            $branchCode = '-' . $branch->branch_code;
-                                                                        @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                            {{ $branchName . $areaName . $branchCode }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        @endif
+                                                                @else
+
+                                                                    @php
+                                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $branchCode = '-' . $branch->branch_code;
+                                                                    @endphp
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                        {{ $branchName . $areaName . $branchCode }}
+                                                                    </option>
+                                                                    @if (count($branch->childBranches) > 0)
+                                                                        @foreach ($branch->childBranches as $childBranch)
+                                                                            @php
+                                                                                $branchName = $branch->name;
+                                                                                $areaName = '('.$branch->area_name.')';
+                                                                                $branchCode = '-' . $childBranch->branch_code;
+                                                                            @endphp
+                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                {{  $branchName.$areaName.$branchCode }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endif
+                                                            </select>
+                                                        </div>
 
                                                         <div class="col-lg-6 col-md-6">
                                                             <label><strong>{{ __("Payment Status") }}</strong></label>
@@ -762,25 +844,38 @@
                                                 <div class="card pb-5">
                                                     <form id="filter_receipts" class="py-2 px-2 mt-2" method="get">
                                                         <div class="form-group row align-items-end">
-                                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                                <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                    <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>
-                                                                        <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+
+                                                            <div class="col-lg-3 col-md-6">
+                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>
+                                                                    @if (!$branch)
                                                                         <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                        @foreach ($branches as $branch)
-                                                                            @php
-                                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                                $branchCode = '-' . $branch->branch_code;
-                                                                            @endphp
-                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                                {{ $branchName . $areaName . $branchCode }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
+                                                                    @else
+
+                                                                        @php
+                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $branchCode = '-' . $branch->branch_code;
+                                                                        @endphp
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                            {{ $branchName . $areaName . $branchCode }}
+                                                                        </option>
+                                                                        @if (count($branch->childBranches) > 0)
+                                                                            @foreach ($branch->childBranches as $childBranch)
+                                                                                @php
+                                                                                    $branchName = $branch->name;
+                                                                                    $areaName = '('.$branch->area_name.')';
+                                                                                    $branchCode = '-' . $childBranch->branch_code;
+                                                                                @endphp
+                                                                                <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endif
+                                                                </select>
+                                                            </div>
 
                                                             <div class="col-lg-3 col-md-6">
                                                                 <label><strong>{{ __("From Date") }}</strong></label>
@@ -874,7 +969,7 @@
                     <div class="tab_contant payments d-hide">
                         <div class="row">
                             <div class="col-sm-12 col-lg-3" id="for_payments">
-                                @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
+                                @include('contacts.manage_customers.partials.account_summery_area_by_ledgers')
                             </div>
 
                             <div class="col-sm-12 col-lg-9">
@@ -889,25 +984,37 @@
                                                 <div class="card pb-5">
                                                     <form id="filter_payments" class="py-2 px-2 mt-2" method="get">
                                                         <div class="form-group row align-items-end">
-                                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                                <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                                    <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
-                                                                        <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                            <div class="col-lg-3 col-md-6">
+                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
+                                                                    @if (!$branch)
                                                                         <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                                                        @foreach ($branches as $branch)
-                                                                            @php
-                                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                                                $branchCode = '-' . $branch->branch_code;
-                                                                            @endphp
-                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                                {{ $branchName . $areaName . $branchCode }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            @endif
+                                                                    @else
+
+                                                                        @php
+                                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $branchCode = '-' . $branch->branch_code;
+                                                                        @endphp
+                                                                         <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="">{{ __("All") }}</option>
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                            {{ $branchName . $areaName . $branchCode }}
+                                                                        </option>
+                                                                        @if (count($branch->childBranches) > 0)
+                                                                            @foreach ($branch->childBranches as $childBranch)
+                                                                                @php
+                                                                                    $branchName = $branch->name;
+                                                                                    $areaName = '('.$branch->area_name.')';
+                                                                                    $branchCode = '-' . $childBranch->branch_code;
+                                                                                @endphp
+                                                                                <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $childBranch->id }}">
+                                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endif
+                                                                </select>
+                                                            </div>
 
                                                             <div class="col-lg-3 col-md-6">
                                                                 <label><strong>{{ __("From Date") }}</strong></label>

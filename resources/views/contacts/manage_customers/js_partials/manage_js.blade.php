@@ -17,6 +17,8 @@
         "ajax": {
             "url": "{{ route('accounts.ledger.index', [$contact?->account?->id]) }}",
             "data": function(d) {
+                d.branch_id = $('#ledger_branch_id').val();
+                d.branch_name = $('#ledger_branch_id').find('option:selected').data('branch_name');
                 d.from_date = $('#ledger_from_date').val();
                 d.to_date = $('#ledger_to_date').val();
                 d.note = $('#ledger_note').val();
@@ -352,6 +354,7 @@
         accountLedgerTable.ajax.reload();
 
         var filterObj = {
+            branch_id : $('#ledger_branch_id').val() ? $('#ledger_branch_id').val() : null,
             from_date : $('#ledger_from_date').val() ? $('#ledger_from_date').val() : null,
             to_date : $('#ledger_to_date').val() ? $('#ledger_to_date').val() : null,
         };
@@ -865,6 +868,50 @@
             }
         });
     });
+
+    $(document).on('click', '#printLedger', function(e) {
+        e.preventDefault();
+
+        var url = "{{ route('accounts.ledger.print', [$contact?->account?->id]) }}";
+
+        var branch_id = $('#ledger_branch_id').val();
+        var branch_name = $('#ledger_branch_id').find('option:selected').data('branch_name');
+        var from_date = $('#ledger_from_date').val();
+        var to_date = $('#ledger_to_date').val();
+        var note = $('#ledger_note').val();
+        var transaction_details = $('#ledger_transaction_details').val();
+        var voucher_details = $('#ledger_voucher_details').val();
+        var inventory_list = $('#ledger_inventory_list').val();
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                branch_id,
+                branch_name,
+                from_date,
+                to_date,
+                note,
+                transaction_details,
+                voucher_details,
+                inventory_list
+            },
+            success: function(data) {
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 500,
+                    header: "",
+                    pageTitle: "",
+                    // footer: 'Footer Text',
+                });
+            }
+        });
+    });
 </script>
 
 <script>
@@ -1018,11 +1065,65 @@
         });
     });
 
+    function reloadAllAccountSummaryArea() {
+
+        var summeryReloaderDatas = [
+            {
+                filterDatePrefix : 'ledger_',
+                filterSummerParentDiv : 'for_ledger',
+                changeLedgerTableCurrentTotal : true,
+            },
+            {
+                filterDatePrefix : 'sales_',
+                filterSummerParentDiv : 'for_sales',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'sales_order_',
+                filterSummerParentDiv : 'for_sales_order',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'purchases_',
+                filterSummerParentDiv : 'for_purchases',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'purchases_orders_',
+                filterSummerParentDiv : 'for_purchase_orders',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'receipts_',
+                filterSummerParentDiv : 'for_receipts',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'payments_',
+                filterSummerParentDiv : 'for_payments',
+                changeLedgerTableCurrentTotal : false,
+            },
+        ];
+
+        summeryReloaderDatas.forEach(function (element) {
+            var filterObj = {
+                branch_id : $('#'+element.filterDatePrefix+'branch_id').val(),
+                from_date : $('#'+element.filterDatePrefix+'from_date').val(),
+                to_date : $('#'+element.filterDatePrefix+'to_date').val(),
+            };
+
+            getAccountClosingBalance(filterObj, element.filterSummerParentDiv, element.changeLedgerTableCurrentTotal);
+        });
+    }
+
+
+    var tableId = '';
     $(document).on('click', '#delete',function(e){
 
         e.preventDefault();
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
+        tableId = $(this).closest('tr').closest('table').attr('id');
         $.confirm({
             'title': 'Confirmation',
             'content': 'Are you sure?',
@@ -1052,6 +1153,8 @@
 
                 toastr.error(data);
                 $('.common-reloader').DataTable().ajax.reload();
+
+                reloadAllAccountSummaryArea();
             },error: function(err) {
 
                 if (err.status == 0) {

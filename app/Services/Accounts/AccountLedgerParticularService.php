@@ -881,12 +881,15 @@ class AccountLedgerParticularService
         $generalSettings = config('generalSettings');
         if ($ledger->branch) {
 
+            $areaName = $ledger?->branch?->area_name ? '(' . $ledger?->branch?->area_name . ')' : '';
+            $branchCode = $ledger?->branch?->branch_code ? '-' . $ledger?->branch?->branch_code : '';
+
             if ($ledger?->branch?->parentBranch) {
 
-                return $ledger?->branch?->parentBranch?->name . '(' . $ledger?->branch?->area_name . ')' . '-' . $ledger?->branch?->branch_code;
+                return $ledger?->branch?->parentBranch?->name . $areaName . '-' . $branchCode;
             } else {
 
-                return $ledger?->branch?->name . '(' . $ledger?->branch?->area_name . ')' . '-' . $ledger?->branch?->branch_code;
+                return $ledger?->branch?->name . $areaName . '-' . $branchCode;
             }
         } else {
 

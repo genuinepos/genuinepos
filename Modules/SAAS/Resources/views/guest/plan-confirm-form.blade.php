@@ -143,6 +143,8 @@
                         toastr.error(err.responseJSON.message);
                     }
                 });
+
+                $('#submitBtn').removeAttr('disabled');
             });
 
             // Domain Check

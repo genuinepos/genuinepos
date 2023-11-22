@@ -2,13 +2,13 @@
 
 namespace Modules\SAAS\Services;
 
-use Exception;
 use App\Models\Role;
 use App\Models\User;
-use Modules\SAAS\Entities\Tenant;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SAAS\Database\factories\AdminFactory;
+use Modules\SAAS\Entities\Tenant;
 
 class TenantService implements TenantServiceInterface
 {
@@ -18,7 +18,7 @@ class TenantService implements TenantServiceInterface
             $tenant = Tenant::create(['id' => $tenantRequest['domain'], 'name' => $tenantRequest['name']]);
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
-                if($domain) {
+                if ($domain) {
                     // Shared user
                     $user = User::create([
                         'name' => $tenantRequest['fullname'],
@@ -26,14 +26,17 @@ class TenantService implements TenantServiceInterface
                         'password' => bcrypt($tenantRequest['password']),
                         'phone' => $tenantRequest['phone'],
                         'primary_tenant_id' => $tenant->id,
+                        'ip_address' => request()->ip(),
                     ]);
                     $tenantAdminUserId = $this->makeSuperAdminForTenant($tenant, $tenantRequest);
                     $tenant->update(['impersonate_user' => $tenantAdminUserId]);
+
                     return $tenant;
                 }
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
+
             return null;
         }
     }
@@ -46,6 +49,7 @@ class TenantService implements TenantServiceInterface
         $adminRole = Role::first();
         $tenantAdminUser->assignRole($adminRole);
         DB::reconnect();
+
         return $tenantAdminUser->id;
     }
 

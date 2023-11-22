@@ -11,6 +11,7 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('saas.guest.tenants.store') }}" id="tenantStoreForm">
                     @csrf
+                    <input type="hidden" name="plan_id" id="plan_id" value="{{ $plan->id }}" />
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-2">
@@ -125,6 +126,7 @@
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
+                        plan_id: $('#plan_id').val(),
                         name: $('#name').val(),
                         domain: $('#domain').val(),
                         fullname: $('#fullname').val(),

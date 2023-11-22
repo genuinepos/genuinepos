@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Modules\SAAS\Entities\Plan;
 
 class GuestTenantStoreRequest extends FormRequest
 {
@@ -17,6 +18,7 @@ class GuestTenantStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'plan_id' => 'required',
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
             'fullname' => 'required|string|max:191',
@@ -46,7 +48,9 @@ class GuestTenantStoreRequest extends FormRequest
     protected function passedValidation()
     {
         $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
-        if ($isIpAddressBlocked) {
+        $isTrial = Plan::find($this->plan_id)->price == 0;
+
+        if ($isIpAddressBlocked && $isTrial) {
             throw ValidationException::withMessages([
                 'ip_address' => ['Sorry, you already have an business registered.'],
             ]);

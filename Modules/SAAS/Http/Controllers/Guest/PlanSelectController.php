@@ -28,4 +28,11 @@ class PlanSelectController extends Controller
 
         return view('saas::guest.subscribe', compact('plan', 'intent'));
     }
+
+    public function confirm(Plan $plan)
+    {
+        return view('saas::guest.plan-confirm-form', [
+            'plan' => $plan,
+        ]);
+    }
 }

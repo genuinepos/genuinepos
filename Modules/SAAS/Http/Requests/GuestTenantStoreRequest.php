@@ -2,8 +2,10 @@
 
 namespace Modules\SAAS\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class GuestTenantStoreRequest extends FormRequest
 {
@@ -39,5 +41,15 @@ class GuestTenantStoreRequest extends FormRequest
         return [
             'domain.unique' => 'Selected domain is already taken. Try other domain names.',
         ];
+    }
+
+    protected function passedValidation()
+    {
+        $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
+        if ($isIpAddressBlocked) {
+            throw ValidationException::withMessages([
+                'ip_address' => ['Sorry, you already have an business registered.'],
+            ]);
+        }
     }
 }

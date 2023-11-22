@@ -30,7 +30,7 @@
 
                 <tr>
                     <td class="text-end"><strong>{{ __("Total Purchase") }} : {{ $generalSettings['business__currency'] }}</strong></td>
-                    <td class="text-end total_return" id="ledger_total_purchase">0.00</td>
+                    <td class="text-end total_purchase" id="ledger_total_purchase">0.00</td>
                 </tr>
 
                 <tr>
@@ -45,7 +45,7 @@
 
                 <tr>
                     <td class="text-end"><strong>{{ __("Total Received") }} : {{ $generalSettings['business__currency'] }}</strong></td>
-                    <td class="text-end total_paid text-success" id="ledger_total_received">
+                    <td class="text-end total_received text-success" id="ledger_total_received">
                         0.00
                     </td>
                 </tr>

@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="p-1">
-                        <div class="row">
+                        <div class="row g-1">
                             <div class="col-md-4">
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
@@ -63,9 +63,9 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div class="form_element rounded mt-0 mb-1">
+                                <div class="form_element rounded mt-0">
                                     <div class="element-body">
-                                        <form id="filter_account_ledgers" method="get" class="px-2 py-2">
+                                        <form id="filter_account_ledgers" method="get">
                                             <div class="form-group row g-2 align-items-end">
                                                 @if ($account?->group?->is_global == 1)
                                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
@@ -167,7 +167,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card mt-1">
                             <div class="widget_content">
                                 <div class="data_preloader">
                                     <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}</h6>
@@ -265,7 +265,7 @@
             $('.data_preloader').show();
             accountLedgerTable.ajax.reload(null, false);
 
-            // getAccountClosingBalance();
+            getAccountClosingBalance();
         });
 
         //Print account ledger
@@ -313,59 +313,58 @@
             });
         });
 
-        // function getAccountClosingBalance() {
+        function getAccountClosingBalance() {
 
-        //     var branch_id = $('#branch_id').val();
-        //     var from_date = $('#from_date').val();
-        //     var to_date = $('#to_date').val();
+            var branch_id = $('#branch_id').val();
+            var from_date = $('#from_date').val();
+            var to_date = $('#to_date').val();
 
-        //     var filterObj = {
-        //         branch_id: branch_id ? branch_id : null,
-        //         from_date: from_date ? from_date : null,
-        //         to_date: to_date ? to_date : null,
-        //     };
+            var filterObj = {
+                branch_id: branch_id ? branch_id : null,
+                from_date: from_date ? from_date : null,
+                to_date: to_date ? to_date : null,
+            };
 
-        // vouchers.journals.account.closing.balance', $account->id
-        //     var url = "#";
+            var url = "{{ route('accounts.balance', $account->id) }}";
 
-        //     $.ajax({
-        //         url: url,
-        //         type: 'get',
-        //         data: filterObj,
-        //         success: function(data) {
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: filterObj,
+                success: function(data) {
 
-        //             $('#debit_opening_balance').html('');
-        //             $('#credit_opening_balance').html('');
-        //             $('#debit_closing_balance').html('');
-        //             $('#credit_closing_balance').html('');
+                    $('#debit_opening_balance').html('');
+                    $('#credit_opening_balance').html('');
+                    $('#debit_closing_balance').html('');
+                    $('#credit_closing_balance').html('');
 
-        //             $('#table_total_debit').html(data.all_total_debit > 0 ? bdFormat(data.all_total_debit) : '');
-        //             $('#table_total_credit').html(data.all_total_credit ? bdFormat(data.all_total_credit) : '');
-        //             $('#table_current_balance').html(data.closing_balance > 0 ? data.closing_balance_string : '');
+                    $('#table_total_debit').html(data.all_total_debit > 0 ? bdFormat(data.all_total_debit) : '');
+                    $('#table_total_credit').html(data.all_total_credit ? bdFormat(data.all_total_credit) : '');
+                    $('#table_current_balance').html(data.closing_balance > 0 ? data.closing_balance_string : '');
 
-        //             if (data.opening_balance_side == 'dr') {
+                    if (data.opening_balance_side == 'dr') {
 
-        //                 $('#debit_opening_balance').html(data.opening_balance > 0 ? bdFormat(data.opening_balance) : '');
-        //             } else {
+                        $('#debit_opening_balance').html(data.opening_balance > 0 ? bdFormat(data.opening_balance) : '');
+                    } else {
 
-        //                 $('#credit_opening_balance').html(data.opening_balance > 0 ? bdFormat(data.opening_balance) : '');
-        //             }
+                        $('#credit_opening_balance').html(data.opening_balance > 0 ? bdFormat(data.opening_balance) : '');
+                    }
 
-        //             $('#total_debit').html(data.curr_total_debit > 0 ? bdFormat(data.curr_total_debit) : '');
-        //             $('#total_credit').html(data.curr_total_credit > 0 ? bdFormat(data.curr_total_credit) : '');
+                    $('#total_debit').html(data.curr_total_debit > 0 ? bdFormat(data.curr_total_debit) : '');
+                    $('#total_credit').html(data.curr_total_credit > 0 ? bdFormat(data.curr_total_credit) : '');
 
-        //             if (data.closing_balance_side == 'dr') {
+                    if (data.closing_balance_side == 'dr') {
 
-        //                 $('#debit_closing_balance').html(data.closing_balance > 0 ? bdFormat(data.closing_balance) : '');
-        //             } else {
+                        $('#debit_closing_balance').html(data.closing_balance > 0 ? bdFormat(data.closing_balance) : '');
+                    } else {
 
-        //                 $('#credit_closing_balance').html(data.closing_balance > 0 ? bdFormat(data.closing_balance) : '');
-        //             }
-        //         }
-        //     });
-        // }
+                        $('#credit_closing_balance').html(data.closing_balance > 0 ? bdFormat(data.closing_balance) : '');
+                    }
+                }
+            });
+        }
 
-        // getAccountClosingBalance();
+        getAccountClosingBalance();
 
         // Show details modal with data
         $(document).on('click', '#details_btn', function(e) {

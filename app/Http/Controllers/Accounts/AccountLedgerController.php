@@ -22,12 +22,12 @@ class AccountLedgerController extends Controller
 
     public function index(Request $request, $id, $fromDate = null, $toDate = null, $branchId = null)
     {
+        $account = $this->accountService->singleAccountById(id: $id, with: ['group']);
         if ($request->ajax()) {
 
-            return $this->accountLedgerEntryService->ledgerTable(request: $request, id: $id);
+            return $this->accountLedgerEntryService->ledgerTable(request: $request, id: $id, account: $account);
         }
 
-        $account = $this->accountService->singleAccountById(id: $id, with: ['group']);
         $branches = '';
         if ($account?->group?->is_global == BooleanType::True->value) {
 
@@ -38,8 +38,8 @@ class AccountLedgerController extends Controller
         return view('accounting.accounts.ledger.index', compact('account', 'branches', 'fromDate', 'toDate', 'branchId'));
     }
 
-    function print(Request $request, $id) {
-
+    function print(Request $request, $id)
+    {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 
@@ -58,7 +58,7 @@ class AccountLedgerController extends Controller
 
         $account = $this->accountService->singleAccountById(id: $id, with: ['group']);
 
-        $entries = $this->accountLedgerEntryService->ledgerEntriesPrint(request: $request, id: $id);
+        $entries = $this->accountLedgerEntryService->ledgerEntriesPrint(request: $request, id: $id, account: $account);
 
         return view('accounting.accounts.ledger.ajax_view.print_ledger', compact('entries', 'request', 'fromDate', 'toDate', 'filteredBranchName', 'account'));
     }

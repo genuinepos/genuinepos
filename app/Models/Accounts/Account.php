@@ -4,6 +4,7 @@ namespace App\Models\Accounts;
 
 use App\Models\BaseModel;
 use App\Models\Contacts\Contact;
+use App\Models\Setups\Branch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends BaseModel
@@ -13,6 +14,11 @@ class Account extends BaseModel
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
 
     public function bank()
     {

@@ -190,9 +190,21 @@
                     $('#addOrEditReceiptModal').empty();
 
                     var commonReloaderClass = $('.common-reloader').html();
+                    var forReceipts = $('#for_receipts').html();
                     if (commonReloaderClass != undefined) {
 
                         $('.common-reloader').DataTable().ajax.reload();
+
+                        if (forReceipts != undefined) {
+
+                            var filterObj = {
+                                branch_id : $('#receipts_branch_id').val(),
+                                from_date : $('#receipts_from_date').val(),
+                                to_date : $('#receipts_to_date').val(),
+                            };
+
+                            getAccountClosingBalance(filterObj, 'for_receipts', false);
+                        }
                     }else {
 
                         receiptTable.ajax.reload();

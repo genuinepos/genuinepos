@@ -10,37 +10,58 @@ class ManageCustomerService
 {
     public function customerListTable($request)
     {
-        $customers = DB::table('contacts')
+        $customers = '';
+        $query = DB::table('contacts')
             ->leftJoin('customer_groups', 'contacts.customer_group_id', 'customer_groups.id')
-            ->select(
-                'contacts.id',
-                'contacts.contact_id',
-                'contacts.name',
-                'contacts.business_name',
-                'contacts.status',
-                'contacts.phone',
-                'contacts.credit_limit',
-                'customer_groups.name as group_name',
-            )->where('contacts.type', ContactType::Customer->value);
+            ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
+            ->where('contacts.type', ContactType::Customer->value);
+
+        if (!empty($request->branch_id)) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $query->where('accounts.branch_id', null);
+            } else {
+
+                $query->where('accounts.branch_id', $request->branch_id);
+            }
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
+            $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+        }
+
+        $customers = $query->select(
+            'contacts.id',
+            'contacts.contact_id',
+            'contacts.name',
+            'contacts.business_name',
+            'contacts.status',
+            'contacts.phone',
+            'contacts.credit_limit',
+            'customer_groups.name as group_name',
+        );
 
         return DataTables::of($customers)
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="'.route('contacts.manage.customer.manage', [$row->id]).'">'.__('Manage').'</a>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
 
-                $html .= '<a class="dropdown-item" id="money_receipts" href="'.route('contacts.money.receipts.index', [$row->id]).'">'.__('Money Receipt Vouchers').'</a>';
+                $html .= '<a class="dropdown-item" id="money_receipts" href="' . route('contacts.money.receipts.index', [$row->id]) . '">' . __('Money Receipt Vouchers') . '</a>';
 
                 if (auth()->user()->can('customer_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('contacts.edit', [$row->id, ContactType::Customer->value]).'" id="editContact">'.__('Edit').'</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, ContactType::Customer->value]) . '" id="editContact">' . __('Edit') . '</a>';
                 }
 
                 if (auth()->user()->can('customer_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="'.route('contacts.delete', [$row->id]).'">'.__('Delete').'</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -61,7 +82,7 @@ class ManageCustomerService
                 // $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
                 // return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
 
-                return 0;
+                return 0.00;
             })
 
             ->editColumn('total_sale', function ($row) {
@@ -106,14 +127,14 @@ class ManageCustomerService
                 if ($row->status == 1) {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
                     $html .= '</div>';
 
                     return $html;
                 } else {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;

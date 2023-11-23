@@ -72,6 +72,9 @@
                                     <span id="domainPreview" class="monospace"></span>
                                 </p>
                             </div>
+                            <div class="mb-3" id="recaptcha-div">
+                                {!! NoCaptcha::display() !!}
+                            </div>
                             <div class="mb-2">
                                 <input type="submit" class="btn btn-primary" value="{{ __('Register') }}"
                                     id="submitBtn" />
@@ -121,6 +124,7 @@
                     $('#timespan').text(currentValue + 1);
                 }, 1000);
 
+                var recaptchaResponse = grecaptcha.getResponse();
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -132,7 +136,8 @@
                         fullname: $('#fullname').val(),
                         email: $('#email').val(),
                         password: $('#password').val(),
-                        phone: $('#phone').val()
+                        phone: $('#phone').val(),
+                        'g-recaptcha-response': recaptchaResponse
                     },
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');

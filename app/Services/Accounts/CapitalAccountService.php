@@ -2,8 +2,6 @@
 
 namespace App\Services\Accounts;
 
-use App\Models\Accounts\Account;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -78,17 +76,17 @@ class CapitalAccountService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id]) . '" > ' . __('Edit') . '</a>';
-                $html .= '<a class="dropdown-item" href="' . route('accounts.ledger.index', [$row->id]) . '">' . __('Ledger') . '</a>';
-                $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __('Delete') . '</a>';
+                $html .= '<a id="editAccount" class="dropdown-item" href="'.route('accounts.edit', [$row->id]).'" > '.__('Edit').'</a>';
+                $html .= '<a class="dropdown-item" href="'.route('accounts.ledger.index', [$row->id]).'">'.__('Ledger').'</a>';
+                $html .= '<a class="dropdown-item" href="'.route('accounts.delete', [$row->id]).'" id="delete">'.__('Delete').'</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
                 return $html;
             })
-            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
+            ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')
 
             ->editColumn('opening_balance', function ($row) {
                 $openingBalanceDebit = isset($row->opening_total_debit) ? (float) $row->opening_total_debit : 0;
@@ -109,19 +107,19 @@ class CapitalAccountService
 
                 if ($currOpeningBalanceSide == 'dr') {
 
-                    return '<span class="dr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
-                } else if ($currOpeningBalanceSide == 'cr') {
+                    return '<span class="dr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
+                } elseif ($currOpeningBalanceSide == 'cr') {
 
-                    return '<span class="cr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
+                    return '<span class="cr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
                 }
             })
             ->editColumn('debit', function ($row) {
 
-                return '<span class="debit" data-value="' . $row->curr_total_debit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_debit) . '</span>';
+                return '<span class="debit" data-value="'.$row->curr_total_debit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_debit).'</span>';
             })
             ->editColumn('credit', function ($row) {
 
-                return '<span class="credit" data-value="' . $row->curr_total_credit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_credit) . '</span>';
+                return '<span class="credit" data-value="'.$row->curr_total_credit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_credit).'</span>';
             })
             ->editColumn('closing_balance', function ($row) {
 
@@ -161,10 +159,10 @@ class CapitalAccountService
 
                 if ($closingBalanceSide == 'dr') {
 
-                    return '<span class="dr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
-                } else if ($closingBalanceSide == 'cr') {
+                    return '<span class="dr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
+                } elseif ($closingBalanceSide == 'cr') {
 
-                    return '<span class="cr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
+                    return '<span class="cr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
                 }
             })
             ->rawColumns(['action', 'group', 'opening_balance', 'debit', 'credit', 'closing_balance'])

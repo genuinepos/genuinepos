@@ -47,7 +47,6 @@ Route::middleware('is_auth')->group(function () {
 // Auth and Verified
 Route::middleware(['is_verified'])->group(function () {
 
-
     Route::prefix('dashboard')->group(function () {
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/', 'index')->name('dashboard');

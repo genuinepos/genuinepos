@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\Accounts\AccountService;
-use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountLedgerEntryService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\BranchService;
+use Illuminate\Http\Request;
 
 class AccountLedgerController extends Controller
 {
@@ -38,7 +38,7 @@ class AccountLedgerController extends Controller
         return view('accounting.accounts.ledger.index', compact('account', 'branches', 'fromDate', 'toDate', 'branchId'));
     }
 
-    function print(Request $request, $id)
+    public function print(Request $request, $id)
     {
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {

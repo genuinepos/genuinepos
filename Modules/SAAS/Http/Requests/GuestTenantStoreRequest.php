@@ -25,6 +25,7 @@ class GuestTenantStoreRequest extends FormRequest
             'email' => 'required|email|max:191|unique:users,email',
             'phone' => 'required|max:60|unique:users,phone',
             'password' => ['required', Password::default()],
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 

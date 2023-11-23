@@ -3,19 +3,16 @@
 namespace App\Models\Accounts;
 
 use App\Models\BaseModel;
-use App\Models\Sales\Sale;
-use App\Models\Setups\Branch;
-use App\Models\Accounts\Account;
-use App\Models\Sales\SaleReturn;
-use App\Models\Sales\SaleProduct;
 use App\Models\Purchases\Purchase;
-use App\Models\Sales\SaleReturnProduct;
-use App\Models\Purchases\PurchaseReturn;
 use App\Models\Purchases\PurchaseProduct;
+use App\Models\Purchases\PurchaseReturn;
 use App\Models\Purchases\PurchaseReturnProduct;
+use App\Models\Sales\Sale;
+use App\Models\Sales\SaleProduct;
+use App\Models\Sales\SaleReturn;
+use App\Models\Sales\SaleReturnProduct;
+use App\Models\Setups\Branch;
 use App\Models\StockAdjustments\StockAdjustment;
-use App\Models\Accounts\AccountingVoucherDescription;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AccountLedger extends BaseModel
 {

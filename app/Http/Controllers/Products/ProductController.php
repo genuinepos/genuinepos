@@ -140,7 +140,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }

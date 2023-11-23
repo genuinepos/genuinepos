@@ -38,7 +38,7 @@ class ManageCustomerController extends Controller
     {
         $contact = $this->contactService->singleContact(id: $id, with: [
             'account:id,contact_id,branch_id',
-            'account.branch:id,name,branch_code,parent_branch_id'
+            'account.branch:id,name,branch_code,parent_branch_id',
         ]);
 
         $ownBranchIdOrParentBranchId = $contact->account?->branch?->parent_branch_id ? $contact->account?->branch?->parent_branch_id : $contact->account?->branch_id;

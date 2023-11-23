@@ -119,7 +119,6 @@ Route::get('my-test', function () {
     //     )
     //     ->get();
 
-
     return $stock = DB::table('product_stocks')
         ->leftJoin('products', 'product_stocks.product_id', 'products.id')
         ->leftJoin('product_variants', 'product_stocks.variant_id', 'product_variants.id')

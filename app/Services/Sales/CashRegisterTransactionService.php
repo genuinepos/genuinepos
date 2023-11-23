@@ -20,7 +20,7 @@ class CashRegisterTransactionService
                 $addCashRegisterTransaction->sale_ref_id = $saleRefId;
                 $addCashRegisterTransaction->save();
             }
-        }else {
+        } else {
 
             $addCashRegisterTransaction->cash_register_id = $request->cash_register_id;
             $addCashRegisterTransaction->sale_id = $saleId;

@@ -772,6 +772,7 @@ class AccountingVoucherDescriptionReferenceService
             }
 
             $purchaseReturns = $query->where('due', '>', 0)->orderBy('date_ts', 'asc')->get();
+
             return $purchaseReturns;
         } elseif ($refIdColName == 'sale_id') {
 

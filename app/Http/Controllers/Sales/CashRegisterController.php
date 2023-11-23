@@ -81,7 +81,7 @@ class CashRegisterController extends Controller
         if ($request->sale_id) {
 
             return redirect()->route('sales.pos.edit', $request->sale_id);
-        }else {
+        } else {
 
             return redirect()->route('sales.pos.create');
         }

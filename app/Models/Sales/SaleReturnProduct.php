@@ -3,10 +3,9 @@
 namespace App\Models\Sales;
 
 use App\Models\BaseModel;
-use App\Models\Products\Unit;
 use App\Models\Products\Product;
-use App\Models\Sales\SaleReturn;
 use App\Models\Products\ProductVariant;
+use App\Models\Products\Unit;
 use App\Models\Purchases\PurchaseProduct;
 
 class SaleReturnProduct extends BaseModel

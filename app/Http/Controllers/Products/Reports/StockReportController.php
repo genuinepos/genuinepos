@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Products\Reports;
 
-use App\Utils\Converter;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Products\BrandService;
+use App\Services\Products\CategoryService;
 use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
-use App\Services\Products\BrandService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
-use App\Services\Products\CategoryService;
 
 class StockReportController extends Controller
 {
@@ -72,7 +71,7 @@ class StockReportController extends Controller
                 ->orderBy('products.name', 'asc');
 
             return DataTables::of($branchStocks)
-                ->editColumn('product_name', fn ($row) => Str::limit($row->product_name, 25, '') . ($row->variant_name ? ' - ' . $row->variant_name : ''))
+                ->editColumn('product_name', fn ($row) => Str::limit($row->product_name, 25, '').($row->variant_name ? ' - '.$row->variant_name : ''))
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
                 ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -80,10 +79,10 @@ class StockReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name . '(' . $row->area_name . ')';
+                            return $row->parent_branch_name.'('.$row->area_name.')';
                         } else {
 
-                            return $row->branch_name . '(' . $row->area_name . ')';
+                            return $row->branch_name.'('.$row->area_name.')';
                         }
                     } else {
 
@@ -110,10 +109,10 @@ class StockReportController extends Controller
                         return \App\Utils\Converter::format_in_bdt($row->product_price);
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="branch_stock" data-value="' . $row->stock  . '">' . $row->stock . '/' . $row->unit_code_name . '</span>')
+                ->editColumn('stock', fn ($row) => '<span class="branch_stock" data-value="'.$row->stock.'">'.$row->stock.'/'.$row->unit_code_name.'</span>')
                 ->editColumn('stock_value', function ($row) {
 
-                    return '<span class="branch_stock_value" data-value="' . $row->stock_value . '">' . \App\Utils\Converter::format_in_bdt($row->stock_value) . '</span>';
+                    return '<span class="branch_stock_value" data-value="'.$row->stock_value.'">'.\App\Utils\Converter::format_in_bdt($row->stock_value).'</span>';
                 })
                 ->rawColumns(['product_name', 'product_code', 'branch', 'cost', 'price', 'stock', 'stock_value'])
                 ->make(true);
@@ -162,28 +161,28 @@ class StockReportController extends Controller
             )->orderBy('products.name', 'asc');
 
             return DataTables::of($warehouseStocks)
-                ->editColumn('product_name', fn ($row) => Str::limit($row->product_name, 25, '') . ($row->variant_name ? ' - ' . $row->variant_name : ''))
+                ->editColumn('product_name', fn ($row) => Str::limit($row->product_name, 25, '').($row->variant_name ? ' - '.$row->variant_name : ''))
                 ->editColumn('product_code', fn ($row) => $row->variant_code ? $row->variant_code : $row->product_code)
                 ->editColumn('stock_location', function ($row) use ($generalSettings) {
 
                     $html = '';
                     if ($row->is_global == 1) {
 
-                        $html .= '<p class="p-0 m-0">' .  $row->warehouse_name . '/' . $row->warehouse_code. '-(<b>' . __("Global Warehouse") . '</b>)' . '</p>';
+                        $html .= '<p class="p-0 m-0">'.$row->warehouse_name.'/'.$row->warehouse_code.'-(<b>'.__('Global Warehouse').'</b>)'.'</p>';
                     } else {
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                $html .=  '<p class="p-0 m-0">(' . $row->parent_branch_name . '/' . $row->area_name . ')-<b>'  . $row->warehouse_name . '/' . $row->warehouse_code. '</b></p>';
+                                $html .= '<p class="p-0 m-0">('.$row->parent_branch_name.'/'.$row->area_name.')-<b>'.$row->warehouse_name.'/'.$row->warehouse_code.'</b></p>';
                             } else {
 
-                                $html .=  '<p class="p-0 m-0">(' . $row->branch_name . '/' . $row->area_name . ')-<b>' . $row->warehouse_name . '/' . $row->warehouse_code . '</b></p>';
+                                $html .= '<p class="p-0 m-0">('.$row->branch_name.'/'.$row->area_name.')-<b>'.$row->warehouse_name.'/'.$row->warehouse_code.'</b></p>';
 
                             }
                         } else {
 
-                            $html .=  '<p class="p-0 m-0">(' . $generalSettings['business__shop_name'] . ')-<b>' . $row->warehouse_name . '/' . $row->warehouse_code  . '</b></></p>';
+                            $html .= '<p class="p-0 m-0">('.$generalSettings['business__shop_name'].')-<b>'.$row->warehouse_name.'/'.$row->warehouse_code.'</b></></p>';
                         }
                     }
 
@@ -209,10 +208,10 @@ class StockReportController extends Controller
                         return \App\Utils\Converter::format_in_bdt($row->product_price);
                     }
                 })
-                ->editColumn('stock', fn ($row) => '<span class="warehouse_stock" data-value="' . $row->stock  . '">' . $row->stock . '/' . $row->unit_code_name . '</span>')
+                ->editColumn('stock', fn ($row) => '<span class="warehouse_stock" data-value="'.$row->stock.'">'.$row->stock.'/'.$row->unit_code_name.'</span>')
                 ->editColumn('stock_value', function ($row) {
 
-                    return '<span class="warehouse_stock_value" data-value="' . $row->stock_value . '">' . \App\Utils\Converter::format_in_bdt($row->stock_value) . '</span>';
+                    return '<span class="warehouse_stock_value" data-value="'.$row->stock_value.'">'.\App\Utils\Converter::format_in_bdt($row->stock_value).'</span>';
                 })
                 ->rawColumns(['product_name', 'product_code', 'stock_location', 'cost', 'price', 'stock', 'stock_value'])
                 ->make(true);

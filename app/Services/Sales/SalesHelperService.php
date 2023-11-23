@@ -114,11 +114,11 @@ class SalesHelperService
         }
 
         $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (!$request->category_id && !$request->brand_id) {
+        if (! $request->category_id && ! $request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {
@@ -189,14 +189,14 @@ class SalesHelperService
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
             ->leftJoin('product_stocks', function ($query) {
                 $query->on('products.id', 'product_stocks.product_id')
-                    ->where('product_stocks.variant_id', NULL)
+                    ->where('product_stocks.variant_id', null)
                     ->where('product_stocks.branch_id', auth()->user()->branch_id)
-                    ->where('product_stocks.warehouse_id', NULL);
+                    ->where('product_stocks.warehouse_id', null);
             })
             ->leftJoin('product_stocks as variant_stocks', function ($query) {
                 $query->on('product_variants.id', 'variant_stocks.variant_id')
                     ->where('variant_stocks.branch_id', auth()->user()->branch_id)
-                    ->where('variant_stocks.warehouse_id', NULL);
+                    ->where('variant_stocks.warehouse_id', null);
             })
             ->select(
                 'products.id as product_id',

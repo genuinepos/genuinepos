@@ -2490,6 +2490,16 @@ label.col-6 {
 } */
 /* label right code end */
 
+.dropdown-menu a {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 3px 10px;
+}
+
+.dropdown-menu {
+    padding: 5px 0;
+}
+
 .disabled_element {
     background: #e8e8e8;
     cursor: no-drop;

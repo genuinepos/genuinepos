@@ -88,6 +88,27 @@
 
             document.getElementById('inword').innerHTML = '';
         }
+
+        calculateCurrentBalance();
+    }
+
+     function calculateCurrentBalance() {
+
+        var payingAmount = $('#payment_paying_amount').val() ? $('#payment_paying_amount').val() : 0;
+        var closingBalanceFlatAmount = $('#closing_balance_flat_amount').val() ? $('#closing_balance_flat_amount').val() : 0;
+        var defaultBalanceType = $('#default_balance_type').val() ? $('#default_balance_type').val() : 0;
+        var currentPaidAmount = $('#current_paid_amount').val() ? $('#current_paid_amount').val() : 0;
+
+        var currentBalance = 0;
+        if (defaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closingBalanceFlatAmount) + parseFloat(payingAmount) - parseFloat(currentPaidAmount);
+        }else {
+
+            currentBalance = parseFloat(closingBalanceFlatAmount) - parseFloat(payingAmount) + parseFloat(currentPaidAmount);
+        }
+
+        $('#closing_balance_string').val(bdFormat(currentBalance));
     }
 </script>
 
@@ -251,7 +272,6 @@
                 type: 'get',
                 success: function(vouchers) {
 
-                    console.log(vouchers);
                     $('#vouchers_list').empty();
 
                     var html = '';
@@ -294,13 +314,56 @@
 
             var nextId = $(this).data('next');
 
-            $('#' + nextId).focus();
+            $('#' + nextId).focus().select();
 
             setTimeout(function() {
 
                 $('#' + nextId).focus();
             }, 100);
         });
+
+        function changeAccount (event) {
+
+            $('#closing_balance_string').val(parseFloat(0).toFixed(2));
+            $('#closing_balance_flat_amount').val(parseFloat(0).toFixed(2));
+            $('#default_balance_type').val('dr');
+
+            var accountId = event.value;
+            if (accountId == '') {
+
+                return;
+            }
+
+            var branchId = "{{ $payment->branch_id == null ? 'NULL' : $payment->branch_id }}";
+            var subSubGroupNumber = $(event).find('option:selected').data('sub_sub_group_number');
+            var __branchId = subSubGroupNumber != 6 ? branchId : null;
+            var filterObj = {
+                branch_id : __branchId,
+                from_date : null,
+                to_date : null,
+            };
+
+            getAccountClosingBalance(accountId, filterObj);
+        };
+
+        function getAccountClosingBalance(accountId, filterObj) {
+
+            var url = "{{ route('accounts.balance', ':accountId') }}";
+            var route = url.replace(':accountId', accountId);
+
+            $.ajax({
+                url: route,
+                type: 'get',
+                data: filterObj,
+                success: function(data) {
+
+                    $('#closing_balance_string').val(data.closing_balance_in_flat_amount_string);
+                    $('#closing_balance_flat_amount').val(parseFloat(data.closing_balance_in_flat_amount));
+                    $('#default_balance_type').val(data.default_balance_type);
+                    calculateCurrentBalance();
+                }
+            });
+        }
     </script>
 @endif
 

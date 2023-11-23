@@ -56,7 +56,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
+            'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
@@ -67,10 +67,10 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
 
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
-        $data['receivableAccounts'] = '';
+        $data['payableAccounts'] = '';
         if (! isset($creditAccountId)) {
 
-            $data['receivableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
+            $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
 
         $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
@@ -155,6 +155,8 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
             with: [
                 'voucherCreditDescription',
                 'voucherDebitDescription',
+                'voucherDebitDescription.account',
+                'voucherDebitDescription.account.group',
                 'voucherDebitDescription.references',
                 'voucherDebitDescription.references.purchase',
                 'voucherDebitDescription.references.salesReturn',
@@ -176,7 +178,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
+            'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', $payment->branch_id)

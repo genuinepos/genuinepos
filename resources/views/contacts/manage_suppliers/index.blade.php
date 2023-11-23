@@ -56,7 +56,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>{{ __('All Suppliers') }}</h6>
+                        <h6>{{ __('List Of Suppliers') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
@@ -64,7 +64,7 @@
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                         <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i>@lang('menu.print')</a>
+                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __("Print") }}</a>
                     </div>
                 </div>
 

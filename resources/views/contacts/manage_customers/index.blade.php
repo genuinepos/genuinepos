@@ -56,7 +56,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>{{ __('All Customer') }}</h6>
+                        <h6>{{ __('List Of Customers') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
@@ -74,7 +74,7 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">

@@ -192,7 +192,6 @@ class AccountService
 
                 $currOpeningBalance = 0;
                 $currOpeningBalanceSide = 'dr';
-
                 if ($openingBalanceDebit > $openingBalanceCredit) {
 
                     $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
@@ -367,17 +366,22 @@ class AccountService
             ->get();
     }
 
-    public function branchAccessibleAccounts(?int $ownBranchIdOrParentBranchId): ?object
+    public function branchAccessibleAccounts(?int $ownBranchIdOrParentBranchId, bool $isAllowedWalkInCustomer = true): ?object
     {
-        $ownBranchIdOrParentBranchId = null;
         $customerAccounts = '';
         $query = DB::table('accounts')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('accounts.is_walk_in_customer', 0)
+            // ->where('accounts.is_walk_in_customer', 0)
             ->where('account_groups.sub_sub_group_number', 6);
 
         $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
-        $customerAccounts = $query->select('accounts.id', 'accounts.name', 'accounts.phone');
+        $customerAccounts = $query->select(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.sub_sub_group_number',
+            'account_groups.name as group_name',
+        );
 
         $assets = '';
         $assetsQ = DB::table('accounts')
@@ -392,7 +396,13 @@ class AccountService
 
         $assetsQ->where('accounts.branch_id', auth()->user()->branch_id);
 
-        $assets = $assetsQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+        $assets = $assetsQ->select(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.sub_sub_group_number',
+            'account_groups.name as group_name',
+        );
 
         $liabilities = '';
         $liabilitiesQ = DB::table('accounts')
@@ -408,7 +418,13 @@ class AccountService
 
         $liabilitiesQ->where('accounts.branch_id', auth()->user()->branch_id);
 
-        $liabilities = $liabilitiesQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+        $liabilities = $liabilitiesQ->select(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.sub_sub_group_number',
+            'account_groups.name as group_name',
+        );
 
         $global = '';
         $globalQ = DB::table('accounts')
@@ -422,12 +438,24 @@ class AccountService
                     ->orWhereNull('account_groups.sub_sub_group_number');
             });
 
-        $global = $globalQ->select('accounts.id', 'accounts.name', 'accounts.phone');
+        $global = $globalQ->select(
+            'accounts.id',
+            'accounts.name',
+            'accounts.phone',
+            'account_groups.sub_sub_group_number',
+            'account_groups.name as group_name',
+        );
 
         return $results = Account::query()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 10)
-            ->select('accounts.id', 'accounts.name', 'accounts.phone')
+            ->select(
+                'accounts.id',
+                'accounts.name',
+                'accounts.phone',
+                'account_groups.sub_sub_group_number',
+                'account_groups.name as group_name',
+            )
             ->union($customerAccounts)
             ->union($assets)
             ->union($liabilities)

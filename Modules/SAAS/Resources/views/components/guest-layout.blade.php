@@ -55,7 +55,8 @@
             $(this).siblings('input').attr('type', passType);
         });
     </script>
-     {!! NoCaptcha::renderJs() !!}
+     {{-- {!! NoCaptcha::renderJs() !!} --}}
+     <script src="//www.google.com/recaptcha/api.js?" async defer></script>
 </body>
 
 </html>

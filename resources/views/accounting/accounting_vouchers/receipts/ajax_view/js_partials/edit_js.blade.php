@@ -166,9 +166,15 @@
                 $('#addOrEditReceiptModal').empty();
 
                 var commonReloaderClass = $('.common-reloader').html();
+                var forReceipts = $('#for_receipts').html();
                 if (commonReloaderClass != undefined) {
 
                     $('.common-reloader').DataTable().ajax.reload();
+
+                    if (forReceipts != undefined) {
+
+                        reloadAllAccountSummaryArea();
+                    }
                 }else {
 
                     receiptTable.ajax.reload(null, false);

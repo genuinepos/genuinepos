@@ -166,9 +166,15 @@
                 $('#addOrEditPaymentModal').empty();
 
                 var commonReloaderClass = $('.common-reloader').html();
+                var forPayments = $('#for_payments').html();
                 if (commonReloaderClass != undefined) {
 
                     $('.common-reloader').DataTable().ajax.reload();
+
+                    if (forPayments != undefined) {
+
+                        reloadAllAccountSummaryArea();
+                    }
                 }else {
 
                     paymentTable.ajax.reload();

@@ -99,7 +99,7 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __("Ledger") }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __("Account Ledger") }}</strong></h6>
         </div>
     </div>
 

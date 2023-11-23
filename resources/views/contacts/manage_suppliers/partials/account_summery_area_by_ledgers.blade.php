@@ -47,7 +47,7 @@
 
                 <tr>
                     <td class="text-end"><strong>{{ __("Total Received") }} : {{ $generalSettings['business__currency'] }}</strong></td>
-                    <td class="text-end total_paid text-success" id="ledger_total_received">
+                    <td class="text-end total_paid text-danger" id="ledger_total_received">
                         0.00
                     </td>
                 </tr>

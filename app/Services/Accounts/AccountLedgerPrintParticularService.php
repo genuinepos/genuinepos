@@ -879,7 +879,7 @@ class AccountLedgerPrintParticularService
     private function ledgerBranchName($ledger)
     {
         $generalSettings = config('generalSettings');
-        if ($ledger->branch) {
+        if ($ledger?->branch) {
 
             if ($ledger?->branch?->parentBranch) {
 

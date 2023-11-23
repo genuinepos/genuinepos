@@ -40,10 +40,11 @@ class ManageCustomerController extends Controller
             'account:id,contact_id,branch_id',
             'account.branch:id,name,branch_code,parent_branch_id'
         ]);
-        
-        $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('contacts.manage_customers.manage', compact('branches', 'contact'));
+        $ownBranchIdOrParentBranchId = $contact->account?->branch?->parent_branch_id ? $contact->account?->branch?->parent_branch_id : $contact->account?->branch_id;
+
+        $branch = $this->branchService->singleBranch(id: $ownBranchIdOrParentBranchId, with: ['childBranches']);
+
+        return view('contacts.manage_customers.manage', compact('branch', 'contact'));
     }
 }

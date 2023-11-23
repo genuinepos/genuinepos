@@ -116,7 +116,7 @@
 
             e.preventDefault();
 
-            console.log($('#receipt_credit_account_id').val());
+            // console.log($('#receipt_credit_account_id').val());
 
             if ($(this).attr('id') == 'receipt_remarks' && $('#receipt_credit_account_id').val() == undefined) {
 
@@ -188,29 +188,6 @@
                     toastr.success(data.successMsg);
                     $('#addOrEditReceiptModal').modal('hide');
                     $('#addOrEditReceiptModal').empty();
-
-                    var commonReloaderClass = $('.common-reloader').html();
-                    var forReceipts = $('#for_receipts').html();
-                    if (commonReloaderClass != undefined) {
-
-                        $('.common-reloader').DataTable().ajax.reload();
-
-                        if (forReceipts != undefined) {
-
-                            var filterObj = {
-                                branch_id : $('#receipts_branch_id').val(),
-                                from_date : $('#receipts_from_date').val(),
-                                to_date : $('#receipts_to_date').val(),
-                            };
-
-                            getAccountClosingBalance(filterObj, 'for_receipts', false);
-                        }
-                    }else {
-
-                        receiptTable.ajax.reload();
-                    }
-
-                    return;
                 } else {
 
                     toastr.success("{{ __('Receipt added successfully.') }}");
@@ -226,16 +203,21 @@
                         removeInline: false,
                         printDelay: 1000
                     });
+                }
 
-                    var commonReloaderClass = $('.common-reloader').html();
-                    if (commonReloaderClass != undefined) {
+                var commonReloaderClass = $('.common-reloader').html();
+                var forReceipts = $('#for_receipts').html();
+                if (commonReloaderClass != undefined) {
 
-                        $('.common-reloader').DataTable().ajax.reload();
-                    }else {
+                    $('.common-reloader').DataTable().ajax.reload();
 
-                        receiptTable.ajax.reload();
+                    if (forReceipts != undefined) {
+
+                        reloadAllAccountSummaryArea();
                     }
-                    return;
+                }else {
+
+                    receiptTable.ajax.reload();
                 }
             }, error: function(err) {
 
@@ -313,7 +295,6 @@
                 type: 'get',
                 success: function(vouchers) {
 
-                    console.log(vouchers);
                     $('#vouchers_list').empty();
 
                     var html = '';

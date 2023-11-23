@@ -297,7 +297,7 @@ class BranchService
         return $query;
     }
 
-    public function singleBranch(int $id, array $with = null)
+    public function singleBranch(?int $id, array $with = null)
     {
         $query = Branch::query();
 

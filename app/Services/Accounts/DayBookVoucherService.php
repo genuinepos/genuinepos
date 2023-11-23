@@ -10,6 +10,10 @@ class DayBookVoucherService
 {
     public function vouchersForPaymentReceipt(?int $accountId, $type): ?object
     {
+        $account = DB::table('accounts')
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->select('account_groups.sub_sub_group_number')->first();
+
         $voucherTypes = '';
         if ($type == AccountingVoucherType::Receipt->value) {
 
@@ -33,6 +37,11 @@ class DayBookVoucherService
         if ($accountId) {
 
             $query->where('day_books.account_id', $accountId);
+        }
+
+        if ($account->sub_sub_group_number != 6) {
+
+            $query->where('day_books.branch_id', auth()->user()->branch_id);
         }
 
         $vouchers = $query->select(

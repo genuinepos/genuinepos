@@ -24,7 +24,7 @@
             @if ($account)
                 <div class="info_area mb-1">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="border-right:1px solid #000;">
                             <div class="top_card">
                                 <table class="w-100">
                                     <tbody>
@@ -52,25 +52,25 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="border-right:1px solid #000;">
                             <div class="top_card">
                                 <table class="w-100">
                                     <tbody>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Opening Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Opening Balance") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Sale") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Sale") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Purchase") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Purchase") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Return") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Return") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -81,16 +81,16 @@
                                 <table class="w-100">
                                     <tbody>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Received") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Received") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Paid") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Paid") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Current Balance") }} :</td>
+                                            <td class="text-end fw-bold">0.00</td>
                                         </tr>
                                     </tbody>
                                 </table>

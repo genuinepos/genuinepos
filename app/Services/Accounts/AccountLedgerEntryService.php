@@ -29,61 +29,7 @@ class AccountLedgerEntryService
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
-            $accountOpeningBalance = '';
-
-            $accountOpeningBalanceQ = DB::table('account_ledgers')->where('account_ledgers.account_id', $id);
-
-            if ($request->branch_id) {
-
-                $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
-            }
-
-            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-                if ($account?->group?->sub_sub_group_number != 6) {
-
-                    $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
-                }
-            }
-
-            $accountOpeningBalance = $accountOpeningBalanceQ->select(
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
-            )->groupBy('account_ledgers.account_id')->get();
-
-            $openingBalanceDebit = $accountOpeningBalance->sum('opening_total_debit');
-            $openingBalanceCredit = $accountOpeningBalance->sum('opening_total_credit');
-
-            $currOpeningBalance = 0;
-            $currOpeningBalanceSide = 'dr';
-            if ($openingBalanceDebit > $openingBalanceCredit) {
-
-                $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
-                $currOpeningBalanceSide = 'dr';
-            } elseif ($openingBalanceCredit > $openingBalanceDebit) {
-
-                $currOpeningBalance = $openingBalanceCredit - $openingBalanceDebit;
-                $currOpeningBalanceSide = 'cr';
-            }
-
-            $arr = [
-                'id' => 0,
-                'branch_id' => $request->branch_id ? $request->branch_id : null,
-                'branch' => $request->branch_name ? (object) ['id' => $request->branch_id, 'name' => $request->branch_name] : null,
-                'voucher_type' => 0,
-                'sales_voucher' => null,
-                'date' => null,
-                'account_id' => $id,
-                'amount_type' => $currOpeningBalanceSide == 'dr' ? 'debit' : 'credit',
-                'debit' => $currOpeningBalanceSide == 'dr' ? $currOpeningBalance : 0.00,
-                'credit' => $currOpeningBalanceSide == 'cr' ? $currOpeningBalance : 0.00,
-                'running_balance' => 0,
-                'balance_type' => ' Dr',
-            ];
-
-            $stdArr = (object) $arr;
-
-            $ledgers->prepend($stdArr);
+            $this->generateOpeningBalance(accountId: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
 
         // return $ledgers;
@@ -154,7 +100,7 @@ class AccountLedgerEntryService
         $generalSettings = config('generalSettings');
         $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__start_date']));
 
-        $ledgers = $this->ledgerEntriesQuery($request, $id);
+        $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
         $accountStartDateYmd = '';
         $fromDateYmd = '';
@@ -168,61 +114,7 @@ class AccountLedgerEntryService
 
         if ($fromDateYmd && $toDateYmd && $fromDateYmd > $accountStartDateYmd) {
 
-            $accountOpeningBalance = '';
-
-            $accountOpeningBalanceQ = DB::table('account_ledgers')->where('account_ledgers.account_id', $id);
-
-            if ($request->branch_id) {
-
-                $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
-            }
-
-            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-                if ($account?->group?->sub_sub_group_number != 6) {
-
-                    $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
-                }
-            }
-
-            $accountOpeningBalance = $accountOpeningBalanceQ->select(
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
-                DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
-            )->groupBy('account_ledgers.account_id')->get();
-
-            $openingBalanceDebit = $accountOpeningBalance->sum('opening_total_debit');
-            $openingBalanceCredit = $accountOpeningBalance->sum('opening_total_credit');
-
-            $currOpeningBalance = 0;
-            $currOpeningBalanceSide = 'dr';
-            if ($openingBalanceDebit > $openingBalanceCredit) {
-
-                $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
-                $currOpeningBalanceSide = 'dr';
-            } elseif ($openingBalanceCredit > $openingBalanceDebit) {
-
-                $currOpeningBalance = $openingBalanceCredit - $openingBalanceDebit;
-                $currOpeningBalanceSide = 'cr';
-            }
-
-            $arr = [
-                'id' => 0,
-                'branch_id' => $request->branch_id ? $request->branch_id : null,
-                'branch' => $request->branch_name ? (object) ['id' => $request->branch_id, 'name' => $request->branch_name] : null,
-                'voucher_type' => 0,
-                'sales_voucher' => null,
-                'date' => null,
-                'account_id' => $id,
-                'amount_type' => $currOpeningBalanceSide == 'dr' ? 'debit' : 'credit',
-                'debit' => $currOpeningBalanceSide == 'dr' ? $currOpeningBalance : 0.00,
-                'credit' => $currOpeningBalanceSide == 'cr' ? $currOpeningBalance : 0.00,
-                'running_balance' => 0,
-                'balance_type' => ' Dr',
-            ];
-
-            $stdArr = (object) $arr;
-
-            $ledgers->prepend($stdArr);
+            $this->generateOpeningBalance(accountId: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
 
         $runningDebit = 0;
@@ -429,5 +321,90 @@ class AccountLedgerEntryService
             );
 
         return $query->orderBy('account_ledgers.date', 'asc')->orderBy('account_ledgers.id', 'asc')->get();
+    }
+
+    private function generateOpeningBalance(int $accountId, object $ledgers, string $fromDateYmd, object $request, array $generalSettings): void
+    {
+        $accountOpeningBalance = '';
+        $accountOpeningBalanceQ = DB::table('account_ledgers')->where('account_ledgers.account_id', $accountId);
+
+        if ($request->branch_id) {
+
+            if ($request->branch_id == 'NULL') {
+
+                $accountOpeningBalanceQ->where('account_ledgers.branch_id', null);
+            } else {
+
+                $accountOpeningBalanceQ->where('account_ledgers.branch_id', $request->branch_id);
+            }
+        }
+
+        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+            if ($account?->group?->sub_sub_group_number != 6) {
+
+                $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+            }
+        }
+
+        $accountOpeningBalance = $accountOpeningBalanceQ->select(
+            DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.debit end), 0) as opening_total_debit"),
+            DB::raw("IFNULL(SUM(case when timestamp(account_ledgers.date) < '$fromDateYmd' then account_ledgers.credit end), 0) as opening_total_credit"),
+        )->groupBy('account_ledgers.account_id')->get();
+
+        $openingBalanceDebit = $accountOpeningBalance->sum('opening_total_debit');
+        $openingBalanceCredit = $accountOpeningBalance->sum('opening_total_credit');
+
+        $currOpeningBalance = 0;
+        $currOpeningBalanceSide = 'dr';
+        if ($openingBalanceDebit > $openingBalanceCredit) {
+
+            $currOpeningBalance = $openingBalanceDebit - $openingBalanceCredit;
+            $currOpeningBalanceSide = 'dr';
+        } elseif ($openingBalanceCredit > $openingBalanceDebit) {
+
+            $currOpeningBalance = $openingBalanceCredit - $openingBalanceDebit;
+            $currOpeningBalanceSide = 'cr';
+        }
+
+        $branchName = '';
+        if ($request->branch_name) {
+
+            $branchName = $request->branch_name;
+        } else {
+
+            if (auth()->user()?->branch) {
+
+                if (auth()->user()?->branch?->parentBranch) {
+
+                    $branchName = auth()->user()?->branch?->parentBranch->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
+                } else {
+
+                    $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
+                }
+            } else {
+
+                $branchName = $generalSettings['business__shop_name'] . '(' . __("Business") . ')';
+            }
+        }
+
+        $arr = [
+            'id' => 0,
+            // 'branch_id' => $request->branch_id ? $request->branch_id : null,
+            'branch' => (object) ['id' => null, 'name' => $branchName, 'area_name' => null, 'branch_code' => null, 'parentBranch' => null],
+            'voucher_type' => 0,
+            'sales_voucher' => null,
+            'date' => null,
+            'account_id' => $accountId,
+            'amount_type' => $currOpeningBalanceSide == 'dr' ? 'debit' : 'credit',
+            'debit' => $currOpeningBalanceSide == 'dr' ? $currOpeningBalance : 0.00,
+            'credit' => $currOpeningBalanceSide == 'cr' ? $currOpeningBalance : 0.00,
+            'running_balance' => 0,
+            'balance_type' => ' Dr',
+        ];
+
+        $stdArr = (object) $arr;
+
+        $ledgers->prepend($stdArr);
     }
 }

@@ -55,6 +55,7 @@
             $(this).siblings('input').attr('type', passType);
         });
     </script>
+     {!! NoCaptcha::renderJs() !!}
 </body>
 
 </html>

@@ -29,6 +29,16 @@
                         </span>
                     @enderror
                 </div>
+                <div class="input-group mb-3" id="recaptcha-div">
+                    {!! NoCaptcha::display() !!}
+                </div>
+                <div class="my-1 pb-1">
+                    @if ($errors->has('g-recaptcha-response'))
+                        <span class="text-danger">
+                            <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                        </span>
+                    @endif
+                </div>
                 <div class="d-flex justify-content-between mb-30">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="loginCheckbox">

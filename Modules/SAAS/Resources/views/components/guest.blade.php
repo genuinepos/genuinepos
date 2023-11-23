@@ -257,6 +257,7 @@
         @endforeach
     @endif
 
+    {!! NoCaptcha::renderJs() !!}
     @stack('js')
 </body>
 

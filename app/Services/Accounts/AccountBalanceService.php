@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountBalanceService
 {
-    public function accountBalance(int $accountId, ?string $fromDate = null, ?string $toDate = null, mixed $branchId = null): array
+    public function accountBalance(int $accountId, string $fromDate = null, string $toDate = null, mixed $branchId = null): array
     {
         $account = DB::table('accounts')->where('accounts.id', $accountId)
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')
@@ -96,14 +96,14 @@ class AccountBalanceService
                 DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type != 0 then account_ledgers.debit end), 0) as curr_total_debit'),
                 DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type != 0 then account_ledgers.credit end), 0) as curr_total_credit'),
 
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 1 then account_ledgers.debit end), 0) as total_sale"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 2 then account_ledgers.credit end), 0) as total_sales_return"),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 1 then account_ledgers.debit end), 0) as total_sale'),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 2 then account_ledgers.credit end), 0) as total_sales_return'),
 
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 3 then account_ledgers.credit end), 0) as total_purchase"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 4 then account_ledgers.debit end), 0) as total_purchase_return"),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 3 then account_ledgers.credit end), 0) as total_purchase'),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 4 then account_ledgers.debit end), 0) as total_purchase_return'),
 
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 8 then account_ledgers.credit end), 0) as total_received"),
-                DB::raw("IFNULL(SUM(case when account_ledgers.voucher_type = 9 then account_ledgers.debit end), 0) as total_paid"),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 8 then account_ledgers.credit end), 0) as total_received'),
+                DB::raw('IFNULL(SUM(case when account_ledgers.voucher_type = 9 then account_ledgers.debit end), 0) as total_paid'),
             );
         }
 
@@ -139,10 +139,10 @@ class AccountBalanceService
         }
 
         $openingBalanceInFlatAmount = 0;
-        if($account->default_balance_type == 'dr'){
+        if ($account->default_balance_type == 'dr') {
 
             $openingBalanceInFlatAmount = $openingBalanceDebit - $openingBalanceCredit;
-        }else if($account->default_balance_type == 'cr'){
+        } elseif ($account->default_balance_type == 'cr') {
 
             $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
         }
@@ -163,19 +163,19 @@ class AccountBalanceService
         }
 
         $closingBalanceInFlatAmount = 0;
-        if($account->default_balance_type == 'dr'){
+        if ($account->default_balance_type == 'dr') {
 
             $closingBalanceInFlatAmount = $currTotalDebit - $currTotalCredit;
-        }else if($account->default_balance_type == 'cr'){
+        } elseif ($account->default_balance_type == 'cr') {
 
             $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
         }
 
         $totalReturn = 0;
-        if($account->default_balance_type == 'dr'){
+        if ($account->default_balance_type == 'dr') {
 
             $totalReturn = $totalSalesReturn - $totalPurchaseReturn;
-        }else if($account->default_balance_type == 'cr'){
+        } elseif ($account->default_balance_type == 'cr') {
 
             $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
         }
@@ -221,7 +221,7 @@ class AccountBalanceService
             'all_total_credit_string' => $allTotalCredit ? $converter::format_in_bdt($allTotalCredit) : 0.00,
             'closing_balance' => $closingBalance,
             'closing_balance_side' => $closingBalanceSide,
-            'closing_balance_string' => $converter::format_in_bdt($closingBalance) . ($closingBalanceSide == 'dr' ? ' Dr.' : ' Cr.'),
+            'closing_balance_string' => $converter::format_in_bdt($closingBalance).($closingBalanceSide == 'dr' ? ' Dr.' : ' Cr.'),
         ];
     }
 }

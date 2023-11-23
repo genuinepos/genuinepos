@@ -199,7 +199,7 @@ class UserController extends Controller
 
                 $addUser->role_type = 2;
                 $addUser->assignRole($role->name);
-                // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
+            // $addUser->branch_id = $request->branch_id == 'head_office' ? NULL : $request->branch_id;
             } else {
 
                 $addUser->branch_id = $request->branch_id == 'head_office' ? null : $request->branch_id;

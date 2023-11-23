@@ -16,7 +16,7 @@ class ManageCustomerService
             ->leftJoin('accounts', 'contacts.id', 'accounts.contact_id')
             ->where('contacts.type', ContactType::Customer->value);
 
-        if (!empty($request->branch_id)) {
+        if (! empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -48,20 +48,20 @@ class ManageCustomerService
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="'.route('contacts.manage.customer.manage', [$row->id]).'">'.__('Manage').'</a>';
 
-                $html .= '<a class="dropdown-item" id="money_receipts" href="' . route('contacts.money.receipts.index', [$row->id]) . '">' . __('Money Receipt Vouchers') . '</a>';
+                $html .= '<a class="dropdown-item" id="money_receipts" href="'.route('contacts.money.receipts.index', [$row->id]).'">'.__('Money Receipt Vouchers').'</a>';
 
                 if (auth()->user()->can('customer_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, ContactType::Customer->value]) . '" id="editContact">' . __('Edit') . '</a>';
+                    $html .= '<a class="dropdown-item" href="'.route('contacts.edit', [$row->id, ContactType::Customer->value]).'" id="editContact">'.__('Edit').'</a>';
                 }
 
                 if (auth()->user()->can('customer_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="'.route('contacts.delete', [$row->id]).'">'.__('Delete').'</a>';
                 }
 
                 $html .= '</div>';
@@ -127,14 +127,14 @@ class ManageCustomerService
                 if ($row->status == 1) {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
                     $html .= '</div>';
 
                     return $html;
                 } else {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;

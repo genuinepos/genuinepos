@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Accounts\BankController;
-use App\Http\Controllers\Accounts\ContraController;
+use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\AccountController;
+use App\Http\Controllers\Accounts\AccountGroupController;
+use App\Http\Controllers\Accounts\AccountLedgerController;
+use App\Http\Controllers\Accounts\BankController;
+use App\Http\Controllers\Accounts\CapitalAccountController;
+use App\Http\Controllers\Accounts\ContraController;
 use App\Http\Controllers\Accounts\DayBookController;
+use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 use App\Http\Controllers\Accounts\ExpenseController;
 use App\Http\Controllers\Accounts\PaymentController;
 use App\Http\Controllers\Accounts\ReceiptController;
-use App\Http\Controllers\Accounts\AccountGroupController;
-use App\Http\Controllers\Accounts\AccountLedgerController;
-use App\Http\Controllers\Accounts\AccountBalanceController;
-use App\Http\Controllers\Accounts\CapitalAccountController;
-use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'accounting'], function () {
 

@@ -2,17 +2,15 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Modules\SAAS\Utils\UrlGenerator;
 use Illuminate\Support\Facades\Redirect;
-use Modules\SAAS\Http\Requests\LoginRequest;
 use Illuminate\Validation\ValidationException;
+use Modules\SAAS\Http\Requests\LoginRequest;
+use Modules\SAAS\Utils\UrlGenerator;
 
 class LoginController extends Controller
 {
@@ -31,16 +29,17 @@ class LoginController extends Controller
             ]);
         }
 
-        if(isset($user->primary_tenant_id)) {
+        if (isset($user->primary_tenant_id)) {
             $redirectUrl = '/home';
             $tenant = \App\Models\Tenant::find($user->primary_tenant_id);
             $domain = UrlGenerator::generateFullUrlFromDomain($tenant->domains()?->first()?->domain);
             $token = tenancy()->impersonate($tenant, $tenant->impersonate_user, $redirectUrl);
-            if(isset($token) && isset($domain)) {
+            if (isset($token) && isset($domain)) {
                 return redirect("$domain/impersonate/{$token->token}");
             }
         } else {
             Auth::guard()->login($user);
+
             return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
         }
     }
@@ -50,6 +49,7 @@ class LoginController extends Controller
         Auth::guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->to(route('saas.welcome-page'));
     }
 }

@@ -34,8 +34,6 @@ use App\Http\Controllers\Report\SalePaymentReportController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 use App\Http\Controllers\Report\SaleReturnStatementController;
 use App\Http\Controllers\Report\SaleStatementController;
-use App\Http\Controllers\Report\StockInOutReportController;
-use App\Http\Controllers\Report\StockReportController;
 use App\Http\Controllers\Report\SupplierReportController;
 use App\Http\Controllers\Report\TaxReportController;
 use App\Http\Controllers\Report\UserActivityLogReportController;

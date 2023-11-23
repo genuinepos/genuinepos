@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
 use App\Services\Accounts\AccountGroupService;
 use App\Services\Accounts\CapitalAccountService;
+use Illuminate\Http\Request;
 
 class CapitalAccountController extends Controller
 {
@@ -18,7 +17,7 @@ class CapitalAccountController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('accounting_access')) {
+        if (! auth()->user()->can('accounting_access')) {
 
             abort(403, 'Access Forbidden.');
         }

@@ -8,6 +8,7 @@ class UrlGenerator
     {
         $protocol = request()->isSecure() ? 'https://' : 'http://';
         $domain = str_contains($domain, '.') ? $domain : $domain.'.'.config('app.domain');
+
         return $protocol.$domain;
     }
 }

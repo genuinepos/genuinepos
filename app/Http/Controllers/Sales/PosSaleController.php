@@ -2,44 +2,44 @@
 
 namespace App\Http\Controllers\Sales;
 
-use App\Enums\SaleStatus;
-use App\Enums\BooleanType;
-use Illuminate\Http\Request;
-use App\Enums\SaleScreenType;
-use App\Enums\IsDeleteInUpdate;
-use App\Enums\DayBookVoucherType;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Services\Sales\SaleService;
 use App\Enums\AccountingVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Sales\PosSaleService;
-use App\Services\Setups\BranchService;
 use App\Enums\AccountLedgerVoucherType;
+use App\Enums\BooleanType;
+use App\Enums\DayBookVoucherType;
+use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\Products\BrandService;
+use App\Enums\SaleScreenType;
+use App\Enums\SaleStatus;
+use App\Http\Controllers\Controller;
+use App\Interfaces\CodeGenerationServiceInterface;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Accounts\AccountLedgerService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Contacts\ContactService;
-use App\Services\Products\CategoryService;
-use App\Services\Sales\SaleProductService;
-use App\Services\Sales\CashRegisterService;
-use App\Services\Products\PriceGroupService;
 use App\Services\Contacts\RewardPointService;
+use App\Services\Products\BrandService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\ManagePriceGroupService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\UnitService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Sales\CashRegisterService;
+use App\Services\Sales\CashRegisterTransactionService;
+use App\Services\Sales\PosSaleService;
+use App\Services\Sales\SaleProductService;
+use App\Services\Sales\SaleService;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Products\ProductStockService;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountLedgerService;
-use App\Services\Products\ProductLedgerService;
-use App\Interfaces\CodeGenerationServiceInterface;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Sales\CashRegisterTransactionService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PosSaleController extends Controller
 {
@@ -75,7 +75,7 @@ class PosSaleController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('pos_all')) {
+        if (! auth()->user()->can('pos_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -97,7 +97,7 @@ class PosSaleController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('pos_add')) {
+        if (! auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -287,9 +287,9 @@ class PosSaleController extends Controller
 
             $customerRewardPointOnInvoice = $this->rewardPointService->calculateCustomerPoint(generalSettings: $generalSettings, totalAmount: $request->total_invoice_amount);
 
-            $this->contactService->updateRewardPoint(contactId: $sale?->customer?->contact_id, pointOnInvoice: $customerRewardPointOnInvoice, currentRedeemedPoint: (isset($request->pre_redeemed) ? (int)$request->pre_redeemed : 0));
+            $this->contactService->updateRewardPoint(contactId: $sale?->customer?->contact_id, pointOnInvoice: $customerRewardPointOnInvoice, currentRedeemedPoint: (isset($request->pre_redeemed) ? (int) $request->pre_redeemed : 0));
 
-            $this->saleService->updateInvoiceRewardPoint(sale: $sale, earnedPoint: $customerRewardPointOnInvoice, redeemedPoint: (isset($request->pre_redeemed) ? (int)$request->pre_redeemed : 0));
+            $this->saleService->updateInvoiceRewardPoint(sale: $sale, earnedPoint: $customerRewardPointOnInvoice, redeemedPoint: (isset($request->pre_redeemed) ? (int) $request->pre_redeemed : 0));
 
             $subjectType = '';
             if ($request->status == SaleStatus::Final->value) {
@@ -339,9 +339,9 @@ class PosSaleController extends Controller
         }
     }
 
-    function edit($id)
+    public function edit($id)
     {
-        if (!auth()->user()->can('pos_edit')) {
+        if (! auth()->user()->can('pos_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -582,7 +582,7 @@ class PosSaleController extends Controller
                 $this->accountingVoucherDescriptionReferenceService->invoiceOrVoucherDueAmountAutoDistribution(accountId: $request->customer_account_id, accountingVoucherType: AccountingVoucherType::Receipt->value, refIdColName: 'sale_id', sale: $adjustedSale);
             }
 
-            $pointCalculableTotalAmount = (int)($storedCurrTotalInvoiceAmount - $request->total_invoice_amount);
+            $pointCalculableTotalAmount = (int) ($storedCurrTotalInvoiceAmount - $request->total_invoice_amount);
 
             if ($pointCalculableTotalAmount != 0) {
 

@@ -78,7 +78,7 @@ class ContactService
         return $updateContact;
     }
 
-    public function updateRewardPoint(?int $contactId = null, int $pointOnInvoice = 0, int $currentRedeemedPoint = 0): void
+    public function updateRewardPoint(int $contactId = null, int $pointOnInvoice = 0, int $currentRedeemedPoint = 0): void
     {
         if (isset($contactId)) {
 

@@ -32,11 +32,10 @@
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">
                                                     @php
-                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                        $branchName = $branch->name;
                                                         $branchCode = '-' . $branch->branch_code;
                                                     @endphp
-                                                    {{ $branchName.$areaName.$branchCode }}
+                                                    {{ $branchName.$branchCode }}
                                                 </option>
                                             @endforeach
                                         </select>

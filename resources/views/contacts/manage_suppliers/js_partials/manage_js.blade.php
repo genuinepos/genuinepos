@@ -1,48 +1,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     //Get customer Ledgers by yajra data table
-    // var ledger_table = $('.ledger_table').DataTable({
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "searching" : false,
-    //     dom: "lBfrtip",
-    //     buttons: [
-    //         {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-    //         {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
-    //     ],
+    var accountLedgerTable = $('#ledger-table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "searching": false,
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
+            {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+        ],
+        "lengthMenu": [
+            [50, 100, 500, 1000, -1],
+            [50, 100, 500, 1000, "All"]
+        ],
+        "ajax": {
+            "url": "{{ route('accounts.ledger.index', [$contact?->account?->id]) }}",
+            "data": function(d) {
+                d.branch_id = $('#ledger_branch_id').val();
+                d.branch_name = $('#ledger_branch_id').find('option:selected').data('branch_name');
+                d.from_date = $('#ledger_from_date').val();
+                d.to_date = $('#ledger_to_date').val();
+                d.note = $('#ledger_note').val();
+                d.transaction_details = $('#ledger_transaction_details').val();
+                d.voucher_details = $('#ledger_voucher_details').val();
+                d.inventory_list = $('#ledger_inventory_list').val();
+            }
+        },
+        columns: [{ data: 'date', name: 'account_ledgers.date' },
+            { data: 'particulars', name: 'particulars' },
+            { data: 'voucher_type', name: 'voucher_no' },
+            { data: 'voucher_no', name: 'voucher_no' },
+            { data: 'debit', name: 'account_ledgers.debit', className: 'text-end' },
+            { data: 'credit', name: 'account_ledgers.credit', className: 'text-end' },
+            { data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end' },
+        ],
+        fnDrawCallback: function() {
 
-    //     "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-    //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-
-    //contacts.customer.ledger.list', $contact->id
-    //     "ajax": {
-    //         "url": "#",
-    //         "data": function(d) {
-    //             d.branch_id = $('#ledger_branch_id').val();
-    //             d.voucher_type = $('#ledger_voucher_type').val();
-    //             d.from_date = $('.from_date').val();
-    //             d.to_date = $('.to_date').val();
-    //         }
-    //     },
-
-    //     columns: [
-    //         {data: 'date', name: 'customer_ledgers.report_date'},
-    //         {data: 'particulars', name: 'particulars'},
-    //         {data: 'b_name', name: 'branches.name'},
-    //         {data: 'voucher_no', name: 'voucher_no'},
-    //         {data: 'debit', name: 'debit', className: 'text-end'},
-    //         {data: 'credit', name: 'credit', className: 'text-end'},
-    //         {data: 'running_balance', name: 'running_balance', className: 'text-end'},
-    //     ],fnDrawCallback: function() {
-
-    //         var debit = sum_table_col($('.data_tbl'), 'debit');
-    //         $('#debit').text(bdFormat(debit));
-
-    //         var credit = sum_table_col($('.data_tbl'), 'credit');
-    //         $('#credit').text(bdFormat(credit));
-    //         $('.data_preloader').hide();
-    //     }
-    // });
+            $('.data_preloader').hide();
+        }
+    });
 
     var purchasesTable = $('#purchases-table').DataTable({
         dom: "lBfrtip",
@@ -356,50 +353,46 @@
         to_date : null,
     };
 
-    //Submit filter form by select input changing
-    // $(document).on('submit', '#filter_customer_ledgers', function (e) {
-    //     e.preventDefault();
-    //     $('.data_preloader').show();
-    //     ledger_table.ajax.reload();
+    // Submit filter form by select input changing
+    $(document).on('submit', '#filter_supplier_ledgers', function (e) {
+        e.preventDefault();
+        $('.data_preloader').show();
+        accountLedgerTable.ajax.reload();
 
-    //     filterObj = {
-    //         branch_id : $('#ledger_branch_id').val(),
-    //         from_date : $('.from_date').val(),
-    //         to_date : $('.to_date').val(),
-    //     };
+        var filterObj = {
+            branch_id : $('#ledger_branch_id').val() ? $('#ledger_branch_id').val() : null,
+            from_date : $('#ledger_from_date').val() ? $('#ledger_from_date').val() : null,
+            to_date : $('#ledger_to_date').val() ? $('#ledger_to_date').val() : null,
+        };
 
-    //     var data = getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
-    // });
+        getAccountClosingBalance(filterObj, 'for_ledger', true);
+    });
 
      //Submit filter form by select input changing
     $(document).on('submit', '#filter_sales', function (e) {
         e.preventDefault();
 
         $('.data_preloader').show();
-        salesTable.ajax.reload();
-
-        filterObj = {
+        var filterObj = {
             branch_id : $('#sales_branch_id').val(),
             from_date : $('#sale_from_date').val(),
             to_date : $('#sales_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_sales', false);
     });
 
     $(document).on('submit', '#filter_sales_order', function (e) {
         e.preventDefault();
 
         $('.data_preloader').show();
-        salesOrderTable.ajax.reload();
-
-        filterObj = {
+        var filterObj = {
             branch_id : $('#sales_order_branch_id').val(),
             from_date : $('#sales_order_from_date').val(),
             to_date : $('#sales_order_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_sales_order', false);
     });
 
     $(document).on('submit', '#filter_purchases', function (e) {
@@ -408,28 +401,28 @@
         $('.data_preloader').show();
         purchasesTable.ajax.reload();
 
-        filterObj = {
+        var filterObj = {
             branch_id : $('#purchases_branch_id').val(),
             from_date : $('#purchases_from_date').val(),
             to_date : $('#purchases_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_purchases', false);
     });
 
     $(document).on('submit', '#filter_purchase_orders', function (e) {
         e.preventDefault();
 
         $('.data_preloader').show();
-        purchaseOrdersTable.ajax.reload();
+        purchaseOrderstable.ajax.reload();
 
-        filterObj = {
+        var filterObj = {
             branch_id : $('#purchase_orders_branch_id').val(),
             from_date : $('#purchase_orders_from_date').val(),
             to_date : $('#purchase_orders_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_purchase_orders', false);
     });
 
     $(document).on('submit', '#filter_receipts', function (e) {
@@ -438,13 +431,13 @@
         $('.data_preloader').show();
         receiptTable.ajax.reload();
 
-        filterObj = {
+        var filterObj = {
             branch_id : $('#receipts_branch_id').val(),
             from_date : $('#receipts_from_date').val(),
             to_date : $('#receipts_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_receipts', false);
     });
 
     $(document).on('submit', '#filter_payments', function (e) {
@@ -453,30 +446,14 @@
         $('.data_preloader').show();
         paymentTable.ajax.reload();
 
-        filterObj = {
+        var filterObj = {
             branch_id : $('#payments_branch_id').val(),
             from_date : $('#payments_from_date').val(),
             to_date : $('#payments_to_date').val(),
         };
 
-        // var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+        getAccountClosingBalance(filterObj, 'for_payments', false);
     });
-
-    //Submit filter form by select input changing
-    // $(document).on('submit', '#filter_customer_payments', function (e) {
-    //     e.preventDefault();
-
-    //     $('.data_preloader').show();
-    //     payments_table.ajax.reload();
-
-    //     filterObj = {
-    //         branch_id : $('#payment_branch_id').val(),
-    //         from_date : $('#payment_from_date').val(),
-    //         to_date : $('#payment_to_date').val(),
-    //     };
-
-    //     var data = getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
-    // });
 
     $(document).on('click', '#tab_btn', function(e) {
         e.preventDefault();
@@ -487,64 +464,57 @@
         $('.' + show_content).show();
         $(this).addClass('tab_active');
     });
+</script>
 
-    // $(document).on('click', '#delete',function(e){
-    //     e.preventDefault();
+<script>
 
-    //     var url = $(this).attr('href');
-    //     $('#deleted_form').attr('action', url);
+    function getAccountClosingBalance(filterObj, parentDiv, changeLedgerTableCurrentTotal = false) {
 
-    //     $.confirm({
-    //         'title': 'Confirmation',
-    //         'message': 'Are you sure?',
-    //         'buttons': {
-    //             'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-    //             'No': {'class': 'no btn-modal-primary','action': function() { console.log('Deleted canceled.');}}
-    //         }
-    //     });
-    // });
+        var url = "{{ route('accounts.balance', $contact?->account?->id) }}";
 
-    //data delete by ajax
-    // $(document).on('submit', '#deleted_form',function(e){
-    //     e.preventDefault();
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
 
-    //     var url = $(this).attr('action');
-    //     var request = $(this).serialize();
-    //     $.ajax({
-    //         url:url,
-    //         type:'post',
-    //         data:request,
-    //         success:function(data){
+                if (parentDiv) {
 
-    //              $('.data_tbl').DataTable().ajax.reload();
-    //             toastr.error(data);
+                    $('#' + parentDiv + ' .opening_balance').html(data.opening_balance_in_flat_amount_string);
+                    $('#' + parentDiv + ' .total_sale').html(data.total_sale_string);
+                    $('#' + parentDiv + ' .total_purchase').html(data.total_purchase_string);
+                    $('#' + parentDiv + ' .total_return').html(data.total_return_string);
+                    $('#' + parentDiv + ' .total_received').html(data.total_received_string);
+                    $('#' + parentDiv + ' .total_paid').html(data.total_paid_string);
+                    $('#' + parentDiv + ' .closing_balance').html(data.closing_balance_in_flat_amount_string);
+                }else {
 
-    //             var filterObj = {
-    //                 branch_id : $('#sale_branch_id').val(),
-    //                 from_date : $('#from_sale_date').val(),
-    //                 to_date : $('#to_sale_date').val(),
-    //             };
+                    $('.opening_balance').html(data.opening_balance_in_flat_amount_string);
+                    $('.total_sale').html(data.total_sale_string);
+                    $('.total_purchase').html(data.total_purchase_string);
+                    $('.total_return').html(data.total_return_string);
+                    $('.total_received').html(data.total_received_string);
+                    $('.total_paid').html(data.total_paid_string);
+                    $('.closing_balance').html(data.closing_balance_in_flat_amount_string);
+                }
 
-    //             getCustomerAmountsBranchWise(filterObj, 'sales_', false);
+                if (changeLedgerTableCurrentTotal == true) {
 
-    //             filterObj = {
-    //                 branch_id : $('#payment_branch_id').val(),
-    //                 from_date : $('#payment_from_date').val(),
-    //                 to_date : $('#payment_to_date').val(),
-    //             };
+                    $('#ledger_table_total_debit').html(data.all_total_debit_string);
+                    $('#ledger_table_total_credit').html(data.all_total_debit_string);
+                    $('#ledger_table_current_balance').html(data.closing_balance_string);
+                }
 
-    //             getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
+            }
+        });
+    }
 
-    //             filterObj = {
-    //                 branch_id : $('#ledger_branch_id').val(),
-    //                 from_date : $('.from_date').val(),
-    //                 to_date : $('.to_date').val(),
-    //             };
-
-    //             getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
-    //         }
-    //     });
-    // });
+    var filterObj = {
+        branch_id : null,
+        from_date : null,
+        to_date : null,
+    };
+    getAccountClosingBalance(filterObj, '', true);
 </script>
 
 <script type="text/javascript">
@@ -571,6 +541,8 @@
         });
     }
 
+    litepicker('ledger_from_date');
+    litepicker('ledger_to_date');
     litepicker('sales_from_date');
     litepicker('sales_to_date');
     litepicker('sales_order_from_date');
@@ -583,37 +555,6 @@
     litepicker('payments_to_date');
     litepicker('receipts_from_date');
     litepicker('receipts_to_date');
-</script>
-
-<script>
-
-//    function getCustomerAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
-
-//contacts.customer.amounts.branch.wise', $contact->id
-//         $.ajax({
-//            url :"#",
-//             type :'get',
-//             data : filterObj,
-//             success:function(data){
-//                 var keys = Object.keys(data);
-
-//                 keys.forEach(function (val) {
-
-//                     if (is_show_all) {
-
-//                         $('.'+val).html(bdFormat(data[val]));
-//                     }else {
-
-//                         $('#'+showPrefix+val).html(bdFormat(data[val]));
-//                     }
-//                 });
-
-//                 $('#card_total_due').val(data['total_sale_due']);
-//             }
-//         });
-//     }
-
-//     getCustomerAmountsBranchWise(filterObj);
 </script>
 
 <script>
@@ -929,6 +870,50 @@
             }
         });
     });
+
+    $(document).on('click', '#printLedger', function(e) {
+        e.preventDefault();
+
+        var url = "{{ route('accounts.ledger.print', [$contact?->account?->id]) }}";
+
+        var branch_id = $('#ledger_branch_id').val();
+        var branch_name = $('#ledger_branch_id').find('option:selected').data('branch_name');
+        var from_date = $('#ledger_from_date').val();
+        var to_date = $('#ledger_to_date').val();
+        var note = $('#ledger_note').val();
+        var transaction_details = $('#ledger_transaction_details').val();
+        var voucher_details = $('#ledger_voucher_details').val();
+        var inventory_list = $('#ledger_inventory_list').val();
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                branch_id,
+                branch_name,
+                from_date,
+                to_date,
+                note,
+                transaction_details,
+                voucher_details,
+                inventory_list
+            },
+            success: function(data) {
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 500,
+                    header: "",
+                    pageTitle: "",
+                    // footer: 'Footer Text',
+                });
+            }
+        });
+    });
 </script>
 
 <script>
@@ -1085,18 +1070,70 @@
         });
     });
 
+    function reloadAllAccountSummaryArea() {
+
+        var summeryReloaderDatas = [
+            {
+                filterDatePrefix : 'ledger_',
+                filterSummerParentDiv : 'for_ledger',
+                changeLedgerTableCurrentTotal : true,
+            },
+            {
+                filterDatePrefix : 'sales_',
+                filterSummerParentDiv : 'for_sales',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'sales_order_',
+                filterSummerParentDiv : 'for_sales_order',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'purchases_',
+                filterSummerParentDiv : 'for_purchases',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'purchases_orders_',
+                filterSummerParentDiv : 'for_purchase_orders',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'receipts_',
+                filterSummerParentDiv : 'for_receipts',
+                changeLedgerTableCurrentTotal : false,
+            },
+            {
+                filterDatePrefix : 'payments_',
+                filterSummerParentDiv : 'for_payments',
+                changeLedgerTableCurrentTotal : false,
+            },
+        ];
+
+        summeryReloaderDatas.forEach(function (element) {
+            var filterObj = {
+                branch_id : $('#'+element.filterDatePrefix+'branch_id').val(),
+                from_date : $('#'+element.filterDatePrefix+'from_date').val(),
+                to_date : $('#'+element.filterDatePrefix+'to_date').val(),
+            };
+
+            getAccountClosingBalance(filterObj, element.filterSummerParentDiv, element.changeLedgerTableCurrentTotal);
+        });
+    }
+
+    var tableId = '';
     $(document).on('click', '#delete',function(e){
 
         e.preventDefault();
-
         var url = $(this).attr('href');
         $('#deleted_form').attr('action', url);
+        tableId = $(this).closest('tr').closest('table').attr('id');
         $.confirm({
             'title': 'Confirmation',
             'content': 'Are you sure?',
             'buttons': {
-                'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                'Yes': {'class': 'yes btn-modal-primary', 'action': function() {$('#deleted_form').submit();}},
+                'No': {'class': 'no btn-danger', 'action': function() {console.log('Deleted canceled.');}}
             }
         });
     });
@@ -1110,7 +1147,7 @@
             url:url,
             type:'post',
             data:request,
-            success:function(data) {
+            success:function(data){
 
                 if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -1120,6 +1157,8 @@
 
                 toastr.error(data);
                 $('.common-reloader').DataTable().ajax.reload();
+
+                reloadAllAccountSummaryArea();
             },error: function(err) {
 
                 if (err.status == 0) {

@@ -27,8 +27,7 @@ class ManageCustomerController extends Controller
         $branches = '';
         if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
 
-            $branches = $this->branchService->branches(with: ['parentBranch'])
-                ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+            $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         }
 
         return view('contacts.manage_customers.index', compact('branches'));

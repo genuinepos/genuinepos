@@ -144,7 +144,6 @@ class AccountBalanceService
             $openingBalanceInFlatAmount = $openingBalanceDebit - $openingBalanceCredit;
         } else if ($account->default_balance_type == 'cr') {
 
-
             $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
         }
 

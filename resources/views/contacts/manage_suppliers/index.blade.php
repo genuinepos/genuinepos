@@ -82,6 +82,7 @@
                                     <th>{{ __("Phone") }}</th>
                                     <th>{{ __("Opening Balance") }}</th>
                                     <th>{{ __("Total Purchase") }}</th>
+                                    <th>{{ __("Total Sale") }}</th>
                                     <th>{{ __("Total Return") }}</th>
                                     <th>{{ __("Total Paid") }}</th>
                                     <th>{{ __("Total Received") }}</th>
@@ -95,6 +96,7 @@
                                     <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
+                                    <th id="total_sale" class="text-white text-end"></th>
                                     <th id="total_return" class="text-white text-end"></th>
                                     <th id="total_paid" class="text-white text-end"></th>
                                     <th id="total_received" class="text-white text-end"></th>
@@ -147,6 +149,7 @@
                 {data: 'phone',name: 'contacts.phone'},
                 {data: 'opening_balance', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_purchase', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'total_sale', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_return', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_paid', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_received', name: 'contacts.business_name', className: 'text-end fw-bold'},
@@ -159,6 +162,9 @@
 
                 var total_purchase = sum_table_col($('.data_tbl'), 'total_purchase');
                 $('#total_purchase').text(bdFormat(total_purchase));
+
+                var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
+                $('#total_sale').text(bdFormat(total_sale));
 
                 var total_return = sum_table_col($('.data_tbl'), 'total_return');
                 $('#total_return').text(bdFormat(total_return));

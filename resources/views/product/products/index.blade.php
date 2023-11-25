@@ -115,7 +115,7 @@
                                 @if(auth()->user()->can('product_add'))
 
                                     <div class="col-md-8 d-flex flex-wrap justify-content-end gap-2">
-                                        <a href="{{ route('products.add.view') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add Product") }}</a>
+                                        <a href="{{ route('products.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add Product") }}</a>
 
                                         @if (auth()->user()->can('product_delete'))
 

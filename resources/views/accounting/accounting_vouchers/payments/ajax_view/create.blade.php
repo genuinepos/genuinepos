@@ -105,8 +105,8 @@
                                         </tr>
 
                                         <tr>
-                                            <td class="text-end fw-bold">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end fw-bold">{{ $amounts['closing_balance_in_flat_amount_string'] }}</td>
+                                            <td class="text-end fw-bold text-danger">{{ __("Current Balance") }} :</td>
+                                            <td class="text-end fw-bold text-danger">{{ $amounts['closing_balance_in_flat_amount_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

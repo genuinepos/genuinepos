@@ -368,7 +368,7 @@
 @endif
 
 <script>
-    new Litepicker({
+    var picker = new Litepicker({
         singleMode: true,
         element: document.getElementById('payment_date'),
         dropdowns: {
@@ -385,5 +385,12 @@
             return totalDays - 1;
         },
         format: 'DD-MM-YYYY'
+    });
+
+    $(document).on('change keypress', '#payment_date', function(e) {
+
+        if (e.which == 13) {
+            picker.hide()
+        }
     });
 </script>

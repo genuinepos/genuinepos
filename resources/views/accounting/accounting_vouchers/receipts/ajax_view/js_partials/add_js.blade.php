@@ -370,7 +370,7 @@
             $('#closing_balance_string').val(parseFloat(0).toFixed(2));
             $('#closing_balance_flat_amount').val(parseFloat(0).toFixed(2));
             $('#default_balance_type').val('dr');
-            
+
             var accountId = event.value;
             if (accountId == '') {
 
@@ -411,7 +411,7 @@
 @endif
 
 <script>
-    new Litepicker({
+    var picker = new Litepicker({
         singleMode: true,
         element: document.getElementById('receipt_date'),
         dropdowns: {
@@ -430,5 +430,10 @@
         format: 'DD-MM-YYYY'
     });
 
+    $(document).on('change keypress', '#payment_date', function(e) {
 
+        if (e.which == 13) {
+            picker.hide()
+        }
+    });
 </script>

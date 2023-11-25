@@ -24,7 +24,7 @@ class ManageCustomerController extends Controller
             return $this->manageCustomerService->customerListTable($request);
         }
 
-        $branches = '';
+        $branches = [];
         if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
 
             $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();

@@ -9,7 +9,7 @@ class MoneyReceiptService
     public function addMoneyReceipt($contactId, $request, $codeGenerator)
     {
 
-        $voucherPrefix = auth()?->user()?->branch ? auth()?->user()?->branch->branch_code : 'MB';
+        $voucherPrefix = auth()?->user()?->branch ? auth()?->user()?->branch->branch_code : 'MR';
 
         $voucherNo = $codeGenerator->generateMonthWise(table: 'money_receipts', column: 'voucher_no', prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()?->user()?->branch_id);
 
@@ -51,7 +51,6 @@ class MoneyReceiptService
 
     public function deleteMoneyReceipt($receiptId)
     {
-
         $delete = MoneyReceipt::find($receiptId);
 
         if (! is_null($delete)) {

@@ -22,10 +22,31 @@
                 </div>
             </div>
 
+            @php
+                 $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+                $amounts = $accountBalanceService->accountBalance(accountId: $moneyReceipt?->contact?->account?->id, fromDate: null, toDate: null, branchId: null);
+            @endphp
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="payment_top_card">
                         <table class="table table-sm display modal-table">
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Shop") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> :
+                                    @if ($moneyReceipt?->contact?->account?->branch)
+                                        {{ $moneyReceipt?->contact?->account?->branch?->name }}
+                                    @else
+                                        {{ $generalSettings['business__shop_name'] }}
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Customer") }}</th>
+                                <td class="text-start" style="font-size:11px!important"> : {{ $moneyReceipt?->contact?->name }}</td>
+                            </tr>
+
                             <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Customer") }}</th>
                                 <td class="text-start" style="font-size:11px!important"> : {{ $moneyReceipt?->contact?->name }}</td>
@@ -48,33 +69,38 @@
                     <div class="payment_top_card">
                         <table class="table table-sm display modal-table">
                             <tr>
+                                <th class="text-start" style="font-size:11px!important">{{ __("Opening Balance") }}</th>
+                                <td class="text-start fw-bold" style="font-size:11px!important"> : {{ $amounts['opening_balance_in_flat_amount_string'] }}</td>
+                            </tr>
+
+                            <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Total Sale") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <td class="text-start fw-bold" style="font-size:11px!important"> : {{ $amounts['total_sale_string'] }}</td>
                             </tr>
 
                             <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Total Purchase") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <td class="text-start fw-bold" style="font-size:11px!important"> : {{ $amounts['total_purchase_string'] }}</td>
                             </tr>
 
                             <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Total Return") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <td class="text-start fw-bold" style="font-size:11px!important"> : {{ $amounts['total_return_string'] }}</td>
                             </tr>
 
                             <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Total Received") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <td class="text-start fw-bold text-success" style="font-size:11px!important"> : {{ $amounts['total_received_string'] }}</td>
                             </tr>
 
                             <tr>
                                 <th class="text-start" style="font-size:11px!important">{{ __("Total Paid") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <td class="text-start fw-bold text-danger" style="font-size:11px!important"> : {{ $amounts['total_paid_string'] }}</td>
                             </tr>
 
                             <tr>
-                                <th class="text-start" style="font-size:11px!important">{{ __("Curr. Balance") }}</th>
-                                <td class="text-start" style="font-size:11px!important"> : 0.00</td>
+                                <th class="text-start text-danger" style="font-size:11px!important">{{ __("Curr. Balance") }}</th>
+                                <td class="text-start fw-bold text-danger" style="font-size:11px!important"> : {{ $amounts['closing_balance_in_flat_amount_string'] }}</td>
                             </tr>
                         </table>
                     </div>

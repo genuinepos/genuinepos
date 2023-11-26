@@ -19,24 +19,31 @@ class MoneyReceiptController extends Controller
 
     public function index($contactId)
     {
-        $contact = $this->contactService->singleContact(id: $contactId, with: ['moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch']);
+        if (!auth()->user()->can('money_receipt_index')) {
+            abort(403, 'Access Forbidden.');
+        }
 
+        $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
         return view('contacts.money_receipts.index', compact('contact'));
     }
 
     public function create($contactId)
     {
-        $contact = $this->contactService->singleContact(id: $contactId);
+        if (!auth()->user()->can('money_receipt_add')) {
+            abort(403, 'Access Forbidden.');
+        }
 
+        $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
         return view('contacts.money_receipts.create', compact('contact'));
     }
 
     public function store(Request $request, $contactId, CodeGenerationServiceInterface $codeGenerator)
     {
-        $this->validate(
-            $request,
-            ['date' => 'required|date']
-        );
+        if (!auth()->user()->can('money_receipt_add')) {
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->validate($request, ['date' => 'required|date']);
 
         try {
 
@@ -56,11 +63,15 @@ class MoneyReceiptController extends Controller
 
     public function edit($receiptId)
     {
+        if (!auth()->user()->can('money_receipt_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
 
             DB::beginTransaction();
 
-            $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
+            $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'contact.account', 'contact.account.branch']);
 
             DB::commit();
         } catch (Exception $e) {
@@ -73,10 +84,11 @@ class MoneyReceiptController extends Controller
 
     public function update(Request $request, $receiptId)
     {
-        $this->validate(
-            $request,
-            ['date' => 'required|date']
-        );
+        if (!auth()->user()->can('money_receipt_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+        
+        $this->validate($request, ['date' => 'required|date']);
 
         $updateMoneyReceipt = $this->moneyReceiptService->updateMoneyReceipt(moneyReceiptId: $receiptId, request: $request);
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
@@ -86,6 +98,10 @@ class MoneyReceiptController extends Controller
 
     public function delete($receiptId)
     {
+        if (!auth()->user()->can('money_receipt_delete')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
 
             DB::beginTransaction();

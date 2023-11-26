@@ -127,7 +127,10 @@ class ManageCustomerService
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
 
-                $html .= '<a class="dropdown-item" id="money_receipts" href="' . route('contacts.money.receipts.index', [$row->id]) . '">' . __('Money Receipt Vouchers') . '</a>';
+                if (auth()->user()->can('money_receipt_index')) {
+
+                    $html .= '<a class="dropdown-item" id="money_receipts" href="' . route('contacts.money.receipts.index', [$row->id]) . '">' . __('Money Receipt Vouchers') . '</a>';
+                }
 
                 if (auth()->user()->can('customer_edit')) {
 
@@ -201,7 +204,7 @@ class ManageCustomerService
             ->editColumn('total_received', function ($row) {
 
                 $totalReceived = $row->total_received;
-                return '<span class="total_paid" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
+                return '<span class="total_received" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) {

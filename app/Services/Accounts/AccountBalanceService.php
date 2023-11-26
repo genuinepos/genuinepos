@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class AccountBalanceService
 {
-    public function accountBalance(int $accountId, string $fromDate = null, string $toDate = null, mixed $branchId = null): array
+    public function accountBalance(?int $accountId, string $fromDate = null, string $toDate = null, mixed $branchId = null): array
     {
         $account = DB::table('accounts')->where('accounts.id', $accountId)
             ->leftJoin('contacts', 'accounts.contact_id', 'contacts.id')

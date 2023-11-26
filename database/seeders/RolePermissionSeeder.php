@@ -335,6 +335,11 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '234', 'name' => 'purchased_product_list'],
             ['id' => '235', 'name' => 'stock_adjustment_product_report'],
+
+            ['id' => '236', 'name' => 'money_receipt_index'],
+            ['id' => '237', 'name' => 'money_receipt_add'],
+            ['id' => '238', 'name' => 'money_receipt_edit'],
+            ['id' => '239', 'name' => 'money_receipt_delete'],
         ];
 
         return $permissions;

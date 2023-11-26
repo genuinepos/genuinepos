@@ -206,7 +206,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
@@ -216,7 +216,7 @@
                 </div>
 
                 <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">@lang('menu.print_time') : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">{{ __("Print Time") }} : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>
@@ -239,5 +239,5 @@
           str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
           return str;
     }
-    document.getElementById('inWord').innerHTML = inWords(parseInt("{{ $moneyReceipt->amount }}"));
+    document.getElementById('inWord').innerHTML = inWords(parseInt("{{ $moneyReceipt->amount ? $moneyReceipt->amount : 0 }}"));
   </script>

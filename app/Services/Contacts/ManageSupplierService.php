@@ -9,16 +9,16 @@ class ManageSupplierService
 {
     public function supplierListTable($request)
     {
+        $branchId = $request->branch_id ? $request->branch_id : null;
+        $__branchId = $branchId == 'NULL' ? null : $branchId;
         $sumQueryBranchId = null;
-        if (!empty($request->branch_id)) {
 
-            if ($request->branch_id == 'NULL') {
+        if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
 
-                $sumQueryBranchId = null;
-            } else {
+            $sumQueryBranchId = $__branchId ? $__branchId : null;
+        }else {
 
-                $sumQueryBranchId = $request->branch_id;
-            }
+            $sumQueryBranchId = auth()->user()->branch_id;
         }
 
         $suppliers = DB::table('contacts')
@@ -133,8 +133,7 @@ class ManageSupplierService
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.supplier.manage', [$row->id]) . '">' . __('Manage') . '</a>';
 
                 if (auth()->user()->can('supplier_edit')) {
@@ -151,14 +150,6 @@ class ManageSupplierService
                 $html .= '</div>';
 
                 return $html;
-            })
-
-            ->editColumn('opening_balance', function ($row) {
-
-                // $openingBalance = $branchWiseCustomerAmountUtil->branchWiseCustomerAmount($row->id, $request->branch_id)['opening_balance'];
-                // return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
-
-                return 0;
             })
 
             ->editColumn('opening_balance', function ($row) {
@@ -210,7 +201,7 @@ class ManageSupplierService
             ->editColumn('total_received', function ($row) {
 
                 $totalReceived = $row->total_received;
-                return '<span class="total_paid" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
+                return '<span class="total_received" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) {

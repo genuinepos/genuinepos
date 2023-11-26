@@ -117,6 +117,11 @@
                     @method('DELETE')
                     @csrf
                 </form>
+
+                <form id="delete_money_receipt_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -359,92 +364,8 @@
                 });
             });
 
-            $(document).on('click', '#add_monery_receipt', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#moneyReciptAddOrEditModal').html(data);
-                        $('#moneyReciptAddOrEditModal').modal('show');
-
-                        setTimeout(function(){
-
-                            $('#mr_amount').focus();
-                        }, 500);
-                    }, error: function(err) {
-
-                        $('.data_preloader').hide();
-                        if (err.status == 0) {
-
-                            toastr.error('Net Connetion Error. Reload This Page.');
-                            return;
-                        }else if (err.status == 500) {
-
-                            toastr.error('Server Error. Please contact to the support team.');
-                            return;
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '#edit_money_receipt', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    success: function(data) {
-
-                        $('#moneyReciptAddOrEditModal').html(data);
-                        $('#moneyReciptAddOrEditModal').modal('show');
-
-                        setTimeout(function(){
-
-                            $('#mr_amount').focus().select();
-                        }, 500);
-                    }, error: function(err) {
-
-                        $('.data_preloader').hide();
-                        if (err.status == 0) {
-
-                            toastr.error('Net Connetion Error. Reload This Page.');
-                            return;
-                        }else if (err.status == 500) {
-
-                            toastr.error('Server Error. Please contact to the support team.');
-                            return;
-                        }
-                    }
-                });
-            });
-
-            $(document).on('click', '#delete_receipt',function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-                var tr = $(this).closest('tr');
-
-                $('#receipt_deleted_form').attr('action', url);
-
-                $.confirm({
-                    'title': 'Confirmation',
-                    'content': 'Are you sure?',
-                    'buttons': {
-                        'Yes': {'class': 'yes btn-danger', 'action': function() {$('#receipt_deleted_form').submit();tr.remove();}},
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
-                    }
-                });
-            });
-
             //data delete by ajax
-            $(document).on('submit', '#receipt_deleted_form', function(e) {
+            $(document).on('submit', '#delete_money_receipt_form', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('action');
                 var request = $(this).serialize();
@@ -456,13 +377,35 @@
                     data: request,
                     success: function(data) {
 
+                        if(!$.isEmptyObject(data.errorMsg)){
+
+                            toastr.error(data.errorMsg);
+                            return;
+                        }
+
                         toastr.error(data);
-                        $('#receipt_deleted_form')[0].reset();
+                        $('#delete_money_receipt_form')[0].reset();
+
+                        if (deleteAbleMoneryReceiptVoucherTr) {
+
+                            deleteAbleMoneryReceiptVoucherTr.remove();
+                        }
+                    }, error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            return;
+                        }else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                            return;
+                        }
                     }
                 });
             });
 
-             // Show sweet alert for delete
+            // Show sweet alert for delete
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
@@ -483,29 +426,6 @@
                         },
 
                         'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
-                    }
-                });
-            });
-
-            $(document).on('click', '#print_money_receipt', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url: url,
-                    type: 'get',
-                    dataType: 'html',
-                    success: function(data) {
-
-                        $(data).printThis({
-                            debug: false,
-                            importCSS: true,
-                            importStyle: true,
-                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                            removeInline: false,
-                            printDelay: 500,
-                            header: null,
-                        });
-                        return;
                     }
                 });
             });

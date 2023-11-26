@@ -72,9 +72,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
                                     <div class="head addr-t">
-                                        {{-- <h2>
-                                            Genuine Point Of Sale
-                                        </h2> --}}
+
                                         <div class="px-2">
                                             <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">

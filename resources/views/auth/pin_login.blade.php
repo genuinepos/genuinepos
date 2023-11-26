@@ -64,9 +64,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
                                     <div class="head addr-t pt-4">
-                                        {{-- <h2>
-                                            Genuine Point Of Sale
-                                        </h2> --}}
+
                                         <div class="px-2">
                                             <p class="logo-main-sec"><img
                                                     src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"

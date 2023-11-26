@@ -20,6 +20,21 @@
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
+        @php
+
+            $voucherDebitDescription = $payment->voucherDebitDescription;
+            $debitAccount = $payment->voucherDebitDescription->account;
+            $voucherDebitDescriptionReferences = $payment->voucherDebitDescription->references()->orderBy('id', 'asc')->get();
+            $voucherCreditDescription = $payment->voucherCreditDescription;
+
+
+            $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+
+            $branchId = $payment->branch_id == null ? 'NULL' : $payment->branch_id;
+            $__branchId = $debitAccount->group?->sub_sub_group_number == 6 ? $branchId : '';
+            $amounts = $accountBalanceService->accountBalance(accountId: $debitAccount->id, fromDate: null, toDate: null, branchId: $__branchId);
+        @endphp
+
         <div class="modal-body">
             @if ($account)
                 <div class="info_area mb-1">
@@ -30,7 +45,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="fw-bold text-end">{{ __("Pay To") }} :</td>
-                                            <td class="text-end">{{ $account->name }}</td>
+                                            <td class="text-end">{{ $account->name }} | (<span class="fw-bold">{{ $account?->group?->name }}</span>)</td>
                                         </tr>
 
                                         <tr>
@@ -45,7 +60,35 @@
 
                                         <tr>
                                             <td class="fw-bold text-end">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['closing_balance_string'] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4" style="border-right:1px solid #000;">
+                            <div class="top_card">
+                                <table class="w-100">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-end fw-bold">{{ __("Opening Balance") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['opening_balance_in_flat_amount_string'] }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-end fw-bold">{{ __("Total Purchase") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_purchase_string'] }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-end fw-bold">{{ __("Total Sale") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_sale_string'] }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-end fw-bold">{{ __("Total Return") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_return_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -57,43 +100,18 @@
                                 <table class="w-100">
                                     <tbody>
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Opening Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Purchase") }} :</td>
-                                            <td class="text-end">0.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Sale") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Paid") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_paid_string'] }}</td>
                                         </tr>
 
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Return") }} :</td>
-                                            <td class="text-end">0.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="top_card">
-                                <table class="w-100">
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Paid") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ __("Total Received") }} :</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_received_string'] }}</td>
                                         </tr>
 
                                         <tr>
-                                            <td class="fw-bold text-end">{{ __("Total Received") }} :</td>
-                                            <td class="text-end">0.00</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="fw-bold text-end">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold text-danger">{{ __("Current Balance") }} :</td>
+                                            <td class="text-end fw-bold text-danger">{{ $amounts['closing_balance_in_flat_amount_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -103,14 +121,9 @@
                 </div>
             @endif
 
-            @php
-                $voucherDebitDescription = $payment->voucherDebitDescription;
-                $voucherDebitDescriptionReferences = $payment->voucherDebitDescription->references()->orderBy('id', 'asc')->get();
-                $voucherCreditDescription = $payment->voucherCreditDescription;
-            @endphp
-
             <form id="edit_payment_form" action="{{ route('payments.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" id="current_paid_amount" value="{{ $payment->total_amount }}">
                 <div class="form-group row">
                     <div class="col-md-4">
                         <div class="row" style="border-right:1px solid black;">
@@ -133,8 +146,9 @@
                                             @php
                                                 $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
                                                 $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
+                                                $groupName = ' | ' . $ac?->group?->name;
                                             @endphp
-                                            {{ $ac->name . $acNo . $bank }}
+                                            {{ $ac->name . $acNo . $bank . $groupName }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -184,7 +198,7 @@
                             @if ($account)
                                 <div class="col-md-12">
                                     <label class="fw-bold">{{ __("Debit A/c") }}</label>
-                                    <input readonly class="form-control fw-bold" value="Business Customer">
+                                    <input readonly class="form-control fw-bold" value="{{ $account->name }}">
                                     <input type="hidden" name="debit_account_id" value="{{ $account->id }}">
                                 </div>
                             @else
@@ -195,8 +209,10 @@
                                         @foreach ($payableAccounts as $payableAccount)
                                             @php
                                                 $phoneNo = $payableAccount->phone ?  '/' . $payableAccount->phone : '';
+                                                $groupName = ' | '. $payableAccount->group_name;
+                                                $subSubGroupNumber = $payableAccount->sub_sub_group_number;
                                             @endphp
-                                            <option {{ $voucherDebitDescription->account_id == $payableAccount->id ? 'SELECTED' : '' }} value="{{ $payableAccount->id }}">{{ $payableAccount->name . $phoneNo }}</option>
+                                            <option data-sub_sub_group_number="{{ $subSubGroupNumber }}" {{ $voucherDebitDescription->account_id == $payableAccount->id ? 'SELECTED' : '' }} value="{{ $payableAccount->id }}">{{ $payableAccount->name . $phoneNo . $groupName }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -204,7 +220,20 @@
 
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Pay Amount") }}</label>
-                                <input required type="number" step="any" name="paying_amount" class="form-control fw-bold" id="payment_paying_amount" data-next="save_changes"  value="{{ $payment->total_amount }}" placeholder="{{ __("Pay Amount") }}">
+                                <div class="input-group">
+                                    <input required oninput="calculateCurrentBalance(); return false;" type="number" step="any" name="paying_amount" class="form-control fw-bold w-75" id="payment_paying_amount" data-next="save_changes"  value="{{ $payment->total_amount }}" placeholder="{{ __("Pay Amount") }}">
+
+                                    @php
+                                        $closingBalanceInFlatAmountStr = $amounts['closing_balance_in_flat_amount_string'];
+                                        $closingBalanceInFlatAmount = $amounts['closing_balance_in_flat_amount'];
+                                        $defaultBalanceType = $amounts['default_balance_type'];
+                                    @endphp
+
+                                    <input readonly type="text" class="form-control fw-bold text-danger text-end w-25" id="closing_balance_string" value="{{ $closingBalanceInFlatAmountStr }}" placeholder="{{ __("Current Balance") }}">
+                                    <input type="hidden" id="closing_balance_flat_amount" value="{{ $closingBalanceInFlatAmount }}">
+                                    <input type="hidden" id="default_balance_type" value="{{ $defaultBalanceType }}">
+                                </div>
+
                                 <span class="error error_payment_paying_amount"></span>
                             </div>
 

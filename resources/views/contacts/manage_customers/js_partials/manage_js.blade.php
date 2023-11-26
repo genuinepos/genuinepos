@@ -1116,7 +1116,6 @@
         });
     }
 
-
     var tableId = '';
     $(document).on('click', '#delete',function(e){
 

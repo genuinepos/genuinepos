@@ -21,7 +21,17 @@
         </div>
 
         <div class="modal-body">
+            @php
+                $amounts = '';
+            @endphp
             @if ($account)
+                @php
+                   $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+
+                   $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+                   $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+                   $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
+                @endphp
                 <div class="info_area mb-1">
                     <div class="row">
                         <div class="col-md-4" style="border-right:1px solid #000;">
@@ -30,7 +40,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="fw-bold text-end">{{ __("Receipt From") }} :</td>
-                                            <td class="text-end">{{ $account->name }}</td>
+                                            <td class="text-end">{{ $account->name }} | (<span class="fw-bold">{{ $account?->group?->name }}</span>)</td>
                                         </tr>
 
                                         <tr>
@@ -45,7 +55,7 @@
 
                                         <tr>
                                             <td class="fw-bold text-end">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['closing_balance_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -58,39 +68,40 @@
                                     <tbody>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Opening Balance") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['opening_balance_in_flat_amount_string'] }}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Total Sale") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_sale_string'] }}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Total Purchase") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_purchase_string'] }}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Total Return") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_return_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                         <div class="col-md-4">
                             <div class="top_card">
                                 <table class="w-100">
                                     <tbody>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Total Received") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_received_string'] }}</td>
                                         </tr>
                                         <tr>
                                             <td class="text-end fw-bold">{{ __("Total Paid") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold">{{ $amounts['total_paid_string'] }}</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-end fw-bold">{{ __("Current Balance") }} :</td>
-                                            <td class="text-end fw-bold">0.00</td>
+                                            <td class="text-end fw-bold text-danger">{{ __("Current Balance") }} :</td>
+                                            <td class="text-end fw-bold text-danger">{{ $amounts['closing_balance_in_flat_amount_string'] }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -132,12 +143,13 @@
                                             @continue
                                         @endif
 
-                                        <option value="{{ $ac->id }}">
+                                        <option data-sub_sub_group_number="{{ $ac?->group?->sub_sub_group_number }}" value="{{ $ac->id }}">
                                             @php
                                                 $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
                                                 $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
+                                                $groupName = ' | ' . $ac?->group?->name;
                                             @endphp
-                                            {{ $ac->name . $acNo . $bank }}
+                                            {{ $ac->name . $acNo . $bank . $groupName }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -182,13 +194,15 @@
                             @else
                                 <div class="col-md-12">
                                     <label class="fw-bold">{{ __("Credit A/c") }}</label>
-                                    <select name="credit_account_id" class="form-control select2" id="receipt_credit_account_id" data-next="receipt_received_amount">
+                                    <select name="credit_account_id" onchange="changeAccount(this); return false;" class="form-control select2" id="receipt_credit_account_id" data-next="receipt_received_amount">
                                         <option value="">{{ __('Select Credit A/c') }}</option>
                                         @foreach ($receivableAccounts as $receivableAccount)
                                             @php
                                                 $phoneNo = $receivableAccount->phone ?  '/' . $receivableAccount->phone : '';
+                                                $groupName = ' | '. $receivableAccount->group_name;
+                                                $subSubGroupNumber = $receivableAccount->sub_sub_group_number;
                                             @endphp
-                                            <option value="{{ $receivableAccount->id }}">{{ $receivableAccount->name . $phoneNo }}</option>
+                                            <option data-sub_sub_group_number="{{ $subSubGroupNumber }}" value="{{ $receivableAccount->id }}">{{ $receivableAccount->name . $phoneNo . $groupName }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -196,7 +210,20 @@
 
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Receipt Amount") }}</label>
-                                <input required type="number" step="any" name="received_amount" class="form-control fw-bold" id="receipt_received_amount" data-next="save_and_print" placeholder="{{ __("Receipt Amount") }}">
+                                <div class="input-group">
+                                    <input required oninput="calculateCurrentBalance(); return false;" type="number" step="any" name="received_amount" class="form-control fw-bold w-75" id="receipt_received_amount" data-next="save_and_print" placeholder="{{ __("Receipt Amount") }}">
+
+                                    @php
+                                       $closingBalanceInFlatAmountStr = isset($amounts['closing_balance_in_flat_amount_string']) ? $amounts['closing_balance_in_flat_amount_string'] : \App\Utils\Converter::format_in_bdt(0);
+
+                                       $closingBalanceInFlatAmount = isset($amounts['closing_balance_in_flat_amount']) ? $amounts['closing_balance_in_flat_amount'] : \App\Utils\Converter::format_in_bdt(0);
+
+                                       $defaultBalanceType = isset($amounts['default_balance_type']) ? $amounts['default_balance_type'] : 'dr';
+                                    @endphp
+                                    <input readonly type="text" class="form-control fw-bold text-danger text-end w-25" id="closing_balance_string" value="{{ $closingBalanceInFlatAmountStr }}" placeholder="{{ __("Current Balance") }}">
+                                    <input type="hidden" id="closing_balance_flat_amount" value="{{ $closingBalanceInFlatAmount }}">
+                                    <input type="hidden" id="default_balance_type" value="{{ $defaultBalanceType }}">
+                                </div>
                                 <span class="error error_received_amount"></span>
                             </div>
 
@@ -241,7 +268,6 @@
                     </div>
 
                     <div class="col-md-4">
-
                         <div class="row" style="border-left:1px solid black;">
                             <p class="fw-bold">{{ __("List Of Receivable Vouchers") }}</p>
                             <div class="col-md-12">

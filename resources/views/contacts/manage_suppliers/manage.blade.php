@@ -71,7 +71,7 @@
 
                     <div class="tab_contant ledger">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-3">
+                            <div class="col-sm-12 col-lg-3" id="for_ledger">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -82,29 +82,27 @@
                                     </div>
 
                                     <div class="account_summary_table">
-                                        <form id="filter_customer_ledgers" method="get" class="px-2">
+                                        <form id="filter_supplier_ledgers" method="get" class="px-2">
                                             <div class="form-group row align-items-end justify-content-end g-3">
-                                                @if ($generalSettings['addons__branches'] == 1)
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-
-                                                        <div class="col-lg-3 col-md-6">
-                                                            <label><strong>{{ __("Shop") }}</strong></label>
-                                                            <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
-                                                                <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL"> {{ $generalSettings['business__shop_name'] }} </option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
-                                                @else
-
-                                                    <input type="hidden" name="branch_id" id="ledger_branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : 'NULL' }}">
+                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                    <div class="col-lg-3 col-md-3">
+                                                        <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                        <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
+                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                            <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                            @foreach ($branches as $branch)
+                                                                @php
+                                                                    $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                    $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                    $branchCode = '-' . $branch->branch_code;
+                                                                @endphp
+                                                                <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                    {{ $branchName . $areaName . $branchCode }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 @endif
-
 
                                                 <div class="col-lg-3 col-md-6">
                                                     <label><strong>{{ __("From Date") }}</strong></label>
@@ -116,7 +114,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-6">
+                                                <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __("To Date") }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -125,6 +123,38 @@
 
                                                         <input type="text" name="to_date" id="ledger_to_date" class="form-control" autocomplete="off">
                                                     </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3">
+                                                    <label><strong>{{ __('Note/Remarks') }} :</strong></label>
+                                                    <select name="note" class="form-control" id="ledger_note">
+                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option selected value="1">{{ __("Yes") }}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3">
+                                                    <label><strong>{{ __('Voucher Details') }} :</strong></label>
+                                                    <select name="voucher_details" class="form-control" id="ledger_voucher_details">
+                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option value="1">{{ __("Yes") }}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3">
+                                                    <label><strong>{{ __('Transaction Details') }} :</strong></label>
+                                                    <select name="transaction_details" class="form-control" id="ledger_transaction_details">
+                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option value="1">{{ __("Yes") }}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3">
+                                                    <label><strong>{{ __('Inventory List') }} :</strong></label>
+                                                    <select name="inventory_list" class="form-control" id="ledger_inventory_list">
+                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option value="1">{{ __("Yes") }}</option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-6">
@@ -136,7 +166,7 @@
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="print_ledger"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printLedger"><i class="fas fa-print"></i> {{ __("Print") }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -151,7 +181,7 @@
                             <div class="col-md-12">
                                 <div class="ledger_table_area">
                                     <div class="table-responsive" id="payment_list_table">
-                                        <table class="display data_tbl data__table ledger_table">
+                                        <table id="ledger-table" class="display data_tbl data__table ledger_table common-reloader w-100">
                                             <thead>
                                                 <tr>
                                                     <tr>
@@ -169,9 +199,9 @@
                                             <tfoot>
                                                 <tr class="bg-secondary">
                                                     <th colspan="4" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
-                                                    <th id="debit" class="text-white text-end"></th>
-                                                    <th id="credit" class="text-white text-end"></th>
-                                                    <th class="text-white text-end">---</th>
+                                                    <th id="ledger_table_total_debit" class="text-white text-end"></th>
+                                                    <th id="ledger_table_total_credit" class="text-white text-end"></th>
+                                                    <th id="ledger_table_current_balance" class="text-white text-end"></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -212,7 +242,7 @@
 
                     <div class="tab_contant purchases d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-4" id="for_purchases">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -342,7 +372,7 @@
 
                     <div class="tab_contant purchase_orders d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-4" id="for_purchase_orders">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -470,7 +500,7 @@
 
                     <div class="tab_contant sale d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-4" id="for_sales">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -604,7 +634,7 @@
 
                     <div class="tab_contant sales_order d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-4" id="for_sales_order">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -736,7 +766,7 @@
 
                     <div class="tab_contant payments d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-3">
+                            <div class="col-sm-12 col-lg-3" id="for_payments">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -863,7 +893,7 @@
 
                     <div class="tab_contant receipts d-hide">
                         <div class="row">
-                            <div class="col-sm-12 col-lg-3">
+                            <div class="col-sm-12 col-lg-3" id="for_receipts">
                                 @include('contacts.manage_suppliers.partials.account_summery_area_by_ledgers')
                             </div>
 
@@ -999,7 +1029,6 @@
 
     <!-- Edit Shipping modal -->
     <div class="modal fade" id="editShipmentDetailsModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
-
     <div class="modal fade" id="addOrEditReceiptModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 

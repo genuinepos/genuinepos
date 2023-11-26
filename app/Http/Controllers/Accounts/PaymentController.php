@@ -87,7 +87,7 @@ class PaymentController extends Controller
 
         extract($createMethodContainer);
 
-        return view('accounting.accounting_vouchers.payments.ajax_view.create', compact('vouchers', 'account', 'accounts', 'methods', 'receivableAccounts'));
+        return view('accounting.accounting_vouchers.payments.ajax_view.create', compact('vouchers', 'account', 'accounts', 'methods', 'payableAccounts'));
     }
 
     public function store(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, CodeGenerationService $codeGenerator)

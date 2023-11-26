@@ -58,7 +58,7 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
+            'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)
@@ -158,6 +158,9 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
             id: $id,
             with: [
                 'voucherDebitDescription',
+                'voucherCreditDescription',
+                'voucherCreditDescription.account',
+                'voucherCreditDescription.account.group',
                 'voucherCreditDescription.references',
                 'voucherCreditDescription.references.sale',
                 'voucherCreditDescription.references.purchaseReturn',
@@ -179,7 +182,7 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
 
         $accounts = $accountService->accounts(with: [
             'bank:id,name',
-            'group:id,sorting_number,sub_sub_group_number',
+            'group:id,name,sorting_number,sub_sub_group_number',
             'bankAccessBranch',
         ])->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('branch_id', auth()->user()->branch_id)

@@ -32,11 +32,10 @@
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">
                                                     @php
-                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                        $branchName = $branch->name;
                                                         $branchCode = '-' . $branch->branch_code;
                                                     @endphp
-                                                    {{ $branchName.$areaName.$branchCode }}
+                                                    {{ $branchName.$branchCode }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -56,7 +55,7 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-md-4">
-                        <h6>{{ __('All Customer') }}</h6>
+                        <h6>{{ __('List Of Customers') }}</h6>
                     </div>
 
                     <div class="col-md-8 d-flex flex-wrap justify-content-md-end justify-content-center gap-2">
@@ -74,7 +73,7 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -84,10 +83,11 @@
                                     <th>{{ __("Customer ID") }}</th>
                                     <th>{{ __("Name") }}</th>
                                     <th>{{ __("Phone") }}</th>
-                                    <th>{{ __("Group") }}</th>
+                                    {{-- <th>{{ __("Group") }}</th> --}}
                                     <th>{{ __("Credit Limit") }}</th>
                                     <th>{{ __("Opening Balance") }}</th>
                                     <th>{{ __("Total Sale") }}</th>
+                                    <th>{{ __("Total Purchase") }}</th>
                                     <th>{{ __("Total Return") }}</th>
                                     <th>{{ __("Total Received") }}</th>
                                     <th>{{ __("Total Paid") }}</th>
@@ -98,9 +98,10 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="6" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th colspan="5" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
+                                    <th id="total_purchase" class="text-white text-end"></th>
                                     <th id="total_return" class="text-white text-end"></th>
                                     <th id="total_received" class="text-white text-end"></th>
                                     <th id="total_paid" class="text-white text-end"></th>
@@ -158,10 +159,11 @@
                 {data: 'contact_id',name: 'contacts.contact_id'},
                 {data: 'name',name: 'contacts.name'},
                 {data: 'phone',name: 'contacts.phone'},
-                {data: 'group_name', name: 'customer_groups.group_name'},
+                // {data: 'group_name', name: 'customer_groups.group_name'},
                 {data: 'credit_limit', name: 'contacts.credit_limit'},
                 {data: 'opening_balance', name: 'opening_balance', className: 'text-end fw-bold'},
                 {data: 'total_sale', name: 'contacts.business_name', className: 'text-end fw-bold'},
+                {data: 'total_purchase', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_return', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_received', name: 'contacts.business_name', className: 'text-end fw-bold'},
                 {data: 'total_paid', name: 'contacts.business_name', className: 'text-end fw-bold'},
@@ -174,6 +176,9 @@
 
                 var total_sale = sum_table_col($('.data_tbl'), 'total_sale');
                 $('#total_sale').text(bdFormat(total_sale));
+
+                var total_purchase = sum_table_col($('.data_tbl'), 'total_purchase');
+                $('#total_purchase').text(bdFormat(total_purchase));
 
                 var total_return = sum_table_col($('.data_tbl'), 'total_return');
                 $('#total_return').text(bdFormat(total_return));

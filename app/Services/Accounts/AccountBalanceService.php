@@ -142,7 +142,7 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $openingBalanceInFlatAmount = $openingBalanceDebit - $openingBalanceCredit;
-        } elseif ($account->default_balance_type == 'cr') {
+        } else if ($account->default_balance_type == 'cr') {
 
             $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
         }
@@ -166,7 +166,8 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $closingBalanceInFlatAmount = $currTotalDebit - $currTotalCredit;
-        } elseif ($account->default_balance_type == 'cr') {
+
+        } else if ($account->default_balance_type == 'cr') {
 
             $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
         }
@@ -175,7 +176,7 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $totalReturn = $totalSalesReturn - $totalPurchaseReturn;
-        } elseif ($account->default_balance_type == 'cr') {
+        } else if ($account->default_balance_type == 'cr') {
 
             $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
         }
@@ -193,32 +194,33 @@ class AccountBalanceService
         }
 
         return [
-            'reward_point' => $account->reward_point ? $account->reward_point : 0,
-            'opening_balance_in_flat_amount' => $openingBalanceInFlatAmount ? $openingBalanceInFlatAmount : 0.00,
-            'opening_balance_in_flat_amount_string' => $openingBalanceInFlatAmount ? $converter::format_in_bdt($openingBalanceInFlatAmount) : 0.00,
-            'total_sale' => $totalSale ? $totalSale : 0.00,
-            'total_sale_string' => $totalSale ? $converter::format_in_bdt($totalSale) : 0.00,
-            'total_purchase' => $totalPurchase ? $totalPurchase : 0.00,
-            'total_purchase_string' => $totalPurchase ? $converter::format_in_bdt($totalPurchase) : 0.00,
-            'total_return' => $totalReturn ? $totalReturn : 0.00,
-            'total_return_string' => $totalReturn ? $converter::format_in_bdt($totalReturn) : 0.00,
-            'total_received' => $totalReceived ? $totalReceived : 0.00,
-            'total_received_string' => $totalReceived ? $converter::format_in_bdt($totalReceived) : 0.00,
-            'total_paid' => $totalPaid ? $totalPaid : 0,
-            'total_paid_string' => $totalPaid ? $converter::format_in_bdt($totalPaid) : 0.00,
-            'closing_balance_in_flat_amount' => $closingBalanceInFlatAmount ? $closingBalanceInFlatAmount : 0.00,
-            'closing_balance_in_flat_amount_string' => $closingBalanceInFlatAmount ? $converter::format_in_bdt($closingBalanceInFlatAmount) : 0.00,
-            'opening_balance' => $currOpeningBalance ? $currOpeningBalance : 0.00,
-            'opening_balance_string' => $currOpeningBalance ? $converter::format_in_bdt($currOpeningBalance) : 0.00,
+            'reward_point' => $account->reward_point ? $account->reward_point : $converter::format_in_bdt(0),
+            'default_balance_type' => $account->default_balance_type,
+            'opening_balance_in_flat_amount' => $openingBalanceInFlatAmount ? $openingBalanceInFlatAmount : $converter::format_in_bdt(0),
+            'opening_balance_in_flat_amount_string' => $openingBalanceInFlatAmount ? $converter::format_in_bdt($openingBalanceInFlatAmount) : $converter::format_in_bdt(0),
+            'total_sale' => $totalSale ? $totalSale : $converter::format_in_bdt(0),
+            'total_sale_string' => $totalSale ? $converter::format_in_bdt($totalSale) : $converter::format_in_bdt(0),
+            'total_purchase' => $totalPurchase ? $totalPurchase : $converter::format_in_bdt(0),
+            'total_purchase_string' => $totalPurchase ? $converter::format_in_bdt($totalPurchase) : $converter::format_in_bdt(0),
+            'total_return' => $totalReturn ? $totalReturn : $converter::format_in_bdt(0),
+            'total_return_string' => $totalReturn ? $converter::format_in_bdt($totalReturn) : $converter::format_in_bdt(0),
+            'total_received' => $totalReceived ? $totalReceived : $converter::format_in_bdt(0),
+            'total_received_string' => $totalReceived ? $converter::format_in_bdt($totalReceived) : $converter::format_in_bdt(0),
+            'total_paid' => $totalPaid ? $totalPaid : $converter::format_in_bdt(0),
+            'total_paid_string' => $totalPaid ? $converter::format_in_bdt($totalPaid) : $converter::format_in_bdt(0),
+            'closing_balance_in_flat_amount' => $closingBalanceInFlatAmount ? $closingBalanceInFlatAmount : $converter::format_in_bdt(0),
+            'closing_balance_in_flat_amount_string' => $closingBalanceInFlatAmount ? $converter::format_in_bdt($closingBalanceInFlatAmount) : $converter::format_in_bdt(0),
+            'opening_balance' => $currOpeningBalance ? $currOpeningBalance : $converter::format_in_bdt(0),
+            'opening_balance_string' => $currOpeningBalance ? $converter::format_in_bdt($currOpeningBalance) : $converter::format_in_bdt(0),
             'opening_balance_side' => $currOpeningBalanceSide,
-            'curr_total_debit' => $__currTotalDebit ? $__currTotalDebit : 0.00,
-            'curr_total_debit_string' => $__currTotalDebit ? $converter::format_in_bdt($__currTotalDebit) : 0.00,
-            'curr_total_credit' => $__currTotalCredit ? $__currTotalCredit : 0.00,
-            'curr_total_credit_string' => $__currTotalCredit ? $converter::format_in_bdt($__currTotalCredit) : 0.00,
-            'all_total_debit' => $allTotalDebit ? $allTotalDebit : 0.00,
-            'all_total_debit_string' => $allTotalDebit ? $converter::format_in_bdt($allTotalDebit) : 0.00,
-            'all_total_credit' => $allTotalCredit ? $allTotalCredit : 0.00,
-            'all_total_credit_string' => $allTotalCredit ? $converter::format_in_bdt($allTotalCredit) : 0.00,
+            'curr_total_debit' => $__currTotalDebit ? $__currTotalDebit : $converter::format_in_bdt(0),
+            'curr_total_debit_string' => $__currTotalDebit ? $converter::format_in_bdt($__currTotalDebit) : $converter::format_in_bdt(0),
+            'curr_total_credit' => $__currTotalCredit ? $__currTotalCredit : $converter::format_in_bdt(0),
+            'curr_total_credit_string' => $__currTotalCredit ? $converter::format_in_bdt($__currTotalCredit) : $converter::format_in_bdt(0),
+            'all_total_debit' => $allTotalDebit ? $allTotalDebit : $converter::format_in_bdt(0),
+            'all_total_debit_string' => $allTotalDebit ? $converter::format_in_bdt($allTotalDebit) : $converter::format_in_bdt(0),
+            'all_total_credit' => $allTotalCredit ? $allTotalCredit : $converter::format_in_bdt(0),
+            'all_total_credit_string' => $allTotalCredit ? $converter::format_in_bdt($allTotalCredit) : $converter::format_in_bdt(0),
             'closing_balance' => $closingBalance,
             'closing_balance_side' => $closingBalanceSide,
             'closing_balance_string' => $converter::format_in_bdt($closingBalance).($closingBalanceSide == 'dr' ? ' Dr.' : ' Cr.'),

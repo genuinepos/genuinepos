@@ -10,12 +10,12 @@
                             @if ($generalSettings['business__business_logo'] != null)
 
                                 <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                            @else 
+                            @else
 
                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
                             @endif
                             <span class="head-text">
-                                {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
+                                {{ __('GPOSS, Point of Sale software by SpeedDigit') }}
                             </span>
                         </div>
                     </div>

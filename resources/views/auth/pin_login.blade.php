@@ -20,7 +20,7 @@
                                         <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
                                             alt="POS" class="logo">
                                         <span class="head-text">
-                                            {{ __('Genuine POS, Point of Sale software by SpeedDigit') }}
+                                            {{ __('GPOSS, Point of Sale software by SpeedDigit') }}
                                         </span>
                                     </div>
                                 </div>
@@ -64,9 +64,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-head addr">
                                     <div class="head addr-t pt-4">
-                                        {{-- <h2>
-                                            Genuine Point Of Sale
-                                        </h2> --}}
+
                                         <div class="px-2">
                                             <p class="logo-main-sec"><img
                                                     src="{{ asset('assets/images/genuine_pos.png') }}" alt="POS"

@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\Products\BrandController;
-use App\Http\Controllers\Products\BulkVariantController;
-use App\Http\Controllers\Products\CategoryController;
-use App\Http\Controllers\Products\ExpiredProductController;
-use App\Http\Controllers\Products\OpeningStockController;
-use App\Http\Controllers\Products\PriceGroupController;
-use App\Http\Controllers\Products\PriceGroupManageController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Products\ProductSettingsController;
-use App\Http\Controllers\Products\Reports\StockReportController;
-use App\Http\Controllers\Products\SubCategoryController;
-use App\Http\Controllers\Products\UnitController;
-use App\Http\Controllers\Products\WarrantyController;
-use App\Http\Controllers\Report\StockInOutReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Products\UnitController;
+use App\Http\Controllers\Products\BrandController;
+use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Products\CategoryController;
+use App\Http\Controllers\Products\WarrantyController;
+use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\SubCategoryController;
+use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ExpiredProductController;
+use App\Http\Controllers\Report\StockInOutReportController;
+use App\Http\Controllers\Products\ProductSettingsController;
+use App\Http\Controllers\Products\QuickProductAddController;
+use App\Http\Controllers\Products\PriceGroupManageController;
+use App\Http\Controllers\Products\Reports\StockReportController;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 
@@ -32,6 +33,11 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
     Route::controller(OpeningStockController::class)->prefix('opening-stock')->group(function () {
         Route::get('create/or/edit/{productId}', 'createOrEdit')->name('product.opening.stocks.create');
         Route::post('store/or/update', 'storeOrUpdate')->name('product.opening.stocks.store.or.update');
+    });
+
+    Route::controller(QuickProductAddController::class)->prefix('quick-product-add')->group(function () {
+        Route::get('create', 'create')->name('quick.product.create');
+        Route::post('store', 'store')->name('quick.product.store');
     });
 
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {

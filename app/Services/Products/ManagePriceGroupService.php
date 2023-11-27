@@ -17,7 +17,9 @@ class ManagePriceGroupService
 
                 (float) $__group_price = $group_price[$product_id][$variant_ids[$index]];
                 $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
-                $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)->where('product_id', $product_id)->where('variant_id', $__variant_id)->first();
+                $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)
+                    ->where('product_id', $product_id)
+                    ->where('variant_id', $__variant_id)->first();
 
                 if ($updatePriceGroup) {
 

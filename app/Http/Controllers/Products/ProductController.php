@@ -39,7 +39,7 @@ class ProductController extends Controller
 
     public function index(Request $request, $isForCreatePage = 0)
     {
-        if (! auth()->user()->can('product_all')) {
+        if (!auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -110,7 +110,7 @@ class ProductController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if (! auth()->user()->can('product_edit')) {
+        if (!auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -140,7 +140,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -187,6 +187,8 @@ class ProductController extends Controller
 
             $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
 
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -202,7 +204,7 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,'.$id,
+                'code' => 'sometimes|unique:products,product_code,' . $id,
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
             ],
@@ -240,6 +242,8 @@ class ProductController extends Controller
 
             $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
 
+            $this->userActivityLogUtil->addLog(action: 2, subject_type: 26, data_obj: $updateProduct);
+
             DB::commit();
         } catch (Exception $e) {
 
@@ -252,7 +256,8 @@ class ProductController extends Controller
     public function formPart($type)
     {
         $type = $type;
-        $taxAccounts = $this->accountService->accounts()->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
@@ -277,6 +282,8 @@ class ProductController extends Controller
 
                 return response()->json(['errorMsg' => $deleteProduct['msg']]);
             }
+
+            $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $deleteProduct);
 
             DB::commit();
         } catch (Exception $e) {

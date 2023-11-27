@@ -583,7 +583,7 @@ class ProductService
         }
     }
 
-    public function deleteProduct(int $id): array
+    public function deleteProduct(int $id): array|object
     {
         $deleteProduct = $this->singleProduct(id: $id, with: ['ledgerEntries', 'variants']);
 
@@ -611,7 +611,7 @@ class ProductService
             $deleteProduct->delete();
         }
 
-        return ['pass' => true];
+        return $deleteProduct;
     }
 
     public function restrictions($request)
@@ -674,7 +674,7 @@ class ProductService
         }
     }
 
-    public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object
+    public function singleProduct(int $id, ?array $with = null, ?array $firstWithSelect = null): ?object
     {
         $query = Product::query();
 

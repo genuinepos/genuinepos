@@ -1,12 +1,8 @@
 <script>
     function calculateSubtotal(tr) {
 
-        console.log({tr});
         var quantity = $(tr).find('#ops_quantity').val() ? $(tr).find('#ops_quantity').val() : 0;
         var unit_cost_inc_tax = $(tr).find('#ops_unit_cost_inc_tax').val() ? $(tr).find('#ops_unit_cost_inc_tax').val() : 0;
-
-        console.log({quantity});
-        console.log({unit_cost_inc_tax});
 
         var subtotal = parseFloat(quantity) * parseFloat(unit_cost_inc_tax);
         $(tr).find('#ops_subtotal').val(parseFloat(subtotal).toFixed(2));

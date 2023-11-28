@@ -126,7 +126,7 @@
                     toastr.success("{{ __('Warranty is added successfully') }}");
                     $('#warrantyAddOrEditModal').modal('hide');
                     var warranty_id = $('#warranty_id').val();
-                    var product_warranty_id = $('#product_warranty_id').val();
+                    var quick_product_warranty_id = $('#quick_product_warranty_id').val();
 
                     if (warranty_id != undefined) {
 
@@ -135,12 +135,12 @@
 
                         var nextId = $('#warranty_id').data('next');
                         $('#' + nextId).focus().select();
-                    } else if (product_warranty_id != undefined) {
+                    } else if (quick_product_warranty_id != undefined) {
 
-                        $('#product_warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
-                        $('#product_warranty_id').val(data.id);
+                        $('#quick_product_warranty_id').append('<option value="' + data.id + '">' + data.name + '</option>');
+                        $('#quick_product_warranty_id').val(data.id);
 
-                        var nextId = $('#product_warranty_id').data('next');
+                        var nextId = $('#quick_product_warranty_id').data('next');
                         $('#' + nextId).focus().select();
                     } else {
 

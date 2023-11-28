@@ -52,8 +52,7 @@
 
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
-        var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(
-            netTotalComboPrice);
+        var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
         $('#combo_price').val(parseFloat(calcTotalComboPrice).toFixed(2));
     }
 

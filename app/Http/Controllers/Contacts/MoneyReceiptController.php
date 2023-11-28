@@ -87,7 +87,7 @@ class MoneyReceiptController extends Controller
         if (!auth()->user()->can('money_receipt_edit')) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $this->validate($request, ['date' => 'required|date']);
 
         $updateMoneyReceipt = $this->moneyReceiptService->updateMoneyReceipt(moneyReceiptId: $receiptId, request: $request);
@@ -120,7 +120,6 @@ class MoneyReceiptController extends Controller
     public function print($receiptId)
     {
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
-
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 }

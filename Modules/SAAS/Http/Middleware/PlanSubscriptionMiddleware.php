@@ -21,7 +21,6 @@ class PlanSubscriptionMiddleware
         $subscription = DB::connection('mysql') // <-- landlord connection
             ->table('plan_subscriptions')
             ->where('tenant_id', tenant('id'))
-            ->orderByDesc('end_at')
             ->select('end_at')
             ->first();
 

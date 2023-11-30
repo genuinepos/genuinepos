@@ -256,6 +256,8 @@ class PurchaseOrderController extends Controller
         $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
             'branch',
             'branch.parentBranch',
+            'supplier',
+            'supplier.group',
             'purchaseOrderProducts',
             'purchaseOrderProducts.product',
             'purchaseOrderProducts.variant',

@@ -84,7 +84,7 @@
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
 
-                                                                    <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                                 @endforeach
                                                             </select>
 
@@ -382,7 +382,7 @@
 
                             <div class="col-md-3">
                                 <div class="form_element rounded m-0 mb-1 p-1 text-end">
-                                    <button type="button" class="btn btn-sm btn-secondary text-white resent-tn">{{ __('Recent Transaction') }}</button>
+                                    <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => App\Enums\SaleScreenType::AddSale->value, 'limit' => 20]) }}" class="btn btn-sm btn-secondary text-white resent-tn" id="recentTransactionsBtn">{{ __('Recent Transaction') }}</a>
                                 </div>
 
                                 <div class="form_element rounded m-0">
@@ -529,8 +529,7 @@
     </div>
 
     @if(auth()->user()->can('customer_add'))
-        <div class="modal fade" id="addOrEditContactModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
-        </div>
+        <div class="modal fade" id="addOrEditContactModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     @endif
 
     @if (auth()->user()->can('product_add'))
@@ -543,7 +542,8 @@
     @endif
 
     <!-- Recent transection list modal-->
-    <div class="modal fade" id="recentTransModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="recentTransModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <!-- Recent transection list modal end-->
 @endsection
 @push('scripts')
     @include('sales.add_sale.js_partials.add_sale_createJs_script')

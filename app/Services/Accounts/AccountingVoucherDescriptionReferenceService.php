@@ -614,7 +614,7 @@ class AccountingVoucherDescriptionReferenceService
                 // DB::raw('SUM(supplier_payment_invoices.paid_amount) as total_invoice_paid_amount'),
                 // DB::raw('SUM(- IFNULL(supplier_payment_invoices.paid_amount, 0)) + supplier_payments.paid_amount as left_amount')
                 // DB::raw('SUM(- IFNULL(voucher_description_references.amount, 0)) + accounting_voucher_descriptions.amount as left_amount')
-                DB::raw('SUM(- CASE WHEN sales.status != 3 AND purchases.purchase_status != 2 THEN voucher_description_references.amount ELSE 0 END) + accounting_voucher_descriptions.amount as left_amount')
+                DB::raw('SUM(- CASE WHEN COALESCE(sales.status, 0) != 3 AND COALESCE(purchases.purchase_status, 0) != 2 THEN voucher_description_references.amount ELSE 0 END) + accounting_voucher_descriptions.amount as left_amount')
             )
             ->having('left_amount', '>', 0)
             ->groupBy('accounting_vouchers.id')

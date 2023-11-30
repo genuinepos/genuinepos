@@ -70,35 +70,7 @@
                     <div class="row g-1">
                         <div class="col-xl-4 logo-sec">
                             <div class="pos-logo d-flex justify-content-center">
-                                @if (auth()->user()?->branch)
-                                    @if (auth()->user()?->branch?->parent_branch_id)
-
-                                        @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-
-                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
-                                        @else
-
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
-                                        @endif
-                                    @else
-
-                                        @if (auth()->user()?->branch?->logo != 'default.png')
-
-                                            <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
-                                        @else
-
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->name }}</span>
-                                        @endif
-                                    @endif
-                                @else
-                                    @if ($generalSettings['business__business_logo'] != null)
-
-                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
-                                    @else
-
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
-                                    @endif
-                                @endif
+                                <img style="height: auto; width:120px;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
                             </div>
                         </div>
 

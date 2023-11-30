@@ -77,6 +77,20 @@
                                     + parseFloat(shipmentCharge);
 
         $('#total_ordered_amount').val(parseFloat(calcTotalOrderedAmount).toFixed(2));
+
+        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+        var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closingBalance) + parseFloat(payingAmount);
+        } else {
+
+            currentBalance = parseFloat(closingBalance) - parseFloat(payingAmount);
+        }
+
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     var delay = (function() {
@@ -905,6 +919,50 @@
         }
     });
 
+    $(document).on('change', '#supplier_account_id', function() {
+
+        $('#closing_balance').val(parseFloat(0).toFixed(2));
+
+        var accountId = $(this).val();
+        if (accountId == '') {
+
+            return;
+        }
+
+        var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+        var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
+        var __branchId = subSubGroupNumber != 6 ? branchId : null;
+        var filterObj = {
+            branch_id : __branchId,
+            from_date : null,
+            to_date : null,
+        };
+
+        var url = "{{ route('accounts.balance', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
+
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            }, error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    });
+
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
@@ -1031,45 +1089,146 @@
 
 @if(auth()->user()->can('product_add'))
     <script>
-        $('#add_product').on('click', function () {
+        $('#addProduct').on('click', function () {
 
             $.ajax({
-                url:"#",
+                url:"{{ route('quick.product.create') }}",
                 type:'get',
                 success:function(data){
 
-                    $('#add_product_body').html(data);
-                    $('#addProductModal').modal('show');
+                    $('#addQuickProductModal').empty();
+                    $('#addQuickProductModal').html(data);
+                    $('#addQuickProductModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#quick_product_name').focus();
+                    }, 1000);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
                 }
             });
         });
 
+        $(document).on('click keypress focus blur change', '.form-control', function(event) {
+
+            $('.quick_product_submit_button').prop('type', 'button');
+        });
+
+        var isAllowQuickProductSubmit = true;
+        $(document).on('click', '.quick_product_submit_button', function() {
+
+            if (isAllowQuickProductSubmit) {
+
+                $(this).prop('type', 'submit');
+            } else {
+
+                $(this).prop('type', 'button');
+            }
+        });
+
         // Add product by ajax
-        $(document).on('submit', '#add_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form',function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
+            isQuickProductAjaxIn = false;
+            isAllowQuickProductSubmit = false;
+
             $.ajax({
+                beforeSend: function() {
+                    isQuickProductAjaxIn = true;
+                },
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
 
-                    toastr.success('Successfully product is added.');
+                    $('.quick_product_loading_btn').hide();
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
+                    toastr.success("{{ __('Product is added successfully.') }}");
+
+                    var name = data.name.length > 35 ? data.name.substring(0, 35) + '...' : data.name;
+                    var unique_id = data.id + 'noid';
+
+                    $('#search_product').val(name);
+                    $('#e_unique_id').val(unique_id);
+                    $('#e_item_name').val(name);
+                    $('#e_product_id').val(data.id);
+                    $('#e_variant_id').val('noid');
+                    $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                    $('#e_unit_cost_exc_tax').val(data.product_cost);
+                    $('#e_discount').val(parseFloat(0).toFixed(2));
+                    $('#e_discount_type').val(1);
+                    $('#e_discount_amount').val(parseFloat(0).toFixed(2));
+                    $('#e_tax_type').val(data.tax_type);
+                    $('#e_tax_ac_id').val(data.tax_ac_id);
+                    $('#e_profit_margin').val(parseFloat(data.profit).toFixed(2));
+                    $('#e_selling_price').val(parseFloat(data.product_price).toFixed(2));
+
+                    $('#e_unit_id').empty();
+                    $('#e_unit_id').append('<option value="'+data.unit.id+'" data-is_base_unit="1" data-unit_name="'+data.unit.name+'" data-base_unit_multiplier="1">'+data.unit.name+'</option>');
+
+                    itemUnitsArray[data.id] = [
+                        {
+                            'unit_id' : data.unit.id,
+                            'unit_name' : data.unit.name,
+                            'unit_code_name' : data.unit.code_name,
+                            'base_unit_multiplier' : 1,
+                            'multiplier_details' : '',
+                            'is_base_unit' : 1,
+                        }
+                    ];
+
+                    $('#add_item').html('Add');
+                    calculateEditOrAddAmount();
+
+                    $('#addQuickProductModal').empty();
+                    $('#addQuickProductModal').modal('hide');
                 },error: function(err) {
 
-                    $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
+                    $('.quick_product_loading_btn').hide();
                     $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if(err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if(err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
-                        $('.error_sale_' + key + '').html(error[0]);
+                        $('.error_quick_product_' + key + '').html(error[0]);
                     });
                 }
             });
+
+            if (isQuickProductAjaxIn == false) {
+
+                isAllowQuickProductSubmit = true;
+            }
         });
     </script>
 @endif

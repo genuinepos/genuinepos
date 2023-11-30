@@ -28,6 +28,8 @@
         label.col-6 { text-align: right; padding-right: 10px; }
 
         .checkbox_input_wrap { text-align: right; }
+
+        .big_amount_field { height: 36px;  font-size: 24px!important; margin-bottom: 3px; }
     </style>
 @endpush
 
@@ -60,7 +62,7 @@
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="pay_term_number">
                                                     <option value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
-                                                        <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -72,9 +74,9 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Curr. Balance') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Closing Balance') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" id="current_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                            <input readonly type="text" id="closing_balance" class="form-control text-danger fw-bold" value="0.00" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -158,11 +160,11 @@
                                         <div class="searching_area" style="position: relative;">
                                             <label class="fw-bold">{{ __('Search Product') }}</label>
                                             <div class="input-group">
-                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Serach Product') }}">
+                                                <input type="text" name="search_product" class="form-control fw-bold" autocomplete="off" id="search_product" onkeyup="event.preventDefault();" placeholder="{{ __('Serach Product By Name/Code') }}">
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">
-                                                        <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                        <span id="addProduct" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                     </div>
                                                 @endif
                                             </div>
@@ -390,7 +392,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>{{ __('Paying Amount') }}</b> {{ $generalSettings['business__currency'] }} <strong>>></strong></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="paying_amount" class="form-control fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control big_amount_field fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -452,9 +454,9 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Current_balance') }}</b></label>
+                                                        <label class=" col-4"><b>{{ __('Current Balance') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
+                                                            <input readonly type="number" step="any" class="form-control text-danger fw-bold" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -486,7 +488,12 @@
     @endif
 
     @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

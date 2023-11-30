@@ -29,20 +29,18 @@
                                 <div class="main-form">
                                     <div class="form_inner">
                                         <div class="form-title">
-                                            <p>@lang('menu.user_login')</p>
+                                            <p>{{ __('User Login') }}</p>
                                         </div>
                                         <form action="{{ route('login') }}" method="POST">
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
-                                                <input required type="text" name="username" class="form-control form-st"
-                                                    value="{{ old('username') }}" placeholder="{{ __('Username') }}" />
+                                                <input required type="text" name="username" class="form-control form-st" value="{{ old('username') }}" placeholder="{{ __('Username') }}" />
                                             </div>
 
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-key"></i>
-                                                <input required name="password" type="Password"
-                                                    class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
+                                                <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
                                             </div>
 
                                             @if (Session::has('errorMsg'))
@@ -76,32 +74,29 @@
                                         <div class="px-2">
                                             <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
-                                                <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
+                                            <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
                                             <table class="text-white">
                                                 <tbody>
                                                     <tr class="details">
-                                                        <td>@lang('menu.address') :</td>
+                                                        <td>{{ __('Address') }} :</td>
                                                         <td>{{ config('speeddigit.address') }}</td>
                                                     </tr>
                                                     <tr class="details">
-                                                        <td>@lang('menu.support') :</td>
+                                                        <td>{{ __('Support') }} :</td>
                                                         <td>{{ config('speeddigit.support_email') }}</td>
                                                     </tr>
                                                     <tr class="details">
-                                                        <td>@lang('menu.website') :</td>
+                                                        <td>{{ __('Website') }} :</td>
                                                         <td>{{ config('speeddigit.website') }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
 
                                             <div class="function-btn">
-                                                <a href="{{ config('speeddigit.facebook') }}" target="_blank"><span
-                                                        class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
-                                                <a href="{{ config('speeddigit.twitter') }}" target="_blank"><span
-                                                        class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
-                                                <a href="{{ config('speeddigit.youtube') }}" target="_blank"><span
-                                                        class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
+                                                <a href="{{ config('speeddigit.facebook') }}" target="_blank"><span class="btn-fn facebook"><i class="fab fa-facebook"></i></span></a>
+                                                <a href="{{ config('speeddigit.twitter') }}" target="_blank"><span class="btn-fn twitter"><i class="fab fa-twitter"></i></span></a>
+                                                <a href="{{ config('speeddigit.youtube') }}" target="_blank"><span class="btn-fn youtube"><i class="fab fa-youtube"></i></span></a>
                                             </div>
                                         </div>
                                     </div>

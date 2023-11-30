@@ -357,6 +357,8 @@ class PurchaseController extends Controller
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'branch',
             'branch.parentBranch',
+            'supplier',
+            'supplier.group',
             'purchaseAccount:id,name',
             'purchaseProducts',
             'purchaseProducts.product',

@@ -53,7 +53,7 @@ class PurchaseReturnController extends Controller
     // Sale return index view
     public function index(Request $request)
     {
-        if (! auth()->user()->can('purchase_return')) {
+        if (! auth()->user()->can('purchase_return_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -106,7 +106,7 @@ class PurchaseReturnController extends Controller
     // create purchase return view
     public function create()
     {
-        if (! auth()->user()->can('purchase_return')) {
+        if (! auth()->user()->can('purchase_return_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -153,6 +153,11 @@ class PurchaseReturnController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('purchase_return_add')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'date' => 'required|date',
@@ -291,10 +296,16 @@ class PurchaseReturnController extends Controller
 
     public function edit($id)
     {
+        if (! auth()->user()->can('purchase_return_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
             'branch',
             'branch.parentBranch',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group',
             'createdBy:id,prefix,name,last_name',
             'purchaseReturnProducts',
             'purchaseReturnProducts.purchaseProduct',
@@ -349,6 +360,11 @@ class PurchaseReturnController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('purchase_return_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'supplier_account_id' => 'required',
             'date' => 'required|date',
@@ -508,6 +524,11 @@ class PurchaseReturnController extends Controller
     //Deleted purchase return
     public function delete($id)
     {
+        if (! auth()->user()->can('purchase_return_delete')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
 
             DB::beginTransaction();
@@ -545,6 +566,6 @@ class PurchaseReturnController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Purchase return deleted successfully');
+        return response()->json(__('Purchase return deleted successfully'));
     }
 }

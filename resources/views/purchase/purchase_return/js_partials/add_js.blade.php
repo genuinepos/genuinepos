@@ -776,6 +776,20 @@
             - parseFloat(itemTotalTaxAmount);
 
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
+
+        var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
+        var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closingBalance) + parseFloat(calcTotalAmount) - parseFloat(receivedAmount);
+        } else {
+
+            currentBalance = parseFloat(closingBalance) - parseFloat(calcTotalAmount) + parseFloat(receivedAmount);
+        }
+
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     $(document).on('input', '#return_discount', function() {
@@ -788,6 +802,10 @@
         calculateTotalAmount();
         var returnTaxPercent = $(this).find('option:selected').data('return_tax_percent') ? $(this).find('option:selected').data('return_tax_percent') : 0;
         $('#return_tax_percent').val(parseFloat(returnTaxPercent).toFixed(2));
+    });
+
+    $(document).on('input', '#received_amount', function(){
+        calculateTotalAmount();
     });
 
     // Remove product form purchase product list (Table)
@@ -973,40 +991,6 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    $('#supplier_account_id').on('change', function() {
-
-        var supplier_account_id = $(this).val();
-        $('#current_balance').val(parseFloat(0).toFixed(2));
-        if (supplier_account_id) {
-
-            // getAccountClosingBalance(supplier_account_id);
-            return;
-        }
-    });
-
-    // function getAccountClosingBalance(account_id) {
-
-    //     var filterObj = {
-    //         user_id: null,
-    //         from_date: null,
-    //         to_date: null,
-    //     };
-
-    //     var url = "";
-    //     var route = url.replace(':account_id', account_id);
-
-    //     $.ajax({
-    //         url: route,
-    //         type: 'get',
-    //         data: filterObj,
-    //         success: function(data) {
-
-    //             $('#current_balance').val(data['closing_balance_string']);
-    //             calculateTotalAmount();
-    //         }
-    //     });
-    // }
-
     $('select').on('select2:close', function(e) {
 
         var nextId = $(this).data('next');
@@ -1043,6 +1027,50 @@
 
             $('#' + nextId).focus().select();
         }
+    });
+
+    $(document).on('change', '#supplier_account_id', function() {
+
+        $('#closing_balance').val(parseFloat(0).toFixed(2));
+
+        var accountId = $(this).val();
+        if (accountId == '') {
+
+            return;
+        }
+
+        var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+        var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
+        var __branchId = subSubGroupNumber != 6 ? branchId : null;
+        var filterObj = {
+            branch_id : __branchId,
+            from_date : null,
+            to_date : null,
+        };
+
+        var url = "{{ route('accounts.balance', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
+
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            }, error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     });
 
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Products;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
@@ -19,6 +20,7 @@ use App\Services\Products\PriceGroupService;
 use App\Services\Products\BulkVariantService;
 use App\Services\Products\OpeningStockService;
 use App\Services\Products\ProductStockService;
+use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ProductVariantService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Products\ProductAccessBranchService;
@@ -39,6 +41,7 @@ class QuickProductAddController extends Controller
         private PriceGroupService $priceGroupService,
         private WarehouseService $warehouseService,
         private OpeningStockService $openingStockService,
+        private ProductLedgerService $productLedgerService,
         private ProductStockService $productStockService,
         private PurchaseProductService $purchaseProductService,
         private UserActivityLogUtil $userActivityLogUtil
@@ -72,8 +75,6 @@ class QuickProductAddController extends Controller
 
     function store(Request $request)
     {
-        return $request->all();
-
         $this->validate(
             $request,
             [
@@ -82,7 +83,7 @@ class QuickProductAddController extends Controller
                 'unit_id' => 'required',
             ],
             [
-                'unit_id.required' => 'Product unit field is required.',
+                'unit_id.required' => __('Product unit field is required.'),
             ]
         );
 
@@ -91,11 +92,13 @@ class QuickProductAddController extends Controller
 
             $addProduct = $this->productService->addProduct($request);
 
+            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
+
             foreach ($request->branch_ids as $index => $branch_id) {
 
                 $addOrEditOpeningStock = $this->openingStockService->addOrEditProductOpeningStock(request: $request, index: $index, productId: $addProduct->id);
 
-                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::OpeningStock->value, date: $addOrEditOpeningStock->date, productId: $addOrEditOpeningStock->product_id, transId: $addOrEditOpeningStock->id, rate: $addOrEditOpeningStock->unit_cost_inc_tax, quantityType: 'in', quantity: $addOrEditOpeningStock->quantity, subtotal: $addOrEditOpeningStock->subtotal, variantId: $addOrEditOpeningStock->variant_id, branchId: auth()->user()->branch_id, warehouseId: $addOrEditOpeningStock->warehouse_id);
 
                 $this->productStockService->adjustMainProductAndVariantStock(productId: $addOrEditOpeningStock->product_id, variantId: $addOrEditOpeningStock->variant_id);
 

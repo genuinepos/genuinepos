@@ -46,6 +46,8 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
     ): array {
 
         $quotation = $quotationService->singleQuotation(id: $id, with: [
+            'customer',
+            'customer.group',
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',

@@ -310,7 +310,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Purchase Return Voucher") }}</strong></h4>
+                <h4 class="fw-bold" style="text-transform: uppercase;">{{ __("Purchase Return Voucher") }}</h4>
             </div>
         </div>
 
@@ -333,7 +333,7 @@
         </div>
 
         <div class="purchase_product_table pt-1 pb-1">
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <tr>

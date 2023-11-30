@@ -142,7 +142,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
+                        <h5 style="text-transform: uppercase;">{{ __("Draft") }}</h5>
                     </div>
                 @endif
 
@@ -152,7 +152,7 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) . ' ' . $draft->time }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($dateFormat.' '.$timeFormat, strtotime($draft->draft_date_ts)) }}
                     </li>
 
                     <li style="font-size:11px!important;">

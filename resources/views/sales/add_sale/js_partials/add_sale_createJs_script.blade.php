@@ -932,7 +932,17 @@
         var closing_balance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
         var invoice_amount = status == 1 ? calcInvoiceAmount : 0;
         var received_amount = $('#received_amount').val() ? $('#received_amount').val() : 0;
-        var currentBalance = parseFloat(invoice_amount) + parseFloat(closing_balance) - parseFloat(received_amount);
+
+        var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closing_balance) + parseFloat(invoice_amount) - parseFloat(received_amount);
+        } else {
+
+            currentBalance = parseFloat(closing_balance) - parseFloat(invoice_amount) + parseFloat(received_amount);
+        }
+
         $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
@@ -1363,6 +1373,7 @@
         $('#sale_product_list').empty();
         $("#customer_account_id").select2("destroy");
         $("#customer_account_id").select2();
+        $("#customer_account_id").focus();
         afterChangeStatusAcivity(status);
     }
 
@@ -1378,39 +1389,53 @@
         }
     });
 
-    $(document).on('click', '.resent-tn',function (e) {
-        e.preventDefault();
+    $(document).on('change', '#customer_account_id', function() {
 
-        showRecentTransectionModal();
-    });
+        $('#closing_balance').val(parseFloat(0).toFixed(2));
 
-    function showRecentTransectionModal() {
+        var accountId = $(this).val();
+        if (accountId == '') {
 
-        recentSales();
-        $('#recentTransModal').modal('show');
-        $('.tab_btn').removeClass('tab_active');
-        $('#tab_btn').addClass('tab_active');
-    }
+            return;
+        }
 
-    function recentSales() {
+        var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+        var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
+        var __branchId = subSubGroupNumber != 6 ? branchId : null;
+        var filterObj = {
+            branch_id : __branchId,
+            from_date : null,
+            to_date : null,
+        };
 
-        $('#recent_trans_preloader').show();
+        var url = "{{ route('accounts.balance', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
 
         $.ajax({
-            url:"{{url('common/ajax/call/recent/sales/1')}}",
-            type:'get',
-            success:function(data){
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
 
-                $('#transection_list').html(data);
-                $('#recent_trans_preloader').hide();
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            }, error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
             }
         });
-    }
+    });
 
-    $(document).on('click', '#tab_btn', function(e) {
+    $(document).on('click', '#recentTransactionsBtn', function (e) {
         e.preventDefault();
 
-        $('#recent_trans_preloader').show();
         var url = $(this).attr('href');
 
         $.ajax({
@@ -1418,31 +1443,21 @@
             type:'get',
             success:function(data){
 
-                $('#transection_list').html(data);
-                $('#recent_trans_preloader').hide();
+                $('#recentTransModal').empty();
+                $('#recentTransModal').html(data);
+                $('#recentTransModal').modal('show');
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
             }
-        });
-
-        $('.tab_btn').removeClass('tab_active');
-        $(this).addClass('tab_active');
-    });
-
-    $(document).on('click', '#only_print', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-
-        $.get(url, function(data) {
-
-            $(data).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                removeInline: false,
-                printDelay: 500,
-                header : null,
-                footer : null,
-            });
         });
     });
 
@@ -1600,10 +1615,10 @@
             $('.quick_product_submit_button').prop('type', 'button');
         });
 
-        var isAllowSubmit = true;
+        var isAllowQuickProductSubmit = true;
         $(document).on('click', '.quick_product_submit_button', function() {
 
-            if (isAllowSubmit) {
+            if (isAllowQuickProductSubmit) {
 
                 $(this).prop('type', 'submit');
             } else {
@@ -1619,18 +1634,21 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
-            isAjaxIn = false;
-            isAllowSubmit = false;
+            isQuickProductAjaxIn = false;
+            isAllowQuickProductSubmit = false;
 
             $.ajax({
+                beforeSend: function() {
+                    isQuickProductAjaxIn = true;
+                },
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
 
                     $('.quick_product_loading_btn').hide();
-                    isAjaxIn = false;
-                    isAllowSubmit = false;
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
                     toastr.success("{{ __('Product is added successfully.') }}");
 
                     if (data.is_manage_stock == 1) {
@@ -1675,8 +1693,8 @@
                     $('#addQuickProductModal').modal('hide');
                 },error: function(err) {
 
-                    isAjaxIn = true;
-                    isAllowSubmit = true;
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
                     $('.quick_product_loading_btn').hide();
                     $('.error').html('');
 
@@ -1700,6 +1718,11 @@
                     });
                 }
             });
+
+            if (isQuickProductAjaxIn == false) {
+
+                isAllowQuickProductSubmit = true;
+            }
         });
     </script>
 @endif

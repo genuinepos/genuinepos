@@ -37,9 +37,9 @@ class OpeningStockService
         $addOrEditOpeningStock->warehouse_id = $warehouseId;
         $addOrEditOpeningStock->product_id = $productId;
         $addOrEditOpeningStock->variant_id = $variantId;
-        $addOrEditOpeningStock->quantity = $request->quantities[$index];
-        $addOrEditOpeningStock->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
-        $addOrEditOpeningStock->subtotal = $request->subtotals[$index];
+        $addOrEditOpeningStock->quantity = isset($request->quantities[$index]) ? $request->quantities[$index] : 0;
+        $addOrEditOpeningStock->unit_cost_inc_tax = isset($request->unit_costs_inc_tax[$index]) ? $request->unit_costs_inc_tax[$index] : 0;
+        $addOrEditOpeningStock->subtotal = isset($request->subtotals[$index]) ? $request->subtotals[$index] : 0;
         $addOrEditOpeningStock->date = $date;
         $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date.' 01:00:00'));
         $addOrEditOpeningStock->save();

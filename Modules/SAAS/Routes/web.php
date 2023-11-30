@@ -44,10 +44,11 @@ Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->nam
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 
 // Auth User **Not-Verified
+
 Route::middleware('is_auth')->group(function () {
     Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
     Route::post('/email/verify/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
     Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 });
 

@@ -797,6 +797,20 @@
             - parseFloat(itemTotalTaxAmount);
 
         $('#sale_ledger_amount').val(salesLedgerAmount);
+
+        var paidAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+        var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closingBalance) - parseFloat(calcTotalAmount) + parseFloat(paidAmount);
+        } else {
+
+            currentBalance = parseFloat(closingBalance) + parseFloat(calcTotalAmount) - parseFloat(paidAmount);
+        }
+
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     $(document).on('input', '#return_discount', function() {
@@ -809,6 +823,11 @@
         calculateTotalAmount();
         var returnTaxPercent = $(this).find('option:selected').data('return_tax_percent') ? $(this).find('option:selected').data('return_tax_percent') : 0;
         $('#return_tax_percent').val(parseFloat(returnTaxPercent).toFixed(2));
+    });
+
+    $(document).on('input', '#paying_amount', function() {
+
+        calculateTotalAmount();
     });
 
     $(document).on('click', '#remove_product_btn', function(e) {
@@ -994,39 +1013,49 @@
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    $('#customer_account_id').on('change', function() {
+    $(document).on('change', '#customer_account_id', function() {
 
-        var customer_account_id = $(this).val();
-        $('#current_balance').val(parseFloat(0).toFixed(2));
-        if (customer_account_id) {
+        $('#closing_balance').val(parseFloat(0).toFixed(2));
 
-            // getAccountClosingBalance(supplier_account_id);
+        var accountId = $(this).val();
+        if (accountId == '') {
+
             return;
         }
+
+        var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+        var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
+        var __branchId = subSubGroupNumber != 6 ? branchId : null;
+        var filterObj = {
+            branch_id : __branchId,
+            from_date : null,
+            to_date : null,
+        };
+
+        var url = "{{ route('accounts.balance', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
+
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            }, error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
     });
-
-    // function getAccountClosingBalance(account_id) {
-
-    //     var filterObj = {
-    //         user_id: null,
-    //         from_date: null,
-    //         to_date: null,
-    //     };
-
-    //     var url = "";
-    //     var route = url.replace(':account_id', account_id);
-
-    //     $.ajax({
-    //         url: route,
-    //         type: 'get',
-    //         data: filterObj,
-    //         success: function(data) {
-
-    //             $('#current_balance').val(data['closing_balance_string']);
-    //             calculateTotalAmount();
-    //         }
-    //     });
-    // }
 
     $('select').on('select2:close', function(e) {
 

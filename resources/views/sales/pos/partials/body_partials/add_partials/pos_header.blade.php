@@ -129,7 +129,7 @@
                                     </div>
                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                         @foreach ($customerAccounts as $customerAccount)
-                                            <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                            <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
@@ -142,12 +142,10 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="Scan/Search Items by SKU/Barcode" autofocus autocomplete="off">
-                                        @if (auth()->user()->can('product_add'))
-                                            <div class="input-group-append add_button" id="add_product">
-                                                <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                                            </div>
-                                        @endif
+                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __("Search Product by Name/Barcode") }}" autofocus autocomplete="off">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                        </div>
                                     </div>
 
                                     <div class="select_area">

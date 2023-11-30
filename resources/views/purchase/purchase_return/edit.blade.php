@@ -474,7 +474,11 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Received Amount") }}</b> <strong>>></strong></label>
                                                 <div class="col-8">
-                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
+                                                    <div class="input-group">
+                                                        <input type="number" step="any" name="received_amount" class="form-control fw-bold w-75" id="received_amount" value="0.00" data-next="receipt_date" autocomplete="off">
+                                                        <input type="text" name="receipt_date" class="form-control w-25" id="receipt_date" value="{{ date($generalSettings['business__date_format']) }}" data-next="payment_method_id" autocomplete="off">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

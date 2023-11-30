@@ -1,6 +1,12 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $return?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -199,7 +205,7 @@
                                 <tr>
                                     <th class="text-end">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt(0) }}
+                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                    </td>
                                 </tr>
                             </table>
@@ -398,7 +404,7 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                             </td>
                         </tr>
 
@@ -407,11 +413,11 @@
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($return->return_discount_type == 1)
 
-                                    <b>({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}</b>
+                                    ({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}
                                 @else
 
-                                    <b>({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%=)
-                                    {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}</b>
+                                    ({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%=)
+                                    {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
                                 @endif
                             </td>
                         </tr>
@@ -419,35 +425,35 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Return Tax") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ '('.$return->return_tax_percent.'%)='. $return->return_tax_amount }}</b>
+                                {{ '('.$return->return_tax_percent.'%)='. $return->return_tax_amount }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Returned Amount') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($return->received_amount) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($return->received_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Due (On Return Voucher)") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt($return->due) }}</b>
+                                {{ App\Utils\Converter::format_in_bdt($return->due) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                {{ $amounts['closing_balance_in_flat_amount_string'] }}
                             </td>
                         </tr>
                     </thead>
@@ -480,7 +486,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($return->voucher_no, $generator::TYPE_CODE_128)) }}">
-                <p><b>{{ $return->voucher_no }}</b></p>
+                <p>{{ $return->voucher_no }}</p>
             </div>
         </div>
 

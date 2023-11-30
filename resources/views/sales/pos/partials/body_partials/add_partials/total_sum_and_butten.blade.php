@@ -242,8 +242,8 @@
                                         {{ __("Credit Sale") }} {{ __("Alt+A") }}
                                     </button>
                                 @else
-                                    <a href="#" id="credit_sale_disabled" onclick="event.preventDefault(); toastr.error('Full credit sale is disabled.');" class="function-card">{{ __("Credit Sale") }}<p>{{ __("Alt+A") }}</p>
-                                    </a>
+                                    <button type="button" id="credit_sale_disabled" onclick="event.preventDefault(); toastr.error('Full credit sale is disabled.');" class="btn-pos pos_submit_btn btn btn-pos">{{ __("Credit Sale") }} {{ __("Alt+A") }}
+                                    </button>
                                 @endif
                             </div>
 

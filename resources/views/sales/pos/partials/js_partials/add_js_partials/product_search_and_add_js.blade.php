@@ -66,9 +66,11 @@
 
                         if (product.variants.length == 0) {
 
-                            var stock = product.product_branch_stock.stock;
+                            var stock = product.product_branch_stock != null ? product.product_branch_stock.stock : 0;
 
-                            if (stock == 0) {
+                            var __stock = product.is_manage_stock == 0 ? Number.MAX_SAFE_INTEGER : stock;
+
+                            if (__stock == 0) {
 
                                 toastr.error("{{ __('Product stock is 0') }}");
                                 return;
@@ -125,7 +127,12 @@
                                 tr += '<tr class="product_row">';
                                 tr += '<td id="serial">1</td>';
                                 tr += '<td class="text-start">';
-                                tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                                // tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+
+                                tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                                tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
+                                tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + product.is_show_emi_on_pos + '">';
+                                tr += '<input type="hidden" name="descriptions[]" id="description">';
                                 tr += '<input type="hidden" id="product_name" value="' + name + '">';
                                 tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product.id + '">';
                                 tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="noid">';
@@ -138,7 +145,7 @@
                                 tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + parseFloat(discount_amount) + '">';
                                 tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + (product.update_product_cost != null ? product.update_product_cost.net_unit_cost : product.product_cost_with_tax) + '">';
                                 tr += ' <input type="hidden" id="current_quantity" value="0">';
-                                tr += '<input type="hidden" id="current_stock" value="' + stock + '">';
+                                tr += '<input type="hidden" id="current_stock" value="' + __stock + '">';
                                 tr += '<input type="hidden" class="unique_id" id="' + product.id + 'noid' + '" value="' + product.id + 'noid' + '">';
                                 tr += '</td>';
 
@@ -175,7 +182,7 @@
                                 var currentQty = exTr.find('#quantity').val() ? exTr.find('#quantity').val() : 0;
                                 var updateQty = parseFloat(currentQty) + 1;
 
-                                if (updateQty > stock) {
+                                if (updateQty > __stock) {
 
                                     toastr.error("{{ __('Quantity exceed the current stock') }}");
                                     return;
@@ -214,9 +221,11 @@
                         $('.select_area').hide();
 
                         var variant = product.variant_product;
-                        var stock = variant.variant_branch_stock.stock;
+                        var stock = variant.variant_branch_stock != null ? variant.variant_branch_stock.stock : 0;
 
-                        if (stock == 0) {
+                        var __stock = product.is_manage_stock == 0 ? Number.MAX_SAFE_INTEGER : stock;
+
+                        if (__stock == 0) {
 
                             toastr.error("{{ __('Product stock is 0') }}");
                             return;
@@ -232,7 +241,6 @@
                         if (uniqueIdValue == undefined) {
 
                             var price = 0;
-
                             var __price = priceGroups.filter(function(value) {
 
                                 return value.price_group_id == price_group_id && value.product_id == variant.product.id && value.variant_id == variant.id;
@@ -256,7 +264,6 @@
                             }
 
                             var __price_with_discount = parseFloat(price) - parseFloat(discount_amount);
-
                             var tax_amount = parseFloat(__price_with_discount) / 100 * parseFloat(taxPercent);
                             var unitPriceIncTax = parseFloat(__price_with_discount) + parseFloat(tax_amount);
 
@@ -272,9 +279,11 @@
                             var tr = '';
                             tr += '<tr class="product_row">';
                             tr += '<td id="serial">1</td>';
-
                             tr += '<td class="text-start">';
-                            tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + name + ' - ' + variant.variant_name + '</a><br/><input type="' + (variant.product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                            tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                            tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
+                            tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + product.is_show_emi_on_pos + '">';
+                            tr += '<input type="hidden" name="descriptions[]" id="description">';
                             tr += '<input type="hidden" id="product_name" value="' + name + ' - ' + variant.variant_name + '">';
                             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + variant.product.id + '">';
                             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant.id + '">';
@@ -287,7 +296,7 @@
                             tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + parseFloat(discount_amount) + '">';
                             tr += '<input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="' + (variant.update_variant_cost ? variant.update_variant_cost.net_unit_cost : variant.variant_cost_with_tax) + '">';
                             tr += ' <input type="hidden" id="current_quantity" value="0">';
-                            tr += '<input type="hidden" id="current_stock" value="' + stock + '">';
+                            tr += '<input type="hidden" id="current_stock" value="' + __stock + '">';
                             tr += '<input type="hidden" class="unique_id" id="' + variant.product.id +''+ variant.id + '" value="' + variant.product.id +''+ variant.id + '">';
                             tr += '</td>';
 
@@ -323,7 +332,7 @@
                             var currentQty = exTr.find('#quantity').val() ? exTr.find('#quantity').val() : 0;
                             var updateQty = parseFloat(currentQty) + 1;
 
-                            if (updateQty > stock) {
+                            if (updateQty > __stock) {
 
                                 toastr.error("{{ __('Quantity exceed the current stock') }}");
                                 return;
@@ -490,7 +499,10 @@
                         tr += '<tr class="product_row">';
                         tr += '<td class="fw-bold" id="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + __name + '</a><br/><input type="' + (is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
+                        tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                        tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
+                        tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + is_show_emi_on_pos + '">';
+                        tr += '<input type="hidden" name="descriptions[]" id="description">';
                         tr += '<input type="hidden" id="product_name" value="' + __name + '">';
                         tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + product_id + '">';
                         tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + variant_id + '">';

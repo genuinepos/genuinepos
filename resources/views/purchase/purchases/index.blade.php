@@ -319,9 +319,14 @@
         $(document).on('click', '#modalDetailsPrintBtn', function(e) {
             e.preventDefault();
 
+            var filename = $(this).attr('filename');
             var body = $('.print_modal_details').html();
 
-            document.title = 'some title';
+            document.title = filename;
+
+            setTimeout(function() {
+                document.title = "Purchase List - GPOSS";
+            }, 1000);
 
             $(body).printThis({
                 debug: false,

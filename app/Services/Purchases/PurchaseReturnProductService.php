@@ -2,6 +2,7 @@
 
 namespace App\Services\Purchases;
 
+use App\Enums\BooleanType;
 use App\Models\Purchases\PurchaseReturnProduct;
 
 class PurchaseReturnProductService
@@ -67,6 +68,7 @@ class PurchaseReturnProductService
         $addOrEditPurchaseReturnProduct->unit_tax_amount = $request->unit_tax_amounts[$index];
         $addOrEditPurchaseReturnProduct->unit_cost_inc_tax = $request->unit_costs_inc_tax[$index];
         $addOrEditPurchaseReturnProduct->return_subtotal = $request->subtotals[$index];
+        $addOrEditPurchaseReturnProduct->is_delete_in_update = BooleanType::False->value;
         $addOrEditPurchaseReturnProduct->save();
 
         $addOrEditPurchaseReturnProduct->current_tax_ac_id = $currentUnitTaxAcId;

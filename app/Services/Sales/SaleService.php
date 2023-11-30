@@ -398,6 +398,7 @@ class SaleService
             isset($request->is_full_credit_sale)
             && $request->is_full_credit_sale == 0
             && $request->received_amount == 0
+            && $request->current_balance > 0
             && $request->status == SaleStatus::Final->value
         ) {
 

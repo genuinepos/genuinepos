@@ -57,7 +57,7 @@
                                         <div class="col-8">
                                             <select required name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="sale_invoice_id" autofocus>
                                                 @foreach ($customerAccounts as $customerAccount)
-                                                    <option data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name.'/'.$customerAccount->phone }}</option>
+                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name.'/'.$customerAccount->phone }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_customer_account_id"></span>
@@ -65,9 +65,9 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4 text-danger"><b>{{ __("Curr. Bal") }}</b></label>
+                                        <label class="col-4"><b>{{ __("Closing Balance") }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control fw-bold" id="current_balance" value="0.00" tabindex="-1">
+                                            <input readonly type="text" class="form-control text-danger fw-bold" id="closing_balance" value="0.00" tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -445,7 +445,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Current Balance') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="current_balance" class="form-control fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
+                                                    <input readonly type="text" name="current_balance" class="form-control text-danger fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
                                                 </div>
                                             </div>
                                         </div>

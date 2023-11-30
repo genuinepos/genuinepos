@@ -2,29 +2,32 @@
 
 namespace App\Http\Controllers\Purchases;
 
+use Illuminate\Http\Request;
+use App\Enums\DayBookVoucherType;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
+use App\Services\Setups\BranchService;
+use App\Enums\AccountLedgerVoucherType;
+use App\Enums\ProductLedgerVoucherType;
+use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Purchases\PurchaseReturnProductService;
-use App\Services\Purchases\PurchaseReturnService;
+use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
-use App\Services\Setups\BranchService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
-use App\Services\Setups\WarehouseService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Products\ProductStockService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Purchases\PurchaseReturnService;
+use App\Services\Accounts\AccountingVoucherService;
+use App\Services\Purchases\PurchaseReturnProductService;
 use Modules\Communication\Interface\EmailServiceInterface;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 
 class PurchaseReturnController extends Controller
 {
@@ -53,7 +56,7 @@ class PurchaseReturnController extends Controller
     // Sale return index view
     public function index(Request $request)
     {
-        if (! auth()->user()->can('purchase_return_index')) {
+        if (!auth()->user()->can('purchase_return_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -79,7 +82,8 @@ class PurchaseReturnController extends Controller
             'purchase',
             'branch',
             'branch.parentBranch',
-            'supplier:id,name,phone,address',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group',
             'createdBy:id,prefix,name,last_name',
             'purchaseReturnProducts',
             'purchaseReturnProducts.product',
@@ -106,7 +110,7 @@ class PurchaseReturnController extends Controller
     // create purchase return view
     public function create()
     {
-        if (! auth()->user()->can('purchase_return_add')) {
+        if (!auth()->user()->can('purchase_return_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -153,7 +157,7 @@ class PurchaseReturnController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_return_add')) {
+        if (!auth()->user()->can('purchase_return_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -188,18 +192,18 @@ class PurchaseReturnController extends Controller
 
             $addReturn = $this->purchaseReturnService->addPurchaseReturn(request: $request, voucherPrefix: $purchaseReturnVoucherPrefix, codeGenerator: $codeGenerator);
 
-            $this->dayBookService->addDayBook(voucherTypeId: 6, date: $request->date, accountId: $request->supplier_account_id, transId: $addReturn->id, amount: $request->total_return_amount, amountType: 'debit');
+            $this->dayBookService->addDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $request->date, accountId: $request->supplier_account_id, transId: $addReturn->id, amount: $request->total_return_amount, amountType: 'debit');
 
             // Add Purchase A/c Ledger Entry
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit');
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $request->date, account_id: $request->purchase_account_id, trans_id: $addReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit');
 
             // Add supplier A/c ledger Entry For Purchase
-            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addReturn->id, amount: $request->total_return_amount, amount_type: 'debit');
+            $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $request->supplier_account_id, date: $request->date, trans_id: $addReturn->id, amount: $request->total_return_amount, amount_type: 'debit');
 
             if ($request->return_tax_ac_id) {
 
                 // Add Tax A/c ledger Entry For Purchase
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 4, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'credit');
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $addReturn->id, amount: $request->return_tax_amount, amount_type: 'credit');
             }
 
             $index = 0;
@@ -208,13 +212,13 @@ class PurchaseReturnController extends Controller
                 $addPurchaseReturnProduct = $this->purchaseReturnProductService->addPurchaseReturnProduct(request: $request, purchaseReturnId: $addReturn->id, index: $index);
 
                 // Add Product Ledger Entry
-                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: $addPurchaseReturnProduct->variant_id, warehouseId: ($addPurchaseReturnProduct->warehouse_id ? $addPurchaseReturnProduct->warehouse_id : null));
+                $this->productLedgerService->addProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $request->date, productId: $productId, transId: $addPurchaseReturnProduct->id, rate: $addPurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $addPurchaseReturnProduct->return_qty, subtotal: $addPurchaseReturnProduct->return_subtotal, variantId: $addPurchaseReturnProduct->variant_id, warehouseId: ($addPurchaseReturnProduct->warehouse_id ? $addPurchaseReturnProduct->warehouse_id : null));
 
                 // purchase product tax will be go here
                 if ($addPurchaseReturnProduct->tax_ac_id) {
 
                     // Add Tax A/c ledger Entry
-                    $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 19, date: $request->date, account_id: $addPurchaseReturnProduct->tax_ac_id, trans_id: $addPurchaseReturnProduct->id, amount: ($addPurchaseReturnProduct->unit_tax_amount * $addPurchaseReturnProduct->return_qty), amount_type: 'credit');
+                    $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturnProductTax->value, date: $request->date, account_id: $addPurchaseReturnProduct->tax_ac_id, trans_id: $addPurchaseReturnProduct->id, amount: ($addPurchaseReturnProduct->unit_tax_amount * $addPurchaseReturnProduct->return_qty), amount_type: 'credit');
                 }
 
                 $index++;
@@ -228,7 +232,7 @@ class PurchaseReturnController extends Controller
                 $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'dr', amount: $request->received_amount, note: null);
 
                 //Add debit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
 
                 // Add Credit Account Accounting voucher Description
                 $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->received_amount);
@@ -237,7 +241,7 @@ class PurchaseReturnController extends Controller
                 $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$addReturn->id]);
 
                 //Add Credit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->supplier_account_id);
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->supplier_account_id);
             }
 
             $__index = 0;
@@ -281,6 +285,7 @@ class PurchaseReturnController extends Controller
                 'branch',
                 'branch.parentBranch',
                 'supplier',
+                'supplier.group',
                 'purchaseReturnProducts',
                 'purchaseReturnProducts.product',
                 'purchaseReturnProducts.variant',
@@ -296,7 +301,7 @@ class PurchaseReturnController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('purchase_return_edit')) {
+        if (!auth()->user()->can('purchase_return_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -360,7 +365,7 @@ class PurchaseReturnController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_return_edit')) {
+        if (!auth()->user()->can('purchase_return_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -402,21 +407,21 @@ class PurchaseReturnController extends Controller
             $updateReturn = $this->purchaseReturnService->updatePurchaseReturn(request: $request, updatePurchaseReturn: $return);
 
             // Update Day Book entry for Purchase
-            $this->dayBookService->updateDayBook(voucherTypeId: 6, date: $request->date, accountId: $request->supplier_account_id, transId: $updateReturn->id, amount: $request->total_return_amount, amountType: 'debit');
+            $this->dayBookService->updateDayBook(voucherTypeId: DayBookVoucherType::PurchaseReturn->value, date: $updateReturn->date, accountId: $updateReturn->supplier_account_id, transId: $updateReturn->id, amount: $updateReturn->total_return_amount, amountType: 'debit');
 
-            // Update supplier A/c ledger Entry For Purchase
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, account_id: $request->supplier_account_id, date: $request->date, trans_id: $updateReturn->id, amount: $request->total_return_amount, amount_type: 'debit', branch_id: $updateReturn->branch_id);
+            // Update supplier A/c ledger Entry For Purchase return
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $updateReturn->supplier_account_id, date: $updateReturn->date, trans_id: $updateReturn->id, amount: $updateReturn->total_return_amount, amount_type: 'debit', branch_id: $updateReturn->branch_id, current_account_id: $storedCurrSupplierAccountId);
 
             // Update Purchase A/c Ledger Entry
-            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, date: $request->date, account_id: $request->purchase_account_id, trans_id: $updateReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
+            $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, date: $updateReturn->date, account_id: $updateReturn->purchase_account_id, trans_id: $updateReturn->id, amount: $request->purchase_ledger_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id, current_account_id: $storedCurrPurchaseAccountId);
 
             if ($request->return_tax_ac_id) {
 
                 // Update Tax A/c ledger Entry For Purchase
-                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 4, account_id: $request->return_tax_ac_id, date: $request->date, trans_id: $updateReturn->id, amount: $request->return_tax_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
+                $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturn->value, account_id: $updateReturn->return_tax_ac_id, date: $updateReturn->date, trans_id: $updateReturn->id, amount: $updateReturn->return_tax_amount, amount_type: 'credit', branch_id: $updateReturn->branch_id);
             } else {
 
-                $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 4, transId: $updateReturn->id, accountId: $storedCurrReturnTaxAccountId);
+                $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturn->value, transId: $updateReturn->id, accountId: $storedCurrReturnTaxAccountId);
             }
 
             $index = 0;
@@ -425,15 +430,15 @@ class PurchaseReturnController extends Controller
                 $updatePurchaseReturnProduct = $this->purchaseReturnProductService->updatePurchaseReturnProduct(request: $request, purchaseReturnId: $updateReturn->id, index: $index);
 
                 // Update Product Ledger Entry
-                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: 4, date: $request->date, productId: $productId, transId: $updatePurchaseReturnProduct->id, rate: $updatePurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $updatePurchaseReturnProduct->return_qty, subtotal: $updatePurchaseReturnProduct->return_subtotal, variantId: $updatePurchaseReturnProduct->variant_id, warehouseId: ($updatePurchaseReturnProduct->warehouse_id ? $updatePurchaseReturnProduct->warehouse_id : null), currentWarehouseId: $updatePurchaseReturnProduct->current_warehouse_id, branchId: $updateReturn->branch_id);
+                $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::PurchaseReturn->value, date: $request->date, productId: $productId, transId: $updatePurchaseReturnProduct->id, rate: $updatePurchaseReturnProduct->unit_cost_inc_tax, quantityType: 'out', quantity: $updatePurchaseReturnProduct->return_qty, subtotal: $updatePurchaseReturnProduct->return_subtotal, variantId: $updatePurchaseReturnProduct->variant_id, warehouseId: ($updatePurchaseReturnProduct->warehouse_id ? $updatePurchaseReturnProduct->warehouse_id : null), currentWarehouseId: $updatePurchaseReturnProduct->current_warehouse_id, branchId: $updateReturn->branch_id);
 
                 if ($updatePurchaseReturnProduct->tax_ac_id) {
 
                     // Update Tax A/c ledger Entry
-                    $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: 19, date: $request->date, account_id: $updatePurchaseReturnProduct->tax_ac_id, trans_id: $updatePurchaseReturnProduct->id, amount: ($updatePurchaseReturnProduct->unit_tax_amount * $updatePurchaseReturnProduct->return_qty), amount_type: 'credit', branch_id: $updateReturn->branch_id);
+                    $this->accountLedgerService->updateAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::PurchaseReturnProductTax->value, date: $request->date, account_id: $updatePurchaseReturnProduct->tax_ac_id, trans_id: $updatePurchaseReturnProduct->id, amount: ($updatePurchaseReturnProduct->unit_tax_amount * $updatePurchaseReturnProduct->return_qty), amount_type: 'credit', branch_id: $updateReturn->branch_id);
                 } else {
 
-                    $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: 19, transId: $updatePurchaseReturnProduct->id, accountId: $updatePurchaseReturnProduct->current_tax_ac_id);
+                    $this->accountLedgerService->deleteUnusedLedgerEntry(voucherType: AccountLedgerVoucherType::PurchaseReturnProductTax->value, transId: $updatePurchaseReturnProduct->id, accountId: $updatePurchaseReturnProduct->current_tax_ac_id);
                 }
 
                 $index++;
@@ -441,13 +446,15 @@ class PurchaseReturnController extends Controller
 
             if ($request->received_amount > 0) {
 
-                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->receipt_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, purchaseReturnRefId: $updateReturn->id);
+                $receiptDate = $request->receipt_date ? $request->receipt_date : $request->date;
+
+                $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $receiptDate, voucherType: AccountingVoucherType::Receipt->value, remarks: $request->receipt_note, codeGenerator: $codeGenerator, voucherPrefix: $receiptVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount, purchaseReturnRefId: $updateReturn->id);
 
                 // Add Accounting Voucher Description Credit Entry
                 $addAccountingVoucherDebitDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->account_id, paymentMethodId: null, amountType: 'dr', amount: $request->received_amount, note: null);
 
                 //Add debit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $receiptDate, account_id: $request->account_id, trans_id: $addAccountingVoucherDebitDescription->id, amount: $request->received_amount, amount_type: 'debit');
 
                 // Add Credit Account Accounting voucher Description
                 $addAccountingVoucherCreditDescription = $this->accountingVoucherDescriptionService->addAccountingVoucherDescription(accountingVoucherId: $addAccountingVoucher->id, accountId: $request->supplier_account_id, paymentMethodId: $request->payment_method_id, amountType: 'cr', amount: $request->received_amount);
@@ -456,7 +463,7 @@ class PurchaseReturnController extends Controller
                 $this->accountingVoucherDescriptionReferenceService->addAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $addAccountingVoucherCreditDescription->id, accountId: $request->supplier_account_id, amount: $request->received_amount, refIdColName: 'purchase_return_id', refIds: [$updateReturn->id]);
 
                 //Add Credit Ledger Entry
-                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: 8, date: $request->date, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
+                $this->accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Receipt->value, date: $receiptDate, account_id: $request->supplier_account_id, trans_id: $addAccountingVoucherCreditDescription->id, amount: $request->received_amount, amount_type: 'credit', cash_bank_account_id: $request->account_id);
             }
 
             $__index = 0;
@@ -478,7 +485,7 @@ class PurchaseReturnController extends Controller
                 $__index++;
             }
 
-            $deletedUnusedPurchaseReturnProducts = $this->purchaseReturnProductService->purchaseReturnProducts()->where('purchase_return_id', $updateReturn->id)->where('is_delete_in_update', 1)->get();
+            $deletedUnusedPurchaseReturnProducts = $this->purchaseReturnProductService->purchaseReturnProducts()->where('purchase_return_id', $updateReturn->id)->where('is_delete_in_update', BooleanType::True->value)->get();
             if (count($deletedUnusedPurchaseReturnProducts) > 0) {
 
                 foreach ($deletedUnusedPurchaseReturnProducts as $deletedUnusedPurchaseReturnProduct) {
@@ -524,7 +531,7 @@ class PurchaseReturnController extends Controller
     //Deleted purchase return
     public function delete($id)
     {
-        if (! auth()->user()->can('purchase_return_delete')) {
+        if (!auth()->user()->can('purchase_return_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

@@ -17,9 +17,9 @@
                      <div class="col-md-4">
                          <ul class="list-unstyled">
                              <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : - </strong></li>
-                             <li style="font-size:11px!important;"><strong>{{ __("Name") }} : </strong> <span class="supplier_name">{{ $purchase->supplier->name }}</span></li>
-                             <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong> <span class="supplier_address">{{ $purchase->supplier->address }}</span></li>
-                             <li style="font-size:11px!important;"><strong>{{ __("Phone") }}: </strong> <span class="supplier_phone">{{ $purchase->supplier->phone }}</span></li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Name") }} : </strong> {{ $purchase->supplier->name }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Address") }} : </strong> {{ $purchase->supplier->address }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Phone") }}: </strong> {{ $purchase->supplier->phone }}</li>
                          </ul>
                      </div>
 
@@ -250,8 +250,8 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">@lang('menu.edit')</a>
-                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __("Print") }}</button>
+                            <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
+                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn" filename="{{ 'Purchase - '.$purchase->invoice_id.' - '.$purchase->date }}">{{ __("Print") }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                         </div>
                     </div>

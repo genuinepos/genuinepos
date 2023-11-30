@@ -1,6 +1,13 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $sale?->customer;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
  <!-- Details Modal -->
  <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -25,7 +32,7 @@
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($dateFormat.' '.$timeFormat, strtotime($sale->sale_date_ts)) }}</li>
                              <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong> {{ $sale->invoice_id }}</li>
 
                              <li style="font-size:11px!important;"><strong>{{ __("Payment Status") }} : </strong>
@@ -241,7 +248,7 @@
                                 <tr>
                                     <th class="text-end">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                                     <td class="text-end">
-                                        {{ App\Utils\Converter::format_in_bdt(0) }}
+                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                    </td>
                                 </tr>
                             </table>

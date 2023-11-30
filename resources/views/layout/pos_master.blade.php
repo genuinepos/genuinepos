@@ -284,19 +284,11 @@
     <!-- Hold invoice list modal End-->
 
     @if (auth()->user()->can('product_add'))
-        <!--Add Product Modal-->
-        <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-            <div class="modal-dialog four-col-modal" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="exampleModalLabel">@lang('menu.add_product')</h6>
-                        <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close" tabindex="-1"><span class="fas fa-times"></span></a>
-                    </div>
-                    <div class="modal-body" id="add_product_body"></div>
-                </div>
-            </div>
-        </div>
-        <!--Add Product Modal End-->
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 
     <!--Add Customer Modal-->
@@ -326,6 +318,7 @@
                             <input type="hidden" id="e_variant_id">
                             <input type="hidden" id="e_tax_amount">
                             <input type="hidden" id="e_price_inc_tax">
+                            <input type="hidden" id="e_is_show_emi_on_pos">
                         </div>
 
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
@@ -340,7 +333,7 @@
                         @endif
 
                         <div class="row g-2 align-items-end">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label> <strong>{{ __('Quantity') }}</strong> : <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
@@ -350,12 +343,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
                                 <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>{{ __('Unit Discount') }}</strong> </label>
                                 <div class="input-group">
                                     <select class="form-control" id="e_unit_discount_type">
@@ -367,10 +360,8 @@
                                     <input type="hidden" id="e_discount_amount" />
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row g-2 align-items-end">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label><strong>{{ __('Vat/Tax') }}</strong> </label>
                                 <div class="input-group">
                                     <select id="e_tax_ac_id" class="form-control w-50">
@@ -388,8 +379,15 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-4">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-3" id="description_field">
+                                <label class="fw-bold">{{ __('IMEI, Serial number or other info.') }}</label>
+                                <input type="text" class="form-control" id="e_description" placeholder="{{ __('IMEI, Serial number or other info.') }}" tabindex="-1">
+                            </div>
+
+                            <div class="col-md-3">
                                 <label class="fw-bold">{{ __('Subtotal') }}</label>
                                 <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                             </div>

@@ -60,7 +60,6 @@
         // Update Total payable Amount
         var calcOrderTaxAmount = $('#order_tax_amount').val() ? $('#order_tax_amount').val() : 0;
         var shipmentCharge = $('#shipment_charge').val() ? $('#shipment_charge').val() : 0;
-        var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
 
         var calcTotalInvoiceAmount = parseFloat(netTotalAmount)
                                 - parseFloat(orderDiscountAmount)
@@ -76,22 +75,38 @@
 
         $('#sales_ledger_amount').val(parseFloat(salesLedgerAmount).toFixed(2));
 
-        var calcTotalReceivableAmount = parseFloat(netTotalAmount) -
-            parseFloat(orderDiscountAmount) +
-            parseFloat(calcOrderTaxAmount) +
-            parseFloat(shipmentCharge) +
-            parseFloat(previousDue);
+        var accountDefaultBalanceType = $('#customer_account_id').find('option:selected').data('default_balance_type');
+        var previousDue = $('#previous_due').val() ? $('#previous_due').val() : 0;
+        var calcTotalReceivableAmount = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            calcTotalReceivableAmount = parseFloat(previousDue) + parseFloat(calcTotalInvoiceAmount);
+        } else {
+
+            calcTotalReceivableAmount = parseFloat(previousDue) - parseFloat(calcTotalInvoiceAmount);
+        }
 
         $('#total_receivable_amount').val(parseFloat(calcTotalReceivableAmount).toFixed(2));
 
-        //$('#paying_amount').val(parseFloat(calcTotalPayableAmount).toFixed(2));
-        // Update purchase due
 
         var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
         var changeAmount = parseFloat(receivedAmount) - parseFloat(calcTotalReceivableAmount);
         $('#change_amount').val(parseFloat(changeAmount >= 0 ? changeAmount : 0).toFixed(2));
-        var currentBalance = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
-        var __currentBalance = parseFloat(currentBalance) >= 0 ? parseFloat(currentBalance) : 0
+        // var currentBalance = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
+        // var __currentBalance = parseFloat(currentBalance) >= 0 ? parseFloat(currentBalance) : 0
+        // $('#current_balance').val(parseFloat(__currentBalance).toFixed(2));
+
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(calcTotalReceivableAmount) - parseFloat(receivedAmount);
+        } else {
+
+            currentBalance = parseFloat(calcTotalReceivableAmount) + parseFloat(receivedAmount);
+        }
+
+        var __currentBalance = currentBalance > 0 ? currentBalance : 0;
+
         $('#current_balance').val(parseFloat(__currentBalance).toFixed(2));
     }
 

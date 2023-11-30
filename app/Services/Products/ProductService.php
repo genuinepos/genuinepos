@@ -674,7 +674,7 @@ class ProductService
         }
     }
 
-    public function singleProduct(int $id, ?array $with = null, ?array $firstWithSelect = null): ?object
+    public function singleProduct(int $id, array $with = null, array $firstWithSelect = null): ?object
     {
         $query = Product::query();
 

@@ -1,4 +1,4 @@
-<x-saas::guest title="Welcome">
+<x-saas::guest title="Plan Selection">
     <div class="container mt-3">
         <div class="card pb-5">
             <div class="card-header">

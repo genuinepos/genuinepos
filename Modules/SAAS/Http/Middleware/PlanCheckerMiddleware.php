@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SAAS\app\Http\Middleware;
+namespace Modules\SAAS\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -23,14 +23,14 @@ class PlanCheckerMiddleware
         $isVerified = isset($tenant->is_verified) && ($tenant->is_verified == 1);
         $enjoyedTrialDays = today()->diffInDays($tenantCreatedAt);
 
-        if($enjoyedTrialDays > 3 && $enjoyedTrialDays <= 7) {
-            // Send to verification page
-            if(! $isVerified) {
-                return redirect()->route('saas.plan.confirm', ['plan' =>'trial'])->with('error', __('Purchase a plan to continue'));
+        if ($enjoyedTrialDays > 3 && $enjoyedTrialDays <= 7) {
+            if (! $isVerified) {
+                return redirect()->route('saas.business-verification.index')->with('error', __('Verify your Business Email to continue'));
             }
-            // Send to payment page
-            return redirect()->route('saas.plan.confirm', ['plan' =>'trial'])->with('error', __('Purchase a plan to continue'));
+        } elseif ($enjoyedTrialDays > 7) {
+            return redirect()->route('saas.plan.all')->with('error', __('Purchase a plan to continue'));
         }
+
         return $next($request);
     }
 }

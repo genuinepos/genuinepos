@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
-use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Services\Setups\BranchService;
 use App\Enums\ProductLedgerVoucherType;
-use App\Services\Products\BrandService;
+use App\Http\Controllers\Controller;
 use App\Services\Accounts\AccountService;
-use App\Services\Products\ProductService;
-use App\Services\Setups\WarehouseService;
-use App\Services\Products\CategoryService;
-use App\Services\Products\WarrantyService;
-use App\Services\Products\PriceGroupService;
+use App\Services\Products\BrandService;
 use App\Services\Products\BulkVariantService;
+use App\Services\Products\CategoryService;
 use App\Services\Products\OpeningStockService;
-use App\Services\Products\ProductStockService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductVariantService;
-use App\Services\Purchases\PurchaseProductService;
+use App\Services\Products\PriceGroupService;
 use App\Services\Products\ProductAccessBranchService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Products\ProductService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\ProductVariantService;
+use App\Services\Products\UnitService;
+use App\Services\Products\WarrantyService;
+use App\Services\Purchases\PurchaseProductService;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\WarehouseService;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuickProductAddController extends Controller
 {
@@ -73,7 +73,7 @@ class QuickProductAddController extends Controller
         return view('product.products.quick_add_product.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'lastProductSerialCode', 'warehouses'));
     }
 
-    function store(Request $request)
+    public function store(Request $request)
     {
         $this->validate(
             $request,

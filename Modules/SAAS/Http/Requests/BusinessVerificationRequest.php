@@ -4,7 +4,7 @@ namespace Modules\SAAS\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class BusinessVerificationRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,6 @@ class LoginRequest extends FormRequest
     {
         $rules = [
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:6'],
         ];
         if (! config('app.debug')) {
             $rules['g-recaptcha-response'] = 'required|captcha';

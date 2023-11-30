@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
+use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\DashboardController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
@@ -29,6 +30,10 @@ Route::middleware('is_guest')->group(function () {
 
 Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
 
+Route::get('/business-verification', [BusinessVerificationController::class, 'index'])->name('business-verification.index');
+Route::post('/business-verification/send', [BusinessVerificationController::class, 'send'])->name('business-verification.send');
+Route::get('/business-verification/{hash}/verify', [BusinessVerificationController::class, 'verify'])->name('business-verification.verify');
+
 // All User
 Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
 Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
@@ -39,10 +44,11 @@ Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->nam
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 
 // Auth User **Not-Verified
+
 Route::middleware('is_auth')->group(function () {
     Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
     Route::post('/email/verify/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
     Route::delete('logout', [LoginController::class, 'logout'])->name('logout');
 });
 

@@ -6,7 +6,7 @@ use App\Models\Products\ProductOpeningStock;
 
 class OpeningStockService
 {
-    public function addOrEditProductOpeningStock(object $request, int $index, ?int $productId = null, ?int $variantId = null): object
+    public function addOrEditProductOpeningStock(object $request, int $index, int $productId = null, int $variantId = null): object
     {
         $generalSettings = config('generalSettings');
         $accountStartDate = $generalSettings['business__start_date'];

@@ -2,19 +2,20 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\Auth\VerificationController;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
-use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
-use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\PlanController;
-use Modules\SAAS\Http\Controllers\ProfileController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\RoleController;
-use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\UserController;
+use Modules\SAAS\Http\Controllers\LoginController;
+use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
+use Modules\SAAS\Http\Controllers\Auth\VerificationController;
+use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\BusinessVerificationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -28,6 +29,10 @@ Route::middleware('is_guest')->group(function () {
 });
 
 Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
+
+Route::get('/business-verification', [BusinessVerificationController::class, 'index'])->name('business-verification.index');
+Route::post('/business-verification/send', [BusinessVerificationController::class, 'send'])->name('business-verification.send');
+Route::get('/business-verification/{hash}/verify', [BusinessVerificationController::class, 'verify'])->name('business-verification.verify');
 
 // All User
 Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');

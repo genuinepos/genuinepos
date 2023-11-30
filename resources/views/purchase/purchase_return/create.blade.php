@@ -26,6 +26,8 @@
         .select_area ul li a:hover { background-color: #999396; color: #fff; }
 
         .element-body { overflow: initial !important; }
+
+        .big_amount_field { height: 36px;  font-size: 24px!important; margin-bottom: 3px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
@@ -56,9 +58,9 @@
                                         <label class="col-4"><b>{{ __("Supplier") }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
                                             <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="purchase_invoice_id" autofocus>
-                                                <option value="">{{ __("Select Supplier") }}</option>
+                                                <option data-default_balance_type="cr"  value="">{{ __("Select Supplier") }}</option>
                                                 @foreach ($supplierAccounts as $supplierAccount)
-                                                    <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
+                                                    <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_supplier_account_id"></span>
@@ -66,9 +68,9 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4 text-danger"><b>{{ __("Curr. Bal") }}</b></label>
+                                        <label class="col-4"><b>{{ __("Closing Balance") }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control fw-bold" id="current_balance" value="0.00" tabindex="-1">
+                                            <input readonly type="text" class="form-control text-danger fw-bold" id="closing_balance" value="0.00" tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -364,7 +366,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Received Amount") }}</b> <strong>>></strong></label>
                                                 <div class="col-8">
-                                                    <input type="number" step="any" name="received_amount" class="form-control fw-bold" id="received_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
+                                                    <input type="number" step="any" name="received_amount" class="form-control big_amount_field fw-bold" id="received_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -422,7 +424,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Current Balance') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="current_balance" class="form-control fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
+                                                    <input readonly type="text" name="current_balance" class="form-control text-danger fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
                                                 </div>
                                             </div>
                                         </div>

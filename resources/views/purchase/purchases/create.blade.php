@@ -28,6 +28,8 @@
         label.col-6 { text-align: right; padding-right: 10px; }
 
         .checkbox_input_wrap { text-align: right; }
+
+        .big_amount_field { height: 36px;  font-size: 24px!important; margin-bottom: 3px; }
     </style>
 @endpush
 @section('title', 'Add Purchase - ')
@@ -40,7 +42,7 @@
                     <h6>{{ __('Add Purchase') }}</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
@@ -58,9 +60,9 @@
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
                                                 <select required name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
-                                                    <option value="">{{ __('Select Supplier') }}</option>
+                                                    <option data-default_balance_type="cr" value="">{{ __('Select Supplier') }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
-                                                        <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
@@ -95,7 +97,7 @@
                                             <label class="col-4"><b>{{ __('Warehouse') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-8">
                                                 <select required class="form-control" name="warehouse_id" id="warehouse_id" data-next="date">
-                                                    <option value="">@lang('menu.select_warehouse')</option>
+                                                    <option value="">{{ __("Select Warehouse") }}</option>
                                                     @foreach ($warehouses as $w)
                                                         @php
                                                             $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
@@ -183,7 +185,7 @@
 
                                                 @if (auth()->user()->can('product_add'))
                                                     <div class="input-group-prepend">
-                                                        <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                        <span id="addProduct" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                     </div>
                                                 @endif
                                             </div>
@@ -271,13 +273,13 @@
                                     @endif
 
                                     <div class="col-xl-2 col-md-4">
-                                        <label class="fw-bold">@lang('menu.line_total')</label>
+                                        <label class="fw-bold">{{ __("Linetotal") }}</label>
                                         <input readonly type="number" step="any" class="form-control fw-bold" id="e_linetotal" value="0.00" placeholder="0.00" tabindex="-1">
                                     </div>
 
                                     <div class="col-xl-2 col-md-4">
-                                        <a href="#" class="btn btn-sm btn-success me-2" id="add_item">@lang('menu.add')</a>
-                                        <a href="#" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger">@lang('menu.reset')</a>
+                                        <a href="#" class="btn btn-sm btn-success me-2" id="add_item">{{ __("Add") }}</a>
+                                        <a href="#" id="reset_add_or_edit_item_fields" class="btn btn-sm btn-danger">{{ __("Reset") }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -324,18 +326,12 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Total Item') }}</b></label>
+                                                        <label class="col-4"><b>{{ __('Total Item & Quantity') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly name="total_item" type="number" step="any" class="form-control fw-bold" id="total_item" value="0.00" tabindex="-1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Total Quantity') }}</b></label>
-                                                        <div class="col-8">
-                                                            <input readonly name="total_qty" type="number" step="any" class="form-control fw-bold" id="total_qty" value="0.00" tabindex="-1">
+                                                            <div class="input-group">
+                                                                <input readonly name="total_item" type="number" step="any" class="form-control fw-bold" id="total_item" value="0.00" tabindex="-1">
+                                                                <input readonly name="total_qty" type="number" step="any" class="form-control fw-bold" id="total_qty" value="0.00" tabindex="-1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -391,7 +387,16 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Shipment Details') }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="paying_amount" placeholder="{{ __('Shipment Details') }}">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" placeholder="{{ __('Shipment Details') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="paying_amount" placeholder="{{ __('Purchase Note') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -422,7 +427,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Paying Amount') }}</b> <strong>>></strong></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="paying_amount" class="form-control fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control fw-bold big_amount_field" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -462,29 +467,13 @@
                                                             <span class="error error_account_id"></span>
                                                         </div>
                                                     </div>
-
-                                                    {{-- <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Due (On Invoice)') }}</b></label>
-                                                        <div class="col-8">
-                                                            <input readonly type="number" step="any" class="form-control fw-bold" name="purchase_due" id="purchase_due" value="0.00" tabindex="-1">
-                                                        </div>
-                                                    </div> --}}
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>{{ __('Payment Note') }}</b> </label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="purchase_note" placeholder="{{ __('Payment Note') }}" autocomplete="off">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
-                                                        <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="save_and_print" placeholder="{{ __('Purchase Note') }}">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="save_and_print" placeholder="{{ __('Payment Note') }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,7 +482,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Current Balance') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="text" name="current_balance" class="form-control fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
+                                                            <input readonly type="text" name="current_balance" class="form-control text-danger fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -525,7 +514,12 @@
     @endif
 
     @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

@@ -4,21 +4,7 @@
             <div class=" top-menu">
                 <div class="logo__sec">
                     <a href="{{ route('dashboard.dashboard') }}" class="logo">
-                        @if (auth()->user()->branch)
-                            @if (auth()->user()?->branch?->logo != 'default.png')
-                                <img style="height: 40px; width:110px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
-                            @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{ auth()->user()->branch->name }}</span>
-                            @endif
-                        @else
-                            @if ($generalSettings['business__business_logo'])
-                                <img style="height: 40px; width:110px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}"
-                                alt="logo" class="logo__img">
-                            @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;letter-spacing:1px;display:inline-block;">{{
-                                $generalSettings['business__shop_name'] }}</span>
-                            @endif
-                        @endif
+                        <img style="height: height; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
                     </a>
                 </div>
                 <div id="left_bar_toggle"><span class="fa-light fa-bars"></span></div>

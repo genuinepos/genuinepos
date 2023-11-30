@@ -184,7 +184,7 @@
                                                 <label class="col-4"><b>{{ __("Warranty") }}</b></label>
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
-                                                        <select class="form-control select2" name="warranty_id" id="warranty_id" data-next="branch_id">
+                                                        <select class="form-control select2" name="warranty_id" id="warranty_id" data-next="access_branch_id">
                                                             <option value="">{{ __("Select Warranty") }}</option>
                                                             @foreach ($warranties as $warranty)
                                                                 <option {{ $warranty->id == $product->warranty_id ? 'SELECTED' : '' }} value="{{ $warranty->id }}">{{ $warranty->name }}</option>
@@ -205,8 +205,8 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Access Shop") }}</b> </label>
                                                     <div class="col-8">
-                                                        <input type="hidden" name="branch_count" value="branch_count">
-                                                        <select class="form-control select2" name="branch_ids[]" id="branch_id" multiple>
+                                                        <input type="hidden" name="access_branch_count" value="access_branch_count">
+                                                        <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
                                                             @foreach ($branches as $branch)
                                                                 <option
                                                                     @foreach ($product->productAccessBranches as $productAccessBranche)
@@ -218,7 +218,7 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        <span class="error error_branch_ids"></span>
+                                                        <span class="error error_access_branch_ids"></span>
                                                     </div>
                                                 </div>
                                             </div>

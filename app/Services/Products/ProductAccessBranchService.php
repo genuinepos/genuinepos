@@ -15,9 +15,9 @@ class ProductAccessBranchService
         $addProductAccessBranch->product_id = $productId;
         $addProductAccessBranch->save();
 
-        if (isset($request->branch_count) && $request->branch_ids) {
+        if (isset($request->access_branch_count) && $request->access_branch_ids) {
 
-            foreach ($request->branch_ids as $branch_id) {
+            foreach ($request->access_branch_ids as $branch_id) {
 
                 $addProductAccessBranch = new ProductAccessBranch();
                 $addProductAccessBranch->product_id = $productId;
@@ -39,7 +39,7 @@ class ProductAccessBranchService
     public function updateProductAccessBranches(object $request, object $product)
     {
         if (
-            isset($request->branch_count) &&
+            isset($request->access_branch_count) &&
             auth()->user()->role_type != RoleType::Other->value &&
             auth()->user()->is_belonging_an_area == BooleanType::False->value
         ) {
@@ -53,9 +53,9 @@ class ProductAccessBranchService
                 }
             }
 
-            if (isset($request->branch_ids)) {
+            if (isset($request->access_branch_ids)) {
 
-                foreach ($request->branch_ids as $branch_id) {
+                foreach ($request->access_branch_ids as $branch_id) {
 
                     $productAssetBranch = $this->productAssetBranch()->where('branch_id', $branch_id)
                         ->where('product_id', $product->id)->first();

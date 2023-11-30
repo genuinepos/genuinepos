@@ -184,7 +184,7 @@
                     toastr.success("{{ __('Unit is created successfully') }}");
                     $('#unitAddOrEditModal').modal('hide');
                     var unit_id = $('#unit_id').val();
-                    var product_unit_id = $('#product_unit_id').val();
+                    var quick_product_unit_id = $('#quick_product_unit_id').val();
 
                     if (unit_id != undefined) {
 
@@ -193,12 +193,12 @@
 
                         var nextId = $('#unit_id').data('next');
                         $('#' + nextId).focus().select();
-                    } else if (product_unit_id != undefined) {
+                    } else if (quick_product_unit_id != undefined) {
 
-                        $('#product_unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.code_name + ')' + '</option>');
-                        $('#product_unit_id').val(data.id);
+                        $('#quick_product_unit_id').append('<option value="' + data.id + '">' + data.name + ' (' + data.code_name + ')' + '</option>');
+                        $('#quick_product_unit_id').val(data.id);
 
-                        var nextId = $('#product_unit_id').data('next');
+                        var nextId = $('#quick_product_unit_id').data('next');
                         $('#' + nextId).focus().select();
                     } else {
 

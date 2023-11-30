@@ -84,7 +84,9 @@
         // Update total purchase amount
         var netTotalWithDiscount = parseFloat(netTotalAmount) - orderDiscountAmount;
 
-        var purchaseTaxPercent = $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') ? $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent') : 0;
+        var purchaseTaxPercent = $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent')
+                                ? $('#purchase_tax_ac_id').find('option:selected').data('purchase_tax_percent')
+                                : 0;
         var purchaseTaxAmount = parseFloat(netTotalWithDiscount) / 100 * parseFloat(purchaseTaxPercent);
 
         $('#purchase_tax_amount').val(parseFloat(purchaseTaxAmount).toFixed(2));
@@ -98,14 +100,26 @@
 
         $('#total_purchase_amount').val(parseFloat(calcTotalPurchaseAmount).toFixed(2));
 
-        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
-
         var purchaseLedgerAmount = parseFloat(netTotalAmount)
         + parseFloat(shipmentCharge)
         - parseFloat(orderDiscountAmount)
         - parseFloat(productTotalTaxAmount);
 
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
+
+        var payingAmount = $('#paying_amount').val() ? $('#paying_amount').val() : 0;
+        var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
+        var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
+        var currentBalance = 0;
+        if (accountDefaultBalanceType == 'dr') {
+
+            currentBalance = parseFloat(closingBalance) - parseFloat(calcTotalPurchaseAmount) + parseFloat(payingAmount);
+        } else {
+
+            currentBalance = parseFloat(closingBalance) + parseFloat(calcTotalPurchaseAmount) - parseFloat(payingAmount);
+        }
+
+        $('#current_balance').val(parseFloat(currentBalance).toFixed(2));
     }
 
     var delay = (function() {
@@ -475,13 +489,13 @@
 
         if (e_product_id == '') {
 
-            toastr.error('Please select a item.');
+            toastr.error("{{ __('Please select a item.') }}");
             return;
         }
 
         if (e_quantity == '') {
 
-            toastr.error('Quantity field must not be empty.');
+            toastr.error("{{ __('Quantity field must not be empty.') }}");
             return;
         }
 
@@ -1117,6 +1131,50 @@
         }
     });
 
+    $(document).on('change', '#supplier_account_id', function() {
+
+        $('#closing_balance').val(parseFloat(0).toFixed(2));
+
+        var accountId = $(this).val();
+        if (accountId == '') {
+
+            return;
+        }
+
+        var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+        var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
+        var __branchId = subSubGroupNumber != 6 ? branchId : null;
+        var filterObj = {
+            branch_id : __branchId,
+            from_date : null,
+            to_date : null,
+        };
+
+        var url = "{{ route('accounts.balance', ':accountId') }}";
+        var route = url.replace(':accountId', accountId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            data: filterObj,
+            success: function(data) {
+
+                $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                calculateTotalAmount();
+            }, error: function(err) {
+
+                $('.data_preloader').hide();
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    });
+
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
@@ -1228,7 +1286,6 @@
 
                         $('#contact_name').focus();
                     }, 500);
-
                 }, error: function(err) {
 
                     if (err.status == 0) {
@@ -1248,45 +1305,160 @@
 
 @if(auth()->user()->can('product_add'))
     <script>
-        $('#add_product').on('click', function () {
+        $('#addProduct').on('click', function () {
 
             $.ajax({
-                url:"#",
+                url:"{{ route('quick.product.create') }}",
                 type:'get',
                 success:function(data){
 
-                    $('#add_product_body').html(data);
-                    $('#addProductModal').modal('show');
+                    $('#addQuickProductModal').empty();
+                    $('#addQuickProductModal').html(data);
+                    $('#addQuickProductModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#quick_product_name').focus();
+                    }, 1000);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
                 }
             });
         });
 
+        $(document).on('click keypress focus blur change', '.form-control', function(event) {
+
+            $('.quick_product_submit_button').prop('type', 'button');
+        });
+
+        var isAllowQuickProductSubmit = true;
+        $(document).on('click', '.quick_product_submit_button', function() {
+
+            if (isAllowQuickProductSubmit) {
+
+                $(this).prop('type', 'submit');
+            } else {
+
+                $(this).prop('type', 'button');
+            }
+        });
+
         // Add product by ajax
-        $(document).on('submit', '#add_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form',function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
+            isQuickProductAjaxIn = false;
+            isAllowQuickProductSubmit = false;
+
             $.ajax({
+                beforeSend: function() {
+                    isQuickProductAjaxIn = true;
+                },
                 url: url,
                 type: 'post',
                 data: request,
                 success: function(data) {
 
-                    toastr.success('Successfully product is added.');
+                    $('.quick_product_loading_btn').hide();
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
+                    toastr.success("{{ __('Product is added successfully.') }}");
+
+                    var name = data.name.length > 35 ? data.name.substring(0, 35) + '...' : data.name;
+                    var unique_id = data.id + 'noid';
+
+                    $('#search_product').val(name);
+                    $('#e_unique_id').val(unique_id);
+                    $('#e_item_name').val(name);
+                    $('#e_product_id').val(data.id);
+                    $('#e_variant_id').val('noid');
+                    $('#e_quantity').val(parseFloat(1).toFixed(2)).focus().select();
+                    $('#e_unit_cost_exc_tax').val(data.product_cost);
+                    $('#e_discount').val(parseFloat(0).toFixed(2));
+                    $('#e_discount_type').val(1);
+                    $('#e_discount_amount').val(parseFloat(0).toFixed(2));
+                    $('#e_tax_type').val(data.tax_type);
+                    $('#e_tax_ac_id').val(data.tax_ac_id);
+                    $('#e_profit_margin').val(parseFloat(data.profit).toFixed(2));
+                    $('#e_selling_price').val(parseFloat(data.product_price).toFixed(2));
+                    $('#e_lot_number').val('');
+                    $('#e_has_batch_no_expire_date').val(data.has_batch_no_expire_date);
+
+                    $('#e_unit_id').empty();
+                    $('#e_unit_id').append('<option value="'+data.unit.id+'" data-is_base_unit="1" data-unit_name="'+data.unit.name+'" data-base_unit_multiplier="1">'+data.unit.name+'</option>');
+
+                    itemUnitsArray[data.id] = [
+                        {
+                            'unit_id' : data.unit.id,
+                            'unit_name' : data.unit.name,
+                            'unit_code_name' : data.unit.code_name,
+                            'base_unit_multiplier' : 1,
+                            'multiplier_details' : '',
+                            'is_base_unit' : 1,
+                        }
+                    ];
+
+                    if (data.has_batch_no_expire_date == 1) {
+
+                        $('#e_batch_number').prop('readonly', false);
+                        $('#e_expire_date').prop('readonly', false);
+                        $('.batch_no_expire_date_fields').removeClass('d-none');
+                    }else {
+
+                        $('#e_batch_number').prop('readonly', true);
+                        $('#e_expire_date').prop('readonly', true);
+                        $('.batch_no_expire_date_fields').addClass('d-none');
+                    }
+
+                    $('#add_item').html('Add');
+                    calculateEditOrAddAmount();
+
+                    $('#addQuickProductModal').empty();
+                    $('#addQuickProductModal').modal('hide');
                 },error: function(err) {
 
-                    $('.loading_button').hide();
-                    toastr.error('Please check again all form fields.', 'Some thing went wrong.');
+                    isQuickProductAjaxIn = true;
+                    isAllowQuickProductSubmit = true;
+                    $('.quick_product_loading_btn').hide();
                     $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if(err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if(err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
 
                     $.each(err.responseJSON.errors, function(key, error) {
 
-                        $('.error_sale_' + key + '').html(error[0]);
+                        $('.error_quick_product_' + key + '').html(error[0]);
                     });
                 }
             });
+
+            if (isQuickProductAjaxIn == false) {
+
+                isAllowQuickProductSubmit = true;
+            }
         });
     </script>
 @endif

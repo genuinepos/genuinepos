@@ -119,22 +119,33 @@ Route::get('my-test', function () {
     //     )
     //     ->get();
 
-    return $stock = DB::table('product_stocks')
-        ->leftJoin('products', 'product_stocks.product_id', 'products.id')
-        ->leftJoin('product_variants', 'product_stocks.variant_id', 'product_variants.id')
-        ->leftJoin('branches', 'product_stocks.branch_id', 'branches.id')
-        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-        ->where('product_stocks.warehouse_id', null)
-        ->select(
-            'products.name as product_name',
-            'products.product_code',
-            'product_variants.variant_name',
-            'product_variants.variant_code',
-            'branches.name as branch_name',
-            'branches.branch_code',
-            'parentBranch.name as parent_branch_name',
-            'product_stocks.stock',
-        )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->orderBy('products.name', 'asc')->get();
+        return DB::table('accounting_voucher_descriptions')
+            ->leftJoin('voucher_description_references', 'accounting_voucher_descriptions.id', 'voucher_description_references.voucher_description_id')
+            ->leftJoin('accounting_vouchers', 'accounting_voucher_descriptions.accounting_voucher_id', 'accounting_vouchers.id')
+            ->leftJoin('sales', 'voucher_description_references.sale_id', 'sales.id')
+            ->leftJoin('purchases', 'voucher_description_references.purchase_id', 'purchases.id')
+            ->where('accounting_voucher_descriptions.account_id', 238)
+            ->where('accounting_vouchers.voucher_type', AccountingVoucherType::Receipt->value)
+            ->where('accounting_vouchers.branch_id', null)
+            ->select(
+                'accounting_vouchers.id as accounting_voucher_id',
+                'accounting_voucher_descriptions.account_id',
+                'accounting_voucher_descriptions.id as voucher_description_id',
+                // 'supplier_payments.account_id',
+                // 'supplier_payments.date',
+                // 'supplier_payments.voucher_no',
+                'accounting_voucher_descriptions.amount as received_or_paid_amount',
+                // DB::raw('SUM(supplier_payment_invoices.paid_amount) as total_invoice_paid_amount'),
+                // DB::raw('SUM(- IFNULL(supplier_payment_invoices.paid_amount, 0)) + supplier_payments.paid_amount as left_amount')
+                // DB::raw('SUM(- IFNULL(voucher_description_references.amount, 0)) + accounting_voucher_descriptions.amount as left_amount')
+                DB::raw('SUM(- CASE WHEN COALESCE(sales.status, 0) != 3 AND COALESCE(purchases.purchase_status, 0) != 2 THEN voucher_description_references.amount ELSE 0 END) + accounting_voucher_descriptions.amount as left_amount')
+            )
+            ->having('left_amount', '>', 0)
+            ->groupBy('accounting_vouchers.id')
+            ->groupBy('accounting_voucher_descriptions.account_id')
+            ->groupBy('accounting_voucher_descriptions.id')
+            ->groupBy('accounting_voucher_descriptions.amount')
+            ->get();
 });
 
 Route::get('t-id', function () {

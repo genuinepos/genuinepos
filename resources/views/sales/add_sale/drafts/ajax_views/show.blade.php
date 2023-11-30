@@ -1,5 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $draft?->branch?->branchSetting?->addSaleInvoiceLayout ? $draft?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
@@ -27,7 +28,7 @@
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($draft->date)) }}</li>
+                             <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($dateFormat.' '.$timeFormat, strtotime($draft->draft_date_ts)) }}</li>
                              <li style="font-size:11px!important;"><strong>{{ __('Draft ID') }} : </strong> {{ $draft->draft_id }}</li>
                              <li style="font-size:11px!important;">
                                  <strong>{{ __("Created By") }} : </strong>

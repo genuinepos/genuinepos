@@ -50,6 +50,8 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
     ): array {
 
         $draft = $draftService->singleDraft(id: $id, with: [
+            'customer',
+            'customer.group',
             'branch:id,parent_branch_id,name,branch_code,area_name',
             'branch.parentBranch:id,name',
             'saleProducts',

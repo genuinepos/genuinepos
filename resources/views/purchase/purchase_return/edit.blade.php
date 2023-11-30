@@ -31,6 +31,13 @@
 @endpush
 @section('title', 'Edit Purchase Return - ')
 @section('content')
+    @php
+        $account = $return?->supplier;
+        $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+        $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+        $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+        $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
+    @endphp
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
@@ -65,9 +72,9 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4 text-danger"><b>{{ __("Curr. Bal") }}</b></label>
+                                        <label class="col-4"><b>{{ __("Closing Balance") }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control fw-bold" id="current_balance" value="0.00" tabindex="-1">
+                                            <input readonly type="text" class="form-control text-danger fw-bold" id="closing_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -270,7 +277,7 @@
                                                                         }
 
                                                                         $variantName = $returnProduct?->variant ? ' - ' . $returnProduct?->variant?->variant_name : '';
-                                                                        $variantId = $returnProduct->product_variant_id ? $returnProduct->product_variant_id : 'noid';
+                                                                        $variantId = $returnProduct->variant_id ? $returnProduct->variant_id : 'noid';
                                                                     @endphp
 
                                                                     <tr id="select_item">
@@ -299,8 +306,8 @@
                                                                         </td>
 
                                                                         <td class="text-start">
-                                                                            <span id="span_purchased_qty" class="fw-bold">{{ $returnProduct?->purchaseProduct ? $returnProduct?->purchaseProduct->quantity : 0.00 }}</span>
-                                                                            <input type="hidden" name="purchased_quantities[]" value="{{ $returnProduct?->purchaseProduct ? $returnProduct?->purchaseProduct->quantity : 0.00 }}">
+                                                                            <span id="span_purchased_qty" class="fw-bold">{{ $returnProduct?->purchaseProduct ? $returnProduct?->purchaseProduct->quantity : 0 }}</span>
+                                                                            <input type="hidden" name="purchased_quantities[]" value="{{ $returnProduct?->purchaseProduct ? $returnProduct?->purchaseProduct->quantity : 0 }}">
                                                                         </td>
 
                                                                         @php
@@ -310,18 +317,18 @@
                                                                                 $stockLocationName = $returnProduct->warehouse->warehouse_name;
                                                                             } else {
 
-                                                                                if ($sale?->branch) {
+                                                                                if ($returnProduct?->branch) {
 
-                                                                                    if ($sale?->branch?->parentBranch) {
+                                                                                    if ($returnProduct?->branch?->parentBranch) {
 
-                                                                                        $stockLocationName = $sale?->branch?->parentBranch->name.'('.$sale?->branch?->area_name
+                                                                                        $stockLocationName = $returnProduct?->branch?->parentBranch->name . '(' . $returnProduct?->branch?->area_name;
                                                                                     }else{
 
-                                                                                        $stockLocationName = $sale?->branch?->name.'('.$sale?->branch?->area_name
+                                                                                        $stockLocationName = $returnProduct?->branch?->name . '(' . $returnProduct?->branch?->area_name;
                                                                                     }
                                                                                 }else {
 
-                                                                                    $stockLocationName = json_decode($generalSettings->business, true)['shop_name'];
+                                                                                    $stockLocationName = $generalSettings['business__shop_name'];
                                                                                 }
                                                                             }
                                                                         @endphp
@@ -523,9 +530,18 @@
 
                                         <div class="col-md-12">
                                             <div class="input-group">
+                                                <label class="col-4"><b>{{ __('Previous Received') }}</b></label>
+                                                <div class="col-8">
+                                                    <input readonly type="text" class="form-control text-success fw-bold" id="previous_received" value="{{ $return->received_amount }}" placeholder="{{ __('0.00') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="input-group">
                                                 <label class="col-4"><b>{{ __('Current Balance') }}</b></label>
                                                 <div class="col-8">
-                                                    <input readonly type="text" name="current_balance" class="form-control fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
+                                                    <input readonly type="text" name="current_balance" class="form-control text-danger fw-bold" id="current_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" placeholder="{{ __('0.00') }}">
                                                 </div>
                                             </div>
                                         </div>

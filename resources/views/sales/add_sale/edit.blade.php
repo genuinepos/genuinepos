@@ -54,7 +54,13 @@
 @section('title', 'Edit Add Sale - ')
 @section('content')
     @php
-       $generalProductSearchService = new App\Services\GeneralSearch\GeneralProductSearchService();
+        $generalProductSearchService = new App\Services\GeneralSearch\GeneralProductSearchService();
+
+        $account = $sale?->customer;
+        $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+        $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+        $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+        $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
     @endphp
     <div class="body-woaper">
         <div class="main__content">
@@ -85,7 +91,7 @@
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
 
-                                                                    <option {{ $customerAccount->id == $sale->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
+                                                                    <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $sale->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
@@ -99,7 +105,7 @@
                                                 <div class="input-group mt-1">
                                                     <label class="col-4"><b>{{ __('Closing Bal.') }}</b></label>
                                                     <div class="col-8">
-                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="0.00" autocomplete="off">
+                                                        <input readonly type="text" id="closing_balance" class="form-control fw-bold text-danger" value="{{ $amounts['closing_balance_in_flat_amount'] }}" autocomplete="off">
                                                     </div>
                                                 </div>
 
@@ -172,7 +178,7 @@
                                                         <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
                                                         @if (auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
-                                                                <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -608,7 +614,7 @@
                                             <div class="row gx-2 mt-1">
                                                 <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
                                                 <div class="col-md-7">
-                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="0.00" tabindex="-1">
+                                                    <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" tabindex="-1">
                                                 </div>
                                             </div>
                                         </div>
@@ -637,7 +643,12 @@
     @endif
 
     @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

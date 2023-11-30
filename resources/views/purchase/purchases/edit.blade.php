@@ -10,11 +10,20 @@
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
         .checkbox_input_wrap {text-align: right;}
+
+        .big_amount_field { height: 36px;  font-size: 24px!important; margin-bottom: 3px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
 @section('title', 'Edit Purchase')
 @section('content')
+    @php
+        $account = $purchase?->supplier;
+        $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+        $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+        $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+        $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
+    @endphp
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
@@ -24,14 +33,13 @@
                 </div>
 
                 <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                 </div>
             </div>
         </div>
         <div class="p-1">
             <form id="edit_purchase_form" action="{{ route('purchases.update', $purchase->id) }}" enctype="multipart/form-data" method="POST">
                 @csrf
-                <input type="hidden" name="paid" id="paid" value="{{ $purchase->paid }}">
                 <section>
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
@@ -42,9 +50,9 @@
                                         <div class="col-8">
                                             <div class="input-group flex-nowrap">
                                                 <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" data-next="invoice_id">
-                                                    <option value="">{{ __("Select Supplier") }}</option>
+                                                    <option data-default_balance_type="cr" value="">{{ __("Select Supplier") }}</option>
                                                     @foreach ($supplierAccounts as $supplierAccount)
-                                                        <option data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" {{ $supplierAccount->id == $purchase->supplier_account_id ? 'SELECTED' : '' }} value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
+                                                        <option data-default_balance_type="{{ $supplierAccount->default_balance_type }}" data-sub_sub_group_number="{{ $supplierAccount->sub_sub_group_number }}" data-pay_term="{{ $supplierAccount->pay_term }}" data-pay_term_number="{{ $supplierAccount->pay_term_number }}" {{ $supplierAccount->id == $purchase->supplier_account_id ? 'SELECTED' : '' }} value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
                                                     @endforeach
                                                 </select>
 
@@ -57,16 +65,16 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>@lang('menu.curr_balance') </b></label>
+                                        <label class="col-4"><b>{{ __("Closing Bal.") }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" id="current_balance" class="form-control fw-bold" value="0.00" autocomplete="off">
+                                            <input readonly type="text" id="closing_balance" class="form-control text-danger fw-bold" value="{{ $amounts['closing_balance_in_flat_amount'] }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3 col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>@lang('menu.invoice_id') </b></label>
+                                        <label class="col-4"><b>{{ __("Invoice ID") }}</b></label>
                                         <div class="col-8">
                                             <input readonly name="invoice_id" type="text" class="form-control fw-bold" id="invoice_id" value="{{ $purchase->invoice_id }}" data-next="warehouse_id">
                                         </div>
@@ -114,8 +122,8 @@
                                                 id="pay_term_number" placeholder="{{ __("Number") }}" value="{{ $purchase->pay_term_number }}" data-next="pay_term">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="purchase_account_id">
                                                     <option value="">{{ __("Pay-Term") }}</option>
-                                                    <option {{ $purchase->pay_term == 1 ? 'SELECTED' : '' }} value="1">@lang('menu.days')</option>
-                                                    <option {{ $purchase->pay_term == 2 ? 'SELECTED' : '' }} value="2">@lang('menu.months')</option>
+                                                    <option {{ $purchase->pay_term == 1 ? 'SELECTED' : '' }} value="1">{{ __("Days") }}</option>
+                                                    <option {{ $purchase->pay_term == 2 ? 'SELECTED' : '' }} value="2">{{ __("Month") }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -166,7 +174,7 @@
 
                                                     @if (auth()->user()->can('product_add'))
                                                         <div class="input-group-prepend">
-                                                            <span id="add_product" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                            <span id="addProduct" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -409,18 +417,12 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class="col-4"><b>{{ __("Total Item") }}</b></label>
+                                                        <label class="col-4"><b>{{ __("Total Item & Quantity") }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly name="total_item" type="number" step="any" class="form-control fw-bold" id="total_item" value="{{ $purchase->total_item }}" tabindex="-1">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-12">
-                                                    <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __("Total Quantity") }}</b></label>
-                                                        <div class="col-8">
-                                                            <input readonly name="total_qty" type="number" step="any" class="form-control fw-bold" id="total_qty" value="{{ $purchase->total_qty }}" tabindex="-1">
+                                                            <div class="input-group">
+                                                                <input readonly name="total_item" type="number" step="any" class="form-control fw-bold" id="total_item" value="{{ $purchase->total_item }}" tabindex="-1">
+                                                                <input readonly name="total_qty" type="number" step="any" class="form-control fw-bold" id="total_qty" value="{{ $purchase->total_qty }}" tabindex="-1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -474,14 +476,23 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __("Shipment Charge") }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" value="{{ $purchase->shipment_charge }}" data-next="purchase_tax">
+                                                            <input name="shipment_charge" type="number" class="form-control fw-bold" id="shipment_charge" value="{{ $purchase->shipment_charge }}" data-next="shipment_details">
                                                         </div>
                                                     </div>
 
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.shipment_details')</b></label>
+                                                        <label class="col-4"><b>{{ __("Shipment Details") }}</b></label>
                                                         <div class="col-8">
-                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" value="{{ $purchase->shipment_details }}" placeholder="@lang('menu.shipment_details')">
+                                                            <input name="shipment_details" type="text" class="form-control" id="shipment_details" data-next="purchase_note" value="{{ $purchase->shipment_details }}" placeholder="{{ __("Shipment Details") }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="input-group mt-1">
+                                                        <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
+                                                        <div class="col-8">
+                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="paying_amount" value="{{ $purchase->purchase_note }}" placeholder="{{ __('Purchase Note') }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -512,7 +523,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __("Paying Amount") }}</b> <strong>>></strong></label>
                                                         <div class="col-8">
-                                                            <input type="number" step="any" name="paying_amount" class="form-control fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
+                                                            <input type="number" step="any" name="paying_amount" class="form-control fw-bold big_amount_field" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>
                                                     </div>
 
@@ -559,16 +570,16 @@
                                                     <div class="input-group mt-1">
                                                         <label class=" col-4"><b>{{ __("Payment Note") }}</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="purchase_note" placeholder="{{ __("Payment Note") }}" autocomplete="off">
+                                                            <input type="text" name="payment_note" class="form-control" id="payment_note" data-next="save" placeholder="{{ __("Payment Note") }}" autocomplete="off">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>{{ __('Purchase Note') }}</b></label>
+                                                        <label class="col-4"><b>{{ __('Previous paid') }}</b></label>
                                                         <div class="col-8">
-                                                            <input type="text" name="purchase_note" id="purchase_note" class="form-control" data-next="save_and_print" value="{{ $purchase->purchase_note }}" placeholder="{{ __('Purchase Note') }}">
+                                                            <input readonly type="text" name="current_balance" class="form-control text-success fw-bold" id="previous_paid" value="{{ $purchase->paid }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -577,7 +588,7 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>{{ __('Current Balance') }}</b></label>
                                                         <div class="col-8">
-                                                            <input readonly type="text" name="current_balance" class="form-control fw-bold" id="current_balance" value="0.00" placeholder="{{ __('0.00') }}">
+                                                            <input readonly type="text" name="current_balance" class="form-control text-danger fw-bold" id="current_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -595,8 +606,8 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i
-                                    class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                <button id="save" class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_changes')</button>
+                                    class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                <button id="save" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                             </div>
                         </div>
                     </div>
@@ -610,8 +621,13 @@
         </div>
     @endif
 
-    @if (auth()->user()->can('product_add'))
-        <div class="modal fade" id="addQuickProductModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+     @if (auth()->user()->can('product_add'))
+        <div class="modal fade" id="addQuickProductModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+        <div class="modal fade" id="unitAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="categoryAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="brandAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
+        <div class="modal fade" id="warrantyAddOrEditModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
     @endif
 @endsection
 @push('scripts')

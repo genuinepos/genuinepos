@@ -113,7 +113,7 @@
                                         </select>
 
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" onclick="{{ auth()->user()->can('product_brand_add') ? 'addBrand()': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
+                                            <span class="input-group-text add_button {{ !auth()->user()->can('product_brand_add')? 'disabled_element': '' }}" onclick="{{ auth()->user()->can('product_brand_add') ? 'addBrand();': '' }} return false;"><i class="fas fa-plus-square input_i"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -147,13 +147,13 @@
                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                     <div class="col-md-4">
                                         <label><b>{{ __("Access Shop") }}</b> </label>
-                                        <input type="hidden" name="branch_count" value="branch_count">
-                                        <select class="form-control select2" name="branch_ids[]" id="quick_product_branch_id" multiple>
+                                        <input type="hidden" name="access_branch_count" value="access_branch_count">
+                                        <select class="form-control select2" name="access_branch_ids[]" id="quick_product_access_branch_id" multiple>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
                                         </select>
-                                        <span class="error error_quick_product_branch_ids"></span>
+                                        <span class="error error_quick_product_access_branch_ids"></span>
                                     </div>
                                 @endif
                             @endif
@@ -290,7 +290,7 @@
                                         </td>
 
                                         <td>
-                                            <input required type="number" step="any" name="unit_costs_inc_tax[]" onkeypress="enterPressQuickProductCostIncTax(event);" class="form-control fw-bold" id="quick_product_unit_cost_inc_tax" autocomplete="off">
+                                            <input type="number" step="any" name="unit_costs_inc_tax[]" onkeypress="enterPressQuickProductCostIncTax(event);" class="form-control fw-bold" id="quick_product_unit_cost_inc_tax" autocomplete="off">
                                         </td>
 
                                         <td>
@@ -312,7 +312,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input required type="number" step="any" name="unit_costs_inc_tax[]" onkeypress="enterPressQuickProductCostIncTax(event);" class="form-control fw-bold" id="quick_product_unit_cost_inc_tax" autocomplete="off">
+                                                    <input type="number" step="any" name="unit_costs_inc_tax[]" onkeypress="enterPressQuickProductCostIncTax(event);" class="form-control fw-bold" id="quick_product_unit_cost_inc_tax" autocomplete="off">
                                                 </td>
 
                                                 <td>
@@ -332,7 +332,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button quick_product_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="button" id="quick_product_save_btn" class="btn btn-sm btn-success quick_product_submit_button">{{ __("Save") }}</button>
+                            <button type="submit" id="quick_product_save_btn" class="btn btn-sm btn-success quick_product_submit_button">{{ __("Save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -540,9 +540,7 @@
 </script>
 
 <script>
-    $(document).on('click', '#addUnit', function(e) {
-        e.preventDefault();
-
+    function addUnit() {
         var url = "{{ route('units.create', 0) }}";
 
         $.ajax({
@@ -571,10 +569,9 @@
                 }
             }
         });
-    });
+    };
 
-    $(document).on('click', '#addCategory', function(e) {
-        e.preventDefault();
+    function addCategory() {
 
         var url = "{{ route('categories.create') }}";
 
@@ -604,10 +601,9 @@
                 }
             }
         });
-    });
+    };
 
-    $(document).on('click', '#addBrand', function(e) {
-        e.preventDefault();
+     function addBrand() {
 
         var url = "{{ route('brands.create') }}";
 
@@ -636,7 +632,7 @@
                 }
             }
         });
-    });
+    };
 
     function addWarranty() {
 

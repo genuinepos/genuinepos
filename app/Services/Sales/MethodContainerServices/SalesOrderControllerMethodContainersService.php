@@ -55,6 +55,8 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
     ): array {
 
         $order = $salesOrderService->singleSalesOrder(id: $id, with: [
+            'customer',
+            'customer.group',
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',

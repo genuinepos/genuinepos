@@ -273,6 +273,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     ): array {
 
         $sale = $saleService->singleSale(id: $id, with: [
+            'customer',
+            'customer.group',
             'saleProducts',
             'saleProducts.product',
             'saleProducts.variant',

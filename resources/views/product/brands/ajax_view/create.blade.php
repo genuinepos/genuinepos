@@ -94,7 +94,7 @@
                     toastr.success("{{ __('Brand is added successfully') }}");
                     $('#brandAddOrEditModal').modal('hide');
                     var brand_id = $('#brand_id').val();
-                    var product_brand_id = $('#product_brand_id').val();
+                    var quick_product_brand_id = $('#quick_product_brand_id').val();
 
                     if (brand_id != undefined) {
 
@@ -103,12 +103,12 @@
 
                         var nextId = $('#brand_id').data('next');
                         $('#'+nextId).focus().select();
-                    }else if (product_brand_id != undefined) {
+                    }else if (quick_product_brand_id != undefined) {
 
-                        $('#product_brand_id').append('<option value="' + data.id + '">' + data.name +'</option>');
-                        $('#product_brand_id').val(data.id);
+                        $('#quick_product_brand_id').append('<option value="' + data.id + '">' + data.name +'</option>');
+                        $('#quick_product_brand_id').val(data.id);
 
-                        var nextId = $('#product_brand_id').data('next');
+                        var nextId = $('#quick_product_brand_id').data('next');
                         $('#'+nextId).focus().select();
                     } else {
 

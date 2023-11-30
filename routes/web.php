@@ -21,6 +21,7 @@ Route::middleware([
     InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
     CheckTenantForMaintenanceMode::class,
+    'plan_check',
 ])->group(function () {
     // Guest User
     Auth::routes(['register' => false, 'verify' => true]);

@@ -27,6 +27,8 @@ Route::middleware('is_guest')->group(function () {
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });
 
+Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
+
 // All User
 Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
 Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');

@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Modules\SAAS\app\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Console\RolePermissionSync;
 use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;
@@ -66,6 +67,7 @@ class SAASServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('is_auth', IsAuthenticatedMiddleware::class);
         app()->make('router')->aliasMiddleware('is_guest', IsGuestMiddleware::class);
         app()->make('router')->aliasMiddleware('is_verified', IsEmailVerifiedMiddleware::class);
+        app()->make('router')->aliasMiddleware('plan_check', PlanCheckerMiddleware::class);
 
         $this->app->bind(TenantServiceInterface::class, TenantService::class);
     }

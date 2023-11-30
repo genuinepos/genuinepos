@@ -13,12 +13,13 @@ class BusinessVerificationRequest extends FormRequest
      */
     public function rules()
     {
-        $rules =  [
+        $rules = [
             'email' => ['required', 'string', 'email', 'max:255'],
         ];
-        if(! config('app.debug')) {
+        if (! config('app.debug')) {
             $rules['g-recaptcha-response'] = 'required|captcha';
         }
+
         return $rules;
     }
 

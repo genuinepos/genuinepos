@@ -19,27 +19,29 @@ class MoneyReceiptController extends Controller
 
     public function index($contactId)
     {
-        if (!auth()->user()->can('money_receipt_index')) {
+        if (! auth()->user()->can('money_receipt_index')) {
             abort(403, 'Access Forbidden.');
         }
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
+
         return view('contacts.money_receipts.index', compact('contact'));
     }
 
     public function create($contactId)
     {
-        if (!auth()->user()->can('money_receipt_add')) {
+        if (! auth()->user()->can('money_receipt_add')) {
             abort(403, 'Access Forbidden.');
         }
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
+
         return view('contacts.money_receipts.create', compact('contact'));
     }
 
     public function store(Request $request, $contactId, CodeGenerationServiceInterface $codeGenerator)
     {
-        if (!auth()->user()->can('money_receipt_add')) {
+        if (! auth()->user()->can('money_receipt_add')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -63,7 +65,7 @@ class MoneyReceiptController extends Controller
 
     public function edit($receiptId)
     {
-        if (!auth()->user()->can('money_receipt_edit')) {
+        if (! auth()->user()->can('money_receipt_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -84,7 +86,7 @@ class MoneyReceiptController extends Controller
 
     public function update(Request $request, $receiptId)
     {
-        if (!auth()->user()->can('money_receipt_edit')) {
+        if (! auth()->user()->can('money_receipt_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -98,7 +100,7 @@ class MoneyReceiptController extends Controller
 
     public function delete($receiptId)
     {
-        if (!auth()->user()->can('money_receipt_delete')) {
+        if (! auth()->user()->can('money_receipt_delete')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -120,6 +122,7 @@ class MoneyReceiptController extends Controller
     public function print($receiptId)
     {
         $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'branch']);
+
         return view('contacts.money_receipts.print_receipt', compact('moneyReceipt'));
     }
 }

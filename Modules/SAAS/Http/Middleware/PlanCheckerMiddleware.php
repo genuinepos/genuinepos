@@ -23,13 +23,14 @@ class PlanCheckerMiddleware
         $isVerified = isset($tenant->is_verified) && ($tenant->is_verified == 1);
         $enjoyedTrialDays = today()->diffInDays($tenantCreatedAt);
 
-        if($enjoyedTrialDays > 3 && $enjoyedTrialDays <= 7) {
-            if(! $isVerified) {
+        if ($enjoyedTrialDays > 3 && $enjoyedTrialDays <= 7) {
+            if (! $isVerified) {
                 return redirect()->route('saas.business-verification.index')->with('error', __('Verify your Business Email to continue'));
             }
-        } else if($enjoyedTrialDays > 7) {
+        } elseif ($enjoyedTrialDays > 7) {
             return redirect()->route('saas.plan.all')->with('error', __('Purchase a plan to continue'));
         }
+
         return $next($request);
     }
 }

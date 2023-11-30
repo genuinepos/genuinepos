@@ -17,7 +17,7 @@ class GuestTenantStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $rules =  [
+        $rules = [
             'plan_id' => 'required',
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
@@ -26,9 +26,10 @@ class GuestTenantStoreRequest extends FormRequest
             'phone' => 'required|max:60|unique:users,phone',
             'password' => ['required', Password::default()],
         ];
-        if(! config('app.debug')) {
+        if (! config('app.debug')) {
             $rules['g-recaptcha-response'] = 'required|captcha';
         }
+
         return $rules;
     }
 

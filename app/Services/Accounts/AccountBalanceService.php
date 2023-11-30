@@ -142,7 +142,7 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $openingBalanceInFlatAmount = $openingBalanceDebit - $openingBalanceCredit;
-        } else if ($account->default_balance_type == 'cr') {
+        } elseif ($account->default_balance_type == 'cr') {
 
             $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
         }
@@ -167,7 +167,7 @@ class AccountBalanceService
 
             $closingBalanceInFlatAmount = $currTotalDebit - $currTotalCredit;
 
-        } else if ($account->default_balance_type == 'cr') {
+        } elseif ($account->default_balance_type == 'cr') {
 
             $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
         }
@@ -176,7 +176,7 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $totalReturn = $totalSalesReturn - $totalPurchaseReturn;
-        } else if ($account->default_balance_type == 'cr') {
+        } elseif ($account->default_balance_type == 'cr') {
 
             $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
         }

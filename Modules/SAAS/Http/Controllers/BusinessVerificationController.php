@@ -18,6 +18,7 @@ class BusinessVerificationController extends Controller
     {
         $attributes = $request->validated();
         $businessVerificationService->sendVerificationEmail($attributes['email']);
+
         return back()->with('success', __('Verification email sent successfully. Go to your inbox and verify.'));
     }
 

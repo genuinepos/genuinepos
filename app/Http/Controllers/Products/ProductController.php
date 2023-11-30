@@ -39,7 +39,7 @@ class ProductController extends Controller
 
     public function index(Request $request, $isForCreatePage = 0)
     {
-        if (!auth()->user()->can('product_all')) {
+        if (! auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -110,7 +110,7 @@ class ProductController extends Controller
 
     public function edit(Request $request, $id)
     {
-        if (!auth()->user()->can('product_edit')) {
+        if (! auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -140,7 +140,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('product_add')) {
+        if (! auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -204,7 +204,7 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,' . $id,
+                'code' => 'sometimes|unique:products,product_code,'.$id,
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
             ],

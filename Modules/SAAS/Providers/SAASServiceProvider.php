@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use Modules\SAAS\app\Http\Middleware\PlanCheckerMiddleware;
+use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Console\BackupCommand;
 use Modules\SAAS\Console\RolePermissionSync;
 use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;

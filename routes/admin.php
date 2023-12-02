@@ -52,18 +52,12 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WarehouseReceiveStockController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.dashboard');
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
 Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
 
-Route::get('dashboard/card/amount', [DashboardController::class, 'cardData'])->name('dashboard.card.data');
-Route::get('dashboard/stock/alert', [DashboardController::class, 'stockAlert'])->name('dashboard.stock.alert');
-Route::get('dashboard/sale/order', [DashboardController::class, 'saleOrder'])->name('dashboard.sale.order');
-Route::get('dashboard/sale/due', [DashboardController::class, 'saleDue'])->name('dashboard.sale.due');
-Route::get('dashboard/purchase/due', [DashboardController::class, 'purchaseDue'])->name('dashboard.purchase.due');
-Route::get('dashboard/today/summery', [DashboardController::class, 'todaySummery'])->name('dashboard.today.summery');
+
 
 Route::group(['prefix' => 'common/ajax/call'], function () {
     Route::get('branch/authenticated/users/{branchId}', [CommonAjaxCallController::class, 'branchAuthenticatedUsers']);

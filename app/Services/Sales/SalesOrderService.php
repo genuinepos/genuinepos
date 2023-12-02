@@ -2,10 +2,12 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\OrderDeliveryStatus;
-use App\Enums\PaymentStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
+use App\Enums\PaymentStatus;
+use App\Enums\OrderDeliveryStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,7 +23,7 @@ class SalesOrderService
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('users as created_by', 'sales.created_by_id', 'created_by.id')
-            ->where('sales.order_status', 1);
+            ->where('sales.order_status', BooleanType::True->value);
 
         $this->filteredQuery(request: $request, query: $query, customerAccountId: $customerAccountId);
 
@@ -147,7 +149,7 @@ class SalesOrderService
     {
         foreach ($updateSalesOrder->saleProducts as $saleProduct) {
 
-            $saleProduct->is_delete_in_update = 1;
+            $saleProduct->is_delete_in_update = BooleanType::True->value;
             $saleProduct->save();
         }
 
@@ -282,7 +284,7 @@ class SalesOrderService
             $query->where('sales.customer_account_id', $customerAccountId);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if (auth()->user()->can('view_own_sale')) {
 

@@ -3,7 +3,7 @@
         <div class="panel__nav">
             <div class=" top-menu">
                 <div class="logo__sec">
-                    <a href="{{ route('dashboard.dashboard') }}" class="logo">
+                    <a href="{{ route('dashboard.index') }}" class="logo">
                         <img style="height: height; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
                     </a>
                 </div>

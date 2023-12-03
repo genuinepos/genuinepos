@@ -29,7 +29,7 @@ class RedirectIfAuthenticated
 
                     if (Auth::guard()->check()) {
 
-                        return redirect()->route('dashboard.dashboard');
+                        return redirect()->route('dashboard.index');
                     }
                     break;
             }

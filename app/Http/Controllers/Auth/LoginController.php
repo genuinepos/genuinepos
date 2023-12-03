@@ -69,30 +69,22 @@ class LoginController extends Controller
 
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
-                if (! Session::has($admin->language)) {
+                if (!Session::has($admin->language)) {
 
                     session(['lang' => $admin->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(
-                    action: 4,
-                    subject_type: 18,
-                    data_obj: $admin,
-                    branch_id: $admin->branch_id,
-                    user_id: $admin->id,
-                );
+                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $admin, branch_id: $admin->branch_id,  user_id: $admin->id);
 
-                return redirect()->intended(route('dashboard.dashboard'));
-
+                return redirect()->intended(route('dashboard.index'));
             } else {
 
-                session()->flash('errorMsg', 'Sorry! Username or Password not matched!');
-
+                session()->flash('errorMsg', __('Sorry! Username or Password not matched!'));
                 return redirect()->back();
             }
         } else {
-            session()->flash('errorMsg', 'Login failed. Please try with correct username and password');
 
+            session()->flash('errorMsg', __('Login failed. Please try with correct username and password'));
             return redirect()->back();
         }
     }

@@ -111,12 +111,20 @@
                 @endif
 
                 @if ($generalSettings['modules__transfer_stock'] == '1')
-                    <li data-menu="transfer" class="{{ request()->is('transfer-stocks*') ? 'menu_active' : '' }}">
-                        <a href="#">
-                            <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
-                            <p class="title">{{ __('Transfer') }}</p>
-                        </a>
-                    </li>
+
+                    @if (
+                        auth()->user()->can('transfer_stock_index') ||
+                        auth()->user()->can('transfer_stock_create') ||
+                        auth()->user()->can('transfer_stock_receive_from_warehouse') ||
+                        auth()->user()->can('transfer_stock_receive_from_branch')
+                    )
+                        <li data-menu="transfer" class="{{ request()->is('transfer-stocks*') ? 'menu_active' : '' }}">
+                            <a href="#">
+                                <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
+                                <p class="title">{{ __('Transfer') }}</p>
+                            </a>
+                        </li>
+                    @endif
                 @endif
 
                 @if ($generalSettings['modules__stock_adjustment'] == '1')
@@ -1305,74 +1313,92 @@
             </div>
 
             @if ($generalSettings['modules__transfer_stock'] == '1')
-                <div class="sub-menu_t" id="transfer">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center justify-content-end">
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container-fluid">
-
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Transfer Stock') }}</p>
-                                <div class="sub-menu-row">
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stocks.create') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-exchange-alt"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Add Transfer Stock') }}</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('transfer.stocks.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list-ul"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Transfer Stock List') }}</p>
-                                        </a>
+                @if (
+                    auth()->user()->can('transfer_stock_index') ||
+                    auth()->user()->can('transfer_stock_create') ||
+                    auth()->user()->can('transfer_stock_receive_from_warehouse') ||
+                    auth()->user()->can('transfer_stock_receive_from_branch')
+                )
+                    <div class="sub-menu_t" id="transfer">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Receive Transferred Stocks') }} <strong></strong></p>
-                                <div class="sub-menu-row">
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('receive.stock.from.warehouse.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-exchange-alt"></i></span>
+                            <div class="container-fluid">
+                                @if (auth()->user()->can('transfer_stock_index') || auth()->user()->can('transfer_stock_create'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Transfer Stock') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('transfer_stock_create'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('transfer.stocks.create') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-exchange-alt"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Add Transfer Stock') }}</p>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Receive From Warehouse') }}</p>
-                                        </a>
-                                    </div>
+                                            @endif
 
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('receive.stock.from.branch.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-list-ul"></i></span>
+                                            @if (auth()->user()->can('transfer_stock_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('transfer.stocks.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list-ul"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Transfer Stock List') }}</p>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                            <p class="switch_text">{{ __('Receive From Shop/Business') }}</p>
-                                        </a>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
+                                @if (auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Receive Transferred Stocks') }} <strong></strong></p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('transfer_stock_receive_from_warehouse'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('receive.stock.from.warehouse.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-exchange-alt"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Receive From Warehouse') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('transfer_stock_receive_from_branch'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('receive.stock.from.branch.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-list-ul"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __('Receive From Shop/Business') }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
 
             @if ($generalSettings['modules__stock_adjustment'] == '1')

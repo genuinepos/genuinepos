@@ -998,6 +998,74 @@
                                 </div>
                             </div>
                         </div>
+
+                         {{-- Transfer Stocks Permissions --}}
+                         <div class="accordion-item mb-1">
+                            <div class="form_element rounded mt-0 mb-0">
+                                <div class="accordion-header d-flex">
+                                    <p class="checkbox_input_wrap ">
+                                        <input type="checkbox" class="ms-2" id="select_all" data-target="transfer_stocks" autocomplete="off">
+                                    </p>
+                                    <a data-bs-toggle="collapse" class="collapsed" href="#transfer_stocks_permission" aria-expanded="false">
+                                        {{ __('Transfer Stocks Permissions') }}
+                                    </a>
+                                </div>
+                                <div id="transfer_stocks_permission" class="collapse" data-bs-parent="#transfer_stocks_permission" style="">
+                                    <div class="element-body border-top">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="transfer_stock" id="select_all" data-target="transfer_stock" autocomplete="off">
+                                                        <strong>{{ __('Transfer Stock') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_index" id="transfer_stock_index" class="transfer_stock transfer_stocks">
+                                                    <label for="transfer_stock_index">{{ __('Transfer Stock List') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_create" id="transfer_stock_create" class="transfer_stock transfer_stocks">
+                                                    <label for="transfer_stock_create">{{ __('Transfer Stock Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_edit" id="transfer_stock_edit" class="transfer_stock transfer_stocks">
+                                                    <label for="transfer_stock_edit">{{ __('Transfer Stock Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_delete" id="transfer_stock_delete" class="transfer_stock transfer_stocks">
+                                                    <label for="transfer_stock_delete">{{ __('Transfer Stock Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="transfer_stock_receive" id="select_all" data-target="transfer_stock_receive" autocomplete="off">
+                                                        <strong>{{ __('Receive Transferred Stocks') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_receive_from_warehouse" id="transfer_stock_receive_from_warehouse" class="transfer_stock_receive transfer_stocks">
+                                                    <label for="transfer_stock_receive_from_warehouse">{{ __('Receive From Warehouse') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="transfer_stock_receive_from_branch" id="transfer_stock_receive_from_branch" class="transfer_stock_receive transfer_stocks">
+                                                    <label for="transfer_stock_receive_from_branch">{{ __('Receive From Shop/Business') }}</label>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- All Report Permissions --}}
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">

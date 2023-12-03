@@ -385,6 +385,14 @@ class RolePermissionSeeder extends Seeder
             ['id' => '274', 'name' => 'balance_sheet'],
             ['id' => '275', 'name' => 'trial_balance'],
             ['id' => '276', 'name' => 'cash_flow'],
+
+            ['id' => '277', 'name' => 'transfer_stock_index'],
+            ['id' => '278', 'name' => 'transfer_stock_create'],
+            ['id' => '279', 'name' => 'transfer_stock_edit'],
+            ['id' => '280', 'name' => 'transfer_stock_delete'],
+
+            ['id' => '281', 'name' => 'transfer_stock_receive_from_warehouse'],
+            ['id' => '282', 'name' => 'transfer_stock_receive_from_branch'],
         ];
 
 

@@ -57,20 +57,25 @@ class TransferStockService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
                 $html .= '<a href="' . route('transfer.stocks.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a href="' . route('transfer.stocks.edit', [$row->id]) . '" class="dropdown-item">' . __('Edit') . '</a>';
+                    if (auth()->user()->can('transfer_stock_edit')) {
+
+                        $html .= '<a href="' . route('transfer.stocks.edit', [$row->id]) . '" class="dropdown-item">' . __('Edit') . '</a>';
+                    }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a href="' . route('transfer.stocks.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    if (auth()->user()->can('transfer_stock_delete')) {
+
+                        $html .= '<a href="' . route('transfer.stocks.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    }
                 }
 
                 $html .= '</div>';
@@ -297,7 +302,7 @@ class TransferStockService
                 $deleteTransferStock->receive_status == TransferStockReceiveStatus::Partial->value ||
                 $deleteTransferStock->receive_status == TransferStockReceiveStatus::Completed->value
             ) {
-                return ['pass' => false, 'msg' => 'Transfer stock can not be deleted. Transfer stock receiving status is ' . TransferStockReceiveStatus::tryFrom($deleteTransferStock->receive_status)->name];
+                return ['pass' => false, 'msg' => __('Transfer stock can not be deleted. Transfer stock receiving status is ') . TransferStockReceiveStatus::tryFrom($deleteTransferStock->receive_status)->name];
             }
 
             $deleteTransferStock->delete();

@@ -32,6 +32,10 @@ class TransferStockController extends Controller
 
     public function index(Request $request)
     {
+        if (! auth()->user()->can('transfer_stock_index')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
 
             return $this->transferStockService->transferStockTable(request: $request);
@@ -66,11 +70,13 @@ class TransferStockController extends Controller
 
     public function create()
     {
-        $branchName = $this->branchService->branchName();
+        if (! auth()->user()->can('transfer_stock_create')) {
+            abort(403, 'Access Forbidden.');
+        }
 
+        $branchName = $this->branchService->branchName();
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
-
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
             ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
@@ -79,6 +85,10 @@ class TransferStockController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('transfer_stock_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_branch_id' => 'required',
@@ -151,6 +161,10 @@ class TransferStockController extends Controller
 
     public function edit($id)
     {
+        if (! auth()->user()->can('transfer_stock_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
             with: [
@@ -183,6 +197,10 @@ class TransferStockController extends Controller
 
     public function update($id, Request $request)
     {
+        if (! auth()->user()->can('transfer_stock_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'receiver_branch_id' => 'required',
@@ -244,6 +262,10 @@ class TransferStockController extends Controller
 
     public function delete($id)
     {
+        if (! auth()->user()->can('transfer_stock_delete')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
             DB::beginTransaction();
 

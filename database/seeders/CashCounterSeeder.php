@@ -20,6 +20,7 @@ class CashCounterSeeder extends Seeder
             CashCounter::truncate();
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE cash_counters AUTO_INCREMENT=1');
         }
+        
         CashCounter::insert([
             'branch_id' => auth()->user()?->branch_id ?? null,
             'counter_name' => 'Cash Counter 1',

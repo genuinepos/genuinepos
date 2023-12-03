@@ -23,8 +23,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitSeeder::class); // 8
         $this->call(BarcodeSettingsSeeder::class); // 9
         $this->call(InvoiceLayoutSeeder::class); // 10
-        $this->call(InvoiceSchemaSeeder::class); // 11
-        // $this->call(AccountSeeder::class); // 12 --> Changed the database schema (Need update)
+        // $this->call(InvoiceSchemaSeeder::class); // 11
+        $this->call(AccountGroupSeeder::class); // 12A
+        $this->call(AccountSeeder::class); // 12B
         $this->call(CashCounterSeeder::class); // 13
         $this->call(PaymentMethodSeeder::class); // 14
         // $this->call(ProductSeeder::class); // 15

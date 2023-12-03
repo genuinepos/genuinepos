@@ -255,14 +255,14 @@ class BranchService
 
     public function addBranchDefaultAccounts(int $branchId): void
     {
-        $cashInHand = AccountGroup::where('sub_sub_group_number', 2)->first();
-        $directExpenseGroup = AccountGroup::where('sub_group_number', 10)->first();
-        $directIncomeGroup = AccountGroup::where('sub_group_number', 13)->first();
-        $salesAccountGroup = AccountGroup::where('sub_group_number', 15)->first();
-        $purchaseAccountGroup = AccountGroup::where('sub_group_number', 12)->first();
-        $accountReceivablesAccountGroup = AccountGroup::where('sub_group_number', 6)->first();
-        $suspenseAccountGroup = AccountGroup::where('sub_group_number', 9)->first();
-        // $capitalAccountGroup = AccountGroup::where('sub_group_number', 6)->where('branch_id', $branchId)->first();
+        $cashInHand = DB::table('account_groups')->where('sub_sub_group_number', 2)->first();
+        $directExpenseGroup = DB::table('account_groups')->where('sub_group_number', 10)->first();
+        $directIncomeGroup = DB::table('account_groups')->where('sub_group_number', 13)->first();
+        $salesAccountGroup = DB::table('account_groups')->where('sub_group_number', 15)->first();
+        $purchaseAccountGroup = DB::table('account_groups')->where('sub_group_number', 12)->first();
+        $accountReceivablesAccountGroup = DB::table('account_groups')->where('sub_group_number', 6)->first();
+        $suspenseAccountGroup = DB::table('account_groups')->where('sub_group_number', 9)->first();
+        // $capitalAccountGroup = DB::table('account_groups')->where('sub_group_number', 6)->first();
         // $dutiesAndTaxAccountGroup = AccountGroup::where('sub_sub_group_number', 8)->where('branch_id', $branchId)->first();
 
         $accounts = [

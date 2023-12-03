@@ -22,12 +22,13 @@ class PlanCheckerMiddleware
         $tenantCreatedAt = Carbon::parse($tenant->created_at);
         $isVerified = isset($tenant->is_verified) && ($tenant->is_verified == 1);
         $enjoyedTrialDays = today()->diffInDays($tenantCreatedAt);
-
-        if ($enjoyedTrialDays > 3 && $enjoyedTrialDays <= 7) {
+        $minTrialDays = config('saas.trial_min_days');
+        $maxTrialDays = config('saas.trial_max_days');
+        if ($enjoyedTrialDays > $minTrialDays && $enjoyedTrialDays <= $maxTrialDays) {
             if (! $isVerified) {
                 return redirect()->route('saas.business-verification.index')->with('error', __('Verify your Business Email to continue'));
             }
-        } elseif ($enjoyedTrialDays > 7) {
+        } elseif ($enjoyedTrialDays > $maxTrialDays) {
             return redirect()->route('saas.plan.all')->with('error', __('Purchase a plan to continue'));
         }
 

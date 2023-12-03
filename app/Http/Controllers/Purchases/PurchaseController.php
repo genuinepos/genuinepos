@@ -54,7 +54,7 @@ class PurchaseController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (! auth()->user()->can('purchase_all')) {
+        if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -81,7 +81,7 @@ class PurchaseController extends Controller
 
     public function show($id)
     {
-        if (! auth()->user()->can('purchase_all')) {
+        if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
@@ -111,7 +111,7 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('purchase_add')) {
+        if (!auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -156,7 +156,7 @@ class PurchaseController extends Controller
     // add purchase method
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_add')) {
+        if (!auth()->user()->can('purchase_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -349,7 +349,7 @@ class PurchaseController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('purchase_edit')) {
+        if (!auth()->user()->can('purchase_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -408,7 +408,7 @@ class PurchaseController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_edit')) {
+        if (!auth()->user()->can('purchase_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -600,7 +600,7 @@ class PurchaseController extends Controller
     // delete purchase method
     public function delete($id)
     {
-        if (! auth()->user()->can('purchase_delete')) {
+        if (!auth()->user()->can('purchase_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

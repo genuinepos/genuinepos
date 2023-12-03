@@ -1,10 +1,17 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 
     $__receivedAmount = isset($receivedAmount) ? $receivedAmount : 0;
+
+    $account = $sale?->customer;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 
 
@@ -190,7 +197,7 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;">
-                            <strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
+                            <strong>{{ __("Date") }} : </strong> {{ date($dateFormat .' '. $timeFormat ,strtotime($sale->sale_date_ts)) }}
                         </li>
 
                         <li style="font-size:11px!important;">
@@ -291,7 +298,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
-                        <h6><em>@lang('menu.continued_to_this_next_page')....</em></h6>
+                        <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
                     </div>
                 </div>
 
@@ -305,7 +312,7 @@
             <div class="row">
                 <div class="col-6">
                     @if ($invoiceLayout->show_total_in_word == 1)
-                        <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>Inword : </strong> <span id="inword"></span> {{ __("Only") }}.</p>
+                        <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __("Inword") }} : </strong> <span id="inword"></span> {{ __("Only") }}.</p>
                     @endif
 
                     @if (
@@ -390,7 +397,7 @@
                             <tr>
                                 <td class="text-end" style="font-size:11px!important;"><strong>{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt(0) }}
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </tbody>
@@ -564,7 +571,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center" style="font-size:11px;">
-                                    <strong>{{ __("Date") }} : </strong> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <strong>{{ __("Date") }} : </strong> <span>{{ date($dateFormat .' '. $timeFormat ,strtotime($sale->sale_date_ts)) }}</span>
                                 </th>
                             </tr>
 
@@ -576,7 +583,7 @@
 
                             <tr>
                                 <th class="text-center" style="font-size:11px;">
-                                    <strong>{{ __("Customer") }} : </strong> <span>{{ $sale->customer ? $sale->customer->name : 'Walk-In-Customer' }}</span>
+                                    <strong>{{ __("Customer") }} : </strong> <span>{{ $sale?->customer?->name }}</span>
                                 </th>
                             </tr>
                         </thead>
@@ -657,7 +664,7 @@
                                 </th>
                             </tr>
 
-                            @if ($changeAmount > 0)
+                            @if ($changeAmount > 0 && $__receivedAmount > 0 )
                                 <tr>
                                     <th class="text-end" style="font-size:11px;">{{ __("Change") }} : {{ $generalSettings['business__currency'] }}</th>
                                     <th class="text-end" style="font-size:11px;">
@@ -669,10 +676,19 @@
                             @endif
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __("Due") }} : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end" style="font-size:11px;">{{ __("Due (On Invoice)") }} : {{ $generalSettings['business__currency'] }}</th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}
+                                    </span>
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th class="text-end" style="font-size:11px;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end" style="font-size:11px;">
+                                    <span>
+                                        {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </span>
                                 </th>
                             </tr>

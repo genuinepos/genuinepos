@@ -21,7 +21,7 @@ Route::middleware([
     InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
     CheckTenantForMaintenanceMode::class,
-    'plan_check',
+    // 'plan_check',
 ])->group(function () {
     // Guest User
     Auth::routes(['register' => false, 'verify' => true]);
@@ -42,6 +42,7 @@ Route::middleware([
     Route::middleware('auth')->group(base_path('routes/general_searches.php'));
     Route::middleware('auth')->group(base_path('routes/stock_adjustments.php'));
     Route::middleware('auth')->group(base_path('routes/transfer_stocks.php'));
+    Route::middleware('auth')->group(base_path('routes/dashboard.php'));
     Route::get('impersonate/{token}', [UserImpersonateController::class, 'impersonate'])->name('users.impersonate');
 });
 

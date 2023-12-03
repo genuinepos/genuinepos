@@ -3,16 +3,16 @@
         <div class="main__nav">
             <ul id="" class="float-right">
                 <li data-menu="dashboardmenu" class="">
-                    <a href="{{ route('dashboard.dashboard') }}" class="">
+                    <a href="{{ route('dashboard.index') }}" class="">
                         <img src="{{ asset('backend/asset/img/icon/pie-chart.svg') }}" alt="">
-                        <p class="title">@lang('menu.dashboard')</p>
+                        <p class="title">{{ __("Dashboard") }}</p>
                     </a>
                 </li>
 
                 @if ($generalSettings['addons__branches'] == 1)
                     <li data-menu="superadmin" class="">
                         <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/superadmin.svg') }}">
-                            <p class="title">@lang('menu.superadmin')</p>
+                            <p class="title">{{ __("Superadmin") }}</p>
                         </a>
                     </li>
                 @endif

@@ -116,8 +116,10 @@ class QuickProductAddController extends Controller
             }
 
             $product = $this->productService->singleProduct(id: $addProduct->id, with: [
+                'tax',
                 'unit:id,name,code_name',
                 'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'productBranchStock',
             ]);
 
             DB::commit();

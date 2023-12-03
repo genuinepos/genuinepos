@@ -266,11 +266,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
                     }
                     $.each(err.responseJSON.errors, function(key, error) {
@@ -318,10 +318,10 @@
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
                     }
 
@@ -376,11 +376,11 @@
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server error. Please contact to the support team.');
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                             return;
                         }
 
@@ -425,11 +425,11 @@
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server error. Please contact to the support team.');
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                             return;
                         }
 

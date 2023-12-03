@@ -78,7 +78,7 @@ class AccountLedgerService
         }
 
         $update = $query->where('branch_id', $branchId)->first();
-
+        
         if ($update) {
 
             $update->debit = 0;

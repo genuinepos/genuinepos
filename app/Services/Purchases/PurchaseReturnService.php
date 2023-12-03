@@ -2,9 +2,10 @@
 
 namespace App\Services\Purchases;
 
-use App\Models\Purchases\PurchaseReturn;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Purchases\PurchaseReturn;
 use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseReturnService
@@ -231,7 +232,7 @@ class PurchaseReturnService
     {
         foreach ($updatePurchaseReturn->purchaseReturnProducts as $purchaseReturnProduct) {
 
-            $purchaseReturnProduct->is_delete_in_update = 1;
+            $purchaseReturnProduct->is_delete_in_update = BooleanType::True->value;
             $purchaseReturnProduct->save();
         }
 

@@ -255,7 +255,7 @@
         $(document).on('submit', '#filter_form', function (e) {
             e.preventDefault();
             $('.data_preloader').show();
-            table.ajax.reload();
+            salesTable.ajax.reload();
         });
 
         $(document).on('click', '#editShipmentDetails', function(e) {

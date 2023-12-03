@@ -44,7 +44,7 @@
                                         <div class="input-group">
                                             <label class="col-4 text-end pe-2"> <b>{{ __('Cash A/c') }} </b> <span class="text-danger">*</span> </label>
                                             <div class="col-8">
-                                                <select name="cash_account_id" id="" class="form-control">
+                                                <select name="cash_account_id" id="cash_account_id" class="form-control">
                                                     <option value="">{{ __("Select Cash A/c") }}</option>
                                                     @foreach ($cashAccounts as $cashAccount)
                                                         <option {{ old('cash_account_id') == $cashAccount->id ? 'SELECTED' : '' }} value="{{ $cashAccount->id }}">{{ $cashAccount->name }}</option>
@@ -78,7 +78,7 @@
                                         <div class="input-group">
                                             <label class="col-4 text-end pe-2"> <b>{{ __('Opening Cash Amount') }}</b></label>
                                             <div class="col-8">
-                                                <input readonly type="number" step="any" name="opening_cash" class="form-control fw-bold" placeholder="{{ __("Opening Cash Amount") }}" value="0.00">
+                                                <input readonly type="number" step="any" name="opening_cash" class="form-control fw-bold" id="opening_cash" placeholder="{{ __("Opening Cash Amount") }}" value="0.00">
                                                 <span class="error">{{ $errors->first('opening_cash') }}</span>
                                             </div>
                                         </div>
@@ -131,5 +131,46 @@
 </div>
 @endsection
 @push('scripts')
+    <script>
+        $(document).on('change', '#cash_account_id', function() {
 
+            $('#opening_cash').val(parseFloat(0).toFixed(2));
+
+            var accountId = $(this).val();
+            if (accountId == '') {
+
+                return;
+            }
+
+            var branchId = "{{ auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id }}";
+            var filterObj = {
+                branch_id : branchId,
+                from_date : null,
+                to_date : null,
+            };
+
+            var url = "{{ route('accounts.balance', ':accountId') }}";
+            var route = url.replace(':accountId', accountId);
+
+            $.ajax({
+                url: route,
+                type: 'get',
+                data: filterObj,
+                success: function(data) {
+
+                    $('#opening_cash').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
+                }, error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+    </script>
 @endpush

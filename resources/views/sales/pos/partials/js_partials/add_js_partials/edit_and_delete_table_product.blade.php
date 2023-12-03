@@ -18,12 +18,15 @@
         var unit_name = tr.find('#span_unit').html();
         var unit_price_exc_tax = tr.find('#unit_price_exc_tax').val();
         var unit_price_inc_tax = tr.find('#unit_price_inc_tax').val();
+        var is_show_emi_on_pos = tr.find('#is_show_emi_on_pos').val();
+        var description = tr.find('#description').val();
         var subtotal = tr.find('#subtotal').val();
 
         $('#editProductModal').modal('show');
 
         $('#e_unique_id').val(unique_id);
         $('#e_product_name').html(item_name);
+        $('#e_description').val(description);
         $('#e_product_id').val(product_id);
         $('#e_variant_id').val(variant_id);
         $('#e_unit_id').empty();
@@ -38,6 +41,15 @@
         $('#e_tax_type').val(tax_type);
         $('#e_tax_amount').val(parseFloat(unit_tax_amount).toFixed(2));
         $('#e_subtotal').val(parseFloat(subtotal).toFixed(2));
+        $('#e_is_show_emi_on_pos').val(is_show_emi_on_pos);
+
+        if (is_show_emi_on_pos == 1) {
+
+            $('#description_field').show();
+        }else{
+
+            $('#description_field').hide();
+        }
 
         setTimeout(function() {
 
@@ -143,6 +155,7 @@
     $('#e_tax_ac_id').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
+        var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
         var val = $(this).val();
 
         if (e.which == 0) {
@@ -152,7 +165,14 @@
                 $('#e_tax_type').focus();
             } else {
 
-                $('#edit_product').focus();
+                if (e_is_show_emi_on_pos == 1) {
+
+                    $('#e_description').focus().select();
+                }else {
+
+                    $('#edit_product').focus();
+                }
+
             }
         }
     });
@@ -160,8 +180,23 @@
     $('#e_tax_type').on('change keypress click', function(e) {
 
         calculateEditOrAddAmount();
+        var e_is_show_emi_on_pos = $('#e_is_show_emi_on_pos').val();
 
         if (e.which == 0) {
+
+            if (e_is_show_emi_on_pos == 1) {
+
+                $('#e_description').focus().select();
+            }else {
+
+                $('#edit_product').focus();
+            }
+        }
+    });
+
+    $('#e_description').on('change keypress click', function(e) {
+
+        if (e.which == 13) {
 
             $('#edit_product').focus();
         }
@@ -186,6 +221,7 @@
         var e_tax_type = $('#e_tax_type').val();
         var e_price_inc_tax = $('#e_price_inc_tax').val() ? $('#e_price_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
+        var e_description = $('#e_description').val();
 
         if (e_quantity == '') {
 
@@ -226,8 +262,6 @@
 
                 var tr = $('#' + e_unique_id).closest('tr');
 
-                console.log(tr);
-
                 tr.find('#tax_ac_id').val(e_tax_ac_id);
                 tr.find('#tax_type').val(e_tax_type);
                 tr.find('#unit_tax_percent').val(parseFloat(e_tax_percent).toFixed(2));
@@ -242,6 +276,9 @@
                 tr.find('#span_unit_price_inc_tax').html(parseFloat(e_price_inc_tax).toFixed(2));
                 tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
                 tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
+                var __description = e_description.length > 30 ? e_description.substring(0, 40) + '...' : e_description;
+                tr.find('#description').val(__description);
+                tr.find('#span_description').html(__description);
 
                 $('#editProductModal').modal('hide');
                 tr.find('#edit_product_link').focus();

@@ -1,6 +1,12 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $return?->supplier;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <style>
     @media print
@@ -233,7 +239,7 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                <b>{{ $amounts['closing_balance_in_flat_amount_string'] }}</b>
                             </td>
                         </tr>
                     </thead>

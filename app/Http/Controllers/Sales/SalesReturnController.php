@@ -83,7 +83,8 @@ class SalesReturnController extends Controller
     {
         $return = $this->salesReturnService->singleSalesReturn(id: $id, with: [
             'sale',
-            'customer:id,name,phone,address',
+            'customer:id,name,phone,address,account_group_id',
+            'customer.group',
             'createdBy:id,prefix,name,last_name',
             'saleReturnProducts',
             'saleReturnProducts.product',

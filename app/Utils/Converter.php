@@ -67,7 +67,22 @@ class Converter
 
         return self::en2bn($number);
     }
+
+    public static function numberShortFormat($number)
+    {
+        if ($number < 1000) {
+            return number_format($number, 2); // If less than 1000, simply format with 2 decimal places
+        } elseif ($number < 1000000) {
+            return number_format($number / 1000, 1) . 'K'; // If less than 1 million, display as Xk
+        } elseif ($number < 1000000000) {
+            return number_format($number / 1000000, 2) . 'M'; // If less than 1 billion, display as Xm
+        } else {
+            return number_format($number / 1000000000, 2) . 'B'; // Otherwise, display as Xb
+        }
+    }
 }
+
+
 
 // echo BanglaEnglishConverter::format_in_text("10002345.89");
 // echo PHP_EOL;

@@ -1,6 +1,13 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
+    $account = $return?->customer;
+    $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
+    $branchId = auth()->user()->branch_id == null ? 'NULL' : auth()->user()->branch_id;
+    $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
+    $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <style>
     @media print
@@ -96,7 +103,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h4 style="text-transform: uppercase;"><strong>{{ __("Sales Return Voucher") }}</strong></h4>
+                <h4 class="fw-bold" style="text-transform: uppercase;">{{ __("Sales Return Voucher") }}</h4>
             </div>
         </div>
 
@@ -105,7 +112,7 @@
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>{{ $return->date }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $return->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Customer") }} : </strong> {{ $return?->supplier?->name  }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Customer") }} : </strong> {{ $return?->customer?->name  }}</li>
                 </ul>
             </div>
 
@@ -233,7 +240,7 @@
                         <tr>
                             <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
+                                <b>{{ $amounts['closing_balance_in_flat_amount_string'] }}</b>
                             </td>
                         </tr>
                     </thead>
@@ -274,7 +281,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($dateFormat) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

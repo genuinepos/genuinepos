@@ -794,8 +794,8 @@
 
             $('#purchase_ledger_amount').val(purchaseLedgerAmount);
 
-            var previousPaid = $('#previous_received').val() ? $('#previous_received').val() : 0;
-            var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousPaid);
+            var previousReceived = $('#previous_received').val() ? $('#previous_received').val() : 0;
+            var returnedAmount = parseFloat(calcTotalAmount) - parseFloat(previousReceived);
             var receivedAmount = $('#received_amount').val() ? $('#received_amount').val() : 0;
             var closingBalance = $('#closing_balance').val() ? $('#closing_balance').val() : 0;
             var accountDefaultBalanceType = $('#supplier_account_id').find('option:selected').data('default_balance_type');
@@ -899,7 +899,7 @@
                     }
 
                     toastr.success(data);
-
+                    return;
                     window.location = "{{ url()->previous() }}";
                 },
                 error: function(err) {
@@ -1062,6 +1062,25 @@
         new Litepicker({
             singleMode: true,
             element: document.getElementById('date'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat,
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('receipt_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

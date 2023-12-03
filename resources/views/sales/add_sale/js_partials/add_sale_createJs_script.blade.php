@@ -75,9 +75,11 @@
                             $('.select_area').hide();
                             $('#search_product').val('');
 
+                            var stock = product.product_branch_stock != null ? product.product_branch_stock.all_stock : 0;
+
                             if (product.is_manage_stock == 1) {
 
-                                $('#stock_quantity').val(parseFloat(product.product_branch_stock.all_stock).toFixed(2));
+                                $('#stock_quantity').val(parseFloat(stock).toFixed(2));
                             }
 
                             var price = 0;
@@ -160,9 +162,11 @@
 
                         var variant = product.variant_product;
 
+                        var stock = variant.variant_branch_stock ? variant.variant_branch_stock.all_stock : 0;
+
                         if (variant.product.is_manage_stock == 1) {
 
-                            $('#stock_quantity').val(parseFloat(variant.variant_branch_stock.all_stock).toFixed(2));
+                            $('#stock_quantity').val(parseFloat(stock).toFixed(2));
                         }
 
                         var price = 0;
@@ -321,8 +325,6 @@
         var route = url.replace(':product_id', product_id);
         route = route.replace(':variant_id', variant_id);
         route = route.replace(':price_group_id', price_group_id);
-
-        console.log(route);
 
         $.ajax({
             url: route,

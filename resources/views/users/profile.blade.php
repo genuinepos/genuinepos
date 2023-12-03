@@ -477,7 +477,7 @@
              success: function(data) {
                 toastr.success(data);
                 $('.loading_button').hide();
-                window.location = "{{ route('dashboard.dashboard') }}";
+                window.location = "{{ route('dashboard.index') }}";
             }
             , error: function(err) {
                 $('.loading_button').hide();

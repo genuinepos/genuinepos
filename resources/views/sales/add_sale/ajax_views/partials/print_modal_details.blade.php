@@ -1,6 +1,4 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
     $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
@@ -191,7 +189,7 @@
                         </li>
 
                         <li style="font-size:11px!important;">
-                            <strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}
+                            <strong>{{ __("Date") }} : </strong> {{ date($dateFormat.' '.$timeFormat, strtotime($sale->sale_date_ts)) }}
                         </li>
 
                         <li style="font-size:11px!important;">
@@ -386,7 +384,7 @@
                             <tr>
                                 <td class="text-end" style="font-size:11px!important;"><strong>{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt(0) }}
+                                    {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
                             </tr>
                         </tbody>
@@ -560,7 +558,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center" style="font-size:11px;">
-                                    <strong>{{ __("Date") }} : </strong> <span>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</span>
+                                    <strong>{{ __("Date") }} : </strong> <span>{{ date($dateFormat.' '.$timeFormat, strtotime($sale->sale_date_ts)) }}</span>
                                 </th>
                             </tr>
 

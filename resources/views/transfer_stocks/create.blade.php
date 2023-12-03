@@ -17,14 +17,16 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 @endpush
-@section('title', 'Edit Transfer Stock (Warehouse To Show/Business)')
+{{-- @section('title', 'Add Transfer Stock (Shop/Business To Shop/Business)') --}}
+@section('title', 'Add Transfer Stock')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
-                    <h6>{{ __("Edit Tranfer Stock (Warehouse To Shop/Business)") }}</h6>
+                    {{-- <h6>{{ __("Add Tranfer Stock (Shop/Business To Shop/Business)") }}</h6> --}}
+                    <h6>{{ __("Add Tranfer Stock") }}</h6>
                 </div>
 
                 <div class="col-6">
@@ -33,51 +35,63 @@
             </div>
         </div>
         <div class="p-1">
-            <form id="edit_transfer_warehouse_to_branch_form" action="{{ route('transfer.stock.warehouse.to.branch.update', $transferStock->id) }}" method="POST">
+            <form id="add_transfer_branch_to_branch_form" action="{{ route('transfer.stocks.store') }}" method="POST">
                 @csrf
+                <input type="hidden" name="action" id="action">
                 <section>
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-5"><b>{{ __("Sender Warehouse") }}</b> <span class="text-danger">*</span></label>
+                                        <label class="col-5"><b>{{ __("Sender Shop/Business") }}</b></label>
                                         <div class="col-7">
-                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="date" autofocus>
-                                                <option value="">{{ __("Select Sender Warehouse") }}</option>
+                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <input readonly type="text" class="form-control fw-bold" value="{{ $branchName }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mt-1">
+                                        <label class="col-5"><b>{{ __("Send At") }}</b></label>
+                                        <div class="col-7">
+                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
+                                                <option value="">{{ __("Select Warehouse") }}</option>
                                                 @foreach ($warehouses as $w)
-                                                    <option {{ $transferStock->sender_warehouse_id == $w->id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                    <option value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
                                                 @endforeach
                                             </select>
-                                            <span class="error error_sender_warehouse_id"></span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-5"><b>{{ __("Receiver Shop/Business") }}</b></label>
+                                        <label class="col-5"><b>{{ __("Receiver Shop/Business") }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-7">
-                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
+                                            <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
+                                                <option value="" class="fw-bold">{{ __("Select Receiver Shop/Business") }}</option>
+                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                            $branchCode = '-' . $branch->branch_code;
+                                                        @endphp
+                                                        {{ $branchName.$areaName.$branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="error error_receiver_warehouse_id"></span>
+                                        </div>
+                                    </div>
 
-                                            @php
-                                                $branchName = '';
-                                                if ($transferStock?->receiverBranch) {
-
-                                                    if ($transferStock?->receiverBranch?->parent_branch_id) {
-
-                                                        $branchName = $transferStock?->receiverBranch?->parentBranch?->name.'('.$transferStock?->receiverBranch?->area_name.')';
-                                                    }else {
-
-                                                        $branchName = $transferStock?->receiverBranch?->name.'('.$transferStock?->receiverBranch?->area_name.')';
-                                                    }
-                                                }else{
-
-                                                    $branchName = $generalSettings['business__shop_name'];
-                                                }
-                                            @endphp
-
-                                            <input readonly type="text" class="form-control fw-bold" value="{{ $branchName }}">
+                                    <div class="input-group mt-1">
+                                        <label class="col-5"><b>{{ __("Receive At") }}</b></label>
+                                        <div class="col-7">
+                                            <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
+                                                <option value="">{{ __("Select Warehouse") }}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +100,7 @@
                                     <div class="input-group">
                                         <label  class="col-5"><b>{{ __("Transfer Date") }}</b></label>
                                         <div class="col-7">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}" data-next="search_product" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="search_product" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +139,6 @@
                                         <input type="hidden" id="e_item_name">
                                         <input type="hidden" id="e_product_id">
                                         <input type="hidden" id="e_variant_id">
-                                        <input type="hidden" id="e_current_qty">
                                     </div>
 
                                     <div class="col-xl-2 col-md-6">
@@ -171,65 +184,7 @@
                                                                 <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="transfer_product_list">
-                                                            @php
-                                                                $itemUnitsArray = [];
-                                                            @endphp
-                                                            @foreach ($transferStock->transferStockProducts as $transferStockProduct)
-                                                                @php
-                                                                    if (isset($transferStockProduct->product_id)) {
-
-                                                                        $itemUnitsArray[$transferStockProduct->product_id][] = [
-                                                                            'unit_id' => $transferStockProduct->product->unit->id,
-                                                                            'unit_name' => $transferStockProduct->product->unit->name,
-                                                                            'unit_code_name' => $transferStockProduct->product->unit->code_name,
-                                                                            'base_unit_multiplier' => 1,
-                                                                            'multiplier_details' => '',
-                                                                            'is_base_unit' => 1,
-                                                                        ];
-                                                                    }
-
-                                                                    $variantName = $transferStockProduct?->variant ? ' - ' . $transferStockProduct?->variant?->variant_name : '';
-                                                                    $variantId = $transferStockProduct->variant_id ? $transferStockProduct->variant_id : 'noid';
-                                                                @endphp
-
-                                                                <tr id="select_item">
-                                                                    <td class="text-start">
-                                                                        <span class="product_name">{{ $transferStockProduct->product->name . $variantName }}</span>
-                                                                        <input type="hidden" id="item_name" value="{{ $transferStockProduct->product->name . $variantName }}">
-                                                                        <input type="hidden" name="product_ids[]" id="product_id" value="{{ $transferStockProduct->product_id }}">
-                                                                        <input type="hidden" name="variant_ids[]" id="variant_id" value="{{ $variantId }}">
-                                                                        <input type="hidden" name="transfer_stock_product_ids[]" value="{{ $transferStockProduct->id }}">
-                                                                        <input type="hidden" class="unique_id" id="{{ $transferStockProduct->product_id . $variantId }}" value="{{ $transferStockProduct->product_id . $variantId }}">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <span id="span_quantity" class="fw-bold">{{ $transferStockProduct->send_qty }}</span>
-                                                                        <input type="hidden" name="quantities[]" id="quantity" value="{{ $transferStockProduct->send_qty }}">
-                                                                        <input type="hidden" id="current_qty" value="{{ $transferStockProduct->send_qty }}">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <span id="span_unit" class="fw-bold">{{ $transferStockProduct?->unit?->name }}</span>
-                                                                        <input type="hidden" name="unit_ids[]" id="unit_id" value="{{ $transferStockProduct->unit_id }}">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <span id="span_unit_cost_inc_tax" class="fw-bold">{{ $transferStockProduct->unit_cost_inc_tax }}</span>
-                                                                        <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $transferStockProduct->unit_cost_inc_tax }}">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <span id="span_subtotal" class="fw-bold">{{ $transferStockProduct->subtotal }}</span>
-                                                                        <input type="hidden" name="subtotals[]" id="subtotal" value="{{ $transferStockProduct->subtotal }}" tabindex="-1">
-                                                                    </td>
-
-                                                                    <td class="text-start">
-                                                                        <a href="#" id="remove_product_btn" tabindex="-1"><i class="fas fa-trash-alt text-danger mt-2"></i></a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
+                                                        <tbody id="transfer_product_list"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -247,12 +202,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __("Total Item & Qty") }}</b></label>
+                                        <label class=" col-4"><b>{{ __("Total Item") }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
-                                                <input readonly type="number" step="any" name="total_item" class="form-control fw-bold" id="total_item" value="{{ $transferStock->total_item }}" tabindex="-1">
+                                                <input readonly type="number" step="any" name="total_item" class="form-control fw-bold" id="total_item" value="0.00" tabindex="-1">
                                                 <input readonly type="number" step="any" name="total_qty"
-                                                class="form-control fw-bold" id="total_qty" value="{{ $transferStock->total_qty }}" tabindex="-1">
+                                                class="form-control fw-bold" id="total_qty" tabindex="-1">
                                             </div>
                                         </div>
                                     </div>
@@ -262,7 +217,7 @@
                                     <div class="input-group">
                                         <label class=" col-4"><b>{{ __("Total Stock Value") }} :</b> </label>
                                         <div class="col-8">
-                                            <input readonly type="number" step="any" name="total_stock_value" class="form-control fw-bold" id="total_stock_value" value="{{ $transferStock->total_stock_value }}" tabindex="-1">
+                                            <input readonly type="number" step="any" name="total_stock_value" class="form-control fw-bold" id="total_stock_value" value="0.00" tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +226,7 @@
                                     <div class="input-group">
                                         <label  class="col-2"><b>{{ __("Note") }}</b></label>
                                         <div class="col-10">
-                                            <input name="transfer_note" type="text" class="form-control" id="transfer_note" data-next="save_changes" value="{{ $transferStock->transfer_note }}" placeholder="{{ __("Transfer Note") }}">
+                                            <input name="transfer_note" type="text" class="form-control" id="transfer_note" data-next="save_and_print" placeholder="{{ __("Transfer Note") }}">
                                         </div>
                                     </div>
                                 </div>
@@ -285,7 +240,8 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
-                                <button type="button" id="save_changes" class="btn btn-success submit_button">{{ __("Save Changes") }}</button>
+                                <button type="button" id="save_and_print" value="save_and_print" class="btn btn-success submit_button">{{ __("Save & Print") }}</button>
+                                <button type="button" id="save" value="save" class="btn btn-success submit_button">{{ __("Save") }}</button>
                             </div>
                         </div>
                     </div>
@@ -298,8 +254,7 @@
     <script src="{{ asset('assets/plugins/custom/select_li/selectli.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var itemUnitsArray = @json($itemUnitsArray);
-
+        var itemUnitsArray = [];
         // Calculate total amount functionalitie
         function calculateTotalAmount(){
             var quantities = document.querySelectorAll('#quantity');
@@ -339,14 +294,6 @@
             $('.variant_list_area').empty();
             $('.select_area').hide();
 
-            var senderWarehouseId = $('#sender_warehouse_id').val();
-
-            if (senderWarehouseId == '') {
-
-                toastr.error("{{ __('Please Select The Sender Warehouse') }}");
-                return;
-            }
-
             var keyWord = $(this).val();
             var __keyWord = keyWord.replaceAll('/', '~');
             delay(function() {
@@ -357,7 +304,7 @@
         function searchProduct(keyWord) {
 
             $('#search_product').focus();
-   
+
             var isShowNotForSaleItem = 1;
             var url = "{{ route('general.product.search.common', [':keyWord', ':isShowNotForSaleItem']) }}";
             var route = url.replace(':keyWord', keyWord);
@@ -428,7 +375,7 @@
                                     product.thumbnail_photo = product.thumbnail_photo === null ? "{{ asset('images/default.jpg') }}" : "{{ asset('uploads/product/thumbnail') }}" + '/' + product.thumbnail_photo;
 
                                     li += '<li>';
-                                    li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_code="' + variant.variant_code + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
+                                    li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + variant.id + '" data-p_name="' + product.name + '" data-v_name="' + variant.variant_name + '" data-p_cost_exc_tax="' + variant.variant_cost + '" data-p_cost_inc_tax="' + variant.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + variant.variant_name + '</a>';
                                     li += '</li>';
                                 });
 
@@ -474,13 +421,13 @@
                                     if (product.is_variant == 1) {
 
                                         li += '<li>';
-                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-v_name="' + product.variant_name + '" data-p_code="' + product.variant_code + '" data-p_cost_inc_tax="' + product.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
+                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="variant" data-p_id="' + product.id + '" data-is_manage_stock="' + product.is_manage_stock + '" data-v_id="' + product.variant_id + '" data-p_name="' + product.name + '" data-v_name="' + product.variant_name + '" data-p_cost_inc_tax="' + product.variant_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + ' - ' + product.variant_name + '</a>';
                                         li += '</li>';
 
                                     } else {
 
                                         li += '<li>';
-                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-v_name="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-p_code="' + product.product_code + '" data-p_cost_inc_tax="' + product.product_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
+                                        li += '<a onclick="selectProduct(this); return false;" data-product_type="single" data-p_id="' + product.id + '" data-v_id="" data-v_name="" data-is_manage_stock="' + product.is_manage_stock + '" data-p_name="' + product.name + '" data-p_cost_inc_tax="' + product.product_cost_with_tax + '" href="#"><img style="width:20px; height:20px;" src="' + product.thumbnail_photo + '"> ' + product.name + '</a>';
                                         li += '</li>';
                                     }
                                 });
@@ -509,7 +456,6 @@
             var is_manage_stock = e.getAttribute('data-is_manage_stock');
             var product_name = e.getAttribute('data-p_name');
             var variant_name = e.getAttribute('data-v_name');
-            var product_code = e.getAttribute('data-p_code');
             var product_cost_inc_tax = e.getAttribute('data-p_cost_inc_tax');
 
             $('#search_product').val('');
@@ -562,11 +508,10 @@
             var e_unit_id = $('#e_unit_id').val();
             var e_unit_name = $('#e_unit_id').find('option:selected').data('unit_name');
             var e_quantity = $('#e_quantity').val() ? $('#e_quantity').val() : 0;
-            var e_current_qty = $('#e_quantity').val() ? $('#e_current_qty').val() : 0;
             var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
             var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-            var sender_warehouse_id = $('#sender_warehouse_id').val();
+            var senderWarehouseId = $('#sender_warehouse_id').val();
 
             if (e_quantity == '') {
 
@@ -583,15 +528,15 @@
             var route = '';
             if (e_variant_id != 'noid') {
 
-                var url = "{{ route('general.product.search.variant.product.stock', [':e_product_id', ':e_variant_id', ':sender_warehouse_id']) }}";
+                var url = "{{ route('general.product.search.variant.product.stock', ['productId' => ':e_product_id', 'variantId' => ':e_variant_id', 'warehouseId' => ':warehouseId']) }}";
                 route = url.replace(':e_product_id', e_product_id);
                 route = route.replace(':e_variant_id', e_variant_id);
-                route = route.replace(':sender_warehouse_id', sender_warehouse_id);
+                route = route.replace(':warehouseId', senderWarehouseId);
             } else {
 
-                var url = "{{ route('general.product.search.single.product.stock', [':e_product_id', ':sender_warehouse_id']) }}";
+                var url = "{{ route('general.product.search.single.product.stock', ['productId' => ':e_product_id', 'warehouseId' => ':warehouseId']) }}";
                 route = url.replace(':e_product_id', e_product_id);
-                route = route.replace(':sender_warehouse_id', sender_warehouse_id);
+                route = route.replace(':warehouseId', senderWarehouseId);
             }
 
             $.ajax({
@@ -601,11 +546,10 @@
                 success: function(data) {
                     if ($.isEmptyObject(data.errorMsg)) {
 
-                        var stock = parseFloat(data.stock) + parseFloat(e_current_qty);
-                        console.log(stock);
-                        if (parseFloat(e_quantity) > parseFloat(stock)) {
+                        var stockLocationMessage = senderWarehouseId ? ' in selected warehouse' : ' in the Shop/Business';
+                        if (parseFloat(e_quantity) > parseFloat(data.stock)) {
 
-                            toastr.error("{{ __('Send quantity is exceed the current stock.') }}");
+                            toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + stockLocationMessage);
                             return;
                         }
 
@@ -621,16 +565,13 @@
                             tr += '<input type="hidden" id="item_name" value="' + e_item_name + '">';
                             tr += '<input type="hidden" name="product_ids[]" id="product_id" value="' + e_product_id + '">';
                             tr += '<input type="hidden" name="variant_ids[]" id="variant_id" value="' + e_variant_id + '">';
-                            tr += '<input type="hidden" name="transfer_stock_product_ids[]">';
                             tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + '" value="' + e_product_id + e_variant_id + '">';
                             tr += '</td>';
 
                             tr += '<td class="text-start">';
                             tr += '<span id="span_quantity" class="fw-bold">' + parseFloat(e_quantity).toFixed(2) + '</span>';
-                            tr += '<input type="hidden" id="current_qty" value="0">';
                             tr += '<input type="hidden" name="quantities[]" id="quantity" value="' + parseFloat(e_quantity).toFixed(2) + '">';
                             tr += '</td>';
-
 
                             tr += '<td class="text text-start">';
                             tr += '<span id="span_unit" class="fw-bold">' + e_unit_name + '</span>';
@@ -696,7 +637,6 @@
             var variant_id = tr.find('#variant_id').val();
             var unit_cost_inc_tax = tr.find('#unit_cost_inc_tax').val();
             var quantity = tr.find('#quantity').val();
-            var current_qty = tr.find('#current_qty').val();
             var subtotal = tr.find('#subtotal').val();
 
             $('#e_unit_id').empty();
@@ -706,8 +646,7 @@
                 $('#e_unit_id').append('<option ' + (unit_id == unit.unit_id ? 'selected' : '') +
                     ' value="' + unit.unit_id + '" data-is_base_unit="' + unit.is_base_unit +
                     '" data-unit_name="' + unit.unit_name + '" data-base_unit_multiplier="' + unit
-                    .base_unit_multiplier + '">' + unit.unit_name + unit.multiplier_details +
-                    '</option>');
+                    .base_unit_multiplier + '">' + unit.unit_name + unit.multiplier_details + '</option>');
             });
 
             $('#search_product').val(item_name);
@@ -715,7 +654,6 @@
             $('#e_product_id').val(product_id);
             $('#e_variant_id').val(variant_id);
             $('#e_quantity').val(parseFloat(quantity).toFixed(2)).focus().select();
-            $('#e_current_qty').val(parseFloat(current_qty).toFixed(2));
             $('#e_unique_id').val(unique_id);
             $('#e_unit_cost_inc_tax').val(unit_cost_inc_tax);
             $('#e_subtotal').val(subtotal);
@@ -730,7 +668,6 @@
             $('#e_product_id').val('');
             $('#e_variant_id').val('');
             $('#e_quantity').val(0.00);
-            $('#e_current_qty').val(0.00);
             $('#e_unit_cost_inc_tax').val(parseFloat(0).toFixed(2));
             $('#e_subtotal').val(parseFloat(0).toFixed(2));
         }
@@ -805,6 +742,9 @@
         var isAllowSubmit = true;
         $(document).on('click', '.submit_button', function() {
 
+            var value = $(this).val();
+            $('#action').val(value);
+
             if (isAllowSubmit) {
 
                 $(this).prop('type', 'submit');
@@ -817,7 +757,11 @@
 
             if (e.ctrlKey && e.which == 13) {
 
-                $('#save_changes').click();
+                $('#save_and_print').click();
+                return false;
+            } else if (e.shiftKey && e.which == 13) {
+
+                $('#save').click();
                 return false;
             } else if (e.which == 27) {
 
@@ -828,7 +772,8 @@
             }
         }
 
-        $('#edit_transfer_warehouse_to_branch_form').on('submit', function(e){
+        //Add purchase request by ajax
+        $('#add_transfer_branch_to_branch_form').on('submit', function(e){
             e.preventDefault();
 
             var totalItem = $('#total_item').val();
@@ -843,12 +788,19 @@
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
+            isAjaxIn = false;
+            isAllowSubmit = false;
             $.ajax({
+                beforeSend: function() {
+                    isAjaxIn = true;
+                },
                 url:url,
                 type:'post',
                 data: request,
                 success:function(data){
 
+                    isAjaxIn = true;
+                    isAllowSubmit = true;
                     $('.loading_button').hide();
                     if(!$.isEmptyObject(data.errorMsg)){
 
@@ -856,10 +808,30 @@
                         return;
                     }
 
-                    toastr.success(data);
-                    window.location = "{{ url()->previous() }}";
+                    if(!$.isEmptyObject(data.successMsg)){
+
+                        toastr.success(data.successMsg);
+                        window.location = "{{ route('transfer.stocks.index') }}";
+                    }else{
+
+                        $('#add_transfer_branch_to_branch_form')[0].reset();
+                        toastr.success("{{ __('Transfer is created successfully.') }}");
+                        $('#transfer_product_list').empty();
+
+                        $(data).printThis({
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                            removeInline: false,
+                            printDelay: 1000,
+                            header: null,
+                        });
+                    }
                 }, error: function(err) {
 
+                    isAjaxIn = true;
+                    isAllowSubmit = true;
                     $('.loading_button').hide();
                     $('.error').html('');
 
@@ -881,6 +853,11 @@
                     });
                 }
             });
+
+            if (isAjaxIn == false) {
+
+                isAllowSubmit = true;
+            }
         });
 
         $(document).on('change keypress click', 'select', function(e) {
@@ -926,6 +903,46 @@
         $(document).on('mouseenter', '#list>li>a',function () {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
+        });
+
+        $(document).on('click', '#receiver_branch_id', function(e) {
+            e.preventDefault();
+
+            var branchId = $(this).val() ? $(this).val() : 'noid';
+
+            // if (branchId == '') {
+            //     return;
+            // }
+
+            var route = '';
+            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+            route = url.replace(':branchId', branchId);
+
+            $.ajax({
+                url: route,
+                type: 'get',
+                success: function(warehouses) {
+
+                    $('#receiver_warehouse_id').empty();
+                    $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
+
+                    $.each(warehouses, function(key, warehouse) {
+
+                        $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                    });
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
         });
 
         var dateFormat = "{{ $generalSettings['business__date_format'] }}";

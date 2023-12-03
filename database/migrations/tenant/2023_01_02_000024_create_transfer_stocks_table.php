@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('transfer_stocks', function (Blueprint $table) {
             $table->id();
             $table->string('voucher_no')->nullable();
-            $table->tinyInteger('type')->comment('1=warehouse_to_branch, 2=branch_to_warehouse, 3=branch_to_branch, 4=warehouse_to_warehouse');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedBigInteger('sender_branch_id')->nullable();
             $table->unsignedBigInteger('receiver_branch_id')->nullable();

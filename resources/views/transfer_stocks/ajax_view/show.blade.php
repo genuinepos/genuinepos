@@ -16,9 +16,31 @@
                  <div class="row">
                      <div class="col-md-4">
                          <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __("Send From") }} : </strong>{{ $transferStock?->senderWarehouse?->warehouse_name.'-('.$transferStock?->senderWarehouse->warehouse_code.')' }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __("Send From") }} : </strong>
+                                @if ($transferStock?->senderBranch)
+
+                                    @if ($transferStock?->senderBranch?->parent_branch_id)
+
+                                        {{ $transferStock?->senderBranch?->parentBranch?->name }}
+                                    @else
+
+                                        {{ $transferStock?->senderBranch?->name }}
+                                    @endif
+                                @else
+
+                                    {{ $generalSettings['business__shop_name'] }}
+                                @endif
+                            </li>
+
+                            @if ($transferStock?->senderWarehouse)
+                                <li style="font-size:11px!important;"><strong>{{ __("Send At") }} : </strong>
+                                    {{ $transferStock?->senderWarehouse?->warehouse_name.'-('.$transferStock?->senderWarehouse?->warehouse_code.')' }}
+                                </li>
+                            @endif
+
                             <li style="font-size:11px!important;"><strong>{{ __("Send To") }} : </strong>
                                 @if ($transferStock?->receiverBranch)
+
                                     @if ($transferStock?->receiverBranch?->parent_branch_id)
 
                                         {{ $transferStock?->receiverBranch?->parentBranch?->name }}
@@ -31,12 +53,18 @@
                                     {{ $generalSettings['business__shop_name'] }}
                                 @endif
                             </li>
+
+                            @if ($transferStock?->receiverWarehouse)
+                                <li style="font-size:11px!important;"><strong>{{ __("Receive At") }} : </strong>
+                                    {{ $transferStock?->receiverWarehouse?->warehouse_name.'-('.$transferStock?->receiverWarehouse?->warehouse_code.')' }}
+                                </li>
+                            @endif
                          </ul>
                      </div>
 
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __("Transferred Date") }} : </strong>
+                            <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
                                 {{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}
                             </li>
 
@@ -137,15 +165,15 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;color:rgb(42, 194, 42)!important;">{{ __("Total Received Qty") }} : </th>
-                                    <td class="text-end" style="font-size:11px!important;color:rgb(42, 194, 42)!important;">
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Total Received Qty") }} : </th>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($transferStock->total_received_qty) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;color:rgb(218, 24, 24)!important;">{{ __("Total Pending Qty") }} : </th>
-                                    <td class="text-end" style="font-size:11px!important;color:rgb(218, 24, 24)!important;">
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Total Pending Qty") }} : </th>
+                                    <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($transferStock->total_pending_qty) }}
                                     </td>
                                 </tr>
@@ -175,7 +203,7 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <a href="{{ route('transfer.stock.warehouse.to.branch.edit', [$transferStock->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
+                            <a href="{{ route('transfer.stocks.edit', [$transferStock->id]) }}" class="btn btn-sm btn-secondary">{{ __("Edit") }}</a>
                             <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __("Print") }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                         </div>
@@ -282,14 +310,34 @@
         <div class="row mt-2">
             <div class="col-12 text-center">
                 <h6 style="text-transform: uppercase;"><strong>{{ __("Transfer Stock Voucher") }}</strong></h6>
-                <p><strong>{{ __("Warehouse To Shop/Business") }}</strong></p>
+                {{-- <p><strong>{{ __("Shop/Business To Shop/Business") }}</strong></p> --}}
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col-4">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __("Send From") }} : </strong>{{ $transferStock?->senderWarehouse?->warehouse_name.'-('.$transferStock?->senderWarehouse->warehouse_code.')' }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __("Send From") }} : </strong>
+                        @if ($transferStock?->senderBranch)
+                            @if ($transferStock?->senderBranch?->parent_branch_id)
+
+                                {{ $transferStock?->senderBranch?->parentBranch?->name }}
+                            @else
+
+                                {{ $transferStock?->senderBranch?->name }}
+                            @endif
+                        @else
+
+                            {{ $generalSettings['business__shop_name'] }}
+                        @endif
+                    </li>
+
+                    @if ($transferStock?->senderWarehouse)
+                        <li style="font-size:11px!important;"><strong>{{ __("Send At") }} : </strong>
+                            {{ $transferStock?->senderWarehouse?->warehouse_name.'-('.$transferStock?->senderWarehouse->warehouse_code.')' }}
+                        </li>
+                    @endif
+
                     <li style="font-size:11px!important;"><strong>{{ __("Send To") }} : </strong>
                         @if ($transferStock?->receiverBranch)
                             @if ($transferStock?->receiverBranch?->parent_branch_id)
@@ -304,12 +352,18 @@
                             {{ $generalSettings['business__shop_name'] }}
                         @endif
                     </li>
+
+                    @if ($transferStock?->receiverWarehouse)
+                        <li style="font-size:11px!important;"><strong>{{ __("Receive At") }} : </strong>
+                            {{ $transferStock?->receiverWarehouse?->warehouse_name.'-('.$transferStock?->receiverWarehouse->warehouse_code.')' }}
+                        </li>
+                    @endif
                 </ul>
             </div>
 
             <div class="col-4">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __("Transferred Date") }} : </strong>
+                    <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
                         {{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}
                     </li>
 
@@ -319,9 +373,10 @@
 
             <div class="col-4">
                 <ul class="list-unstyled">
-                    @if ($transferStock->receive_date)
-                        <li style="font-size:11px!important;"><strong>{{ __("Received Date") }} : </strong>
-                            {{ date($generalSettings['business__date_format'], strtotime($transferStock->receive_date)) }}
+
+                    @if ($transferStock->date)
+                        <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>
+                            {{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}
                         </li>
                     @endif
 

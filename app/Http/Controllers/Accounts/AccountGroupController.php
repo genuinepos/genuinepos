@@ -18,6 +18,10 @@ class AccountGroupController extends Controller
 
     public function index()
     {
+        if (!auth()->user()->can('account_groups_index')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -34,6 +38,10 @@ class AccountGroupController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('account_groups_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
             ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
 
@@ -42,13 +50,16 @@ class AccountGroupController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('account_groups_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'parent_group_id' => 'required',
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $addAccountGroup = $this->accountGroupService->addAccountGroup($request);
@@ -64,6 +75,10 @@ class AccountGroupController extends Controller
 
     public function edit($id)
     {
+        if (!auth()->user()->can('account_groups_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $formGroups = $this->accountGroupService->accountGroups(with: ['parentGroup'])
             ->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $group = $this->accountGroupService->singleAccountGroup(id: $id, with: ['parentGroup']);
@@ -73,13 +88,16 @@ class AccountGroupController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('account_groups_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'name' => 'required',
             'parent_group_id' => 'required',
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $updateAccountGroup = $this->accountGroupService->updateAccountGroup(id: $id, request: $request);
@@ -95,8 +113,11 @@ class AccountGroupController extends Controller
 
     public function delete(Request $request, $id)
     {
-        try {
+        if (!auth()->user()->can('account_groups_delete')) {
+            abort(403, 'Access Forbidden.');
+        }
 
+        try {
             DB::beginTransaction();
 
             $deleteAccountGroup = $this->accountGroupService->deleteAccountGroup($id);

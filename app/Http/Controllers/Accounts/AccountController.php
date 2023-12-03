@@ -34,8 +34,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('accounts_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -54,7 +53,7 @@ class AccountController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('accounting_access')) {
+        if (! auth()->user()->can('accounts_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -70,8 +69,7 @@ class AccountController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('accounts_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -155,6 +153,10 @@ class AccountController extends Controller
 
     public function edit($accountId)
     {
+        if (! auth()->user()->can('accounts_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $account = $this->accountService->singleAccountById(id: $accountId, with: ['group', 'bankAccessBranches', 'openingBalance']);
         $groups = $this->accountGroupService->accountGroups(with: ['parentGroup'])->where('is_main_group', 0)->orWhere('is_global', 1)->get();
         $banks = $this->bankService->banks()->get();
@@ -166,8 +168,7 @@ class AccountController extends Controller
 
     public function update(Request $request, $accountId, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('accounts_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -282,8 +283,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('accounts_delete')) {
             abort(403, 'Access Forbidden.');
         }
 

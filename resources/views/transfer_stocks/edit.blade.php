@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="p-1">
-            <form id="edit_transfer_branch_to_branch_form" action="{{ route('transfer.stock.branch.to.branch.update', $transferStock->id) }}" method="POST">
+            <form id="edit_transfer_branch_to_branch_form" action="{{ route('transfer.stocks.update', $transferStock->id) }}" method="POST">
                 @csrf
                 <section>
                     <div class="form_element rounded mt-0 mb-1">

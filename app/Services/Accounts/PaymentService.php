@@ -79,18 +79,24 @@ class PaymentService
             ->addColumn('action', function ($row) use ($debitAccountId) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="'.route('payments.show', [$row?->accountingVoucher?->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+                $html .= '<a href="' . route('payments.show', [$row?->accountingVoucher?->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a href="'.route('payments.edit', ['id' => $row?->accountingVoucher?->id, 'debitAccountId' => $debitAccountId]).'" class="dropdown-item" id="editPayment">'.__('Edit').'</a>';
+                    if (auth()->user()->can('payments_edit')) {
+
+                        $html .= '<a href="' . route('payments.edit', ['id' => $row?->accountingVoucher?->id, 'debitAccountId' => $debitAccountId]) . '" class="dropdown-item" id="editPayment">' . __('Edit') . '</a>';
+                    }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a href="'.route('payments.delete', [$row?->accountingVoucher?->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+                    if (auth()->user()->can('payments_delete')) {
+
+                        $html .= '<a href="' . route('payments.delete', [$row?->accountingVoucher?->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    }
                 }
 
                 $html .= '</div>';
@@ -106,7 +112,7 @@ class PaymentService
             })
             ->editColumn('voucher_no', function ($row) {
 
-                return '<a href="'.route('payments.show', [$row?->accountingVoucher?->id]).'" id="details_btn">'.$row?->accountingVoucher?->voucher_no.'</a>';
+                return '<a href="' . route('payments.show', [$row?->accountingVoucher?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->voucher_no . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -114,10 +120,10 @@ class PaymentService
 
                     if ($row?->accountingVoucher?->branch?->parentBranch) {
 
-                        return $row?->accountingVoucher?->branch?->parentBranch->name.'('.$row?->accountingVoucher?->branch?->area_name.')';
+                        return $row?->accountingVoucher?->branch?->parentBranch->name . '(' . $row?->accountingVoucher?->branch?->area_name . ')';
                     } else {
 
-                        return $row?->accountingVoucher?->branch?->name.'('.$row?->accountingVoucher?->branch?->area_name.')';
+                        return $row?->accountingVoucher?->branch?->name . '(' . $row?->accountingVoucher?->branch?->area_name . ')';
                     }
                 } else {
 
@@ -129,17 +135,17 @@ class PaymentService
                 if ($row?->accountingVoucher?->purchaseRef) {
 
                     if ($row?->accountingVoucher?->purchaseRef?->purchase_status == PurchaseStatus::Purchase->value) {
-                        return __('Purchase').':'.'<a href="'.route('purchases.show', [$row?->accountingVoucher?->purchaseRef?->id]).'" id="details_btn">'.$row?->accountingVoucher?->purchaseRef?->invoice_id.'</a>';
+                        return __('Purchase') . ':' . '<a href="' . route('purchases.show', [$row?->accountingVoucher?->purchaseRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->purchaseRef?->invoice_id . '</a>';
                     } else {
 
-                        return __('P/o').':'.'<a href="'.route('purchase.orders.show', [$row?->accountingVoucher?->purchaseRef?->id]).'" id="details_btn">'.$row?->accountingVoucher?->purchaseRef?->invoice_id.'</a>';
+                        return __('P/o') . ':' . '<a href="' . route('purchase.orders.show', [$row?->accountingVoucher?->purchaseRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->purchaseRef?->invoice_id . '</a>';
                     }
                 } elseif ($row?->accountingVoucher?->salesReturnRef) {
 
-                    return __('Sales Return').':'.'<a href="'.route('sales.returns.show', [$row?->accountingVoucher?->salesReturnRef?->id]).'" id="details_btn">'.$row?->accountingVoucher?->salesReturnRef?->voucher_no.'</a>';
+                    return __('Sales Return') . ':' . '<a href="' . route('sales.returns.show', [$row?->accountingVoucher?->salesReturnRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->salesReturnRef?->voucher_no . '</a>';
                 }
             })
-            ->editColumn('remarks', fn ($row) => '<span title="'.$row?->accountingVoucher?->remarks.'">'.Str::limit($row?->accountingVoucher?->remarks, 25, '').'</span>')
+            ->editColumn('remarks', fn ($row) => '<span title="' . $row?->accountingVoucher?->remarks . '">' . Str::limit($row?->accountingVoucher?->remarks, 25, '') . '</span>')
 
             ->editColumn('paid_to', fn ($row) => $row?->account?->name)
             ->editColumn('paid_from', fn ($row) => $row?->accountingVoucher?->voucherCreditDescription?->account?->name)
@@ -148,11 +154,11 @@ class PaymentService
             ->editColumn('cheque_no', fn ($row) => $row?->accountingVoucher?->voucherCreditDescription?->cheque_no)
             ->editColumn('cheque_serial_no', fn ($row) => $row?->accountingVoucher?->voucherCreditDescription?->cheque_serial_no)
 
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="'.$row?->accountingVoucher->total_amount.'">'.\App\Utils\Converter::format_in_bdt($row?->accountingVoucher->total_amount).'</span>')
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->accountingVoucher->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row?->accountingVoucher->total_amount) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
-                return $row?->accountingVoucher?->createdBy?->prefix.' '.$row?->accountingVoucher?->createdBy?->name.' '.$row?->accountingVoucher?->createdBy?->last_name;
+                return $row?->accountingVoucher?->createdBy?->prefix . ' ' . $row?->accountingVoucher?->createdBy?->name . ' ' . $row?->accountingVoucher?->createdBy?->last_name;
             })
 
             ->rawColumns(['action', 'date', 'voucher_no', 'branch', 'reference', 'remarks', 'paid_to', 'paid_from', 'payment_method', 'transaction_no', 'cheque_no', 'cheque_serial_no', 'total_amount', 'created_by'])
@@ -171,7 +177,7 @@ class PaymentService
             'voucherDescriptions.references.stockAdjustment',
         ]);
 
-        if (! is_null($deletePayment)) {
+        if (!is_null($deletePayment)) {
 
             $deletePayment->delete();
         }

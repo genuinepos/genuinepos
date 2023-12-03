@@ -372,7 +372,6 @@
                                                     <input type="checkbox" name="generate_barcode" id="generate_barcode" class="products product_all">
                                                     <label for="generate_barcode">{{ __('Generate Barcode') }}</label>
                                                 </p>
-
                                             </div>
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
@@ -758,62 +757,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- Expenses Permissions --}}
-                        <div class="accordion-item mb-1">
-                            <div class="form_element rounded mt-0 mb-0">
-                                <div class="accordion-header d-flex">
-                                    <p class="checkbox_input_wrap ">
-                                        <input type="checkbox" class="ms-2" id="select_all" data-target="expenses" autocomplete="off">
-                                    </p>
-                                    <a data-bs-toggle="collapse" class="collapsed" href="#expenses_permission" aria-expanded="false">
-                                        {{ __('Expenses Permissions') }}
-                                    </a>
-                                </div>
-                                <div id="expenses_permission" class="collapse" data-bs-parent="#expenses_permission" style="">
-                                    <div class="element-body border-top">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-sm-6">
-                                                <p class="text-info checkbox_input_wrap">
-                                                    <label>
-                                                        <input type="checkbox" class="expenses" id="select_all" data-target="expenses_all" autocomplete="off">
-                                                        <strong>{{ __('Expenses') }}</strong>
-                                                    </label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="view_expense" id="view_expense" class="expenses expenses_all">
-                                                    <label for="view_expense">{{ __('View Expense') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="add_expense" id="add_expense" class="expenses expenses_all">
-                                                    <label for="add_expense">{{ __('Add Expense') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="edit_expense" id="edit_expense" class="expenses expenses_all">
-                                                    <label for="edit_expense">{{ __('Edit expense') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="delete_expense" id="delete_expense" class="expenses expenses_all">
-                                                    <label for="delete_expense">{{ __('Delete Expense') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="expense_category" id="expense_category" class="expenses expenses_all">
-                                                    <label for="expense_category"> {{ __('Expense Category') }} &rarr; {{ __('View/Add/Edit/Delete') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="category_wise_expense" id="category_wise_expense" class="expenses expenses_all">
-                                                    <label for="category_wise_expense">{{ __('View Category Wise Expense') }}</label>
-                                                </p>
-                                                <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="expanse_report" id="expanse_report" class="expenses expenses_all">
-                                                    <label for="expanse_report">{{ __('Expense Reports') }}</label>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- Sales Permissions --}}
+
                         <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">
@@ -1200,13 +1144,231 @@
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
-                                                        <input type="checkbox" class="accounting" id="select_all" data-target="accounting_all" autocomplete="off">
-                                                        <strong>{{ __('Accounting') }}</strong>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="banks" autocomplete="off">
+                                                        <strong>{{ __('Banks') }}</strong>
                                                     </label>
                                                 </p>
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="accounting_access" id="accounting_access" class="accounting accounting_all">
-                                                    <label for="accounting_access">{{ __('Access Accounting') }}</label>
+                                                    <input type="checkbox" name="banks_index" id="banks_index" class="accounting banks">
+                                                    <label for="banks_index">{{ __('Bank List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="banks_create" id="banks_create" class="accounting banks">
+                                                    <label for="banks_create">{{ __('Bank Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="banks_edit" id="banks_edit" class="accounting banks">
+                                                    <label for="banks_edit">{{ __('Bank Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="banks_edit" id="banks_delete" class="accounting banks">
+                                                    <label for="banks_delete">{{ __('Bank Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="account_groups" autocomplete="off">
+                                                        <strong>{{ __('Account Groups') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="account_groups_index" id="account_groups_index" class="accounting account_groups">
+                                                    <label for="account_groups_index">{{ __('Account Group List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="account_groups_create" id="account_groups_create" class="accounting account_groups">
+                                                    <label for="account_groups_create">{{ __('Account Group Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="account_groups_edit" id="account_groups_edit" class="accounting account_groups">
+                                                    <label for="account_groups_edit">{{ __('Account Group Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="account_groups_delete" id="account_groups_delete" class="accounting account_groups">
+                                                    <label for="account_groups_delete">{{ __('Account Group Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="accounts" autocomplete="off">
+                                                        <strong>{{ __('Accounts') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="accounts_index" id="accounts_index" class="accounting accounts">
+                                                    <label for="accounts_index">{{ __('Account List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="accounts_create" id="accounts_create" class="accounting accounts">
+                                                    <label for="accounts_create">{{ __('Account Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="accounts_edit" id="accounts_edit" class="accounting accounts">
+                                                    <label for="accounts_edit">{{ __('Account Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="accounts_delete" id="accounts_delete" class="accounting accounts">
+                                                    <label for="accounts_delete">{{ __('Account Delete') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="accounts_ledger" id="accounts_ledger" class="accounting accounts">
+                                                    <label for="accounts_ledger">{{ __('Account Ledger') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="capital_accounts_index" id="capital_accounts_index" class="accounting accounts">
+                                                    <label for="capital_accounts_index">{{ __('Capital Accounts') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="duties_and_taxes_index" id="duties_and_taxes_index" class="accounting accounts">
+                                                    <label for="duties_and_taxes_index">{{ __('Duties And Taxes') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="receipts" autocomplete="off">
+                                                        <strong>{{ __('Receipts') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="receipts_index" id="receipts_index" class="accounting receipts">
+                                                    <label for="account_groups_index">{{ __('Receipt List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="receipts_create" id="receipts_create" class="accounting receipts">
+                                                    <label for="receipts_create">{{ __('Receipt Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="receipts_edit" id="receipts_edit" class="accounting receipts">
+                                                    <label for="receipts_edit">{{ __('Receipt Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="receipts_delete" id="receipts_delete" class="accounting receipts">
+                                                    <label for="receipts_delete">{{ __('Receipt Delete') }}</label>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="payments" autocomplete="off">
+                                                        <strong>{{ __('Payments') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="payments_index" id="receipts_index" class="accounting payments">
+                                                    <label for="payments_index">{{ __('Payment List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="payments_create" id="payments_create" class="accounting payments">
+                                                    <label for="payments_create">{{ __('Payment Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="payments_edit" id="payments_edit" class="accounting payments">
+                                                    <label for="payments_edit">{{ __('Payment Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="payments_delete" id="payments_delete" class="accounting payments">
+                                                    <label for="payments_delete">{{ __('Payment Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="expenses" autocomplete="off">
+                                                        <strong>{{ __('Expenses') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="expenses_index" id="expenses_index" class="accounting expenses">
+                                                    <label for="expenses_index">{{ __('Expense List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="expenses_create" id="expenses_create" class="accounting expenses">
+                                                    <label for="expenses_create">{{ __('Expense Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="expenses_edit" id="expenses_edit" class="accounting expenses">
+                                                    <label for="expenses_edit">{{ __('Expense Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="expenses_delete" id="expenses_delete" class="accounting expenses">
+                                                    <label for="expenses_delete">{{ __('Expense Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="contras" autocomplete="off">
+                                                        <strong>{{ __('Contras') }}</strong>
+                                                    </label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="contras_index" id="contras_index" class="accounting contras">
+                                                    <label for="contras_index">{{ __('Contra List') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="contras_create" id="contras_create" class="accounting contras">
+                                                    <label for="contras_create">{{ __('Contra Add') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="contras_edit" id="contras_edit" class="accounting contras">
+                                                    <label for="contras_edit">{{ __('Contra Edit') }}</label>
+                                                </p>
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="contras_delete" id="contras_delete" class="accounting contras">
+                                                    <label for="contras_delete">{{ __('Contra Delete') }}</label>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
+                                                        <input type="checkbox" class="accounting" id="select_all" data-target="account_reports" autocomplete="off">
+                                                        <strong>{{ __('Account Reports') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="profit_loss" id="profit_loss" class="accounting account_reports">
+                                                    <label for="profit_loss">{{ __('Profit/Loss') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="financial_report" id="financial_report" class="accounting account_reports">
+                                                    <label for="financial_report">{{ __('Financial Report') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="profit_loss_account" id="profit_loss_account" class="accounting account_reports">
+                                                    <label for="profit_loss_account">{{ __('Profit Loss Account') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="balance_sheet" id="balance_sheet" class="accounting account_reports">
+                                                    <label for="balance_sheet">{{ __('Balance Sheet') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="trial_balance" id="trial_balance" class="accounting account_reports">
+                                                    <label for="trial_balance">{{ __('Trial Balance') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input type="checkbox" name="cash_flow" id="cash_flow" class="accounting account_reports">
+                                                    <label for="cash_flow">{{ __('Cash Flow') }}</label>
                                                 </p>
                                             </div>
                                         </div>

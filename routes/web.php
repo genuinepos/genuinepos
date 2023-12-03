@@ -48,12 +48,11 @@ Route::middleware([
 
 /*
 |--------------------------------------------------------------------------
-| Redirects '/' to '/welcome' for landlord, and '/home' for all tenants
+| Redirects to landlord or tenant based on request type
 |--------------------------------------------------------------------------
 */
 Route::get('/', function (Request $request) {
     $isTenant = tenant();
-
     return isset($isTenant) ?
         redirect(RouteServiceProvider::HOME) :
         redirect()->route('saas.welcome-page');

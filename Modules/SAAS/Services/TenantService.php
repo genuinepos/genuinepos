@@ -44,7 +44,7 @@ class TenantService implements TenantServiceInterface
     private function makeSuperAdminForTenant(Tenant $tenant, array $tenantRequest): int
     {
         $admin = $this->getAdmin($tenantRequest);
-        DB::statement('use '.$tenant->tenancy_db_name);
+        DB::statement('use ' . $tenant->tenancy_db_name);
         $tenantAdminUser = User::create($admin);
         $adminRole = Role::first();
         $tenantAdminUser->assignRole($adminRole);

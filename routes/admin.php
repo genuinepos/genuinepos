@@ -500,35 +500,6 @@ Route::group(['prefix' => 'settings'], function () {
     });
 });
 
-Route::group(['prefix' => 'users'], function () {
-
-    Route::get('/', [UserController::class, 'index'])->name('users.index');
-    Route::get('create', [UserController::class, 'create'])->name('users.create');
-    Route::post('store', [UserController::class, 'store'])->name('users.store');
-    Route::get('edit/{userId}', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('update/{userId}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('delete/{userId}', [UserController::class, 'delete'])->name('users.delete');
-    Route::get('show/{userId}', [UserController::class, 'show'])->name('users.show');
-
-    Route::group(['prefix' => 'roles'], function () {
-
-        Route::get('/', [RoleController::class, 'index'])->name('users.role.index');
-        Route::get('all/roles', [RoleController::class, 'allRoles'])->name('users.role.all.roles');
-        Route::get('create', [RoleController::class, 'create'])->name('users.role.create');
-        Route::post('store', [RoleController::class, 'store'])->name('users.role.store');
-        Route::get('edit/{roleId}', [RoleController::class, 'edit'])->name('users.role.edit');
-        Route::post('update/{roleId}', [RoleController::class, 'update'])->name('users.role.update');
-        Route::delete('delete/{roleId}', [RoleController::class, 'delete'])->name('users.role.delete');
-    });
-
-    Route::group(['prefix' => 'profile'], function () {
-
-        Route::get('/', [UserProfileController::class, 'index'])->name('users.profile.index');
-        Route::post('update', [UserProfileController::class, 'update'])->name('users.profile.update');
-        Route::get('view/{id}', [UserProfileController::class, 'view'])->name('users.profile.view');
-    });
-});
-
 Route::group(['prefix' => 'reports'], function () {
 
     Route::group(['prefix' => 'taxes'], function () {

@@ -81,6 +81,6 @@ class UserDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'User_'.date('YmdHis');
+        return 'User_' . date('YmdHis');
     }
 }

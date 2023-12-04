@@ -709,7 +709,7 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" {{ $role->hasPermissionTo('stock_adjustment_all') ? 'CHECKED' : '' }} name="adjustment_all" id="stock_adjustment_all" class="adjustment adjustment_all">
+                                                    <input type="checkbox" {{ $role->hasPermissionTo('stock_adjustment_all') ? 'CHECKED' : '' }} name="stock_adjustment_all" id="stock_adjustment_all" class="adjustment adjustment_all">
                                                     <label for="stock_adjustment_all">{{ __('Stock Adjustment List') }}</label>
                                                 </p>
 

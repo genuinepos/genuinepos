@@ -43,9 +43,9 @@ class BranchService
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item" id="edit" href="'.route('branches.edit', [$row->id]).'">'.__('Edit').'</a>';
-                $html .= '<a class="dropdown-item" id="delete" href="'.route('branches.delete', [$row->id]).'">'.__('Delete').'</a>';
-                $html .= '<a class="dropdown-item" id="branchSettings" href="'.route('branches.settings.edit', [$row->id]).'">'.__('Shop Settings').'</a>';
+                $html .= '<a class="dropdown-item" id="edit" href="' . route('branches.edit', [$row->id]) . '">' . __('Edit') . '</a>';
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('branches.delete', [$row->id]) . '">' . __('Delete') . '</a>';
+                $html .= '<a class="dropdown-item" id="branchSettings" href="' . route('branches.settings.edit', [$row->id]) . '">' . __('Shop Settings') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -55,21 +55,21 @@ class BranchService
 
                 if ($row->branch_type == 1) {
 
-                    return '</span> <span class="fw-bold">'.$row->branch_name.' ('.$row->area_name.')'.'</span>';
+                    return '</span> <span class="fw-bold">' . $row->branch_name . ' (' . $row->area_name . ')' . '</span>';
                 } else {
 
-                    return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> <span class="fw-bold">'.$row->parent_branch_name.' ('.$row->area_name.')'.'</span>';
+                    return '<span class="fas fa-long-arrow-alt-right text-success" style="font-size:15px;"></span> <span class="fw-bold">' . $row->parent_branch_name . ' (' . $row->area_name . ')' . '</span>';
                 }
             })
 
             ->editColumn('logo', function ($row) use ($logoUrl) {
 
-                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="'.$logoUrl.'/'.$row->logo.'">';
+                return '<img loading="lazy" class="rounded" style="height:40px; width:40px; padding:2px 0px;" src="' . $logoUrl . '/' . $row->logo . '">';
             })
 
             ->editColumn('address', function ($row) {
 
-                return $row->city.', '.$row->state.', '.$row->zip_code.', '.$row->country;
+                return $row->city . ', ' . $row->state . ', ' . $row->zip_code . ', ' . $row->country;
             })
 
             ->rawColumns(['branchName', 'shopLogo', 'logo', 'address', 'action'])
@@ -98,7 +98,7 @@ class BranchService
         if ($request->hasFile('logo')) {
 
             $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
+            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
 
             $addBranch->logo = $branchLogoName;
@@ -131,14 +131,14 @@ class BranchService
 
             if ($updateBranch->logo != 'default.png') {
 
-                if (file_exists(public_path('uploads/branch_logo/'.$updateBranch->logo))) {
+                if (file_exists(public_path('uploads/branch_logo/' . $updateBranch->logo))) {
 
-                    unlink(public_path('uploads/branch_logo/'.$updateBranch->logo));
+                    unlink(public_path('uploads/branch_logo/' . $updateBranch->logo));
                 }
             }
 
             $branchLogo = $request->file('logo');
-            $branchLogoName = uniqid().'-'.'.'.$branchLogo->getClientOriginalExtension();
+            $branchLogoName = uniqid() . '-' . '.' . $branchLogo->getClientOriginalExtension();
             $branchLogo->move(public_path('uploads/branch_logo/'), $branchLogoName);
             $updateBranch->logo = $branchLogoName;
         }
@@ -167,9 +167,9 @@ class BranchService
 
         if ($deleteBranch->logo != 'default.png') {
 
-            if (file_exists(public_path('uploads/branch_logo/'.$deleteBranch->logo))) {
+            if (file_exists(public_path('uploads/branch_logo/' . $deleteBranch->logo))) {
 
-                unlink(public_path('uploads/branch_logo/'.$deleteBranch->logo));
+                unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
             }
         }
 
@@ -345,10 +345,10 @@ class BranchService
 
                 if ($transObject?->branch->parentBranch) {
 
-                    $branchName = $transObject?->branch?->parentBranch?->name.'('.$transObject?->branch?->parentBranch?->area_name.')';
+                    $branchName = $transObject?->branch?->parentBranch?->name . '(' . $transObject?->branch?->parentBranch?->area_name . ')';
                 } else {
 
-                    $branchName = $transObject?->branch?->name.'('.$transObject?->branch?->area_name.')';
+                    $branchName = $transObject?->branch?->name . '(' . $transObject?->branch?->area_name . ')';
                 }
             }
         } else {
@@ -357,10 +357,10 @@ class BranchService
 
                 if (auth()->user()?->branch->parentBranch) {
 
-                    $branchName = auth()->user()?->branch->parentBranch?->name.'('.auth()->user()?->branch->parentBranch?->area_name.')';
+                    $branchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
                 } else {
 
-                    $branchName = auth()->user()?->branch?->name.'('.auth()->user()?->branch?->area_name.')';
+                    $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')';
                 }
             }
         }

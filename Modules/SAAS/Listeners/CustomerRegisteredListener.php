@@ -26,7 +26,7 @@ class CustomerRegisteredListener
     public function handle(object $event): void
     {
         // Mail::to($event->user->email)->send(new CustomerRegistrationConfirmationMail($event->user));
-        if ($event->user instanceof MustVerifyEmail && ! $event->user->hasVerifiedEmail()) {
+        if ($event->user instanceof MustVerifyEmail && !$event->user->hasVerifiedEmail()) {
             $event->user->sendEmailVerificationNotification();
         }
     }

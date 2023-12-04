@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
 use App\Models\User;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UserProfileController extends Controller
 {
@@ -12,22 +13,19 @@ class UserProfileController extends Controller
     {
     }
 
-    // Profile index view
     public function index()
     {
         return view('users.profile');
     }
 
-    // Update user profile
     public function update(Request $request)
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'email' => 'required|unique:users,email,'.auth()->user()->id,
+            'email' => 'required|unique:users,email,' . auth()->user()->id,
             'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
-        //return $request->all();
         $updateProfile = User::where('id', auth()->user()->id)->first();
         $updateProfile->prefix = $request->prefix;
         $updateProfile->name = $request->first_name;
@@ -52,28 +50,30 @@ class UserProfileController extends Controller
         $updateProfile->bank_branch = $request->bank_branch;
         $updateProfile->tax_payer_id = $request->tax_payer_id;
         $updateProfile->language = $request->language;
+
         if ($request->hasFile('photo')) {
             $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
             if (
                 isset($updateProfile->photo) &&
-                file_exists(public_path('uploads/user_photo/'.$updateProfile->photo)) &&
+                file_exists(public_path('uploads/user_photo/' . $updateProfile->photo)) &&
                 $updateProfile->photo != 'default.png'
             ) {
                 try {
-                    unlink(public_path('uploads/user_photo/'.$updateProfile->photo));
+                    unlink(public_path('uploads/user_photo/' . $updateProfile->photo));
                 } catch (Exception $e) {
                 }
             }
             $updateProfile->photo = $newFile;
         }
+
         $updateProfile->save();
+        
         session(['lang' => $updateProfile->language]);
         session()->flash('successMsg', 'Successfully user updated');
 
         return response()->json('Successfully user profile is updated');
     }
 
-    // View logged in user profile
     public function view($id)
     {
         $user = User::with(['roles', 'department', 'shift', 'designation'])->where('id', $id)->firstOrFail();

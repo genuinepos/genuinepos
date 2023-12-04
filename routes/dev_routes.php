@@ -1,9 +1,9 @@
 <?php
 
-use App\Enums\AccountingVoucherType;
 use App\Models\Accounts\Account;
-use App\Models\Accounts\AccountingVoucherDescription;
+use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
 

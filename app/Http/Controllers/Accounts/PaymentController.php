@@ -48,13 +48,16 @@ class PaymentController extends Controller
 
     public function index(Request $request, $debitAccountId = null)
     {
+        if (! auth()->user()->can('payments_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->ajax()) {
 
             return $this->paymentService->paymentsTable(request: $request, debitAccountId: $debitAccountId);
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
-
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -77,6 +80,10 @@ class PaymentController extends Controller
 
     public function create(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $debitAccountId = null)
     {
+        if (! auth()->user()->can('payments_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $createMethodContainer = $paymentControllerMethodContainersInterface->createMethodContainer(
             debitAccountId: $debitAccountId,
             accountService: $this->accountService,
@@ -92,6 +99,10 @@ class PaymentController extends Controller
 
     public function store(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('payments_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'paying_amount' => 'required',
@@ -139,6 +150,10 @@ class PaymentController extends Controller
 
     public function edit(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id, $debitAccountId = null)
     {
+        if (! auth()->user()->can('payments_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $editMethodContainer = $paymentControllerMethodContainersInterface->editMethodContainer(
             id: $id,
             debitAccountId: $debitAccountId,
@@ -156,6 +171,10 @@ class PaymentController extends Controller
 
     public function update(Request $request, PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
+        if (! auth()->user()->can('payments_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'paying_amount' => 'required',
@@ -197,6 +216,10 @@ class PaymentController extends Controller
 
     public function delete(PaymentControllerMethodContainersInterface $paymentControllerMethodContainersInterface, $id)
     {
+        if (! auth()->user()->can('payments_delete')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         try {
             DB::beginTransaction();
 

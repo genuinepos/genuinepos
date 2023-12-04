@@ -63,24 +63,24 @@ class ContraService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="'.route('contras.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+                $html .= '<a href="' . route('contras.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    // if (auth()->user()->can('edit_expense')) {
+                    if (auth()->user()->can('contras_edit')) {
 
-                    $html .= '<a href="'.route('contras.edit', ['id' => $row->id]).'" class="dropdown-item" id="editContra">'.__('Edit').'</a>';
-                    // }
+                        $html .= '<a href="' . route('contras.edit', ['id' => $row->id]) . '" class="dropdown-item" id="editContra">' . __('Edit') . '</a>';
+                    }
                 }
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    // if (auth()->user()->can('delete_expense')) {
+                    if (auth()->user()->can('contras_delete')) {
 
-                    $html .= '<a href="'.route('contras.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
-                    // }
+                        $html .= '<a href="' . route('contras.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
+                    }
                 }
 
                 $html .= '</div>';
@@ -96,7 +96,7 @@ class ContraService
             })
             ->editColumn('voucher_no', function ($row) {
 
-                return '<a href="'.route('contras.show', [$row?->id]).'" id="details_btn">'.$row?->voucher_no.'</a>';
+                return '<a href="' . route('contras.show', [$row?->id]) . '" id="details_btn">' . $row?->voucher_no . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -104,10 +104,10 @@ class ContraService
 
                     if ($row?->branch?->parentBranch) {
 
-                        return $row?->branch?->parentBranch->name.'('.$row?->branch?->area_name.')';
+                        return $row?->branch?->parentBranch->name . '(' . $row?->branch?->area_name . ')';
                     } else {
 
-                        return $row?->branch?->name.'('.$row?->branch?->area_name.')';
+                        return $row?->branch?->name . '(' . $row?->branch?->area_name . ')';
                     }
                 } else {
 
@@ -115,19 +115,19 @@ class ContraService
                 }
             })
 
-            ->editColumn('remarks', fn ($row) => '<span title="'.$row?->remarks.'">'.Str::limit($row?->remarks, 10, '').'</span>')
+            ->editColumn('remarks', fn ($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 10, '') . '</span>')
 
-            ->editColumn('credit_account', fn ($row) => $row?->voucherCreditDescription?->account?->name.($row?->voucherCreditDescription?->account?->account_number ? ' / '.$row?->voucherCreditDescription?->account?->account_number : ''))
+            ->editColumn('credit_account', fn ($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
             ->editColumn('payment_method', fn ($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
             ->editColumn('transaction_no', fn ($row) => $row?->voucherCreditDescription?->transaction_no)
             ->editColumn('cheque_no', fn ($row) => $row?->voucherCreditDescription?->cheque_no)
             ->editColumn('cheque_serial_no', fn ($row) => $row?->voucherCreditDescription?->cheque_serial_no)
-            ->editColumn('debit_account', fn ($row) => $row?->voucherDebitDescription?->account?->name.($row?->voucherDebitDescription?->account?->account_number ? ' / '.$row?->voucherDebitDescription?->account?->account_number : ''))
-            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="'.$row?->total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_amount).'</span>')
+            ->editColumn('debit_account', fn ($row) => $row?->voucherDebitDescription?->account?->name . ($row?->voucherDebitDescription?->account?->account_number ? ' / ' . $row?->voucherDebitDescription?->account?->account_number : ''))
+            ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_amount) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
-                return $row?->createdBy?->prefix.' '.$row?->createdBy?->name.' '.$row?->createdBy?->last_name;
+                return $row?->createdBy?->prefix . ' ' . $row?->createdBy?->name . ' ' . $row?->createdBy?->last_name;
             })
 
             ->rawColumns(['action', 'date', 'voucher_no', 'branch', 'remarks', 'credit_account', 'expense_descriptions', 'payment_method', 'transaction_no', 'cheque_no', 'cheque_serial_no', 'debit_account', 'total_amount', 'created_by'])
@@ -138,7 +138,7 @@ class ContraService
     {
         $deleteContra = $this->singleContra(id: $id);
 
-        if (! is_null($deleteContra)) {
+        if (!is_null($deleteContra)) {
 
             $deleteContra->delete();
         }

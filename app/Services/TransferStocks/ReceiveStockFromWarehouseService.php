@@ -4,7 +4,6 @@ namespace App\Services\TransferStocks;
 
 use App\Enums\BooleanType;
 use App\Enums\TransferStockReceiveStatus;
-use App\Enums\TransferStockType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -61,16 +60,7 @@ class ReceiveStockFromWarehouseService
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                if ($row->type == TransferStockType::WarehouseToBranch->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.warehouse.to.branch.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                } elseif ($row->type == TransferStockType::BranchToWarehouse->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.branch.to.warehouse.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                } elseif ($row->type == TransferStockType::BranchToBranch->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.branch.to.branch.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                }
+                $html .= '<a href="'.route('transfer.stocks.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 $html .= '<a href="'.route('receive.stock.from.warehouse.create', [$row->id]).'" class="dropdown-item">'.__('Process To Receive').'</a>';
                 $html .= '</div>';
@@ -86,16 +76,7 @@ class ReceiveStockFromWarehouseService
             })
             ->editColumn('voucher_no', function ($row) {
 
-                if ($row->type == TransferStockType::WarehouseToBranch->value) {
-
-                    return '<a href="'.route('transfer.stock.warehouse.to.branch.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                } elseif ($row->type == TransferStockType::BranchToWarehouse->value) {
-
-                    return '<a href="'.route('transfer.stock.branch.to.warehouse.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                } elseif ($row->type == TransferStockType::BranchToBranch->value) {
-
-                    return '<a href="'.route('transfer.stock.branch.to.branch.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                }
+                return '<a href="'.route('transfer.stocks.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -116,8 +97,6 @@ class ReceiveStockFromWarehouseService
             ->editColumn('send_from', function ($row) use ($generalSettings) {
                 $senderBranch = '';
                 $senderWarehouse = '';
-                // if ($row->type == TransferStockType::BranchToBranch->value) {
-
                 if ($row->sender_branch_id) {
 
                     if ($row->sender_parent_branch_name) {
@@ -138,32 +117,10 @@ class ReceiveStockFromWarehouseService
                 }
 
                 return '<p class="m-0 p-0">'.$senderBranch.'</p><p class="m-0 p-0">'.$senderWarehouse.'</p>';
-                // }
-
-                // if ($row->sender_warehouse_id) {
-
-                //     return $row->sender_warehouse_name . '(' . $row->sender_warehouse_code . ')';
-                // }
-
-                // if ($row->sender_branch_id) {
-
-                //     if ($row->sender_parent_branch_name) {
-
-                //         return $row->sender_parent_branch_name . '(' . $row->area_name . ')';
-                //     } else {
-
-                //         return $row->sender_branch_name . '(' . $row->area_name . ')';
-                //     }
-                // } else {
-
-                //     return $generalSettings['business__shop_name'];
-                // }
             })
             ->editColumn('send_to', function ($row) use ($generalSettings) {
                 $receiverBranch = '';
                 $receiverWarehouse = '';
-                // if ($row->type == TransferStockType::BranchToBranch->value) {
-
                 if ($row->receiver_branch_id) {
 
                     if ($row->receiver_parent_branch_name) {
@@ -184,26 +141,6 @@ class ReceiveStockFromWarehouseService
                 }
 
                 return '<p class="m-0 p-0">'.$receiverBranch.'</p><p class="m-0 p-0">'.$receiverWarehouse.'</p>';
-                // }
-
-                // if ($row->receiver_warehouse_id) {
-
-                //     return $row->receiver_warehouse_name . '(' . $row->receiver_warehouse_code . ')';
-                // }
-
-                // if ($row->receiver_branch_id) {
-
-                //     if ($row->receiver_parent_branch_name) {
-
-                //         return $row->receiver_parent_branch_name . '(' . $row->area_name . ')';
-                //     } else {
-
-                //         return $row->receiver_branch_name . '(' . $row->area_name . ')';
-                //     }
-                // } else {
-
-                //     return $generalSettings['business__shop_name'];
-                // }
             })
 
             ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')

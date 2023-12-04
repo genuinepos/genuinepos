@@ -18,8 +18,7 @@ class BankController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('banks_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -33,14 +32,15 @@ class BankController extends Controller
 
     public function create()
     {
-
+        if (! auth()->user()->can('banks_create')) {
+            abort(403, 'Access Forbidden.');
+        }
         return view('accounting.banks.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('banks_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -50,7 +50,6 @@ class BankController extends Controller
         );
 
         try {
-
             DB::beginTransaction();
 
             $addBank = $this->bankService->addBank($request);
@@ -68,8 +67,7 @@ class BankController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('banks_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -80,8 +78,7 @@ class BankController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('banks_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -90,7 +87,6 @@ class BankController extends Controller
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $updateBank = $this->bankService->updateBank(id: $id, request: $request);
@@ -107,13 +103,11 @@ class BankController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('banks_delete')) {
             abort(403, 'Access Forbidden.');
         }
 
         try {
-
             DB::beginTransaction();
 
             $deleteBank = $this->bankService->deleteBank($id);

@@ -36,8 +36,7 @@ class ExpenseController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('view_expense')) {
-
+        if (! auth()->user()->can('expenses_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -66,8 +65,7 @@ class ExpenseController extends Controller
 
     public function create(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('add_expense')) {
-
+        if (! auth()->user()->can('expenses_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -84,8 +82,7 @@ class ExpenseController extends Controller
 
     public function store(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('add_expense')) {
-
+        if (! auth()->user()->can('expenses_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -134,8 +131,7 @@ class ExpenseController extends Controller
 
     public function edit(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('edit_expense')) {
-
+        if (! auth()->user()->can('expenses_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -154,8 +150,7 @@ class ExpenseController extends Controller
 
     public function update(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('add_expense')) {
-
+        if (! auth()->user()->can('expenses_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -196,8 +191,7 @@ class ExpenseController extends Controller
 
     public function delete($id)
     {
-        if (! auth()->user()->can('delete_expense')) {
-
+        if (! auth()->user()->can('expenses_delete')) {
             abort(403, 'Access Forbidden.');
         }
 

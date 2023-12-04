@@ -38,8 +38,7 @@ class ContraController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('view_expense')) {
-
+        if (! auth()->user()->can('contras_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -75,8 +74,7 @@ class ContraController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('add_expense')) {
-
+        if (! auth()->user()->can('contras_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -100,6 +98,10 @@ class ContraController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
+        if (! auth()->user()->can('contras_create')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'received_amount' => 'required',
@@ -171,8 +173,7 @@ class ContraController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('add_expense')) {
-
+        if (! auth()->user()->can('contras_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -201,6 +202,10 @@ class ContraController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (! auth()->user()->can('contras_edit')) {
+            abort(403, 'Access Forbidden.');
+        }
+
         $this->validate($request, [
             'date' => 'required|date',
             'received_amount' => 'required',
@@ -248,8 +253,7 @@ class ContraController extends Controller
 
     public function delete($id)
     {
-        if (! auth()->user()->can('delete_expense')) {
-
+        if (! auth()->user()->can('contras_delete')) {
             abort(403, 'Access Forbidden.');
         }
 

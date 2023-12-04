@@ -17,8 +17,7 @@ class DutyAndTaxAccountController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('accounting_access')) {
-
+        if (! auth()->user()->can('duties_and_taxes_index')) {
             abort(403, 'Access Forbidden.');
         }
 

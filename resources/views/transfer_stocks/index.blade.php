@@ -2,7 +2,7 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', 'Transfer Stocks (Warehouse To Shop/Business) - ')
+@section('title', 'Transfer Stocks - ')
 @section('content')
     <div class="body-woaper">
         <div class="container-fluid">
@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>{{ __("Transfer Stocks (Warehouse To Shop/Business)") }}</h5>
+                                <h5>{{ __("Transfer Stocks") }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                         </div>
@@ -92,11 +92,11 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Transfer Stocks (Warehouse To Shop/Business)') }}</h6>
+                                    <h6>{{ __('List Of Transfer Stocks') }}</h6>
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('transfer.stock.warehouse.to.branch.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                    <a href="{{ route('transfer.stocks.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
                                 </div>
                             </div>
 
@@ -174,8 +174,9 @@
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
             "ajax": {
-                "url": "{{ route('transfer.stock.warehouse.to.branch.index', \App\Enums\TransferStockType::WarehouseToBranch->value) }}",
+                "url": "{{ route('transfer.stocks.index') }}",
                 "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
                     d.receive_status = $('#receive_status').val();
                     d.from_date = $('#from_date').val();
                     d.to_date = $('#to_date').val();

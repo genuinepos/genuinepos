@@ -3,7 +3,6 @@
 namespace App\Services\TransferStocks;
 
 use App\Enums\TransferStockReceiveStatus;
-use App\Enums\TransferStockType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -60,16 +59,7 @@ class ReceiveStockFromBranchService
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                if ($row->type == TransferStockType::WarehouseToBranch->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.warehouse.to.branch.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                } elseif ($row->type == TransferStockType::BranchToWarehouse->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.branch.to.warehouse.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                } elseif ($row->type == TransferStockType::BranchToBranch->value) {
-
-                    $html .= '<a href="'.route('transfer.stock.branch.to.branch.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
-                }
+                $html .= '<a href="'.route('transfer.stocks.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
 
                 $html .= '<a href="'.route('receive.stock.from.branch.create', [$row->id]).'" class="dropdown-item">'.__('Process To Receive').'</a>';
                 $html .= '</div>';
@@ -85,16 +75,7 @@ class ReceiveStockFromBranchService
             })
             ->editColumn('voucher_no', function ($row) {
 
-                if ($row->type == TransferStockType::WarehouseToBranch->value) {
-
-                    return '<a href="'.route('transfer.stock.warehouse.to.branch.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                } elseif ($row->type == TransferStockType::BranchToWarehouse->value) {
-
-                    return '<a href="'.route('transfer.stock.branch.to.warehouse.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                } elseif ($row->type == TransferStockType::BranchToBranch->value) {
-
-                    return '<a href="'.route('transfer.stock.branch.to.branch.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
-                }
+                return '<a href="'.route('transfer.stocks.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -226,9 +207,7 @@ class ReceiveStockFromBranchService
             $query->whereBetween('transfer_stocks.date_ts', $date_range); // Final
         }
 
-        $query
-        // ->whereIn('transfer_stocks.type', [TransferStockType::BranchToBranch->value, TransferStockType::WarehouseToBranch->value])
-            ->where('transfer_stocks.receiver_branch_id', auth()->user()->branch_id)
+        $query->where('transfer_stocks.receiver_branch_id', auth()->user()->branch_id)
             ->where('transfer_stocks.receiver_warehouse_id', null);
 
         return $query;

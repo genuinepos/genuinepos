@@ -41,7 +41,7 @@ class RolePermissionSeeder extends Seeder
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
-            if (! $roleAlreadyExists) {
+            if (!$roleAlreadyExists) {
                 Role::create(['name' => $role['name']]);
             }
         }
@@ -49,7 +49,7 @@ class RolePermissionSeeder extends Seeder
         $permissions = $this->getPermissionsArray();
         foreach ($permissions as $permission) {
             $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
-            if (! $permissionExists) {
+            if (!$permissionExists) {
                 Permission::create([
                     'id' => $permission['id'],
                     'name' => $permission['name'],
@@ -137,13 +137,13 @@ class RolePermissionSeeder extends Seeder
             ['id' => '51', 'name' => 'stock_adjustment_delete'],
             // ['id' => '52', 'name' => 'adjustment_delete'],
             ['id' => '53', 'name' => 'stock_adjustment_report'],
-            ['id' => '54', 'name' => 'view_expense'],
-            ['id' => '55', 'name' => 'add_expense'],
-            ['id' => '56', 'name' => 'edit_expense'],
-            ['id' => '57', 'name' => 'delete_expense'],
-            ['id' => '58', 'name' => 'expense_category'],
-            ['id' => '59', 'name' => 'category_wise_expense'],
-            ['id' => '60', 'name' => 'expanse_report'],
+            // ['id' => '54', 'name' => 'view_expense'],
+            // ['id' => '55', 'name' => 'add_expense'],
+            // ['id' => '56', 'name' => 'edit_expense'],
+            // ['id' => '57', 'name' => 'delete_expense'],
+            // ['id' => '58', 'name' => 'expense_category'],
+            // ['id' => '59', 'name' => 'category_wise_expense'],
+            // ['id' => '60', 'name' => 'expanse_report'],
             ['id' => '61', 'name' => 'pos_all'],
             ['id' => '62', 'name' => 'pos_add'],
             ['id' => '63', 'name' => 'pos_edit'],
@@ -186,7 +186,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '100', 'name' => 'barcode_settings'],
             ['id' => '101', 'name' => 'cash_counters'],
             ['id' => '102', 'name' => 'view_dashboard_data'],
-            ['id' => '103', 'name' => 'accounting_access'],
+            // ['id' => '103', 'name' => 'accounting_access'],
             ['id' => '104', 'name' => 'hrm_dashboard'],
             ['id' => '105', 'name' => 'leave_type'],
             ['id' => '106', 'name' => 'leave_assign'],
@@ -340,7 +340,61 @@ class RolePermissionSeeder extends Seeder
             ['id' => '237', 'name' => 'money_receipt_add'],
             ['id' => '238', 'name' => 'money_receipt_edit'],
             ['id' => '239', 'name' => 'money_receipt_delete'],
+
+            ['id' => '240', 'name' => 'banks_index'],
+            ['id' => '241', 'name' => 'banks_create'],
+            ['id' => '242', 'name' => 'banks_edit'],
+            ['id' => '243', 'name' => 'banks_delete'],
+
+            ['id' => '244', 'name' => 'account_groups_index'],
+            ['id' => '245', 'name' => 'account_groups_create'],
+            ['id' => '246', 'name' => 'account_groups_edit'],
+            ['id' => '247', 'name' => 'account_groups_delete'],
+
+            ['id' => '248', 'name' => 'accounts_index'],
+            ['id' => '249', 'name' => 'accounts_create'],
+            ['id' => '250', 'name' => 'accounts_edit'],
+            ['id' => '251', 'name' => 'accounts_delete'],
+            ['id' => '252', 'name' => 'accounts_ledger'],
+            ['id' => '253', 'name' => 'capital_accounts_index'],
+            ['id' => '254', 'name' => 'duties_and_taxes_index'],
+
+            ['id' => '255', 'name' => 'receipts_index'],
+            ['id' => '256', 'name' => 'receipts_create'],
+            ['id' => '257', 'name' => 'receipts_edit'],
+            ['id' => '258', 'name' => 'receipts_delete'],
+
+            ['id' => '259', 'name' => 'payments_index'],
+            ['id' => '260', 'name' => 'payments_create'],
+            ['id' => '261', 'name' => 'payments_edit'],
+            ['id' => '262', 'name' => 'payments_delete'],
+
+            ['id' => '263', 'name' => 'expenses_index'],
+            ['id' => '264', 'name' => 'expenses_create'],
+            ['id' => '265', 'name' => 'expenses_edit'],
+            ['id' => '266', 'name' => 'expenses_delete'],
+
+            ['id' => '267', 'name' => 'contras_index'],
+            ['id' => '268', 'name' => 'contras_create'],
+            ['id' => '269', 'name' => 'contras_edit'],
+            ['id' => '270', 'name' => 'contras_delete'],
+
+            ['id' => '271', 'name' => 'profit_loss'],
+            ['id' => '272', 'name' => 'financial_report'],
+            ['id' => '273', 'name' => 'profit_loss_account'],
+            ['id' => '274', 'name' => 'balance_sheet'],
+            ['id' => '275', 'name' => 'trial_balance'],
+            ['id' => '276', 'name' => 'cash_flow'],
+
+            ['id' => '277', 'name' => 'transfer_stock_index'],
+            ['id' => '278', 'name' => 'transfer_stock_create'],
+            ['id' => '279', 'name' => 'transfer_stock_edit'],
+            ['id' => '280', 'name' => 'transfer_stock_delete'],
+
+            ['id' => '281', 'name' => 'transfer_stock_receive_from_warehouse'],
+            ['id' => '282', 'name' => 'transfer_stock_receive_from_branch'],
         ];
+
 
         return $permissions;
     }

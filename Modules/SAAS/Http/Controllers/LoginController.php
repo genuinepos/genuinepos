@@ -36,11 +36,11 @@ class LoginController extends Controller
             $domain = UrlGenerator::generateFullUrlFromDomain($tenant->domains()?->first()?->domain);
             $token = tenancy()->impersonate($tenant, $tenant->impersonate_user, $redirectUrl);
             if (isset($token) && isset($domain)) {
+                Auth::guard()->login($user);
                 return redirect("$domain/impersonate/{$token->token}");
             }
         } else {
             Auth::guard()->login($user);
-
             return Redirect::intended(Redirect::getIntendedUrl())->with('success', 'Logged in!');
         }
     }

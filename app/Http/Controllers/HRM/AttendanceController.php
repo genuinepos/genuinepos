@@ -14,7 +14,6 @@ class AttendanceController extends Controller
 {
     public function __construct()
     {
-
     }
 
     //attendance index page
@@ -58,7 +57,6 @@ class AttendanceController extends Controller
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
             } else {
 
                 $query->where('branch_id', auth()->user()->branch_id);
@@ -77,11 +75,11 @@ class AttendanceController extends Controller
 
                     $html = '';
                     $html .= '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('hrm.attendance.edit', [$row->id]).'" class="btn btn-sm btn-primary me-1" id="edit_attendance" title="Edit">';
+                    $html .= '<a href="' . route('hrm.attendance.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit_attendance" title="Edit">';
                     $html .= '<i class="la la-edit"></i> Edit';
                     $html .= '</a>';
 
-                    $html .= '<a href="'.route('hrm.attendance.delete', [$row->id]).'" class="btn btn-sm btn-danger" id="delete">';
+                    $html .= '<a href="' . route('hrm.attendance.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete">';
                     $html .= '<i class="la la-trash"></i> Delete';
                     $html .= '</a>';
                     $html .= '</div>';
@@ -90,7 +88,7 @@ class AttendanceController extends Controller
                 })
                 ->editColumn('name', function ($row) {
 
-                    return $row->prefix.' '.$row->name.' '.$row->last_name;
+                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
@@ -98,9 +96,9 @@ class AttendanceController extends Controller
                 })
                 ->editColumn('clock_in_out', function ($row) {
 
-                    $clockOut = $row->clock_out_ts ? ' - '.date('h:i a', strtotime($row->clock_out)) : '';
+                    $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';
 
-                    return ' <b>'.date('h:i a', strtotime($row->clock_in)).$clockOut.' </b>';
+                    return ' <b>' . date('h:i a', strtotime($row->clock_in)) . $clockOut . ' </b>';
                 })
                 ->editColumn('work_duration', function ($row) {
 
@@ -155,7 +153,7 @@ class AttendanceController extends Controller
 
                 if ($request->clock_outs[$key]) {
 
-                    $updateAttendance->clock_out_ts = date('Y-m-d ').$request->clock_outs[$key];
+                    $updateAttendance->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
                     $updateAttendance->is_completed = 1;
                 }
 
@@ -170,12 +168,12 @@ class AttendanceController extends Controller
                 $data->at_date = date('d-m-Y');
                 $data->at_date_ts = date('Y-m-d H:i:s');
                 $data->clock_in = $request->clock_ins[$key];
-                $data->clock_in_ts = date('Y-m-d ').$request->clock_ins[$key];
+                $data->clock_in_ts = date('Y-m-d ') . $request->clock_ins[$key];
                 $data->clock_out = $request->clock_outs[$key];
 
                 if ($request->clock_outs[$key]) {
 
-                    $data->clock_out_ts = date('Y-m-d ').$request->clock_outs[$key];
+                    $data->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
                     $data->is_completed = 1;
                 }
                 $data->clock_in_note = $request->clock_in_notes[$key];
@@ -214,9 +212,9 @@ class AttendanceController extends Controller
 
         if ($updateAttendance) {
 
-            $updateAttendance->at_date_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)).$request->clock_in;
+            $updateAttendance->at_date_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)) . $request->clock_in;
             $updateAttendance->clock_in = $request->clock_in;
-            $updateAttendance->clock_in_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)).$request->clock_in;
+            $updateAttendance->clock_in_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)) . $request->clock_in;
 
             if ($request->clock_out) {
 
@@ -224,11 +222,11 @@ class AttendanceController extends Controller
 
                     $updateAttendance->clock_out = $request->clock_out;
                     $filteredDate = explode(' ', $updateAttendance->clock_out_ts);
-                    $updateAttendance->clock_out_ts = $filteredDate[0].' '.$request->clock_out;
+                    $updateAttendance->clock_out_ts = $filteredDate[0] . ' ' . $request->clock_out;
                 } else {
 
                     $updateAttendance->clock_out = $request->clock_out;
-                    $updateAttendance->clock_out_ts = date('Y-m-d ').$request->clock_out;
+                    $updateAttendance->clock_out_ts = date('Y-m-d ') . $request->clock_out;
                     $updateAttendance->is_completed = 1;
                 }
             }
@@ -246,7 +244,7 @@ class AttendanceController extends Controller
     {
         $deleteAttendance = Attendance::find($attendanceId);
 
-        if (! is_null($deleteAttendance)) {
+        if (!is_null($deleteAttendance)) {
 
             $deleteAttendance->delete();
         }

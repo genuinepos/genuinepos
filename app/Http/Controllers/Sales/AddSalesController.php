@@ -63,7 +63,6 @@ class AddSalesController extends Controller
         if ($request->ajax()) {
 
             $customerAccountId = $customerAccountId == 'null' ? null : $customerAccountId;
-
             return $this->saleService->salesListTable(request: $request, customerAccountId: $customerAccountId, saleScreen: $saleScreen);
         }
 

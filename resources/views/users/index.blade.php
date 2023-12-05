@@ -6,18 +6,18 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>@lang('menu.users')</h6>
+                    <h6>{{ __("Users") }}</h6>
                 </div>
 
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
-        <div class="p-3">
+        <div class="p-1">
             @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_area == 0)
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form_element rounded mt-0 mb-3">
+                        <div class="form_element rounded mt-0 mb-1">
                             <div class="element-body">
                                 <form action="" method="get">
                                     <div class="form-group row">

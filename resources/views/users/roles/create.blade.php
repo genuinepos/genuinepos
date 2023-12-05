@@ -719,8 +719,8 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" name="stock_adjustment_all" id="adjustment_all" class="adjustment adjustment_all">
-                                                    <label for="adjustment_all">{{ __('Stock Adjustment List') }}</label>
+                                                    <input type="checkbox" name="stock_adjustment_all" id="stock_adjustment_all" class="adjustment adjustment_all">
+                                                    <label for="stock_adjustment_all">{{ __('Stock Adjustment List') }}</label>
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">

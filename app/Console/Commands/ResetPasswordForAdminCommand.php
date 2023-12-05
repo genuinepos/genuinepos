@@ -27,7 +27,7 @@ class ResetPasswordForAdminCommand extends Command
      */
     public function handle()
     {
-        if (! config('app.debug')) {
+        if (!config('app.debug')) {
             $this->error('This command is not available on production environment');
             exit(1);
         }
@@ -43,6 +43,5 @@ class ResetPasswordForAdminCommand extends Command
         }
 
         return Command::SUCCESS;
-
     }
 }

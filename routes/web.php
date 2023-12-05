@@ -43,6 +43,7 @@ Route::middleware([
     Route::middleware('auth')->group(base_path('routes/stock_adjustments.php'));
     Route::middleware('auth')->group(base_path('routes/transfer_stocks.php'));
     Route::middleware('auth')->group(base_path('routes/dashboard.php'));
+    Route::middleware('auth')->group(base_path('routes/users.php'));
     Route::get('impersonate/{token}', [UserImpersonateController::class, 'impersonate'])->name('users.impersonate');
 });
 

@@ -28,7 +28,7 @@ final class AccountFactory extends Factory
             'account_type' => $this->faker->randomNumber(),
             'name' => $this->faker->name,
             'account_number' => $this->faker->word,
-            'bank_id' => \App\Models\Bank::factory(),
+            'bank_id' => \App\Models\Accounts\Bank::factory(),
             'opening_balance' => $this->faker->randomFloat(),
             'debit' => $this->faker->randomFloat(),
             'credit' => $this->faker->randomFloat(),

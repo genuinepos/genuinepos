@@ -34,16 +34,18 @@ class ResetPasswordController extends Controller
     public function resetCurrentPassword(Request $request)
     {
         return response()->json('Feature is disabled in this demo');
-        $this->validate($request,
+        $this->validate(
+            $request,
             [
                 'current_password' => 'required',
                 'password' => 'required|confirmed',
-            ]);
+            ]
+        );
 
         $adminUserHashtedPassword = auth()->user()->password;
         $checkHashtedPasswordWithOldPassword = Hash::check($request->current_password, $adminUserHashtedPassword);
         if ($checkHashtedPasswordWithOldPassword) {
-            if (! Hash::check($request->password, $adminUserHashtedPassword)) {
+            if (!Hash::check($request->password, $adminUserHashtedPassword)) {
                 $user = User::find(Auth::user()->id);
                 $user->password = Hash::make($request->password);
                 $user->save();

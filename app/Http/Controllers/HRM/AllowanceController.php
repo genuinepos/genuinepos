@@ -12,7 +12,6 @@ class AllowanceController extends Controller
 {
     public function __construct()
     {
-
     }
 
     //index methods allwoance get page
@@ -71,7 +70,7 @@ class AllowanceController extends Controller
     public function updateallowance(Request $request)
     {
         $this->validate($request, [
-            'description' => 'required|unique:hrm_allowance,description,'.$request->id,
+            'description' => 'required|unique:hrm_allowance,description,' . $request->id,
             'amount' => 'required',
         ]);
 

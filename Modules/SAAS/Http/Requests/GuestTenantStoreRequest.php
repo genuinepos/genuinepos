@@ -26,7 +26,7 @@ class GuestTenantStoreRequest extends FormRequest
             'phone' => 'required|max:60|unique:users,phone',
             'password' => ['required', Password::default()],
         ];
-        if (! config('app.debug')) {
+        if (!config('app.debug')) {
             $rules['g-recaptcha-response'] = 'required|captcha';
         }
 

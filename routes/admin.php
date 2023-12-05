@@ -10,7 +10,7 @@ use App\Http\Controllers\BranchReceiveStockController;
 use App\Http\Controllers\CommonAjaxCallController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerImportController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ImportPriceGroupProductController;

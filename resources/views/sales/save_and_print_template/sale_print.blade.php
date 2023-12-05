@@ -3,7 +3,10 @@
     $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
-    $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
+    $addSaleInvoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout;
+    $posSaleInvoiceLayout = $sale?->branch?->branchSetting?->posSaleInvoiceLayout;
+    $setInvoiceLayout = $sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value ? $addSaleInvoiceLayout : $posSaleInvoiceLayout;
+    $invoiceLayout = $setInvoiceLayout ? $setInvoiceLayout : $defaultLayout;
 
     $__receivedAmount = isset($receivedAmount) ? $receivedAmount : 0;
 
@@ -13,7 +16,6 @@
     $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
     $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
-
 
 <!-- Sale print templete-->
 @if ($invoiceLayout->layout_design == 1)

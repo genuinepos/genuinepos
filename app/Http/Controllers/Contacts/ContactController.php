@@ -105,6 +105,7 @@ class ContactController extends Controller
                 trans_id: $addAccount->id,
                 amount: $request->opening_balance ? $request->opening_balance : 0,
                 amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
+                branch_id: $addAccount->branch_id,
             );
 
             // AccountLedger Will be go Here
@@ -201,6 +202,8 @@ class ContactController extends Controller
                 trans_id: $updateAccount->id,
                 amount: $request->opening_balance ? $request->opening_balance : 0,
                 amount_type: $request->opening_balance_type == 'dr' ? 'debit' : 'credit',
+                branch_id: $updateContact?->account?->branch_id,
+                current_account_id: $updateContact?->account?->id,
             );
 
             // AccountLedger Will be go Here

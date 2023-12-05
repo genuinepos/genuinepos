@@ -20,33 +20,36 @@
             <div id="closeRightSidebar"><a href="#" style="color: #fff;"><i class="far fa-times-circle fs-4"></i></a></div>
         </div>
 
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="fa-solid fa-shop fs-3"></i></span></li>
+                <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
                 <li class="my-1 me-2 ms-1 branch_switcher">
-                    <div class="select-dropdown">
-                        <select name="branch_id" id="switch_branch_id">
-                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                            @foreach ($branches as $branch)
-                                <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
-                                    @php
-                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                        $branchCode = '-' . $branch->branch_code;
-                                    @endphp
-                                    {{  $branchName.$areaName.$branchCode }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <form id="change_branch_form" action="{{ route('users.change.branch') }}">
+                        @csrf
+                        <div class="select-dropdown">
+                            <select name="branch_id" id="switch_branch_id">
+                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                @foreach ($branches as $branch)
+                                    <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
+                                        @php
+                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                            $branchCode = '-' . $branch->branch_code;
+                                        @endphp
+                                        {{  $branchName.$areaName.$branchCode }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                 </li>
             </ul>
         </div>
 
-        <div class="py-3 ">
+        <div class="py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="far fa-user fs-3"></i></span></li>
-                <li class="my-1 me-2 ms-1 text-white py-2" style="font-size: 12px">
+                <li class="icon text-white"><span class=""><i class="far fa-user"></i></span></li>
+                <li class="my-1 me-2 ms-1 text-white py-1" style="font-size: 12px">
                     {{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}
                     @if (auth()->user()->role_type == 1)
                         ({{ __('Super-Admin') }})
@@ -59,9 +62,9 @@
             </ul>
         </div>
 
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="far fa-user-circle fs-3"></i></span></li>
+                <li class="icon text-white"><span class=""><i class="far fa-user-circle"></i></span></li>
                 <li class="my-1 me-2 ms-1">
                     <a href="{{ route('users.profile.view', auth()->user()->id) }}">
                         <p class="title text-white">{{ __('My Profile') }}</p>
@@ -71,9 +74,9 @@
             </ul>
         </div>
 
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="fas fa-user fs-3"></i></span></li>
+                <li class="icon text-white"><span class=""><i class="fas fa-user"></i></span></li>
                 <li class="my-1 me-2 ms-1">
                     <a href="{{ route('users.profile.index') }}">
                         <p class="title text-white">{{ __('Change Profile') }}</p>
@@ -83,9 +86,9 @@
             </ul>
         </div>
 
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><small class=""><i class="far fa-comment-alt fs-3"></i></small></li>
+                <li class="icon text-white"><small class=""><i class="far fa-comment-alt"></i></small></li>
                 <li class="my-2 me-2 ms-1">
                     <a href="{{ route('feedback.index') }}">
                         <p class="title text-white">{{ __('Feedback') }}</p>
@@ -93,9 +96,9 @@
                 </li>
             </ul>
         </div>
-        <div class="border-top py-3">
+        <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><small class=""><i class="fas fa-book fs-3"></i></small></li>
+                <li class="icon text-white"><small class=""><i class="fas fa-book"></i></small></li>
                 <li class="my-2 me-2 ms-1">
                     <a href="#">
                         <p class="title text-white">{{ __('Documentation') }}</p>
@@ -106,7 +109,7 @@
 
         <div class="position-absolute bottom-btn-group" style="bottom: 0; left: 0; right: 0; border-top: 1px solid #fff;">
             <ul class="d-flex">
-                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">Light Nav</span></a></li>
+                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">{{ __("Light Nav") }}</span></a></li>
                 <li class="d-lg-block d-none"><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog"></i></span><span>{{ __('Settings') }}</span></a></li>
 
                 <li>
@@ -162,6 +165,7 @@
             $("#openRightSidebar").on('click', function() {
                 $("#rightSidebar").toggleClass("open");
             });
+
             $("#closeRightSidebar").on('click', function() {
                 $("#rightSidebar").removeClass("open");
             });
@@ -287,6 +291,53 @@
             // document.getElementById('exampleImage').addEventListener('click', function() {
             //     toggleFullscreen(this);
             // });
+        });
+
+        var selectedBranchId = $('#switch_branch_id').val();
+        $(document).on('change', '#switch_branch_id',function(e){
+
+            $.confirm({
+                'title': "{{ __('Confirmation') }}",
+                'content': "{{ __('Are you sure?') }}",
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes btn-modal-primary','action': function() {
+                            $('#change_branch_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger','action': function() {
+                            $('#switch_branch_id').val(selectedBranchId);
+                        }
+                    }
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#change_branch_form',function(e){
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url:url,
+                type:'post',
+                data:request,
+                success:function(data){
+
+                    toastr.success(data);
+                    window.location.reload();
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    }else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
         });
     </script>
 @endpush

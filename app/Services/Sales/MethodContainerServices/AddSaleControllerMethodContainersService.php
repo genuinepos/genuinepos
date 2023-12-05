@@ -22,6 +22,9 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data = [];
         $sale = $saleService->singleSale(id: $id, with: [
             'branch',
+            'branch.branchSetting',
+            'branch.branchSetting.addSaleInvoiceLayout',
+            'branch.branchSetting.posSaleInvoiceLayout',
             'branch.parentBranch',
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',

@@ -119,14 +119,20 @@ class UserController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
-       $deleteUser = $this->userService->deleteUser(id: $id);
+        $deleteUser = $this->userService->deleteUser(id: $id);
 
-       if($deleteUser['pass'] == false){
+        if ($deleteUser['pass'] == false) {
 
             return response()->json(['errorMsg' => $deleteUser['msg']]);
-       }
+        }
 
         return response()->json(__('User deleted successfully'));
+    }
+
+    public function changeBranch(Request $request)
+    {
+        $this->userService->changeBranch(request: $request);
+        return response()->json(__('Succeed'));
     }
 
     public function show($id)

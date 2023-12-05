@@ -26,7 +26,7 @@ class ProductService
             'productAccessBranches',
             'productAccessBranches.branch:id,name,area_name,branch_code,parent_branch_id',
             'productAccessBranches.branch.parentBranch:id,name,area_name,branch_code',
-            'ownBranchAllStocks:id,branch_id,stock',
+            'ownBranchAllStocks:id,branch_id,stock,product_id,variant_id',
         ])
             ->leftJoin('product_access_branches', 'products.id', 'product_access_branches.product_id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')

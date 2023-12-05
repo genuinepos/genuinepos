@@ -1,6 +1,10 @@
 @php
     $defaultLayout = DB::table('invoice_layouts')->where('branch_id', null)->where('is_default', 1)->first();
-    $invoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout ? $sale?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
+
+    $addSaleInvoiceLayout = $sale?->branch?->branchSetting?->addSaleInvoiceLayout;
+    $posSaleInvoiceLayout = $sale?->branch?->branchSetting?->posSaleInvoiceLayout;
+    $setInvoiceLayout = $sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value ? $addSaleInvoiceLayout : $posSaleInvoiceLayout;
+    $invoiceLayout = $setInvoiceLayout ? $setInvoiceLayout : $defaultLayout;
 @endphp
 
 <!-- Sale print templete-->

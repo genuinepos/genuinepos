@@ -122,10 +122,10 @@ class SaleService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name.'('.$row->branch_area_name.')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name.'('.$row->branch_area_name.')';
                     }
                 } else {
 

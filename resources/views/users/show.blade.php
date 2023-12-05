@@ -2,6 +2,7 @@
 @push('stylesheets')
 
 @endpush
+@section('title', 'View User - ')
 @section('content')
 <div class="body-wraper">
     <div class="main__content">

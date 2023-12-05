@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -63,18 +65,25 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = User::where('username', $request->username)->where('allow_login', 1)->first();
+        $user = User::where('username', $request->username)->where('allow_login', 1)->first();
 
-        if (isset($admin) && $admin->allow_login == 1) {
+        if (isset($user) && $user->allow_login == 1) {
 
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
-                if (!Session::has($admin->language)) {
+                if (!Session::has($user->language)) {
 
-                    session(['lang' => $admin->language]);
+                    session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $admin, branch_id: $admin->branch_id,  user_id: $admin->id);
+                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id,  user_id: $user->id);
+
+                if ($user->role_type == RoleType::SuperAdmin->value || $user->role_type == RoleType::Admin->value) {
+
+                    $user->branch_id = null;
+                    $user->is_belonging_an_area = BooleanType::True->value;
+                    $user->save();
+                }
 
                 return redirect()->intended(route('dashboard.index'));
             } else {

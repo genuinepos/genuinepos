@@ -142,7 +142,7 @@ class DashboardService
             ->leftJoin('units', 'products.unit_id', 'units.id')
             ->where('products.is_manage_stock', BooleanType::True->value)
             ->where('warehouse_id', null)
-            ->where('product_stocks.all_stock', '<=', 'products.alert_quantity');
+            ->whereColumn('products.alert_quantity', '>=', 'product_stocks.all_stock');
 
         if ($request->branch_id) {
 

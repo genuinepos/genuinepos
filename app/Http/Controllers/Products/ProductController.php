@@ -96,7 +96,6 @@ class ProductController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
@@ -126,7 +125,6 @@ class ProductController extends Controller
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
-            ->where('accounts.branch_id', auth()->user()->branch_id)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();

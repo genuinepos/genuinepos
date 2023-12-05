@@ -2,25 +2,28 @@
 
 namespace App\Services\Accounts;
 
-use App\Enums\AccountingVoucherType;
+use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Enums\AccountingVoucherType;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescription;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
 
 class ReceiptService
 {
     public function receiptsTable(object $request, int $creditAccountId = null): object
     {
+        $account = DB::table('accounts')->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('accounts.id', $creditAccountId)->select('account_groups.sub_sub_group_number')->first();
         $generalSettings = config('generalSettings');
         $receipts = '';
         $query = AccountingVoucherDescription::query()
             ->with([
                 'account:id,name,phone,address',
                 'accountingVoucher:id,branch_id,voucher_no,date,date_ts,voucher_type,sale_ref_id,purchase_return_ref_id,stock_adjustment_ref_id,total_amount,remarks,created_by_id',
-                'accountingVoucher.branch:id,name,branch_code,parent_branch_id',
+                'accountingVoucher.branch:id,name,branch_code,area_name,parent_branch_id',
                 'accountingVoucher.branch.parentBranch:id,name',
                 'accountingVoucher.voucherDebitDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'accountingVoucher.voucherDebitDescription.account:id,name',
@@ -66,7 +69,10 @@ class ReceiptService
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            if (!isset($creditAccountId) && $account?->sub_sub_group_number != 6) {
+
+                $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            }
         }
 
         $receipts = $query->select(
@@ -83,7 +89,7 @@ class ReceiptService
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a href="' . route('receipts.show', [$row?->accountingVoucher?->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('receipts_edit')) {
 
@@ -91,7 +97,7 @@ class ReceiptService
                     }
                 }
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('receipts_delete')) {
 

@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Users;
 use App\Models\User;
 use App\Utils\FileUploader;
 use Illuminate\Http\Request;
+use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
+use App\Services\Users\UserProfileService;
 
 class UserProfileController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private UserProfileService $userProfileService,
+        private UserService $userService,
+    ) {
     }
 
     public function index()
@@ -26,61 +30,16 @@ class UserProfileController extends Controller
             'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
         ]);
 
-        $updateProfile = User::where('id', auth()->user()->id)->first();
-        $updateProfile->prefix = $request->prefix;
-        $updateProfile->name = $request->first_name;
-        $updateProfile->last_name = $request->last_name;
-        $updateProfile->email = $request->email;
-        $updateProfile->date_of_birth = $request->date_of_birth;
-        $updateProfile->gender = $request->gender;
-        $updateProfile->marital_status = $request->marital_status;
-        $updateProfile->blood_group = $request->blood_group;
-        $updateProfile->phone = $request->phone;
-        $updateProfile->facebook_link = $request->facebook_link;
-        $updateProfile->twitter_link = $request->twitter_link;
-        $updateProfile->instagram_link = $request->instagram_link;
-        $updateProfile->guardian_name = $request->guardian_name;
-        $updateProfile->id_proof_name = $request->id_proof_name;
-        $updateProfile->permanent_address = $request->permanent_address;
-        $updateProfile->current_address = $request->current_address;
-        $updateProfile->bank_ac_holder_name = $request->bank_ac_holder_name;
-        $updateProfile->bank_ac_no = $request->bank_ac_no;
-        $updateProfile->bank_name = $request->bank_name;
-        $updateProfile->bank_identifier_code = $request->bank_identifier_code;
-        $updateProfile->bank_branch = $request->bank_branch;
-        $updateProfile->tax_payer_id = $request->tax_payer_id;
-        $updateProfile->language = $request->language;
+        $updateUserProfile = $this->userProfileService->updateUserProfile(request: $request);
 
-        if ($request->hasFile('photo')) {
-            $newFile = FileUploader::upload($request->file('photo'), 'uploads/user_photo');
-            if (
-                isset($updateProfile->photo) &&
-                file_exists(public_path('uploads/user_photo/' . $updateProfile->photo)) &&
-                $updateProfile->photo != 'default.png'
-            ) {
-                try {
-                    unlink(public_path('uploads/user_photo/' . $updateProfile->photo));
-                } catch (Exception $e) {
-                }
-            }
-            $updateProfile->photo = $newFile;
-        }
-
-        $updateProfile->save();
-        
-        session(['lang' => $updateProfile->language]);
-        session()->flash('successMsg', 'Successfully user updated');
-
-        return response()->json('Successfully user profile is updated');
+        session(['lang' => $updateUserProfile->language]);
+        session()->flash('successMsg', __('User profile updated successfully'));
+        return response()->json(__('Successfully user profile is updated'));
     }
 
     public function view($id)
     {
-        $user = User::with(['roles', 'department', 'shift', 'designation'])->where('id', $id)->firstOrFail();
-
-        // $firstName = str_split($user->name)[0];
-        // $lastName = $user->last_name ? str_split($user->last_name)[0] : '';
-        // $namePrefix = $firstName.' '.$lastName;
+        $user = $this->userService->singleUser(id: $id, with: ['roles', 'department', 'shift', 'designation']);
         return view('users.view_profile', compact('user'));
     }
 }

@@ -25,10 +25,10 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::delete('delete/{id}', 'delete')->name('users.role.delete');
     });
 
-    Route::group(['prefix' => 'profile'], function () {
+    Route::controller(UserProfileController::class)->prefix('profile')->group(function () {
 
-        Route::get('/', [UserProfileController::class, 'index'])->name('users.profile.index');
-        Route::post('update', [UserProfileController::class, 'update'])->name('users.profile.update');
-        Route::get('view/{id}', [UserProfileController::class, 'view'])->name('users.profile.view');
+        Route::get('/', 'index')->name('users.profile.index');
+        Route::post('update', 'update')->name('users.profile.update');
+        Route::get('view/{id}', 'view')->name('users.profile.view');
     });
 });

@@ -15,7 +15,13 @@ class TenantService implements TenantServiceInterface
     public function create(array $tenantRequest): ?Tenant
     {
         try {
-            $tenant = Tenant::create(['id' => $tenantRequest['domain'], 'name' => $tenantRequest['name']]);
+            $tenant = Tenant::create([
+                'id' => $tenantRequest['domain'],
+                'name' => $tenantRequest['name'],
+                'plan_id' => $tenantRequest['plan_id'],
+                'impersonate_user' => 1,
+            ]);
+
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 if ($domain) {
@@ -28,15 +34,12 @@ class TenantService implements TenantServiceInterface
                         'primary_tenant_id' => $tenant->id,
                         'ip_address' => request()->ip(),
                     ]);
-                    $tenantAdminUserId = $this->makeSuperAdminForTenant($tenant, $tenantRequest);
-                    $tenant->update(['impersonate_user' => $tenantAdminUserId]);
-
+                    $this->makeSuperAdminForTenant($tenant, $tenantRequest);
                     return $tenant;
                 }
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
-
             return null;
         }
     }

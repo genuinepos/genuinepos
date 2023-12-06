@@ -27,7 +27,7 @@ class WarehouseService
 
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            $warehouses = $query->where('warehouse_branches.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', 0);
+            $warehouses = $query->where('warehouses.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', 1);
         }
 
         $warehouses = $query->select(

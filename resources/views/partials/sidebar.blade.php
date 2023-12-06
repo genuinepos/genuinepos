@@ -488,9 +488,10 @@
 
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Product Reports') }}</p>
-                            @if (auth()->user()->can('stock_report') ||
-                                    auth()->user()->can('stock_in_out_report'))
-
+                            @if (
+                                    auth()->user()->can('stock_report') ||
+                                    auth()->user()->can('stock_in_out_report')
+                            )
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('stock_report'))
                                         <div class="sub-menu-col">
@@ -537,7 +538,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">@lang('menu.superadmin')</p>
+                                <p class="sub-menu-group-title">{{ __("Superadmin") }}</p>
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('branch'))
                                         <div class="sub-menu-col">
@@ -581,7 +582,7 @@
                                                         <span><i class="fas fa-address-card"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.suppliers')</p>
+                                                <p class="switch_text">{{ __("Suppliers") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -594,7 +595,7 @@
                                                         <span><i class="fas fa-file-import"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.import_suppliers')</p>
+                                                <p class="switch_text">{{ __("Import Suppliers") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -609,7 +610,7 @@
                                                         <span><i class="far fa-address-card"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.customers') </p>
+                                                <p class="switch_text">{{ __("Customers") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -622,7 +623,7 @@
                                                         <span><i class="fas fa-file-upload"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.import_customers')</p>
+                                                <p class="switch_text">{{ __("Import Customer") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -635,7 +636,7 @@
                                                         <span><i class="fas fa-users"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.customer_groups')</p>
+                                                <p class="switch_text">{{ __("Customer Groups") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -656,7 +657,7 @@
                                                             <span><i class="fas fa-id-card"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">@lang('menu.supplier_report')</p>
+                                                    <p class="switch_text">{{ __("Supplier Reports") }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -669,7 +670,7 @@
                                                             <span><i class="far fa-id-card"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">@lang('menu.customer_report')</p>
+                                                    <p class="switch_text">{{ __("Customer Reports") }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -725,7 +726,7 @@
                                                                 <span><i class="fas fa-plus-circle"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">@lang('menu.add_purchase')</p>
+                                                        <p class="switch_text">{{ __("Add Purchase") }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -738,7 +739,7 @@
                                                                 <span><i class="fas fa-list"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">@lang('menu.purchase_list')</p>
+                                                        <p class="switch_text">{{ __("Purchase List") }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -764,7 +765,7 @@
                                                                 <span><i class="fas fa-sliders-h"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">@lang('menu.purchase_settings')</p>
+                                                        <p class="switch_text">{{ __("Purchase Settings") }}</p>
                                                     </a>
                                                 </div>
                                             @endif

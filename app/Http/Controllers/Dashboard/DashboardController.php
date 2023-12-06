@@ -76,7 +76,6 @@ class DashboardController extends Controller
     public function changeLang($lang)
     {
         session(['lang' => $lang]);
-
         return redirect()->back();
     }
 }

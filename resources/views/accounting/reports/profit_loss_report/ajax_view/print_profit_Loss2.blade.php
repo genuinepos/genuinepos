@@ -17,6 +17,7 @@
     tr.noBorder td {border: 0px !important;}
     tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
 </style>
+
 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
     <div class="col-4 align-items-center">
         @if ($branch_id == '')
@@ -96,30 +97,6 @@
 </div>
 
 <div class="sale_and_purchase_amount_area">
-    {{-- <div class="row">
-        <div class="col-md-12 text-center">
-            @if ($branch_id == '')
-                <h6>{{ $generalSettings['business__shop_name'] }}</h6>
-                <p><b>@lang('menu.all_business_location').</b></p>
-                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
-            @elseif ($branch_id == 'NULL')
-                <h6>{{ $generalSettings['business__shop_name'] }}</h6>
-                <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
-            @else
-                @php
-                    $branch = DB::table('branches')->where('id', $branch_id)->select('name', 'branch_code', 'city', 'state', 'zip_code', 'country')->first();
-                @endphp
-                <h6>{{ $branch->name.' '.$branch->branch_code }}</h6>
-                <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
-            @endif
-
-            @if ($fromDate && $toDate)
-                <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
-            @endif
-            <h6 style="margin-top: 10px;"><b>@lang('menu.daily_profit_loss_report')</b></h6>
-        </div>
-    </div> --}}
-
     <div class="row g-3 mt-2">
         <div class="col-8 offset-2">
             <div class="card">

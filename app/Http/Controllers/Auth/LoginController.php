@@ -81,7 +81,7 @@ class LoginController extends Controller
                 if ($user->role_type == RoleType::SuperAdmin->value || $user->role_type == RoleType::Admin->value) {
 
                     $user->branch_id = null;
-                    $user->is_belonging_an_area = BooleanType::True->value;
+                    $user->is_belonging_an_area = BooleanType::False->value;
                     $user->save();
                 }
 

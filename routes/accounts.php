@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\Accounts\AccountBalanceController;
-use App\Http\Controllers\Accounts\AccountController;
-use App\Http\Controllers\Accounts\AccountGroupController;
-use App\Http\Controllers\Accounts\AccountLedgerController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Accounts\BankController;
-use App\Http\Controllers\Accounts\CapitalAccountController;
 use App\Http\Controllers\Accounts\ContraController;
+use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\DayBookController;
-use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
 use App\Http\Controllers\Accounts\ExpenseController;
 use App\Http\Controllers\Accounts\PaymentController;
 use App\Http\Controllers\Accounts\ReceiptController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Accounts\AccountGroupController;
+use App\Http\Controllers\Accounts\AccountLedgerController;
+use App\Http\Controllers\Accounts\AccountBalanceController;
+use App\Http\Controllers\Accounts\CapitalAccountController;
+use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
+use App\Http\Controllers\Accounts\Reports\ProfitLossReportController;
 
 Route::group(['prefix' => 'accounting'], function () {
 
@@ -115,5 +116,15 @@ Route::group(['prefix' => 'accounting'], function () {
     Route::controller(DayBookController::class)->prefix('day-books')->group(function () {
 
         Route::get('vouchers/for/receipts/or/payments/{accountId?}/{type?}', 'vouchersForReceiptOrPayment')->name('daybooks.vouchers.for.receipt.or.payment');
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+
+        Route::controller(ProfitLossReportController::class)->prefix('profit-loss')->group(function () {
+
+            Route::get('/', 'index')->name('reports.profit.loss.index');
+            Route::get('amounts', 'profitLossAmounts')->name('reports.profit.loss.amounts');
+            Route::get('print', 'printProfitLoss')->name('reports.profit.loss.print');
+        });
     });
 });

@@ -23,7 +23,7 @@ class BranchController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('branch')) {
+        if (!auth()->user()->can('branch')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -40,8 +40,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('branch')) {
-
+        if (!auth()->user()->can('branch')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -53,8 +52,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('branch')) {
-
+        if (!auth()->user()->can('branch')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -87,7 +85,6 @@ class BranchController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->branchService->restrictions();
@@ -125,8 +122,7 @@ class BranchController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('branch')) {
-
+        if (!auth()->user()->can('branch')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -138,8 +134,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('branch')) {
-
+        if (!auth()->user()->can('branch')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -162,7 +157,6 @@ class BranchController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $this->branchService->updateBranch(id: $id, request: $request);
@@ -186,5 +180,10 @@ class BranchController extends Controller
         }
 
         return response()->json(__('Shop deleted deleted successfully'));
+    }
+
+    public function parentWithChildBranches($id)
+    {
+        return $this->branchService->branches(with: ['childBranches'])->where('id', $id)->first();
     }
 }

@@ -64,6 +64,7 @@
                                         </select>
                                     </div>
                                 @endif
+                                
                                 <div class="select-dropdown">
                                     <select name="date" id="date">
                                         <option data-date_period="{{ __('Today\'s Status.') }}" value="{{ $toDay }}">{{ __('Current Day') }}</option>

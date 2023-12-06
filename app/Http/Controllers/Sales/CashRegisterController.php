@@ -39,6 +39,7 @@ class CashRegisterController extends Controller
 
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['branch', 'user'])
             ->where('user_id', auth()->user()->id)
+            ->where('branch_id', auth()->user()->branch)
             ->where('status', BooleanType::True->value)
             ->first();
 

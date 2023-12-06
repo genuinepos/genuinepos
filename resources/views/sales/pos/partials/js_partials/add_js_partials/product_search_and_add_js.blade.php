@@ -424,6 +424,8 @@
         route = route.replace(':variant_id', variant_id);
         route = route.replace(':price_group_id', price_group_id);
 
+        console.log(route);
+
         $.ajax({
             url: route,
             type: 'get',

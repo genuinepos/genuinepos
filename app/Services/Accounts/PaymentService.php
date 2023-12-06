@@ -2,18 +2,24 @@
 
 namespace App\Services\Accounts;
 
-use App\Enums\AccountingVoucherType;
+use Carbon\Carbon;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
+use Illuminate\Support\Str;
 use App\Enums\PurchaseStatus;
+use Illuminate\Support\Facades\DB;
+use App\Enums\AccountingVoucherType;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\Accounts\AccountingVoucher;
 use App\Models\Accounts\AccountingVoucherDescription;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
 
 class PaymentService
 {
     public function paymentsTable(object $request, int $debitAccountId = null): object
     {
+        $account = DB::table('accounts')->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+        ->where('accounts.id', $debitAccountId)->select('account_groups.sub_sub_group_number')->first();
+
         $generalSettings = config('generalSettings');
         $payments = '';
         $query = AccountingVoucherDescription::query()
@@ -64,9 +70,12 @@ class PaymentService
             $query->whereBetween('accounting_vouchers.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            if (!isset($debitAccountId) && $account?->sub_sub_group_number != 6) {
+
+                $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            }
         }
 
         $payments = $query->select(
@@ -83,7 +92,7 @@ class PaymentService
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a href="' . route('payments.show', [$row?->accountingVoucher?->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('payments_edit')) {
 
@@ -91,7 +100,7 @@ class PaymentService
                     }
                 }
 
-                if (auth()->user()->branch_id == $row->branch_id) {
+                if (auth()->user()->branch_id == $row?->accountingVoucher?->branch_id) {
 
                     if (auth()->user()->can('payments_delete')) {
 

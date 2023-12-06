@@ -307,6 +307,15 @@ class UserService
         return ['pass' => true];
     }
 
+    public function changeBranch(object $request): void
+    {
+        $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
+        $user = $this->singleUser(id: auth()->user()->id);
+        $user->branch_id = $branchId;
+        $user->is_belonging_an_area = isset($branchId) ? BooleanType::True->value : BooleanType::False->value;
+        $user->save();
+    }
+
     public function singleUser(?int $id, array $with = null)
     {
         $query = User::query();

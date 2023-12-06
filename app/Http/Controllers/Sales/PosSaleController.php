@@ -104,6 +104,7 @@ class PosSaleController extends Controller
 
         $openedCashRegister = $this->cashRegisterService->singleCashRegister(with: ['user', 'branch', 'branch.parentBranch', 'cashCounter'])
             ->where('user_id', auth()->user()->id)
+            ->where('branch_id', auth()->user()->branch_id)
             ->where('status', 1)
             ->first();
 
@@ -256,7 +257,7 @@ class PosSaleController extends Controller
                     'branch',
                     'branch.parentBranch',
                     'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    'branch.branchSetting.addSaleInvoiceLayout',
+                    'branch.branchSetting.posSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',
@@ -568,7 +569,7 @@ class PosSaleController extends Controller
                     'branch',
                     'branch.parentBranch',
                     'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    'branch.branchSetting.addSaleInvoiceLayout',
+                    'branch.branchSetting.posSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',

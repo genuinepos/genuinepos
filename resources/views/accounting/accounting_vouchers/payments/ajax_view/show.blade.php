@@ -31,10 +31,10 @@
 
                                     @if ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
 
-                                        {{ __("Purchase") }} : {{ $payment?->purchaseRef->invoice_id }}
+                                        {{ __("Purchase") }} : {{ $payment?->purchaseRef?->invoice_id }}
                                     @elseif ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
 
-                                        {{ __("P/o") }} : {{ $payment?->purchaseRef->invoice_id }}
+                                        {{ __("P/o") }} : {{ $payment?->purchaseRef?->invoice_id }}
                                     @endif
                                 @endif
 
@@ -506,15 +506,15 @@
                     <li style="font-size:11px!important;"><strong>{{ __("Reference") }} : </strong>
                         @if ($payment?->purchaseRef)
 
-                            @if ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
-                                {{ __("Purchase") }} : {{ $payment?->saleRef->invoice_id }}
-                            @elseif ($payment?->purchaseRef->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
-                                {{ __("P/o") }} : {{ $payment?->purchaseRef->invoice_id }}
+                            @if ($payment?->purchaseRef?->purchase_status == \App\Enums\PurchaseStatus::Purchase->value)
+                                {{ __("Purchase") }} : {{ $payment?->purchaseRef?->invoice_id }}
+                            @elseif ($payment?->purchaseRef?->purchase_status == \App\Enums\PurchaseStatus::PurchaseOrder->value)
+                                {{ __("P/o") }} : {{ $payment?->purchaseRef?->invoice_id }}
                             @endif
                         @endif
 
                         @if ($payment?->salesReturnRef)
-                            {{ __("Sales Return") }} : {{ $payment?->salesReturnRef->voucher_no }}
+                            {{ __("Sales Return") }} : {{ $payment?->salesReturnRef?->voucher_no }}
                         @endif
                     </li>
 

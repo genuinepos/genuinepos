@@ -14,6 +14,7 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::post('update/{id}', 'update')->name('users.update');
     Route::delete('delete/{id}', 'delete')->name('users.delete');
     Route::get('show/{id}', 'show')->name('users.show');
+    Route::post('change/branch', 'changeBranch')->name('users.change.branch');
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
 

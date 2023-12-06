@@ -255,6 +255,7 @@ class ProductUtil
             })
             ->editColumn('quantity', function ($row) use ($productStock, $request) {
 
+                // $branchId = $request->branch_id ? $request->branch_id
                 $quantity = $productStock->branchWiseSingleProductStock($row->id, $request->branch_id);
 
                 return \App\Utils\Converter::format_in_bdt($quantity).'/'.$row->unit_name;

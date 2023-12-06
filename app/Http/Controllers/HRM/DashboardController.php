@@ -47,11 +47,13 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $userCount = $userCountQ->count();
             $users = $usersQ->groupBy('users.department_id')
                 ->groupBy('department_name')
                 ->get();
         } else {
+
             $userCount = $userCountQ->where('users.branch_id', auth()->user()->branch_id)->count();
             $users = $usersQ->groupBy('users.department_id')
                 ->groupBy('department_name')
@@ -70,14 +72,18 @@ class DashboardController extends Controller
             ->whereDate('hrm_attendances.at_date_ts', Carbon::today());
 
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $todayAttQ->where('users.branch_id', null);
             } else {
+
                 $todayAttQ->where('users.branch_id', $request->branch_id);
             }
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $todayAttendances = $todayAttQ->select(
                 'users.prefix',
                 'users.name',
@@ -86,6 +92,7 @@ class DashboardController extends Controller
                 'hrm_attendances.clock_out',
             )->get();
         } else {
+            
             $todayAttendances = $todayAttQ->select(
                 'users.prefix',
                 'users.name',

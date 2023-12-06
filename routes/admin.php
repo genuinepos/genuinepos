@@ -1,62 +1,60 @@
 <?php
 
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\AccountingRelatedSectionController;
-use App\Http\Controllers\Accounts\BankController;
-use App\Http\Controllers\AssetController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\BarcodeController;
-use App\Http\Controllers\BranchReceiveStockController;
-use App\Http\Controllers\CommonAjaxCallController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerImportController;
-use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\EmailController;
-use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\ImportPriceGroupProductController;
-use App\Http\Controllers\InvoiceSchemaController;
-use App\Http\Controllers\LoanCompanyController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\LoanController;
-use App\Http\Controllers\LoanPaymentController;
-use App\Http\Controllers\MoneyReceiptController;
-use App\Http\Controllers\PosShortMenuController;
-use App\Http\Controllers\ProductImportController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\PurchaseOrderReceiveController;
-use App\Http\Controllers\RandomSaleReturnController;
-use App\Http\Controllers\ReceiveTransferBranchToBranchController;
-use App\Http\Controllers\Report\CashRegisterReportController;
-use App\Http\Controllers\Report\CustomerReportController;
-use App\Http\Controllers\Report\FinancialReportControllerReport;
-use App\Http\Controllers\Report\ProductSaleReportController;
-use App\Http\Controllers\Report\ProfitLossReportController;
-use App\Http\Controllers\Report\SalePaymentReportController;
-use App\Http\Controllers\Report\SaleRepresentativeReportController;
-use App\Http\Controllers\Report\SaleReturnStatementController;
-use App\Http\Controllers\Report\SaleStatementController;
-use App\Http\Controllers\Report\SupplierReportController;
-use App\Http\Controllers\Report\TaxReportController;
-use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
-use App\Http\Controllers\SaleReturnController;
-use App\Http\Controllers\ShortMenuController;
-use App\Http\Controllers\SmsController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\SupplierImportController;
-use App\Http\Controllers\TransferStockBranchToBranchController;
-use App\Http\Controllers\TransferToBranchController;
-use App\Http\Controllers\TransferToWarehouseController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BarcodeController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ShortMenuController;
+use App\Http\Controllers\SaleReturnController;
+use App\Http\Controllers\LoanCompanyController;
+use App\Http\Controllers\LoanPaymentController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\MoneyReceiptController;
+use App\Http\Controllers\PosShortMenuController;
+use App\Http\Controllers\Accounts\BankController;
+use App\Http\Controllers\InvoiceSchemaController;
+use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\CommonAjaxCallController;
+use App\Http\Controllers\CustomerImportController;
+use App\Http\Controllers\SupplierImportController;
+use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\RandomSaleReturnController;
+use App\Http\Controllers\Report\TaxReportController;
+use App\Http\Controllers\TransferToBranchController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\BranchReceiveStockController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\TransferToWarehouseController;
+use App\Http\Controllers\PurchaseOrderReceiveController;
+use App\Http\Controllers\Report\SaleStatementController;
+use App\Http\Controllers\Report\CustomerReportController;
+use App\Http\Controllers\Report\SupplierReportController;
 use App\Http\Controllers\WarehouseReceiveStockController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImportPriceGroupProductController;
+use App\Http\Controllers\Report\ProfitLossReportController;
+use App\Http\Controllers\AccountingRelatedSectionController;
+use App\Http\Controllers\Report\ProductSaleReportController;
+use App\Http\Controllers\Report\SalePaymentReportController;
+use App\Http\Controllers\Report\CashRegisterReportController;
+use App\Http\Controllers\Report\SaleReturnStatementController;
+use App\Http\Controllers\TransferStockBranchToBranchController;
+use App\Http\Controllers\Report\FinancialReportControllerReport;
+use App\Http\Controllers\Report\UserActivityLogReportController;
+use App\Http\Controllers\ReceiveTransferBranchToBranchController;
+use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
 
 Route::post('change-current-password', [ResetPasswordController::class, 'resetCurrentPassword'])->name('password.updateCurrent');
 Route::get('maintenance/mode', fn () => view('maintenance/maintenance'))->name('maintenance.mode');
-Route::get('change/lang/{lang}', [DashboardController::class, 'changeLang'])->name('change.lang');
-
 
 
 Route::group(['prefix' => 'common/ajax/call'], function () {
@@ -245,7 +243,7 @@ Route::group(['prefix' => 'purchases'], function () {
 Route::group(['prefix' => 'sales'], function () {
 
     // Route::get('v2', [SaleController::class, 'index2'])->name('sales.index2');
-    Route::get('pos/list', [SaleController::class, 'posList'])->name('sales.pos.list');
+    // Route::get('pos/list', [SaleController::class, 'posList'])->name('sales.pos.list');
     // Route::get('product/list', [SaleController::class, 'soldProductList'])->name('sales.product.list');
     // // Route::get('show/{saleId}', [SaleController::class, 'show'])->name('sales.show');
     // Route::get('pos/show/{saleId}', [SaleController::class, 'posShow'])->name('sales.pos.show');
@@ -466,13 +464,13 @@ Route::group(['prefix' => 'accounting'], function () {
 
     Route::group(['prefix' => 'reports'], function () {
 
-        Route::group(['prefix' => 'daily/profit/loss'], function () {
+        // Route::group(['prefix' => 'daily/profit/loss'], function () {
 
-            Route::get('/', [ProfitLossReportController::class, 'index'])->name('reports.profit.loss.index');
-            Route::get('sale/purchase/profit', [ProfitLossReportController::class, 'salePurchaseProfit'])->name('reports.profit.sale.purchase.profit');
-            Route::get('filter/sale/purchase/profit/filter', [ProfitLossReportController::class, 'filterSalePurchaseProfit'])->name('reports.profit.filter.sale.purchase.profit');
-            Route::get('print', [ProfitLossReportController::class, 'printProfitLoss'])->name('reports.profit.loss.print');
-        });
+        //     Route::get('/', [ProfitLossReportController::class, 'index'])->name('reports.profit.loss.index');
+        //     Route::get('sale/purchase/profit', [ProfitLossReportController::class, 'salePurchaseProfit'])->name('reports.profit.sale.purchase.profit');
+        //     Route::get('filter/sale/purchase/profit/filter', [ProfitLossReportController::class, 'filterSalePurchaseProfit'])->name('reports.profit.filter.sale.purchase.profit');
+        //     Route::get('print', [ProfitLossReportController::class, 'printProfitLoss'])->name('reports.profit.loss.print');
+        // });
 
         Route::group(['prefix' => 'financial'], function () {
 

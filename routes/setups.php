@@ -41,6 +41,7 @@ Route::prefix('setups')->group(function () {
         Route::get('edit/{id}', 'edit')->name('branches.edit');
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
+        Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 

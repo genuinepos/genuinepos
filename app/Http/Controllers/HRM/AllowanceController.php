@@ -18,7 +18,6 @@ class AllowanceController extends Controller
     public function index()
     {
         $employee = User::where('status', 1)->get();
-
         return view('hrm.allowance.index', compact('employee'));
     }
 
@@ -26,7 +25,6 @@ class AllowanceController extends Controller
     public function allallowance()
     {
         $allowance = Allowance::with(['allowance_employees', 'allowance_employees.employee'])->orderBy('id', 'DESC')->get();
-
         return view('hrm.allowance.ajax.list', compact('allowance'));
     }
 

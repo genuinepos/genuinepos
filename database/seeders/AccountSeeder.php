@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountGroup;
+use Illuminate\Support\Facades\Schema;
 
 class AccountSeeder extends Seeder
 {
@@ -42,6 +43,8 @@ class AccountSeeder extends Seeder
             ['account_group_id' => $capitalAccountGroup->id, 'name' => 'Capital Account', 'phone' => null, 'contact_id' => null, 'address' => null, 'account_number' => null, 'bank_id' => null, 'bank_branch' => null, 'bank_address' => null, 'tax_percent' => '0.00', 'bank_code' => null, 'swift_code' => null, 'opening_balance' => '0.00', 'opening_balance_type' => 'dr', 'remark' => null, 'status' => '1', 'created_by_id' => '1', 'is_fixed' => null, 'is_main_capital_account' => '1', 'is_main_pl_account' => null, 'created_at' => '2023-08-08 18:14:40', 'updated_at' => '2023-08-08 18:14:40', 'branch_id' => null],
         ];
 
+        Schema::disableForeignKeyConstraints();
         Account::insert($accounts);
+        Schema::enableForeignKeyConstraints();
     }
 }

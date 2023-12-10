@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SAAS\Database\factories\AdminFactory;
@@ -40,6 +41,7 @@ class TenantService implements TenantServiceInterface
                         'ip_address' => request()->ip(),
                     ]);
                     $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+                    Artisan::call('optimize:clear');
                     return $tenant;
                 }
             }

@@ -39,6 +39,14 @@
                                         placeholder="Period Value" required value="{{ $plan->period_value }}" required>
                                 </div>
                                 <div class="mb-4">
+                                    <label for="currency_code" class="form-label">{{ __('Select Currency') }}</label>
+                                    <select name="currency_code" id="currency_code" class="form-select" required>
+                                        @foreach(Modules\SAAS\Enums\Currencies::cases() as $currency)
+                                        <option value="{{ $currency->value }}" @selected($currency->value == $plan->currency_code)>{{ $currency->value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-4">
                                     <label for="price" class="form-label">{{ __('Period Price') }}</label>
                                     <input type="number" min="0" step="0.000001" class="form-control"
                                         name="price" placeholder="Enter Price" required value="{{ $plan->price }}">

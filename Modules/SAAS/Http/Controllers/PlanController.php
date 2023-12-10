@@ -50,6 +50,7 @@ class PlanController extends Controller
         $plan = Plan::create([
             'name' => $request->name,
             'slug' => $request->slug ?? Str::slug($request->slug),
+            'currency_code' => $request->currency_code,
             'price' => $request->price,
             'description' => $request->description,
             'period_unit' => $request->period_unit,
@@ -101,6 +102,7 @@ class PlanController extends Controller
         $plan->update([
             'name' => $request->name,
             'slug' => $request->slug ?? Str::slug($request->slug),
+            'currency_code' => $request->currency_code,
             'price' => $request->price,
             'description' => $request->description,
             'period_unit' => $request->period_unit,

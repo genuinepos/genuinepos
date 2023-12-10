@@ -2,11 +2,14 @@
 
 namespace App\Models\Setups;
 
+use App\Models\Sales\Sale;
+use App\Models\Purchases\Purchase;
 use App\Models\BaseModel;
+use App\Models\InvoiceSchema;
 use App\Models\Products\Product;
+use App\Models\Setups\Warehouse;
+use App\Models\Setups\BranchSetting;
 use App\Models\Products\ProductOpeningStock;
-use App\Models\Purchase;
-use App\Models\Sale;
 
 class Branch extends BaseModel
 {
@@ -14,6 +17,9 @@ class Branch extends BaseModel
 
     protected $hidden = ['created_at', 'updated_at'];
 
+    protected $casts = [
+        'expire_at' => 'date',
+    ];
     public function invoiceSchema()
     {
         return $this->belongsTo(InvoiceSchema::class, 'invoice_schema_id');

@@ -38,7 +38,7 @@ return new class extends Migration
             $table->integer('financial_year_start_month')->nullable();
             $table->boolean('purchase_permission')->default(false);
             $table->timestamps();
-
+            $table->timestamp('expire_at')->nullable();
             $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }

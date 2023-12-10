@@ -11,7 +11,7 @@ class Plan extends Model
     use HasFactory;
     use IsActive;
 
-    protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status'];
+    protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status', 'currency_code'];
 
     public function scopeActive($query)
     {
@@ -27,6 +27,11 @@ class Plan extends Model
     {
         return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
             ->withPivot('capacity');
+    }
+
+    public function getPriceLabelAttribute()
+    {
+        return $this->price . ' '. $this->currency_code;
     }
 
     public function getPeriodTypeAttribute()

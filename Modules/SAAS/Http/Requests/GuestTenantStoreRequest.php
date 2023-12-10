@@ -19,6 +19,7 @@ class GuestTenantStoreRequest extends FormRequest
     {
         $rules = [
             'plan_id' => 'required|numeric',
+            'shop_count' => 'required|numeric',
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
             'fullname' => 'required|string|max:191',

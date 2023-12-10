@@ -26,9 +26,16 @@ return new class extends Migration
             $table->string('zip_code')->nullable();
             $table->string('alternate_phone_number')->nullable();
             $table->string('country', 191)->nullable();
+            $table->text('address')->nullable();
             $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->string('logo', 191)->nullable()->default('default.png');
+            $table->string('timezone')->nullable();
+            $table->string('time_format')->nullable();
+            $table->string('date_format')->nullable();
+            $table->tinyInteger('stock_accounting_method')->nullable();
+            $table->string('account_start_date')->nullable();
+            $table->integer('financial_year_start_month')->nullable();
             $table->boolean('purchase_permission')->default(false);
             $table->timestamps();
 

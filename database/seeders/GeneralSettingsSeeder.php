@@ -23,7 +23,7 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '10', 'key' => 'business__address', 'value' => 'Dhaka, Bangladesh', 'branch_id' => null],
             ['id' => '11', 'key' => 'business__phone', 'value' => '01700000000/ 01800000000', 'branch_id' => null],
             ['id' => '12', 'key' => 'business__email', 'value' => 'company.email@provider.com', 'branch_id' => null],
-            ['id' => '13', 'key' => 'business__start_date', 'value' => '01-01-1970', 'branch_id' => null],
+            ['id' => '13', 'key' => 'business__account_start_date', 'value' => '01-01-2023', 'branch_id' => null],
             ['id' => '14', 'key' => 'business__default_profit', 'value' => '0', 'branch_id' => null],
             ['id' => '15', 'key' => 'business__currency', 'value' => 'TK.', 'branch_id' => null],
             ['id' => '16', 'key' => 'business__currency_placement', 'value' => null, 'branch_id' => null],
@@ -154,6 +154,7 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '141', 'key' => 'email_settings__discount_redeemed_via_email', 'value' => null, 'branch_id' => null],
             ['id' => '141', 'key' => 'email_settings__new_product_arrived_via_email', 'value' => null, 'branch_id' => null],
             ['id' => '141', 'key' => 'email_settings__weekly_news_letter_via_email', 'value' => null, 'branch_id' => null],
+            ['id' => '142', 'key' => 'business__financial_year_start_month', 'value' => '1', 'branch_id' => null],
         ];
 
         return $general_settings;

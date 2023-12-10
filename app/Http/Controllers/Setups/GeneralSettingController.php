@@ -2,37 +2,44 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Http\Controllers\Controller;
-use App\Models\Currency;
-use App\Services\GeneralSettingServiceInterface;
-use App\Services\Products\UnitService;
-use App\Utils\TimeZone;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
+use App\Services\Setups\CurrencyService;
+use App\Services\Setups\TimezoneService;
+use App\Services\Products\PriceGroupService;
+use App\Services\GeneralSettingServiceInterface;
 
 class GeneralSettingController extends Controller
 {
     public function __construct(
         private UnitService $unitService,
+        private CurrencyService $currencyService,
+        private TimezoneService $timezoneService,
+        private PriceGroupService $priceGroupService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
     }
 
     public function index()
     {
-        if (! auth()->user()->can('general_settings')) {
+        if (!auth()->user()->can('general_settings')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        $currencies = Currency::all();
+        $currencies = $this->currencyService->currencies();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();
-        $timezones = TimeZone::all();
+        $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
+        $timezones = $this->timezoneService->all();
 
         return view('setups.general_settings.index', compact(
             'generalSettings',
             'currencies',
             'timezones',
+            'units',
+            'priceGroups',
         ));
     }
 
@@ -48,14 +55,14 @@ class GeneralSettingController extends Controller
 
                 $bLogo = $generalSettings['business__business_logo'];
 
-                if (file_exists(public_path('uploads/business_logo/'.$bLogo))) {
+                if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
 
-                    unlink(public_path('uploads/business_logo/'.$bLogo));
+                    unlink(public_path('uploads/business_logo/' . $bLogo));
                 }
             }
 
             $logo = $request->file('business_logo');
-            $logoName = uniqid().'-'.'.'.$logo->getClientOriginalExtension();
+            $logoName = uniqid() . '-' . '.' . $logo->getClientOriginalExtension();
             $logo->move(public_path('uploads/business_logo/'), $logoName);
             $business_logo = $logoName;
         } else {
@@ -68,7 +75,8 @@ class GeneralSettingController extends Controller
             'business__address' => $request->address,
             'business__phone' => $request->phone,
             'business__email' => $request->email,
-            'business__start_date' => $request->start_date,
+            'business__account_start_date' => $request->account_start_date,
+            'business__financial_year_start_month' => $request->financial_year_start_month,
             'business__default_profit' => $request->default_profit ? $request->default_profit : 0,
             'business__currency' => $request->currency,
             'business__currency_placement' => $request->currency_placement,
@@ -109,6 +117,67 @@ class GeneralSettingController extends Controller
         return response()->json('Dashboard settings updated successfully.');
     }
 
+    public function productSettings(Request $request)
+    {
+        $settings = [
+            'product__product_code_prefix' => $request->product_code_prefix,
+            'product__default_unit_id' => $request->default_unit_id,
+            'product__is_enable_brands' => $request->is_enable_brands,
+            'product__is_enable_categories' => $request->is_enable_categories,
+            'product__is_enable_sub_categories' => $request->is_enable_sub_categories,
+            'product__is_enable_price_tax' => $request->is_enable_price_tax,
+            'product__is_enable_warranty' => $request->is_enable_warranty,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Product settings updated Successfully'));
+    }
+
+    public function purchaseSettings(Request $request)
+    {
+        $settings = [
+            'purchase__is_edit_pro_price' => $request->is_edit_pro_price,
+            'purchase__is_enable_lot_no' => $request->is_enable_lot_no,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Purchase settings updated successfully.'));
+    }
+
+    public function addSaleSettings(Request $request)
+    {
+        $settings = [
+            'sale__default_sale_discount' => $request->default_sale_discount,
+            'sale__sales_commission' => $request->sales_commission,
+            'sale__default_price_group_id' => $request->default_price_group_id,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Sale settings updated successfully'));
+    }
+
+    public function posSettings(Request $request)
+    {
+        $settings = [
+            'pos__is_enabled_multiple_pay' => $request->is_enabled_multiple_pay,
+            'pos__is_enabled_draft' => $request->is_enabled_draft,
+            'pos__is_enabled_quotation' => $request->is_enabled_quotation,
+            'pos__is_enabled_suspend' => $request->is_enabled_suspend,
+            'pos__is_enabled_discount' => $request->is_enabled_discount,
+            'pos__is_enabled_order_tax' => $request->is_enabled_order_tax,
+            'pos__is_show_recent_transactions' => $request->is_show_recent_transactions,
+            'pos__is_enabled_credit_full_sale' => $request->is_enabled_credit_full_sale,
+            'pos__is_enabled_hold_invoice' => $request->is_enabled_hold_invoice,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json('POS settings updated successfully');
+    }
+
     public function prefixSettings(Request $request)
     {
         $settings = [
@@ -136,6 +205,7 @@ class GeneralSettingController extends Controller
             'system__theme_color' => $request->theme_color,
             'system__datatables_page_entry' => $request->datatable_page_entry,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json('System settings updated Successfully.');
@@ -157,6 +227,7 @@ class GeneralSettingController extends Controller
             'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
             'modules__service' => isset($request->service) ? 1 : 0,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json('Modules settings updated successfully');
@@ -175,6 +246,7 @@ class GeneralSettingController extends Controller
             'email_settings__new_product_arrived_via_email' => isset($request->new_product_arrived_via_email) ? 1 : 0,
             'email_settings__weekly_news_letter_via_email' => isset($request->weekly_news_letter_via_email) ? 1 : 0,
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json('Send Email & SMS settings updated successfully');
@@ -193,6 +265,7 @@ class GeneralSettingController extends Controller
             'reward_point_settings__min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
             'reward_point_settings__max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
         ];
+
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json('Reward point settings updated Successfully');

@@ -13,7 +13,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
@@ -100,7 +100,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 

@@ -33,15 +33,16 @@ class BranchService
             'branches.state',
             'branches.zip_code',
             'branches.country',
+            'branches.address',
             'parentBranch.name as parent_branch_name',
-        )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id');
 
         return DataTables::of($branches)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __("Action") . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item" id="edit" href="' . route('branches.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                 $html .= '<a class="dropdown-item" id="delete" href="' . route('branches.delete', [$row->id]) . '">' . __('Delete') . '</a>';
@@ -53,7 +54,7 @@ class BranchService
             })
             ->editColumn('branchName', function ($row) {
 
-                if ($row->branch_type == 1) {
+                if ($row->branch_type == BranchType::DifferentShop->value) {
 
                     return '</span> <span class="fw-bold">' . $row->branch_name . ' (' . $row->area_name . ')' . '</span>';
                 } else {
@@ -69,7 +70,13 @@ class BranchService
 
             ->editColumn('address', function ($row) {
 
-                return $row->city . ', ' . $row->state . ', ' . $row->zip_code . ', ' . $row->country;
+                if ($row->address) {
+
+                    $row->address;
+                } else {
+
+                    return $row->city . ', ' . $row->state . ', ' . $row->zip_code . ', ' . $row->country;
+                }
             })
 
             ->rawColumns(['branchName', 'shopLogo', 'logo', 'address', 'action'])
@@ -89,10 +96,20 @@ class BranchService
         $addBranch->state = $request->state;
         $addBranch->zip_code = $request->zip_code;
         $addBranch->country = $request->country;
+        $addBranch->address = $request->address;
         $addBranch->alternate_phone_number = $request->alternate_phone_number;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        $addBranch->purchase_permission = $request->purchase_permission;
+        $addBranch->date_format = $request->date_format;
+        $addBranch->time_format = $request->time_format;
+        $addBranch->timezone = $request->timezone;
+
+        if ($request->branch_type == BranchType::DifferentShop->value) {
+
+            $addBranch->stock_accounting_method = $request->stock_accounting_method;
+            $addBranch->account_start_date = $request->account_start_date;
+            $addBranch->financial_year_start_month = $request->financial_year_start_month;
+        }
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -122,10 +139,26 @@ class BranchService
         $updateBranch->state = $request->state;
         $updateBranch->zip_code = $request->zip_code;
         $updateBranch->country = $request->country;
+        $updateBranch->address = $request->address;
         $updateBranch->alternate_phone_number = $request->alternate_phone_number;
         $updateBranch->email = $request->email;
         $updateBranch->website = $request->website;
-        $updateBranch->purchase_permission = $request->purchase_permission;
+
+        $updateBranch->date_format = $request->date_format;
+        $updateBranch->time_format = $request->time_format;
+        $updateBranch->timezone = $request->timezone;
+
+        if ($request->branch_type == BranchType::DifferentShop->value) {
+
+            $updateBranch->stock_accounting_method = $request->stock_accounting_method;
+            $updateBranch->account_start_date = $request->account_start_date;
+            $updateBranch->financial_year_start_month = $request->financial_year_start_month;
+        }else {
+
+            $updateBranch->stock_accounting_method = null;
+            $updateBranch->account_start_date = null;
+            $updateBranch->financial_year_start_month = null;
+        }
 
         if ($request->hasFile('logo')) {
 

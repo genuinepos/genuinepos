@@ -18,14 +18,14 @@
         .hide-all { display: none; }
     </style>
 @endpush
-@section('title', 'General Settings - ')
+@section('title', 'Shop Settings - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-cogs"></span>
-                    <h5>@lang('menu.general_settings')</h5>
+                    <h5>{{ __("General Settings") }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
@@ -42,7 +42,7 @@
                                 <div class="settings_side_menu">
                                     <ul class="menus_unorder_list">
                                         <li class="menu_list">
-                                            <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __("Business Settings") }}</a>
+                                            <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __("Shop Settings") }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -95,14 +95,14 @@
                                 <form id="business_settings_form" class="setting_form p-2" action="{{ route('settings.business.settings') }}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">{{ __("Business Settings") }}</h6>
+                                            <h6 class="text-primary">{{ __("Shop Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label class="fw-bold">{{ __("Business Name") }}</label>
-                                            <input type="text" name="shop_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
+                                            <label class="fw-bold">{{ __("Shop Name") }}</label>
+                                            <input type="text" name="branch_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
@@ -139,7 +139,7 @@
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Currency') }} <span class="text-danger">*</span></label>
-                                            <select name="currency" class="form-control" data-name="Currency" id="currency">
+                                            <select name="currency" class="form-control bs_input" data-name="Currency" id="currency">
                                                 @foreach ($currencies as $currency)
                                                     <option {{ $generalSettings['business__currency'] == $currency->symbol ? 'SELECTED' : '' }} value="{{ $currency->symbol }}">
                                                         {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
@@ -180,8 +180,10 @@
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Time Format') }} <span class="text-danger">*</span></label>
                                             <select name="time_format" class="form-control bs_input" data-name="Time format" id="time_format">
-                                                <option value="12" {{ $generalSettings['business__time_format'] == '12' ? 'SELECTED' : '' }}>{{ __("12 Hour") }}</option>
-                                                <option value="24" {{ $generalSettings['business__time_format'] == '24' ? 'SELECTED' : '' }}>{{ __("24 Hour") }}</option>
+                                                <option value="12" {{ $generalSettings['business__time_format'] == '12' ? 'SELECTED' : '' }}>
+                                                    {{ __("12 Hour") }}</option>
+                                                <option value="24" {{ $generalSettings['business__time_format'] == '24' ? 'SELECTED' : '' }}>
+                                                    2{{ __("4 Hour") }}</option>
                                             </select>
                                             <span class="error error_time_format"></span>
                                         </div>

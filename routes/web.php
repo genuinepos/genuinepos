@@ -27,8 +27,8 @@ Route::middleware([
     // Impersonate User
     Route::get('impersonate/{token}', [UserImpersonateController::class, 'impersonate'])->name('users.impersonate');
     // Authenticated User
-    Route::middleware([])->group(function() {
-    // Route::middleware(['plan_check'])->group(function() {
+    // Route::middleware([])->group(function() {
+    Route::middleware(['plan_check'])->group(function() {
         Route::middleware('auth')->group(base_path('routes/dev_routes.php'));
         Route::middleware('auth')->group(base_path('routes/admin.php'));
         Route::middleware('auth')->group(base_path('routes/hrms.php'));

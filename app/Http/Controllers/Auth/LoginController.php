@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Utils\UserActivityLogUtil;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,6 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check('web')) {
-
             return redirect()->back();
         }
 
@@ -66,9 +66,7 @@ class LoginController extends Controller
         ]);
 
         $user = User::where('username', $request->username)->where('allow_login', 1)->first();
-
         if (isset($user) && $user->allow_login == 1) {
-
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
                 if (!Session::has($user->language)) {
@@ -87,12 +85,10 @@ class LoginController extends Controller
 
                 return redirect()->intended(route('dashboard.index'));
             } else {
-
                 session()->flash('errorMsg', __('Sorry! Username or Password not matched!'));
                 return redirect()->back();
             }
         } else {
-
             session()->flash('errorMsg', __('Login failed. Please try with correct username and password'));
             return redirect()->back();
         }
@@ -103,13 +99,10 @@ class LoginController extends Controller
         $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
 
         $this->guard()->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         if ($response = $this->loggedOut($request)) {
-
             return $response;
         }
 

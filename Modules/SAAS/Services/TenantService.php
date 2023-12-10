@@ -5,9 +5,12 @@ namespace Modules\SAAS\Services;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\SAAS\Database\factories\AdminFactory;
+use Modules\SAAS\Entities\Plan;
 use Modules\SAAS\Entities\Tenant;
 
 class TenantService implements TenantServiceInterface
@@ -15,7 +18,16 @@ class TenantService implements TenantServiceInterface
     public function create(array $tenantRequest): ?Tenant
     {
         try {
-            $tenant = Tenant::create(['id' => $tenantRequest['domain'], 'name' => $tenantRequest['name']]);
+            $plan = Plan::find($tenantRequest['plan_id']);
+            $expireAt = $plan->expireAt();
+            $tenant = Tenant::create([
+                'id' => $tenantRequest['domain'],
+                'name' => $tenantRequest['name'],
+                'plan_id' => $tenantRequest['plan_id'],
+                'impersonate_user' => 1,
+                'expire_at'=> $expireAt,
+            ]);
+
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 if ($domain) {
@@ -28,15 +40,13 @@ class TenantService implements TenantServiceInterface
                         'primary_tenant_id' => $tenant->id,
                         'ip_address' => request()->ip(),
                     ]);
-                    $tenantAdminUserId = $this->makeSuperAdminForTenant($tenant, $tenantRequest);
-                    $tenant->update(['impersonate_user' => $tenantAdminUserId]);
-
+                    $this->makeSuperAdminForTenant($tenant, $tenantRequest);
+                    Artisan::call('optimize:clear');
                     return $tenant;
                 }
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
-
             return null;
         }
     }
@@ -56,7 +66,7 @@ class TenantService implements TenantServiceInterface
     public function getAdmin(array $tenantRequest): array
     {
         $admin = (new AdminFactory)->definition();
-        $admin['username'] = $tenantRequest['email']; // TODO:: resolve username and email for same field now, change later
+        $admin['username'] = $tenantRequest['email'];
         $admin['email'] = $tenantRequest['email'];
         $admin['password'] = bcrypt($tenantRequest['password']);
 

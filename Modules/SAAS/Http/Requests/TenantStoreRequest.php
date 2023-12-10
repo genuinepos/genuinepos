@@ -15,6 +15,7 @@ class TenantStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'plan_id' => 'required|numeric',
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
             'fullname' => 'required|string|max:191',

@@ -2,11 +2,8 @@
     <div class="container ck-container mt-3 pb-5">
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5>Plan Name: {{ $plan->name }}</h5>
+                <h5 class="py-1 pt-2">Plan Name: {{ $plan->name }}</h5>
                 <h5>{{ __('Plan Confirmation and Registration') }}</h5>
-                {{-- <div>
-                    <x-back-button href="{{ route('saas.plan.all') }}"></x-back-button>
-                </div> --}}
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ route('saas.guest.tenants.store') }}" id="tenantStoreForm">
@@ -67,7 +64,7 @@
                                 </label>
                                 <input type="text" name="domain" id="domain"
                                     class="form-control @error('name') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Domain Name') }}" {{-- placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()" --}} required />
+                                    placeholder="{{ __('Enter Domain Name') }}" required />
                                 <p class="mt-2">
                                     <span id="domainPreview" class="monospace"></span>
                                 </p>
@@ -88,7 +85,7 @@
                         <h6 id="response-message-text">
                             {{ __('Creating your Business. It can take a while, please wait...') }}
                             Elapsed Time: <span id="timespan"></span> Seconds.
-                            </h3>
+                        </h6>
                     </div>
                     <div class="mt-3">
                         <div class="spinner-border text-dark" role="status">
@@ -142,7 +139,7 @@
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text(
-                            '{{ __('Successfully created! Redirecting you to your Domain...') }}');
+                            "{{ __('Successfully created! Redirecting you to your Domain...') }}");
                         window.location = res;
                     },
                     error: function(err) {

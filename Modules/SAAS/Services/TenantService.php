@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Services;
 
+use App\Models\GeneralSetting;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
@@ -23,8 +24,9 @@ class TenantService implements TenantServiceInterface
             $tenant = Tenant::create([
                 'id' => $tenantRequest['domain'],
                 'name' => $tenantRequest['name'],
-                'plan_id' => $tenantRequest['plan_id'],
                 'impersonate_user' => 1,
+                'plan_id' => $tenantRequest['plan_id'],
+                'shop_count' => $tenantRequest['shop_count'],
                 'expire_at'=> $expireAt,
             ]);
 
@@ -40,8 +42,13 @@ class TenantService implements TenantServiceInterface
                         'primary_tenant_id' => $tenant->id,
                         'ip_address' => request()->ip(),
                     ]);
-                    $this->makeSuperAdminForTenant($tenant, $tenantRequest);
-                    Artisan::call('optimize:clear');
+
+                    DB::statement('use ' . $tenant->tenancy_db_name);
+                    $this->makeSuperAdminForTenant($tenantRequest);
+                    // Insert setings coming from tenant creation form
+                    $this->saveBusinessSettings($tenantRequest);
+                    DB::reconnect();
+                    Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
                     return $tenant;
                 }
             }
@@ -51,15 +58,29 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    private function makeSuperAdminForTenant(Tenant $tenant, array $tenantRequest): int
+    public function saveBusinessSettings(array $tenantRequest) : void
+    {
+        $settings = [
+            'business__shop_name' => $tenantRequest['name'],
+            'business__phone' => $tenantRequest['phone'],
+            'business__email' => $tenantRequest['email'],
+
+            'addons__branch_limit' => $tenantRequest['shop_count'],
+            // 'business__address' => $business__address,
+            // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
+        ];
+
+        foreach($settings as $key => $setting) {
+            GeneralSetting::where('key', $key)->update(['value'=> $setting]);
+        }
+    }
+
+    private function makeSuperAdminForTenant(array $tenantRequest): int
     {
         $admin = $this->getAdmin($tenantRequest);
-        DB::statement('use ' . $tenant->tenancy_db_name);
         $tenantAdminUser = User::create($admin);
         $adminRole = Role::first();
         $tenantAdminUser->assignRole($adminRole);
-        DB::reconnect();
-
         return $tenantAdminUser->id;
     }
 

@@ -2,7 +2,7 @@
     <div class="container ck-container mt-3 pb-5">
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="py-1 pt-2">Plan Name: {{ $plan->name }}</h5>
+                <h5 class="py-1 pt-2">Plan Name: {{ $plan->name }} ({{$plan->priceLabel . ' ' . $plan->periodType}})</h5>
                 <h5>{{ __('Plan Confirmation and Registration') }}</h5>
             </div>
             <div class="card-body">
@@ -69,6 +69,13 @@
                                     <span id="domainPreview" class="monospace"></span>
                                 </p>
                             </div>
+                            <div class="mb-2">
+                                <label for="name" class="form-label text-bold">
+                                    <b>{{ __('Number of Shops') }}</b>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="shop_count" min="1" value="1" id="shop_count" class="form-control" placeholder="{{__('Number of Shops') }}" required>
+                            </div>
                             <div class="mb-3" id="recaptcha-div">
                                 {!! NoCaptcha::display() !!}
                             </div>
@@ -128,6 +135,7 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                         plan_id: $('#plan_id').val(),
+                        shop_count: $('#shop_count').val(),
                         name: $('#name').val(),
                         domain: $('#domain').val(),
                         fullname: $('#fullname').val(),

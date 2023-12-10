@@ -22,6 +22,7 @@
                                     <th>{{ __('Plan Name') }}</th>
                                     <th>{{ __('Period Value') }}</th>
                                     <th>{{ __('Period Unit') }}</th>
+                                    <th>{{ __('Currency Code') }}</th>
                                     <th>{{ __('Period Price') }}</th>
                                     <th>{{ __('Plan Status') }}</th>
                                     <th>{{ __('Action') }}</th>
@@ -34,6 +35,7 @@
                                         <td>{{ $plan->name }}</td>
                                         <td>{{ $plan->period_value }}</td>
                                         <td>{{ $plan->period_unit }}</td>
+                                        <td>{{ $plan->currency_code }}</td>
                                         <td>{{ $plan->price }}</td>
                                         <td>{!! $plan->statusLabel !!}</td>
                                         <td class="">

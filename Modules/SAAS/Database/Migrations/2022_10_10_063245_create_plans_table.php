@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('currency_code');
             $table->double('price', 10, 2);
             $table->string('period_unit', 10); // ->comment('day,month,year');
             $table->integer('period_value');

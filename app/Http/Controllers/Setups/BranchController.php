@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Enums\BranchType;
-use App\Http\Controllers\Controller;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
-use App\Services\Setups\CashCounterService;
-use App\Services\Setups\InvoiceLayoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Setups\CurrencyService;
+use App\Services\Setups\TimezoneService;
+use App\Services\Setups\CashCounterService;
+use App\Services\Setups\BranchSettingService;
+use App\Services\Setups\InvoiceLayoutService;
 
 class BranchController extends Controller
 {
@@ -17,6 +19,8 @@ class BranchController extends Controller
         private BranchService $branchService,
         private InvoiceLayoutService $invoiceLayoutService,
         private CashCounterService $cashCounterService,
+        private CurrencyService $currencyService,
+        private TimezoneService $timezoneService,
         private BranchSettingService $branchSettingService,
     ) {
     }
@@ -44,10 +48,13 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $currencies = $this->currencyService->currencies();
+        $timezones = $this->timezoneService->all();
+
         $roles = DB::table('roles')->select('id', 'name')->get();
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
-        return view('setups.branches.ajax_view.create', compact('branches', 'roles'));
+        return view('setups.branches.ajax_view.create', compact('branches', 'roles', 'currencies', 'timezones'));
     }
 
     public function store(Request $request)
@@ -126,10 +133,13 @@ class BranchController extends Controller
             abort(403, 'Access Forbidden.');
         }
 
+        $currencies = $this->currencyService->currencies();
+        $timezones = $this->timezoneService->all();
+
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         $branch = $this->branchService->singleBranch($id);
 
-        return view('setups.branches.ajax_view.edit', compact('branches', 'branch'));
+        return view('setups.branches.ajax_view.edit', compact('branches', 'branch', 'currencies', 'timezones'));
     }
 
     public function update(Request $request, $id)

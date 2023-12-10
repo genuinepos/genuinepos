@@ -20,8 +20,7 @@ Route::prefix('setups')->group(function () {
         Route::post('business/settings', 'businessSettings')->name('settings.business.settings');
         Route::post('tax/settings', 'taxSettings')->name('settings.tax.settings');
         Route::post('product/settings', 'productSettings')->name('settings.product.settings');
-        Route::post('contact/settings', 'contactSettings')->name('settings.contact.settings');
-        Route::post('sale/settings', 'saleSettings')->name('settings.sale.settings');
+        Route::post('add/sale/settings', 'addSaleSettings')->name('settings.add.sale.settings');
         Route::post('pos/settings', 'posSettings')->name('settings.pos.settings');
         Route::post('purchase/settings', 'purchaseSettings')->name('settings.purchase.settings');
         Route::post('dashboard/settings', 'dashboardSettings')->name('settings.dashboard.settings');

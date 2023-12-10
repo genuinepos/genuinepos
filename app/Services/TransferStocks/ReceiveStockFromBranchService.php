@@ -31,7 +31,7 @@ class ReceiveStockFromBranchService
         $transferStocks = $query->select(
             'transfer_stocks.*',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'sender_branch.name as sender_branch_name',
@@ -41,7 +41,9 @@ class ReceiveStockFromBranchService
             'receiver_branch.name as receiver_branch_name',
             'receiver_branch.area_name as receiver_branch_area_name',
             'receiver_branch.branch_code as receiver_branch_code',
-            'receiver_branch.name as receiver_parent_branch_name',
+
+            'receiver_branch_parent.name as receiver_parent_branch_name',
+
             'sender_warehouse.warehouse_name as sender_warehouse_name',
             'sender_warehouse.warehouse_code as sender_warehouse_code',
             'receiver_warehouse.warehouse_name as receiver_warehouse_name',
@@ -115,46 +117,50 @@ class ReceiveStockFromBranchService
                 }
 
                 return '<p class="m-0 p-0">'.$senderBranch.'</p><p class="m-0 p-0">'.$senderWarehouse.'</p>';
+            })
+            ->editColumn('send_to', function ($row) use ($generalSettings) {
 
-                // if ($row->sender_warehouse_id) {
+                // if ($row->receiver_warehouse_id) {
 
-                //     return $row->sender_warehouse_name . '(' . $row->sender_warehouse_code . ')';
+                //     return $row->receiver_warehouse_name.'('.$row->receiver_warehouse_code.')';
                 // }
 
-                // if ($row->sender_branch_id) {
+                // if ($row->receiver_branch_id) {
 
-                //     if ($row->sender_parent_branch_name) {
+                //     if ($row->receiver_parent_branch_name) {
 
-                //         return $row->sender_parent_branch_name . '(' . $row->area_name . ')';
+                //         return $row->receiver_parent_branch_name.'('.$row->area_name.')';
                 //     } else {
 
-                //         return $row->sender_branch_name . '(' . $row->area_name . ')';
+                //         return $row->receiver_branch_name.'('.$row->area_name.')';
                 //     }
                 // } else {
 
                 //     return $generalSettings['business__shop_name'];
                 // }
-            })
-            ->editColumn('send_to', function ($row) use ($generalSettings) {
 
-                if ($row->receiver_warehouse_id) {
-
-                    return $row->receiver_warehouse_name.'('.$row->receiver_warehouse_code.')';
-                }
-
+                $receiverBranch = '';
+                $receiverWarehouse = '';
                 if ($row->receiver_branch_id) {
 
                     if ($row->receiver_parent_branch_name) {
 
-                        return $row->receiver_parent_branch_name.'('.$row->area_name.')';
+                        $receiverBranch = '<strong>' . __('Send To') . ':</strong> ' . $row->receiver_parent_branch_name . '(' . $row->receiver_branch_area_name . ')';
                     } else {
 
-                        return $row->receiver_branch_name.'('.$row->area_name.')';
+                        $receiverBranch = '<strong>' . __('Send To') . ':</strong> ' . $row->receiver_branch_name . '(' . $row->receiver_branch_area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    $receiverBranch = '<strong>' . __('Send To') . ':</strong> ' . $generalSettings['business__shop_name'];
                 }
+
+                if ($row->receiver_warehouse_id) {
+
+                    $receiverWarehouse = '<strong>' . __('Receive At') . ':</strong> ' . $row->receiver_warehouse_name . '(' . $row->receiver_warehouse_code . ')';
+                }
+
+                return '<p class="m-0 p-0">' . $receiverBranch . '</p><p class="m-0 p-0">' . $receiverWarehouse . '</p>';
             })
 
             ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')

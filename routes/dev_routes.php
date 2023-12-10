@@ -118,6 +118,10 @@ Route::get('my-test', function () {
     //         'product_stocks.variant_id',
     //     )
     //     ->get();
+        
+    $date = date('Y-11-01');
+    return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
+
 });
 
 Route::get('t-id', function () {

@@ -469,7 +469,7 @@
                                     </div>
                                 @endif
 
-                                @can('product_settings')
+                                {{-- @can('product_settings')
                                     <div class="sub-menu-col">
                                         <a href="{{ route('product.settings.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
@@ -482,7 +482,7 @@
                                             <p class="switch_text">{{ __('Product Settings') }}</p>
                                         </a>
                                     </div>
-                                @endcan
+                                @endcan --}}
                             </div>
                         </div>
 
@@ -757,7 +757,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('purchase_settings'))
+                                            {{-- @if (auth()->user()->can('purchase_settings'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('purchase.settings.index') }}" class="switch-bar-wrap settings-wrap">
                                                         <div class="switch_bar">
@@ -768,7 +768,7 @@
                                                         <p class="switch_text">{{ __("Purchase Settings") }}</p>
                                                     </a>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     </div>
                                 @endif

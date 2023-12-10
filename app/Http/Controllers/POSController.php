@@ -53,11 +53,8 @@ class POSController extends Controller
         if ($openedCashRegister) {
 
             $categories = DB::table('categories')->where('parent_category_id', null)->get(['id', 'name']);
-
             $brands = DB::table('brands')->get(['id', 'name']);
-
             $customers = DB::table('customers')->where('status', 1)->get(['id', 'name', 'phone']);
-
             $priceGroups = DB::table('price_groups')->where('status', 'Active')->get(['id', 'name']);
 
             $accounts = DB::table('account_branches')

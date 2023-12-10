@@ -149,7 +149,7 @@
                             $openingBalanceAmount = $account?->openingBalance?->debit + $account?->openingBalance?->credit;
                             $openingBalanceType = $account?->openingBalance?->amount_type == 'debit' ? 'dr' : 'cr';
                         @endphp
-                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__start_date'])) }}" tabindex="-1"/>
+                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__account_start_date'])) }}" tabindex="-1"/>
                         <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" value="{{ $openingBalanceAmount }}" data-next="opening_balance_type"/>
                         <select name="opening_balance_type" class="form-control w-25 text-end" id="opening_balance_type" data-next="remarks">
                             <option value="dr">{{ __("Debit") }}</option>

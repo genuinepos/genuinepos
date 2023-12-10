@@ -2187,6 +2187,17 @@
                                 @endif
 
                                 <div class="sub-menu-col">
+                                    <a href="#" class="switch-bar-wrap">
+                                        <div class="switch_bar">
+                                            <div class="bar-link">
+                                                <span><i class="far fa-arrow-alt-circle-up"></i></span>
+                                            </div>
+                                        </div>
+                                        <p class="switch_text">{{ __("Billing") }}</p>
+                                    </a>
+                                </div>
+
+                                <div class="sub-menu-col">
                                     <a href="{{ route('settings.release.note.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
@@ -2458,7 +2469,7 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.sms_settings')</p>
+                                        <p class="switch_text">{{ __("SMS Settings") }}</p>
                                     </a>
                                 </div>
 

@@ -34,7 +34,6 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '21', 'key' => 'business__timezone', 'value' => 'Asia/Dhaka', 'branch_id' => null],
             ['id' => '22', 'key' => 'system__theme_color', 'value' => 'dark-theme', 'branch_id' => null],
             ['id' => '23', 'key' => 'system__datatable_page_entry', 'value' => '25', 'branch_id' => null],
-            ['id' => '24', 'key' => 'sale__sales_commission_agent', 'value' => null, 'branch_id' => null],
             ['id' => '25', 'key' => 'pos__is_enabled_multiple_pay', 'value' => null, 'branch_id' => null],
             ['id' => '26', 'key' => 'pos__is_enabled_draft', 'value' => null, 'branch_id' => null],
             ['id' => '27', 'key' => 'pos__is_enabled_quotation', 'value' => null, 'branch_id' => null],
@@ -79,10 +78,8 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '66', 'key' => 'product__is_enable_sub_categories', 'value' => '1', 'branch_id' => null],
             ['id' => '67', 'key' => 'product__is_enable_price_tax', 'value' => '0', 'branch_id' => null],
             ['id' => '68', 'key' => 'product__is_enable_warranty', 'value' => '1', 'branch_id' => null],
-            ['id' => '69', 'key' => 'sale__default_sale_discount', 'value' => '0.00', 'branch_id' => null],
-            ['id' => '70', 'key' => 'sale__default_tax_id', 'value' => 'null', 'branch_id' => null],
-            ['id' => '71', 'key' => 'sale__sales_commission', 'value' => 'disable', 'branch_id' => null],
-            ['id' => '72', 'key' => 'sale__default_price_group_id', 'value' => '7', 'branch_id' => null],
+            ['id' => '69', 'key' => 'add_sale__default_sale_discount', 'value' => '0.00', 'branch_id' => null],
+            ['id' => '72', 'key' => 'add_sale__default_price_group_id', 'value' => '7', 'branch_id' => null],
             ['id' => '73', 'key' => 'pos__is_disable_draft', 'value' => '0', 'branch_id' => null],
             ['id' => '74', 'key' => 'pos__is_disable_quotation', 'value' => '0', 'branch_id' => null],
             ['id' => '75', 'key' => 'pos__is_disable_challan', 'value' => '0', 'branch_id' => null],
@@ -155,6 +152,8 @@ class GeneralSettingsSeeder extends Seeder
             ['id' => '141', 'key' => 'email_settings__new_product_arrived_via_email', 'value' => null, 'branch_id' => null],
             ['id' => '141', 'key' => 'email_settings__weekly_news_letter_via_email', 'value' => null, 'branch_id' => null],
             ['id' => '142', 'key' => 'business__financial_year_start_month', 'value' => '1', 'branch_id' => null],
+            ['id' => '143', 'key' => 'add_sale__default_tax_ac_id', 'value' => 'null', 'branch_id' => null],
+            ['id' => '144', 'key' => 'pos__default_tax_ac_id', 'value' => 'null', 'branch_id' => null],
         ];
 
         return $general_settings;

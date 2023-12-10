@@ -535,7 +535,7 @@
                                                 <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
                                                     <option data-order_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
                                                     @foreach ($taxAccounts as $taxAccount)
-                                                        <option {{ $sale->sale_tax_ac_id == $taxAccount->id ? 'SELECTED' : '' }} {{ $generalSettings['sale__default_tax_id'] == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
+                                                        <option {{ $sale->sale_tax_ac_id == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                             {{ $taxAccount->name }}
                                                         </option>
                                                     @endforeach

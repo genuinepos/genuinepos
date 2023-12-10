@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
+use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
 use App\Services\GeneralSettingServiceInterface;
 
 class GeneralSettingController extends Controller
 {
     public function __construct(
+        private AccountService $accountService,
         private UnitService $unitService,
         private CurrencyService $currencyService,
         private TimezoneService $timezoneService,
@@ -34,12 +36,19 @@ class GeneralSettingController extends Controller
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $timezones = $this->timezoneService->all();
 
+
+        $taxAccounts = $this->accountService->accounts()
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->get(['accounts.id', 'accounts.name', 'tax_percent']);
+
         return view('setups.general_settings.index', compact(
             'generalSettings',
             'currencies',
             'timezones',
             'units',
             'priceGroups',
+            'taxAccounts'
         ));
     }
 
@@ -92,21 +101,6 @@ class GeneralSettingController extends Controller
         return response()->json('Business settings updated successfully');
     }
 
-    // Add tax settings
-    // public function taxSettings(Request $request)
-    // {
-    //     $settings = [
-    //         'tax__tax_1_name' => $request->tax_1_name,
-    //         'tax__tax_1_no' => $request->tax_1_no,
-    //         'tax__tax_2_name' => $request->tax_2_name,
-    //         'tax__tax_2_no' => $request->tax_2_no,
-    //         'tax__is_tax_en_purchase_sale' => isset($request->is_tax_en_purchase_sale) ? 1 : 0,
-    //     ];
-    //     $this->generalSettingService->updateAndSync($settings);
-
-    //     return response()->json('Tax settings updated successfully');
-    // }
-
     public function dashboardSettings(Request $request)
     {
         $settings = [
@@ -149,9 +143,9 @@ class GeneralSettingController extends Controller
     public function addSaleSettings(Request $request)
     {
         $settings = [
-            'sale__default_sale_discount' => $request->default_sale_discount,
-            'sale__sales_commission' => $request->sales_commission,
-            'sale__default_price_group_id' => $request->default_price_group_id,
+            'add_sale__default_sale_discount' => $request->default_sale_discount,
+            'add_sale__sales_commission' => $request->sales_commission,
+            'add_sale__default_tax_ac_id' => $request->default_tax_ac_id,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -171,6 +165,7 @@ class GeneralSettingController extends Controller
             'pos__is_show_recent_transactions' => $request->is_show_recent_transactions,
             'pos__is_enabled_credit_full_sale' => $request->is_enabled_credit_full_sale,
             'pos__is_enabled_hold_invoice' => $request->is_enabled_hold_invoice,
+            'pos__default_tax_ac_id' => $request->default_tax_ac_id,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

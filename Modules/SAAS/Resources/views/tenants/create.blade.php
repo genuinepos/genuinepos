@@ -10,7 +10,18 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-2">
+                                <div class="mb-3">
+                                    <label for="plan_id" class="form-label text-bold">
+                                        <b>{{ __('Select Plan') }}</b>
+                                    </label>
+                                    <select name="plan_id" class="form-control" id="plan_id">
+                                        <option value="">{{ __("Select Plan") }}</option>
+                                        @foreach($plans as $plan)
+                                            <option value="{{ $plan->id }}">{{ $plan->name }} ({{ $plan->price . ' Taka, ' . $plan->periodType }})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label for="fullname" class="form-label text-bold">
                                         <b>{{ __('Full Name') }}</b>
                                     </label>
@@ -18,7 +29,7 @@
                                         class="form-control @error('fullname') is-invalid  @enderror"
                                         placeholder="{{ __('Enter Full Name') }}" required />
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label for="email" class="form-label text-bold">
                                         <b>{{ __('Email Address') }}</b>
                                     </label>
@@ -26,7 +37,7 @@
                                         class="form-control @error('email') is-invalid  @enderror"
                                         placeholder="{{ __('Enter Email Address') }}" required />
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label for="password" class="form-label text-bold">
                                         <b>{{ __('Password') }}</b>
                                     </label>
@@ -34,7 +45,7 @@
                                         class="form-control @error('password') is-invalid  @enderror"
                                         placeholder="{{ __('Enter Password') }}" required />
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label for="phone" class="form-label text-bold">
                                         <b>{{ __('Phone Number') }}</b>
                                     </label>
@@ -43,7 +54,7 @@
                                         placeholder="{{ __('Enter Phone Number') }}" required />
                                 </div>
                                 <hr />
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label for="name" class="form-label text-bold">
                                         <b>{{ __('Business Name') }}</b>
                                     </label>
@@ -51,7 +62,7 @@
                                         class="form-control @error('name') is-invalid  @enderror"
                                         placeholder="{{ __('Enter Business Name') }}" required />
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <label for="name"
                                         class="form-label text-bold"><b>{{ __('Domain Name') }}</b></label>
                                     <input type="text" name="domain" id="domain"
@@ -61,7 +72,7 @@
                                         <span id="domainPreview" class="monospace"></span>
                                     </p>
                                 </div>
-                                <div class="mb-2">
+                                <div class="mb-3">
                                     <input type="submit" class="btn btn-primary" value="{{ __('Create') }}"
                                         id="submitBtn" />
                                 </div>
@@ -115,12 +126,13 @@
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
+                        plan_id: $('#plan_id').val(),
                         name: $('#name').val(),
                         domain: $('#domain').val(),
                         fullname: $('#fullname').val(),
                         email: $('#email').val(),
                         password: $('#password').val(),
-                        phone: $('#phone').val()
+                        phone: $('#phone').val(),
                     },
                     success: function(res) {
                         $('#response-message-text').addClass('text-success');

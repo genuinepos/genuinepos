@@ -3,6 +3,7 @@
 namespace Modules\SAAS\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Plan;
 use Modules\SAAS\Entities\Tenant;
 use Modules\SAAS\Http\Requests\TenantStoreRequest;
 use Modules\SAAS\Services\TenantServiceInterface;
@@ -25,8 +26,8 @@ class TenantController extends Controller
     public function create()
     {
         abort_unless(auth()->user()->can('tenants_create'), 403);
-
-        return view('saas::tenants.create');
+        $plans = Plan::where('status', 1)->get();
+        return view('saas::tenants.create', compact('plans'));
     }
 
     public function store(TenantStoreRequest $request)

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('logo', 191)->nullable()->default('default.png');
             $table->boolean('purchase_permission')->default(false);
             $table->timestamps();
-
+            $table->timestamp('expire_at')->nullable();
             $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }

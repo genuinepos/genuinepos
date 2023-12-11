@@ -18,7 +18,6 @@ Route::prefix('setups')->group(function () {
 
         Route::get('/', 'index')->name('settings.general.index');
         Route::post('business/settings', 'businessSettings')->name('settings.business.settings');
-        Route::post('tax/settings', 'taxSettings')->name('settings.tax.settings');
         Route::post('product/settings', 'productSettings')->name('settings.product.settings');
         Route::post('add/sale/settings', 'addSaleSettings')->name('settings.add.sale.settings');
         Route::post('pos/settings', 'posSettings')->name('settings.pos.settings');
@@ -44,8 +43,21 @@ Route::prefix('setups')->group(function () {
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
-            Route::get('edit/{branchId}', 'edit')->name('branches.settings.edit');
-            Route::post('update/{branchId}', 'update')->name('branches.settings.update');
+            Route::get('index/{id?}', 'index')->name('branches.settings.index');
+            Route::get('edit/{id}', 'edit')->name('branches.settings.edit');
+            Route::post('update/{id}', 'update')->name('branches.settings.update');
+
+            Route::post('product', 'productSettings')->name('branches.settings.product');
+            Route::post('add/sale', 'addSaleSettings')->name('branches.settings.add.sale');
+            Route::post('pos', 'posSettings')->name('branches.settings.pos');
+            Route::post('purchase', 'purchaseSettings')->name('branches.settings.purchase');
+            Route::post('dashboard', 'dashboardSettings')->name('branches.settings.dashboard');
+            Route::post('prefix', 'prefixSettings')->name('branches.settings.prefix');
+            Route::post('system', 'systemSettings')->name('branches.settings.system');
+            Route::post('module', 'moduleSettings')->name('branches.settings.module');
+            Route::post('send/email', 'SendEmailSmsSettings')->name('branches.settings.send.email');
+            Route::post('send/sms', 'smsSettings')->name('branches.settings.sms');
+            Route::post('rp', 'rewardPointSettings')->name('branches.settings.reward.point');
         });
     });
 

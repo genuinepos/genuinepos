@@ -30,6 +30,8 @@
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
                 </a>
+
+                <a href="{{ route('branches.settings.index', 28) }}">Test</a>
             </div>
         </div>
         <div class="p-1">
@@ -393,26 +395,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __("Default Sale Discount") }}</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
                                                 </div>
-                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
+                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['add_sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Sales Commission') }}</label>
-                                            <select class="form-control" name="sales_commission" id="sales_commission" data-next="default_price_group_id">
-                                                <option {{ $generalSettings['sale__sales_commission'] == 'disable' ? 'SELECTED' : '' }} value="disable">{{ __('Disable') }}
-                                                </option>
-
-                                                <option {{ $generalSettings['sale__sales_commission'] == 'enable' ? 'SELECTED' : '' }} value="enable">{{ __('Enable') }}
-                                                </option>
-                                            </select>
                                         </div>
 
                                         <div class="col-md-4">
@@ -420,7 +411,19 @@
                                             <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
                                                 <option value="null">{{ __("None") }}</option>
                                                 @foreach ($priceGroups as $priceGroup)
-                                                    <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                    <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-4">
+                                            <label class="fw-bold">{{ __("Add Sale Default Tax") }}</label>
+                                            <select class="form-control" name="default_tax_ac_id" id="add_sale_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                                <option value="">{{ __("None") }}</option>
+                                                @foreach ($taxAccounts as $tax)
+                                                    <option {{ $generalSettings['add_sale__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id }}">{{ $tax->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -486,6 +489,16 @@
                                             <select class="form-control" name="is_enabled_order_tax" id="is_enabled_order_tax" data-next="is_show_recent_transactions">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_order_tax'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="fw-bold">{{ __("Pos Sale Default Tax") }}</label>
+                                            <select class="form-control" name="default_tax_ac_id" id="pos_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                                <option value="">{{ __("None") }}</option>
+                                                @foreach ($taxAccounts as $tax)
+                                                    <option {{ $generalSettings['pos__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }}  value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 

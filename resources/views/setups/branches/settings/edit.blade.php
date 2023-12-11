@@ -63,7 +63,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Purchase Order Voucher Prefix") }}</b></label>
-                        <input required type="text" name="purchase_order_prefix" class="form-control" id="branch_setting_purchase_order_prefix" data-next="branch_setting_purchase_return_prefix" value="{{ $branchSetting->purchase_order_prefix }}" placeholder="{{ __("Purchase Order Prefix") }}" />
+                        <input required type="text" name="purchase_order_prefix" class="form-control" id="branch_setting_purchase_order_prefix" data-next="branch_setting_purchase_return_prefix" value="{{ $branchSetting->purchase_order_prefix }}" placeholder="{{ __("Purchase Order Prefix") }}"/>
                     </div>
                 </div>
 
@@ -80,12 +80,11 @@
                 </div>
 
                 <div class="form-group row mt-1">
-
                     <div class="col-lg-3 col-md-6">
                         <label><b>{{ __("Add Sale Default Invoice Layout") }}</b></label>
                         <select name="add_sale_invoice_layout_id" class="form-control" id="branch_setting_add_sale_invoice_layout_id" data-next="branch_setting_pos_sale_invoice_layout_id">
                             @foreach ($invoiceLayouts as $invoiceLayout)
-                                    <option {{ $branchSetting->add_sale_invoice_layout_id == $invoiceLayout->id ? 'SELECTED' : '' }} value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
+                                <option {{ $branchSetting->add_sale_invoice_layout_id == $invoiceLayout->id ? 'SELECTED' : '' }} value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -94,7 +93,7 @@
                         <label><b>{{ __("Add Sale Default Invoice Layout") }}</b></label>
                         <select name="pos_sale_invoice_layout_id" class="form-control" id="branch_setting_pos_sale_invoice_layout_id" data-next="branch_setting_default_tax_ac_id">
                             @foreach ($invoiceLayouts as $invoiceLayout)
-                                    <option {{ $branchSetting->pos_sale_invoice_layout_id == $invoiceLayout->id ? 'SELECTED' : '' }} value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
+                                <option {{ $branchSetting->pos_sale_invoice_layout_id == $invoiceLayout->id ? 'SELECTED' : '' }} value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -104,7 +103,7 @@
                         <select name="default_tax_ac_id" class="form-control" id="branch_setting_default_tax_ac_id" data-next="branch_settings_save">
                             <option value="">{{ __("Select Sales Default Tax") }}</option>
                             @foreach ($taxAccounts as $taxAccount)
-                                    <option {{ $branchSetting->default_tax_ac_id == $taxAccount->id ? 'SELECTED' : '' }} value="{{ $taxAccount->id }}">{{ $taxAccount->name }}</option>
+                                <option {{ $branchSetting->default_tax_ac_id == $taxAccount->id ? 'SELECTED' : '' }} value="{{ $taxAccount->id }}">{{ $taxAccount->name }}</option>
                             @endforeach
                         </select>
                     </div>

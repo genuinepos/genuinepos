@@ -42,7 +42,7 @@
                                 <div class="settings_side_menu">
                                     <ul class="menus_unorder_list">
                                         <li class="menu_list">
-                                            <a class="menu_btn menu_active" data-form="business_settings_form" href="#">{{ __("Shop Settings") }}</a>
+                                            <a class="menu_btn menu_active" data-form="branch_settings_form" href="#">{{ __("Shop Settings") }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -70,7 +70,15 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="invoice_layout_settings_form" href="#">{{ __("Invoice Settings") }}</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="system_settings_form" href="#">{{ __("System Settings") }}</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="account_settings_form" href="#">{{ __("Account Settings") }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -82,167 +90,202 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="e_settings_form" href="#">{{ __('Send Email Settings') }}</a>
+                                            <a class="menu_btn" data-form="email_settings_form" href="#">{{ __('Send Email Settings') }}</a>
                                         </li>
+
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="s_settings_form" href="#">{{ __('Send SMS Settings') }}</a>
+                                            <a class="menu_btn" data-form="sms_settings_form" href="#">{{ __('Send SMS Settings') }}</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
 
-                            <div class="col-md-9">
-                                <form id="business_settings_form" class="setting_form p-2" action="{{ route('settings.business.settings') }}" method="post" enctype="multipart/form-data">
+                            <div class="col-md-10">
+                                <form id="branch_settings_form" class="setting_form p-2" action="{{ route('branches.update', $branch->id) }}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">{{ __("Shop Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __("Shop Name") }}</label>
-                                            <input type="text" name="branch_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
-                                        </div>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="row">
 
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __("Address") }}</label>
-                                            <input type="text" name="address" class="form-control bs_input" autocomplete="off" placeholder="Business address" value="{{ $generalSettings['business__address'] }}">
-                                        </div>
 
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __("Phone") }}</label>
-                                            <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number" value="{{ $generalSettings['business__phone'] }}">
-                                        </div>
-                                    </div>
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Shop Name") }}</b> <span class="text-danger">*</span></label>
+                                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
+                                                    <span class="error error_branch_name"></span>
+                                                </div>
 
-                                    <div class="form-group row mt-1">
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __("Email") }}</label>
-                                            <input type="text" name="email" class="form-control bs_input" placeholder="Business email address" value="{{ $generalSettings['business__email'] }}">
-                                        </div>
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Shop ID") }}</b></label>
+                                                    <input readonly type="text" name="branch_code" class="form-control" id="branch_code" data-next="phone" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
+                                                    <span class="error error_branch_code"></span>
+                                                </div>
 
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Default Profit') }}(%) <span class="text-danger">*</span></label>
-                                            <input type="number" name="default_profit" class="form-control bs_input" autocomplete="off" data-name="Default profit" id="default_profit" value="{{ $generalSettings['business__default_profit'] }}">
-                                            <span class="error error_default_profit"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row mt-1">
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Business Logo') }} <small class="red-label-notice">{{ __("Recommended Size : H : 40px; W: 110px;") }}</small></label>
-                                            <input type="file" class="form-control" name="business_logo" id="business_logo">
-
-                                            <span class="error error_business_logo"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Currency') }} <span class="text-danger">*</span></label>
-                                            <select name="currency" class="form-control bs_input" data-name="Currency" id="currency">
-                                                @foreach ($currencies as $currency)
-                                                    <option {{ $generalSettings['business__currency'] == $currency->symbol ? 'SELECTED' : '' }} value="{{ $currency->symbol }}">
-                                                        {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_currency"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Stock Accounting Method') }} <span class="text-danger">*</span></label>
-                                            <select name="stock_accounting_method" class="form-control bs_input" data-name="Stock Accounting Method" id="stock_accounting_method">
-                                                @php
-                                                    $stock_accounting_method = $generalSettings['business__stock_accounting_method'] ?? null;
-                                                @endphp
-                                                @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                                    <option {{ $stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_financial_year_start"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row mt-1">
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Date Format') }} <span class="text-danger">*</span></label>
-                                            <select name="date_format" class="form-control bs_input" data-name="Date format" id="date_format">
-                                                <option value="d-m-Y" {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
-                                                    dd-mm-yyyy</option>
-                                                <option value="m-d-Y" {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
-                                                    mm-dd-yyyy</option>
-                                                <option value="Y-m-d" {{ $generalSettings['business__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
-                                                    yyyy-mm-dd</option>
-                                            </select>
-                                            <span class="error error_date_format"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Time Format') }} <span class="text-danger">*</span></label>
-                                            <select name="time_format" class="form-control bs_input" data-name="Time format" id="time_format">
-                                                <option value="12" {{ $generalSettings['business__time_format'] == '12' ? 'SELECTED' : '' }}>
-                                                    {{ __("12 Hour") }}</option>
-                                                <option value="24" {{ $generalSettings['business__time_format'] == '24' ? 'SELECTED' : '' }}>
-                                                    2{{ __("4 Hour") }}</option>
-                                            </select>
-                                            <span class="error error_time_format"></span>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                            <select name="timezone" class="form-control bs_input" data-name="Time format" id="time_format">
-                                                <option value="">{{ __('Time Zone') }}</option>
-                                                @foreach ($timezones as $key => $timezone)
-                                                    <option {{ ($generalSettings['business__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_time_format"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row mt-1">
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <input type="text" name="account_start_date" class="form-control" id="account_start_date" autocomplete="off" value="{{ $generalSettings['business__account_start_date'] }}">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Area Name") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
+                                                    <span class="error error_branch_code"></span>
+                                                </div>
                                             </div>
-                                            <span class="error error_account_start_date"></span>
-                                        </div>
 
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Financial Year Start Month') }} <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2">
-                                                    @php
-                                                        $months = \App\Enums\Months::cases();
-                                                    @endphp
-                                                    @foreach ($months as $month)
-                                                        <option {{ $month->value == $generalSettings['business__financial_year_start_month'] ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                            <div class="row mt-1">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="phone" class="form-control" id="phone" data-next="alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
+                                                    <span class="error error_phone"></span>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Alternative Phone") }}</b> </label>
+                                                    <input type="text" name="alternate_phone_number" class="form-control" id="alternate_phone_number" data-next="country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __("Alternative Phone") }}"/>
+                                                </div>
                                             </div>
-                                            <span class="error error_financial_year_start_month"></span>
-                                        </div>
 
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Current Financial Year') }} <span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <input readonly type="text" class="form-control" id="current_financial_year" autocomplete="off" value="{{ '01-Jan-2023' . ' To ' .'31-Dec-2023' }}">
+                                            <div class="row mt-1">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Country") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="country" class="form-control" id="country" data-next="state" value="{{ $branch->country }}" placeholder="{{ __("Country") }}"/>
+                                                    <span class="error error_country"></span>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("State") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="state" class="form-control" id="state" data-next="city" value="{{ $branch->state }}" placeholder="{{ __("State") }}" />
+                                                    <span class="error error_state"></span>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label> <b>{{ __("City") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="city" class="form-control" id="city" data-next="zip_code" value="{{ $branch->city }}" placeholder="{{ __("City") }}" />
+                                                    <span class="error error_city"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Zip-Code") }}</b> <span class="text-danger">*</span></label>
+                                                    <input required type="text" name="zip_code" class="form-control" id="zip_code" data-next="address" value="{{ $branch->zip_code }}" placeholder="Zip code" />
+                                                    <span class="error error_code"></span>
+                                                </div>
+
+                                                <div class="col-lg-8 col-md-6">
+                                                    <label><b>{{ __("Address") }}</b></label>
+                                                    <input required type="text" name="address" class="form-control" id="address" data-next="email" value="{{ $branch->address }}" placeholder="{{ __("Address") }}"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Email") }}</b></label>
+                                                    <input type="text" name="email" class="form-control" id="email" data-next="website" value="{{ $branch->email }}" placeholder="{{ __("Email address") }}" />
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Website") }}</b></label>
+                                                    <input type="text" name="website" class="form-control" id="website" data-next="date_format" value="{{ $branch->website }}" placeholder="{{ __("Website Url") }}" />
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label><b>{{ __("Logo") }}</b> <small class="text-danger">{{ __("Logo size 200px * 70px") }}</small></label>
+                                                    <input type="file" name="logo" class="form-control " id="logo"/>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3" style="border-left: 1px solid #000;">
+                                            <div class="row mt-1">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Date Format') }}</label>
+                                                    <select name="date_format" class="form-control" id="date_format" data-next="branch_time_format">
+                                                        <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
+                                                        <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
+                                                        <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                                    </select>
+                                                    <span class="error error_date_format"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Time Format') }}</label>
+                                                    <select name="time_format" class="form-control" id="time_format" data-next="timezone">
+                                                        <option {{ $branch->time_format == '12' ? 'SELECTED' : '' }} value="12">{{ __("12 Hour") }}</option>
+                                                        <option {{ $branch->time_format == '24' ? 'SELECTED' : '' }} value="24">{{ __("24 Hour") }}</option>
+                                                    </select>
+                                                    <span class="error error_time_format"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
+                                                    <select required name="timezone" class="form-control select2" id="timezone" data-next="branch_stock_accounting_method">
+                                                        <option value="">{{ __('Time Zone') }}</option>
+                                                        @foreach ($timezones as $key => $timezone)
+                                                            <option {{ ($branch->timezone ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_time_format"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="stock_accounting_method_field">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
+                                                    <select name="stock_accounting_method" class="form-control" id="stock_accounting_method" data-next="branch_account_start_date">
+                                                        @php
+                                                            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
+                                                        @endphp
+                                                        @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
+                                                            <option {{ $branch->stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="error error_financial_year_start"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="account_start_date_field">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
+                                                    <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                                    <span class="error error_account_start_date"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="financial_year_start_month_field">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
+                                                    <div class="input-group">
+                                                        <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="branch_save_changes">
+                                                            @php
+                                                                $months = \App\Enums\Months::cases();
+                                                            @endphp
+                                                            @foreach ($months as $month)
+                                                                <option {{ $branch->financial_year_start_month == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <span class="error error_financial_year_start_month"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="row mt-2">
+                                    <div class="row mt-4">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                                <button type="button" class="btn loading_button branch_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="dashboard_settings_form" class="setting_form hide-all" action="{{ route('settings.dashboard.settings') }}" method="post">
+                                <form id="dashboard_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.dashboard', $branch->id) }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">{{ __("Dashboard Settings") }}</h6>
@@ -253,26 +296,26 @@
                                         <div class="col-md-6">
                                             <label><strong>{{ __('View Stock Expiry Alert For') }} </strong> <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="number" name="view_stock_expiry_alert_for" class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for" data-name="Day amount" autocomplete="off" value="{{ $generalSettings['dashboard__view_stock_expiry_alert_for'] }}">
+                                                <input type="number" name="view_stock_expiry_alert_for" class="form-control" id="view_stock_expiry_alert_for" data-name="Day amount" autocomplete="off" value="{{ $generalSettings['dashboard__view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text input-group-text-sm" id="basic-addon1">@lang('menu.days')</span>
+                                                    <span class="input-group-text input-group-text-sm" id="basic-addon1">{{ __("Days") }}</span>
                                                 </div>
                                             </div>
-                                            <span class="error error_dbs_view_stock_expiry_alert_for"></span>
+                                            <span class="error error_view_stock_expiry_alert_for"></span>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button type="button" class="btn loading_button dashboard_setting_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="product_settings_form" class="setting_form hide-all" action="{{ route('settings.product.settings') }}" method="post">
+                                <form id="product_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.product', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -344,14 +387,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button type="button" class="btn loading_button product_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="purchase_settings_form" class="setting_form hide-all" action="{{ route('settings.purchase.settings') }}" method="post">
+                                <form id="purchase_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.purchase', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -380,14 +423,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="button" class="btn loading_button purchase_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button type="submit" id="save_changes_btn" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="add_sale_settings_form" class="setting_form hide-all" action="{{ route('settings.add.sale.settings') }}" method="post">
+                                <form id="add_sale_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.add.sale', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -395,26 +438,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __("Default Sale Discount") }}</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
                                                 </div>
-                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
+                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['add_sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label class="fw-bold">{{ __('Sales Commission') }}</label>
-                                            <select class="form-control" name="sales_commission" id="sales_commission" data-next="default_price_group_id">
-                                                <option {{ $generalSettings['sale__sales_commission'] == 'disable' ? 'SELECTED' : '' }} value="disable">{{ __('Disable') }}
-                                                </option>
-
-                                                <option {{ $generalSettings['sale__sales_commission'] == 'enable' ? 'SELECTED' : '' }} value="enable">{{ __('Enable') }}
-                                                </option>
-                                            </select>
                                         </div>
 
                                         <div class="col-md-4">
@@ -422,7 +454,17 @@
                                             <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
                                                 <option value="null">{{ __("None") }}</option>
                                                 @foreach ($priceGroups as $priceGroup)
-                                                    <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                    <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="fw-bold">{{ __("Add Sale Default Tax") }}</label>
+                                            <select class="form-control" name="default_tax_ac_id" id="add_sale_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                                <option value="">{{ __("None") }}</option>
+                                                @foreach ($taxAccounts as $tax)
+                                                    <option {{ $generalSettings['add_sale__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id }}">{{ $tax->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -431,14 +473,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button add_sale_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="button" class="btn loading_button add_sale_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="pos_settings_form" class="setting_form hide-all" action="{{ route('settings.pos.settings') }}" method="post">
+                                <form id="pos_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.pos', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-3">
@@ -492,6 +534,16 @@
                                         </div>
 
                                         <div class="col-md-3">
+                                            <label class="fw-bold">{{ __("Pos Sale Default Tax") }}</label>
+                                            <select class="form-control" name="default_tax_ac_id" id="pos_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                                <option value="">{{ __("None") }}</option>
+                                                @foreach ($taxAccounts as $tax)
+                                                    <option {{ $generalSettings['pos__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Show Recent Transactions") }}</label>
                                             <select class="form-control" name="is_show_recent_transactions" id="is_show_recent_transactions" data-next="is_enabled_credit_full_sale">
                                                 <option value="1">{{ __("Yes") }}</option>
@@ -528,92 +580,117 @@
                                     </div>
                                 </form>
 
-                                <form id="prefix_settings_form" class="setting_form hide-all" action="{{ route('settings.prefix.settings') }}" method="post">
+                                <form id="prefix_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.prefix', $branch->id) }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">{{ __("Prefix Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Purchase Invoice') }}</strong></label>
-                                            <input type="text" name="purchase_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_invoice'] }}">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Invoice Prefix") }}</label>
+                                            <input type="text" name="invoice_prefix" class="form-control" id="invoice_prefix" data-next="quotation_prefix" value="$branchSetting->invoice_prefix" placeholder="{{ __("Invoice Prefix") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Sale Invoice") }}</strong></label>
-                                            <input type="text" name="sale_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__sale_invoice'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Quotation Prefix") }}</label>
+                                            <input required type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" data-next="setting_sales_order_prefix" value=" $branchSetting->quotation_prefix" placeholder="{{ __("Shop ID") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Purchase Return") }}</strong></label>
-                                            <input type="text" name="purchase_return" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_return'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Sales Order Prefix") }}</label>
+                                            <input required type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" data-next="sales_return_prefix" value=" $branchSetting->sales_order_prefix" placeholder="{{ __("Sales Order Prefix") }}" />
                                         </div>
 
-                                        {{-- <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Transfer') }} </strong></label>
-                                            <input type="text" name="stock_transfer" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__stock_transfer'] }}">
-                                        </div> --}}
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Adjustment') }}</strong></label>
-                                            <input type="text" name="stock_adjustment" class="form-control" value="{{ $generalSettings['prefix__stock_adjustment'] }}" autocomplete="off">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Sales Return") }}</strong></label>
-                                            <input type="text" name="sale_return" class="form-control" value="{{ $generalSettings['prefix__sale_return'] }}" autocomplete="off">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Expense") }}</strong></label>
-                                            <input type="text" name="expenses" class="form-control" value="{{ $generalSettings['prefix__expenses'] }}" autocomplete="off">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Sales Return Prefix") }}</label>
+                                            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" data-next="payment_voucher_prefix" value="$branchSetting->sales_return_prefix" placeholder="{{ __("Sales Return Prefix") }}"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        {{-- <div class="col-md-4">
-                                            <label><strong>{{ __('Expense Payment') }} </strong></label>
-                                            <input type="text" name="expanse_payment" class="form-control" value="{{ $generalSettings['prefix__expanse_payment'] }}" autocomplete="off">
-                                        </div> --}}
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Payment') }} </strong></label>
-                                            <input type="text" name="payment" class="form-control" value="{{ $generalSettings['prefix__payment'] }}" autocomplete="off">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Payment Voucher Prefix") }}</label>
+                                            <input required type="text" name="payment_voucher_prefix" class="form-control" id="branch_setting_payment_voucher_prefix" data-next="branch_setting_receipt_voucher_prefix" value="$branchSetting->payment_voucher_prefix" placeholder="{{ __("Payment Voucher Prefix") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Receipt') }} </strong></label>
-                                            <input type="text" name="receipt" class="form-control" value="{{ $generalSettings['prefix__receipt'] }}" autocomplete="off">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Receipt Voucher Prefix") }}</label>
+                                            <input required type="text" name="receipt_voucher_prefix" class="form-control" id="branch_setting_receipt_voucher_prefix" data-next="branch_setting_purchase_invoice_prefix" value="$branchSetting->receipt_voucher_prefix" placeholder="{{ __("Receipt Voucher Prefix") }}" />
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Invoice Prefix") }}</label>
+                                            <input required type="text" name="purchase_invoice_prefix" class="form-control" id="branch_setting_purchase_invoice_prefix" data-next="branch_setting_purchase_order_prefix" value="$branchSetting->purchase_invoice_prefix" placeholder="{{ __("Purchase Invoice Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Order Voucher Prefix") }}</label>
+                                            <input required type="text" name="purchase_order_prefix" class="form-control" id="branch_setting_purchase_order_prefix" data-next="branch_setting_purchase_return_prefix" value=" $branchSetting->purchase_order_prefix" placeholder="{{ __("Purchase Order Prefix") }}" />
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Supplier ID') }}</strong></label>
-                                            <input type="text" name="supplier_id" class="form-control" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Return Voucher Prefix") }}</label>
+                                            <input type="text" name="purchase_return_prefix" class="form-control" id="branch_setting_purchase_return_prefix" data-next="branch_setting_stock_adjustment_prefix" value="$branchSetting->purchase_return_prefix" placeholder="{{ __("Purchase Return Prefix") }}" />
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Customer ID') }} </strong></label>
-                                            <input type="text" name="customer_id" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__customer_id'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Stock Adjustment Voucher Prefix") }}</label>
+                                            <input type="text" name="stock_adjustment_prefix" class="form-control" id="branch_setting_stock_adjustment_prefix" data-next="branch_setting_add_sale_invoice_layout_id" value="$branchSetting->stock_adjustment_prefix" placeholder="{{ __("Stock Adjustment Voucher Prefix") }}" />
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                                <button type="button" class="btn loading_button prefix_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="system_settings_form" class="setting_form hide-all" action="{{ route('settings.system.settings') }}" method="post">
+                                <form id="invoice_layout_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.prefix', $branch->id) }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">{{ __("Invoice Layout Settings") }}</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <label class="fw-bold">{{ __("Add Sale Default Invoice Layout") }}</label>
+                                            <select name="add_sale_invoice_layout_id" class="form-control" id="add_sale_invoice_layout_id" data-next="pos_sale_invoice_layout_id">
+                                                @foreach ($invoiceLayouts as $invoiceLayout)
+                                                    <option value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-6">
+                                            <label class="fw-bold">{{ __("Pos Sale Default Invoice Layout") }}</label>
+                                            <select name="pos_sale_invoice_layout_id" class="form-control" id="pos_sale_invoice_layout_id" data-next="default_tax_ac_id">
+                                                @foreach ($invoiceLayouts as $invoiceLayout)
+                                                    <option value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button prefix_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="system_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.system', $branch->id) }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">@lang('menu.system_settings')</h6>
@@ -622,25 +699,14 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Theme Color </strong></label>
-                                            <select name="theme_color" class="form-control" id="theme_color">
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label><strong>Default datatable page entries </strong></label>
+                                            <label><strong>{{ __("Default datatable page entries") }}</strong></label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">10</option>
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">25</option>
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">50</option>
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">100</option>
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">500</option>
-                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">1000</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">{{ __("10") }}</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">{{ __("25") }}</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 50 ? 'SELECTED' : '' }} value="50">{{ __("50") }}</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 100 ? 'SELECTED' : '' }} value="100">{{ __("100") }}</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 500 ? 'SELECTED' : '' }} value="500">{{ __("500") }}</option>
+                                                <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 1000 ? 'SELECTED' : '' }} value="1000">{{ __("1000") }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -648,17 +714,17 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button system_setting_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="point_settings_form" class="setting_form hide-all" action="{{ route('settings.reward.point.settings') }}" method="post">
+                                <form id="point_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.reward.point', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <h6 class="text-primary mb-3"><b>@lang('menu.reward_point_settings')</b></h6>
+                                        <h6 class="text-primary mb-3"><b>{{ __("Reward Point Settings") }}</b></h6>
                                     </div>
 
                                     <div class="form-group row mt-2">
@@ -671,7 +737,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Reward Point Display Name') }} </strong></label>
+                                            <label class="fw-bold">{{ __('Reward Point Display Name') }}</label>
                                             <input type="text" name="point_display_name" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__point_display_name'] }}">
                                         </div>
                                     </div>
@@ -679,43 +745,44 @@
                                     <div class="form-group row mt-2">
                                         <h6 class="text-primary mb-1"><b>{{ __('Earning Settings') }}</b></h6>
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Amount spend for unit point') }} </strong>
-                                                <i data-bs-toggle="tooltip" data-bs-placement="left" title="Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Amount spend for unit point') }}
+                                            <i data-bs-toggle="tooltip" data-bs-placement="left" title="{{ __("Example: If you set it as 10, then for every $10 spent by customer they will get one reward points. If the customer purchases for $1000 then they will get 100 reward points") }}." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="amount_for_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__amount_for_unit_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum order total to earn reward') }} </strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Minimum order total to earn reward') }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Example: If you set it as 100 then customer will get reward points only if there invoice total is greater or equal to 100. If invoice total is 99 then they won’t get any reward points.You can set it as minimum 1.") }}" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_order_total_for_rp'] }}">
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Maximum points per order') }} </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Maximum points per order') }} <i data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __("Maximum reward points customers can earn in one invoice. Leave it empty if you don’t want any such restrictions.") }}" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_rp_per_order" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__max_rp_per_order'] }}">
                                         </div>
                                     </div>
+
                                     <div class="form-group row mt-2">
                                         <h6 class="text-primary mb-1"><b>{{ __('Redeem Points Settings') }}</b></h6>
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Redeem amount per unit point') }} </strong>
-                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50" class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Redeem amount per unit point') }}
+                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("example: If 1 point is $1 then enter the value as 1. If 2 points is $1 then enter the value as 0.50") }}" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="redeem_amount_per_unit_rp" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__redeem_amount_per_unit_rp'] }}">
                                         </div>
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum order total to redeem points') }} </strong>
-                                                <i data-bs-toggle="tooltip" data-bs-placement="right" title="Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Minimum order total to redeem points') }}
+                                                <i data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __("Minimum order total for which customers can redeem points. Leave it blank if you don’t need this restriction or you need to give something for free.") }}" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_order_total_for_redeem" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_order_total_for_redeem'] }}">
                                         </div>
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Minimum redeem point') }} </strong>
-                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Minimum redeem point') }}
+                                                <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Minimum redeem points that can be used per invoice. Leave it blank if you don’t need this restriction.") }}" class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="min_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__min_redeem_point'] }}">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __('Maximum redeem point per order') }} </strong>
-                                                <i data-bs-toggle="tooltip" data-bs-placement="right" title="Maximum points that can be used in one order. Leave it blank if you don’t need this restriction." class="fas fa-info-circle tp"></i></label>
+                                            <label class="fw-bold">{{ __('Maximum redeem point per order') }}
+                                                <i data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __("Maximum points that can be used in one order. Leave it blank if you don’t need this restriction") }}." class="fas fa-info-circle tp"></i></label>
                                             <input type="number" step="any" name="max_redeem_point" class="form-control" autocomplete="off" value="{{ $generalSettings['reward_point_settings__max_redeem_point'] }}">
                                         </div>
                                     </div>
@@ -723,14 +790,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button reward_point_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="module_settings_form" class="setting_form hide-all" action="{{ route('settings.module.settings') }}" method="post">
+                                <form id="module_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.module', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -742,7 +809,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>{{ __("Purchases") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -750,7 +817,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __("Add Sale") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -777,15 +844,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }} name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__expenses'] == '1' ? 'CHECKED' : '' }} name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }} name="stock_adjustment" autocomplete="off"> &nbsp; <b>{{ __("Stock Adjustments") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -795,32 +854,34 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }} name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }} name="accounting" autocomplete="off"> &nbsp; <b>{{ __("Accounting") }}</b>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }} name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }} name="contacts" autocomplete="off"> &nbsp; <b>{{ __("Contacts") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         @if ($generalSettings['addons__hrm'] == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
+                                                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>{{ __("Human Resource Management") }}</b>
                                                     </p>
                                                 </div>
                                             </div>
                                         @endif
                                     </div>
+
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>{{ __('Requisite') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__requisite'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -835,30 +896,19 @@
                                                 </div>
                                             </div>
                                         @endif
-
-                                        @if ($generalSettings['addons__service'] == 1)
-                                            <div class="col-md-4">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" @if (isset($generalSettings['modules__service'])) {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} @endif name="service" autocomplete="off">
-                                                        &nbsp;<b>@lang('menu.service')</b>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        @endif
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button module_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="e_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="email_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.send.email', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -882,6 +932,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
@@ -890,6 +941,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
@@ -898,6 +950,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
@@ -905,6 +958,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
@@ -913,6 +967,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
@@ -921,6 +976,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
@@ -928,6 +984,7 @@
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
@@ -939,14 +996,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="button" class="btn loading_button email_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="s_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="sms_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.sms', $branch->id) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -955,82 +1012,36 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        {{-- <div class="col-md-4 mt-1">
+                                        <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
+                                                    <input type="checkbox" name="send_inv_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
                                                 </p>
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
+                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>{{ __("Send Notification After Sale Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                    <input type="checkbox" name="customer_due_reminder_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Customer Remainder Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings
-                                                    ['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.user_forget_password_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings
-                                                    ['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.coupon_offer_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                    </div>
-                                    <div class="form-group row">
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset ($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.discount_redeemed_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset ($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.new_product_arrived_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset ($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.weekly_news_letter_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                    </div>
+
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button sms_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1046,7 +1057,6 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            //$('.setting_form').hide();
             $(document).on('click', '.menu_btn', function(e) {
                 e.preventDefault();
                 var form_name = $(this).data('form');
@@ -1057,35 +1067,11 @@
             });
         });
 
-        $('#business_settings_form').on('submit', function(e) {
+        $('#branch_settings_form').on('submit', function(e) {
             e.preventDefault();
 
-            $('.loading_button').show();
+            $('.branch_settings_loading_btn').show();
             var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.bs_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');
-
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val()
-                if (idValue == '') {
-
-                    countErrorField += 1;
-                    $('#' + inputId).addClass('is-invalid');
-                    var fieldName = $('#' + inputId).data('name');
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
-
-            if (countErrorField > 0) {
-
-                $('.loading_button').hide();
-                return;
-            }
 
             $.ajax({
                 url: url,
@@ -1095,51 +1081,40 @@
                 cache: false,
                 processData: false,
                 success: function(data) {
+                    $('.error').html('');
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.branch_settings_loading_btn').hide();
+                },error: function(err) {
+
+                    $('.branch_settings_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         $('#dashboard_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            var inputs = $('.dbs_input');
-            inputs.removeClass('is-invalid');
-            $('.error').html('');
-            var countErrorField = 0;
-            $.each(inputs, function(key, val) {
-                var inputId = $(val).attr('id');
-                var idValue = $('#' + inputId).val()
-                if (idValue == '') {
-                    countErrorField += 1;
-                    $('#' + inputId).addClass('is-invalid');
-                    var fieldName = $('#' + inputId).data('name');
-                    $('.error_' + inputId).html(fieldName + ' is required.');
-                }
-            });
+            $('.dashboard_setting_loading_btn').show();
 
-            if (countErrorField > 0) {
-                $('.loading_button').hide();
-                return;
-            }
-
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: request,
-                success: function(data) {
-                    toastr.success(data);
-                    $('.loading_button').hide();
-                }
-            });
-        });
-
-        $('#prefix_settings_form').on('submit', function(e) {
-            e.preventDefault();
-            $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1149,14 +1124,38 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
+                    $('.error').html('');
                     $('.loading_button').hide();
+                }, error: function(err) {
+
+                    $('.dashboard_setting_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+
+                    $.each(err.responseJSON.errors, function(key, error) {
+
+                        $('.error_' + key + '').html(error[0]);
+                    });
                 }
             });
         });
 
         $('#product_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.product_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1166,14 +1165,31 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.product_settings_loading_btn').hide();
+                },error: function(err) {
+
+                    $('.product_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#purchase_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.purchase_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1183,14 +1199,32 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.purchase_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.purchase_settings_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#add_sale_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.add_sale_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1199,15 +1233,72 @@
                 type: 'post',
                 data: request,
                 success: function(data) {
+
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.error').html('');
+                    $('.add_sale_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.add_sale_settings_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#pos_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.pos_settings_loading_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+
+                    toastr.success(data);
+                    $('.pos_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.pos_settings_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $('#prefix_settings_form').on('submit', function(e) {
+            e.preventDefault();
+
+            $('.prefix_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1217,14 +1308,31 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.prefix_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.prefix_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#system_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.system_setting_loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1234,15 +1342,32 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
-                    window.location = "{{ url()->current() }}";
+                    $('.system_setting_loading_button').hide();
+                }, error: function(err) {
+
+                    $('.system_setting_loading_button').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#point_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+
+            $('.reward_point_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1252,14 +1377,31 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.reward_point_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.reward_point_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
         $('#module_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.module_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
 
@@ -1269,14 +1411,31 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.module_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.module_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
-        $('#e_settings_form').on('submit', function(e) {
+        $('#email_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.email_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -1285,14 +1444,31 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.email_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.email_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });
 
-        $('#s_settings_form').on('submit', function(e) {
+        $('#sms_settings_form').on('submit', function(e) {
             e.preventDefault();
-            $('.loading_button').show();
+            $('.sms_settings_loading_btn').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
@@ -1301,7 +1477,24 @@
                 data: request,
                 success: function(data) {
                     toastr.success(data);
-                    $('.loading_button').hide();
+                    $('.sms_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.sms_settings_loading_btn').hide();
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
                 }
             });
         });

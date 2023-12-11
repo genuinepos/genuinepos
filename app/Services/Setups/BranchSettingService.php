@@ -33,25 +33,6 @@ class BranchSettingService
         $addBranchSettings->save();
     }
 
-    public function updateBranchSettings(int $branchId, object $request): void
-    {
-        $updateBranchSettings = $this->singleBranchSetting(branchId: $branchId);
-        $updateBranchSettings->invoice_prefix = $request->invoice_prefix;
-        $updateBranchSettings->quotation_prefix = $request->quotation_prefix;
-        $updateBranchSettings->sales_order_prefix = $request->sales_order_prefix;
-        $updateBranchSettings->sales_return_prefix = $request->sales_return_prefix;
-        $updateBranchSettings->payment_voucher_prefix = $request->payment_voucher_prefix;
-        $updateBranchSettings->receipt_voucher_prefix = $request->receipt_voucher_prefix;
-        $updateBranchSettings->purchase_invoice_prefix = $request->purchase_invoice_prefix;
-        $updateBranchSettings->purchase_order_prefix = $request->purchase_order_prefix;
-        $updateBranchSettings->purchase_return_prefix = $request->purchase_return_prefix;
-        $updateBranchSettings->stock_adjustment_prefix = $request->stock_adjustment_prefix;
-        $updateBranchSettings->add_sale_invoice_layout_id = $request->add_sale_invoice_layout_id;
-        $updateBranchSettings->pos_sale_invoice_layout_id = $request->pos_sale_invoice_layout_id;
-        $updateBranchSettings->default_tax_ac_id = $request->default_tax_ac_id;
-        $updateBranchSettings->save();
-    }
-
     public function updateAndSync(array $settings, int $branchId): bool
     {
         if (is_array($settings)) {
@@ -60,7 +41,37 @@ class BranchSettingService
 
                 if (isset($key) && isset($value)) {
 
-                    BranchSetting::where('branch_id', $branchId)->where('key', $key)->update(['value' => $value]);
+                    $branchSetting = BranchSetting::where('branch_id', $branchId)->where('key', $key)->first();
+                    if ($branchSetting) {
+
+                        $branchSetting->key = $key;
+                        $branchSetting->value = $value;
+                        if ($key == 'invoice_layout__add_sale_invoice_layout_id') {
+
+                            $branchSetting->add_sale_invoice_layout_id = $value;
+                        } else if ($key == 'invoice_layout__pos_sale_invoice_layout_id') {
+
+                            $branchSetting->pos_sale_invoice_layout_id = $value;
+                        }
+
+                        $branchSetting->save();
+                    } else {
+
+                        $addBranchSetting = new BranchSetting();
+                        $addBranchSetting->key = $key;
+                        $addBranchSetting->value = $value;
+
+                        if ($key == 'invoice_layout__add_sale_invoice_layout_id') {
+
+                            $addBranchSetting->add_sale_invoice_layout_id = $value;
+                        } else if ($key == 'invoice_layout__pos_sale_invoice_layout_id') {
+
+                            $addBranchSetting->pos_sale_invoice_layout_id = $value;
+                        }
+
+                        $addBranchSetting->branch_id = $branchId;
+                        $addBranchSetting->save();
+                    }
                 }
             }
 

@@ -8,7 +8,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Barcode - {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }} </title>
+    <title>Barcode - {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__business_name'] }} </title>
     <link rel="stylesheet" href="{{ asset('backend/asset/css/bootstrap.min.css') }}">
 
     <style>
@@ -37,7 +37,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                 margin-top: 0.3cm;
                 margin-bottom: 28px;
             }
-        @else 
+        @else
 
             @page {
                 /* size: auto; */
@@ -88,7 +88,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                             <tr>
                                                 <th class="company_name">
                                                     @if (isset($req->is_business_name))
-                                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
+                                                        {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__business_name'] }}
                                                     @endif
                                                 </th>
                                             </tr>
@@ -160,7 +160,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                                 <p class="company_name" style="margin: 0px;padding: 0px;font-size: 4px;">
                                     <strong>
                                         @if (isset($req->is_business_name))
-                                            {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__shop_name'] }}
+                                            {{ auth()->user()->branch ? auth()->user()->branch->name : $generalSettings['business__business_name'] }}
                                         @endif
                                     </strong>
                                 </p>
@@ -193,7 +193,7 @@ $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
                         @if ($currentPublished == $limit)
                             <div id="pageBreaker" style="page-break-after: always;"></div>
                             @php
-                               $currentPublished = 0; 
+                               $currentPublished = 0;
                             @endphp
                         @endif
                     @endfor

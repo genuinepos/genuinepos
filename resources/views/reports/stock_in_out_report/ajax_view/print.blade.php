@@ -52,11 +52,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__shop_name'] }} </h5>
+            <h5>{{ $generalSettings['business__business_name'] }} </h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__shop_name'] }}</h5>
+            <h5>{{ $generalSettings['business__business_name'] }}</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
@@ -119,7 +119,7 @@
                             @if ($row->branch_name)
                                 {{ $row->branch_name }}
                             @else
-                                {{ $generalSettings['business__shop_name'] }}
+                                {{ $generalSettings['business__business_name'] }}
                             @endif
                         </td>
 

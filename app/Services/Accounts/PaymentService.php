@@ -18,7 +18,7 @@ class PaymentService
     public function paymentsTable(object $request, int $debitAccountId = null): object
     {
         $account = DB::table('accounts')->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('accounts.id', $debitAccountId)->select('account_groups.sub_sub_group_number')->first();
+            ->where('accounts.id', $debitAccountId)->select('account_groups.sub_sub_group_number')->first();
 
         $generalSettings = config('generalSettings');
         $payments = '';
@@ -136,7 +136,7 @@ class PaymentService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('reference', function ($row) {

@@ -46,7 +46,7 @@
                             <li><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</li>
                             @else
                                 <li><strong>@lang('menu.stock_location') </strong>
-                                    {{ $generalSettings['business__shop_name'] }} <b></b>
+                                    {{ $generalSettings['business__business_name'] }} <b></b>
                                 </li>
                                 <li><strong>@lang('menu.address') </strong>{{ $generalSettings['business__address'] }}</li>
                                 <li><strong>@lang('menu.phone') </strong>{{ $generalSettings['business__phone'] }}</li>

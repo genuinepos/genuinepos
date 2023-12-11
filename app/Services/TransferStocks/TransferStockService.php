@@ -106,7 +106,7 @@ class TransferStockService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('send_from', function ($row) use ($generalSettings) {
@@ -125,7 +125,7 @@ class TransferStockService
                     }
                 } else {
 
-                    $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $generalSettings['business__shop_name'];
+                    $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $generalSettings['business__business_name'];
                 }
 
                 if ($row->sender_warehouse_id) {
@@ -151,7 +151,7 @@ class TransferStockService
                     }
                 } else {
 
-                    $receiverBranch = '<strong>' . __("Send To") . ':</strong> ' . $generalSettings['business__shop_name'];
+                    $receiverBranch = '<strong>' . __("Send To") . ':</strong> ' . $generalSettings['business__business_name'];
                 }
 
                 if ($row->receiver_warehouse_id) {

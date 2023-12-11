@@ -108,7 +108,7 @@ class CashRegisterReportController extends Controller
                         return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user', function ($row) {

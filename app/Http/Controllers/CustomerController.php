@@ -444,7 +444,7 @@ class CustomerController extends Controller
                         return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('customer', function ($row) {
@@ -589,7 +589,7 @@ class CustomerController extends Controller
                         return $row->b_name;
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
 

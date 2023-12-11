@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-12 text-center">
 
-        <h6 style="width: 60%; margin:0 auto;">{{ $generalSettings['business__shop_name'] }}</h6>
+        <h6 style="width: 60%; margin:0 auto;">{{ $generalSettings['business__business_name'] }}</h6>
         <p>{{ $generalSettings['business__address'] }}</p>
 
         @if ($fromDate && $toDate)

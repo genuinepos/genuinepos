@@ -16,7 +16,7 @@ class ReceiptService
     public function receiptsTable(object $request, int $creditAccountId = null): object
     {
         $account = DB::table('accounts')->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-        ->where('accounts.id', $creditAccountId)->select('account_groups.sub_sub_group_number')->first();
+            ->where('accounts.id', $creditAccountId)->select('account_groups.sub_sub_group_number')->first();
         $generalSettings = config('generalSettings');
         $receipts = '';
         $query = AccountingVoucherDescription::query()
@@ -133,7 +133,7 @@ class ReceiptService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('reference', function ($row) {

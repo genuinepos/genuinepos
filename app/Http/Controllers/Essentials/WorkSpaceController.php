@@ -14,13 +14,13 @@ class WorkSpaceController extends Controller
 {
     public function index(Request $request)
     {
-        if (! auth()->user()->can('work_space')) {
+        if (!auth()->user()->can('work_space')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -50,8 +50,8 @@ class WorkSpaceController extends Controller
             if ($request->date_range) {
                 $date_range = explode('-', $request->date_range);
                 $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1].' +1 days'));
-                $query->whereBetween('workspaces.created_at', [$form_date.' 00:00:00', $to_date.' 00:00:00']); // Final
+                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
+                $query->whereBetween('workspaces.created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
             }
 
             if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
@@ -84,9 +84,9 @@ class WorkSpaceController extends Controller
                     </button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                     $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="'.route('workspace.task.index', [$row->id]).'"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="'.route('workspace.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('workspace.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('workspace.task.index', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
+                    $html .= '<a class="dropdown-item" id="edit" href="' . route('workspace.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('workspace.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
 
@@ -96,11 +96,11 @@ class WorkSpaceController extends Controller
                     return date('d/m/Y', strtotime($row->created_at));
                 })
                 ->editColumn('name', function ($row) {
-                    return $row->name.' <a class="btn btn-sm btn-info text-white" id="docs" href="'.route('workspace.view.docs', [$row->id]).'">Docs</a>';
+                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="' . route('workspace.view.docs', [$row->id]) . '">Docs</a>';
                 })
                 ->editColumn('from', function ($row) {
                     if ($row->branch_name) {
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
                         return '<b>Head Office</b>';
                     }
@@ -112,7 +112,7 @@ class WorkSpaceController extends Controller
                     return date('d/m/Y', strtotime($row->end_date));
                 })
                 ->editColumn('assigned_by', function ($row) {
-                    return $row->prefix.' '.$row->a_name.' '.$row->last_name;
+                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
                 })
                 ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by'])
                 ->make(true);
@@ -127,13 +127,13 @@ class WorkSpaceController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('work_space')) {
+        if (!auth()->user()->can('work_space')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -153,7 +153,7 @@ class WorkSpaceController extends Controller
         }
 
         $addWorkspace = Workspace::insertGetId([
-            'ws_id' => date('Y/').$IdNo,
+            'ws_id' => date('Y/') . $IdNo,
             'branch_id' => auth()->user()->branch_id,
             'name' => $request->name,
             'priority' => $request->priority,
@@ -179,7 +179,7 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid().'.'.$wpDocument->getClientOriginalExtension();
+                    $wpDocumentName = uniqid() . '.' . $wpDocument->getClientOriginalExtension();
                     $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $addWorkspace,
@@ -195,13 +195,13 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('work_space')) {
+        if (!auth()->user()->can('work_space')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -215,7 +215,7 @@ class WorkSpaceController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('work_space')) {
+        if (!auth()->user()->can('work_space')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -268,7 +268,7 @@ class WorkSpaceController extends Controller
             if (count($request->file('documents')) > 0) {
                 foreach ($request->file('documents') as $document) {
                     $wpDocument = $document;
-                    $wpDocumentName = uniqid().'.'.$wpDocument->getClientOriginalExtension();
+                    $wpDocumentName = uniqid() . '.' . $wpDocument->getClientOriginalExtension();
                     $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
                     WorkspaceAttachment::insert([
                         'workspace_id' => $id,
@@ -284,18 +284,18 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('work_space')) {
+        if (!auth()->user()->can('work_space')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteWorkspace = Workspace::where('id', $id)->first();
-        if (! is_null($deleteWorkspace)) {
+        if (!is_null($deleteWorkspace)) {
             $deleteWorkspace->delete();
         }
 
@@ -305,7 +305,7 @@ class WorkSpaceController extends Controller
     public function viewDocs($id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -317,14 +317,14 @@ class WorkSpaceController extends Controller
     public function deleteDoc($docId)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
-        if (! is_null($deleteDoc)) {
-            if (file_exists(public_path('uploads/workspace_docs/'.$deleteDoc->attachment))) {
-                unlink(public_path('uploads/workspace_docs/'.$deleteDoc->attachment));
+        if (!is_null($deleteDoc)) {
+            if (file_exists(public_path('uploads/workspace_docs/' . $deleteDoc->attachment))) {
+                unlink(public_path('uploads/workspace_docs/' . $deleteDoc->attachment));
             }
             $deleteDoc->delete();
         }

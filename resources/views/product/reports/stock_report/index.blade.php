@@ -63,7 +63,7 @@
                                                 <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_stock_branch_id" autofocus>
                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})</option>
+                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -168,7 +168,7 @@
                                                 <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="warehouse_stock_branch_id" autofocus>
                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})</option>
+                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -232,7 +232,7 @@
                                             <select name="unit_id" class="form-control select2" id="warehouse_stock_unit_id">
                                                 <option data-unit_name="{{ __('All') }}" value="">{{ __('All') }}</option>
                                                 @foreach ($units as $unit)
-                                                    <option data-unit_name="{{ $unit->name.'/'.$unit->code_name }}" value="{{ $unit->id }}">{{ $unit->name.'/'.$unit->code_name }}</option>
+                                                    <option data-unit_name="{{ $unit->name . '/' . $unit->code_name }}" value="{{ $unit->id }}">{{ $unit->name . '/' . $unit->code_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -300,8 +300,16 @@
     <script>
         var branchStocksTable = $('.branch_stock_table').DataTable({
             dom: "lBfrtip",
-            buttons: [{ extend: 'excel', text: 'Excel',  className: 'btn btn-primary' },
-                {extend: 'pdf',text: 'Pdf', className: 'btn btn-primary' }
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary'
+                }
             ],
             "processing": true,
             "serverSide": true,
@@ -319,14 +327,40 @@
                     d.unit_id = $('#branch_stock_unit_id').val();
                 }
             },
-            columns: [{  data: 'product_name',  name: 'products.name' },
-                {data: 'product_code', name: 'products.product_code' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'cost', name: 'product_variants.variant_name', className: 'text-end' },
-                { data: 'price', name: 'parentBranch.name', className: 'text-end' },
-                { data: 'stock', name: 'product_stocks.stock', className: 'text-end fw-bold' },
-                { data: 'stock_value', name: 'product_stocks.stock_value', className: 'text-end fw-bold' },
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'product_name',
+                    name: 'products.name'
+                },
+                {
+                    data: 'product_code',
+                    name: 'products.product_code'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'cost',
+                    name: 'product_variants.variant_name',
+                    className: 'text-end'
+                },
+                {
+                    data: 'price',
+                    name: 'parentBranch.name',
+                    className: 'text-end'
+                },
+                {
+                    data: 'stock',
+                    name: 'product_stocks.stock',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'stock_value',
+                    name: 'product_stocks.stock_value',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var branch_stock = sum_table_col($('.branch_stock_table'), 'branch_stock');
                 $('#branch_stock').text(bdFormat(branch_stock));
@@ -345,9 +379,16 @@
 
         var warehouseStocksTable = $('.warehouse_stock_table').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: 'Excel', className: 'btn btn-primary' },
-                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary' }
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary'
+                }
             ],
             "processing": true,
             "serverSide": true,
@@ -365,15 +406,40 @@
                     d.unit_id = $('#warehouse_stock_unit_id').val();
                 }
             },
-            columns: [
-                { data: 'product_name', name: 'products.name' },
-                { data: 'product_code', name: 'products.product_code' },
-                { data: 'stock_location', name: 'branches.name' },
-                { data: 'cost', name: 'product_variants.variant_name', className: 'text-end' },
-                { data: 'price', name: 'parentBranch.name', className: 'text-end' },
-                { data: 'stock', name: 'warehouses.warehouse_name', className: 'text-end fw-bold' },
-                { data: 'stock_value', name: 'product_stocks.stock_value', className: 'text-end fw-bold' },
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'product_name',
+                    name: 'products.name'
+                },
+                {
+                    data: 'product_code',
+                    name: 'products.product_code'
+                },
+                {
+                    data: 'stock_location',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'cost',
+                    name: 'product_variants.variant_name',
+                    className: 'text-end'
+                },
+                {
+                    data: 'price',
+                    name: 'parentBranch.name',
+                    className: 'text-end'
+                },
+                {
+                    data: 'stock',
+                    name: 'warehouses.warehouse_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'stock_value',
+                    name: 'product_stocks.stock_value',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var warehouse_stock = sum_table_col($('.warehouse_stock_table'), 'warehouse_stock');
                 $('#warehouse_stock').text(bdFormat(warehouse_stock));
@@ -384,7 +450,7 @@
             },
         });
 
-        $(document).on('submit', '#warehouse_stock_filter_form', function (e) {
+        $(document).on('submit', '#warehouse_stock_filter_form', function(e) {
             e.preventDefault();
             $('#w_data_preloader').show();
             warehouseStocksTable.ajax.reload();
@@ -427,11 +493,11 @@
                 success: function(warehouses) {
 
                     $('#warehouse_id').empty();
-                    $('#warehouse_id').append('<option data-warehouse_name="'+"{{ __('All') }}"+'" value="">'+"{{ __('All') }}"+'</option>');
+                    $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
 
                     $.each(warehouses, function(key, warehouse) {
 
-                        $('#warehouse_id').append('<option data-warehouse_name="'+warehouse.warehouse_name + '/' + warehouse.warehouse_code+'" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                        $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
                     });
                 },
                 error: function(err) {

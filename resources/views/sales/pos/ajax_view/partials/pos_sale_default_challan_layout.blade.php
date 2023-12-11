@@ -37,7 +37,7 @@
                         <div class="heading text-end">
                             @if ($sale->branch)
                                 <h3 class="company_name">
-                                    {{ $generalSettings['business__shop_name'] }}</h3>
+                                    {{ $generalSettings['business__business_name'] }}</h3>
                                 <h6 class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                     {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -55,7 +55,7 @@
                                 @endif
                             @else
                                 <h3 class="company_name">
-                                    {{ $generalSettings['business__shop_name'] }}</h3>
+                                    {{ $generalSettings['business__business_name'] }}</h3>
                                 <h6 class="company_address">
                                     {{ $generalSettings['business__address'] }}
                                 </h6>

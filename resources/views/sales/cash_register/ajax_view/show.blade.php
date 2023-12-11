@@ -166,7 +166,7 @@
                                 {{ $openedCashRegister?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__shop_name'] }}
+                            {{ $generalSettings['business__business_name'] }}
                         @endif
                     </li>
 

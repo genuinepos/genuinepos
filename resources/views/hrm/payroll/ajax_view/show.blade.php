@@ -18,7 +18,7 @@
                             {{ $payroll->employee->branch->zip_code == 1 ? $payroll->employee->branch->zip_code : '' }},
                             {{ $payroll->employee->branch->country == 1 ? $payroll->employee->branch->country : '' }}.
                         @else
-                            <h6>{{$generalSettings['business__shop_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
+                            <h6>{{$generalSettings['business__business_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
                             <p>{{$generalSettings['business__address']}} </p>
                             <p><b>@lang('menu.phone') </b>  {{$generalSettings['business__phone']}} </p>
                         @endif

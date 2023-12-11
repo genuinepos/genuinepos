@@ -67,7 +67,7 @@
                                                     }
                                                 } else {
 
-                                                    $sendFrom = $generalSettings['business__shop_name'];
+                                                    $sendFrom = $generalSettings['business__business_name'];
                                                 }
                                             @endphp
 
@@ -106,7 +106,7 @@
                                                     }
                                                 } else {
 
-                                                    $sendTo = $generalSettings['business__shop_name'];
+                                                    $sendTo = $generalSettings['business__business_name'];
                                                 }
                                             @endphp
 

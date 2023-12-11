@@ -1,6 +1,6 @@
 <p>
     <b>{{ __("Shop") }} :
-    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business__shop_name'].'' !!}
+    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business__business_name'].'' !!}
     </b>
 </p>
 <table class="table modal-table table-sm table-striped" id="data_table">

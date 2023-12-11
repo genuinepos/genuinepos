@@ -79,7 +79,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <label><strong>@lang('menu.business_location') </strong> </label>
-                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__business_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
                             <div class="col-md-12 mt-2">

@@ -17,7 +17,7 @@
         </div>
 
         <div class="p-3">
-            @if ($generalSettings['addons__branches'] == 1)
+       
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                     <div class="row">
                         <div class="col-md-12">
@@ -30,7 +30,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 @endif
-            @endif
+
 
             <div class="card">
                 <div class="section-header">

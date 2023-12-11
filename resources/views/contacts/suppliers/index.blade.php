@@ -17,40 +17,40 @@
     </div>
 
     <div class="p-3">
-        @if ($generalSettings['addons__branches'] == 1)
-            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form_element rounded mt-0 mb-3">
-                            <form id="filter_form" class="p-2">
-                                <div class="form-group row">
-                                    <div class="col-xl-2 col-lg-3 col-md-4">
-                                        <label><strong>@lang('menu.business_location') </strong></label>
-                                        <select name="branch_id"
-                                            class="form-control submit_able select2" id="branch_id" autofocus>
-                                            <option value="">@lang('menu.all')</option>
-                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    {{ $branch->name . '/' . $branch->branch_code }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
 
-                                    <div class="col-xl-2 col-lg-3 col-md-4">
-                                        <label><strong></strong></label>
-                                        <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                        </div>
+        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form_element rounded mt-0 mb-3">
+                        <form id="filter_form" class="p-2">
+                            <div class="form-group row">
+                                <div class="col-xl-2 col-lg-3 col-md-4">
+                                    <label><strong>@lang('menu.business_location') </strong></label>
+                                    <select name="branch_id"
+                                        class="form-control submit_able select2" id="branch_id" autofocus>
+                                        <option value="">@lang('menu.all')</option>
+                                        <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}">
+                                                {{ $branch->name . '/' . $branch->branch_code }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-xl-2 col-lg-3 col-md-4">
+                                    <label><strong></strong></label>
+                                    <div class="input-group">
+                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            @endif
+            </div>
         @endif
+
 
         <div class="card">
             <div class="section-header">

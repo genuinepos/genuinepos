@@ -90,7 +90,7 @@ class LoanController extends Controller
                     if ($row->b_name) {
                         return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {

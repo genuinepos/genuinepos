@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 
 @section('title', 'Supplier List - ')
@@ -25,21 +25,21 @@
                                 <form id="filter_form">
                                     <div class="form-group row align-items-end">
                                         <div class="col-xl-6 col-lg-6 col-md-12">
-                                            <label><strong>{{ __("Shop") }}</strong></label>
+                                            <label><strong>{{ __('Shop') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                            <option value="">{{ __("All") }}</option>
-                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
-                                            @foreach ($branches as $branch)
-                                                <option value="{{ $branch->id }}">
-                                                    @php
-                                                        $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
-                                                        $branchCode = '-' . $branch->branch_code;
-                                                    @endphp
-                                                    {{ $branchName.$areaName.$branchCode }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                                <option value="">{{ __('All') }}</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                            $branchCode = '-' . $branch->branch_code;
+                                                        @endphp
+                                                        {{ $branchName . $areaName . $branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="col-xl-2 col-lg-3 col-md-4">
@@ -64,7 +64,7 @@
                             <i class="fas fa-plus-square"></i> @lang('menu.add')
                         </a>
                         <a href="{{ route('contacts.suppliers.import.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> @lang('menu.import_customers')</a>
-                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                        <a href="#" class="print_report btn btn-sm btn-primary"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                     </div>
                 </div>
 
@@ -76,18 +76,18 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="text-start">
-                                    <th>{{ __("Action") }}</th>
+                                    <th>{{ __('Action') }}</th>
                                     <th>{{ __('Supplier ID') }}</th>
-                                    <th>{{ __("Name") }}</th>
-                                    <th>{{ __("Phone") }}</th>
-                                    <th>{{ __("Opening Balance") }}</th>
-                                    <th>{{ __("Total Purchase") }}</th>
-                                    <th>{{ __("Total Sale") }}</th>
-                                    <th>{{ __("Total Return") }}</th>
-                                    <th>{{ __("Total Paid") }}</th>
-                                    <th>{{ __("Total Received") }}</th>
+                                    <th>{{ __('Name') }}</th>
+                                    <th>{{ __('Phone') }}</th>
+                                    <th>{{ __('Opening Balance') }}</th>
+                                    <th>{{ __('Total Purchase') }}</th>
+                                    <th>{{ __('Total Sale') }}</th>
+                                    <th>{{ __('Total Return') }}</th>
+                                    <th>{{ __('Total Paid') }}</th>
+                                    <th>{{ __('Total Received') }}</th>
                                     <th>{{ __('Curr. Balance') }}</th>
-                                    <th>{{ __("Status") }}</th>
+                                    <th>{{ __('Status') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -126,15 +126,33 @@
     <script>
         var contactTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: { columns: [3,4,5,6,7,8,9,10,11,12] }},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: { columns: [3,4,5,6,7,8,9,10,11,12] }},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    }
+                },
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
+            aaSorting: [
+                [0, 'asc']
+            ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('contacts.manage.supplier.index', \App\Enums\ContactType::Supplier->value) }}",
                 "data": function(d) {
@@ -142,20 +160,62 @@
                     d.branch_id = $('#branch_id').val();
                 }
             },
-            columns: [
-                {data: 'action'},
-                {data: 'contact_id',name: 'contacts.contact_id'},
-                {data: 'name',name: 'contacts.name'},
-                {data: 'phone',name: 'contacts.phone'},
-                {data: 'opening_balance', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'total_purchase', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'total_sale', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'total_return', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'total_paid', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'total_received', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'current_balance', name: 'contacts.business_name', className: 'text-end fw-bold'},
-                {data: 'status', name: 'status'},
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'contact_id',
+                    name: 'contacts.contact_id'
+                },
+                {
+                    data: 'name',
+                    name: 'contacts.name'
+                },
+                {
+                    data: 'phone',
+                    name: 'contacts.phone'
+                },
+                {
+                    data: 'opening_balance',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_purchase',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_sale',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_return',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_paid',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_received',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'current_balance',
+                    name: 'contacts.business_name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
                 $('#opening_balance').text(bdFormat(opening_balance));
@@ -199,14 +259,18 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             contactTable.ajax.reload();
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         // call jquery method
         $(document).ready(function() {
@@ -225,18 +289,19 @@
                         $('#addOrEditContactModal').html(data);
                         $('#addOrEditContactModal').modal('show');
 
-                        setTimeout(function(){
+                        setTimeout(function() {
 
                             $('#contact_name').focus();
                         }, 500);
 
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         if (err.status == 0) {
 
                             toastr.error('Net Connetion Error. Reload This Page.');
                             return;
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error('Server Error. Please contact to the support team.');
                             return;
@@ -259,18 +324,19 @@
                         $('#addOrEditContactModal').html(data);
                         $('#addOrEditContactModal').modal('show');
 
-                        setTimeout(function(){
+                        setTimeout(function() {
 
                             $('#contact_name').focus().select();
                         }, 500);
 
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         if (err.status == 0) {
 
                             toastr.error('Net Connetion Error. Reload This Page.');
                             return;
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error('Server Error. Please contact to the support team.');
                             return;
@@ -279,7 +345,7 @@
                 });
             });
 
-            $(document).on('click', '#deleteContact',function(e){
+            $(document).on('click', '#deleteContact', function(e) {
                 e.preventDefault();
 
                 var url = $(this).attr('href');
@@ -289,8 +355,18 @@
                     'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {'class': 'yes btn-danger','action': function() {$('#delete_contact_form').submit();}},
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#delete_contact_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Deleted canceled.');
+                            }
+                        }
                     }
                 });
             });
@@ -324,12 +400,13 @@
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                 $.confirm({
+                $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
                         'Yes': {
-                            'class': 'yes btn-danger', 'action': function() {
+                            'class': 'yes btn-danger',
+                            'action': function() {
                                 $.ajax({
                                     url: url,
                                     type: 'post',
@@ -340,31 +417,38 @@
                                 });
                             }
                         },
-                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Confirmation canceled.');
+                            }
+                        }
                     }
                 });
             });
         });
 
         //Print supplier report
-        $(document).on('click', '.print_report', function (e) {
+        $(document).on('click', '.print_report', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = "{{ route('reports.customer.print') }}";
             var customer_id = $('#customer_id').val();
             console.log(customer_id);
             $.ajax({
-                url:url,
-                type:'get',
-                data: {customer_id},
-                success:function(data){
+                url: url,
+                type: 'get',
+                data: {
+                    customer_id
+                },
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,

@@ -5,18 +5,20 @@
 
     .branch_switcher .select-dropdown select {
         width: 100%;
-        color: #fff!important;
+        color: #fff !important;
     }
 </style>
 @php
     $branchService = new App\Services\Setups\BranchService();
-    $branches = $branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+    $branches = $branchService
+        ->branches(with: ['parentBranch'])
+        ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
+        ->get();
 @endphp
 <div id="rightSidebar">
     <div class="sidebar-container position-relative">
         <div class="d-flex align-items-center justify-content-between">
-            <h2 class="text-white">{{ __("User Profile") }}</h2>
+            <h2 class="text-white">{{ __('User Profile') }}</h2>
             <div id="closeRightSidebar"><a href="#" style="color: #fff;"><i class="far fa-times-circle fs-4"></i></a></div>
         </div>
 
@@ -28,15 +30,15 @@
                         @csrf
                         <div class="select-dropdown">
                             <select name="branch_id" id="switch_branch_id">
-                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                 @foreach ($branches as $branch)
                                     <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                         @php
                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                             $branchCode = '-' . $branch->branch_code;
                                         @endphp
-                                        {{  $branchName.$areaName.$branchCode }}
+                                        {{ $branchName . $areaName . $branchCode }}
                                     </option>
                                 @endforeach
                             </select>
@@ -109,7 +111,7 @@
 
         <div class="position-absolute bottom-btn-group" style="bottom: 0; left: 0; right: 0; border-top: 1px solid #fff;">
             <ul class="d-flex">
-                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">{{ __("Light Nav") }}</span></a></li>
+                <li><a href="#" class="text-white menu-theme"><span><i class="fas fa-sun"></i></span><span id="themeNameText">{{ __('Light Nav') }}</span></a></li>
                 <li class="d-lg-block d-none"><a href="{{ route('settings.general.index') }}" class="text-white"><span><i class="fas fa-cog"></i></span><span>{{ __('Settings') }}</span></a></li>
 
                 <li>
@@ -294,19 +296,21 @@
         });
 
         var selectedBranchId = $('#switch_branch_id').val();
-        $(document).on('change', '#switch_branch_id',function(e){
+        $(document).on('change', '#switch_branch_id', function(e) {
 
             $.confirm({
                 'title': "{{ __('Confirmation') }}",
                 'content': "{{ __('Are you sure?') }}",
                 'buttons': {
                     'Yes': {
-                        'class': 'yes btn-modal-primary','action': function() {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
                             $('#change_branch_form').submit();
                         }
                     },
                     'No': {
-                        'class': 'no btn-danger','action': function() {
+                        'class': 'no btn-danger',
+                        'action': function() {
                             $('#switch_branch_id').val(selectedBranchId);
                         }
                     }
@@ -315,24 +319,25 @@
         });
 
         //data delete by ajax
-        $(document).on('submit', '#change_branch_form',function(e){
+        $(document).on('submit', '#change_branch_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
 
                     toastr.success(data);
                     window.location.reload();
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }

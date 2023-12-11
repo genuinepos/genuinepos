@@ -149,7 +149,7 @@
                                                                             {{ $production?->branch?->name .'-('.$production?->branch?->area_name.')-'.$production?->branch?->branch_code }}
                                                                         @endif
                                                                     @else
-                                                                        {{ $branchName = $generalSettings['business__shop_name'] }}
+                                                                        {{ $branchName = $generalSettings['business__business_name'] }}
                                                                     @endif
                                                                 @endif
                                                                 <input type="hidden" name="warehouse_id" id="warehouse_id" value="{{ $production->stock_warehouse_id }}">

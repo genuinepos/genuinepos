@@ -1,34 +1,31 @@
 <style>
     .dataTables_wrapper {
-        margin-top: 0px!important;
+        margin-top: 0px !important;
     }
 
     .dataTables_wrapper {
-        margin-top: 0px!important;
+        margin-top: 0px !important;
     }
 </style>
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="data_preloader mt-5" id="stock_preloader">
-            <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
+            <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}</h6>
         </div>
         <div class="modal-header">
             <h6 class="modal-title">
-                {{ __("Product Stock") }} |
+                {{ __('Product Stock') }} |
                 <b>
                     {{ __('Shop') }} :
                     @if (auth()->user()?->branch)
 
                         @if (auth()->user()?->branch?->parent_branch_id)
-
                             {{ auth()->user()?->branch?->parentBranch?->name }}
                         @else
-
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-
-                        {{ $generalSettings['business__shop_name'] }} ({{ __("Business") }})
+                        {{ $generalSettings['business__business_name'] }} ({{ __('Business') }})
                     @endif
                 </b>
             </h6>

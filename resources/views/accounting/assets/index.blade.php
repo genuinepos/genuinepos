@@ -24,13 +24,13 @@
                                 <form id="filter_form" action="" method="get">
                                     @csrf
                                     <div class="form-group row">
-                                        @if ($generalSettings['addons__branches'] == 1)
+
                                             @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                 <div class="col-md-3">
                                                     <label><strong>@lang('menu.business_location') </strong></label>
                                                     <select name="branch_id" class="form-control submit_able  select2" id="filter_branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                        <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $br)
                                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                                         @endforeach
@@ -39,7 +39,7 @@
                                             @else
                                                 <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                             @endif
-                                        @endif
+
 
                                         <div class="col-md-3">
                                             <label><strong>@lang('menu.asset_type') </strong></label>
@@ -240,7 +240,7 @@
                                 <div class="col-md-12">
                                     <label><b>@lang('menu.branch') </b> <span class="text-danger">*</span></label>
                                     <select name="branch_id" class="form-control" id="branch_id">
-                                        <option value="">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                        <option value="">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                         @foreach ($branches as $br)
                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                         @endforeach

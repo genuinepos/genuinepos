@@ -27,13 +27,13 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row g-3">
-                                    @if ($generalSettings['addons__branches'] == 1)
+                          
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') : </strong></label>
                                                 <select name="branch_id"
                                                     class="form-control" id="branch_id" autofocus>
-                                                    <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -44,9 +44,7 @@
                                         @else
                                             <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : NULL }}">
                                         @endif
-                                    @else
-                                        <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : NULL }}">
-                                    @endif
+
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.action_by') : </strong></label>

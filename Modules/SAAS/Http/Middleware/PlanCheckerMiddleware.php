@@ -18,6 +18,11 @@ class PlanCheckerMiddleware
         if (! $tenant) {
             throw new TenancyNotInitializedException;
         }
+
+        if($tenant->haveExpired()) {
+            return redirect()->route('saas.plan.all', ['error' => 'plan-expired']);
+        }
+        
         $tenantCreatedAt = Carbon::parse($tenant->created_at);
         $isVerified = isset($tenant->is_verified) && ($tenant->is_verified == 1);
         $enjoyedTrialDays = today()->diffInDays($tenantCreatedAt);

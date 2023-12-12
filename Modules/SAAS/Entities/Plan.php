@@ -80,4 +80,9 @@ class Plan extends Model
     {
         return $this->status == 1 ? '<span class="text-success">Active</span>' : '<span class="text-danger">In-Active</span>';
     }
+
+    public function isTrial()
+    {
+        return intval($this->price) === 0;
+    }
 }

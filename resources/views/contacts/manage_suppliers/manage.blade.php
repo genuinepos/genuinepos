@@ -1,18 +1,31 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .card-body { flex: 1 1 auto; padding: 0.4rem 0.4rem; }
+        .card-body {
+            flex: 1 1 auto;
+            padding: 0.4rem 0.4rem;
+        }
     </style>
 @endpush
 @section('title', 'Maange Supplier - ')
 @section('content')
     @push('stylesheets')
-        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
-            .contract_info_area ul li strong{color:#495677}
-            .account_summary_area .heading h5{background:#0F3057;color:white}
-            .contract_info_area ul li strong i {color: #495b77; font-size: 13px;}
+            .contract_info_area ul li strong {
+                color: #495677
+            }
+
+            .account_summary_area .heading h5 {
+                background: #0F3057;
+                color: white
+            }
+
+            .contract_info_area ul li strong i {
+                color: #495b77;
+                font-size: 13px;
+            }
         </style>
     @endpush
     <div class="body-woaper">
@@ -20,9 +33,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-people-arrows"></span>
-                    <h6>{{ __("Manage Supplier") }} - (<strong>{{ $contact->name }}</strong>)</h6>
+                    <h6>{{ __('Manage Supplier') }} - (<strong>{{ $contact->name }}</strong>)</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -30,13 +43,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                     </div>
 
                     <div class="tab_list_area">
                         <div class="btn-group">
                             <a id="tab_btn" data-show="ledger" class="btn btn-sm btn-primary tab_btn tab_active" href="#">
-                                <i class="fas fa-scroll"></i> {{ __("Ledger") }}
+                                <i class="fas fa-scroll"></i> {{ __('Ledger') }}
                             </a>
 
                             <a id="tab_btn" data-show="contract_info_area" class="btn btn-sm btn-primary tab_btn" href="#">
@@ -44,27 +57,27 @@
                             </a>
 
                             <a id="tab_btn" data-show="purchases" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-shopping-bag"></i> {{ __("Purchases") }}
+                                <i class="fas fa-shopping-bag"></i> {{ __('Purchases') }}
                             </a>
 
                             <a id="tab_btn" data-show="purchase_orders" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-shopping-bag"></i> {{ __("Purchases Orders") }}
+                                <i class="fas fa-shopping-bag"></i> {{ __('Purchases Orders') }}
                             </a>
 
                             <a id="tab_btn" data-show="sale" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-shopping-bag"></i> {{ __("Sales") }}
+                                <i class="fas fa-shopping-bag"></i> {{ __('Sales') }}
                             </a>
 
                             <a id="tab_btn" data-show="sales_order" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-shopping-bag"></i> {{ __("Sales Orders") }}
+                                <i class="fas fa-shopping-bag"></i> {{ __('Sales Orders') }}
                             </a>
 
                             <a id="tab_btn" data-show="payments" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="far fa-money-bill-alt"></i> {{ __("Payments") }}
+                                <i class="far fa-money-bill-alt"></i> {{ __('Payments') }}
                             </a>
 
                             <a id="tab_btn" data-show="receipts" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="far fa-money-bill-alt"></i> {{ __("Receipts") }}
+                                <i class="far fa-money-bill-alt"></i> {{ __('Receipts') }}
                             </a>
                         </div>
                     </div>
@@ -78,7 +91,7 @@
                             <div class="col-sm-12 col-lg-9">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -86,14 +99,14 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-lg-3 col-md-3">
-                                                        <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
-                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 @php
                                                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                    $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                    $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                     $branchCode = '-' . $branch->branch_code;
                                                                 @endphp
                                                                 <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
@@ -105,7 +118,7 @@
                                                 @endif
 
                                                 <div class="col-lg-3 col-md-6">
-                                                    <label><strong>{{ __("From Date") }}</strong></label>
+                                                    <label><strong>{{ __('From Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -115,7 +128,7 @@
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3">
-                                                    <label><strong>{{ __("To Date") }}</strong></label>
+                                                    <label><strong>{{ __('To Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -128,32 +141,32 @@
                                                 <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __('Note/Remarks') }} :</strong></label>
                                                     <select name="note" class="form-control" id="ledger_note">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option selected value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option selected value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __('Voucher Details') }} :</strong></label>
                                                     <select name="voucher_details" class="form-control" id="ledger_voucher_details">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __('Transaction Details') }} :</strong></label>
                                                     <select name="transaction_details" class="form-control" id="ledger_transaction_details">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3">
                                                     <label><strong>{{ __('Inventory List') }} :</strong></label>
                                                     <select name="inventory_list" class="form-control" id="ledger_inventory_list">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
@@ -161,12 +174,12 @@
                                                     <div class="row align-items-end">
                                                         <div class="col-6">
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printLedger"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printLedger"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -184,21 +197,21 @@
                                         <table id="ledger-table" class="display data_tbl data__table ledger_table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <tr>
-                                                        <th>{{ __("Date") }}</th>
-                                                        <th>{{ __("Particulars") }}</th>
-                                                        <th>{{ __('Voucher Type') }}</th>
-                                                        <th>{{ __('Voucher No') }}</th>
-                                                        <th>{{ __("Debit") }}</th>
-                                                        <th>{{ __("Credit") }}</th>
-                                                        <th>{{ __("Running Balance") }}</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>{{ __('Date') }}</th>
+                                                    <th>{{ __('Particulars') }}</th>
+                                                    <th>{{ __('Voucher Type') }}</th>
+                                                    <th>{{ __('Voucher No') }}</th>
+                                                    <th>{{ __('Debit') }}</th>
+                                                    <th>{{ __('Credit') }}</th>
+                                                    <th>{{ __('Running Balance') }}</th>
+                                                </tr>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
                                                     <th id="ledger_table_total_debit" class="text-white text-end"></th>
                                                     <th id="ledger_table_total_credit" class="text-white text-end"></th>
                                                     <th id="ledger_table_current_balance" class="text-white text-end"></th>
@@ -215,25 +228,25 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong>{{ __("Name") }}</strong></li>
+                                    <li><strong>{{ __('Name') }}</strong></li>
                                     <li><span class="name">{{ $contact->name }}</span></li><br>
-                                    <li><strong><i class="fas fa-map-marker-alt"></i> {{ __("Address") }}</strong></li>
+                                    <li><strong><i class="fas fa-map-marker-alt"></i> {{ __('Address') }}</strong></li>
                                     <li><span class="address">{{ $contact->address }}</span></li><br>
-                                    <li><strong><i class="fas fa-briefcase"></i> {{ __("Business") }}</strong></li>
+                                    <li><strong><i class="fas fa-briefcase"></i> {{ __('Business') }}</strong></li>
                                     <li><span class="business">{{ $contact->business_name }}</span></li>
                                 </ul>
                             </div>
 
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong><i class="fas fa-phone-square"></i> {{ __("Phone") }}</strong></li>
+                                    <li><strong><i class="fas fa-phone-square"></i> {{ __('Phone') }}</strong></li>
                                     <li><span class="phone">{{ $contact->phone }}</span></li>
                                 </ul>
                             </div>
 
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
-                                    <li><strong><i class="fas fa-info"></i> {{ __("Tax Number") }}</strong></li>
+                                    <li><strong><i class="fas fa-info"></i> {{ __('Tax Number') }}</strong></li>
                                     <li><span class="tax_number">{{ $contact->tax_number }}</span></li>
                                 </ul>
                             </div>
@@ -249,7 +262,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -259,17 +272,17 @@
                                                     <div class="row">
                                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                    <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                             $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
                                                                         </option>
                                                                     @endforeach
@@ -278,9 +291,9 @@
                                                         @endif
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("Payment Status") }}</strong></label>
+                                                            <label><strong>{{ __('Payment Status') }}</strong></label>
                                                             <select name="payment_status" id="purchases_payment_status" class="form-control">
-                                                                <option value="">{{ __("All") }}</option>
+                                                                <option value="">{{ __('All') }}</option>
                                                                 @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
                                                                     <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
                                                                 @endforeach
@@ -290,7 +303,7 @@
 
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("From Date") }}</strong></label>
+                                                            <label><strong>{{ __('From Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -300,7 +313,7 @@
                                                         </div>
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("To Date") }}</strong></label>
+                                                            <label><strong>{{ __('To Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -316,12 +329,12 @@
                                                     <div class="row align-items-end">
                                                         <div class="col-md-7">
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-5">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printPurchasesReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printPurchasesReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -339,23 +352,23 @@
                                         <table id="purchases-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
                                                     <th>{{ __('P.Invoice ID') }}</th>
-                                                    <th>{{ __("Shop/Business") }}</th>
-                                                    <th>{{ __("Supplier") }}</th>
-                                                    <th>{{ __("Payment Status") }}</th>
-                                                    <th>{{ __("Total Purchased Amount") }}</th>
-                                                    <th>{{ __("Paid") }}</th>
-                                                    <th>{{ __("Return") }}</th>
-                                                    <th>{{ __("Due") }}</th>
-                                                    <th>{{ __("Created By") }}</th>
+                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ __('Supplier') }}</th>
+                                                    <th>{{ __('Payment Status') }}</th>
+                                                    <th>{{ __('Total Purchased Amount') }}</th>
+                                                    <th>{{ __('Paid') }}</th>
+                                                    <th>{{ __('Return') }}</th>
+                                                    <th>{{ __('Due') }}</th>
+                                                    <th>{{ __('Created By') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                     <th id="purchases_total_purchase_amount" class="text-white"></th>
                                                     <th id="purchases_paid" class="text-white"></th>
                                                     <th id="purchases_purchase_return_amount" class="text-white"></th>
@@ -379,7 +392,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -389,17 +402,17 @@
                                                     <div class="row">
                                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                    <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                             $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
                                                                         </option>
                                                                     @endforeach
@@ -408,9 +421,9 @@
                                                         @endif
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("Payment Status") }}</strong></label>
+                                                            <label><strong>{{ __('Payment Status') }}</strong></label>
                                                             <select name="payment_status" id="purchases_orders_payment_status" class="form-control">
-                                                                <option value="">{{ __("All") }}</option>
+                                                                <option value="">{{ __('All') }}</option>
                                                                 @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
                                                                     <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
                                                                 @endforeach
@@ -420,7 +433,7 @@
 
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("From Date") }}</strong></label>
+                                                            <label><strong>{{ __('From Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -430,7 +443,7 @@
                                                         </div>
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("To Date") }}</strong></label>
+                                                            <label><strong>{{ __('To Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -446,12 +459,12 @@
                                                     <div class="row align-items-end">
                                                         <div class="col-md-7">
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-5">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printPurchaseOrdersReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printPurchaseOrdersReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -469,23 +482,23 @@
                                         <table id="purchase-orders-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
                                                     <th>{{ __('P/o ID') }}</th>
-                                                    <th>{{ __("Shop/Business") }}</th>
-                                                    <th>{{ __("Supplier") }}</th>
-                                                    <th>{{ __("Created By") }}</th>
-                                                    <th>{{ __("Receiving Status") }}</th>
-                                                    <th>{{ __("Payment Status") }}</th>
-                                                    <th>{{ __("Total Ordered Amount") }}</th>
-                                                    <th>{{ __("Paid") }}</th>
-                                                    <th>{{ __("Due") }}</th>
+                                                    <th>{{ __('Shop/Business') }}</th>
+                                                    <th>{{ __('Supplier') }}</th>
+                                                    <th>{{ __('Created By') }}</th>
+                                                    <th>{{ __('Receiving Status') }}</th>
+                                                    <th>{{ __('Payment Status') }}</th>
+                                                    <th>{{ __('Total Ordered Amount') }}</th>
+                                                    <th>{{ __('Paid') }}</th>
+                                                    <th>{{ __('Due') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="8" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
                                                     <th id="purchase_orders_total_purchase_amount" class="text-white text-end"></th>
                                                     <th id="purchase_orders_paid" class="text-white text-end"></th>
                                                     <th id="purchase_orders_due" class="text-white text-end"></th>
@@ -507,7 +520,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -517,18 +530,18 @@
                                                     <div class="row">
                                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                    <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                             $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                            {{  $branchName.$areaName.$branchCode }}
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                            {{ $branchName . $areaName . $branchCode }}
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
@@ -536,9 +549,9 @@
                                                         @endif
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("Payment Status") }}</strong></label>
+                                                            <label><strong>{{ __('Payment Status') }}</strong></label>
                                                             <select name="payment_status" id="sales_payment_status" class="form-control">
-                                                                <option value="">{{ __("All") }}</option>
+                                                                <option value="">{{ __('All') }}</option>
                                                                 @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
                                                                     <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
                                                                 @endforeach
@@ -548,7 +561,7 @@
 
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("From Date") }}</strong></label>
+                                                            <label><strong>{{ __('From Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -558,7 +571,7 @@
                                                         </div>
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("To Date") }}</strong></label>
+                                                            <label><strong>{{ __('To Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -574,12 +587,12 @@
                                                     <div class="row align-items-end">
                                                         <div class="col-md-7">
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-5">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printSalesReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printSalesReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -597,25 +610,25 @@
                                         <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
-                                                    <th>{{ __("Invoice ID") }}</th>
-                                                    <th>{{ __("Shop") }}</th>
-                                                    <th>{{ __("Customer") }}</th>
-                                                    <th>{{ __("Payment Status") }}</th>
-                                                    <th>{{ __("Total Item") }}</th>
-                                                    <th>{{ __("Total Qty") }}</th>
-                                                    <th>{{ __("Total Invoice Amt") }}</th>
-                                                    <th>{{ __("Received Amount") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
+                                                    <th>{{ __('Invoice ID') }}</th>
+                                                    <th>{{ __('Shop') }}</th>
+                                                    <th>{{ __('Customer') }}</th>
+                                                    <th>{{ __('Payment Status') }}</th>
+                                                    <th>{{ __('Total Item') }}</th>
+                                                    <th>{{ __('Total Qty') }}</th>
+                                                    <th>{{ __('Total Invoice Amt') }}</th>
+                                                    <th>{{ __('Received Amount') }}</th>
                                                     <th>{{ __('Return') }}</th>
-                                                    <th>{{ __("Due") }}</th>
-                                                    <th>{{ __("Created By") }}</th>
+                                                    <th>{{ __('Due') }}</th>
+                                                    <th>{{ __('Created By') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
                                                     <th id="sales_total_item" class="text-white text-end"></th>
                                                     <th id="sales_total_qty" class="text-white text-end"></th>
                                                     <th id="sales_total_invoice_amount" class="text-white text-end"></th>
@@ -641,7 +654,7 @@
                             <div class="col-sm-12 col-lg-8">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -651,17 +664,17 @@
                                                     <div class="row">
                                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                             <div class="col-lg-6 col-md-6">
-                                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
-                                                                    <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                    <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                    <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                     @foreach ($branches as $branch)
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                             $branchCode = '-' . $branch->branch_code;
                                                                         @endphp
-                                                                        <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                             {{ $branchName . $areaName . $branchCode }}
                                                                         </option>
                                                                     @endforeach
@@ -670,9 +683,9 @@
                                                         @endif
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("Payment Status") }}</strong></label>
+                                                            <label><strong>{{ __('Payment Status') }}</strong></label>
                                                             <select name="payment_status" id="sales_order_payment_status" class="form-control">
-                                                                <option value="">{{ __("All") }}</option>
+                                                                <option value="">{{ __('All') }}</option>
                                                                 @foreach (\App\Enums\PaymentStatus::cases() as $paymentStatus)
                                                                     <option value="{{ $paymentStatus->value }}">{{ $paymentStatus->name }}</option>
                                                                 @endforeach
@@ -682,7 +695,7 @@
 
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("From Date") }}</strong></label>
+                                                            <label><strong>{{ __('From Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -692,7 +705,7 @@
                                                         </div>
 
                                                         <div class="col-lg-6 col-md-6">
-                                                            <label><strong>{{ __("To Date") }}</strong></label>
+                                                            <label><strong>{{ __('To Date') }}</strong></label>
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -708,12 +721,12 @@
                                                     <div class="row align-items-end">
                                                         <div class="col-md-7">
                                                             <div class="input-group">
-                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-md-5">
-                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printSalesOrderReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="printSalesOrderReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -731,24 +744,24 @@
                                         <table id="sales-order-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
-                                                    <th>{{ __("Order ID") }}</th>
-                                                    <th>{{ __("Shop") }}</th>
-                                                    <th>{{ __("Customer") }}</th>
-                                                    <th>{{ __("Payment Status") }}</th>
-                                                    <th>{{ __("Total Item") }}</th>
-                                                    <th>{{ __("Total Qty") }}</th>
-                                                    <th>{{ __("Total Ordered Amt") }}</th>
-                                                    <th>{{ __("Advance Received") }}</th>
-                                                    <th>{{ __("Due") }}</th>
-                                                    <th>{{ __("Created By") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
+                                                    <th>{{ __('Order ID') }}</th>
+                                                    <th>{{ __('Shop') }}</th>
+                                                    <th>{{ __('Customer') }}</th>
+                                                    <th>{{ __('Payment Status') }}</th>
+                                                    <th>{{ __('Total Item') }}</th>
+                                                    <th>{{ __('Total Qty') }}</th>
+                                                    <th>{{ __('Total Ordered Amt') }}</th>
+                                                    <th>{{ __('Advance Received') }}</th>
+                                                    <th>{{ __('Due') }}</th>
+                                                    <th>{{ __('Created By') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
                                                     <th id="sales_order_total_item" class="text-white text-end"></th>
                                                     <th id="sales_order_total_qty" class="text-white text-end"></th>
                                                     <th id="sales_order_total_invoice_amount" class="text-white text-end"></th>
@@ -773,7 +786,7 @@
                             <div class="col-sm-12 col-lg-9">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -784,17 +797,17 @@
                                                         <div class="form-group row align-items-end">
                                                             @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                    <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
-                                                                        <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                        <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                        <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                         @foreach ($branches as $branch)
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                                 $branchCode = '-' . $branch->branch_code;
                                                                             @endphp
-                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                            <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                                 {{ $branchName . $areaName . $branchCode }}
                                                                             </option>
                                                                         @endforeach
@@ -803,7 +816,7 @@
                                                             @endif
 
                                                             <div class="col-lg-3 col-md-6">
-                                                                <label><strong>{{ __("From Date") }}</strong></label>
+                                                                <label><strong>{{ __('From Date') }}</strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -813,7 +826,7 @@
                                                             </div>
 
                                                             <div class="col-lg-3 col-md-6">
-                                                                <label><strong>{{ __("To Date") }}</strong></label>
+                                                                <label><strong>{{ __('To Date') }}</strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -825,11 +838,11 @@
                                                             <div class="col-lg-3 col-md-6">
                                                                 <div class="row align-items-end">
                                                                     <div class="col-md-6">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                                     </div>
 
                                                                     <div class="col-md-6">
-                                                                        <a href="#" class="btn btn-sm btn-primary" id="printPaymentReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                                        <a href="#" class="btn btn-sm btn-primary" id="printPaymentReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -842,7 +855,7 @@
                                                 <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <a href="{{ route('payments.create', ['debitAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addPayment"><i class="far fa-money-bill-alt text-white"></i> {{ __("Add Payment") }}</a>
+                                                            <a href="{{ route('payments.create', ['debitAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addPayment"><i class="far fa-money-bill-alt text-white"></i> {{ __('Add Payment') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -860,26 +873,26 @@
                                         <table id="payments-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Voucher') }}</th>
-                                                    <th>{{ __("Shop/Business") }}</th>
+                                                    <th>{{ __('Shop/Business') }}</th>
                                                     <th>{{ __('Reference') }}</th>
                                                     <th>{{ __('Remarks') }}</th>
                                                     {{-- <th>{{ __("Received From") }}</th> --}}
-                                                    <th>{{ __("Paid From") }}</th>
-                                                    <th>{{ __("Type/Method") }}</th>
-                                                    <th>{{ __("Trans. No") }}</th>
-                                                    <th>{{ __("Cheque No") }}</th>
+                                                    <th>{{ __('Paid From') }}</th>
+                                                    <th>{{ __('Type/Method') }}</th>
+                                                    <th>{{ __('Trans. No') }}</th>
+                                                    <th>{{ __('Cheque No') }}</th>
                                                     {{-- <th>{{ __("Cheque S/L No") }}</th> --}}
-                                                    <th>{{ __("Paid Amount") }}</th>
+                                                    <th>{{ __('Paid Amount') }}</th>
                                                     {{-- <th>{{ __("Created By") }}</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                     <th id="payments_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>
@@ -900,7 +913,7 @@
                             <div class="col-sm-12 col-lg-9">
                                 <div class="account_summary_area">
                                     <div class="heading py-1">
-                                        <h5 class="py-1 pl-1 text-center">{{ __("Filter Area") }}</h5>
+                                        <h5 class="py-1 pl-1 text-center">{{ __('Filter Area') }}</h5>
                                     </div>
 
                                     <div class="account_summary_table">
@@ -911,17 +924,17 @@
                                                         <div class="form-group row align-items-end">
                                                             @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                                 <div class="col-lg-3 col-md-6">
-                                                                    <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                                                    <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>
-                                                                        <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                                        <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                        <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                         @foreach ($branches as $branch)
                                                                             @php
                                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                                 $branchCode = '-' . $branch->branch_code;
                                                                             @endphp
-                                                                            <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
+                                                                            <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
                                                                                 {{ $branchName . $areaName . $branchCode }}
                                                                             </option>
                                                                         @endforeach
@@ -930,7 +943,7 @@
                                                             @endif
 
                                                             <div class="col-lg-3 col-md-6">
-                                                                <label><strong>{{ __("From Date") }}</strong></label>
+                                                                <label><strong>{{ __('From Date') }}</strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -940,7 +953,7 @@
                                                             </div>
 
                                                             <div class="col-lg-3 col-md-6">
-                                                                <label><strong>{{ __("To Date") }}</strong></label>
+                                                                <label><strong>{{ __('To Date') }}</strong></label>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -952,11 +965,11 @@
                                                             <div class="col-lg-3 col-md-6">
                                                                 <div class="row align-items-end">
                                                                     <div class="col-md-6">
-                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                                     </div>
 
                                                                     <div class="col-md-6">
-                                                                        <a href="#" class="btn btn-sm btn-primary" id="printReceiptReport"><i class="fas fa-print"></i> {{ __("Print") }}</a>
+                                                                        <a href="#" class="btn btn-sm btn-primary" id="printReceiptReport"><i class="fas fa-print"></i> {{ __('Print') }}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -969,7 +982,7 @@
                                                 <div class="col-md-12 col-sm-12 col-lg-12 d-md-block d-flex gap-2">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <a href="{{ route('receipts.create', ['creditAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addReceipt"><i class="far fa-money-bill-alt text-white"></i> {{ __("Add Receipt") }}</a>
+                                                            <a href="{{ route('receipts.create', ['creditAccountId' => $contact?->account?->id]) }}" class="btn btn-sm btn-success" id="addReceipt"><i class="far fa-money-bill-alt text-white"></i> {{ __('Add Receipt') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -987,26 +1000,26 @@
                                         <table id="receipts-table" class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ __("Action") }}</th>
-                                                    <th>{{ __("Date") }}</th>
+                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Voucher') }}</th>
-                                                    <th>{{ __("Shop/Business") }}</th>
+                                                    <th>{{ __('Shop/Business') }}</th>
                                                     <th>{{ __('Reference') }}</th>
                                                     <th>{{ __('Remarks') }}</th>
                                                     {{-- <th>{{ __("Received From") }}</th> --}}
-                                                    <th>{{ __("Received To") }}</th>
-                                                    <th>{{ __("Type/Method") }}</th>
-                                                    <th>{{ __("Trans. No") }}</th>
-                                                    <th>{{ __("Cheque No") }}</th>
+                                                    <th>{{ __('Received To') }}</th>
+                                                    <th>{{ __('Type/Method') }}</th>
+                                                    <th>{{ __('Trans. No') }}</th>
+                                                    <th>{{ __('Cheque No') }}</th>
                                                     {{-- <th>{{ __("Cheque S/L No") }}</th> --}}
-                                                    <th>{{ __("Received Amount") }}</th>
+                                                    <th>{{ __('Received Amount') }}</th>
                                                     {{-- <th>{{ __("Created By") }}</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                     <th id="receipt_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>

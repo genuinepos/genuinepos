@@ -151,7 +151,7 @@ class PurchaseOrderProductReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
                 ->editColumn('ordered_quantity', function ($row) {

@@ -42,7 +42,7 @@
                                 <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                             @else
 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -79,7 +79,7 @@
                                 @if ($purchase->branch)
                                     {!! $purchase->branch->name.' '.$purchase->branch->branch_code.' <b>(BL)</b>' !!}
                                 @else
-                                    {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
+                                    {{ $generalSettings['business__business_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
 
@@ -91,7 +91,7 @@
                                     {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
                                     (<b>B.L</b>)
                                 @else
-                                    {{ $generalSettings['business__shop_name'] }} (<b>HO</b>)
+                                    {{ $generalSettings['business__business_name'] }} (<b>HO</b>)
                                 @endif
                             </li>
 

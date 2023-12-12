@@ -12,7 +12,7 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-basket"></span>
-                                <h5>{{ __("Purchases") }}</h5>
+                                <h5>{{ __('Purchases') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
                         </div>
@@ -27,19 +27,18 @@
                                             <div class="form-group row">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-4">
-                                                        <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                        <select name="branch_id"
-                                                            class="form-control select2" id="branch_id" autofocus>
+                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                        <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                         $branchCode = '-' . $branch->branch_code;
                                                                     @endphp
-                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                    {{ $branchName . $areaName . $branchCode }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -47,17 +46,17 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Supplier") }}</strong></label>
+                                                    <label><strong>{{ __('Supplier') }}</strong></label>
                                                     <select name="supplier_account_id" class="form-control select2" id="supplier_account_id" autofocus>
-                                                        <option value="">{{ __("All") }}</option>
+                                                        <option value="">{{ __('All') }}</option>
                                                         @foreach ($supplierAccounts as $supplierAccount)
-                                                            <option data-supplier_account_name="{{ $supplierAccount->name.'/'.$supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
+                                                            <option data-supplier_account_name="{{ $supplierAccount->name . '/' . $supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("From Date") }}</strong></label>
+                                                    <label><strong>{{ __('From Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -69,7 +68,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("To Date") }}</strong></label>
+                                                    <label><strong>{{ __('To Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -84,7 +83,7 @@
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
                                                         <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                            <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                            <i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -100,9 +99,9 @@
                                 <div class="col-10">
                                     <h6>{{ __('List Of Purchases') }}</h6>
                                 </div>
-                                @if(auth()->user()->can('purchase_add'))
+                                @if (auth()->user()->can('purchase_add'))
                                     <div class="col-2 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -115,23 +114,23 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Action") }}</th>
-                                                <th>{{ __("Date") }}</th>
+                                                <th>{{ __('Action') }}</th>
+                                                <th>{{ __('Date') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
-                                                <th>{{ __("Shop/Business") }}</th>
-                                                <th>{{ __("Supplier") }}</th>
-                                                <th>{{ __("Payment Status") }}</th>
-                                                <th>{{ __("Total Purchased Amount") }}</th>
-                                                <th>{{ __("Paid") }}</th>
-                                                <th>{{ __("Return") }}</th>
-                                                <th>{{ __("Due") }}</th>
-                                                <th>{{ __("Created By") }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ __('Supplier') }}</th>
+                                                <th>{{ __('Payment Status') }}</th>
+                                                <th>{{ __('Total Purchased Amount') }}</th>
+                                                <th>{{ __('Paid') }}</th>
+                                                <th>{{ __('Return') }}</th>
+                                                <th>{{ __('Due') }}</th>
+                                                <th>{{ __('Created By') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                 <th id="total_purchase_amount" class="text-white"></th>
                                                 <th id="paid" class="text-white"></th>
                                                 <th id="purchase_return_amount" class="text-white"></th>
@@ -168,16 +167,39 @@
 
         var purchasesTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
             ],
             "processing": true,
             "serverSide": true,
             //aaSorting: [[0, 'asc']],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('purchases.index') }}",
                 "data": function(d) {
@@ -188,20 +210,62 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columnDefs: [{"targets": [0, 5, 6],"orderable": false,"searchable": false}],
-            columns: [
-                {data: 'action'},
-                {data: 'date', name: 'date'},
-                {data: 'invoice_id',name: 'invoice_id', className: 'fw-bold'},
-                {data: 'branch',name: 'branches.name'},
-                {data: 'supplier_name', name: 'suppliers.name'},
-                {data: 'payment_status',name: 'payment_status', className: 'fw-bold'},
-                {data: 'total_purchase_amount',name: 'total_purchase_amount', className: 'text-end fw-bold'},
-                {data: 'paid',name: 'paid', className: 'text-end fw-bold'},
-                {data: 'purchase_return_amount',name: 'purchase_return_amount', className: 'text-end fw-bold'},
-                {data: 'due',name: 'due', className: 'text-end fw-bold'},
-                {data: 'created_by',name: 'created_by.name'},
-            ],fnDrawCallback: function() {
+            columnDefs: [{
+                "targets": [0, 5, 6],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'invoice_id',
+                    name: 'invoice_id',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'supplier_name',
+                    name: 'suppliers.name'
+                },
+                {
+                    data: 'payment_status',
+                    name: 'payment_status',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'total_purchase_amount',
+                    name: 'total_purchase_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'paid',
+                    name: 'paid',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'purchase_return_amount',
+                    name: 'purchase_return_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'due',
+                    name: 'due',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'created_by',
+                    name: 'created_by.name'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
@@ -231,7 +295,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -253,13 +317,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -267,7 +332,7 @@
             });
         });
 
-        $(document).on('click', '#delete', function(e){
+        $(document).on('click', '#delete', function(e) {
 
             e.preventDefault();
 
@@ -277,8 +342,18 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() { $('#delete_form').submit(); }},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#delete_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
@@ -302,12 +377,13 @@
 
                     purchasesTable.ajax.reload();
                     toastr.error(data);
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -341,7 +417,7 @@
     </script>
 
     <script type="text/javascript">
-         new Litepicker({
+        new Litepicker({
             singleMode: true,
             element: document.getElementById('from_date'),
             dropdowns: {

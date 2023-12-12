@@ -20,6 +20,7 @@ class Branch extends BaseModel
     protected $casts = [
         'expire_at' => 'date',
     ];
+
     public function invoiceSchema()
     {
         return $this->belongsTo(InvoiceSchema::class, 'invoice_schema_id');
@@ -55,9 +56,19 @@ class Branch extends BaseModel
         return $this->hasMany(Warehouse::class);
     }
 
-    public function branchSetting()
+    public function branchSettings()
     {
-        return $this->hasOne(BranchSetting::class, 'branch_id');
+        return $this->hasMany(BranchSetting::class, 'branch_id');
+    }
+
+    public function addSaleInvoiceLayout()
+    {
+        return $this->hasOne(BranchSetting::class, 'branch_id')->where('add_sale_invoice_layout_id', '!=', null);
+    }
+
+    public function posSaleInvoiceLayout()
+    {
+        return $this->hasOne(BranchSetting::class, 'branch_id')->where('pos_sale_invoice_layout_id', '!=', null);
     }
 
     public function openingStockProduct()

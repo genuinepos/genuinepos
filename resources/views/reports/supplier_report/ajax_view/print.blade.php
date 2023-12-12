@@ -26,7 +26,7 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+        <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
         <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         <h6 style="margin-top: 10px;"><b>@lang('menu.supplier_report')</b></h6>
     </div>

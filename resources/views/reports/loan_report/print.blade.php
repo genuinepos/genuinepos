@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if (!auth()->user()->branch_id)
-            <h5>{{ $generalSettings['business__shop_name'] }} <b>(@lang('menu.head_office'))</b></h5>
+            <h5>{{ $generalSettings['business__business_name'] }} <b>(@lang('menu.head_office'))</b></h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
@@ -94,7 +94,7 @@
                             @if ($loan->b_name)
                                 {!! $loan->b_name . '/' . $loan->b_code . '(<b>BL</b>)' !!}
                              @else
-                                {!! $generalSettings['business__shop_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business__business_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 

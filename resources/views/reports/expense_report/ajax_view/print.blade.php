@@ -30,7 +30,7 @@
                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
             @else
 
-                <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__shop_name'] }}</h4>
+                <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
             @endif
         @elseif($branch_id == 'NULL')
             @if ($generalSettings['business__business_logo'] != null)
@@ -38,7 +38,7 @@
                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
             @else
 
-                <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__shop_name'] }}</h4>
+                <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
             @endif
         @else
             @php
@@ -61,14 +61,14 @@
     <div class="col-8 text-end">
         @if ($branch_id == '')
 
-            <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__shop_name'] }}</h5>
+            <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h5>
             <p class="text-uppercase fw-bold">@lang('menu.all_business_location')</p>
             <p>{{ $generalSettings['business__address'] }}</p>
             <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>
             <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</p>
         @elseif ($branch_id == 'NULL')
 
-            <h5 class="text-uppercase">{{ $generalSettings['business__shop_name'] }}</h5>
+            <h5 class="text-uppercase">{{ $generalSettings['business__business_name'] }}</h5>
             <p>{{ $generalSettings['business__address'] }}</p>
             <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>
             <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</p>
@@ -189,7 +189,7 @@
                             @if ($ex->branch_name)
                                 {!! $ex->branch_name . '/' . $ex->branch_code . '(<b>B.L.</b>)' !!}
                             @else
-                                {!! $generalSettings['business__shop_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business__business_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 

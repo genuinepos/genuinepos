@@ -128,7 +128,7 @@ class PurchaseProductService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('quantity', function ($row) {

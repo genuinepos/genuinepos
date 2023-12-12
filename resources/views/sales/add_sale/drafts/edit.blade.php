@@ -78,8 +78,8 @@
         }
 
         /*.select2-selection:focus {
-                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                } */
+                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                    } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -117,7 +117,7 @@
 @section('title', 'Edit Draft - ')
 @section('content')
     @php
-       $generalProductSearchService = new App\Services\GeneralSearch\GeneralProductSearchService();
+        $generalProductSearchService = new App\Services\GeneralSearch\GeneralProductSearchService();
 
         $account = $draft?->customer;
         $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
@@ -407,14 +407,12 @@
 
                                                                                 $stockLimit = 0;
                                                                                 if ($saleProduct->warehouse_id) {
-
                                                                                     $stockLimit = DB::table('product_stocks')
                                                                                         ->where('warehouse_id', $saleProduct->warehouse_id)
                                                                                         ->where('product_id', $saleProduct->product_id)
                                                                                         ->where('variant_id', $saleProduct->variant_id)
                                                                                         ->first()->stock;
                                                                                 } else {
-
                                                                                     $stockLimit = DB::table('product_stocks')
                                                                                         ->where('branch_id', $draft->branch_id)
                                                                                         ->where('warehouse_id', null)
@@ -460,7 +458,7 @@
                                                                                             $stockLocationName = $draft?->branch?->name . '(' . $draft?->branch?->area_name;
                                                                                         }
                                                                                     } else {
-                                                                                        $stockLocationName = $generalSettings['business__shop_name'];
+                                                                                        $stockLocationName = $generalSettings['business__business_name'];
                                                                                     }
                                                                                 }
                                                                             @endphp

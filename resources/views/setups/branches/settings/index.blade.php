@@ -70,7 +70,7 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="invoice_layout_settings_form" href="#">{{ __("Invoice Settings") }}</a>
+                                            <a class="menu_btn" data-form="invoice_layout_settings_form" href="#">{{ __("Invoice Layout Settings") }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -108,58 +108,57 @@
                                         </div>
                                     </div>
                                     @csrf
+                                    <input type="hidden" name="branch_type" value="{{ $branch->branch_type }}">
                                     <div class="row">
                                         <div class="col-md-9">
                                             <div class="row">
-
-
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Shop Name") }}</b> <span class="text-danger">*</span></label>
-                                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
+                                                    <label class="fw-bold">{{ __("Shop Name") }} <span class="text-danger">*</span></label>
+                                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
                                                     <span class="error error_branch_name"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Shop ID") }}</b></label>
+                                                    <label class="fw-bold">{{ __("Shop ID") }}</label>
                                                     <input readonly type="text" name="branch_code" class="form-control" id="branch_code" data-next="phone" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
                                                     <span class="error error_branch_code"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Area Name") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("Area Name") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
-                                                    <span class="error error_branch_code"></span>
+                                                    <span class="error error_code"></span>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("Phone") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="phone" class="form-control" id="phone" data-next="alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
                                                     <span class="error error_phone"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Alternative Phone") }}</b> </label>
+                                                    <label class="fw-bold">{{ __("Alternative Phone") }}</label>
                                                     <input type="text" name="alternate_phone_number" class="form-control" id="alternate_phone_number" data-next="country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __("Alternative Phone") }}"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Country") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("Country") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="country" class="form-control" id="country" data-next="state" value="{{ $branch->country }}" placeholder="{{ __("Country") }}"/>
                                                     <span class="error error_country"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("State") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("State") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="state" class="form-control" id="state" data-next="city" value="{{ $branch->state }}" placeholder="{{ __("State") }}" />
                                                     <span class="error error_state"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label> <b>{{ __("City") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("City") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="city" class="form-control" id="city" data-next="zip_code" value="{{ $branch->city }}" placeholder="{{ __("City") }}" />
                                                     <span class="error error_city"></span>
                                                 </div>
@@ -167,32 +166,34 @@
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Zip-Code") }}</b> <span class="text-danger">*</span></label>
+                                                    <label class="fw-bold">{{ __("Zip-Code") }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="zip_code" class="form-control" id="zip_code" data-next="address" value="{{ $branch->zip_code }}" placeholder="Zip code" />
                                                     <span class="error error_code"></span>
                                                 </div>
 
                                                 <div class="col-lg-8 col-md-6">
-                                                    <label><b>{{ __("Address") }}</b></label>
+                                                    <label class="fw-bold">{{ __("Address") }}</label>
                                                     <input required type="text" name="address" class="form-control" id="address" data-next="email" value="{{ $branch->address }}" placeholder="{{ __("Address") }}"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Email") }}</b></label>
+                                                    <label class="fw-bold">{{ __("Email") }}</label>
                                                     <input type="text" name="email" class="form-control" id="email" data-next="website" value="{{ $branch->email }}" placeholder="{{ __("Email address") }}" />
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Website") }}</b></label>
+                                                    <label class="fw-bold">{{ __("Website") }}</label>
                                                     <input type="text" name="website" class="form-control" id="website" data-next="date_format" value="{{ $branch->website }}" placeholder="{{ __("Website Url") }}" />
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-6">
-                                                    <label><b>{{ __("Logo") }}</b> <small class="text-danger">{{ __("Logo size 200px * 70px") }}</small></label>
-                                                    <input type="file" name="logo" class="form-control " id="logo"/>
-                                                </div>
+                                                @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
+                                                    <div class="col-lg-4 col-md-6">
+                                                        <label class="fw-bold">{{ __("Logo") }} <small class="text-danger">{{ __("Logo size 200px * 70px") }}</small></label>
+                                                        <input type="file" name="logo" class="form-control " id="logo"/>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -223,7 +224,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                                    <select required name="timezone" class="form-control select2" id="timezone" data-next="branch_stock_accounting_method">
+                                                    <select required name="timezone" class="form-control select2" id="timezone" data-next="stock_accounting_method">
                                                         <option value="">{{ __('Time Zone') }}</option>
                                                         @foreach ($timezones as $key => $timezone)
                                                             <option {{ ($branch->timezone ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
@@ -233,45 +234,47 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="stock_accounting_method_field">
-                                                <div class="col-md-12">
-                                                    <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
-                                                    <select name="stock_accounting_method" class="form-control" id="stock_accounting_method" data-next="branch_account_start_date">
-                                                        @php
-                                                            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
-                                                        @endphp
-                                                        @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                                            <option {{ $branch->stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <span class="error error_financial_year_start"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="account_start_date_field">
-                                                <div class="col-md-12">
-                                                    <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                                    <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
-                                                    <span class="error error_account_start_date"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="financial_year_start_month_field">
-                                                <div class="col-md-12">
-                                                    <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
-                                                    <div class="input-group">
-                                                        <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="branch_save_changes">
+                                            @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
+                                                <div class="row mt-1" id="stock_accounting_method_field">
+                                                    <div class="col-md-12">
+                                                        <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
+                                                        <select name="stock_accounting_method" class="form-control" id="stock_accounting_method" data-next="account_start_date">
                                                             @php
-                                                                $months = \App\Enums\Months::cases();
+                                                                $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
                                                             @endphp
-                                                            @foreach ($months as $month)
-                                                                <option {{ $branch->financial_year_start_month == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                                            @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
+                                                                <option {{ $branch->stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="error error_financial_year_start"></span>
                                                     </div>
-                                                    <span class="error error_financial_year_start_month"></span>
                                                 </div>
-                                            </div>
+
+                                                <div class="form-group row mt-1" id="account_start_date_field">
+                                                    <div class="col-md-12">
+                                                        <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                                        <span class="error error_account_start_date"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mt-1" id="financial_year_start_month_field">
+                                                    <div class="col-md-12">
+                                                        <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
+                                                        <div class="input-group">
+                                                            <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="branch_save_changes">
+                                                                @php
+                                                                    $months = \App\Enums\Months::cases();
+                                                                @endphp
+                                                                @foreach ($months as $month)
+                                                                    <option {{ $branch->financial_year_start_month == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <span class="error error_financial_year_start_month"></span>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -653,7 +656,7 @@
                                     </div>
                                 </form>
 
-                                <form id="invoice_layout_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.prefix', $branch->id) }}" method="post">
+                                <form id="invoice_layout_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.invoice.layout', $branch->id) }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
                                             <h6 class="text-primary">{{ __("Invoice Layout Settings") }}</h6>
@@ -683,7 +686,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button prefix_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="button" class="btn loading_button invoice_layout_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
@@ -693,13 +696,24 @@
                                 <form id="system_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.system', $branch->id) }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">@lang('menu.system_settings')</h6>
+                                            <h6 class="text-primary">{{ __("System Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Default datatable page entries") }}</strong></label>
+                                            <label class="fw-bold">{{ __("Theme Color") }}</label>
+                                            <select name="theme_color" class="form-control" id="theme_color">
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">{{ __("Default Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">{{ __("Red Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">{{ __("Blue Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">{{ __("Light Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">{{ __("Orange Theme") }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="fw-bold">{{ __("Default datatable page entries") }}</label>
                                             <select name="datatable_page_entry" class="form-control" id="datatable_page_entry">
                                                 <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 10 ? 'SELECTED' : '' }} value="10">{{ __("10") }}</option>
                                                 <option {{ ($generalSettings['system__datatables_page_entry'] ?? 0) == 25 ? 'SELECTED' : '' }} value="25">{{ __("25") }}</option>
@@ -844,7 +858,15 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }} name="stock_adjustment" autocomplete="off"> &nbsp; <b>{{ __("Stock Adjustments") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} name="service" autocomplete="off"> &nbsp; <b>{{ __('Service') }}</b>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <p class="checkbox_input_wrap">
+                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustments'] == '1' ? 'CHECKED' : '' }} name="stock_adjustments" autocomplete="off"> &nbsp; <b>{{ __("Stock Adjustments") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -879,9 +901,9 @@
 
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
-                                            <div class="row ">
+                                            <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__requisite'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -920,7 +942,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__send_invoice_via_email'] == '1' ? 'CHECKED' : '' }} name="send_invoice_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -928,7 +950,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>{{ __("Send Notification After Sale Via Sms") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__send_notification_via_email'] == '1' ? 'CHECKED' : '' }} name="send_notification_via_email"> &nbsp; <b>{{ __("Send Notification Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -936,7 +958,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__customer_due_reminder_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>{{ __("Custome Remainder Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__customer_due_reminder_via_email'] == '1' ? 'CHECKED' : '' }} name="customer_due_reminder_via_email"> &nbsp; <b>{{ __("Custome Due Remainder Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -946,7 +968,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b> {{ __("Customer Remainder Via Sms") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__user_forget_password_via_email'] == '1' ? 'CHECKED' : '' }} name="user_forget_password_via_email"> &nbsp; <b> {{ __("User Forget Password Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -954,45 +976,12 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b> {{ __("User Forget Password Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Coupon Offer Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__coupon_offer_via_email'] == '1' ? 'CHECKED' : '' }} name="coupon_offer_via_email"> &nbsp; <b>{{ __("Coupon Offer Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Discount Redeemed Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("New Product Arrived Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Weekly News Letter Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
@@ -1015,7 +1004,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="send_inv_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_sms__send_invoice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_invoice_via_sms"> &nbsp; <b>{{ __("Send Invoice After Sale Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -1023,7 +1012,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>{{ __("Send Notification After Sale Via Sms") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_sms__send_notification_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notification_via_sms"> &nbsp; <b>{{ __("Send Notification Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -1031,7 +1020,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="customer_due_reminder_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Customer Remainder Via Sms") }}</b>
+                                                    <input type="checkbox" name="customer_due_reminder_via_sms" {{ $generalSettings['send_sms__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Customer Due Remainder Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -1313,6 +1302,40 @@
 
                     $('.prefix_settings_loading_btn').hide();
 
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $('#invoice_layout_settings_form').on('submit', function(e) {
+            e.preventDefault();
+
+            $('.invoice_layout_settings_loading_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.invoice_layout_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.invoice_layout_settings_loading_btn').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");

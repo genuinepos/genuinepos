@@ -13,7 +13,7 @@ class WorkSpaceTaskController extends Controller
     public function index($workspaceId)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -25,7 +25,7 @@ class WorkSpaceTaskController extends Controller
     public function store(Request $request)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -41,7 +41,7 @@ class WorkSpaceTaskController extends Controller
     public function taskList($workspaceId)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -75,7 +75,7 @@ class WorkSpaceTaskController extends Controller
     public function update(Request $request)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -90,12 +90,12 @@ class WorkSpaceTaskController extends Controller
     public function delete(Request $request, $id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteWorkspaceTask = WorkspaceTask::where('id', $id)->first();
-        if (! is_null($deleteWorkspaceTask)) {
+        if (!is_null($deleteWorkspaceTask)) {
             $deleteWorkspaceTask->delete();
         }
 
@@ -105,7 +105,7 @@ class WorkSpaceTaskController extends Controller
     public function assignUser(Request $request, $id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -120,7 +120,7 @@ class WorkSpaceTaskController extends Controller
     public function changeStatus(Request $request, $id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -135,7 +135,7 @@ class WorkSpaceTaskController extends Controller
     public function changePriority(Request $request, $id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 

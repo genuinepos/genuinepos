@@ -42,7 +42,7 @@
                 $stockLocationName = $purchaseProduct?->purchase?->warehouse->warehouse_name . '/' . $purchaseProduct?->purchase?->warehouse->warehouse_code;
             } else {
 
-                $stockLocationName = $generalSettings['business__shop_name'];
+                $stockLocationName = $generalSettings['business__business_name'];
 
                 if ($purchase->branch) {
 

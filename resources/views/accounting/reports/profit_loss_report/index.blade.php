@@ -37,7 +37,7 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-bill-wave"></span>
-                    <h5>{{ __("Profit/Loss") }}</h5>
+                    <h5>{{ __('Profit/Loss') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
@@ -58,7 +58,7 @@
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" id="branch_id" class="form-control select2" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                             @endforeach
@@ -273,7 +273,7 @@
             var branchId = $(this).val();
 
             $('#child_branch_id').empty();
-            $('#child_branch_id').append('<option data-child_branch_name="" value="">'+"{{ __('All') }}"+'</option>');
+            $('#child_branch_id').append('<option data-child_branch_name="" value="">' + "{{ __('All') }}" + '</option>');
 
             if (branchId == '') {
                 return;
@@ -291,15 +291,16 @@
                     if (branch.child_branches.length > 0) {
 
                         $('#child_branch_id').empty();
-                        $('#child_branch_id').append('<option data-child_branch_name="'+"{{ __('All') }}"+'" value="">'+"{{ __('All') }}"+'</option>');
+                        $('#child_branch_id').append('<option data-child_branch_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
                         $('#child_branch_id').append('<option data-child_branch_name="' + branch.name + '(' + branch.area_name + ')' + '" value="' + branch.id + '">' + branch.name + '(' + branch.area_name + ')' + '</option>');
 
                         $.each(branch.child_branches, function(key, childBranch) {
 
-                            $('#child_branch_id').append('<option data-child_branch_name="' + branch.name + '(' + childBranch.area_name + ')' + '" value="' + childBranch.id + '">' + branch.name + '(' + childBranch.area_name + ')' +'</option>');
+                            $('#child_branch_id').append('<option data-child_branch_name="' + branch.name + '(' + childBranch.area_name + ')' + '" value="' + childBranch.id + '">' + branch.name + '(' + childBranch.area_name + ')' + '</option>');
                         });
                     }
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -349,7 +350,8 @@
                         printDelay: 700,
                         header: null,
                     });
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 

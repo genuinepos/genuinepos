@@ -75,7 +75,7 @@ class AccountLedgerEntryService
                 $accountLedgerService = new \App\Services\Accounts\AccountLedgerService();
                 $type = $accountLedgerService->voucherType($row->voucher_type);
 
-                return $row->voucher_type != 0 ? '<strong>'.$type['name'].'</strong>' : '';
+                return $row->voucher_type != 0 ? '<strong>' . $type['name'] . '</strong>' : '';
             })
 
             ->editColumn('voucher_no', function ($row) {
@@ -84,13 +84,13 @@ class AccountLedgerEntryService
                 $accountLedgerService = new \App\Services\Accounts\AccountLedgerService();
                 $type = $accountLedgerService->voucherType($row->voucher_type);
 
-                return '<a href="'.(! empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#').'" id="details_btn" class="fw-bold">'.$row->{$type['voucher_no']}.'</a>';
+                return '<a href="' . (!empty($type['link']) ? route($type['link'], $row->{$type['details_id']}) : '#') . '" id="details_btn" class="fw-bold">' . $row->{$type['voucher_no']} . '</a>';
             })
-            ->editColumn('debit', fn ($row) => '<span class="debit fw-bold" data-value="'.$row->debit.'">'.($row->debit > 0 ? \App\Utils\Converter::format_in_bdt($row->debit) : '').'</span>')
-            ->editColumn('credit', fn ($row) => '<span class="credit fw-bold" data-value="'.$row->credit.'">'.($row->credit > 0 ? \App\Utils\Converter::format_in_bdt($row->credit) : '').'</span>')
+            ->editColumn('debit', fn ($row) => '<span class="debit fw-bold" data-value="' . $row->debit . '">' . ($row->debit > 0 ? \App\Utils\Converter::format_in_bdt($row->debit) : '') . '</span>')
+            ->editColumn('credit', fn ($row) => '<span class="credit fw-bold" data-value="' . $row->credit . '">' . ($row->credit > 0 ? \App\Utils\Converter::format_in_bdt($row->credit) : '') . '</span>')
             ->editColumn('running_balance', function ($row) {
 
-                return $row->running_balance > 0 ? '<span class="running_balance fw-bold">'.\App\Utils\Converter::format_in_bdt(abs($row->running_balance)).$row->balance_type.'</span>' : '';
+                return $row->running_balance > 0 ? '<span class="running_balance fw-bold">' . \App\Utils\Converter::format_in_bdt(abs($row->running_balance)) . $row->balance_type . '</span>' : '';
             })
             ->rawColumns(['date', 'particulars', 'voucher_type', 'voucher_no', 'debit', 'credit', 'running_balance'])
             ->make(true);
@@ -379,14 +379,14 @@ class AccountLedgerEntryService
 
                 if (auth()->user()?->branch?->parentBranch) {
 
-                    $branchName = auth()->user()?->branch?->parentBranch->name.'('.auth()->user()?->branch?->area_name.')-'.auth()->user()?->branch->branch_code;
+                    $branchName = auth()->user()?->branch?->parentBranch->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
                 } else {
 
-                    $branchName = auth()->user()?->branch?->name.'('.auth()->user()?->branch?->area_name.')-'.auth()->user()?->branch->branch_code;
+                    $branchName = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch->branch_code;
                 }
             } else {
 
-                $branchName = $generalSettings['business__shop_name'].'('.__('Business').')';
+                $branchName = $generalSettings['business__business_name'] . '(' . __('Business') . ')';
             }
         }
 

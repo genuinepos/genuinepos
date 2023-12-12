@@ -66,7 +66,7 @@ class InvoiceLayoutService
                         return $row->branch_name.'-('.$row->branch_code.')';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>'.__('Business').'</b>)';
+                        return $generalSettings['business__business_name'].'(<b>'.__('Business').'</b>)';
                     }
                 }
             })

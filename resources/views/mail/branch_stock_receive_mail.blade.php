@@ -65,7 +65,7 @@
             <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.business_location')(To)</span> </h6>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;">
               <span style="display:block;font-weight:bold;font-size:13px;"> @lang('menu.name') </span>
-              {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}
+              {{ $transfer->branch ? $transfer->branch->name.'/'.$transfer->branch->branch_code : $generalSettings['business__business_name'].'(HO)' }}
             </p>
             <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $transfer->branch ? $transfer->branch->phone : $generalSettings['business__phone'] }}</p>
 

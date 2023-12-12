@@ -153,7 +153,7 @@ class BranchService
             $updateBranch->stock_accounting_method = $request->stock_accounting_method;
             $updateBranch->account_start_date = $request->account_start_date;
             $updateBranch->financial_year_start_month = $request->financial_year_start_month;
-        }else {
+        } else {
 
             $updateBranch->stock_accounting_method = null;
             $updateBranch->account_start_date = null;
@@ -370,7 +370,7 @@ class BranchService
     public function branchName(object $transObject = null): string
     {
         $generalSettings = config('generalSettings');
-        $branchName = $generalSettings['business__shop_name'];
+        $branchName = $generalSettings['business__business_name'];
 
         if (isset($transObject)) {
 

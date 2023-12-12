@@ -17,7 +17,7 @@
                         </div>
 
                         <div class="p-3">
-                            @if ($generalSettings['addons__branches'] == 1)
+
                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                     <div class="row">
                                         <div class="col-md-12">
@@ -30,7 +30,7 @@
                                                                 <label><strong>@lang('menu.business_location') </strong></label>
                                                                 <select name="branch_id"
                                                                     class="form-control submit_able select2" id="branch_id" autofocus>
-                                                                    <option SELECTED value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                                    <option SELECTED value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                                                     @foreach ($branches as $branch)
                                                                         <option value="{{ $branch->id }}">
                                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -54,7 +54,7 @@
                                         </div>
                                     </div>
                                 @endif
-                            @endif
+                       
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -70,7 +70,7 @@
                                                                 {{ auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code }}
                                                             @else
 
-                                                                {{ $generalSettings['business__shop_name'] }}
+                                                                {{ $generalSettings['business__business_name'] }}
                                                             @endif
                                                         </h5>
                                                         <h6 class="mt-2"><strong>@lang('menu.balance_sheet')</h6>

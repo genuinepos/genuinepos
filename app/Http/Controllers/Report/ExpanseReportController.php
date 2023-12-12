@@ -82,7 +82,7 @@ class ExpanseReportController extends Controller
                     if ($row->branch_name) {
                         return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name', function ($row) {

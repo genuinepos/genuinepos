@@ -1,21 +1,74 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text {font-size: 12px !important;}
-        .input-group-text-sale {font-size: 7px !important;}
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
+        .input-group-text-sale {
+            font-size: 7px !important;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
-        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
-        label.col-2,label.col-3,label.col-4,label.col-5,label.col-6 { text-align: right; padding-right: 10px;}
-        .checkbox_input_wrap {text-align: right;}
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
+
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+            margin: 2px 0px;
+        }
+
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
+
+        .selectProduct {
+            background-color: #746e70 !important;
+            color: #fff !important;
+        }
+
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        label.col-2,
+        label.col-3,
+        label.col-4,
+        label.col-5,
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .checkbox_input_wrap {
+            text-align: right;
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 {{-- @section('title', 'Add Transfer Stock (Shop/Business To Shop/Business)') --}}
 @section('title', 'Edit Transfer Stock')
@@ -26,11 +79,11 @@
                 <div class="name-head">
                     <span class="fas fa-exchange-alt"></span>
                     {{-- <h6>{{ __("Add Tranfer Stock (Shop/Business To Shop/Business)") }}</h6> --}}
-                    <h6>{{ __("Edit Tranfer Stock") }}</h6>
+                    <h6>{{ __('Edit Tranfer Stock') }}</h6>
                 </div>
 
                 <div class="col-6">
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Bank") }}</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Bank') }}</a>
                 </div>
             </div>
         </div>
@@ -43,23 +96,19 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-5"><b>{{ __("Sender Shop/Business") }}</b></label>
+                                        <label class="col-5"><b>{{ __('Sender Shop/Business') }}</b></label>
                                         <div class="col-7">
                                             <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                             @php
                                                 $branchName = '';
                                                 if ($transferStock?->senderBranch) {
-
                                                     if ($transferStock?->senderBranch?->parent_branch_id) {
-
-                                                        $branchName = $transferStock?->senderBranch?->parentBranch?->name.'('.$transferStock?->senderBranch?->area_name.')';
-                                                    }else {
-
-                                                        $branchName = $transferStock?->senderBranch?->name.'('.$transferStock?->senderBranch?->area_name.')';
+                                                        $branchName = $transferStock?->senderBranch?->parentBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
+                                                    } else {
+                                                        $branchName = $transferStock?->senderBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     }
-                                                }else{
-
-                                                    $branchName = $generalSettings['business__shop_name'];
+                                                } else {
+                                                    $branchName = $generalSettings['business__business_name'];
                                                 }
                                             @endphp
 
@@ -68,12 +117,12 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-5"><b>{{ __("Send At") }}</b></label>
+                                        <label class="col-5"><b>{{ __('Send At') }}</b></label>
                                         <div class="col-7">
                                             <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
-                                                <option value="">{{ __("Select Warehouse") }}</option>
+                                                <option value="">{{ __('Select Warehouse') }}</option>
                                                 @foreach ($warehouses as $w)
-                                                    <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name.'/'.$w->warehouse_code }}</option>
+                                                    <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -84,19 +133,19 @@
 
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <label class="col-5"><b>{{ __("Receiver Shop/Business") }}</b> <span class="text-danger">*</span></label>
+                                            <label class="col-5"><b>{{ __('Receiver Shop/Business') }}</b> <span class="text-danger">*</span></label>
                                             <div class="col-7">
                                                 <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
-                                                    <option value="" class="fw-bold">{{ __("Select Receiver Shop/Business") }}</option>
-                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                    <option value="" class="fw-bold">{{ __('Select Receiver Shop/Business') }}</option>
+                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option {{ $branch->id == $transferStock->receiver_branch_id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                 $branchCode = '-' . $branch->branch_code;
                                                             @endphp
-                                                            {{ $branchName.$areaName.$branchCode }}
+                                                            {{ $branchName . $areaName . $branchCode }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -105,12 +154,12 @@
                                         </div>
 
                                         <div class="input-group mt-1">
-                                            <label class="col-5"><b>{{ __("Receive At") }}</b></label>
+                                            <label class="col-5"><b>{{ __('Receive At') }}</b></label>
                                             <div class="col-7">
                                                 <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
-                                                    <option value="">{{ __("Select Warehouse") }}</option>
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
                                                     @foreach ($selectedBranchWarehouses as $warehouse)
-                                                        <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
+                                                        <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -120,22 +169,18 @@
                                     @php
                                         $receiverBranch = '';
                                         if ($transferStock?->receiverBranch) {
-
                                             if ($transferStock?->receiverBranch?->parent_branch_id) {
-
-                                                $receiverBranch = $transferStock?->receiverBranch?->parentBranch?->name.'('.$transferStock?->receiverBranch?->area_name.')';
-                                            }else {
-
-                                                $receiverBranch = $transferStock?->receiverBranch?->name.'('.$transferStock?->receiverBranch?->area_name.')';
+                                                $receiverBranch = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
+                                            } else {
+                                                $receiverBranch = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                             }
-                                        }else{
-
-                                            $receiverBranch = $generalSettings['business__shop_name'];
+                                        } else {
+                                            $receiverBranch = $generalSettings['business__business_name'];
                                         }
                                     @endphp
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <label class="col-5"><b>{{ __("Receiver Shop/Business") }}</b></label>
+                                            <label class="col-5"><b>{{ __('Receiver Shop/Business') }}</b></label>
                                             <div class="col-7">
                                                 <input readonly type="text" class="form-control fw-bold" value="{{ $receiverBranch }}" autocomplete="off">
                                                 <input type="hidden" name="receiver_branch_id" class="form-control fw-bold" value="{{ $transferStock->receiver_branch_id ? $transferStock->receiver_branch_id : 'NULL' }}">
@@ -144,9 +189,9 @@
 
                                         @if ($transferStock->receiver_warehouse_id)
                                             <div class="input-group mt-1">
-                                                <label class="col-5"><b>{{ __("Receive At") }}</b></label>
+                                                <label class="col-5"><b>{{ __('Receive At') }}</b></label>
                                                 <div class="col-7">
-                                                    <input readonly type="text" class="form-control fw-bold" value="{{ $transferStock?->receiverWarehouse?->warehouse_name.'-('.$transferStock?->receiverWarehouse->warehouse_code.')' }}" autocomplete="off">
+                                                    <input readonly type="text" class="form-control fw-bold" value="{{ $transferStock?->receiverWarehouse?->warehouse_name . '-(' . $transferStock?->receiverWarehouse->warehouse_code . ')' }}" autocomplete="off">
                                                     <input type="hidden" name="receiver_warehouse_id" class="form-control fw-bold" value="{{ $transferStock->receiver_warehouse_id }}">
                                                 </div>
                                             </div>
@@ -157,7 +202,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label  class="col-5"><b>{{ __("Transfer Date") }}</b></label>
+                                        <label class="col-5"><b>{{ __('Transfer Date') }}</b></label>
                                         <div class="col-7">
                                             <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}" data-next="search_product" autocomplete="off">
                                         </div>
@@ -182,7 +227,7 @@
                                                     </span>
                                                 </div>
 
-                                                <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
+                                                <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                             </div>
 
                                             <div class="select_area">
@@ -202,28 +247,28 @@
                                     </div>
 
                                     <div class="col-xl-2 col-md-6">
-                                        <label class="fw-bold">{{ __("Send Quantity") }}</label>
+                                        <label class="fw-bold">{{ __('Send Quantity') }}</label>
                                         <div class="input-group">
-                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" placeholder="{{ __("Send Quantity") }}" value="0.00">
+                                            <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" placeholder="{{ __('Send Quantity') }}" value="0.00">
                                             <select id="e_unit_id" class="form-control w-40">
-                                                <option value="">{{ __("Unit") }}</option>
+                                                <option value="">{{ __('Unit') }}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-2 col-md-6">
-                                        <label class="fw-bold">{{ __("Unit Cost(Inc. Tax)") }}</label>
-                                        <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_inc_tax" placeholder="{{ __("Unit Cost(Inc. Tax)") }}" value="0.00">
+                                        <label class="fw-bold">{{ __('Unit Cost(Inc. Tax)') }}</label>
+                                        <input type="number" step="any" class="form-control fw-bold" id="e_unit_cost_inc_tax" placeholder="{{ __('Unit Cost(Inc. Tax)') }}" value="0.00">
                                     </div>
 
                                     <div class="col-xl-2 col-md-6">
-                                        <label class="fw-bold">{{ __("Subtotal") }}</label>
+                                        <label class="fw-bold">{{ __('Subtotal') }}</label>
                                         <input readonly type="number" step="any" class="form-control fw-bold" id="e_subtotal" value="0.00" tabindex="-1">
                                     </div>
 
                                     <div class="col-xl-1 col-md-6">
                                         <div class="btn-box-2">
-                                            <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __("Add") }}</a>
+                                            <a href="#" class="btn btn-sm btn-success" id="add_item">{{ __('Add') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -236,11 +281,11 @@
                                                     <table class="display data__table table sale-product-table">
                                                         <thead class="staky">
                                                             <tr>
-                                                                <th class="text-start">{{ __("Product") }}</th>
-                                                                <th class="text-start">{{ __("Send Qty") }}</th>
-                                                                <th class="text-start">{{ __("Unit") }}</th>
-                                                                <th class="text-start">{{ __("Unit Cost Inc. Tax") }}</th>
-                                                                <th class="text-start">{{ __("Subtotal") }}</th>
+                                                                <th class="text-start">{{ __('Product') }}</th>
+                                                                <th class="text-start">{{ __('Send Qty') }}</th>
+                                                                <th class="text-start">{{ __('Unit') }}</th>
+                                                                <th class="text-start">{{ __('Unit Cost Inc. Tax') }}</th>
+                                                                <th class="text-start">{{ __('Subtotal') }}</th>
                                                                 <th><i class="fas fa-trash-alt text-danger"></i></th>
                                                             </tr>
                                                         </thead>
@@ -251,7 +296,6 @@
                                                             @foreach ($transferStock->transferStockProducts as $transferStockProduct)
                                                                 @php
                                                                     if (isset($transferStockProduct->product_id)) {
-
                                                                         $itemUnitsArray[$transferStockProduct->product_id][] = [
                                                                             'unit_id' => $transferStockProduct->product->unit->id,
                                                                             'unit_name' => $transferStockProduct->product->unit->name,
@@ -320,12 +364,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __("Total Item & Qty") }}</b></label>
+                                        <label class=" col-4"><b>{{ __('Total Item & Qty') }}</b></label>
                                         <div class="col-8">
                                             <div class="input-group">
                                                 <input readonly type="number" step="any" name="total_item" class="form-control fw-bold" id="total_item" value="{{ $transferStock->total_item }}" tabindex="-1">
-                                                <input readonly type="number" step="any" name="total_qty"
-                                                class="form-control fw-bold" id="total_qty" value="{{ $transferStock->total_qty }}" tabindex="-1">
+                                                <input readonly type="number" step="any" name="total_qty" class="form-control fw-bold" id="total_qty" value="{{ $transferStock->total_qty }}" tabindex="-1">
                                             </div>
                                         </div>
                                     </div>
@@ -333,7 +376,7 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class=" col-4"><b>{{ __("Total Stock Value") }} :</b> </label>
+                                        <label class=" col-4"><b>{{ __('Total Stock Value') }} :</b> </label>
                                         <div class="col-8">
                                             <input readonly type="number" step="any" name="total_stock_value" class="form-control fw-bold" id="total_stock_value" value="{{ $transferStock->total_stock_value }}" tabindex="-1">
                                         </div>
@@ -342,9 +385,9 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label  class="col-2"><b>{{ __("Note") }}</b></label>
+                                        <label class="col-2"><b>{{ __('Note') }}</b></label>
                                         <div class="col-10">
-                                            <input name="transfer_note" type="text" class="form-control" id="transfer_note" data-next="save_changes" value="{{ $transferStock->transfer_note }}" placeholder="{{ __("Transfer Note") }}">
+                                            <input name="transfer_note" type="text" class="form-control" id="transfer_note" data-next="save_changes" value="{{ $transferStock->transfer_note }}" placeholder="{{ __('Transfer Note') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -357,8 +400,8 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
-                                <button type="button" id="save_changes" class="btn btn-success submit_button">{{ __("Save Changes") }}</button>
+                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
+                                <button type="button" id="save_changes" class="btn btn-success submit_button">{{ __('Save Changes') }}</button>
                             </div>
                         </div>
                     </div>
@@ -373,13 +416,13 @@
     <script>
         var itemUnitsArray = @json($itemUnitsArray);
         // Calculate total amount functionalitie
-        function calculateTotalAmount(){
+        function calculateTotalAmount() {
             var quantities = document.querySelectorAll('#quantity');
             var subtotals = document.querySelectorAll('#subtotal');
             // Update Total Item
             var total_item = 0;
             var total_qty = 0;
-            quantities.forEach(function(qty){
+            quantities.forEach(function(qty) {
 
                 total_item += 1;
                 total_qty += parseFloat(qty.value ? qty.value : 0);
@@ -390,7 +433,7 @@
 
             // Update Net total Amount
             var totalStockValue = 0;
-            subtotals.forEach(function(subtotal){
+            subtotals.forEach(function(subtotal) {
                 totalStockValue += parseFloat(subtotal.value);
             });
 
@@ -402,7 +445,7 @@
 
             return function(callback, ms) {
 
-                clearTimeout (timer);
+                clearTimeout(timer);
                 timer = setTimeout(callback, ms);
             };
         })();
@@ -665,7 +708,7 @@
                 success: function(data) {
                     if ($.isEmptyObject(data.errorMsg)) {
 
-                        var stock =  parseFloat(data.stock) + parseFloat(e_current_qty);
+                        var stock = parseFloat(data.stock) + parseFloat(e_current_qty);
                         if (parseFloat(e_quantity) > parseFloat(stock)) {
 
                             toastr.error("{{ __('Send quantity is exceed the current stock.') }}");
@@ -796,13 +839,13 @@
             $('#e_subtotal').val(parseFloat(0).toFixed(2));
         }
 
-        $(document).on('change', '#sender_warehouse_id',function(e){
+        $(document).on('change', '#sender_warehouse_id', function(e) {
 
             $('#transfer_product_list').empty();
             calculateTotalAmount();
         });
 
-        $(document).on('click', '#remove_product_btn',function(e){
+        $(document).on('click', '#remove_product_btn', function(e) {
 
             e.preventDefault();
 
@@ -810,7 +853,7 @@
 
             calculateTotalAmount();
 
-            setTimeout(function () {
+            setTimeout(function() {
 
                 clearEditItemFileds();
             }, 5);
@@ -890,7 +933,7 @@
         }
 
         //Add purchase request by ajax
-        $('#edit_transfer_branch_to_branch_form').on('submit', function(e){
+        $('#edit_transfer_branch_to_branch_form').on('submit', function(e) {
             e.preventDefault();
 
             var totalItem = $('#total_item').val();
@@ -906,21 +949,22 @@
             var request = $(this).serialize();
 
             $.ajax({
-                url:url,
-                type:'post',
+                url: url,
+                type: 'post',
                 data: request,
-                success:function(data){
+                success: function(data) {
 
                     $('.loading_button').hide();
-                    if(!$.isEmptyObject(data.errorMsg)){
+                    if (!$.isEmptyObject(data.errorMsg)) {
 
-                        toastr.error(data.errorMsg,'ERROR');
+                        toastr.error(data.errorMsg, 'ERROR');
                         return;
                     }
 
                     toastr.success(data);
                     window.location = "{{ url()->previous() }}";
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').hide();
                     $('.error').html('');
@@ -972,19 +1016,19 @@
             }
         });
 
-        setInterval(function(){
+        setInterval(function() {
 
             $('#search_product').removeClass('is-invalid');
         }, 500);
 
-        setInterval(function(){
+        setInterval(function() {
 
             $('#search_product').removeClass('is-valid');
         }, 1000);
 
-        $('body').keyup(function(e){
+        $('body').keyup(function(e) {
 
-            if (e.keyCode == 13 || e.keyCode == 9){
+            if (e.keyCode == 13 || e.keyCode == 9) {
 
                 $(".selectProduct").click();
                 $('#list').empty();
@@ -992,7 +1036,7 @@
             }
         });
 
-        $(document).on('mouseenter', '#list>li>a',function () {
+        $(document).on('mouseenter', '#list>li>a', function() {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });
@@ -1022,7 +1066,8 @@
 
                         $('#receiver_warehouse_id').append('<option value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
                     });
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -1038,7 +1083,7 @@
         });
 
         var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-        var _expectedDateFormat = '' ;
+        var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');

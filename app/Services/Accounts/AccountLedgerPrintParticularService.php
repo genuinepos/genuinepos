@@ -887,7 +887,7 @@ class AccountLedgerPrintParticularService
             }
         } else {
 
-            return $generalSettings['business__shop_name'].'('.__('Business').')';
+            return $generalSettings['business__business_name'].'('.__('Business').')';
         }
     }
 }

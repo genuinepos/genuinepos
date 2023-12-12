@@ -3,17 +3,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Search Product area style */
-        .selectProduct { background-color: #5f555a; color: #fff !important; }
+        .selectProduct {
+            background-color: #5f555a;
+            color: #fff !important;
+        }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
-        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
+        .search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 8px;
+            margin-top: 1px;
+        }
 
-        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
+        .search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 3px;
+        }
 
-        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
+        .search_result ul li a {
+            color: #7b7676;
+            font-size: 12px;
+            display: block;
+            padding: 3px;
+        }
 
-        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
+        .search_result ul li a:hover {
+            color: white;
+            background-color: #ccc1c6;
+        }
+
         /* Search Product area style end */
     </style>
 @endpush
@@ -57,15 +83,15 @@
                                                         <label><strong>{{ __('Shop/Business') }} : </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }} ({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }} ({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                        $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                         $branchCode = '-' . $branch->branch_code;
                                                                     @endphp
-                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                    {{ $branchName . $areaName . $branchCode }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -73,17 +99,17 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Supplier") }} : </strong></label>
+                                                    <label><strong>{{ __('Supplier') }} : </strong></label>
                                                     <select name="supplier_id" class="form-control select2" id="supplier_id">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach ($supplierAccounts as $supplierAccount)
-                                                            <option data-supplier_account_name="{{ $supplierAccount->name.'/'.$supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name.'/'.$supplierAccount->phone }}</option>
+                                                            <option data-supplier_account_name="{{ $supplierAccount->name . '/' . $supplierAccount->phone }}" value="{{ $supplierAccount->id }}">{{ $supplierAccount->name . '/' . $supplierAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Category") }} : </strong></label>
+                                                    <label><strong>{{ __('Category') }} : </strong></label>
                                                     <select name="category_id" class="form-control select2" id="category_id">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach ($categories as $category)
@@ -93,7 +119,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Subcategory") }} : </strong></label>
+                                                    <label><strong>{{ __('Subcategory') }} : </strong></label>
                                                     <select name="sub_category_id" class="form-control select2" id="sub_category_id">
                                                         <option value="">{{ __('Select Category First') }}</option>
                                                     </select>
@@ -102,7 +128,7 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("From Date") }} : </strong></label>
+                                                    <label><strong>{{ __('From Date') }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -112,7 +138,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("To Date") }} : </strong></label>
+                                                    <label><strong>{{ __('To Date') }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -124,7 +150,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-search"></i> {{ __("Filter") }}</button>
+                                                        <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-search"></i> {{ __('Filter') }}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -141,7 +167,7 @@
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
-                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                        <a href="{{ route('purchases.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
                                 @endif
                             </div>
@@ -154,20 +180,20 @@
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Date") }}</th>
-                                                <th>{{ __("Shop/Business") }}</th>
-                                                <th>{{ __("Product") }}</th>
-                                                <th>{{ __("Supplier") }}</th>
+                                                <th>{{ __('Date') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ __('Product') }}</th>
+                                                <th>{{ __('Supplier') }}</th>
                                                 <th>{{ __('P.Invoice ID') }}</th>
-                                                <th>{{ __("Quantity") }}</th>
-                                                <th>{{ __("Unit Cost") }}</th>
-                                                <th>{{ __("Subtotal") }}</th>
+                                                <th>{{ __('Quantity') }}</th>
+                                                <th>{{ __('Unit Cost') }}</th>
+                                                <th>{{ __('Subtotal') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white fw-bold">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                 <th class="text-start text-white fw-bold">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white fw-bold"><span id="total_subtotal"></span></th>
@@ -198,15 +224,29 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: 'Excel', className: 'btn btn-primary' },
-                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary' },
-                { extend: 'print', text: 'Print', className: 'btn btn-primary' },
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn btn-primary'
+                },
             ],
             "processing": true,
             "serverSide": true,
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('purchases.products.index') }}",
                 "data": function(d) {
@@ -220,16 +260,43 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                { data: 'date', name: 'purchases.date' },
-                { data: 'branch', name: 'branch.name' },
-                { data: 'product', name: 'products.name' },
-                { data: 'supplier_name', name: 'suppliers.name as supplier_name' },
-                { data: 'invoice_id', name: 'purchases.invoice_id' },
-                { data: 'quantity', name: 'quantity', className: 'text-end fw-bold' },
-                { data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end fw-bold' },
-                { data: 'subtotal', name: 'subtotal', className: 'text-end fw-bold' },
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'date',
+                    name: 'purchases.date'
+                },
+                {
+                    data: 'branch',
+                    name: 'branch.name'
+                },
+                {
+                    data: 'product',
+                    name: 'products.name'
+                },
+                {
+                    data: 'supplier_name',
+                    name: 'suppliers.name as supplier_name'
+                },
+                {
+                    data: 'invoice_id',
+                    name: 'purchases.invoice_id'
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'net_unit_cost',
+                    name: 'net_unit_cost',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'subtotal',
+                    name: 'subtotal',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'qty');
                 $('#total_qty').text(bdFormat(total_qty));
                 var total_subtotal = sum_table_col($('.data_tbl'), 'subtotal');
@@ -265,13 +332,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -302,7 +370,7 @@
             if (categoryId == '') {
 
                 $('#sub_category_id').empty();
-                $('#sub_category_id').append('<option value="">'+"{{ __('Select Category First') }}"+'</option>');
+                $('#sub_category_id').append('<option value="">' + "{{ __('Select Category First') }}" + '</option>');
             }
 
             var url = "{{ route('subcategories.by.category.id', ':categoryId') }}";
@@ -311,7 +379,7 @@
             $.get(route, function(subCategories) {
 
                 $('#sub_category_id').empty();
-                $('#sub_category_id').append('<option value="">'+"{{ __('All') }}"+'</option>');
+                $('#sub_category_id').append('<option value="">' + "{{ __('All') }}" + '</option>');
                 $.each(subCategories, function(key, val) {
 
                     $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
@@ -387,7 +455,7 @@
 
             var url = "{{ route('general.product.search.by.only.name', ':keyword', ':branchId') }}";
             var route = url.replace(':keyword', keyword);
-                route = route.replace(':branchId', branchId);
+            route = route.replace(':branchId', branchId);
 
             $.ajax({
                 url: route,

@@ -29,7 +29,7 @@
                      <div class="col-md-4 text-left">
                          <ul class="list-unstyled">
                              <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($order->date)) }}</li>
-                             
+
                              <li style="font-size:11px!important;"><strong>{{ __('Order ID') }} : </strong> {{ $order->order_id }}</li>
                              @if ($order->quotation_id)
 
@@ -91,7 +91,7 @@
                                     @endif
                                 @else
 
-                                    {{ $generalSettings['business__shop_name'] }}
+                                    {{ $generalSettings['business__business_name'] }}
                                 @endif
                             </li>
 

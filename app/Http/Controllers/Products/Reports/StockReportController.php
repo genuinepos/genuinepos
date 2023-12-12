@@ -86,7 +86,7 @@ class StockReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
                 ->editColumn('cost', function ($row) {
@@ -182,7 +182,7 @@ class StockReportController extends Controller
                             }
                         } else {
 
-                            $html .= '<p class="p-0 m-0">('.$generalSettings['business__shop_name'].')-<b>'.$row->warehouse_name.'/'.$row->warehouse_code.'</b></></p>';
+                            $html .= '<p class="p-0 m-0">('.$generalSettings['business__business_name'].')-<b>'.$row->warehouse_name.'/'.$row->warehouse_code.'</b></></p>';
                         }
                     }
 

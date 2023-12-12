@@ -34,7 +34,7 @@
                                     @if ($generalSettings['business__business_logo'] != null)
                                         <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__shop_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:17px;color:gray;font-weight: 550; letter-spacing:1px;">{{ $generalSettings['business__business_name'] }}</span>
                                     @endif
                                 @endif
                             @endif
@@ -81,7 +81,7 @@
                                     @endif
                                 @else
                                     <p class="company_name" style="text-transform: uppercase;">
-                                        <strong>{{ $generalSettings['business__shop_name'] }}</strong>
+                                        <strong>{{ $generalSettings['business__business_name'] }}</strong>
                                     </p>
 
                                     <p class="company_address">
@@ -417,7 +417,7 @@
                                                 <img style="height: 40px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                             @else
                                                 <span style="font-family: 'Anton', sans-serif;font-size:15px;color:black;font-weight: 600; text-transform: uppercase;">
-                                                    {{ $generalSettings['business__shop_name'] }}
+                                                    {{ $generalSettings['business__business_name'] }}
                                                 </span>
                                             @endif
                                         @endif

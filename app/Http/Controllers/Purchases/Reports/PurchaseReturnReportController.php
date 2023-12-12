@@ -112,7 +112,7 @@ class PurchaseReturnReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
                 ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')

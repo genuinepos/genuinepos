@@ -9,7 +9,7 @@
                         {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
                     @else
 
-                        {{ $generalSettings['business__shop_name'] }}
+                        {{ $generalSettings['business__business_name'] }}
                     @endif
                 </strong>
             </h3>

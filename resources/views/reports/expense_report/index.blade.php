@@ -23,13 +23,13 @@
                     <div class="element-body">
                         <form id="filter_form">
                             <div class="form-group row">
-                                @if ($generalSettings['addons__branches'] == 1)
+
                                     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                         <div class="col-md-2">
                                             <label><strong>@lang('menu.business_location') : </strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -40,7 +40,7 @@
                                     @else
                                         <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                     @endif
-                                @endif
+
 
                                 <div class="col-md-2">
                                     <label><strong>@lang('menu.expense_for') : </strong></label>

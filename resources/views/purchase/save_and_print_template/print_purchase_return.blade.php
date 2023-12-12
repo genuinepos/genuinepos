@@ -9,17 +9,49 @@
     $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:0px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 33px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 <!-- purchase print templete-->
 <div class="purchase_return_print_template">
@@ -31,29 +63,22 @@
                     @if ($return?->branch?->parent_branch_id)
 
                         @if ($return->branch?->parentBranch?->logo != 'default.png')
-
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->parentBranch?->logo) }}">
                         @else
-
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->parentBranch?->name }}</span>
                         @endif
                     @else
-
                         @if ($return->branch?->logo != 'default.png')
-
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $return->branch?->logo) }}">
                         @else
-
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch?->name }}</span>
                         @endif
                     @endif
                 @else
                     @if ($generalSettings['business__business_logo'] != null)
-
                         <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -63,38 +88,31 @@
                     <strong>
                         @if ($return?->branch)
                             @if ($return?->branch?->parent_branch_id)
-
                                 {{ $return?->branch?->parentBranch?->name }}
                             @else
-
                                 {{ $return?->branch?->name }}
                             @endif
                         @else
-
-                            {{ $generalSettings['business__shop_name'] }}
+                            {{ $generalSettings['business__business_name'] }}
                         @endif
                     </strong>
                 </p>
 
                 <p>
                     @if ($return?->branch)
-
-                        {{ $return->branch->city . ', ' . $return->branch->state. ', ' . $return->branch->zip_code. ', ' . $return->branch->country }}
+                        {{ $return->branch->city . ', ' . $return->branch->state . ', ' . $return->branch->zip_code . ', ' . $return->branch->country }}
                     @else
-
                         {{ $generalSettings['business__address'] }}
                     @endif
                 </p>
 
                 <p>
                     @if ($return?->branch)
-
-                        <strong>{{ __("Email") }} : </strong> <b>{{ $return?->branch?->email }}</b>,
-                        <strong>{{ __("Phone") }} : </strong> <b>{{ $return?->branch?->phone }}</b>
+                        <strong>{{ __('Email') }} : </strong> <b>{{ $return?->branch?->email }}</b>,
+                        <strong>{{ __('Phone') }} : </strong> <b>{{ $return?->branch?->phone }}</b>
                     @else
-
-                        <strong>{{ __("Email") }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>{{ __("Phone") }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
+                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
                     @endif
                 </p>
             </div>
@@ -102,7 +120,7 @@
 
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <h6 class="fw-bold" style="text-transform: uppercase;">{{ __("Purchase Return Voucher") }}</h6>
+                <h6 class="fw-bold" style="text-transform: uppercase;">{{ __('Purchase Return Voucher') }}</h6>
             </div>
         </div>
 
@@ -110,16 +128,16 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $return->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Date") }} : </strong>{{ $return->date }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Supplier") }} : </strong> {{ $return?->supplier?->name  }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ $return->date }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Supplier') }} : </strong> {{ $return?->supplier?->name }}</li>
                 </ul>
             </div>
 
             <div class="col-6">
                 <ul class="list-unstyled float-right">
-                    <li style="font-size:11px!important;"><strong>{{ __("Purchase Invoice Details") }} : </strong> </li>
-                    <li style="font-size:11px!important;"><strong>{{ __("P. Invoice ID") }} : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __("Purchase Date") }} : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Purchase Invoice Details') }} : </strong> </li>
+                    <li style="font-size:11px!important;"><strong>{{ __('P. Invoice ID') }} : </strong> {{ $return->purchase ? $return->purchase->invoice_id : 'N/A' }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Purchase Date') }} : </strong>{{ $return->purchase ? $return->purchase->date : 'N/A' }}</li>
                 </ul>
             </div>
         </div>
@@ -128,16 +146,16 @@
             <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <tr>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("S/L") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Product") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Return Qty") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Unit Cost(Exc. Tax)") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Discount") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Vat/Tax") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Unit Cost(Inc. Tax)") }}</th>
-                            <th class="fw-bold text-start" style="font-size:11px!important;">{{ __("Subtotal") }}</th>
-                        </tr>
+                    <tr>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Product') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Return Qty') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Exc. Tax)') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Discount') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Vat/Tax') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Unit Cost(Inc. Tax)') }}</th>
+                        <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Subtotal') }}</th>
+                    </tr>
                     </tr>
                 </thead>
                 <tbody class="purchase_return_print_product_list">
@@ -166,7 +184,7 @@
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">
-                                    {{ '('.$purchaseReturnProduct->unit_tax_percent.')='.App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_tax_amount) }}
+                                    {{ '(' . $purchaseReturnProduct->unit_tax_percent . ')=' . App\Utils\Converter::format_in_bdt($purchaseReturnProduct->unit_tax_amount) }}
                                 </td>
 
                                 <td class="text-start" style="font-size:11px!important;">
@@ -188,30 +206,28 @@
                 <table class="table print-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Net Total Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Return Discount") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Discount') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($return->return_discount_type == 1)
-
-                                    <b>({{ __("Fixed") }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}</b>
+                                    <b>({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}</b>
                                 @else
-
                                     <b>({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%=)
-                                    {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}</b>
+                                        {{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}</b>
                                 @endif
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Return Tax") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Tax') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
-                                <b>{{ '('.$return->return_tax_percent.'%)='. $return->return_tax_amount }}</b>
+                                <b>{{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}</b>
                             </td>
                         </tr>
 
@@ -223,21 +239,21 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($receivedAmount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Due (On Return Voucher)") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($return->due) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __("Current Balance") }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business__currency'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ $amounts['closing_balance_in_flat_amount_string'] }}</b>
                             </td>
@@ -247,23 +263,23 @@
             </div>
         </div>
 
-        <br/><br/>
+        <br /><br />
         <div class="row">
             <div class="col-4 text-start">
                 <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __("Prepared By") }}
+                    {{ __('Prepared By') }}
                 </p>
             </div>
 
             <div class="col-4 text-center">
                 <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __("Checked By") }}
+                    {{ __('Checked By') }}
                 </p>
             </div>
 
             <div class="col-4 text-end">
                 <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __("Authorized By") }}
+                    {{ __('Authorized By') }}
                 </p>
             </div>
         </div>
@@ -280,17 +296,17 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">{{ __("Powered By") }} <strong>SpeedDigit Software Solution.</strong></small>
+                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>SpeedDigit Software Solution.</strong></small>
                     @endif
                 </div>
 
                 <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">{{ __("Print Time") }} : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>

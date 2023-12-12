@@ -89,7 +89,7 @@ class ExpiredProductService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('expire_date', function ($row) use ($generalSettings) {

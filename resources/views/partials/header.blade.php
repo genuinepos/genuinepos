@@ -13,15 +13,12 @@
                         <p class="text-uppercase">
                             @if (auth()?->user()?->branch?->parent_branch_id)
 
-                                {{ auth()?->user()?->branch?->parentBranch?->name. '(' .auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
+                                {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                             @else
-
                                 @if (auth()?->user()?->branch)
-
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                 @else
-
-                                    {{ $generalSettings['business__shop_name'] }}
+                                    {{ $generalSettings['business__business_name'] }}
                                 @endif
                             @endif
                         </p>
@@ -34,7 +31,7 @@
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
 
-                            {{-- @if(auth()->user()->can('communication'))
+                            {{-- @if (auth()->user()->can('communication'))
                                 <li class="top-icon d-hide d-md-block" id="get_mail" title="Communicate"><a href="#"><b><i class="fas fa-th-large"></i></b></a>
                                     <ul class="lists">
                                         <li><a href="#"><i class="fas fa-bell"></i><span class="title">Notice Board</span></a></li>
@@ -45,7 +42,7 @@
                                 </li>
                             @endif --}}
 
-                            @if(auth()->user()->can('today_summery'))
+                            @if (auth()->user()->can('today_summery'))
                                 <li class="top-icon"><a href="#" class="nav-btn" id="today_summery"><span><i class="far fa-calendar"></i><br>{{ __('Today') }}</span></a></li>
                             @endif
 
@@ -73,7 +70,7 @@
                             </li>
 
                             @if ($generalSettings['modules__pos'] == '1')
-                                @if(auth()->user()->can('pos_add'))
+                                @if (auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>POS</span></a></li>
                                 @endif
                             @endif
@@ -86,8 +83,7 @@
                                         Calculator
                                     </span>
                                 </a>
-                                <div class="modal" id="calculatorModal" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modail-body" id="calculator">

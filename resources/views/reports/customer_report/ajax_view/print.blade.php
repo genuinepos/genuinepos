@@ -29,12 +29,12 @@
             <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
         @else
 
-            <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__shop_name'] }}</h4>
+            <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
         @endif
     </div>
 
     <div class="col-8 text-end">
-        <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__shop_name'] }}</h5>
+        <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h5>
         <p class="text-uppercase fw-bold">@lang('menu.all_business_location')</p>
         <p>{{ $generalSettings['business__address'] }}</p>
         <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>

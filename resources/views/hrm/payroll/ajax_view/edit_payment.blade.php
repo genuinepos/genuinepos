@@ -17,7 +17,7 @@
                             @if ($payment->payroll->employee->branch)
                                 {{ $payment->payroll->employee->branch->name.'/'.$payment->payroll->employee->branch->branch_code }}
                             @else
-                                {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                                {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
                             @endif
                         </span>
                     </li>

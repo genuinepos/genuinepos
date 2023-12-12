@@ -104,9 +104,9 @@
                                                     <label class="col-4"><b>{{ __('Shop/Business') }}</b> <span class="text-danger">*</span></label>
                                                     <div class="col-8">
                                                         <input type="hidden" name="branch_count" value="YES">
-                                                        <select required name="branch_id" class="form-control" id="branch_id"  data-next="allow_login">
+                                                        <select required name="branch_id" class="form-control" id="branch_id" data-next="allow_login">
                                                             <option value="">{{ __('Select Shop/Business') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -138,8 +138,8 @@
                                                 <label class="col-4"><b>{{ __('Allow Login') }}</b> </label>
                                                 <div class="col-8">
                                                     <select name="allow_login" id="allow_login" class="form-control" data-next="username">
-                                                        <option value="1">{{ __("Yes") }}</option>
-                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Superadmin And Admin has access to all Shop/Business.") }}" class="fas fa-info-circle tp"></i> </label>
+                                                    <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Superadmin And Admin has access to all Shop/Business.') }}" class="fas fa-info-circle tp"></i> </label>
                                                     <div class="col-8">
                                                         <select required name="role_id" id="role_id" class="form-control" data-next="password">
                                                             <option value="">{{ __('Select Role') }}</option>
@@ -304,7 +304,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"> <b>{{ __('Profile image') }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="file" name="photo" class="form-control"  placeholder="{{ __('Profile image') }}">
+                                                    <input type="file" name="photo" class="form-control" placeholder="{{ __('Profile image') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -513,7 +513,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"> <b>{{ __('Salary') }}</b><span class="text-danger">*</span></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" name="salary" id="salary" class="form-control" data-next="pay_type" placeholder="{{ __("Salary Amount") }}" autocomplete="off">
+                                                        <input type="number" step="any" name="salary" id="salary" class="form-control" data-next="pay_type" placeholder="{{ __('Salary Amount') }}" autocomplete="off">
                                                         <span class="error error_salary"></span>
                                                     </div>
                                                 </div>
@@ -560,7 +560,7 @@
         });
 
         var isAllowSubmit = true;
-        $(document).on('click', '.submit_button',function () {
+        $(document).on('click', '.submit_button', function() {
 
             var value = $(this).val();
             $('#action').val(value);
@@ -568,7 +568,7 @@
             if (isAllowSubmit) {
 
                 $(this).prop('type', 'submit');
-            }else {
+            } else {
 
                 $(this).prop('type', 'button');
             }
@@ -583,7 +583,7 @@
             isAjaxIn = false;
             isAllowSubmit = false;
             $.ajax({
-                 beforeSend: function(){
+                beforeSend: function() {
                     isAjaxIn = true;
                 },
                 url: url,
@@ -602,7 +602,8 @@
                     $('.loading_button').hide();
                     $('.error').html('');
                     $('#first_name').focus();
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     isAjaxIn = true;
                     isAllowSubmit = true;
@@ -614,7 +615,7 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    } else if(err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
@@ -658,10 +659,10 @@
             }
         }
 
-        document.onkeyup = function () {
+        document.onkeyup = function() {
             var e = e || window.event; // for IE to cover IEs window event-object
 
-            if(e.ctrlKey && e.which == 13) {
+            if (e.ctrlKey && e.which == 13) {
 
                 $('#save_btn').click();
                 return false;
@@ -716,7 +717,7 @@
             }
         });
 
-        $(document).on('change', '#role_id', function(e){
+        $(document).on('change', '#role_id', function(e) {
             var roleNeme = $(this).find(':selected').data('role_name');
             $('#branch_id').prop('required', true);
             if (roleName == 'admin') {

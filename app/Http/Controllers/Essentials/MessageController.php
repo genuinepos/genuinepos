@@ -12,17 +12,17 @@ class MessageController extends Controller
 {
     public function index()
     {
-        if (! auth()->user()->can('msg')) {
+        if (!auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
-        if (! auth()->user()->can('msg')) {
+        if (!auth()->user()->can('msg')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -31,13 +31,13 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('msg')) {
+        if (!auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -58,18 +58,18 @@ class MessageController extends Controller
 
     public function delete($id)
     {
-        if (! auth()->user()->can('msg')) {
+        if (!auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteMsg = Message::where('id', $id)->first();
-        if (! is_null($deleteMsg)) {
+        if (!is_null($deleteMsg)) {
             $deleteMsg->delete();
         }
 
@@ -78,13 +78,13 @@ class MessageController extends Controller
 
     public function allMessage()
     {
-        if (! auth()->user()->can('msg')) {
+        if (!auth()->user()->can('msg')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 

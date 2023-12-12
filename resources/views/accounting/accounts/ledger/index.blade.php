@@ -17,9 +17,9 @@
                         <div class="sec-name">
                             <div class="name-head">
                                 <span class="fas fa-shopping-cart"></span>
-                                <h5>{{ __("Account Ledger") }} - <strong>{{ $account->name }}</strong></h5>
+                                <h5>{{ __('Account Ledger') }} - <strong>{{ $account->name }}</strong></h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -31,28 +31,28 @@
                                         <table class="display table modal-table table-sm m-0">
                                             <tbody>
                                                 <tr>
-                                                    <th colspan="3" class="text-center">{{ __("Account Summary") }}</th>
+                                                    <th colspan="3" class="text-center">{{ __('Account Summary') }}</th>
                                                 </tr>
                                                 <tr>
                                                     <th class="text-end"></th>
-                                                    <th class="text-end">{{ __("Debit") }}</th>
-                                                    <th class="text-end">{{ __("Credit") }}</th>
+                                                    <th class="text-end">{{ __('Debit') }}</th>
+                                                    <th class="text-end">{{ __('Credit') }}</th>
                                                 </tr>
 
                                                 <tr>
-                                                    <th class="text-end">{{ __("Opening Balance") }} :</th>
+                                                    <th class="text-end">{{ __('Opening Balance') }} :</th>
                                                     <th class="text-end" id="debit_opening_balance"></th>
                                                     <th class="text-end" id="credit_opening_balance"></th>
                                                 </tr>
 
                                                 <tr>
-                                                    <th class="text-end">{{ __("Current Total") }} :</th>
+                                                    <th class="text-end">{{ __('Current Total') }} :</th>
                                                     <th class="text-end" id="total_debit"></th>
                                                     <th class="text-end" id="total_credit"></th>
                                                 </tr>
 
                                                 <tr>
-                                                    <th class="text-end">{{ __("Closing Balance") }} :</th>
+                                                    <th class="text-end">{{ __('Closing Balance') }} :</th>
                                                     <th class="text-end" id="debit_closing_balance"></th>
                                                     <th class="text-end" id="credit_closing_balance"></th>
                                                 </tr>
@@ -70,10 +70,10 @@
                                                 @if ($account?->group?->is_global == 1)
                                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
                                                         <div class="col-md-3">
-                                                            <label><strong>{{ __("Shop/Business") }} </strong></label>
+                                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                                <option value="">{{ __("All") }}</option>
-                                                                <option data-branch_name="{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                                <option value="">{{ __('All') }}</option>
+                                                                <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                                 @foreach ($branches as $branch)
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -112,32 +112,32 @@
                                                 <div class="col-md-3">
                                                     <label><strong>{{ __('Note/Remarks') }} :</strong></label>
                                                     <select name="note" class="form-control" id="note">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option selected value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option selected value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>{{ __('Voucher Details') }} :</strong></label>
                                                     <select name="voucher_details" class="form-control" id="voucher_details">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>{{ __('Transaction Details') }} :</strong></label>
                                                     <select name="transaction_details" class="form-control" id="transaction_details">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-3">
                                                     <label><strong>{{ __('Inventory List') }} :</strong></label>
                                                     <select name="inventory_list" class="form-control" id="inventory_list">
-                                                        <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option value="0">{{ __('No') }}</option>
+                                                        <option value="1">{{ __('Yes') }}</option>
                                                     </select>
                                                 </div>
 
@@ -147,7 +147,7 @@
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                                    <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                                    <i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -155,7 +155,7 @@
                                                         <div class="col-md-6">
                                                             <label></label>
                                                             <div class="input-group">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>{{ __("Print") }}</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i>{{ __('Print') }}</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -222,9 +222,16 @@
             "serverSide": true,
             "searching": false,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary'
+                },
             ],
             "lengthMenu": [
                 [50, 100, 500, 1000, -1],
@@ -243,13 +250,37 @@
                     d.inventory_list = $('#inventory_list').val();
                 }
             },
-            columns: [{ data: 'date', name: 'account_ledgers.date' },
-                { data: 'particulars', name: 'particulars' },
-                { data: 'voucher_type', name: 'voucher_no' },
-                { data: 'voucher_no', name: 'voucher_no' },
-                { data: 'debit', name: 'account_ledgers.debit', className: 'text-end' },
-                { data: 'credit', name: 'account_ledgers.credit', className: 'text-end' },
-                { data: 'running_balance', name: 'account_ledgers.running_balance', className: 'text-end' },
+            columns: [{
+                    data: 'date',
+                    name: 'account_ledgers.date'
+                },
+                {
+                    data: 'particulars',
+                    name: 'particulars'
+                },
+                {
+                    data: 'voucher_type',
+                    name: 'voucher_no'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'voucher_no'
+                },
+                {
+                    data: 'debit',
+                    name: 'account_ledgers.debit',
+                    className: 'text-end'
+                },
+                {
+                    data: 'credit',
+                    name: 'account_ledgers.credit',
+                    className: 'text-end'
+                },
+                {
+                    data: 'running_balance',
+                    name: 'account_ledgers.running_balance',
+                    className: 'text-end'
+                },
             ],
             fnDrawCallback: function() {
 
@@ -381,13 +412,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -412,34 +444,35 @@
         });
 
         // Print Packing slip
-        $(document).on('click', '#PrintChallanBtn', function (e) {
+        $(document).on('click', '#PrintChallanBtn', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
 
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
                     });
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -448,34 +481,35 @@
         });
 
         // Print Packing slip
-        $(document).on('click', '#printPackingSlipBtn', function (e) {
+        $(document).on('click', '#printPackingSlipBtn', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
 
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
                     });
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }

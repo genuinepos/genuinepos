@@ -19,7 +19,7 @@
                         <div class="trial_balance_area">
                             <div class="print_header d-hide">
                                 <div class="text-center pb-3">
-                                    <h6>{{ $generalSettings['business__shop_name'] }}</h6>
+                                    <h6>{{ $generalSettings['business__business_name'] }}</h6>
                                     <h6><strong>@lang('menu.trial_balance')</h6>
                                 </div>
                             </div>

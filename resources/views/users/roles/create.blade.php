@@ -999,8 +999,8 @@
                             </div>
                         </div>
 
-                         {{-- Transfer Stocks Permissions --}}
-                         <div class="accordion-item mb-1">
+                        {{-- Transfer Stocks Permissions --}}
+                        <div class="accordion-item mb-1">
                             <div class="form_element rounded mt-0 mb-0">
                                 <div class="accordion-header d-flex">
                                     <p class="checkbox_input_wrap ">
@@ -1534,7 +1534,7 @@
                             </div>
                         @endif
                         {{-- Manage Task Permissions --}}
-                        @if ($generalSettings['addons__todo'] == 1)
+                        @if ($generalSettings['addons__manage_task'] == 1)
                             <div class="accordion-item mb-1">
                                 <div class="form_element rounded mt-0 mb-0">
                                     <div class="accordion-header d-flex">

@@ -141,9 +141,9 @@ class AccountService
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
-                // return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__shop_name'];
+                // return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__business_name'];
                 } else {
 
                     return __('Global Access');

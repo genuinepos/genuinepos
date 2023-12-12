@@ -120,7 +120,7 @@ class QuotationService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('current_status', function ($row) {

@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="company_name text-center">
-                    <h3><b>{{ $generalSettings['business__shop_name'] }}</b> </h3>
+                    <h3><b>{{ $generalSettings['business__business_name'] }}</b> </h3>
                     @if ($branch_id != 'NULL' && $branch_id != '')
 
                         @php

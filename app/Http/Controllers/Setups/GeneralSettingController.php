@@ -80,7 +80,7 @@ class GeneralSettingController extends Controller
         }
 
         $settings = [
-            'business__shop_name' => $request->shop_name,
+            'business__business_name' => $request->shop_name,
             'business__address' => $request->address,
             'business__phone' => $request->phone,
             'business__email' => $request->email,
@@ -98,7 +98,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Business settings updated successfully');
+        return response()->json(__('Business settings updated successfully'));
     }
 
     public function dashboardSettings(Request $request)
@@ -108,7 +108,7 @@ class GeneralSettingController extends Controller
         ];
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Dashboard settings updated successfully.');
+        return response()->json(__('Dashboard settings updated successfully.'));
     }
 
     public function productSettings(Request $request)
@@ -170,7 +170,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('POS settings updated successfully');
+        return response()->json(__('POS settings updated successfully'));
     }
 
     public function prefixSettings(Request $request)
@@ -203,7 +203,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('System settings updated Successfully.');
+        return response()->json(__('System settings updated Successfully.'));
     }
 
     public function moduleSettings(Request $request)
@@ -213,38 +213,46 @@ class GeneralSettingController extends Controller
             'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
             'modules__pos' => isset($request->pos) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
-            'modules__stock_adjustment' => isset($request->stock_adjustment) ? 1 : 0,
-            'modules__expenses' => isset($request->expenses) ? 1 : 0,
+            'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
             'modules__hrms' => isset($request->hrms) ? 1 : 0,
-            'modules__requisite' => isset($request->requisite) ? 1 : 0,
+            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
             'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
             'modules__service' => isset($request->service) ? 1 : 0,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Modules settings updated successfully');
+        return response()->json(__('Modules settings updated successfully'));
     }
 
-    public function SendEmailSmsSettings(Request $request)
+    public function sendEmailSettings(Request $request)
     {
         $settings = [
-            'email_settings__send_inv_via_email' => isset($request->send_inv_via_email) ? 1 : 0,
-            'email_settings__send_notice_via_sms' => isset($request->send_notice_via_sms) ? 1 : 0,
-            'email_settings__customer_due_reminder_via_email' => isset($request->cmr_due_rmdr_via_email) ? 1 : 0,
-            'email_settings__customer_due_reminder_via_sms' => isset($request->cmr_due_rmdr_via_sms) ? 1 : 0,
-            'email_settings__user_forget_password_via_email' => isset($request->user_forget_password_via_email) ? 1 : 0,
-            'email_settings__coupon_offer_via_email' => isset($request->coupon_offer_via_email) ? 1 : 0,
-            'email_settings__discount_redeemed_via_email' => isset($request->discount_redeemed_via_email) ? 1 : 0,
-            'email_settings__new_product_arrived_via_email' => isset($request->new_product_arrived_via_email) ? 1 : 0,
-            'email_settings__weekly_news_letter_via_email' => isset($request->weekly_news_letter_via_email) ? 1 : 0,
+            'send_email__send_invoice_via_email' => isset($request->send_invoice_via_email) ? 1 : 0,
+            'send_email__send_notification_via_email' => isset($request->send_notification_via_email) ? 1 : 0,
+            'send_email__customer_due_reminder_via_email' => isset($request->customer_due_reminder_via_email) ? 1 : 0,
+            'send_email__user_forget_password_via_email' => isset($request->user_forget_password_via_email) ? 1 : 0,
+            'send_email__coupon_offer_via_email' => isset($request->coupon_offer_via_email) ? 1 : 0,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Send Email & SMS settings updated successfully');
+        return response()->json(__('Send Email settings updated successfully'));
+    }
+
+    public function sendSmsSettings(Request $request)
+    {
+        $settings = [
+            'send_sms__send_invoice_via_sms' => isset($request->send_invoice_via_sms) ? 1 : 0,
+            'send_sms__send_notification_via_sms' => isset($request->send_notification_via_sms) ? 1 : 0,
+            'send_sms__customer_due_reminder_via_sms' => isset($request->customer_due_reminder_via_sms) ? 1 : 0,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Send SMS settings updated successfully'));
     }
 
     public function rewardPointSettings(Request $request)
@@ -263,6 +271,6 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json('Reward point settings updated Successfully');
+        return response()->json(__('Reward point settings updated Successfully'));
     }
 }

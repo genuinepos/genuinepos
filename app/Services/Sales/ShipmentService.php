@@ -111,7 +111,7 @@ class ShipmentService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('shipment_status', fn ($row) => '<a id="editShipmentDetails" href="'.route('sale.shipments.edit', [$row->id]).'">'.ShipmentStatus::tryFrom($row->shipment_status)->name.'</a>')

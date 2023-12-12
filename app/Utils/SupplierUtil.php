@@ -243,7 +243,7 @@ class SupplierUtil
                     return $row->branch_name.'<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__shop_name'].' (<b>HO</b>)';
+                    return $generalSettings['business__business_name'].' (<b>HO</b>)';
                 }
             })
 
@@ -391,7 +391,7 @@ class SupplierUtil
                 if ($row->b_name) {
                     return $row->b_name;
                 } else {
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
 
@@ -532,7 +532,7 @@ class SupplierUtil
                     return $row->branch_name.'<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__shop_name'].' (<b>HO</b>)';
+                    return $generalSettings['business__business_name'].' (<b>HO</b>)';
                 }
             })
 

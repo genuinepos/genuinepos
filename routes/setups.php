@@ -26,8 +26,8 @@ Route::prefix('setups')->group(function () {
         Route::post('prefix/settings', 'prefixSettings')->name('settings.prefix.settings');
         Route::post('system/settings', 'systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'moduleSettings')->name('settings.module.settings');
-        Route::post('send/email/sms/settings', 'SendEmailSmsSettings')->name('settings.send.email.sms.settings');
-        Route::post('sms/settings', 'smsSettings')->name('settings.sms.settings');
+        Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
+        Route::post('send/sms/settings', 'sendSmsSettings')->name('settings.send.sms.settings');
         Route::post('rp/settings', 'rewardPointSettings')->name('settings.reward.point.settings');
     });
 
@@ -47,17 +47,18 @@ Route::prefix('setups')->group(function () {
             Route::get('edit/{id}', 'edit')->name('branches.settings.edit');
             Route::post('update/{id}', 'update')->name('branches.settings.update');
 
-            Route::post('product', 'productSettings')->name('branches.settings.product');
-            Route::post('add/sale', 'addSaleSettings')->name('branches.settings.add.sale');
-            Route::post('pos', 'posSettings')->name('branches.settings.pos');
-            Route::post('purchase', 'purchaseSettings')->name('branches.settings.purchase');
-            Route::post('dashboard', 'dashboardSettings')->name('branches.settings.dashboard');
-            Route::post('prefix', 'prefixSettings')->name('branches.settings.prefix');
-            Route::post('system', 'systemSettings')->name('branches.settings.system');
-            Route::post('module', 'moduleSettings')->name('branches.settings.module');
-            Route::post('send/email', 'SendEmailSmsSettings')->name('branches.settings.send.email');
-            Route::post('send/sms', 'smsSettings')->name('branches.settings.sms');
-            Route::post('rp', 'rewardPointSettings')->name('branches.settings.reward.point');
+            Route::post('product/{id}', 'productSettings')->name('branches.settings.product');
+            Route::post('add/sale/{id}', 'addSaleSettings')->name('branches.settings.add.sale');
+            Route::post('pos/{id}', 'posSettings')->name('branches.settings.pos');
+            Route::post('purchase/{id}', 'purchaseSettings')->name('branches.settings.purchase');
+            Route::post('dashboard/{id}', 'dashboardSettings')->name('branches.settings.dashboard');
+            Route::post('prefix/{id}', 'prefixSettings')->name('branches.settings.prefix');
+            Route::post('invoice/layout/{id}', 'invoiceLayoutSettings')->name('branches.settings.invoice.layout');
+            Route::post('system/{id}', 'systemSettings')->name('branches.settings.system');
+            Route::post('module/{id}', 'moduleSettings')->name('branches.settings.module');
+            Route::post('send/email/{id}', 'sendEmailSettings')->name('branches.settings.send.email');
+            Route::post('send/sms/{id}', 'sendSmsSettings')->name('branches.settings.sms');
+            Route::post('reward/point/{id}', 'rewardPointSettings')->name('branches.settings.reward.point');
         });
     });
 

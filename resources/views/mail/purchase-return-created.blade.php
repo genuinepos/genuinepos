@@ -17,7 +17,7 @@
                 @if ($generalSettings['business__business_logo'] != null)
                     <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                 @endif
             @endif
         </th>
@@ -44,7 +44,7 @@
                 @if ($return->branch)
                     {!! $return->branch->name.' '.$return->branch->branch_code.' <b>(BL)</b>' !!}
                 @else
-                    {{ $generalSettings['business__shop_name'] }} (<b>@lang('menu.head_office')</b>)
+                    {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
                 @endif
             </p>
             <p style="font-size:14px;margin:0 0 6px 0;">
@@ -72,7 +72,7 @@
                 @elseif($return->branch)
                     {{ $return->branch->name.'/'.$return->branch->branch_code }} <b>(B.L)</b>
                 @else
-                {{ $generalSettings['business__shop_name'] }}<b>(@lang('menu.head_office'))</b>
+                {{ $generalSettings['business__business_name'] }}<b>(@lang('menu.head_office'))</b>
                 @endif
                 </p>
             <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.tax_number') : </strong> {{ $return->supplier->tax_number }}</p>

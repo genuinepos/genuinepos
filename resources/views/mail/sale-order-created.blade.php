@@ -82,7 +82,7 @@
 
         @if ($sale->branch)
             <td style="width:50%;padding:20px;vertical-align:top">
-                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__shop_name'] }}</span> </h6>
+                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__business_name'] }}</span> </h6>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">
                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                     {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -94,7 +94,7 @@
             </td>
         @else
             <td style="width:50%;padding:20px;vertical-align:top">
-                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__shop_name'] }}</span> </h6>
+                <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__business_name'] }}</span> </h6>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__address'] }}</span> </p>
                 <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">@lang('menu.phone') </span> {{ $generalSettings['business__phone'] }}</p>
             </td>

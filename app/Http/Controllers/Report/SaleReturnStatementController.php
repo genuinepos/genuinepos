@@ -79,7 +79,7 @@ class SaleReturnStatementController extends Controller
                         return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })
 

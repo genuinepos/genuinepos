@@ -53,7 +53,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><span class="text-danger">*</span> <b>@lang('menu.b_location') </b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].' (HO)' }}">
+                                                <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__business_name'].' (HO)' }}">
                                             </div>
                                         </div>
                                     @endif

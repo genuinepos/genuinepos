@@ -49,18 +49,18 @@ class BranchSettingController extends Controller
         return view('setups.branches.settings.index', compact('generalSettings', 'currencies', 'units', 'priceGroups', 'timezones', 'branch', 'taxAccounts', 'invoiceLayouts'));
     }
 
-    public function dashboardSettings(Request $request)
+    public function dashboardSettings($id, Request $request)
     {
         $settings = [
             'dashboard__view_stock_expiry_alert_for' => $request->view_stock_expiry_alert_for,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Dashboard settings updated successfully.'));
     }
 
-    public function productSettings(Request $request)
+    public function productSettings($id, Request $request)
     {
         $settings = [
             'product__product_code_prefix' => $request->product_code_prefix,
@@ -72,24 +72,24 @@ class BranchSettingController extends Controller
             'product__is_enable_warranty' => $request->is_enable_warranty,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Product settings updated Successfully'));
     }
 
-    public function purchaseSettings(Request $request)
+    public function purchaseSettings($id, Request $request)
     {
         $settings = [
             'purchase__is_edit_pro_price' => $request->is_edit_pro_price,
             'purchase__is_enable_lot_no' => $request->is_enable_lot_no,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Purchase settings updated successfully.'));
     }
 
-    public function addSaleSettings(Request $request)
+    public function addSaleSettings($id, Request $request)
     {
         $settings = [
             'add_sale__default_sale_discount' => $request->default_sale_discount,
@@ -97,12 +97,12 @@ class BranchSettingController extends Controller
             'add_sale__default_tax_ac_id' => $request->default_tax_ac_id,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Sale settings updated successfully'));
     }
 
-    public function posSettings(Request $request)
+    public function posSettings($id, Request $request)
     {
         $settings = [
             'pos__is_enabled_multiple_pay' => $request->is_enabled_multiple_pay,
@@ -117,12 +117,12 @@ class BranchSettingController extends Controller
             'pos__default_tax_ac_id' => $request->default_tax_ac_id,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
-        return response()->json('POS settings updated successfully');
+        return response()->json(__('POS settings updated successfully'));
     }
 
-    public function prefixSettings(Request $request)
+    public function prefixSettings($id, Request $request)
     {
         $settings = [
             'prefix__invoice_prefix' => $request->invoice_prefix,
@@ -137,9 +137,101 @@ class BranchSettingController extends Controller
             'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
         ];
 
-        $this->branchSettingService->updateAndSync($settings);
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Prefix settings updated Successfully'));
+    }
+
+    public function invoiceLayoutSettings($id, Request $request)
+    {
+        $settings = [
+            'invoice_layout__add_sale_invoice_layout_id' => $request->add_sale_invoice_layout_id,
+            'invoice_layout__pos_sale_invoice_layout_id' => $request->pos_sale_invoice_layout_id,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Invoice settings updated Successfully'));
+    }
+
+    public function rewardPointSettings($id, Request $request)
+    {
+        $settings = [
+            'reward_point_settings__enable_cus_point' => isset($request->enable_cus_point) ? 1 : 0,
+            'reward_point_settings__point_display_name' => $request->point_display_name ? $request->point_display_name : 0,
+            'reward_point_settings__amount_for_unit_rp' => $request->amount_for_unit_rp ? $request->amount_for_unit_rp : 0,
+            'reward_point_settings__min_order_total_for_rp' => $request->min_order_total_for_rp ? $request->min_order_total_for_rp : 0,
+            'reward_point_settings__max_rp_per_order' => $request->max_rp_per_order ? $request->max_rp_per_order : '',
+            'reward_point_settings__redeem_amount_per_unit_rp' => $request->redeem_amount_per_unit_rp ? $request->redeem_amount_per_unit_rp : 0,
+            'reward_point_settings__min_order_total_for_redeem' => $request->min_order_total_for_redeem ? $request->min_order_total_for_redeem : '',
+            'reward_point_settings__min_redeem_point' => $request->min_redeem_point ? $request->min_redeem_point : '',
+            'reward_point_settings__max_redeem_point' => $request->max_redeem_point ? $request->max_redeem_point : '',
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Reward point settings updated Successfully'));
+    }
+
+    public function moduleSettings($id, Request $request)
+    {
+        $settings = [
+            'modules__purchases' => isset($request->purchases) ? 1 : 0,
+            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos) ? 1 : 0,
+            'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
+            'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
+            'modules__accounting' => isset($request->accounting) ? 1 : 0,
+            'modules__contacts' => isset($request->contacts) ? 1 : 0,
+            'modules__hrms' => isset($request->hrms) ? 1 : 0,
+            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
+            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
+            'modules__service' => isset($request->service) ? 1 : 0,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Modules settings updated successfully'));
+    }
+
+    public function sendEmailSettings($id, Request $request)
+    {
+        $settings = [
+            'send_email__send_invoice_via_email' => isset($request->send_invoice_via_email) ? 1 : 0,
+            'send_email__send_notification_via_email' => isset($request->send_notification_via_email) ? 1 : 0,
+            'send_email__customer_due_reminder_via_email' => isset($request->customer_due_reminder_via_email) ? 1 : 0,
+            'send_email__user_forget_password_via_email' => isset($request->user_forget_password_via_email) ? 1 : 0,
+            'send_email__coupon_offer_via_email' => isset($request->coupon_offer_via_email) ? 1 : 0,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Send Email settings updated successfully'));
+    }
+
+    public function sendSmsSettings($id, Request $request)
+    {
+        $settings = [
+            'send_sms__send_invoice_via_sms' => isset($request->send_invoice_via_sms) ? 1 : 0,
+            'send_sms__send_notification_via_sms' => isset($request->send_notification_via_sms) ? 1 : 0,
+            'send_sms__customer_due_reminder_via_sms' => isset($request->customer_due_reminder_via_sms) ? 1 : 0,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Send SMS settings updated successfully'));
+    }
+
+    public function systemSettings($id, Request $request)
+    {
+        $settings = [
+            'system__theme_color' => $request->theme_color,
+            'system__datatables_page_entry' => $request->datatable_page_entry,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('System settings updated Successfully.'));
     }
 
     public function edit($branchId)

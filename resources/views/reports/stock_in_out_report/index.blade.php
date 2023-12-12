@@ -51,24 +51,23 @@
                                             </div>
                                         </div>
 
-                                        @if ($generalSettings['addons__branches'] == 1)
-                                            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                <div class="col-lg-2 col-md-4">
-                                                    <label><strong>@lang('menu.business_location') </strong></label>
-                                                    <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
-                                                        <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</option>
-                                                        @foreach ($branches as $branch)
-                                                            <option value="{{ $branch->id }}">
-                                                                {{ $branch->name . '/' . $branch->branch_code }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @else
-                                                <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
-                                            @endif
+                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>@lang('menu.business_location') </strong></label>
+                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                    @foreach ($branches as $branch)
+                                                        <option value="{{ $branch->id }}">
+                                                            {{ $branch->name . '/' . $branch->branch_code }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @else
+                                            <input type="hidden" name="branch_id" id="branch_id" value="{{ auth()->user()->branch_id }}">
                                         @endif
+
 
                                         <div class="col-lg-2 col-md-4">
                                             <label><strong>@lang('menu.customer') </strong></label>

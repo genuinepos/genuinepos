@@ -96,7 +96,7 @@ class AccountController extends Controller
                 ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'Not Applicable')
                 ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'Not Applicable')
                 ->editColumn('account_type', fn ($row) => '<b>'.$this->util->accountType($row->account_type).'</b>')
-                ->editColumn('branch', fn ($row) => '<b>'.($row->branch_name ? $row->branch_name.'/'.$row->branch_code : $generalSettings['business__shop_name']).'</b>')
+                ->editColumn('branch', fn ($row) => '<b>'.($row->branch_name ? $row->branch_name.'/'.$row->branch_code : $generalSettings['business__business_name']).'</b>')
                 ->editColumn('opening_balance', fn ($row) => $this->converter->format_in_bdt($row->opening_balance))
                 ->editColumn('balance', fn ($row) => $this->converter->format_in_bdt($row->balance))
                 ->rawColumns(['action', 'ac_number', 'bank', 'account_type', 'branch', 'opening_balance', 'balance'])

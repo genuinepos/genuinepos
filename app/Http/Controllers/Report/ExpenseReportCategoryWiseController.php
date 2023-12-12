@@ -87,7 +87,7 @@ class ExpenseReportCategoryWiseController extends Controller
                         return $row->branch_name.'/'.$row->branch_code.'(<b>B.L.</b>)';
                     } else {
 
-                        return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
                     }
                 })->editColumn('category_name', function ($row) {
 

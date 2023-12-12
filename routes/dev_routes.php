@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +8,10 @@ use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
 
+    $shopSettings = config('shopSettings');
+    return $shopSettings;
+
+    dd($shopSettings);
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
     //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
     //     ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])
@@ -118,10 +123,14 @@ Route::get('my-test', function () {
     //         'product_stocks.variant_id',
     //     )
     //     ->get();
-        
-    $date = date('Y-11-01');
-    return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
 
+    // $date = date('Y-11-01');
+    // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
+
+    $branch = Branch::with('branchSettings')->where('id', 28)->first();
+
+    $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
+    // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent 
 });
 
 Route::get('t-id', function () {

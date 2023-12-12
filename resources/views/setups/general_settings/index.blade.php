@@ -84,10 +84,11 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="e_settings_form" href="#">{{ __('Send Email Settings') }}</a>
+                                            <a class="menu_btn" data-form="email_settings_form" href="#">{{ __('Send Email Settings') }}</a>
                                         </li>
+
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="s_settings_form" href="#">{{ __('Send SMS Settings') }}</a>
+                                            <a class="menu_btn" data-form="sms_settings_form" href="#">{{ __('Send SMS Settings') }}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -104,7 +105,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __("Business Name") }}</label>
-                                            <input type="text" name="shop_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__shop_name'] }}">
+                                            <input type="text" name="business_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business__business_name'] }}">
                                         </div>
 
                                         <div class="col-md-4">
@@ -633,13 +634,13 @@
                                     @csrf
                                     <div class="form-group row">
                                         <div class="col-md-4">
-                                            <label><strong>Theme Color </strong></label>
+                                            <label><strong>{{ __("Theme Color") }}</strong></label>
                                             <select name="theme_color" class="form-control" id="theme_color">
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">Default Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">Red Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">Blue Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">Light Theme</option>
-                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">Orange Theme</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'dark-theme' ? 'SELECTED' : '' }} value="dark-theme">{{ __("Default Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'red-theme' ? 'SELECTED' : '' }} value="red-theme">{{ __("Red Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'blue-theme' ? 'SELECTED' : '' }} value="blue-theme">{{ __("Blue Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'light-theme' ? 'SELECTED' : '' }} value="light-theme">{{ __("Light Theme") }}</option>
+                                                <option {{ ($generalSettings['system__theme_color'] ?? '') == 'orange-theme' ? 'SELECTED' : '' }} value="orange-theme">{{ __("Orange Theme") }}</option>
                                             </select>
                                         </div>
 
@@ -753,7 +754,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>@lang('menu.purchases')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__purchases'] == '1' ? 'CHECKED' : '' }} name="purchases" autocomplete="off"> &nbsp; <b>{{ __("Purchases") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -761,7 +762,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>@lang('menu.add_sale')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __("Add Sale") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -788,15 +789,7 @@
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustment'] == '1' ? 'CHECKED' : '' }} name="stock_adjustment" autocomplete="off"> &nbsp; <b>@lang('menu.stock_adjustment')</b>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="row">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__expenses'] == '1' ? 'CHECKED' : '' }} name="expenses" autocomplete="off"> &nbsp; <b>@lang('menu.expenses')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__stock_adjustments'] == '1' ? 'CHECKED' : '' }} name="stock_adjustments" autocomplete="off"> &nbsp; <b>{{ __("Stock Adjustments") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -806,22 +799,24 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }} name="accounting" autocomplete="off"> &nbsp; <b>@lang('menu.accounting')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__accounting'] == '1' ? 'CHECKED' : '' }} name="accounting" autocomplete="off"> &nbsp; <b>{{ __("Accounting") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }} name="contacts" autocomplete="off"> &nbsp; <b>@lang('menu.contacts')</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__contacts'] == '1' ? 'CHECKED' : '' }} name="contacts" autocomplete="off"> &nbsp; <b>{{ __("Contacts") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         @if ($generalSettings['addons__hrm'] == 1)
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>@lang('menu.human_resource_management')</b>
+                                                        <input type="checkbox" {{ $generalSettings['modules__hrms'] == '1' ? 'CHECKED' : '' }} name="hrms" autocomplete="off"> &nbsp; <b>{{ __("Human Resource Management") }}</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -831,7 +826,7 @@
                                         <div class="col-md-4">
                                             <div class="row ">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['modules__requisite'] == '1' ? 'CHECKED' : '' }} name="requisite" autocomplete="off"> &nbsp; <b>{{ __('Requisite') }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -852,7 +847,7 @@
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
                                                         <input type="checkbox" @if (isset($generalSettings['modules__service'])) {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} @endif name="service" autocomplete="off">
-                                                        &nbsp;<b>@lang('menu.service')</b>
+                                                        &nbsp;<b>{{ __("Service") }}</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -862,14 +857,14 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
-                                <form id="e_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="email_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -881,7 +876,7 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__send_invoice_via_email'] == '1' ? 'CHECKED' : '' }} name="send_invoice_via_email"> &nbsp; <b>{{ __("Send Invoice After Sale Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -889,14 +884,15 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>{{ __("Send Notification After Sale Via Sms") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__send_notification_via_email'] == '1' ? 'CHECKED' : '' }} name="send_notification_via_email"> &nbsp; <b>{{ __("Send Notification Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__customer_due_reminder_via_email'] == '1' ? 'CHECKED' : '' }} name="cmr_due_rmdr_via_email"> &nbsp; <b>{{ __("Custome Remainder Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__customer_due_reminder_via_email'] == '1' ? 'CHECKED' : '' }} name="customer_due_reminder_via_email"> &nbsp; <b>{{ __("Custome Due Remainder Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
@@ -905,48 +901,20 @@
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b> {{ __("Customer Remainder Via Sms") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__user_forget_password_via_email'] == '1' ? 'CHECKED' : '' }} name="user_forget_password_via_email"> &nbsp; <b> {{ __("User Forget Password Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
+
                                         <div class="col-md-4 mt-1">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b> {{ __("User Forget Password Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Coupon Offer Via Email") }}</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_email__coupon_offer_via_email'] == '1' ? 'CHECKED' : '' }} name="coupon_offer_via_email"> &nbsp; <b>{{ __("Coupon Offer Via Email") }}</b>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Discount Redeemed Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("New Product Arrived Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Weekly News Letter Via Email") }}</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
@@ -957,7 +925,7 @@
                                     </div>
                                 </form>
 
-                                <form id="s_settings_form" class="setting_form hide-all" action="{{ route('settings.send.email.sms.settings') }}" method="post">
+                                <form id="sms_settings_form" class="setting_form hide-all" action="{{ route('settings.send.sms.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <div class="setting_form_heading">
@@ -966,82 +934,36 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        {{-- <div class="col-md-4 mt-1">
+                                        <div class="col-md-4">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_inv_via_email'] == '1' ? 'CHECKED' : '' }} name="send_inv_via_email"> &nbsp; <b>@lang('menu.send_invoice_after_sale_via_email')</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_sms__send_invoice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_invoice_via_sms"> &nbsp; <b>{{ __("Send Invoice After Sale Via Sms") }}</b>
                                                 </p>
                                             </div>
-                                        </div> --}}
+                                        </div>
 
-                                        <div class="col-md-4 mt-1">
+                                        <div class="col-md-4">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" {{ $generalSettings['email_settings__send_notice_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notice_via_sms"> &nbsp; <b>@lang('menu.send_notification_after_sale_via_sms')</b>
+                                                    <input type="checkbox" {{ $generalSettings['send_sms__send_notification_via_sms'] == '1' ? 'CHECKED' : '' }} name="send_notification_via_sms"> &nbsp; <b>{{ __("Send Notification Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 mt-1">
+
+                                        <div class="col-md-4">
                                             <div class="row mt-4">
                                                 <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
+                                                    <input type="checkbox" name="customer_due_reminder_via_sms" {{ $generalSettings['send_sms__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>{{ __("Customer Due Remainder Via Sms") }}</b>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="cmr_due_rmdr_via_sms" {{ $generalSettings['email_settings__customer_due_reminder_via_sms'] == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.customer_remainder_via_sms')</b>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="user_forget_password_via_email" {{ isset($generalSettings
-                                                    ['email_settings__user_forget_password_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.user_forget_password_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="coupon_offer_via_email" {{ isset($generalSettings
-                                                    ['email_settings__coupon_offer_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.coupon_offer_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                    </div>
-                                    <div class="form-group row">
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="discount_redeemed_via_email" {{ isset ($generalSettings['email_settings__discount_redeemed_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.discount_redeemed_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="new_product_arrived_via_email" {{ isset ($generalSettings['email_settings__new_product_arrived_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.new_product_arrived_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        {{-- <div class="col-md-4 mt-1">
-                                            <div class="row mt-4">
-                                                <p class="checkbox_input_wrap">
-                                                    <input type="checkbox" name="weekly_news_letter_via_email" {{ isset ($generalSettings['email_settings__weekly_news_letter_via_email']) == '1' ? 'CHECKED' : '' }}> &nbsp; <b>@lang('menu.weekly_news_letter_via_email')</b>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                    </div>
+
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1285,7 +1207,7 @@
             });
         });
 
-        $('#e_settings_form').on('submit', function(e) {
+        $('#email_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');
@@ -1301,7 +1223,7 @@
             });
         });
 
-        $('#s_settings_form').on('submit', function(e) {
+        $('#sms_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
             var url = $(this).attr('action');

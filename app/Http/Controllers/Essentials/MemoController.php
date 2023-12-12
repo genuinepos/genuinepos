@@ -13,17 +13,17 @@ class MemoController extends Controller
 {
     public function index(Request $request)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -47,11 +47,11 @@ class MemoController extends Controller
             return DataTables::of($memos)
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('memos.show', [$row->id]).'" class="action-btn c-edit" id="view" title="view"><span class="fas fa-eye text-info"></span></a>';
+                    $html .= '<a href="' . route('memos.show', [$row->id]) . '" class="action-btn c-edit" id="view" title="view"><span class="fas fa-eye text-info"></span></a>';
                     if ($row->is_author == 1) {
-                        $html .= '<a href="'.route('memos.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                        $html .= '<a href="'.route('memos.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                        $html .= '<a href="'.route('memos.add.user.view', [$row->id]).'" class="bg-primary text-white rounded p-1" id="add_user_btn">
+                        $html .= '<a href="' . route('memos.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                        $html .= '<a href="' . route('memos.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                        $html .= '<a href="' . route('memos.add.user.view', [$row->id]) . '" class="bg-primary text-white rounded p-1" id="add_user_btn">
                         Share
                         </a>';
                     }
@@ -64,7 +64,7 @@ class MemoController extends Controller
                     if ($row->is_author == 1) {
                         return $row->heading;
                     } else {
-                        return $row->heading.'<br><b>Shared By : </b><span class="text-muted">'.$row->prefix.' '.$row->name.' '.$row->last_name.'</span>';
+                        return $row->heading . '<br><b>Shared By : </b><span class="text-muted">' . $row->prefix . ' ' . $row->name . ' ' . $row->last_name . '</span>';
                     }
                 })
                 ->editColumn('created_at', function ($row) {
@@ -79,13 +79,13 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -112,18 +112,18 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
         $deleteMemo = Memo::where('id', $id)->first();
-        if (! is_null($deleteMemo)) {
+        if (!is_null($deleteMemo)) {
             $deleteMemo->delete();
         }
 
@@ -132,13 +132,13 @@ class MemoController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -147,13 +147,13 @@ class MemoController extends Controller
 
     public function update(Request $request)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -183,7 +183,7 @@ class MemoController extends Controller
     public function addUsers(Request $request, $id)
     {
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -219,13 +219,13 @@ class MemoController extends Controller
 
     public function show($id)
     {
-        if (! auth()->user()->can('memo')) {
+        if (!auth()->user()->can('memo')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__todo'] == 0) {
+        if ($generalSettings['addons__manage_task'] == 0) {
             abort(403, 'Access Forbidden.');
         }
 

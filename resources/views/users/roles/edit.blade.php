@@ -80,7 +80,7 @@
                     <h5>{{ __('Edit Role') }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-3">
@@ -92,9 +92,9 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><strong>{{ __("Role Name") }} : <span class="text-danger">*</span></strong> </label>
+                                        <label for="inputEmail3" class="col-4"><strong>{{ __('Role Name') }} : <span class="text-danger">*</span></strong> </label>
                                         <div class="col-8">
-                                            <input type="text" name="role_name" class="form-control add_input" id="role_name" placeholder="{{ __("Role Name") }}" value="{{ $role->name }}">
+                                            <input type="text" name="role_name" class="form-control add_input" id="role_name" placeholder="{{ __('Role Name') }}" value="{{ $role->name }}">
                                             <span class="error error_role_name">{{ $errors->first('role_name') }}</span>
                                         </div>
                                     </div>
@@ -564,9 +564,8 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
-                                                    <input type="checkbox" {{ $role->hasPermissionTo('purchased_product_list') ? 'CHECKED' : '' }}  name="purchased_product_list" id="purchased_product_list"
-                                                        class="purchase purchase_all">
-                                                   <label for="purchase_all">{{ __('Purchased_product_list') }}</label>
+                                                    <input type="checkbox" {{ $role->hasPermissionTo('purchased_product_list') ? 'CHECKED' : '' }} name="purchased_product_list" id="purchased_product_list" class="purchase purchase_all">
+                                                    <label for="purchase_all">{{ __('Purchased_product_list') }}</label>
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
@@ -1530,7 +1529,7 @@
                             </div>
                         @endif
                         {{-- Manage Task Permissions --}}
-                        @if ($generalSettings['addons__todo'] == 1)
+                        @if ($generalSettings['addons__manage_task'] == 1)
                             <div class="accordion-item mb-1">
                                 <div class="form_element rounded mt-0 mb-0">
                                     <div class="accordion-header d-flex">

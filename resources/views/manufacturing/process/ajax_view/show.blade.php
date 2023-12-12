@@ -28,7 +28,7 @@
                                     @endif
                                 @else
 
-                                    {{ $generalSettings['business__shop_name'].'(Business)' }}
+                                    {{ $generalSettings['business__business_name'].'(Business)' }}
                                 @endif
                             </li>
                         </ul>
@@ -143,13 +143,13 @@
                     <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                 @else
 
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                 @endif
             </div>
 
             <div class="col-8 text-end">
                 <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>{{ $generalSettings['business__shop_name'] }}</strong>
+                    <strong>{{ $generalSettings['business__business_name'] }}</strong>
                 </p>
 
                 <p>{{ $generalSettings['business__address'] }}</p>
@@ -191,7 +191,7 @@
                             @endif
                         @else
 
-                            {{ $generalSettings['business__shop_name'].'(Business)' }}
+                            {{ $generalSettings['business__business_name'].'(Business)' }}
                         @endif
                     </li>
                 </ul>

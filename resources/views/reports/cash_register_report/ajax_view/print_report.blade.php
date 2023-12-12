@@ -31,11 +31,11 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__shop_name'] }} (@lang('menu.head_office'))</h5>
+            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
             <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
         @else
             @php
@@ -99,7 +99,7 @@
                                 {!! $row->b_name.'/'.$row->b_code.'(<b>BL</b>)' !!}
                             @else
 
-                                {!! $generalSettings['business__shop_name'].'(<b>HO</b>)' !!}
+                                {!! $generalSettings['business__business_name'].'(<b>HO</b>)' !!}
                             @endif
                         </td>
 

@@ -2,15 +2,48 @@
 
 <style>
     @media print {
-        table { page-break-after: auto }
-        tr { page-break-inside: avoid; page-break-after: auto }
-        td { page-break-inside: avoid; page-break-after: auto }
-        thead { display: table-header-group }
-        tfoot { display: table-footer-group }
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px; margin-right: 10px; }
-    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <div class="print_modal_details d-hide">
@@ -47,7 +80,7 @@
                         @if ($generalSettings['business__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
                             <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -62,20 +95,18 @@
                                     {{ $draft?->branch?->name }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__shop_name'] }}
+                                {{ $generalSettings['business__business_name'] }}
                             @endif
                         </strong>
                     </p>
 
                     <p>
                         @if ($draft?->branch)
-
                             {{ $invoiceLayout->branch_city == 1 ? $draft->branch->city . ', ' : '' }}
                             {{ $invoiceLayout->branch_state == 1 ? $draft->branch->state . ', ' : '' }}
                             {{ $invoiceLayout->branch_zipcode == 1 ? $draft->branch->zip_code . ', ' : '' }}
                             {{ $invoiceLayout->branch_country == 1 ? $draft->branch->country : '' }}
                         @else
-
                             {{ $generalSettings['business__address'] }}
                         @endif
                     </p>
@@ -101,7 +132,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 style="text-transform: uppercase;"><strong>{{ __("Draft") }}</strong></h5>
+                    <h5 style="text-transform: uppercase;"><strong>{{ __('Draft') }}</strong></h5>
                 </div>
             </div>
         @endif
@@ -142,7 +173,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Draft") }}</h5>
+                        <h5 style="text-transform: uppercase;">{{ __('Draft') }}</h5>
                     </div>
                 @endif
 
@@ -152,7 +183,7 @@
             <div class="col-lg-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($dateFormat.' '.$timeFormat, strtotime($draft->draft_date_ts)) }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($dateFormat . ' ' . $timeFormat, strtotime($draft->draft_date_ts)) }}
                     </li>
 
                     <li style="font-size:11px!important;">
@@ -215,7 +246,8 @@
 
                             @if ($invoiceLayout->product_tax)
                                 <td class="text-end" style="font-size:11px!important;">
-                                    ({{ $draftProduct->unit_tax_percent }}%)={{ $draftProduct->unit_tax_amount }}
+                                    ({{ $draftProduct->unit_tax_percent }}%)
+                                    ={{ $draftProduct->unit_tax_amount }}
                                 </td>
                             @endif
 
@@ -234,7 +266,7 @@
             <br>
             <div class="row page_break">
                 <div class="col-12 text-end">
-                    <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                    <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                 </div>
             </div>
 
@@ -248,7 +280,7 @@
         <div class="row">
             <div class="col-6">
                 @if ($invoiceLayout->show_total_in_word == 1)
-                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __("Inword") }} : </strong> <span id="inword"></span> {{ $generalSettings['business__currency'] }} {{ __('Only') }}.</p>
+                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ $generalSettings['business__currency'] }} {{ __('Only') }}.</p>
                 @endif
             </div>
 

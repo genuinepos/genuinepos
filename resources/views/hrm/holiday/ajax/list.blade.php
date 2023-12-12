@@ -21,7 +21,7 @@
                     @elseif($row->branch_id)
                         {{ $row->branch->name.'/'.$row->branch->branch_code }}
                     @else
-                        {{ $generalSettings['business__shop_name'] }}  (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business__business_name'] }}  (<b>@lang('menu.head_office')</b>)
                     @endif
                 </td>
                 <td>{{ $row->notes }}</td>

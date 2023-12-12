@@ -102,7 +102,7 @@ class SalesReturnedProductReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
                 ->editColumn('stored_location', function ($row) use ($generalSettings) {
@@ -123,7 +123,7 @@ class SalesReturnedProductReportController extends Controller
                             }
                         } else {
 
-                            return $generalSettings['business__shop_name'];
+                            return $generalSettings['business__business_name'];
                         }
                     }
                 })

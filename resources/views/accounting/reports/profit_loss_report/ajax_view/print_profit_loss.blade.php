@@ -99,7 +99,7 @@
                 @if ($generalSettings['business__business_logo'] != null)
                     <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -114,7 +114,7 @@
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-                        {{ $generalSettings['business__shop_name'] }}
+                        {{ $generalSettings['business__business_name'] }}
                     @endif
                 </strong>
             </p>
@@ -160,7 +160,7 @@
     <div class="row mt-2">
         <div class="col-6">
             @php
-                $ownOrParentbranchName = $generalSettings['business__shop_name'];
+                $ownOrParentbranchName = $generalSettings['business__business_name'];
                 if (auth()->user()?->branch) {
                     if (auth()->user()?->branch->parentBranch) {
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';

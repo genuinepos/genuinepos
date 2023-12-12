@@ -5,20 +5,52 @@
 @endphp
 
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:25px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    div#footer {
+        position: fixed;
+        bottom: 25px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
- <!--Money Receipt design-->
- <div class="money_receipt_print_area">
+<!--Money Receipt design-->
+<div class="money_receipt_print_area">
     <div class="print_content">
         @if ($moneyReceipt->is_header_less == 0)
 
@@ -26,19 +58,15 @@
                 <div class="col-4">
                     @if ($moneyReceipt->branch)
                         @if ($moneyReceipt->branch->logo != 'default.png')
-
                             <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $purchase->branch->logo) }}">
                         @else
-
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
                         @if ($generalSettings['business__business_logo'] != null)
-
                             <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__shop_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -47,32 +75,26 @@
                     <p style="text-transform: uppercase;">
                         <strong>
                             @if ($moneyReceipt->branch)
-
                                 {!! $moneyReceipt->branch->name !!}
                             @else
-
-                                {{ $generalSettings['business__shop_name'] }}
+                                {{ $generalSettings['business__business_name'] }}
                             @endif
                         </strong>
                     </p>
 
                     <p>
                         @if ($moneyReceipt?->branch)
-
-                            {{  $moneyReceipt->branch->city . ', ' . $moneyReceipt->branch->state. ', ' . $moneyReceipt->branch->zip_code. ', ' . $moneyReceipt->branch->country }}
+                            {{ $moneyReceipt->branch->city . ', ' . $moneyReceipt->branch->state . ', ' . $moneyReceipt->branch->zip_code . ', ' . $moneyReceipt->branch->country }}
                         @else
-
                             {{ $generalSettings['business__address'] }}
                         @endif
                     </p>
 
                     <p>
                         @if ($moneyReceipt?->branch)
-
                             <strong>@lang('menu.email') : </strong>{{ $moneyReceipt?->branch?->email }},
                             <strong>@lang('menu.phone') : </strong>{{ $moneyReceipt?->branch?->phone }}
                         @else
-
                             <strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }},
                             <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}
                         @endif
@@ -82,7 +104,7 @@
 
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h4 class="text-uppercase"><strong>{{ __("Money Receipt Voucher") }}</strong></h4>
+                    <h4 class="text-uppercase"><strong>{{ __('Money Receipt Voucher') }}</strong></h4>
                 </div>
             </div>
         @endif
@@ -95,17 +117,17 @@
 
         <div class="row">
             <div class="col-4 text-start">
-                <p style="font-size:11px!important"><b>{{ __("Voucher No") }}</b> : {{ $moneyReceipt->voucher_no }}</p>
+                <p style="font-size:11px!important"><b>{{ __('Voucher No') }}</b> : {{ $moneyReceipt->voucher_no }}</p>
             </div>
 
             <div class="col-4 text-center">
                 @if ($moneyReceipt->is_header_less == 1)
-                    <h6 class="text-uppercase"><strong>{{ __("Monery Receipt Voucher") }}</strong></h6>
+                    <h6 class="text-uppercase"><strong>{{ __('Monery Receipt Voucher') }}</strong></h6>
                 @endif
             </div>
 
             <div class="col-4 text-end">
-                <p style="font-size:11px!important"><b>{{ __("Date") }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business__date_format'] ,strtotime($moneyReceipt->date_ts)) : '.......................................' }}</p>
+                <p style="font-size:11px!important"><b>{{ __('Date') }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business__date_format'], strtotime($moneyReceipt->date_ts)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -124,7 +146,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business__currency'].' '.App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : ''}}</p>
+                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business__currency'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -150,7 +172,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('Paid To') }}</b>  : {{ $moneyReceipt->receiver }}</p>
+                        <p style="font-size:11px!important"><b>{{ __('Paid To') }}</b> : {{ $moneyReceipt->receiver }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -161,7 +183,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('On Account Of') }}</b>  : {{ $moneyReceipt->ac_details }}</p>
+                        <p style="font-size:11px!important"><b>{{ __('On Account Of') }}</b> : {{ $moneyReceipt->ac_details }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -172,7 +194,7 @@
 
         <div class="row">
             <div class="col-12">
-                <p style="font-size:11px!important"><b>{{ __('Pay Method') }} </b> : {{ __("Cash/Card/Bank-Transfer/Cheque/Advanced") }}</p>
+                <p style="font-size:11px!important"><b>{{ __('Pay Method') }} </b> : {{ __('Cash/Card/Bank-Transfer/Cheque/Advanced') }}</p>
             </div>
         </div><br>
 
@@ -191,7 +213,7 @@
             </div>
             <div class="col-6">
                 <div class="details_area text-end">
-                    <p class="borderTop text-uppercase"><strong>{{ __("Signature Of Authority") }}</strong></p>
+                    <p class="borderTop text-uppercase"><strong>{{ __('Signature Of Authority') }}</strong></p>
                 </div>
             </div>
         </div>
@@ -206,7 +228,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __("Print Date") }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">
@@ -216,7 +238,7 @@
                 </div>
 
                 <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">{{ __("Print Time") }} : {{ date($timeFormat) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
                 </div>
             </div>
         </div>
@@ -225,19 +247,20 @@
 <!--Money Receipt design end-->
 
 <script>
-    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+    var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+    var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-    function inWords (num) {
-          if ((num = num.toString()).length > 9) return 'overflow';
-          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-          if (!n) return; var str = '';
-          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
-          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
-          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
-          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
-          return str;
+    function inWords(num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        return str;
     }
     document.getElementById('inWord').innerHTML = inWords(parseInt("{{ $moneyReceipt->amount ? $moneyReceipt->amount : 0 }}"));
-  </script>
+</script>

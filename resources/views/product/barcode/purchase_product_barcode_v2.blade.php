@@ -38,7 +38,7 @@
                                     @csrf
                                     <div class="card-body">
                                         <input type="hidden" id="business_name"
-                                            value="{{ $generalSettings['business__shop_name'] }}">
+                                            value="{{ $generalSettings['business__business_name'] }}">
                                         <div class="form-group row">
                                             <div class="col-md-8 offset-2">
                                                 <div class="input-group ">

@@ -90,7 +90,7 @@ class StockAdjustedProductReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 })
                 ->editColumn('stock_location', function ($row) use ($generalSettings) {
@@ -111,7 +111,7 @@ class StockAdjustedProductReportController extends Controller
                             }
                         } else {
 
-                            return $generalSettings['business__shop_name'];
+                            return $generalSettings['business__business_name'];
                         }
                     }
                 })

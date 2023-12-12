@@ -1,11 +1,54 @@
 <style>
-    .search_item_area {position: relative;}
-    .select_area {position: relative;background: #ffffff;box-sizing: border-box;position: absolute;width: 100%;z-index: 9999999;padding: 0;left: 0%;display: none;border: 1px solid var(--main-color);margin-top: 1px;border-radius: 0px;}
-    .select_area ul {list-style: none;margin-bottom: 0;padding: 4px 4px;}
-    .select_area ul li a {color: #464343;text-decoration: none;font-size: 12px;padding: 2px 3px;display: block;line-height: 15px;border: 1px solid #968e92;font-weight: 400;}
-    .select_area ul li a:hover {background-color: #999396;color: #fff;}
-    .selectProduct {background-color: #746e70!important;color: #fff !important;}
-    .text-info {color: #0795a5 !important;}
+    .search_item_area {
+        position: relative;
+    }
+
+    .select_area {
+        position: relative;
+        background: #ffffff;
+        box-sizing: border-box;
+        position: absolute;
+        width: 100%;
+        z-index: 9999999;
+        padding: 0;
+        left: 0%;
+        display: none;
+        border: 1px solid var(--main-color);
+        margin-top: 1px;
+        border-radius: 0px;
+    }
+
+    .select_area ul {
+        list-style: none;
+        margin-bottom: 0;
+        padding: 4px 4px;
+    }
+
+    .select_area ul li a {
+        color: #464343;
+        text-decoration: none;
+        font-size: 12px;
+        padding: 2px 3px;
+        display: block;
+        line-height: 15px;
+        border: 1px solid #968e92;
+        font-weight: 400;
+    }
+
+    .select_area ul li a:hover {
+        background-color: #999396;
+        color: #fff;
+    }
+
+    .selectProduct {
+        background-color: #746e70 !important;
+        color: #fff !important;
+    }
+
+    .text-info {
+        color: #0795a5 !important;
+    }
+
     .pos-logo img {
         height: auto;
         width: 70%;
@@ -26,29 +69,22 @@
                                     @if (auth()->user()?->branch?->parent_branch_id)
 
                                         @if (auth()->user()?->branch?->parentBranch?->logo != 'default.png')
-
                                             <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->parentBranch?->logo) }}">
                                         @else
-
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->parentBranch?->name }}</span>
                                         @endif
                                     @else
-
                                         @if (auth()->user()?->branch?->logo != 'default.png')
-
                                             <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . auth()->user()?->branch?->logo) }}">
                                         @else
-
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ auth()->user()?->branch?->name }}</span>
                                         @endif
                                     @endif
                                 @else
                                     @if ($generalSettings['business__business_logo'] != null)
-
                                         <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
-
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__shop_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__business_name'] }}</span>
                                     @endif
                                 @endif
                             </div>
@@ -57,10 +93,8 @@
                         <div class="col-lg-8 col-sm-12 col-12 address">
                             @if ($openedCashRegister?->branch_id)
                                 @if ($openedCashRegister?->branch->parent_branch_id)
-
                                     <p class="store-name">{{ $openedCashRegister?->branch->parentBranch?->name }}</p>
                                 @else
-
                                     <p class="store-name">{{ $openedCashRegister?->branch?->name }}</p>
                                 @endif
 
@@ -70,9 +104,8 @@
                                     {{ $openedCashRegister->branch->country ? ', ' . $openedCashRegister->branch->country : '' }}
                                 </p>
                             @else
-
                                 <p class="store-name">
-                                    {{ $generalSettings['business__shop_name'] }}
+                                    {{ $generalSettings['business__business_name'] }}
                                 </p>
 
                                 <p class="address-name">
@@ -82,17 +115,17 @@
 
                             <small class="login-user-name">
                                 <span class="fw-bold">{{ __('C.Register') }}: </span>
-                                    @if ($openedCashRegister->user)
-                                        @if ($openedCashRegister->user->role_type == 1)
-                                            {{ __("SuperAdmin.") }}
-                                        @elseif($openedCashRegister->user->role_type == 2)
-                                            {{ __("Admin.") }}
-                                        @else
-                                            {{ $openedCashRegister->user?->roles()?->first()?->name }}.
-                                        @endif
+                                @if ($openedCashRegister->user)
+                                    @if ($openedCashRegister->user->role_type == 1)
+                                        {{ __('SuperAdmin.') }}
+                                    @elseif($openedCashRegister->user->role_type == 2)
+                                        {{ __('Admin.') }}
+                                    @else
+                                        {{ $openedCashRegister->user?->roles()?->first()?->name }}.
                                     @endif
+                                @endif
                                 </span>
-                                <span> <span class="fw-bold">{{ __("Cash Counter") }}: </span> {{ $openedCashRegister->cashCounter ? $openedCashRegister->cashCounter->counter_name : 'N/A' }}.</span>
+                                <span> <span class="fw-bold">{{ __('Cash Counter') }}: </span> {{ $openedCashRegister->cashCounter ? $openedCashRegister->cashCounter->counter_name : 'N/A' }}.</span>
                             </small>
                         </div>
                     </div>
@@ -111,7 +144,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
 
@@ -137,7 +170,7 @@
                             <div class="col-lg-6 input-value-sec">
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">{{ __("Reedem Point") }}</span>
+                                        <span class="input-group-text valus">{{ __('Reedem Point') }}</span>
                                     </div>
 
                                     <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
@@ -151,13 +184,13 @@
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">{{ __("Curr. Stock") }}</span>
+                                        <span class="input-group-text valus">{{ __('Curr. Stock') }}</span>
                                     </div>
                                     <input readonly type="text" class="form-control" id="stock_quantity" tabindex="-1">
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
-                                            <option value="">{{ __("Default Price Group") }}</option>
+                                            <option value="">{{ __('Default Price Group') }}</option>
                                             @foreach ($priceGroups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
@@ -185,13 +218,11 @@
                             <span class="fas fa-calculator"></span>
                         </a>
                         @if (auth()->user()->can('register_view'))
-
-                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __("Cash Register Details") }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
+                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __('Cash Register Details') }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
                         @endif
 
                         @if (auth()->user()->can('register_close'))
-
-                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __("Close Register") }}" tabindex="-1"> <span class="fas fa-times"></span></a>
+                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __('Close Register') }}" tabindex="-1"> <span class="fas fa-times"></span></a>
                         @endif
                         <a href="#" class="pos-btn" tabindex="-1"><span class="fas fa-bell"></span></a>
                         <a href="#" class="pos-btn" id="pos_exit_button" tabindex="-1"><span class="fas fa-backward"></span></a>

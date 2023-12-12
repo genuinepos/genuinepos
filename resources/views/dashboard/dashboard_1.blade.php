@@ -57,14 +57,14 @@
                                     <div class="select-dropdown">
                                         <select name="branch_id" id="branch_id" autofocus>
                                             <option value="">{{ __('All Shop/Business') }}</option>
-                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __('Business') }})</option>
+                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 @endif
-                                
+
                                 <div class="select-dropdown">
                                     <select name="date" id="date">
                                         <option data-date_period="{{ __('Today\'s Status.') }}" value="{{ $toDay }}">{{ __('Current Day') }}</option>

@@ -77,10 +77,8 @@
                         <div class="col-lg-8 col-sm-12 col-12 address">
                             @if ($openedCashRegister?->branch_id)
                                 @if ($openedCashRegister?->branch->parent_branch_id)
-
                                     <p class="store-name">{{ $openedCashRegister?->branch->parentBranch?->name }}</p>
                                 @else
-
                                     <p class="store-name">{{ $openedCashRegister?->branch?->name }}</p>
                                 @endif
 
@@ -90,9 +88,8 @@
                                     {{ $openedCashRegister->branch->country ? ', ' . $openedCashRegister->branch->country : '' }}
                                 </p>
                             @else
-
                                 <p class="store-name">
-                                    {{ $generalSettings['business__shop_name'] }}
+                                    {{ $generalSettings['business__business_name'] }}
                                 </p>
 
                                 <p class="address-name">
@@ -104,17 +101,17 @@
                                 {{-- <span class="text-highlight">{{ __('Loggedin') }} </span> {{ auth()->user()->prefix . ' ' .  auth()->user()->name . ' ' .  auth()->user()->last_name }}.
                                 <span> --}}
                                 <span class="fw-bold">{{ __('C.Register') }}: </span>
-                                    @if ($openedCashRegister->user)
-                                        @if ($openedCashRegister->user->role_type == 1)
-                                            {{ __("SuperAdmin.") }}
-                                        @elseif($openedCashRegister->user->role_type == 2)
-                                            {{ __("Admin.") }}
-                                        @else
-                                            {{ $openedCashRegister->user?->roles()?->first()?->name }}.
-                                        @endif
+                                @if ($openedCashRegister->user)
+                                    @if ($openedCashRegister->user->role_type == 1)
+                                        {{ __('SuperAdmin.') }}
+                                    @elseif($openedCashRegister->user->role_type == 2)
+                                        {{ __('Admin.') }}
+                                    @else
+                                        {{ $openedCashRegister->user?->roles()?->first()?->name }}.
                                     @endif
+                                @endif
                                 </span>
-                                <span> <span class="fw-bold">{{ __("Cash Counter") }}: </span> {{ $openedCashRegister->cashCounter ? $openedCashRegister->cashCounter->counter_name : 'N/A' }}.</span>
+                                <span> <span class="fw-bold">{{ __('Cash Counter') }}: </span> {{ $openedCashRegister->cashCounter ? $openedCashRegister->cashCounter->counter_name : 'N/A' }}.</span>
                             </small>
                         </div>
                     </div>
@@ -133,7 +130,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                        <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                     </div>
                                 </div>
 
@@ -142,7 +139,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-barcode"></i></span>
                                         </div>
-                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __("Search Product by Name/Barcode") }}" autofocus autocomplete="off">
+                                        <input type="text" name="search_product" class="form-control" id="search_product" placeholder="{{ __('Search Product by Name/Barcode') }}" autofocus autocomplete="off">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                         </div>
@@ -157,7 +154,7 @@
                             <div class="col-lg-6 input-value-sec">
                                 <div class="input-group mb-1">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">{{ __("Reedem Point") }}</span>
+                                        <span class="input-group-text valus">{{ __('Reedem Point') }}</span>
                                     </div>
 
                                     <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
@@ -171,13 +168,13 @@
 
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus">{{ __("Curr. Stock") }}</span>
+                                        <span class="input-group-text valus">{{ __('Curr. Stock') }}</span>
                                     </div>
                                     <input readonly type="text" class="form-control" id="stock_quantity" tabindex="-1">
 
                                     <div class="input-group-prepend ms-1">
                                         <select name="price_group_id" class="form-control" id="price_group_id">
-                                            <option value="">{{ __("Default Price Group") }}</option>
+                                            <option value="">{{ __('Default Price Group') }}</option>
                                             @foreach ($priceGroups as $pg)
                                                 <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                             @endforeach
@@ -209,35 +206,35 @@
                                 <ul class="p-2 pt-3">
                                     <li>
                                         <span class="icon shortcut">F2</span>
-                                        <span class="desc">{{ __("Save as draft") }}</span>
+                                        <span class="desc">{{ __('Save as draft') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">F3</span>
-                                        <span class="desc">{{ __("View stock") }}</span>
+                                        <span class="desc">{{ __('View stock') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">Ctrl+Q</span>
-                                        <span class="desc">{{ __("Quick Setup") }}</span>
+                                        <span class="desc">{{ __('Quick Setup') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">Ctrl+C</span>
-                                        <span class="desc">{{ __("Copy Element") }}</span>
+                                        <span class="desc">{{ __('Copy Element') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">Ctrl+V</span>
-                                        <span class="desc">{{ __("Paste Copied") }}</span>
+                                        <span class="desc">{{ __('Paste Copied') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">F2</span>
-                                        <span class="desc">{{ __("Save as Draft") }}</span>
+                                        <span class="desc">{{ __('Save as Draft') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">F2</span>
-                                        <span class="desc">{{ __("Save as Draft") }}</span>
+                                        <span class="desc">{{ __('Save as Draft') }}</span>
                                     </li>
                                     <li>
                                         <span class="icon shortcut">F2</span>
-                                        <span class="desc">{{ __("Save as Draft") }}</span>
+                                        <span class="desc">{{ __('Save as Draft') }}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -295,13 +292,11 @@
                         </div>
 
                         @if (auth()->user()->can('register_view'))
-
-                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __("Cash Register Details") }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
+                            <a href="{{ route('cash.register.show', $openedCashRegister->id) }}" class="pos-btn text-info" id="cashRegisterDetailsBtn" title="{{ __('Cash Register Details') }}" tabindex="-1"><i class="fas fa-cash-register"></i></a>
                         @endif
 
                         @if (auth()->user()->can('register_close'))
-
-                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __("Close Register") }}" tabindex="-1"> <span class="fas fa-times"></span></a>
+                            <a href="{{ route('cash.register.close', $openedCashRegister->id) }}" class="pos-btn text-danger" id="closeCashRegisterBtn" title="{{ __('Close Register') }}" tabindex="-1"> <span class="fas fa-times"></span></a>
                         @endif
 
                         <a href="#" class="pos-btn" tabindex="-1">

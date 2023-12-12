@@ -143,7 +143,7 @@ class ExpenseUtil
                     return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
                 } else {
 
-                    return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
                 }
             })
             ->editColumn('user_name', function ($row) {
@@ -238,7 +238,7 @@ class ExpenseUtil
                 if ($row->branch_name) {
                     return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business__shop_name'].'(<b>HO</b>)';
+                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
                 }
             })->editColumn('category_name', function ($row) {
                 return $row->name.' ('.$row->code.')';

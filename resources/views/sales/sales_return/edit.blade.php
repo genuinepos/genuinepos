@@ -62,7 +62,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('B. Location') }} </b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__shop_name'].'(HO)' }}" tabindex="-1">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__business_name'].'(HO)' }}" tabindex="-1">
                                             <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
                                         </div>
                                     </div>

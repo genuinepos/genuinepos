@@ -8,9 +8,9 @@
             <div class="sec-name">
                 <div class="name-head">
                     <span class="fas fa-money-check-alt"></span>
-                    <h5>{{ __("Accounts") }}</h5>
+                    <h5>{{ __('Accounts') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -23,17 +23,17 @@
                                 <div class="form-group row">
                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Shop/Business") }} </strong></label>
+                                            <label><strong>{{ __('Shop/Business') }} </strong></label>
                                             <select name="branch_id" class="form-control select2" id="f_branch_id" autofocus>
-                                                <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                             $branchCode = '-' . $branch->branch_code;
                                                         @endphp
-                                                        {{  $branchName . $areaName . $branchCode }}
+                                                        {{ $branchName . $areaName . $branchCode }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -41,14 +41,14 @@
                                     @endif
 
                                     <div class="col-md-4">
-                                        <label><strong>{{ __("Account Group") }} </strong></label>
+                                        <label><strong>{{ __('Account Group') }} </strong></label>
                                         <select name="f_account_group_id" id="f_account_group_id" class="form-control select2">
-                                            <option value="">{{ __("All") }}</option>
+                                            <option value="">{{ __('All') }}</option>
                                             @foreach ($accountGroups as $group)
                                                 @php
-                                                    $parentGroup = $group?->parentGroup ? '-('.$group?->parentGroup?->name.')' : '';
+                                                    $parentGroup = $group?->parentGroup ? '-(' . $group?->parentGroup?->name . ')' : '';
                                                 @endphp
-                                                <option value="{{ $group->id }}">{{ $group->name.$parentGroup }}</option>
+                                                <option value="{{ $group->id }}">{{ $group->name . $parentGroup }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -56,7 +56,7 @@
                                     <div class="col-md-2">
                                         <label><strong></strong></label>
                                         <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                            <button type="submit" class="btn text-white btn-sm btn-info"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -68,38 +68,38 @@
             <div class="card">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __("List Of Accounts") }}</h6>
+                        <h6>{{ __('List Of Accounts') }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">
-                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add Accounts") }}</a>
+                        <a href="{{ route('accounts.create') }}" id="addAccountBtn" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __('Add Accounts') }}</a>
                     </div>
                 </div>
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr>
-                                    <th class="text-start">{{ __("Group") }}</th>
-                                    <th class="text-start">{{ __("Name") }}</th>
-                                    <th class="text-start">{{ __("A/c Number") }}</th>
+                                    <th class="text-start">{{ __('Group') }}</th>
+                                    <th class="text-start">{{ __('Name') }}</th>
+                                    <th class="text-start">{{ __('A/c Number') }}</th>
                                     <th class="text-start">{{ __('Bank') }}</th>
-                                    <th class="text-start">{{ __("Shop/Business") }}</th>
-                                    <th class="text-start">{{ __("Opening Balance") }}</th>
-                                    <th class="text-start">{{ __("Debit") }}</th>
-                                    <th class="text-start">{{ __("Credit") }}</th>
-                                    <th class="text-start">{{ __("Closing Balance") }}</th>
-                                    <th class="text-start">{{ __("Action") }}</th>
+                                    <th class="text-start">{{ __('Shop/Business') }}</th>
+                                    <th class="text-start">{{ __('Opening Balance') }}</th>
+                                    <th class="text-start">{{ __('Debit') }}</th>
+                                    <th class="text-start">{{ __('Credit') }}</th>
+                                    <th class="text-start">{{ __('Closing Balance') }}</th>
+                                    <th class="text-start">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="5" class="text-white text-end">{{ __("Current Total") }} :</th>
+                                    <th colspan="5" class="text-white text-end">{{ __('Current Total') }} :</th>
                                     <th id="total_opening_balance" class="text-white">0.00 Cr.</th>
                                     <th id="total_debit" class="text-white">0.00</th>
                                     <th id="total_credit" class="text-white">0.00</th>
@@ -124,7 +124,7 @@
     <!--Add/Edit Account modal End-->
 @endsection
 @push('scripts')
-    <script src="{{asset('backend/asset/js/select2.min.js') }}"></script>
+    <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 
     <script>
         $('.select2').select2();
@@ -133,13 +133,36 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('accounts.index') }}",
                 "data": function(d) {
@@ -147,18 +170,53 @@
                     d.account_group_id = $('#f_account_group_id').val();
                 }
             },
-            columns: [
-                {data: 'group', name: 'account_groups.name'},
-                {data: 'name', name: 'accounts.name'},
-                {data: 'ac_number', name: 'accounts.account_number'},
-                {data: 'bank', name: 'banks.name'},
-                {data: 'branch', name: 'branches.name', className: 'fw-bold'},
-                {data: 'opening_balance', name: 'accounts.opening_balance', className: 'text-end fw-bold'},
-                {data: 'debit', name: 'accounts.account_number', className: 'text-end fw-bold'},
-                {data: 'credit', name: 'accounts.account_number', className: 'text-end fw-bold'},
-                {data: 'closing_balance', name: 'accounts.account_number', className: 'text-end fw-bold'},
-                {data: 'action', name: 'accounts.account_number'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'group',
+                    name: 'account_groups.name'
+                },
+                {
+                    data: 'name',
+                    name: 'accounts.name'
+                },
+                {
+                    data: 'ac_number',
+                    name: 'accounts.account_number'
+                },
+                {
+                    data: 'bank',
+                    name: 'banks.name'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'opening_balance',
+                    name: 'accounts.opening_balance',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'debit',
+                    name: 'accounts.account_number',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'credit',
+                    name: 'accounts.account_number',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'closing_balance',
+                    name: 'accounts.account_number',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'action',
+                    name: 'accounts.account_number'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var dr_opening_balance = sum_table_col($('.data_tbl'), 'dr_opening_balance');
                 var cr_opening_balance = sum_table_col($('.data_tbl'), 'cr_opening_balance');
@@ -169,7 +227,7 @@
 
                     totalOpeningBalance = dr_opening_balance - cr_opening_balance;
                     totalOpeningBalanceSide = 'Dr.';
-                }else if (cr_opening_balance > dr_opening_balance) {
+                } else if (cr_opening_balance > dr_opening_balance) {
 
                     totalOpeningBalance = cr_opening_balance - dr_opening_balance;
                     totalOpeningBalanceSide = 'Cr.';
@@ -191,7 +249,7 @@
 
                     totalClosingBalance = dr_closing_balance - cr_closing_balance;
                     totalClosingBalanceSide = 'Dr.';
-                }else if (cr_closing_balance > dr_closing_balance) {
+                } else if (cr_closing_balance > dr_closing_balance) {
 
                     totalClosingBalance = cr_closing_balance - dr_closing_balance;
                     totalClosingBalanceSide = 'Cr.';
@@ -221,7 +279,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             accounts_table.ajax.reload();
@@ -229,7 +287,9 @@
 
         // Setup ajax for csrf token.
         $.ajaxSetup({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
 
         // call jquery method
@@ -319,9 +379,18 @@
                     'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
                         },
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Deleted canceled.');
+                            }
+                        }
                     }
                 });
             });

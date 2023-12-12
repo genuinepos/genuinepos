@@ -244,7 +244,7 @@
                                                             @endif
                                                         @else
 
-                                                            {{ $generalSettings['business__shop_name'] }}
+                                                            {{ $generalSettings['business__business_name'] }}
                                                         @endif
                                                     @endif
                                                 </td>
@@ -319,7 +319,7 @@
                                                         @endif
                                                     @else
 
-                                                        {{ $generalSettings['business__shop_name'] }}
+                                                        {{ $generalSettings['business__business_name'] }}
                                                     @endif
                                                 @endif
                                             </td>
@@ -394,7 +394,7 @@
 
                     <hr class="m-0">
 
-                    @if ($generalSettings['addons__branches'] == 1)
+
 
                         <div class="row">
                             <div class="heading">
@@ -404,7 +404,7 @@
                                 @include('product.products.ajax_view.partials.another_branch_details')
                             </div>
                         </div>
-                    @endif
+
                 @endif --}}
 
             <div class="modal-footer text-end">

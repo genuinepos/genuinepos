@@ -80,7 +80,7 @@ class ProductionService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('store_location', function ($row) use ($generalSettings) {
@@ -101,7 +101,7 @@ class ProductionService
                         }
                     } else {
 
-                        return $generalSettings['business__shop_name'];
+                        return $generalSettings['business__business_name'];
                     }
                 }
             })

@@ -32,7 +32,7 @@
                                                         <select name="branch_id"
                                                             class="form-control select2" id="f_branch_id" autofocus>
                                                             <option value="">{{ __("All") }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__shop_name'] }}({{ __("Business") }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php

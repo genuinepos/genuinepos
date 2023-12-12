@@ -17,7 +17,7 @@
                                             <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
                                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">
-                                                {{ $generalSettings['business__shop_name'] }}
+                                                {{ $generalSettings['business__business_name'] }}
                                             </span>
                                         @endif
                                         <span class="head-text">

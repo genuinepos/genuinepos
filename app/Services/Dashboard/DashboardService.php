@@ -198,7 +198,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('alert_quantity', function ($row) {
@@ -290,7 +290,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name)
@@ -366,7 +366,7 @@ class DashboardService
             })
             ->editColumn('invoice_id', function ($row) {
 
-                return '<a href="'.route('sales.show', [$row->id]).'" id="details_btn">' . $row->invoice_id . '</a>';
+                return '<a href="' . route('sales.show', [$row->id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -381,7 +381,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name)
@@ -458,7 +458,7 @@ class DashboardService
             })
             ->editColumn('invoice_id', function ($row) {
 
-                return '<a href="'.route('purchases.show', [$row->id]).'" id="details_btn">' . $row->invoice_id . '</a>';
+                return '<a href="' . route('purchases.show', [$row->id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -473,7 +473,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__shop_name'];
+                    return $generalSettings['business__business_name'];
                 }
             })
             ->editColumn('supplier', fn ($row) => $row->supplier_name)

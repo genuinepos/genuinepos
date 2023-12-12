@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use Exception;
-use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
-use App\Models\Setups\BranchSetting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 
@@ -27,23 +25,15 @@ class TenantBootstrapped
         try {
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
                 $generalSettings = Cache::get('generalSettings');
-                $shopSettings = Cache::get('shopSettings');
                 if (!isset($generalSettings)) {
                     $generalSettings = GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
                         return $generalSettings;
                     });
                 }
-                if (!isset($shopSettings)) {
-                    $shopSettings = BranchSetting::where('branch_id', auth()->user()?->branch)->pluck('value', 'key')->toArray();
-                    Cache::rememberForever('shopSettings', function () use ($shopSettings) {
-                        return $shopSettings;
-                    });
-                }
 
                 config([
                     'generalSettings' => $generalSettings,
-                    'shopSettings' => $shopSettings,
                     // Tenant separated email config start
                     // 'mail.mailers.smtp.transport' => $generalSettings['email_config__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
                     // 'mail.mailers.smtp.host' => $generalSettings['email_config__MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
@@ -60,7 +50,6 @@ class TenantBootstrapped
                 $__date_format = str_replace('-', '/', $dateFormat);
                 if (isset($generalSettings)) {
                     view()->share('generalSettings', $generalSettings);
-                    view()->share('shopSettings', $shopSettings);
                     view()->share('__date_format', $__date_format);
                 }
             }

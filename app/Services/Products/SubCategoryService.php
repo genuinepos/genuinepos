@@ -12,10 +12,10 @@ class SubCategoryService
     public function subcategoriesTable()
     {
         $subCategories = DB::table('categories')
-            ->leftJoin('categories as parentcat', 'parentcat.id', 'categories.parent_category_id')
-            ->select('parentcat.name as parentname', 'categories.*')
+            ->leftJoin('categories as parentCategory', 'categories.id', 'parentCategory.id')
             ->whereNotNull('categories.parent_category_id')
-            ->orderBy('id', 'DESC');
+            ->select('categories.id', 'categories.name', 'categories.photo', 'categories.description', 'parentCategory.name as parent_category_name')
+            ->orderBy('id', 'desc')->get();
 
         $imgUrl = asset('uploads/category/');
 

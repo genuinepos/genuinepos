@@ -9,13 +9,11 @@
                     </a>
                 </li>
 
-
-                <li data-menu="store" class="">
+                <li data-menu="store" class="{{ request()->is('setups/branches*') ? 'menu_active' : '' }}">
                     <a href="{{ route('branches.index') }}" class=""><img src="{{ asset('backend/asset/img/icon/shop.svg') }}">
                         <p class="title">{{ __('Store') }}</p>
                     </a>
                 </li>
-
 
                 @if ($generalSettings['modules__contacts'] == '1')
                     @if (auth()->user()->can('supplier_all') ||
@@ -35,19 +33,21 @@
                     @endif
                 @endif
 
-                @if (auth()->user()->can('product_all') ||
-                        auth()->user()->can('product_add') ||
-                        auth()->user()->can('product_import') ||
-                        auth()->user()->can('product_category_index') ||
-                        auth()->user()->can('product_brand_index') ||
-                        auth()->user()->can('product_unit_index') ||
-                        auth()->user()->can('product_variant_index') ||
-                        auth()->user()->can('product_warranty_index') ||
-                        auth()->user()->can('selling_price_group_index') ||
-                        auth()->user()->can('generate_barcode') ||
-                        auth()->user()->can('product_settings') ||
-                        auth()->user()->can('stock_report') ||
-                        auth()->user()->can('stock_in_out_report'))
+                @if (
+                    auth()->user()->can('product_all') ||
+                    auth()->user()->can('product_add') ||
+                    auth()->user()->can('product_import') ||
+                    auth()->user()->can('product_category_index') ||
+                    auth()->user()->can('product_brand_index') ||
+                    auth()->user()->can('product_unit_index') ||
+                    auth()->user()->can('product_variant_index') ||
+                    auth()->user()->can('product_warranty_index') ||
+                    auth()->user()->can('selling_price_group_index') ||
+                    auth()->user()->can('generate_barcode') ||
+                    auth()->user()->can('product_settings') ||
+                    auth()->user()->can('stock_report') ||
+                    auth()->user()->can('stock_in_out_report')
+                )
                     <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
@@ -2103,17 +2103,6 @@
                                                 </div>
                                             </div>
                                             <p class="switch_text">@lang('menu.payment_methods')</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('payment.methods.settings.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-credit-card"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.payment_method_settings')</p>
                                         </a>
                                     </div>
                                 @endif

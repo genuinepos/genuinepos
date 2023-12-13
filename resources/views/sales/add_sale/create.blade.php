@@ -158,7 +158,7 @@
                                                         <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
                                                             <option value="">{{ __("Default Selling Price Group") }}</option>
                                                             @foreach ($priceGroups as $priceGroup)
-                                                                <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                                                <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

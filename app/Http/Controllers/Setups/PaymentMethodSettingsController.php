@@ -20,7 +20,7 @@ class PaymentMethodSettingsController extends Controller
     ) {
     }
 
-    public function index()
+    public function settingsView()
     {
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
@@ -38,7 +38,7 @@ class PaymentMethodSettingsController extends Controller
 
         $paymentMethods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
-        return view('setups.payment_methods.settings.index', compact('accounts', 'paymentMethods'));
+        return view('setups.payment_methods.ajax_view.payment_method_settings_body', compact('accounts', 'paymentMethods'));
     }
 
     public function update(Request $request)

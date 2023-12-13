@@ -51,6 +51,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-12">
                                 @include('product.categories.bodyPartials.categoriesBody')
                                 @include('product.categories.bodyPartials.subCategoriesBody')

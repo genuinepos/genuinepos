@@ -19,6 +19,7 @@ class LeaveTypeController extends Controller
 
             abort(403, 'Access Forbidden.');
         }
+        
         if ($request->ajax()) {
 
             $leaveTypes = LeaveType::orderBy('id', 'DESC')->get();

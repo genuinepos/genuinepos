@@ -173,9 +173,12 @@ class PosSaleController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sale_invoice'];
-            $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+            // $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sale_invoice'];
+            $invoicePrefix = 'INV';
+            // $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
+            $quotationPrefix = 'Q';
+            // $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+            $receiptVoucherPrefix = 'RV';
 
             $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
 
@@ -256,8 +259,8 @@ class PosSaleController extends Controller
                 with: [
                     'branch',
                     'branch.parentBranch',
-                    'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    'branch.branchSetting.posSaleInvoiceLayout',
+                    // 'branch.branchSetting:id,add_sale_invoice_layout_id',
+                    // 'branch.branchSetting.posSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',

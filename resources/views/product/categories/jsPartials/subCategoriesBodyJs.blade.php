@@ -1,24 +1,23 @@
 <script>
-        var subcategoriesTable = $('.data_tbl2').DataTable({
+    var subcategoriesTable = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
         buttons: [
-            {extend: 'pdf', 'title' : 'List of Subcategories', text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print', 'title' : 'List of Subcategories', text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf', 'title' : 'List of Subcategories', text: 'Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print', 'title' : 'List of Subcategories', text: 'Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
         ],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         processing: true,
         serverSide: true,
         searchable: true,
-        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
         ajax: "{{ route('subcategories.index') }}",
-        columnDefs: [{"targets": [0, 1, 3, 4], "orderable": false, "searchable": false}],
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'photo',name: 'photo'},
-            {data: 'name',name: 'name'},
-            {data: 'parentname',name: 'parentname'},
-            {data: 'description',name: 'description'},
-            {data: 'action',name: 'action'},
+            {data: 'DT_RowIndex'},
+            {data: 'photo', name: 'categories.name'},
+            {data: 'name', name: 'categories.name'},
+            {data: 'parent_category_name', name: 'parentCategory.name'},
+            {data: 'description', name: 'categories.description'},
+            {data: 'action'},
         ]
     });
 

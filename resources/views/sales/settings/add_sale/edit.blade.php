@@ -40,7 +40,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
                                         </div>
-                                        <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
+                                        <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['add_sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
                                     </div>
                                 </div>
 
@@ -60,7 +60,7 @@
                                     <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
                                         <option value="null">@lang('menu.none')</option>
                                         @foreach ($priceGroups as $priceGroup)
-                                            <option {{ $generalSettings['sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
+                                            <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

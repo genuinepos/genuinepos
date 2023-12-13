@@ -1349,7 +1349,7 @@
     }
 
     // Set Default Setting
-    $('#order_discount').val(parseFloat("{{ $generalSettings['sale__default_sale_discount'] }}").toFixed(2));
+    $('#order_discount').val(parseFloat("{{ $generalSettings['add_sale__default_sale_discount'] }}").toFixed(2));
 
     $('body').keyup(function(e){
 

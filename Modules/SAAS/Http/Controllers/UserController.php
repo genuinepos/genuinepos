@@ -26,14 +26,14 @@ class UserController extends Controller
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
                     if ($row->status == 1) {
-                        $html .= '<a href="'.route('saas.users.edit', $row->id).
+                        $html .= '<a href="' . route('saas.users.edit', $row->id) .
                             '" class="px-2 edit-btn btn btn-primary btn-sm text-white" id="editUser" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
-                        $html .= '<a href="'.route('saas.users.trash', $row->id).
+                        $html .= '<a href="' . route('saas.users.trash', $row->id) .
                             '" class="px-2 trash-btn btn btn-danger btn-sm text-white ms-2" id="trashUser" title="Trash"><span class="fas fa-trash pe-1"></span>Trash</a>';
                     } else {
-                        $html .= '<a href="'.route('saas.users.restore', $row->id).
+                        $html .= '<a href="' . route('saas.users.restore', $row->id) .
                             '" class="restore-btn btn btn-info btn-sm text-white" id="restoreUser" title="Restore"><span class="fas fa-recycle pe-1"></span>Restore</a>';
-                        $html .= '<a href="'.route('saas.users.destroy', $row->id).
+                        $html .= '<a href="' . route('saas.users.destroy', $row->id) .
                             '" class="px-2 delete-btn btn btn-warning btn-sm text-black ms-2" id="deleteUser" title="Delete"><span class="fas fa-trash pe-1"></span>Delete</a>';
                     }
                     $html .= '</div>';
@@ -98,14 +98,14 @@ class UserController extends Controller
 
         if ($request->hasFile('photo')) {
             if (isset($user->photo)) {
-                File::delete(public_path('uploads/saas/users/'.$user->photo));
+                File::delete(public_path('uploads/saas/users/' . $user->photo));
             }
             $userUpdateAttributes['photo'] = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
         } else {
             Arr::forget($userUpdateAttributes, 'photo');
         }
 
-        if (isset($userUpdateAttributes['password']) && ! empty($userUpdateAttributes['password'])) {
+        if (isset($userUpdateAttributes['password']) && !empty($userUpdateAttributes['password'])) {
             $userUpdateAttributes['password'] = bcrypt($userUpdateAttributes['password']);
         } else {
             Arr::forget($userUpdateAttributes, 'password');

@@ -1,16 +1,17 @@
 <?php
 
-use App\Http\Controllers\Setups\BarcodeSettingController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Setups\BranchController;
-use App\Http\Controllers\Setups\BranchSettingController;
+use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
-use App\Http\Controllers\Setups\GeneralSettingController;
+use App\Http\Controllers\Setups\ReleaseNoteController;
+use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
+use App\Http\Controllers\Setups\BarcodeSettingController;
+use App\Http\Controllers\Setups\GeneralSettingController;
 use App\Http\Controllers\Setups\PaymentMethodSettingsController;
-use App\Http\Controllers\Setups\ReleaseNoteController;
-use App\Http\Controllers\Setups\WarehouseController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Setups\SoftwareServiceBillingController;
 
 Route::prefix('setups')->group(function () {
 
@@ -128,5 +129,14 @@ Route::prefix('setups')->group(function () {
     Route::group(['prefix' => 'release/note'], function () {
 
         Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
+    });
+
+    Route::group(['prefix' => 'billing'], function () {
+
+        Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
+        Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
+        Route::get('cart/for/upgrade/plan', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
+        Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
+        Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
     });
 });

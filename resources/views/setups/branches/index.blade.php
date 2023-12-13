@@ -7,7 +7,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-code-branch"></span>
                     <h5>{{ __("Shops") }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -67,7 +66,6 @@
 @endsection
 @push('scripts')
 <script>
-
     var branchTable = $('.data_tbl').DataTable({
         "processing": true,
         "serverSide": true,

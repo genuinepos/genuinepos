@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\AccountGroupSeeder;
 use Illuminate\Database\Schema\Blueprint;
 
-require_once base_path('dev/db.php');
+require_once base_path('deployment/db-migrations/001.php');
 
 Artisan::command('dev:m', function () {
     // Schema::table('users', function (Blueprint $table) {

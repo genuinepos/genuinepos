@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('key');
             $table->text('value')->nullable();
             $table->foreignId('branch_id')->nullable()->references('id')->on('branches')->onDelete('CASCADE');
+            $table->foreignId('parent_branch_id')->nullable()->references('id')->on('branches')->onDelete('CASCADE');
         });
     }
 

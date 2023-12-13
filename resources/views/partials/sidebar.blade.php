@@ -10,9 +10,9 @@
                 </li>
 
 
-                <li data-menu="superadmin" class="">
-                    <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/superadmin.svg') }}">
-                        <p class="title">{{ __('Superadmin') }}</p>
+                <li data-menu="store" class="">
+                    <a href="{{ route('branches.index') }}" class=""><img src="{{ asset('backend/asset/img/icon/shop.svg') }}">
+                        <p class="title">{{ __('Store') }}</p>
                     </a>
                 </li>
 
@@ -519,7 +519,7 @@
                 </div>
             </div>
 
-            <div class="sub-menu_t" id="superadmin">
+            {{-- <div class="sub-menu_t" id="superadmin">
                 <div class="sub-menu-width">
                     <div class="model__close bg-secondary-2 mb-3">
                         <div class="row align-items-center justify-content-end">
@@ -549,7 +549,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             @if ($generalSettings['modules__contacts'] == '1')
                 <div class="sub-menu_t" id="contact">
@@ -1000,7 +1000,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('add_sale_settings'))
+                                    {{-- @if (auth()->user()->can('add_sale_settings'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('add.sales.settings.edit') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
@@ -1011,7 +1011,7 @@
                                                 <p class="switch_text">{{ __('Add Sales Settings') }}</p>
                                             </a>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                 @endif
                             </div>
 
@@ -1044,7 +1044,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('pos_sale_settings'))
+                                    {{-- @if (auth()->user()->can('pos_sale_settings'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('pos.sales.settings.edit') }}" class="switch-bar-wrap settings-wrap">
                                                 <div class="switch_bar">
@@ -1055,7 +1055,7 @@
                                                 <p class="switch_text">@lang('menu.pos_sale_settings')</p>
                                             </a>
                                         </div>
-                                    @endif
+                                    @endif --}}
                                 @endif
                             </div>
 
@@ -2171,7 +2171,7 @@
                                 @endif
 
                                 <div class="sub-menu-col">
-                                    <a href="#" class="switch-bar-wrap">
+                                    <a href="{{ route('software.service.billing.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
                                             <div class="bar-link">
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>

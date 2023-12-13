@@ -33,7 +33,7 @@ class TenantService implements TenantServiceInterface
             if (isset($tenant)) {
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 if ($domain) {
-                    // Shared user
+                    // Primary/Owner user
                     $user = User::create([
                         'name' => $tenantRequest['fullname'],
                         'email' => $tenantRequest['email'],
@@ -41,6 +41,10 @@ class TenantService implements TenantServiceInterface
                         'phone' => $tenantRequest['phone'],
                         'primary_tenant_id' => $tenant->id,
                         'ip_address' => request()->ip(),
+                    ]);
+
+                    $tenant->update([
+                        'user_id' => $user->id,
                     ]);
 
                     DB::statement('use ' . $tenant->tenancy_db_name);

@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Entities;
 
+use App\Models\User;
 use Modules\SAAS\Entities\Plan;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
@@ -19,5 +20,21 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function isVerified()
+    {
+        $user = User::where('primary_tenant_id', $this->id)->first();
+        return isset($user) && isset($user->email_verified_at);
+    }
+
+    public function haveExpired()
+    {
+        return isset($this->expire_at ) && today()->gt($this->expire_at);
     }
 }

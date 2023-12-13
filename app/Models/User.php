@@ -66,4 +66,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Shift::class, 'shift_id');
     }
+
+    public function isVerified()
+    {
+        return isset($this->email_verified_at);
+    }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('hrm_leave_types', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->string('leave_type');
-            $table->integer('max_leave_count');
+            $table->string('name');
+            $table->string('max_leave_count')->nullable();
             $table->integer('leave_count_interval');
             $table->timestamps();
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('cascade');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hrm_leavetypes');
+        Schema::dropIfExists('hrm_leave_types');
     }
 };

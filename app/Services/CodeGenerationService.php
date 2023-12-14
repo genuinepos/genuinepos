@@ -159,4 +159,37 @@ class CodeGenerationService implements CodeGenerationServiceInterface
 
         return $finalStr;
     }
+
+    public function generateWithoutYearMonth(string $table, string $column, string $prefix = '', int $digits = 3, int $size = 13, string $splitter = '-', string $suffixSeparator = '', ?int $branchId = null): string
+    {
+        $entryRaw = DB::table($table)
+            ->where('branch_id', $branchId)
+            ->whereNotNull($column)
+            ->orderByRaw("SUBSTRING(`$column`, POSITION('-' IN `$column`) + 1, CHAR_LENGTH(`$column`)) DESC")
+            // ->orderByRaw("CAST((SUBSTRING_INDEX(`$column`, '-', -1)) as UNSIGNED) DESC")
+            ->first(["$column"]);
+
+        $prefix = strlen($prefix) === 0 ? strtoupper(substr($table, 0, 3)) : $prefix;
+        $prefixLength = strlen($prefix);
+        $splitterLength = strlen($splitter);
+        $suffixSeparatorLength = strlen($suffixSeparator);
+        $minSize = $prefixLength + $splitterLength + $digits;
+        $size = $minSize;
+        $lastDigitsNextValue = 1;
+
+        if (isset($entryRaw)) {
+
+            $entry = trim($entryRaw->{$column});
+            $splitterSplittedArray = preg_split("/([\\$splitter\-\#\*\--])/", $entry, -1, PREG_SPLIT_NO_EMPTY);
+            $serial = $splitterSplittedArray[1];
+            $lastDigitsNextValue = intval($serial) + 1;
+        }
+
+        $lastDigitsLength = ($size - ($prefixLength)) - 1;
+        $lastDigitsFinal = str_pad($lastDigitsNextValue, $lastDigitsLength, '0', STR_PAD_LEFT);
+        $finalSuffix = $suffixSeparator.$lastDigitsFinal;
+        $finalStr = $prefix.$splitter.$finalSuffix;
+
+        return $finalStr;
+    }
 }

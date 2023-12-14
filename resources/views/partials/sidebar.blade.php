@@ -1851,19 +1851,6 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('leave_type'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.leave.type.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-th-large"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.leave_type')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
                                     @if (auth()->user()->can('leave_assign'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('hrm.leaves.index') }}" class="switch-bar-wrap">
@@ -1889,9 +1876,7 @@
                                             </a>
                                         </div>
                                     @endif
-                                </div>
 
-                                <div class="sub-menu-row">
                                     @if (auth()->user()->can('attendance'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('hrm.attendance') }}" class="switch-bar-wrap">
@@ -1904,7 +1889,9 @@
                                             </a>
                                         </div>
                                     @endif
+                                </div>
 
+                                <div class="sub-menu-row">
                                     @if (auth()->user()->can('view_allowance_and_deduction'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('hrm.allowance') }}" class="switch-bar-wrap">
@@ -2061,11 +2048,10 @@
                                                     <span><i class="fas fa-cogs"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.general_settings')</p>
+                                            <p class="switch_text">{{ __("General Settings") }}</p>
                                         </a>
                                     </div>
                                 @endif
-
 
                                 @if (auth()->user()->can('branch'))
                                     <div class="sub-menu-col">
@@ -2080,7 +2066,6 @@
                                     </div>
                                 @endif
 
-
                                 @if (auth()->user()->can('warehouse'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">
@@ -2089,7 +2074,7 @@
                                                     <span><i class="fas fa-warehouse"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.warehouses') </p>
+                                            <p class="switch_text">{{ __("Warehouses") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2102,20 +2087,7 @@
                                                     <span><i class="fas fa-credit-card"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.payment_methods')</p>
-                                        </a>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->can('invoice_schema'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('invoices.schemas.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-file-invoice-dollar"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.invoice_schema')</p>
+                                            <p class="switch_text">{{ __("Payment Methods") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2128,7 +2100,7 @@
                                                     <span><i class="fas fa-file-invoice"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.invoice_layout')</p>
+                                            <p class="switch_text">{{ __("Invoice Layout") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2141,7 +2113,7 @@
                                                     <span><i class="fas fa-barcode"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.barcode_settings')</p>
+                                            <p class="switch_text">{{ __("Barcode Settings") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2154,7 +2126,7 @@
                                                     <span><i class="fas fa-store"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.cash_counter')</p>
+                                            <p class="switch_text">{{ __("Cash Counters") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2177,7 +2149,7 @@
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.version_release_notes')</p>
+                                        <p class="switch_text">{{ __("Version Release Notes") }}</p>
                                     </a>
                                 </div>
 

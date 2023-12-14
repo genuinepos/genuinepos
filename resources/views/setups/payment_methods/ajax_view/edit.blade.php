@@ -66,6 +66,7 @@
                 $('#paymentMethodAddOrEditModal').empty();
                 toastr.success(data);
                 paymentMethodTable.ajax.reload();
+                getPaymentMethodSettingsView();
             },
             error: function(err) {
 

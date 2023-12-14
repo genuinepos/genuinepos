@@ -11,13 +11,12 @@
         serverSide: true,
         searchable: true,
         ajax: "{{ route('categories.index') }}",
-        columnDefs: [{"targets": [0, 1, 3], "orderable": false, "searchable": false}],
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'photo',name: 'photo'},
-            {data: 'name',name: 'name'},
-            {data: 'description',name: 'description'},
-            {data: 'action',name: 'action'},
+            {data: 'photo',name: 'categories.photo'},
+            {data: 'name',name: 'categories.name'},
+            {data: 'description',name: 'categories.description'},
+            {data: 'action'},
         ],
     });
 
@@ -134,7 +133,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Please check the connection.');
+                        toastr.error('Net Connetion Error.');
                     }else if(err.status == 500){
 
                         toastr.error('Server Error. Please contact to the support team.');

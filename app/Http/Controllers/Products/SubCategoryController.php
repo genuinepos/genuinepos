@@ -21,7 +21,7 @@ class SubCategoryController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('categories')) {
+        if (!auth()->user()->can('product_category_index')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -34,6 +34,11 @@ class SubCategoryController extends Controller
 
     public function create($fixedParentCategoryId = null)
     {
+        if (!auth()->user()->can('product_category_add')) {
+
+            return response()->json(__('Access Denied'));
+        }
+
         $fixedParentCategory = '';
         if (isset($fixedParentCategoryId)) {
 
@@ -47,7 +52,7 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('categories')) {
+        if (!auth()->user()->can('product_category_add')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -80,7 +85,7 @@ class SubCategoryController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('categories')) {
+        if (!auth()->user()->can('product_category_edit')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -93,7 +98,7 @@ class SubCategoryController extends Controller
 
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('categories')) {
+        if (!auth()->user()->can('product_category_edit')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -126,13 +131,12 @@ class SubCategoryController extends Controller
 
     public function subcategoriesByCategoryId($categoryId)
     {
-
         return $this->subCategoryService->subcategories()->where('parent_category_id', $categoryId)->get();
     }
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('categories')) {
+        if (!auth()->user()->can('product_category_delete')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -143,7 +147,7 @@ class SubCategoryController extends Controller
 
             $deleteSubcategory = $this->subCategoryService->deleteSubcategory(id: $id, request: $request);
 
-            if (! is_null($deleteSubcategory)) {
+            if (!is_null($deleteSubcategory)) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 21, data_obj: $deleteSubcategory);
             }

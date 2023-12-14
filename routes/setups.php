@@ -99,7 +99,7 @@ Route::prefix('setups')->group(function () {
 
         Route::controller(PaymentMethodSettingsController::class)->prefix('settings')->group(function () {
 
-            Route::get('/', 'index')->name('payment.methods.settings.index');
+            Route::get('/', 'settingsView')->name('payment.methods.settings.view');
             Route::post('update', 'update')->name('payment.methods.settings.add.or.update');
         });
     });

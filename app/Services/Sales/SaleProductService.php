@@ -97,7 +97,7 @@ class SaleProductService
             'product_variants.variant_price',
             'customers.name as customer_name',
             'branches.name as branch_name',
-            'branches.area_name as branch_area_name',
+            'branches.area_name',
             'branches.branch_code',
             'parentBranch.name as parent_branch_name',
             'warehouses.warehouse_name',

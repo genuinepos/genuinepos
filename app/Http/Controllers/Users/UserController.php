@@ -51,7 +51,7 @@ class UserController extends Controller
         }
 
         $roles = $this->roleService->roles()->get();
-        $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
+        $departments = DB::table('hrm_departments')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
 
@@ -87,7 +87,7 @@ class UserController extends Controller
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        $departments = DB::table('hrm_department')->orderBy('id', 'desc')->get();
+        $departments = DB::table('hrm_departments')->orderBy('id', 'desc')->get();
         $designations = DB::table('hrm_designations')->orderBy('id', 'desc')->get();
         $shifts = DB::table('hrm_shifts')->orderBy('id', 'desc')->get();
 

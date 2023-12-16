@@ -9,7 +9,7 @@ class Department extends BaseModel
 {
     use HasFactory;
 
-    protected $table = 'hrm_department';
+    protected $table = 'hrm_departments';
 
-    protected $fillable = ['department_name', 'department_id', 'description'];
+    protected $fillable = ['name', 'department_id', 'description'];
 }

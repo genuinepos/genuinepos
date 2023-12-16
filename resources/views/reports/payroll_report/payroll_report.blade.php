@@ -29,7 +29,7 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                           
+
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') : </strong></label>
@@ -175,7 +175,7 @@
         columnDefs: [{"targets": [2, 7],"orderable": false,"searchable": false}],
         columns: [
             {data: 'employee', name: 'users.name'},
-            {data: 'department_name', name: 'hrm_department.department_name'},
+            {data: 'department_name', name: 'hrm_departments.department_name'},
             {data: 'month_year', name: 'month_year'},
             {data: 'reference_no', name: 'reference_no'},
             {data: 'gross_amount', name: 'gross_amount'},

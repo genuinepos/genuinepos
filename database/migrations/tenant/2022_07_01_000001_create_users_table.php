@@ -64,7 +64,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
-            $table->foreign(['department_id'])->references(['id'])->on('hrm_department')->onDelete('SET NULL');
+            $table->foreign(['department_id'])->references(['id'])->on('hrm_departments')->onDelete('SET NULL');
             $table->foreign(['designation_id'])->references(['id'])->on('hrm_designations')->onDelete('SET NULL');
             $table->foreign(['shift_id'])->references(['id'])->on('hrm_shifts')->onDelete('SET NULL');
         });

@@ -28,16 +28,16 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.attendance.shift') }}" class="bar-link">
+            <a href="{{ route('hrm.shifts.index') }}" class="bar-link">
                 <span><i class="fas fa-network-wired"></i></span>
             </a>
         </div>
-        <p class="switch_text">@lang('menu.shift')</p>
+        <p class="switch_text">{{ __("Shift") }}</p>
     </div>
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.attendance') }}" class="bar-link">
+            <a href="{{ route('hrm.attendances.index') }}" class="bar-link">
                 <span><i class="fas fa-paste"></i></span>
             </a>
         </div>
@@ -125,11 +125,11 @@
                     @endif
 
                     <li>
-                        <a href="{{ route('hrm.attendance.shift') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                        <a href="{{ route('hrm.shifts.index') }}" class="text-white "><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.attendance') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                        <a href="{{ route('hrm.attendance.index') }}" class="text-white "><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                     </li>
 
                     <li>

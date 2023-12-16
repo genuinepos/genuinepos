@@ -1866,26 +1866,26 @@
 
                                     @if (auth()->user()->can('shift'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.attendance.shift') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.shifts.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-network-wired"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.shift')</p>
+                                                <p class="switch_text">{{ __("Shifts") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
                                     @if (auth()->user()->can('attendance'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.attendance') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.attendances.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-paste"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.attendance')</p>
+                                                <p class="switch_text">{{ __("Attendances") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1933,7 +1933,7 @@
 
                                     @if (auth()->user()->can('department'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.departments') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.departments.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="far fa-building"></i></span>

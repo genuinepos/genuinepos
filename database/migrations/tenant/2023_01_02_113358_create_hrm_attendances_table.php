@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('hrm_attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('at_date');
+            $table->unsignedBigInteger('branch_id')->index('hrm_attendances_branch_id_foreign')->nullable();
+            $table->string('clock_in_date');
+            $table->string('clock_out_date')->nullable();
             $table->unsignedBigInteger('user_id')->index('hrm_attendances_user_id_foreign');
             $table->string('clock_in')->nullable();
             $table->string('clock_out')->nullable();
@@ -28,9 +30,12 @@ return new class extends Migration
             $table->timestamp('clock_out_ts')->nullable();
             $table->timestamp('at_date_ts')->nullable();
             $table->boolean('is_completed')->default(false);
+            $table->unsignedBigInteger('shift_id')->nullable();
             $table->timestamps();
 
-            $table->foreign(['user_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['shift_id'])->references(['id'])->on('hrm_shifts')->onDelete('SET NULL');
         });
     }
 

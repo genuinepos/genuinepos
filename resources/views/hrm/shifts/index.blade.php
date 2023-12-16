@@ -28,14 +28,14 @@
                                 </div>
 
                                 <div class="col-6 d-flex justify-content-end">
-                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-primary" id="addShift"><i class="fas fa-plus-square"></i>{{ __("Add Shift") }}</a>
+                                    <a href="{{ route('hrm.shifts.create') }}" class="btn btn-sm btn-primary" id="addShift"><i class="fas fa-plus-square"></i> {{ __("Add Shift") }}</a>
                                 </div>
                             </div>
 
                             <div class="widget_content">
                                 <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6></div>
                                 <div class="table-responsive" id="data-list">
-                                    <table class="display data_tbl data__table shift_table">
+                                    <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
                                                 <th>{{ __('Shift Name') }}</th>
@@ -66,36 +66,34 @@
 @push('scripts')
 
 <script>
-    var shiftsTable = $('.shift_table').DataTable({
+    var shiftsTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
         buttons: [
-            {extend: 'excel',text: 'Excel', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'pdf',text: 'Pdf', messageTop: 'Asset types', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print',text: 'Print', messageTop: '<b>Asset types</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'excel',text: 'Excel', messageTop: 'List Of Shifts', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'pdf',text: 'Pdf', messageTop: 'List Of Shifts', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
+            {extend: 'print',text: 'Print', messageTop: '<b>List Of Shifts</b>', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
         ],
         processing: true,
         serverSide: true,
         searchable: true,
-        "lengthMenu" : [25, 100, 500, 1000, 2000],
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         ajax: "{{ route('hrm.shifts.index') }}",
         columns: [
-            {data: 'name',name: 'name'},
+            {data: 'name', name: 'name'},
             {data: 'start_time',name: 'start_time'},
-            {data: 'endtime',name: 'endtime'},
-            {data: 'action',name: 'action'},
+            {data: 'end_time',name: 'end_time'},
+            {data: 'action'},
         ],
     });
 
      // Setup ajax for csrf token.
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
 
     // call jquery method
     $(document).ready(function(){
-        // Add department by ajax
         $(document).on('click', '#addShift', function(e) {
             e.preventDefault();
 
@@ -182,14 +180,14 @@
                     'No': {
                         'class': 'no btn-danger',
                         'action': function() {
-                            // alert('Deleted canceled.')
+                            // alert('Deleted canceled.');
                         }
                     }
                 }
             });
         });
 
-        $(document).on('submit', '#delete_shift_form', function(e) {
+        $(document).on('submit', '#deleted_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();

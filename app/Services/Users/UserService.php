@@ -328,6 +328,18 @@ class UserService
         return $query->where('id', $id)->first();
     }
 
+    public function users(array $with = null)
+    {
+        $query = User::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
     public function addUserValidation(object $request, ?object $role)
     {
         $request->validate([

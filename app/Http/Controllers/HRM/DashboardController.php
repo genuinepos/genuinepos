@@ -29,11 +29,11 @@ class DashboardController extends Controller
         $userCount = '';
         $users = '';
         $userCountQ = DB::table('users');
-        $usersQ = DB::table('hrm_department')
-            ->leftJoin('users', 'hrm_department.id', 'users.department_id')
+        $usersQ = DB::table('hrm_departments')
+            ->leftJoin('users', 'hrm_departments.id', 'users.department_id')
             ->select(
                 DB::raw('COUNT(users.id) as total_users'),
-                'hrm_department.department_name'
+                'hrm_departments.department_name'
             );
 
         if ($request->branch_id) {
@@ -92,7 +92,7 @@ class DashboardController extends Controller
                 'hrm_attendances.clock_out',
             )->get();
         } else {
-            
+
             $todayAttendances = $todayAttQ->select(
                 'users.prefix',
                 'users.name',

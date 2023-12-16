@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hrm_department', function (Blueprint $table) {
+        Schema::create('hrm_departments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('department_name')->nullable();
+            $table->string('name')->nullable();
             $table->string('department_id')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hrm_department');
+        Schema::dropIfExists('hrm_departments');
     }
 };

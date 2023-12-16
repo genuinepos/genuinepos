@@ -32,11 +32,11 @@
                             @endif
 
                             <li>
-                                <a href="{{ route('hrm.attendance.shift') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                <a href="{{ route('hrm.shifts.index') }}" class="text-dark text-muted"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('hrm.attendance') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                <a href="{{ route('hrm.attendances') }}" class="text-dark text-muted"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                             </li>
 
                             <li>

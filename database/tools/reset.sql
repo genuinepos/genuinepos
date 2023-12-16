@@ -27,7 +27,7 @@ TRUNCATE `expense_descriptions`;
 TRUNCATE `failed_jobs`;
 TRUNCATE `hrm_allowance`;
 TRUNCATE `hrm_attendances`;
-TRUNCATE `hrm_department`;
+TRUNCATE `hrm_departments`;
 TRUNCATE `hrm_designations`;
 TRUNCATE `hrm_holidays`;
 TRUNCATE `hrm_leaves`;

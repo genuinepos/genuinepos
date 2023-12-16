@@ -46,7 +46,7 @@ class PayrollController extends Controller
             $payrolls = '';
             $query = DB::table('hrm_payrolls')
                 ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id')
-                ->leftJoin('hrm_department', 'users.department_id', 'hrm_department.id')
+                ->leftJoin('hrm_departments', 'users.department_id', 'hrm_departments.id')
                 ->leftJoin('hrm_designations', 'users.designation_id', 'hrm_designations.id')
                 ->leftJoin('users as created_by', 'hrm_payrolls.admin_id', 'created_by.id');
 
@@ -76,7 +76,7 @@ class PayrollController extends Controller
                 'users.name as emp_name',
                 'users.last_name as emp_last_name',
                 'users.branch_id',
-                'hrm_department.department_name',
+                'hrm_departments.department_name',
                 'hrm_designations.designation_name',
                 'created_by.prefix as user_prefix',
                 'created_by.name as user_name',
@@ -141,7 +141,7 @@ class PayrollController extends Controller
                 ->make(true);
         }
 
-        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
+        $departments = DB::table('hrm_departments')->get(['id', 'department_name']);
         $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
@@ -657,7 +657,7 @@ class PayrollController extends Controller
 
     public function getAllDeparment()
     {
-        $departments = DB::table('hrm_department')->get();
+        $departments = DB::table('hrm_departments')->get();
 
         return response()->json($departments);
     }

@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('hrm_shifts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('shift_name');
+            $table->string('name');
             $table->string('start_time')->nullable();
             $table->string('late_count', 50)->nullable();
-            $table->string('endtime')->nullable();
+            $table->string('end_time')->nullable();
             $table->timestamps();
         });
     }

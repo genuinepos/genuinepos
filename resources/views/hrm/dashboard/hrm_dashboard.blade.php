@@ -47,13 +47,13 @@
 
                             @if(auth()->user()->can('shift'))
                                 <li>
-                                    <a href="{{ route('hrm.attendance.shift') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
+                                    <a href="{{ route('hrm.shifts.index') }}" class="text-white"><i class="fas fa-network-wired"></i> <b>@lang('menu.shift')</b></a>
                                 </li>
                             @endif
 
                             @if(auth()->user()->can('attendance'))
                                 <li>
-                                    <a href="{{ route('hrm.attendance') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
+                                    <a href="{{ route('hrm.attendances') }}" class="text-white"><i class="fas fa-paste"></i> <b>@lang('menu.attendance')</b></a>
                                 </li>
                             @endif
 
@@ -95,7 +95,7 @@
                     <div class="card-title mt-4 ps-4">
                         <h1 class="text-start text-primary pl-5">
                             <i class="fas fa-tachometer-alt"></i>
-                            <span class="">HRM</span> @lang('menu.dashboard')
+                            <span class=""></span> {{ __("HRM Dashboard") }}
                         </h1>
                     </div>
                     <div class="p-3 pt-2">
@@ -153,7 +153,7 @@
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-sm-6">
-                                <a href="{{ route('hrm.attendance') }}">
+                                <a href="{{ route('hrm.attendances') }}">
                                 <div class="card-counter alert-danger d-flex justify-content-around align-content-center">
                                     <div class="icon">
                                         <i class="fas fa-solid fa-paper-plane"></i>
@@ -172,17 +172,15 @@
                         </div>
                     </div>
 
-
-                        <div class="card-title mt-2 ps-4">
-                            <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
-                                <option value="">{{ __('All Business Location') }}</option>
-                                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
+                    <div class="card-title mt-2 ps-4">
+                        <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
+                            <option value="">{{ __('All Business Location') }}</option>
+                            <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="card-body">
                         <div class="row g-3">

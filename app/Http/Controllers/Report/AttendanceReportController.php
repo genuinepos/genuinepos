@@ -21,7 +21,7 @@ class AttendanceReportController extends Controller
             $attendances = '';
             $query = DB::table('hrm_attendances')
                 ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
-                ->leftJoin('hrm_department', 'users.department_id', 'hrm_department.id')
+                ->leftJoin('hrm_departments', 'users.department_id', 'hrm_departments.id')
                 ->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
 
             if ($request->branch_id) {
@@ -57,7 +57,7 @@ class AttendanceReportController extends Controller
 
             $attendances = $query->select(
                 'hrm_attendances.*',
-                'hrm_department.department_name',
+                'hrm_departments.department_name',
                 'hrm_shifts.shift_name',
                 'users.prefix',
                 'users.name',
@@ -92,7 +92,7 @@ class AttendanceReportController extends Controller
                 ->rawColumns(['action', 'date', 'clock_in_out', 'work_duration'])
                 ->make(true);
         }
-        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
+        $departments = DB::table('hrm_departments')->get(['id', 'department_name']);
         $employee = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
@@ -113,7 +113,7 @@ class AttendanceReportController extends Controller
         $attendances = '';
         $query = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
-            ->leftJoin('hrm_department', 'users.department_id', 'hrm_department.id')
+            ->leftJoin('hrm_departments', 'users.department_id', 'hrm_departments.id')
             ->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
 
         if ($request->branch_id) {
@@ -152,7 +152,7 @@ class AttendanceReportController extends Controller
 
         $attendances = $query->select(
             'hrm_attendances.*',
-            'hrm_department.department_name',
+            'hrm_departments.department_name',
             'hrm_shifts.shift_name',
             'users.prefix',
             'users.name',

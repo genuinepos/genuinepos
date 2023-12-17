@@ -108,6 +108,7 @@
                                 </form>
                             </div>
                         </div>
+
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-4">
@@ -192,25 +193,19 @@
                     extend: 'excel',
                     text: '<i class="fas fa-file-excel"></i> Excel',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                    }
+                    exportOptions: { columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
                 },
                 {
                     extend: 'pdf',
                     text: '<i class="fas fa-file-pdf"></i> Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                    }
+                    exportOptions: { columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
                 },
                 {
                     extend: 'print',
                     text: '<i class="fas fa-print"></i> Print',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                    }
+                    exportOptions: { columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12] }
                 },
             ],
             "processing": true,
@@ -236,62 +231,20 @@
                     d.is_for_sale = $('#is_for_sale').val();
                 }
             },
-            columns: [{
-                    data: 'multiple_delete',
-                    name: 'products.name',
-                    orderable: false
-                },
-                {
-                    data: 'photo',
-                    name: 'name'
-                },
-                {
-                    data: 'action',
-                    name: 'name'
-                },
-                {
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'access_branches',
-                    name: 'product_code'
-                },
-                {
-                    data: 'product_cost_with_tax',
-                    name: 'product_cost_with_tax',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'product_price',
-                    name: 'product_price',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'quantity',
-                    name: 'product_price',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'type',
-                    name: 'type'
-                },
-                {
-                    data: 'cate_name',
-                    name: 'categories.name'
-                },
-                {
-                    data: 'brand_name',
-                    name: 'brands.name'
-                },
-                {
-                    data: 'tax_name',
-                    name: 'brands.name'
-                },
-                {
-                    data: 'status',
-                    name: 'products.status'
-                },
+            columns: [
+                { data: 'multiple_delete', name: 'products.name', orderable: false },
+                { data: 'photo', name: 'name' },
+                { data: 'action', name: 'name' },
+                { data: 'name', name: 'name' },
+                { data: 'access_branches', name: 'product_code' },
+                { data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold' },
+                { data: 'product_price', name: 'product_price', className: 'fw-bold' },
+                { data: 'quantity', name: 'product_price', className: 'fw-bold' },
+                { data: 'type', name: 'type' },
+                { data: 'cate_name', name: 'categories.name' },
+                { data: 'brand_name', name: 'brands.name' },
+                { data: 'tax_name', name: 'brands.name' },
+                { data: 'status', name: 'products.status' },
             ],
         });
 

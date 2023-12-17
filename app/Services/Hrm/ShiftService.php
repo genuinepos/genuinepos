@@ -49,7 +49,6 @@ class ShiftService
         $updateShift->save();
     }
 
-
     public function deleteShift(int $id): void
     {
         $shift = $this->singleShift(id: $id);

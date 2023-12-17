@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRM;
 
+use App\Enums\BooleanType;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -85,27 +86,15 @@ class AttendanceController extends Controller
 
     public function update($id, Request $request)
     {
-        $this->validate($request, [
-            'clock_in_date' => 'required|date',
-            'clock_in' => 'required',
-            'clock_out_date' => 'required|date',
-        ]);
-
+        $this->attendanceService->validation(request: $request);
         $this->attendanceService->updateAttendance(request: $request, id: $id);
-
         return response()->json(__('Attendances updated successfully!'));
     }
 
-    public function delete(Request $request, $attendanceId)
+    public function delete($id, Request $request)
     {
-        $deleteAttendance = Attendance::find($attendanceId);
-
-        if (!is_null($deleteAttendance)) {
-
-            $deleteAttendance->delete();
-        }
-
-        return response()->json('Attendance deleted successfully');
+        $this->attendanceService->deleteAttendance(id: $id);
+        return response()->json(__('Attendance deleted successfully'));
     }
 
     public function userAttendanceRow($userId)
@@ -114,7 +103,7 @@ class AttendanceController extends Controller
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
             ->whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
             ->where('hrm_attendances.user_id', $userId)
-            ->where('is_completed', 0)
+            ->where('is_completed', BooleanType::False->value)
             ->select(
                 'hrm_attendances.*',
                 'users.id as user_id',

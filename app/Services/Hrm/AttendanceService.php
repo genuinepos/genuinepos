@@ -85,7 +85,7 @@ class AttendanceService
 
                 $clockOut = $row->clock_out_ts ? ' - ' . date($dateFormat . ' ' . $timeFormat, strtotime($row->clock_out_ts)) : '';
 
-                return ' <b>' . date($dateFormat . ' ' . $timeFormat, strtotime($row->clock_in_ts)) . $clockOut . ' </b>';
+                return date($dateFormat . ' ' . $timeFormat, strtotime($row->clock_in_ts)) . $clockOut;
             })
             ->editColumn('work_duration', function ($row) {
 
@@ -115,7 +115,7 @@ class AttendanceService
         foreach ($request->user_ids as $key => $user_id) {
 
             $addOrUpdateAttendance = '';
-            $attendance = Attendance::whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
+            $attendance = $this->singleAttendance()->whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
                 ->where('user_id', $user_id)
                 ->where('is_completed', BooleanType::False->value)
                 ->first();
@@ -153,7 +153,7 @@ class AttendanceService
 
     function updateAttendance(object $request, int $id): void
     {
-        $updateAttendance = Attendance::where('id', $id)->first();
+        $updateAttendance = $this->singleAttendance()->where('id', $id)->first();
 
         $updateAttendance->clock_in_date = $request->clock_in_date;
         $time = date(' H:i:s', strtotime($updateAttendance->at_date_ts));
@@ -173,5 +173,36 @@ class AttendanceService
         $updateAttendance->clock_out_note = $request->clock_out_note;
         $updateAttendance->shift_id = $request->shift_id;
         $updateAttendance->save();
+    }
+
+    function deleteAttendance(int $id): void
+    {
+        $deleteAttendance = $this->singleAttendance()->where('id', $id)->first();
+
+        if (!is_null($deleteAttendance)) {
+
+            $deleteAttendance->delete();
+        }
+    }
+
+    public function singleAttendance(?array $with = null)
+    {
+        $query = Attendance::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+    }
+
+    public function validation(object $request): ?array
+    {
+        return $request->validate([
+            'clock_in_date' => 'required|date',
+            'clock_in' => 'required',
+            'clock_out_date' => 'required|date',
+        ]);
     }
 }

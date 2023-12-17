@@ -14,15 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('hrm_holidays', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('holiday_name');
+            $table->id();
+            $table->string('name');
             $table->string('start_date');
             $table->string('end_date');
-            $table->unsignedBigInteger('branch_id')->nullable()->index('hrm_holidays_branch_id_foreign');
-            $table->boolean('is_all')->default(false);
-            $table->text('notes')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
-            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
         });
     }
 

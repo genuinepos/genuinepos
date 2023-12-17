@@ -29,7 +29,7 @@
                                                     <div class="col-md-4">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="">{{ __("All") }}</option>
                                                             <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -264,8 +264,7 @@
                     data: 'created_by',
                     name: 'created_by.name'
                 },
-            ],
-            fnDrawCallback: function() {
+            ], fnDrawCallback: function() {
 
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));

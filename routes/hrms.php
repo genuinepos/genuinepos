@@ -1,19 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HRM\LeaveController;
+use App\Http\Controllers\HRM\ShiftController;
+use App\Http\Controllers\HRM\HolidayController;
+use App\Http\Controllers\HRM\PayrollController;
 use App\Http\Controllers\HRM\AllowanceController;
-use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DashboardController;
+use App\Http\Controllers\HRM\LeaveTypeController;
+use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;
 use App\Http\Controllers\HRM\DesignationController;
-use App\Http\Controllers\HRM\HolidayController;
-use App\Http\Controllers\HRM\LeaveController;
-use App\Http\Controllers\HRM\LeaveTypeController;
-use App\Http\Controllers\HRM\PayrollController;
-use App\Http\Controllers\HRM\ShiftController;
-use App\Http\Controllers\Report\AttendanceReportController;
-use App\Http\Controllers\Report\PayrollPaymentReportController;
 use App\Http\Controllers\Report\PayrollReportController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Report\AttendanceReportController;
+use App\Http\Controllers\HRM\AllowanceAndDeductionController;
+use App\Http\Controllers\Report\PayrollPaymentReportController;
 
 Route::group(['prefix' => 'hrm'], function () {
 
@@ -36,25 +37,24 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::delete('hrm/users/{id}', [DepartmentController::class, 'users'])->name('hrm.department.users');
     });
 
-    Route::group(['prefix' => 'holidays'], function () {
+    Route::controller(HolidayController::class)->prefix('holidays')->group(function () {
 
-        Route::get('/', [HolidayController::class, 'index'])->name('hrm.holidays');
-        Route::get('/ajax-all-holidays', [HolidayController::class, 'allholidays'])->name('hrm.holidays.all');
-        Route::post('/hrm/holidays/store', [HolidayController::class, 'storeholidays'])->name('hrm.holidays.store');
-        Route::get('/hrm/holidays/edit/{id}', [HolidayController::class, 'edit'])->name('hrm.holidays.edit');
-        Route::post('/hrm/holidays/update', [HolidayController::class, 'updateholiday'])->name('hrm.holidays.update');
-        Route::delete('hrm/holidays/{id}', [HolidayController::class, 'deleteholidays'])->name('hrm.holidays.delete');
+        Route::get('/', 'index')->name('hrm.holidays.index');
+        Route::get('create', 'create')->name('hrm.holidays.create');
+        Route::post('store', 'store')->name('hrm.holidays.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.holidays.edit');
+        Route::post('update/{id}', 'update')->name('hrm.holidays.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.holidays.delete');
     });
 
-    Route::group(['prefix' => 'allowance-deduction'], function () {
+    Route::controller(AllowanceAndDeductionController::class)->prefix('allowances-and-deductions')->group(function () {
 
-        Route::get('/', [AllowanceController::class, 'index'])->name('hrm.allowance');
-        Route::get('/ajax-all-allowance', [AllowanceController::class, 'allallowance'])->name('hrm.allowance.all');
-        Route::post('/hrm/allowance/store', [AllowanceController::class, 'storeallowance'])->name('hrm.allowance.store');
-        Route::get('/ajax-all-employees', [AllowanceController::class, 'getemployee'])->name('hrm.get.all.employee');
-        Route::get('edit/{alowanceId}', [AllowanceController::class, 'edit'])->name('hrm.allowance.edit');
-        Route::post('/hrm/allowance/update', [AllowanceController::class, 'updateallowance'])->name('hrm.allowance.update');
-        Route::delete('hrm/allowance/{id}', [AllowanceController::class, 'deleteallowance'])->name('hrm.allowance.delete');
+        Route::get('/', 'index')->name('hrm.allowances.deductions.index');
+        Route::post('store', 'store')->name('hrm.allowances.deductions.store');
+        Route::get('create', 'create')->name('hrm.allowances.deductions.create');
+        Route::get('edit/{id}', 'edit')->name('hrm.allowances.deductions.edit');
+        Route::post('update/{id}', 'update')->name('hrm.allowances.deductions.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.allowances.deductions.delete');
     });
 
     Route::controller(LeaveController::class)->prefix('leaves')->group(function () {

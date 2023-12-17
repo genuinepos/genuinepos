@@ -1894,13 +1894,13 @@
                                 <div class="sub-menu-row">
                                     @if (auth()->user()->can('view_allowance_and_deduction'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.allowance') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.allowances.deductions.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-plus"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.allowance_deduction')</p>
+                                                <p class="switch_text">{{ __("Allowances & Deductions") }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1920,13 +1920,13 @@
 
                                     @if (auth()->user()->can('holiday'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.holidays') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.holidays.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-toggle-off"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.holiday')</p>
+                                                <p class="switch_text">{{ __("Holidays") }}</p>
                                             </a>
                                         </div>
                                     @endif

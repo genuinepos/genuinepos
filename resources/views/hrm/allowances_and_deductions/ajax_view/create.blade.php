@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="add_allowance_deduction_form" action="{{ route('hrm.allowances.deductions.store') }}">
+                @csrf
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('Name or Title') }} <span class="text-danger">*</span></label>

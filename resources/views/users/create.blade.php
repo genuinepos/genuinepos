@@ -18,6 +18,8 @@
         .checkbox_input_wrap {
             text-align: right;
         }
+
+        .input-group-text { font-size: 12px !important; }
     </style>
 @endpush
 @section('title', 'Add User - ')
@@ -466,12 +468,17 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Shift') }}</b></label>
                                                     <div class="col-8">
-                                                        <select name="shift_id" class="form-control" id="shift_id" data-next="department_id">
-                                                            @foreach ($shifts as $shift)
-                                                                <option value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_shift_id"></span>
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="shift_id" class="form-control" id="shift_id" data-next="department_id">
+                                                                @foreach ($shifts as $shift)
+                                                                    <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text {{ !auth()->user()->can('shift')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('shift')? 'addShift': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -482,13 +489,18 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Department') }}</b></label>
                                                     <div class="col-8">
-                                                        <select name="department_id" class="form-control" id="department_id" data-next="designation_id">
-                                                            <option value="">{{ __('Select Department') }}</option>
-                                                            @foreach ($departments as $department)
-                                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <span class="error error_department_id"></span>
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="department_id" class="form-control select2" id="department_id" data-next="designation_id">
+                                                                <option value="">{{ __('Select Department') }}</option>
+                                                                @foreach ($departments as $department)
+                                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text {{ !auth()->user()->can('department')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('department')? 'addDepartment': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -497,12 +509,18 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Designation') }}</b></label>
                                                     <div class="col-8">
-                                                        <select name="designation_id" class="form-control" id="designation_id" data-next="salary">
-                                                            <option value="">{{ __('Select Designation') }}</option>
-                                                            @foreach ($designations as $designation)
-                                                                <option value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <div class="input-group flex-nowrap">
+                                                            <select name="designation_id" class="form-control select2" id="designation_id" data-next="salary">
+                                                                <option value="">{{ __('Select Designation') }}</option>
+                                                                @foreach ($designations as $designation)
+                                                                    <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                                                @endforeach
+                                                            </select>
+
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text {{ !auth()->user()->can('designation')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('designation')? 'addDesignation': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -511,17 +529,16 @@
                                         <div class="row g-2 pt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>{{ __('Salary') }}</b><span class="text-danger">*</span></label>
+                                                    <label class="col-4"> <b>{{ __('Salary') }}</b></label>
                                                     <div class="col-8">
                                                         <input type="number" step="any" name="salary" id="salary" class="form-control" data-next="pay_type" placeholder="{{ __('Salary Amount') }}" autocomplete="off">
-                                                        <span class="error error_salary"></span>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="input-group">
-                                                    <label class="col-4"> <b>{{ __('Pay Type') }}</b><span class="text-danger">*</span></label>
+                                                    <label class="col-4"> <b>{{ __('Pay Type') }}</b></label>
                                                     <div class="col-8">
                                                         <select name="pay_type" class="form-control" id="pay_type" data-next="save_btn">
                                                             <option value="">{{ __('Select Pay type') }}</option>
@@ -530,7 +547,6 @@
                                                             <option value="Daliy">{{ __('Daily') }}</option>
                                                             <option value="Hourly">{{ __('Hourly') }}</option>
                                                         </select>
-                                                        <span class="error error_pay_type"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -550,6 +566,13 @@
                 </section>
             </form>
         </div>
+    </div>
+
+    <div class="modal fade" id="shiftAddOrEditModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+    <div class="modal fade" id="departmentAddOrEditModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+
+    <div class="modal fade" id="designationAddOrEditModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
     </div>
 @endsection
 @push('scripts')
@@ -725,5 +748,106 @@
                 $('#branch_id').prop('required', false);
             }
         })
+    </script>
+
+    <script>
+        $(document).on('click', '#addShift', function(e) {
+            e.preventDefault();
+
+            var url = "{{ route('hrm.shifts.create') }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#shiftAddOrEditModal').html(data);
+                    $('#shiftAddOrEditModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#shift_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#addDepartment', function(e) {
+            e.preventDefault();
+
+            var url = "{{ route('hrm.departments.create') }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#departmentAddOrEditModal').html(data);
+                    $('#departmentAddOrEditModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#department_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#addDesignation', function(e) {
+            e.preventDefault();
+
+            var url = "{{ route('hrm.designations.create') }}";
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#designationAddOrEditModal').html(data);
+                    $('#designationAddOrEditModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#designation_name').focus();
+                    }, 500);
+                },
+                error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
     </script>
 @endpush

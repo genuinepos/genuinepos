@@ -18,23 +18,25 @@ use App\Http\Controllers\Report\PayrollPaymentReportController;
 
 Route::group(['prefix' => 'hrm'], function () {
 
-    Route::group(['prefix' => 'designations'], function () {
+    Route::controller(DesignationController::class)->prefix('designations')->group(function () {
 
-        Route::get('/', [DesignationController::class, 'index'])->name('hrm.designations');
-        Route::get('/ajax-all-designation', [DesignationController::class, 'allDesignation'])->name('hrm.designations.all');
-        Route::post('/hrm/designation/store', [DesignationController::class, 'storeDesignation'])->name('hrm.designations.store');
-        Route::post('/hrm/designation/update', [DesignationController::class, 'updateDesignation'])->name('hrm.designations.update');
-        Route::delete('hrm/delete/{designationId}', [DesignationController::class, 'deleteDesignation'])->name('hrm.designations.delete');
+        Route::get('/', 'index')->name('hrm.designations.index');
+        Route::get('create', 'create')->name('hrm.designations.create');
+        Route::post('store', 'store')->name('hrm.designations.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.designations.edit');
+        Route::post('update/{id}', 'update')->name('hrm.designations.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.designations.delete');
     });
 
-    Route::group(['prefix' => 'departments'], function () {
+    Route::controller(DepartmentController::class)->prefix('departments')->group(function () {
 
-        Route::get('/', [DepartmentController::class, 'index'])->name('hrm.departments.index');
-        Route::get('/ajax-all-department', [DepartmentController::class, 'alldepartment'])->name('hrm.departments.all');
-        Route::post('/hrm/departments/store', [DepartmentController::class, 'store'])->name('hrm.departments.store');
-        Route::post('/hrm/departments/update', [DepartmentController::class, 'update'])->name('hrm.departments.update');
-        Route::delete('hrm/delete/{departmentId}', [DepartmentController::class, 'delete'])->name('hrm.department.delete');
-        Route::delete('hrm/users/{id}', [DepartmentController::class, 'users'])->name('hrm.department.users');
+        Route::get('/', 'index')->name('hrm.departments.index');
+        Route::get('create', 'create')->name('hrm.departments.create');
+        Route::post('store', 'store')->name('hrm.departments.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.departments.edit');
+        Route::post('update/{id}', 'update')->name('hrm.departments.update');
+        Route::delete('delete/{id}', 'delete')->name('hrm.departments.delete');
+        Route::delete('users/{id}', 'users')->name('hrm.departments.users');
     });
 
     Route::controller(HolidayController::class)->prefix('holidays')->group(function () {

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('hrm_departments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
-            $table->string('department_id')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

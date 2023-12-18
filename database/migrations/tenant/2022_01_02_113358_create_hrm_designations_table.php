@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hrm_designations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('designation_name');
+            $table->string('name');
             $table->text('description')->nullable();
             $table->timestamps();
         });

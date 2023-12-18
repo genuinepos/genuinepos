@@ -1905,19 +1905,6 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('payroll'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.payroll.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-money-bill-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.payroll')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
                                     @if (auth()->user()->can('holiday'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('hrm.holidays.index') }}" class="switch-bar-wrap">
@@ -1939,20 +1926,33 @@
                                                         <span><i class="far fa-building"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.department')</p>
+                                                <p class="switch_text">{{ __("Departments") }}</p>
                                             </a>
                                         </div>
                                     @endif
 
                                     @if (auth()->user()->can('designation'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.designations') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('hrm.designations.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-map-marker-alt"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">@lang('menu.designation')</p>
+                                                <p class="switch_text">{{ __("Designations") }}</p>
+                                            </a>
+                                        </div>
+                                    @endif
+
+                                    @if (auth()->user()->can('payroll'))
+                                        <div class="sub-menu-col">
+                                            <a href="{{ route('hrm.payroll.index') }}" class="switch-bar-wrap">
+                                                <div class="switch_bar">
+                                                    <div class="bar-link">
+                                                        <span><i class="far fa-money-bill-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                                <p class="switch_text">{{ __("Payroll") }}</p>
                                             </a>
                                         </div>
                                     @endif

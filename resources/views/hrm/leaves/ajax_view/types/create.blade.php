@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="add_leave_type_form" action="{{ route('hrm.leave.type.store') }}">
+                @csrf
                 <div class="form-group">
                     <label class="fw-bold">{{ __("Name") }} <span class="text-danger">*</span></label>
                     <input required type="text" name="name" class="form-control" id="leave_type_name" data-next="leave_type_max_leave_count" placeholder="{{ __("Leave Type") }}"/>

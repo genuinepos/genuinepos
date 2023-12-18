@@ -2,96 +2,90 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
-use App\Models\Hrm\Designation;
 use Illuminate\Http\Request;
+use App\Models\Hrm\Designation;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use App\Services\Hrm\DesignationService;
 
 class DesignationController extends Controller
 {
-    public function __construct()
-    {
-
+    public function __construct(
+        private DesignationService $designationService,
+    ) {
     }
 
-    //show designation page only
-    public function index()
+    public function index(Request $request)
     {
-        if (! auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        return view('hrm.designation.index');
+        if ($request->ajax()) {
+
+            return $this->designationService->designationsTable();
+        }
+
+        return view('hrm.designations.index');
     }
 
-    //ajax request for all designation
-    public function allDesignation()
+
+    public function create()
     {
-        if (! auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $designation = Designation::orderBy('id', 'DESC')->get();
-
-        return view('hrm.designation.ajax.designation_list', compact('designation'));
+        return view('hrm.designations.ajax_view.create');
     }
 
-    //designations store
-    public function storeDesignation(Request $request)
+    public function store(Request $request)
     {
-        if (! auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'designation_name' => 'required|unique:hrm_designations',
-        ]);
-
-        Designation::insert([
-            'designation_name' => $request->designation_name,
-            'description' => $request->description,
-        ]);
-
-        return response()->json('Successfully Designation Added!');
+        $this->designationService->storeValidation(request: $request);
+        return $this->designationService->addDesignation(request: $request);
     }
 
-    //designations update
-    public function updateDesignation(Request $request)
+    public function edit($id)
     {
-        if (! auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'designation_name' => 'required',
-        ]);
-        $updateDesignation = Designation::where('id', $request->id)->first();
-        $updateDesignation->update([
-            'designation_name' => $request->designation_name,
-            'description' => $request->description,
-        ]);
+        $designation = $this->designationService->singleDesignation(id: $id);
 
-        return response()->json('Successfully Designation Updated!');
+        return view('hrm.designations.ajax_view.edit', compact('designation'));
     }
 
-    //destroy designation
-    public function deleteDesignation(Request $request, $designationId)
+    public function update($id, Request $request)
     {
-        if (! auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designation')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $deleteCategory = Designation::find($designationId);
-        $deleteCategory->delete();
-        Cache::forget('all-categories');
-        Cache::forget('all-main_categories');
-        Cache::forget('all-products');
+        $this->designationService->updateValidation(request: $request, id: $id);
+        $this->designationService->updateDesignation(request: $request, id: $id);
 
-        return response()->json('Successfully Designation Deleted');
+        return response()->json(__('Designation updated successfully'));
+    }
+
+    public function delete($id)
+    {
+        if (!auth()->user()->can('designation')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->designationService->deleteDesignation(id: $id);
+
+        return response()->json(__('Designation deleted successfully'));
     }
 }

@@ -159,7 +159,8 @@
                 d.to_date = $('#to_date').val();
             }
         },
-        columns: [{data: 'date', name: 'date'},
+        columns: [
+            {data: 'date', name: 'date'},
             {data: 'name', name: 'users.name'},
             {data: 'clock_in_out', name: 'hrm_attendances.clock_in_out'},
             {data: 'work_duration', name: 'hrm_attendances.clock_in_out'},

@@ -73,7 +73,7 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.departments') }}" class="bar-link">
+            <a href="{{ route('hrm.departments.index') }}" class="bar-link">
                 <span><i class="far fa-building"></i></span>
             </a>
         </div>
@@ -82,7 +82,7 @@
 
     <div class="col-lg-1 col-md-2 col-sm-2 col-4 p-1 ms-4 text-center d-flex justify-content-top align-items-center flex-column flex-column">
         <div class="switch_bar">
-            <a href="{{ route('hrm.designations') }}" class="bar-link">
+            <a href="{{ route('hrm.designations.index') }}" class="bar-link">
                 <span><i class="fas fa-map-marker-alt"></i></span>
             </a>
         </div>
@@ -141,15 +141,15 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.holidays') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
+                        <a href="{{ route('hrm.holidays.index') }}" class="text-white "><i class="fas fa-toggle-off"></i> <b>@lang('menu.holiday')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.departments') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
+                        <a href="{{ route('hrm.departments.index') }}" class="text-white "><i class="far fa-building"></i> <b>@lang('menu.department')</b></a>
                     </li>
 
                     <li>
-                        <a href="{{ route('hrm.designations') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
+                        <a href="{{ route('hrm.designations.index') }}" class="text-white "><i class="fas fa-map-marker-alt"></i> <b>@lang('menu.designation')</b></a>
                     </li>
                 </ul>
             </div>

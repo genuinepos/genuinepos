@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\HRM;
 
 use Illuminate\Http\Request;
-use App\Models\Hrm\Department;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Hrm\DepartmentService;
@@ -16,93 +15,83 @@ class DepartmentController extends Controller
     ) {
     }
 
-    //department showing page method
-    public function index()
+    public function index(Request $request)
     {
         if (!auth()->user()->can('department')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        return view('hrm.department.index');
+        if ($request->ajax()) {
+
+            return $this->departmentService->departmentsTable();
+        }
+
+        return view('hrm.departments.index');
     }
 
-    //department ajax data show method
-    public function allDepartment()
+    public function create()
     {
         if (!auth()->user()->can('department')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $department = Department::orderBy('id', 'DESC')->get();
-
-        return view('hrm.department.ajax.department_list', compact('department'));
+        return view('hrm.departments.ajax_view.create');
     }
 
-    //store department method
-    public function storeDepartment(Request $request)
+    public function store(Request $request)
     {
         if (!auth()->user()->can('department')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'name' => 'required',
-            'department_id' => 'required|unique:hrm_departments',
-        ]);
-
-        Department::insert([
-            'name' => $request->department_name,
-            'department_id' => $request->department_id,
-            'description' => $request->description,
-        ]);
-
-        return response()->json('Successfully Department Added!');
+        $this->departmentService->storeValidation(request: $request);
+        return $this->departmentService->addDepartment(request: $request);
     }
 
-    //update departments method
-    public function updateDepartments(Request $request)
+    public function edit($id)
     {
         if (!auth()->user()->can('department')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'department_name' => 'required',
-            'department_id' => 'required',
-        ]);
+        $department = $this->departmentService->singleDepartment(id: $id);
 
-        $updateDepartment = Department::where('id', $request->id)->first();
-        $updateDepartment->update([
-            'department_name' => $request->department_name,
-            'department_id' => $request->department_id,
-            'description' => $request->description,
-        ]);
-
-        return response()->json('Successfully Department Updated!');
+        return view('hrm.departments.ajax_view.edit', compact('department'));
     }
 
-    //destroy single department
-    public function deleteDepartment($departmentId)
+    public function update($id, Request $request)
     {
         if (!auth()->user()->can('department')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $deleteDepartment = Department::find($departmentId);
-        $deleteDepartment->delete();
+        $this->departmentService->updateValidation(request: $request, id: $id);
+        $this->departmentService->updateDepartment(request: $request, id: $id);
 
-        return response()->json('Successfully Department Deleted');
+        return response()->json(__('Department updated successfully'));
+    }
+
+    public function delete($id)
+    {
+        if (!auth()->user()->can('department')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $this->departmentService->deleteDepartment(id: $id);
+
+        return response()->json(__('Department deleted successfully'));
     }
 
     private function users($id)
     {
         $users = '';
-        $query = $this->userService->user()->where('branch_id', auth()->user()->branch_id);
+        $query = $this->userService->users()->where('branch_id', auth()->user()->branch_id);
         if ($id != 'all') {
 
             $query->where('department_id', $request->department_id);

@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="add_shift_form" action="{{ route('hrm.shifts.store') }}">
+                @csrf
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label>{{ __('Shift Name') }} <span class="text-danger">*</span></label>

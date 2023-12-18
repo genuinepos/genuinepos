@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="add_leave_form" action="{{ route('hrm.leaves.store') }}">
+                @csrf
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('Employee') }} <span class="text-danger">*</span></label>

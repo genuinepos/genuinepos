@@ -471,7 +471,7 @@
                                                         <div class="col-8">
                                                             <select name="shift_id" class="form-control" id="shift_id" data-next="department_id">
                                                                 @foreach ($shifts as $shift)
-                                                                    <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->shift_name }}</option>
+                                                                    <option {{ $user->shift_id == $shift->id ? 'SELECTED' : '' }} value="{{ $shift->id }}">{{ $shift->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <span class="error error_shift_id"></span>
@@ -488,7 +488,7 @@
                                                             <select name="department_id" class="form-control" id="department_id" data-next="designation_id">
                                                                 <option value="">@lang('menu.select_department')</option>
                                                                 @foreach ($departments as $department)
-                                                                    <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                                                    <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <span class="error error_department_id"></span>
@@ -503,7 +503,7 @@
                                                             <select name="designation_id" class="form-control" id="designation_id" data-next="salary">
                                                                 <option value="">{{ __('Select Designation') }}</option>
                                                                 @foreach ($designations as $designation)
-                                                                    <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->designation_name }}</option>
+                                                                    <option {{ $user->designation_id == $designation->id ? 'SELECTED' : '' }} value="{{ $designation->id }}">{{ $designation->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>

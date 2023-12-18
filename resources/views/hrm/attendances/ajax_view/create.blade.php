@@ -6,6 +6,7 @@
         </div>
         <div class="modal-body">
             <form id="add_attendance_form" action="{{ route('hrm.attendances.store') }}" method="POST">
+                @csrf
                 <div class="form-group row">
                     <div class="col-md-6">
                         <label><b>{{ __('Department') }}</b></label>

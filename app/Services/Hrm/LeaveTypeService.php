@@ -16,8 +16,17 @@ class LeaveTypeService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.leave.type.edit', [$row->id]) . '" class="action-btn c-edit" id="editLeaveType" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('hrm.leave.type.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteLeaveType" title="Delete"><span class="fas fa-trash"></span></a>';
+
+                if (auth()->user()->can('leave_types_edit')) {
+
+                    $html .= '<a href="' . route('hrm.leave.type.edit', [$row->id]) . '" class="action-btn c-edit" id="editLeaveType" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('leave_types_delete')) {
+
+                    $html .= '<a href="' . route('hrm.leave.type.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteLeaveType" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;
@@ -59,6 +68,14 @@ class LeaveTypeService
 
             $deleteLeaveType->delete();
         }
+    }
+
+    public function storeAndUpdateValidation(object $request): ?array
+    {
+        return $request->validate([
+            'name' => 'required',
+            'max_leave_count' => 'required',
+        ]);
     }
 
     public function singleLeaveType(int $id, array $with = null)

@@ -14,9 +14,9 @@ class LeaveTypeController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_index')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
         if ($request->ajax()) {
@@ -27,9 +27,9 @@ class LeaveTypeController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_create')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
         return view('hrm.leaves.ajax_view.types.create');
@@ -37,25 +37,22 @@ class LeaveTypeController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_create')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $this->validate($request, [
-            'name' => 'required',
-            'max_leave_count' => 'required',
-        ]);
-
+        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->addLeaveType(request: $request);
+
         return response()->json(__('Leave type created successfully'));
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_edit')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
         $leaveType = $this->leaveTypeService->singleLeaveType(id: $id);
@@ -65,16 +62,12 @@ class LeaveTypeController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_edit')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $this->validate($request, [
-            'name' => 'required',
-            'max_leave_count' => 'required',
-        ]);
-
+        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->updateLeaveType(request: $request, id: $id);
 
         return response()->json(__('Leave type updated successfully'));
@@ -82,9 +75,9 @@ class LeaveTypeController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_delete')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
         $this->leaveTypeService->deleteLeaveType(id: $id);

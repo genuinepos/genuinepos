@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('purchase_ref_id')->nullable();
             $table->unsignedBigInteger('purchase_return_ref_id')->nullable();
             $table->unsignedBigInteger('stock_adjustment_ref_id')->nullable();
+            $table->unsignedBigInteger('payroll_ref_id')->nullable();
             $table->decimal('debit_total', 22, 2)->default(0);
             $table->decimal('credit_total', 22, 2)->default(0);
             $table->decimal('total_amount', 22, 2)->default(0);
@@ -38,6 +39,8 @@ return new class extends Migration
             $table->foreign('sale_return_ref_id')->references('id')->on('sale_returns')->onDelete('set null');
             $table->foreign('purchase_ref_id')->references('id')->on('purchases')->onDelete('set null');
             $table->foreign('purchase_return_ref_id')->references('id')->on('purchase_returns')->onDelete('set null');
+            $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
+            $table->foreign('payroll_ref_id')->references('id')->on('hrm_payrolls')->onDelete('set null');
             $table->foreign('created_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }

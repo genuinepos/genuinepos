@@ -36,7 +36,7 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::get('edit/{id}', 'edit')->name('hrm.departments.edit');
         Route::post('update/{id}', 'update')->name('hrm.departments.update');
         Route::delete('delete/{id}', 'delete')->name('hrm.departments.delete');
-        Route::delete('users/{id}', 'users')->name('hrm.departments.users');
+        Route::get('users/{id}', 'users')->name('hrm.departments.users');
     });
 
     Route::controller(HolidayController::class)->prefix('holidays')->group(function () {
@@ -97,26 +97,15 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::delete('delete/{id}', 'delete')->name('hrm.attendances.delete');
     });
 
-    Route::group(['prefix' => 'payrolls'], function () {
+    Route::controller(PayrollController::class)->prefix('payrolls')->group(function () {
 
-        Route::get('/', [PayrollController::class, 'index'])->name('hrm.payroll.index');
-        Route::get('get', [PayrollController::class, 'getPayrolls'])->name('hrm.payroll.get.payrolls');
-        Route::get('create', [PayrollController::class, 'create'])->name('hrm.payroll.create');
-        Route::post('store', [PayrollController::class, 'store'])->name('hrm.payroll.store');
-        Route::get('edit/{payrollId}', [PayrollController::class, 'edit'])->name('hrm.payrolls.edit');
-        Route::post('update/{payrollId}', [PayrollController::class, 'update'])->name('hrm.payrolls.update');
-        Route::get('show/{payrollId}', [PayrollController::class, 'show'])->name('hrm.payrolls.show');
-        Route::delete('delete/{payrollId}', [PayrollController::class, 'delete'])->name('hrm.payrolls.delete');
-        Route::get('payment/view/{payrollId}', [PayrollController::class, 'paymentView'])->name('hrm.payrolls.payment.view');
-        Route::get('payment/{payrollId}', [PayrollController::class, 'payment'])->name('hrm.payrolls.payment');
-        Route::post('add/payment/{payrollId}', [PayrollController::class, 'addPayment'])->name('hrm.payrolls.add.payment');
-        Route::get('payment/details/{paymentId}', [PayrollController::class, 'paymentDetails'])->name('hrm.payrolls.payment.details');
-        Route::delete('payment/delete/{paymentId}', [PayrollController::class, 'paymentDelete'])->name('hrm.payrolls.payment.delete');
-        Route::get('payment/edit/{paymentId}', [PayrollController::class, 'paymentEdit'])->name('hrm.payrolls.payment.edit');
-        Route::post('payment/update/{paymentId}', [PayrollController::class, 'paymentUpdate'])->name('hrm.payrolls.payment.update');
-        Route::get('all/employees', [PayrollController::class, 'getAllEmployee'])->name('hrm.payroll.get.allEmployee');
-        Route::get('all/departments', [PayrollController::class, 'getAllDeparment'])->name('hrm.payroll.get.department');
-        Route::get('all/designations', [PayrollController::class, 'getAllDesignation'])->name('hrm.payroll.get.designations');
+        Route::get('/', 'index')->name('hrm.payrolls.index');
+        Route::get('create', 'create')->name('hrm.payrolls.create');
+        Route::post('store',  'store')->name('hrm.payrolls.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.payrolls.edit');
+        Route::post('update/{id}', 'update')->name('hrm.payrolls.update');
+        Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
+        Route::delete('delete/{id}', 'delete')->name('hrm.payrolls.delete');
     });
 
     Route::group(['prefix' => 'dashboard'], function () {

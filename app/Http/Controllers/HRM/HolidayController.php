@@ -20,7 +20,7 @@ class HolidayController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -37,13 +37,18 @@ class HolidayController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('holidays_create')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         return view('hrm.holidays.ajax_view.create', compact('branches'));
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -67,7 +72,7 @@ class HolidayController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -80,7 +85,7 @@ class HolidayController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -104,7 +109,7 @@ class HolidayController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

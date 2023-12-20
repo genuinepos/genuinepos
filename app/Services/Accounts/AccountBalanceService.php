@@ -28,7 +28,7 @@ class AccountBalanceService
         if ($fromDate && $toDate) {
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business__account_start_date'];
 
             $fromDateYmd = Carbon::parse($fromDate)->startOfDay();
             $toDateYmd = Carbon::parse($toDate)->endOfDay();

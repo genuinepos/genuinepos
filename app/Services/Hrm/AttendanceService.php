@@ -24,10 +24,10 @@ class AttendanceService
 
             if ($request->branch_id == 'NULL') {
 
-                $query->where('users.branch_id', null);
+                $query->where('hrm_attendances.branch_id', null);
             } else {
 
-                $query->where('users.branch_id', $request->branch_id);
+                $query->where('hrm_attendances.branch_id', $request->branch_id);
             }
         }
 
@@ -63,9 +63,20 @@ class AttendanceService
 
                 $html = '';
                 $html .= '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.attendances.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit" title="Edit"><i class="la la-edit"></i> ' . __("Edit") . '</a>';
 
-                $html .= '<a href="' . route('hrm.attendances.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete"><i class="la la-trash"></i> ' . __("Delete") . '</a>';
+                if (auth()->user()->branch_id == $row->branch_id) {
+
+                    if (auth()->user()->can('attendances_edit')) {
+
+                        $html .= '<a href="' . route('hrm.attendances.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit" title="Edit"><i class="la la-edit"></i> ' . __("Edit") . '</a>';
+                    }
+       
+                    if (auth()->user()->can('attendances_delete')) {
+
+                        $html .= '<a href="' . route('hrm.attendances.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete"><i class="la la-trash"></i> ' . __("Delete") . '</a>';
+                    }
+                }
+
                 $html .= '</div>';
 
                 return $html;

@@ -1,191 +1,538 @@
-<div class="modal-header bg-dark">
-    <h6 class="modal-title" id="exampleModalLabel">Payroll Of
-        <b>{{ $payroll->employee->prefix . ' ' . $payroll->employee->name . ' ' . $payroll->employee->last_name }}</b>
-        for <b>{{ $payroll->month . ' ' . $payroll->year }}</b>
-    </h6>
-    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-</div>
-<div class="modal-body">
-    <div class="payroll_print_area">
-        <div class="header_area">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="company_name text-center">
-                        @if ($payroll->employee->branch)
-                            {{ $payroll->employee->branch->name . '/' . $payroll->employee->branch->branch_code }} <br>
-                            {{ $payroll->employee->branch->city == 1 ? $payroll->employee->branch->city : '' }},
-                            {{ $payroll->employee->branch->state == 1 ? $payroll->employee->branch->state : '' }},
-                            {{ $payroll->employee->branch->zip_code == 1 ? $payroll->employee->branch->zip_code : '' }},
-                            {{ $payroll->employee->branch->country == 1 ? $payroll->employee->branch->country : '' }}.
-                        @else
-                            <h6>{{$generalSettings['business__business_name']}}  (<b>@lang('menu.head_office')</b>)</h6>
-                            <p>{{$generalSettings['business__address']}} </p>
-                            <p><b>@lang('menu.phone') </b>  {{$generalSettings['business__phone']}} </p>
-                        @endif
-                        <h6 class="modal-title" id="exampleModalLabel">Payroll Of
-                            <b>{{ $payroll->employee->prefix . ' ' . $payroll->employee->name . ' ' . $payroll->employee->last_name }}</b>
-                            for <b>{{ $payroll->month . ' ' . $payroll->year }}</b>
-                        </h6>
+@php
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+@endphp
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">
+                    {{ __('Payroll Details') }} ({{ __('Voucher No') }} : <strong>{{ $payroll->voucher_no }}</strong>)
+                </h6>
+                <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li style="font-size:11px!important;"><strong>{{ __('Employee') }} : - </strong></li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong> {{  $payroll?->user?->prefix . '  ' . $payroll?->user?->name . '  ' . $payroll?->user?->last_name }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }}: </strong> {{ $payroll->user->phone }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $payroll->user->current_address }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month.'-'.$payroll->year }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($payroll->date_ts)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Payroll Voucher No') }} : </strong> {{ $payroll->voucher_no }}</li>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
+                                @php
+                                    $payable = $payroll->gross_amount;
+                                @endphp
+                                @if ($payroll->due <= 0)
+                                    <span class="badge bg-success">{{ __('Paid') }}</span>
+                                @elseif($payroll->due > 0 && $payroll->due < $payable)
+                                    <span class="badge bg-primary text-white">{{ __('Partial') }}</span>
+                                @elseif($payable == $payroll->due)
+                                    <span class="badge bg-danger text-white">{{ __('Due') }}</span>
+                                @endif
+                            </li>
+
+                            <li style="font-size:11px!important;">
+                                <strong>{{ __('Created By') }} : </strong>
+                                {{ $payroll?->createdBy?->prefix . ' ' . $payroll?->createdBy?->name . ' ' . $payroll?->createdBy?->last_name }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
+                                @if ($payroll->branch_id)
+
+                                    @if ($payroll?->branch?->parentBranch)
+                                        {{ $payroll?->branch?->parentBranch?->name . '(' . $payroll?->branch?->area_name . ')' . '-(' . $payroll?->branch?->branch_code . ')' }}
+                                    @else
+                                        {{ $payroll?->branch?->name . '(' . $payroll?->branch?->area_name . ')' . '-(' . $payroll?->branch?->branch_code . ')' }}
+                                    @endif
+                                @else
+                                    {{ $generalSettings['business__business_name'] }}
+                                @endif
+                            </li>
+
+                            <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
+                                @if ($payroll->branch)
+                                    {{ $payroll->branch->phone }}
+                                @else
+                                    {{ $generalSettings['business__phone'] }}
+                                @endif
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="fw-bold">{{ __("Allowances") }}</p>
+                        <div class="table-responsive">
+                            <table id="" class="table modal-table table-sm">
+                                <thead>
+                                    <tr class="bg-secondary">
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Name') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="purchase_product_list">
+                                    @foreach ($payroll->allowances as $allowance)
+                                        <tr>
+                                            @php
+                                                $name = $allowance?->allowance ? $allowance?->allowance?->name : $allowance->allowance_name;
+                                            @endphp
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $name }}</td>
+
+                                            <td class="text-start fw-bold" style="font-size:11px!important;">
+                                                @php
+                                                    $allowanceAmountType = $allowance->amount_type == 2 ? '(' . $allowance->allowance_percent . '%)=' : '';
+                                                @endphp
+                                                {{ $allowanceAmountType . App\Utils\Converter::format_in_bdt($allowance->allowance_amount) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="fw-bold text-end">{{ __("Total Allowance") }} : </td>
+                                        <td colspan="2" class="fw-bold">   {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="fw-bold">{{ __("Deductions") }}</p>
+                        <div class="table-responsive">
+                            <table id="" class="table modal-table table-sm">
+                                <thead>
+                                    <tr class="bg-secondary">
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Name') }}</th>
+                                        <th class="text-white text-start fw-bold" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="purchase_product_list">
+                                    @foreach ($payroll->deductions as $deduction)
+                                        <tr>
+                                            @php
+                                                $name = $deduction?->deduction ? $deduction?->deduction?->name : $deduction->deduction_name;
+                                            @endphp
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+
+                                            <td class="text-start" style="font-size:11px!important;">{{ $name }}</td>
+
+                                            <td class="text-start fw-bold" style="font-size:11px!important;">
+                                                @php
+                                                    $deductionAmountType = $deduction->amount_type == 2 ? '(' . $deduction->deduction_percent . '%)=' : '';
+                                                @endphp
+                                                {{ $deductionAmountType . App\Utils\Converter::format_in_bdt($deduction->deduction_amount) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="fw-bold text-end">{{ __("Total Deduction") }} : </td>
+                                        <td colspan="2" class="fw-bold">   {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <p class="fw-bold">{{ __('Payments') }}</p>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="table-responsive">
+                            <table class="display table modal-table table-sm">
+                                <tr>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->paid) }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <td class="text-end">
+                                        {{ App\Utils\Converter::format_in_bdt($payroll->due) }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <div class="btn-box">
+                            @if (auth()->user()->branch_id == $payroll->branch_id)
+                                @can('payrolls_edit')
+
+                                    <a href="{{ route('hrm.payrolls.edit', $payroll->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                                @endcan
+                            @endif
+                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn" filename="{{ 'Payroll - ' . $payroll->voucher_no . ' - ' . $payroll->month.'-'.$payroll->year }}">{{ __('Print') }}</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="reference_area pt-2">
-            <h6 class="text-dark"><b>@lang('menu.title') </b>@lang('menu.employee_salary')</h6>
-            <h6 class="text-dark"><b>@lang('menu.month') </b> {{ $payroll->month }}/{{ $payroll->year }} </h6>
-            <h6 class="text-dark"><b>@lang('menu.reference_no') </b> {{ $payroll->reference_no }}</h6>
-            <h6 class="text-dark"><b>@lang('menu.created_by') </b> {{ $payroll->admin->prefix.' '.$payroll->admin->name.' '.$payroll->admin->last_name }} </h6>
+<style>
+    @media print {
+        table { page-break-after: auto; }
+
+        tr { page-break-inside: avoid; page-break-after: auto; }
+
+        td { page-break-inside: avoid; page-break-after: auto; }
+
+        thead { display: table-header-group; }
+
+        tfoot { display: table-footer-group; }
+    }
+
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+</style>
+
+<!-- Pay Slip print templete-->
+<div class="print_modal_details d-none">
+    <div class="details_area">
+        <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
+            <div class="col-4">
+                @if ($payroll->branch)
+
+                    @if ($payroll?->branch?->parent_branch_id)
+
+                        @if ($payroll->branch?->parentBranch?->logo != 'default.png')
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->parentBranch?->logo) }}">
+                        @else
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->parentBranch?->name }}</span>
+                        @endif
+                    @else
+                        @if ($payroll->branch?->logo != 'default.png')
+                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $payroll->branch?->logo) }}">
+                        @else
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $payroll->branch?->name }}</span>
+                        @endif
+                    @endif
+                @else
+                    @if ($generalSettings['business__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @else
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                    @endif
+                @endif
+            </div>
+
+            <div class="col-8 text-end">
+                <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                    @if ($payroll?->branch)
+                        @if ($payroll?->branch?->parent_branch_id)
+                            {{ $payroll?->branch?->parentBranch?->name }}
+                        @else
+                            {{ $payroll?->branch?->name }}
+                        @endif
+                    @else
+                        {{ $generalSettings['business__business_name'] }}
+                    @endif
+                </p>
+
+                <p style="font-size:12px!important;">
+                    @if ($payroll?->branch)
+                        {{ $payroll->branch->city . ', ' . $payroll->branch->state . ', ' . $payroll->branch->zip_code . ', ' . $payroll->branch->country }}
+                    @else
+                        {{ $generalSettings['business__address'] }}
+                    @endif
+                </p>
+
+                <p style="font-size:12px!important;">
+                    @if ($payroll?->branch)
+                        <strong>{{ __("Email") }} : </strong> {{ $payroll?->branch?->email }},
+                        <strong>{{ __("Phone") }} : </strong> {{ $payroll?->branch?->phone }}
+                    @else
+                        <strong>{{ __("Email") }} : </strong> {{ $generalSettings['business__email'] }},
+                        <strong>{{ __("Phone") }} : </strong> {{ $generalSettings['business__phone'] }}
+                    @endif
+                </p>
+            </div>
         </div>
 
-        <div class="total_amount_table_area pt-4">
-            <div class="table-responsive">
-                <table class="table modal-table table-sm">
-                    <tbody>
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <h5 style="text-transform: uppercase;" class="fw-bold">{{ __('Pay Slip') }}</h5>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-6">
+                <ul class="list-unstyled">
+                    <li style="font-size:11px!important;"><strong>{{ __('Employee') }} : - </strong></li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong> {{ $payroll?->user?->prefix . '  ' . $payroll?->user?->name . '  ' . $payroll?->user?->last_name }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Phone') }}: </strong> {{ $payroll->user->phone }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $payroll->user->current_address }}</li>
+                </ul>
+            </div>
+
+            <div class="col-6">
+                <ul class="list-unstyled">
+                    <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month.'-'.$payroll->year }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($payroll->date_ts)) }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Payroll Voucher No') }} : </strong> {{ $payroll->voucher_no }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
+                        @php
+                            $payable = $payroll->gross_amount;
+                        @endphp
+                        @if ($payroll->due <= 0)
+                            {{ __('Paid') }}
+                        @elseif($payroll->due > 0 && $payroll->due < $payable)
+                            {{ __('Partial') }}
+                        @elseif($payable == $payroll->due)
+                            {{ __('Due') }}
+                        @endif
+                    </li>
+
+                    <li style="font-size:11px!important;">
+                        <strong>{{ __('Created By') }} : </strong>
+                        {{ $payroll?->createdBy?->prefix . ' ' . $payroll?->createdBy?->name . ' ' . $payroll?->createdBy?->last_name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-6">
+                <p class="fw-bold">{{ __("Allowances") }}</p>
+                <div class="table-responsive">
+                    <table id="" class="table print-table table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Name') }}</th>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($payroll->allowances as $allowance)
+                                <tr>
+                                    @php
+                                        $name = $allowance?->allowance ? $allowance?->allowance?->name : $allowance->allowance_name;
+                                    @endphp
+
+                                    <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+
+                                    <td class="text-start" style="font-size:11px!important;">{{ $name }}</td>
+
+                                    <td class="text-start fw-bold" style="font-size:11px!important;">
+                                        @php
+                                            $allowanceAmountType = $allowance->amount_type == 2 ? '(' . $allowance->allowance_percent . '%)=' : '';
+                                        @endphp
+                                        {{ $allowanceAmountType . App\Utils\Converter::format_in_bdt($allowance->allowance_amount) }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total") }} : </td>
+                                <td class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <p class="fw-bold">{{ __("Deductions") }}</p>
+                <div class="table-responsive">
+                    <table id="" class="table print-table table-sm">
+                        <thead>
+                            <tr>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('S/L') }}</th>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Name') }}</th>
+                                <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Amount') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($payroll->deductions as $deduction)
+                                <tr>
+                                    @php
+                                        $name = $deduction?->deduction ? $deduction?->deduction?->name : $deduction->deduction_name;
+                                    @endphp
+
+                                    <td class="text-start" style="font-size:11px!important;">{{ $loop->index + 1 }}</td>
+
+                                    <td class="text-start" style="font-size:11px!important;">{{ $name }}</td>
+
+                                    <td class="text-start fw-bold" style="font-size:11px!important;">
+                                        @php
+                                            $deductionAmountType = $deduction->amount_type == 2 ? '(' . $deduction->deduction_percent . '%)=' : '';
+                                        @endphp
+                                        {{ $deductionAmountType . App\Utils\Converter::format_in_bdt($deduction->deduction_amount) }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total") }} : </td>
+                                <td class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 offset-6">
+                <table class="table print-table table-sm">
+                    <thead>
                         <tr>
-                            <th width="50%" class="text-start">{{ __('Total work duration') }} </th>
-                            <td width="50%" class="text-start">
-                                {{ $payroll->duration_time . ' ' . $payroll->duration_unit }}
+                            <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                            <td class="text-end">
+                                {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th width="50%" class="text-start">{{ __('Amount per unit duration') }} </th>
-                            <td width="50%" class="text-start">{{ $payroll->amount_per_unit }}</td>
+                            <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                         </tr>
-                    </tbody>
-                    <tfoot>
+
                         <tr>
-                            <th width="50%" class="text-start">@lang('menu.total') : ({{ $payroll->duration_time }} * {{  $payroll->amount_per_unit }})</th>
-                            <th width="50%" class="text-start">{{ $generalSettings['business__currency'] }} {{ $payroll->total_amount }}</th>
+                            <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                         </tr>
-                    </tfoot>
+
+                        <tr>
+                            <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->paid) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->due) }}</td>
+                        </tr>
+                    </thead>
                 </table>
             </div>
         </div>
 
-        <div class="allowance_table_area pt-2">
-            <div class="heading_area">
-                <h6 class="text-start"><b>{{ __('Allowances') }} </b></h6>
+        <br /><br />
+        <div class="row">
+            <div class="col-4 text-start">
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __('Prepared By') }}
+                </p>
             </div>
 
-            <div class="table-responsive">
-                <table class="table modal-table table-sm">
-                    <tbody>
-                        @if (count($payroll->allowances) > 0)
-                            @foreach ($payroll->allowances as $allowance)
-                                <tr>
-                                    <th width="50%" class="text-start">{{ $allowance->allowance_name ? $allowance->allowance_name : 'Unknown' }} </th>
-                                    <td width="50%" class="text-start">{{ $allowance->allowance_amount .' '.($allowance->amount_type == 2 ? '(' . $allowance->allowance_percent . '%)' : '') }}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <th colspan="2" width="100%"  class="text-start">@lang('menu.none')</th>
-                            </tr>
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th width="50%" class="text-start">@lang('menu.total') </th>
-                            <th width="50%" class="text-start">{{ $generalSettings['business__currency'] }} {{ $payroll->total_allowance_amount }}</th>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="col-4 text-center">
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __('Checked By') }}
+                </p>
+            </div>
+
+            <div class="col-4 text-end">
+                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
+                    {{ __('Authorized By') }}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($payroll->voucher_no, $generator::TYPE_CODE_128)) }}">
+                <p>{{ $payroll->voucher_no }}</p>
             </div>
         </div>
 
-        <div class="deduction_table_area pt-2">
-            <div class="heading_area">
-                <h6><b>{{ __('Deductions') }} </b> </h6>
-            </div>
+        <div id="footer">
+            <div class="row mt-1">
+                <div class="col-4 text-start">
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                </div>
 
-            <div class="table-responsive">
-                <table class="table modal-table table-sm">
-                    <tbody>
-                        @if (count($payroll->deductions) > 0)
-                            @foreach ($payroll->deductions as $deduction)
-                                <tr>
-                                    <th width="50%" class="text-start">{{ $deduction->deduction_name ? $deduction->deduction_name : 'Unknown' }} </th>
-                                    <td width="50%" class="text-start">
-                                        {{ $deduction->deduction_amount .' '. ($deduction->amount_type == 2 ? '(' . $deduction->deduction_percent . '%)' : '') }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <th colspan="2">@lang('menu.none')</th>
-                            </tr>
-                        @endif
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th width="50%" class="text-start">@lang('menu.total') </th>
-                            <th class="text-start text-danger" width="50%">{{ $generalSettings['business__currency'] }} {{ $payroll->total_deduction_amount }}</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <div class="gross_amount_area pt-2">
-            <div class="table-responsive">
-                <table class="table table-sm">
-                    <tbody>
-                        <tr>
-                            <th width="50%" class="text-start">
-                                {{ __('Gross Amount') }} : <br>
-                                ({{ $payroll->total_amount }} + {{ $payroll->total_allowance_amount }} -
-                                {{ $payroll->total_deduction_amount }})
-                            </th>
-                            <td width="50%" class="text-start"><b>{{ $generalSettings['business__currency'] }} {{ $payroll->gross_amount }}</b> </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="paid_amount_area pt-2">
-            <div class="table-responsive">
-                <table class="table modal-table table-sm">
-                    <tbody>
-                        <tr>
-                            <th width="50%" class="text-start">@lang('menu.paid') </th>
-                            <td width="50%" class="text-start"><b>{{ $generalSettings['business__currency'] }} {{ $payroll->paid }}</b> </td>
-                        </tr>
-
-                        <tr>
-                            <th width="50%" class="text-start">@lang('menu.due') </th>
-                            <td width="50%" class="text-start"><b>{{ $generalSettings['business__currency'] }} {{ $payroll->due }}</b> </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="signature_area pt-5 mt-5 d-hide">
-            <br><br>
-            <table class="w-100 pt-5">
-                <tbody>
-                    <tr>
-                        <th width="50%" class="text-dark"><h6 style="border-top:1px solid black;display:inline;">@lang('menu.signature_of_receiver')</h6></th>
-                        <th width="50%" class="text-dark text-end"><h6 style="border-top:1px solid black;display:inline;">@lang('menu.signature_of_authority')</h6>  </th>
-                    </tr>
-
-                    @if (env('PRINT_SD_OTHERS') == true)
-                        <tr>
-                            <td colspan="2" class="text-dark text-center">@lang('menu.software_by_speedDigit_pvt_ltd') </td>
-                        </tr>
+                <div class="col-4 text-center">
+                    @if (config('company.print_on_company'))
+                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __("SpeedDigit Software Solution.") }}</strong></small>
                     @endif
-                </tbody>
-            </table>
+                </div>
+
+                <div class="col-4 text-end">
+                    <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<div class="modal-footer">
-    <div class="form-group text-end">
-        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-        <button type="submit" class="btn btn-sm btn-success print_payroll">@lang('menu.print')</button>
-    </div>
-</div>
+<!-- Pay Slip print templete end-->

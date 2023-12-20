@@ -108,7 +108,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
@@ -129,7 +129,7 @@
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
-                                            <tr class="bg-secondary">
+                                            <tr>
                                                 <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                 <th id="total_purchase_amount" class="text-white"></th>
                                                 <th id="paid" class="text-white"></th>
@@ -171,25 +171,19 @@
                     extend: 'excel',
                     text: '<i class="fas fa-file-excel"></i> Excel',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
                 {
                     extend: 'pdf',
                     text: '<i class="fas fa-file-pdf"></i> Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
                 {
                     extend: 'print',
                     text: '<i class="fas fa-print"></i> Print',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
             ],
             "processing": true,
@@ -215,55 +209,18 @@
                 "orderable": false,
                 "searchable": false
             }],
-            columns: [{
-                    data: 'action'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'invoice_id',
-                    name: 'invoice_id',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'branch',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'supplier_name',
-                    name: 'suppliers.name'
-                },
-                {
-                    data: 'payment_status',
-                    name: 'payment_status',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'total_purchase_amount',
-                    name: 'total_purchase_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'paid',
-                    name: 'paid',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'purchase_return_amount',
-                    name: 'purchase_return_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'due',
-                    name: 'due',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'created_by',
-                    name: 'created_by.name'
-                },
+            columns: [
+                { data: 'action' },
+                { data: 'date', name: 'date' },
+                { data: 'invoice_id', name: 'invoice_id', className: 'fw-bold' },
+                { data: 'branch', name: 'branches.name' },
+                { data: 'supplier_name', name: 'suppliers.name' },
+                { data: 'payment_status', name: 'payment_status', className: 'fw-bold' },
+                { data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold' },
+                { data: 'paid', name: 'paid', className: 'text-end fw-bold' },
+                { data: 'purchase_return_amount', name: 'purchase_return_amount', className: 'text-end fw-bold' },
+                { data: 'due', name: 'due', className: 'text-end fw-bold' },
+                { data: 'created_by', name: 'created_by.name' },
             ], fnDrawCallback: function() {
 
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');

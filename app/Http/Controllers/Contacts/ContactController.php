@@ -70,7 +70,7 @@ class ContactController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business__account_start_date'];
             $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
             $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
@@ -163,7 +163,7 @@ class ContactController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business__account_start_date'];
 
             $customerAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 6)->where('is_reserved', 1)->first();

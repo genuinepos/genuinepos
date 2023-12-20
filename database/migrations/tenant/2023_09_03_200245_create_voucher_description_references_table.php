@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sale_return_id')->nullable();
             $table->unsignedBigInteger('purchase_return_id')->nullable();
             $table->unsignedBigInteger('stock_adjustment_id')->nullable();
+            $table->unsignedBigInteger('payroll_id')->nullable();
             $table->decimal('amount', 22, 2)->default(0);
             $table->timestamps();
 
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->foreign('purchase_return_id')->references('id')->on('purchase_returns')->onDelete('cascade');
             $table->foreign('stock_adjustment_id')->references('id')->on('stock_adjustments')->onDelete('cascade');
+            $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
         });
     }
 

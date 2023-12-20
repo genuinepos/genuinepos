@@ -75,7 +75,7 @@
 
         var department_id = $(e).val();
 
-        var url = "{{ route('hrm.department.users', ':department_id') }}";
+        var url = "{{ route('hrm.departments.users', ':department_id') }}";
         var route = url.replace(':department_id', department_id);
 
         $.ajax({
@@ -91,7 +91,7 @@
                     var prefix = user.prefix != null ? user.prefix : '';
                     var name = user.name != null ? ' ' + user.name : '';
                     var last_name = user.last_name != null ? ' ' + user.last_name : '';
-                    var emp_id = user.last_name != null ? '(' + user.emp_id + ')' : '';
+                    var emp_id = user.emp_id != null ? '(' + user.emp_id + ')' : '';
 
                     var __name = prefix + name + last_name + emp_id;
 

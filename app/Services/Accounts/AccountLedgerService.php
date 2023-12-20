@@ -26,6 +26,7 @@ class AccountLedgerService
             18 => ['name' => 'Sales Return', 'id' => 'sale_return_product_id', 'voucher_no' => 'product_sale_return_voucher', 'details_id' => 'product_sale_return_id', 'link' => 'sales.returns.show'],
             19 => ['name' => 'Purchase Return', 'id' => 'purchase_return_product_id', 'voucher_no' => 'product_purchase_return_voucher', 'details_id' => 'product_purchase_return_id', 'link' => 'purchase.returns.show'],
             20 => ['name' => 'Exchange', 'id' => 'sale_product_id', 'voucher_no' => 'product_sale_voucher', 'details_id' => 'product_sale_id', 'link' => 'sales.show'],
+            21 => ['name' => 'Payroll Payment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => 'hrm.payrolls.payments.show'],
         ];
 
         return $data[$voucher_type_id];
@@ -78,7 +79,7 @@ class AccountLedgerService
         }
 
         $update = $query->where('branch_id', $branchId)->first();
-        
+
         if ($update) {
 
             $update->debit = 0;

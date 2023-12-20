@@ -17,7 +17,7 @@ class DepartmentController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -32,7 +32,7 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -42,7 +42,7 @@ class DepartmentController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -53,7 +53,7 @@ class DepartmentController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -65,7 +65,7 @@ class DepartmentController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +78,7 @@ class DepartmentController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('department')) {
+        if (!auth()->user()->can('departments_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -88,13 +88,13 @@ class DepartmentController extends Controller
         return response()->json(__('Department deleted successfully'));
     }
 
-    private function users($id)
+    public function users($id)
     {
         $users = '';
         $query = $this->userService->users()->where('branch_id', auth()->user()->branch_id);
         if ($id != 'all') {
 
-            $query->where('department_id', $request->department_id);
+            $query->where('department_id', $id);
         }
 
         $users = $query->select(['id', 'prefix', 'name', 'last_name', 'emp_id'])->get();

@@ -45,8 +45,20 @@ class LeaveService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.leaves.edit', [$row->id]) . '" class="action-btn c-edit" id="editLeave" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('hrm.leaves.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteLeave" title="Delete"><span class="fas fa-trash "></span></a>';
+
+                if (auth()->user()->branch_id == $row->branch_id) {
+
+                    if (auth()->user()->can('leaves_delete')) {
+
+                        $html .= '<a href="' . route('hrm.leaves.edit', [$row->id]) . '" class="action-btn c-edit" id="editLeave" title="Edit"><span class="fas fa-edit"></span></a>';
+                    }
+            
+                    if (auth()->user()->can('leaves_delete')) {
+
+                        $html .= '<a href="' . route('hrm.leaves.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteLeave" title="Delete"><span class="fas fa-trash "></span></a>';
+                    }
+                }
+
                 $html .= '</div>';
 
                 return $html;
@@ -119,6 +131,17 @@ class LeaveService
 
             $deleteLeave->delete();
         }
+    }
+
+    public function storeAndUpdateValidation(object $request): ?array
+    {
+
+        return $request->validate([
+            'user_id' => 'required',
+            'leave_type_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
     }
 
     public function singleLeave(int $id, array $with = null)

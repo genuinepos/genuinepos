@@ -17,6 +17,11 @@ class LeaveController extends Controller
 
     public function index(Request $request)
     {
+        if (!auth()->user()->can('leaves_index')) {
+
+            abort(403, __('Access Forbidden.'));
+        }
+
         if ($request->ajax()) {
 
             return $this->leaveService->leavesTable($request);
@@ -27,6 +32,11 @@ class LeaveController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->can('leaves_create')) {
+
+            abort(403, __('Access Forbidden.'));
+        }
+
         $leaveTypes = DB::table('hrm_leave_types')->get(['id', 'name']);
         $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
 
@@ -35,19 +45,24 @@ class LeaveController extends Controller
 
     public function store(Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        $this->validate($request, [
-            'user_id' => 'required',
-            'leave_type_id' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-        ]);
+        if (!auth()->user()->can('leaves_create')) {
 
-        $addLeave = $this->leaveService->addLeave(request: $request, codeGenerator: $codeGenerator);
+            abort(403, __('Access Forbidden.'));
+        }
+
+        $this->leaveService->storeAndUpdateValidation(request: $request);
+        $this->leaveService->addLeave(request: $request, codeGenerator: $codeGenerator);
+
         return response()->json(__('Leave created successfully'));
     }
 
     public function edit($id)
     {
+        if (!auth()->user()->can('leaves_edit')) {
+
+            abort(403, __('Access Forbidden.'));
+        }
+
         $leaveTypes = DB::table('hrm_leave_types')->get(['id', 'name']);
         $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
         $leave = DB::table('hrm_leaves')->where('id', $id)->first();
@@ -57,14 +72,14 @@ class LeaveController extends Controller
 
     public function update($id, Request $request)
     {
-        $this->validate($request, [
-            'user_id' => 'required',
-            'leave_type_id' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        if (!auth()->user()->can('leaves_edit')) {
 
+            abort(403, __('Access Forbidden.'));
+        }
+
+        $this->leaveService->storeAndUpdateValidation(request: $request);
         $this->leaveService->updateLeave(request: $request, id: $id);
+        
         return response()->json(__('Leave Updated successfully'));
     }
 

@@ -17,8 +17,17 @@ class AllowanceAndDeductionService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.allowances.deductions.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('hrm.allowances.deductions.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+
+                if (auth()->user()->can('allowances_edit') || auth()->user()->can('deductions_edit')) {
+
+                    $html .= '<a href="' . route('hrm.allowances.deductions.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('allowances_edit') || auth()->user()->can('deductions_edit')) {
+
+                    $html .= '<a href="' . route('hrm.allowances.deductions.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;

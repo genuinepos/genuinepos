@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_delete_in_update')->nullable()->default(false);
             $table->timestamps();
 
-            $table->foreign(['allowance_id'])->references(['id'])->on('hrm_allowance')->onDelete('CASCADE');
+            $table->foreign(['allowance_id'])->references(['id'])->on('hrm_allowances')->onDelete('CASCADE');
             $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }

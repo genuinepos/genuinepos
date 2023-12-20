@@ -25,7 +25,7 @@ TRUNCATE `expanse_categories`;
 TRUNCATE `expanse_payments`;
 TRUNCATE `expense_descriptions`;
 TRUNCATE `failed_jobs`;
-TRUNCATE `hrm_allowance`;
+TRUNCATE `hrm_allowances`;
 TRUNCATE `hrm_attendances`;
 TRUNCATE `hrm_departments`;
 TRUNCATE `hrm_designations`;

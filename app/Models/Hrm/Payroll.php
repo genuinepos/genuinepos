@@ -2,8 +2,10 @@
 
 namespace App\Models\Hrm;
 
-use App\Models\BaseModel;
 use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\Setups\Branch;
+use App\Models\Accounts\AccountingVoucher;
 
 class Payroll extends BaseModel
 {
@@ -13,9 +15,14 @@ class Payroll extends BaseModel
 
     protected $hidden = ['updated_at'];
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
     public function payments()
     {
-        return $this->hasMany(PayrollPayment::class, 'payroll_id');
+        return $this->hasMany(AccountingVoucher::class, 'payroll_ref_id');
     }
 
     public function allowances()
@@ -28,13 +35,13 @@ class Payroll extends BaseModel
         return $this->hasMany(PayrollDeduction::class, 'payroll_id');
     }
 
-    public function employee()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function admin()
+    public function createdBy()
     {
-        return $this->belongsTo(User::class, 'admin_id', 'id');
+        return $this->belongsTo(User::class, 'created_by_id', 'id');
     }
 }

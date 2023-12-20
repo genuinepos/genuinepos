@@ -18,8 +18,17 @@ class DepartmentService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.departments.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('hrm.departments.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                
+                if (auth()->user()->can('departments_edit')) {
+
+                    $html .= '<a href="' . route('hrm.departments.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('departments_delete')) {
+
+                    $html .= '<a href="' . route('hrm.departments.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;
@@ -63,6 +72,18 @@ class DepartmentService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function departments(array $with = null)
+    {
+        $query = Department::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 
     function storeValidation(object $request): ?array

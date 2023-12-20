@@ -14,23 +14,18 @@ Artisan::command('dev:m', function () {
     //     $table->ipAddress()->nullable();
     // });
 
-    Schema::create('hrm_holidays', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->string('start_date');
-        $table->string('end_date');
-        $table->text('notes')->nullable();
-        $table->timestamps();
+    Schema::table('accounting_vouchers', function (Blueprint $table) {
+
+        $table->unsignedBigInteger('payroll_ref_id')->after('stock_adjustment_ref_id')->nullable();
+
+        $table->foreign('payroll_ref_id')->references('id')->on('hrm_payrolls')->onDelete('set null');
+        $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
     });
 
-    Schema::create('hrm_holiday_branches', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('holiday_id');
-        $table->unsignedBigInteger('branch_id')->nullable();
-        $table->timestamps();
+    Schema::create('voucher_description_references', function (Blueprint $table) {
 
-        $table->foreign(['holiday_id'])->references(['id'])->on('hrm_holidays')->onDelete('CASCADE');
-        $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+        $table->unsignedBigInteger('payroll_id')->after('stock_adjustment_id')->nullable();
+        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
     });
 });
 

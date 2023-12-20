@@ -9,7 +9,7 @@ class OpeningStockService
     public function addOrEditProductOpeningStock(object $request, int $index, int $productId = null, int $variantId = null): object
     {
         $generalSettings = config('generalSettings');
-        $accountStartDate = $generalSettings['business__start_date'];
+        $accountStartDate = $generalSettings['business__account_start_date'];
         $date = $accountStartDate;
 
         $branchId = isset($request->branch_ids[$index]) ? $request->branch_ids[$index] : null;
@@ -18,7 +18,6 @@ class OpeningStockService
         $variantId = isset($request->variant_ids[$index]) ? $request->variant_ids[$index] : $variantId;
 
         $addOrEditOpeningStock = '';
-
         $openingStock = ProductOpeningStock::where('branch_id', $branchId)
             ->where('warehouse_id', $warehouseId)
             ->where('product_id', $productId)

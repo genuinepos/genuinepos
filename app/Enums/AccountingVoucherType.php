@@ -9,4 +9,5 @@ enum AccountingVoucherType: int
     case Contra = 3;
     case Expense = 4;
     case Income = 5;
+    case PayrollPayment = 6;
 }

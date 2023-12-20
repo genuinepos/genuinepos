@@ -19,8 +19,17 @@ class ShiftService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('hrm.shifts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('hrm.shifts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+
+                if (auth()->user()->can('shifts_edit')) {
+
+                    $html .= '<a href="' . route('hrm.shifts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('shifts_delete')) {
+
+                    $html .= '<a href="' . route('hrm.shifts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;

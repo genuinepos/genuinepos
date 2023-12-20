@@ -17,7 +17,7 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -33,7 +33,7 @@ class DesignationController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -43,7 +43,7 @@ class DesignationController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -54,7 +54,7 @@ class DesignationController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -66,7 +66,7 @@ class DesignationController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -79,7 +79,7 @@ class DesignationController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('designation')) {
+        if (!auth()->user()->can('designations_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

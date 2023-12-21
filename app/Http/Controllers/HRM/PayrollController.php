@@ -79,14 +79,14 @@ class PayrollController extends Controller
         $dateTime = \DateTime::createFromFormat('m', $month_year[1]);
         $month = $dateTime->format('F');
 
-        $payroll = DB::table('hrm_payrolls')->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->first();
+        $payroll = $this->payrollService->singlePayroll()->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->first();
 
         if ($payroll) {
 
             return redirect()->route('hrm.payrolls.edit', $payroll->id);
         }
 
-        $user = DB::table('users')->where('id', $request->user_id)->first();
+        $user = $this->userService->singleUser('id', $request->user_id);
         $attendances = DB::table('hrm_attendances')->where('user_id', $request->user_id)->where('month', $month)->where('year', $year)->get();
 
         $totalHours = 0;
@@ -207,6 +207,7 @@ class PayrollController extends Controller
             $updatePayroll = $this->payrollService->updatePayroll(request: $request, id: $id);
             $this->payrollAllowanceService->updatePayrollAllowances(request: $request, payroll: $updatePayroll);
             $this->payrollDeductionService->updatePayrollDeductions(request: $request, payroll: $updatePayroll);
+            $this->payrollService->adjustPayrollAmounts(payroll: $updatePayroll);
 
             DB::commit();
         } catch (Exception $e) {

@@ -6,7 +6,7 @@ use App\Models\Accounts\AccountingVoucher;
 
 class AccountingVoucherService
 {
-    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, string $reference = null, int $saleRefId = null, int $saleReturnRefId = null, int $purchaseRefId = null, int $purchaseReturnRefId = null, int $stockAdjustmentRefId = null, int $branchId = null): ?object
+    public function addAccountingVoucher(string $date, int $voucherType, ?string $remarks, object $codeGenerator, string $voucherPrefix, float $debitTotal, float $creditTotal, float $totalAmount, int $isTransactionDetails = 1, ?string $reference = null, ?int $saleRefId = null, ?int $saleReturnRefId = null, ?int $purchaseRefId = null, ?int $purchaseReturnRefId = null, ?int $stockAdjustmentRefId = null, ?int $payrollRefId = null, ?int $branchId = null): ?object
     {
         $voucherNo = $codeGenerator->generateMonthAndTypeWise(table: 'accounting_vouchers', column: 'voucher_no', typeColName: 'voucher_type', typeValue: $voucherType, prefix: $voucherPrefix, splitter: '-', suffixSeparator: '-');
 
@@ -17,6 +17,7 @@ class AccountingVoucherService
         $addAccountingVoucher->purchase_ref_id = $purchaseRefId;
         $addAccountingVoucher->purchase_return_ref_id = $purchaseReturnRefId;
         $addAccountingVoucher->stock_adjustment_ref_id = $stockAdjustmentRefId;
+        $addAccountingVoucher->payroll_ref_id = $payrollRefId;
         $addAccountingVoucher->voucher_type = $voucherType;
         $addAccountingVoucher->voucher_no = $voucherNo;
         $addAccountingVoucher->debit_total = $debitTotal;

@@ -5,6 +5,7 @@ namespace App\Models\Hrm;
 use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\Setups\Branch;
+use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucher;
 
 class Payroll extends BaseModel
@@ -38,6 +39,11 @@ class Payroll extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function expenseAccount()
+    {
+        return $this->belongsTo(Account::class, 'expense_account_id');
     }
 
     public function createdBy()

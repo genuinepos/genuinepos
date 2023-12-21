@@ -22,9 +22,15 @@ Artisan::command('dev:m', function () {
         $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
     });
 
-    Schema::create('voucher_description_references', function (Blueprint $table) {
+    Schema::table('voucher_description_references', function (Blueprint $table) {
 
         $table->unsignedBigInteger('payroll_id')->after('stock_adjustment_id')->nullable();
+        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
+    });
+
+    Schema::table('day_books', function (Blueprint $table) {
+
+        $table->unsignedBigInteger('payroll_id')->after('transfer_stock_id')->nullable();
         $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
     });
 });

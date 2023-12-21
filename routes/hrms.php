@@ -11,6 +11,7 @@ use App\Http\Controllers\HRM\LeaveTypeController;
 use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;
 use App\Http\Controllers\HRM\DesignationController;
+use App\Http\Controllers\HRM\PayrollPaymentController;
 use App\Http\Controllers\Report\PayrollReportController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\HRM\AllowanceAndDeductionController;
@@ -106,6 +107,17 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::post('update/{id}', 'update')->name('hrm.payrolls.update');
         Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
         Route::delete('delete/{id}', 'delete')->name('hrm.payrolls.delete');
+    });
+
+    Route::controller(PayrollPaymentController::class)->prefix('payroll-payments')->group(function () {
+
+        Route::get('/', 'index')->name('hrm.payroll.payments.index');
+        Route::get('create/{payrollId}', 'create')->name('hrm.payroll.payments.create');
+        Route::post('store',  'store')->name('hrm.payroll.payments.store');
+        Route::get('edit/{id}', 'edit')->name('hrm.payroll.payments.edit');
+        Route::post('update/{id}', 'update')->name('hrm.payroll.payments.update');
+        Route::get('show/{id}', 'show')->name('hrm.payroll.payments.show');
+        Route::delete('delete/{id}', 'delete')->name('hrm.payroll.payments.delete');
     });
 
     Route::group(['prefix' => 'dashboard'], function () {

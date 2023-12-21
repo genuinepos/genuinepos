@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('stock_adjustment_id')->nullable();
             $table->unsignedBigInteger('production_id')->nullable();
             $table->unsignedBigInteger('transfer_stock_id')->nullable();
+            $table->unsignedBigInteger('payroll_id')->nullable();
             $table->unsignedBigInteger('voucher_description_id')->nullable();
             $table->double('amount')->default(0);
             $table->string('amount_type', 20)->nullable();
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->foreign('stock_adjustment_id')->references('id')->on('stock_adjustments')->onDelete('cascade');
             $table->foreign('production_id')->references('id')->on('productions')->onDelete('cascade');
             $table->foreign('transfer_stock_id')->references('id')->on('transfer_stocks')->onDelete('cascade');
+            $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
             $table->foreign('voucher_description_id')->references('id')->on('accounting_voucher_descriptions')->onDelete('cascade');
         });
     }

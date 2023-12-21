@@ -44,6 +44,8 @@ class DayBookService
             13 => ['name' => 'Production', 'id' => 'production_id', 'voucher_no' => 'production_voucher_no', 'details_id' => 'production_voucher_id', 'link' => ''],
             14 => ['name' => 'TransferStock', 'id' => 'transfer_stock_id', 'voucher_no' => 'transfer_stock_voucher_no', 'details_id' => 'transfer_stock_voucher_id', 'link' => ''],
             15 => ['name' => 'ReceivedStock', 'id' => 'transfer_stock_id', 'voucher_no' => 'transfer_stock_voucher_no', 'details_id' => 'transfer_stock_voucher_id', 'link' => ''],
+            16 => ['name' => 'Payroll', 'id' => 'payroll_id', 'voucher_no' => 'payroll_voucher', 'details_id' => 'payroll_id', 'link' => ''],
+            17 => ['name' => 'PayrollPayment', 'id' => 'voucher_description_id', 'voucher_no' => 'accounting_voucher_no', 'details_id' => 'accounting_voucher_id', 'link' => ''],
         ];
 
         return $data[$voucherTypeId];

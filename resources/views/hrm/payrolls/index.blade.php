@@ -190,57 +190,7 @@
     </div>
     <!-- Add Modal End-->
 
-    <!--Payment View modal-->
-    <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog four-col-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-dark">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payroll_payment')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="payment_view_modal_body"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-60-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-dark">
-                    <h6 class="modal-title" id="modal_title">@lang('menu.add_payment')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-
-                <div class="modal-body" id="payment_modal_body"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="viewPayrollModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content" id="view_payroll_modal_content"></div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog col-50-modal" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_details')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
-                </div>
-
-                <div class="modal-body" id="payment_details_modal_body"></div>
-
-                <div class="modal-footer">
-                    <div class="form-group text-end">
-                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                        <button type="submit" class="btn btn-sm btn-success" id="payment_details_print">@lang('menu.print')</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     <div id="details"></div>
     <div id="extra_details"></div>
@@ -451,7 +401,7 @@
                         toastr.error(data.errorMsg);
                         return;
                     }
-                    
+
                     payrollsTable.ajax.reload();
                     toastr.error(data);
                 },error: function(err) {
@@ -462,6 +412,44 @@
                     }else if(err.status == 500){
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+         $(document).on('click', '#addPayment', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                cache: false,
+                async: false,
+                dataType: 'html',
+                success: function(data) {
+
+                    $('#addOrEditPaymentModal').empty();
+                    $('#addOrEditPaymentModal').html(data);
+                    $('#addOrEditPaymentModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#payment_date').focus().select();
+                    }, 500);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
                     }
                 }
             });

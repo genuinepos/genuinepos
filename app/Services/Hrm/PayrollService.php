@@ -59,9 +59,9 @@ class PayrollService
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    if (auth()->user()->can('payroll_payments_edit') && $row->due > 0) {
+                    if (auth()->user()->can('payroll_payments_create') && $row->due > 0) {
 
-                        $html .= '<a href="#" class="dropdown-item" id="add_payment">' . __("Add Payment") . '</a>';
+                        $html .= '<a href="' . route('hrm.payroll.payments.create', $row->id) . '" class="dropdown-item" id="addPayment">' . __("Add Payment") . '</a>';
                     }
 
                     if (auth()->user()->can('payrolls_edit')) {
@@ -198,6 +198,23 @@ class PayrollService
         }
 
         return $deletePayroll;
+    }
+
+    public function adjustPayrollAmounts(object $payroll): object
+    {
+        $totalPayrollPayment = DB::table('voucher_description_references')
+            ->where('voucher_description_references.payroll_id', $payroll->id)
+            ->select(DB::raw('sum(voucher_description_references.amount) as total_paid'))
+            ->groupBy('voucher_description_references.payroll_id')
+            ->get();
+
+        $due = $payroll->gross_amount - $totalPayrollPayment->sum('total_paid');
+
+        $payroll->paid = $totalPayrollPayment->sum('total_paid');
+        $payroll->due = $due;
+        $payroll->save();
+
+        return $payroll;
     }
 
     public function singlePayroll(?array $with = null)

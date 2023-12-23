@@ -1,5 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .top-menu-area ul li {display: inline-block;margin-right: 3px;}
         .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
@@ -123,6 +124,11 @@
                     @method('DELETE')
                     @csrf
                 </form>
+
+                <form id="delete_payroll_payment_form" action="" method="post">
+                    @method('DELETE')
+                    @csrf
+                </form>
             </div>
         </div>
     </div>
@@ -190,12 +196,13 @@
     </div>
     <!-- Add Modal End-->
 
-    <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
-
     <div id="details"></div>
     <div id="extra_details"></div>
+
+    <div class="modal fade" id="addOrEditPaymentModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('assets/plugins/custom/print_this/printThis.js') }}"></script>
 
     <script>
@@ -332,7 +339,36 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#extraDetailsBtn', function(e) {
+            e.preventDefault();
+
+            $('.data_preloader').show();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function(data) {
+
+                    $('#extra_details').html(data);
+                    $('#extra_details #detailsModal').modal('show');
+                    $('.data_preloader').hide();
+                },
+                error: function(err) {
+
+                    $('.data_preloader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -346,12 +382,35 @@
             e.preventDefault();
 
             var filename = $(this).attr('filename');
-            var body = $('.print_modal_details').html();
+            var body = $('#details .print_modal_details').html();
 
             document.title = filename;
 
             setTimeout(function() {
-                document.title = "Purchase List - GPOSS";
+                document.title = "Payrolls - GPOSS";
+            }, 1000);
+
+            $(body).printThis({
+                debug: false,
+                importCSS: true,
+                importStyle: true,
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
+                removeInline: false,
+                printDelay: 500,
+                header: null,
+            });
+        });
+
+        $(document).on('click', '#modalExtraDetailsPrintBtn', function(e) {
+            e.preventDefault();
+
+            var filename = $(this).attr('filename');
+            var body = $('#extra_details .print_modal_details').html();
+
+            document.title = filename;
+
+            setTimeout(function() {
+                document.title = "Payrolls - GPOSS";
             }, 1000);
 
             $(body).printThis({
@@ -419,7 +478,7 @@
     </script>
 
     <script>
-         $(document).on('click', '#addPayment', function(e) {
+        $(document).on('click', '#addPayment', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -450,6 +509,95 @@
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#editPayment', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                cache: false,
+                async: false,
+                dataType: 'html',
+                success: function(data) {
+
+                    $('#addOrEditPaymentModal').empty();
+                    $('#addOrEditPaymentModal').html(data);
+                    $('#addOrEditPaymentModal').modal('show');
+
+                    setTimeout(function() {
+
+                        $('#payment_date').focus().select();
+                    }, 500);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '#deletePayment',function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('#delete_payroll_payment_form').attr('action', url);
+            $.confirm({
+                'title': 'Confirmation',
+                'message': 'Are you sure?',
+                'buttons': {
+                    'Yes': {
+                        'class': 'yes bg-primary',
+                        'action': function() {$('#delete_payroll_payment_form').submit();}
+                    },
+                    'No': {'class': 'no bg-danger','action': function() {console.log('Deleted canceled.');}
+                    }
+                }
+            });
+        });
+
+        //data delete by ajax
+        $(document).on('submit', '#delete_payroll_payment_form',function(e){
+            e.preventDefault();
+
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url:url,
+                type:'post',
+                data:request,
+                success:function(data){
+
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    $('.modal').modal('hide');
+                    payrollsTable.ajax.reload(null, false);
+                    toastr.error(data);
+                }, error: function(err) {
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    }else if(err.status == 500){
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });

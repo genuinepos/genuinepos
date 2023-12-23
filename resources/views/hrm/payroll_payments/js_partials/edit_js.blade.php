@@ -26,7 +26,8 @@
 
         var payingAmount = $('#payment_paying_amount').val() ? $('#payment_paying_amount').val() : 0;
         var closingBalanceFlatAmount = $('#closing_balance_flat_amount').val() ? $('#closing_balance_flat_amount').val() : 0;
-        currentBalance = parseFloat(closingBalanceFlatAmount) - parseFloat(payingAmount);
+        var currentPaidAmount = $('#current_paid_amount').val() ? $('#current_paid_amount').val() : 0;
+        var currentBalance = parseFloat(closingBalanceFlatAmount) - parseFloat(payingAmount) + parseFloat(currentPaidAmount);
         $('#closing_balance_string').val(bdFormat(currentBalance));
     }
 </script>
@@ -68,8 +69,6 @@
     var isAllowSubmit = true;
     $(document).on('click', '.payment_submit_button', function() {
 
-        var value = $(this).val();
-        $('#action').val(value);
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
@@ -79,18 +78,13 @@
         }
     });
 
-    $('#add_payment_form').on('submit', function(e) {
+    $('#edit_payment_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.payment_loading_btn').show();
         var url = $(this).attr('action');
 
-        isAjaxIn = false;
-        isAllowSubmit = false;
         $.ajax({
-            beforeSend: function() {
-                isAjaxIn = true;
-            },
             url: url,
             type: 'post',
             data: new FormData(this),
@@ -99,9 +93,6 @@
             processData: false,
             success: function(data) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
-
                 $('.error').html('');
                 $('.payment_loading_btn').hide();
 
@@ -109,27 +100,10 @@
 
                     toastr.error(data.errorMsg, 'ERROR');
                     return;
-                } else if (data.successMsg) {
-
-                    toastr.success(data.successMsg);
-                    $('#addOrEditPaymentModal').modal('hide');
-                    $('#addOrEditPaymentModal').empty();
-                } else {
-
-                    toastr.success("{{ __('Payment added successfully.') }}");
-
-                    $('#addOrEditPaymentModal').modal('hide');
-                    $('#addOrEditPaymentModal').empty();
-
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 1000
-                    });
                 }
+
+                toastr.success(data);
+                $('.modal').modal('hide');
 
                 var commonReloaderClass = $('.common-reloader').html();
                 var forPayments = $('#for_payments').html();
@@ -142,8 +116,6 @@
                 }
             }, error: function(err) {
 
-                isAjaxIn = true;
-                isAllowSubmit = true;
                 $('.payment_loading_btn').hide();
                 $('.error').html('');
 
@@ -165,11 +137,6 @@
                 });
             }
         });
-
-        if (isAjaxIn == false) {
-
-            isAllowSubmit = true;
-        }
     });
 </script>
 
@@ -190,6 +157,8 @@
         return str;
     }
 
+    var paidTotalAmount = "{{ $payment->total_amount }}";
+    document.getElementById('inword').innerHTML = inWords(parseInt(paidTotalAmount)) + 'ONLY';
 </script>
 
 <script>

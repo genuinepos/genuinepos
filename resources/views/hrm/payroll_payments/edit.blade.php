@@ -1,6 +1,6 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $dateFormat = $generalSettings['business__date_format'];
+    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 
 <style>
@@ -10,15 +10,14 @@
 <div class="modal-dialog col-80-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title">{{ __("Add Payroll Payment") }}</h6>
+            <h6 class="modal-title">{{ __("Edit Payroll Payment") }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
         <div class="modal-body">
-            <form id="add_payment_form" action="{{ route('hrm.payroll.payments.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="edit_payment_form" action="{{ route('hrm.payroll.payments.update', $payment->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="action" id="action">
-                <input type="hidden" name="payroll_id" value="{{ $payroll->id }}">
+                <input type="hidden" id="current_paid_amount" value="{{ $payment->total_amount }}">
                 <div class="form-group row">
                     <div class="col-md-4">
                         <div class="row" style="border-right:1px solid rgb(226, 223, 223);">
@@ -30,27 +29,27 @@
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Emplayee") }}</td>
-                                        <td>: {{ $payroll?->user?->prefix .' '. $payroll?->user?->name .' '.$payroll?->user?->last_name }}</td>
+                                        <td>: {{ $payment?->payrollRef?->user?->prefix .' '. $payment?->payrollRef?->user?->name .' '. $payment?->payrollRef?->user?->last_name }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Employee ID") }}</td>
-                                        <td>: {{ $payroll?->user?->emp_id }}</td>
+                                        <td>: {{ $payment?->payrollRef?->user?->emp_id }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Phone") }}</td>
-                                        <td>: {{ $payroll?->user?->phone }}</td>
+                                        <td>: {{ $payment?->payrollRef?->user?->phone }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Designation") }}</td>
-                                        <td>: {{ $payroll?->user?->designation?->name }}</td>
+                                        <td>: {{ $payment?->payrollRef?->user?->designation?->name }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td class="fw-bold">Salary</td>
-                                        <td>: {{ $payroll?->user?->salary }} / {{ $payroll?->user?->salary_type }}</td>
+                                        <td class="fw-bold">{{ __("Salary") }}</td>
+                                        <td>: {{ $payment?->payrollRef?->user?->salary }} / {{ $payment?->payrollRef?->user?->salary_type }}</td>
                                     </tr>
 
                                     <tr>
@@ -59,53 +58,58 @@
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Payroll") }}</td>
-                                        <td>: {{ $payroll->month .' - ' . $payroll->year }}</td>
+                                        <td>: {{ $payment?->payrollRef->month . ' - ' . $payment?->payrollRef->year }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Payroll Voucher") }}</td>
-                                        <td>: {{ $payroll->voucher_no }}</td>
+                                        <td>: {{ $payment?->payrollRef->voucher_no }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Expense Account") }}</td>
-                                        <td>: {{ $payroll?->expenseAccount?->name }}</td>
+                                        <td>: {{ $payment?->payrollRef?->expenseAccount?->name }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Pay Unit") }}</td>
-                                        <td>: {{ $payroll->duration_unit }}</td>
+                                        <td>: {{ $payment?->payrollRef->duration_unit }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Total Amount (As Per Unit)") }}</td>
-                                        <td>: {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}</td>
+                                        <td>: {{ App\Utils\Converter::format_in_bdt($payment?->payrollRef->total_amount) }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Total Allowance") }}</td>
-                                        <td>: {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
+                                        <td>: {{ App\Utils\Converter::format_in_bdt($payment?->payrollRef->total_allowance) }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Total Deduction") }}</td>
-                                        <td>: {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
+                                        <td>: {{ App\Utils\Converter::format_in_bdt($payment?->payrollRef->total_deduction) }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="fw-bold">{{ __("Gross Amount") }}</td>
-                                        <td>: {{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}</td>
+                                        <td>: {{ App\Utils\Converter::format_in_bdt($payment?->payrollRef->gross_amount) }}</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
 
+                    @php
+                        $voucherDebitDescription = $payment->voucherDebitDescription;
+                        $voucherCreditDescription = $payment->voucherCreditDescription;
+                    @endphp
+
                     <div class="col-md-4">
                         <div class="row" style="border-right:1px solid rgb(226, 223, 223);">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Date") }} <span class="text-danger">*</span></label>
-                                <input required name="date" class="form-control" id="payment_date" data-next="payment_credit_account_id" value="{{ date($generalSettings['business__date_format']) }}" placeholder="{{ __("Date") }}" autocomplete="off">
+                                <input required name="date" class="form-control" id="payment_date" data-next="payment_credit_account_id" value="{{ date($dateFormat, strtotime($payment->date)) }}" placeholder="{{ __("Date") }}" autocomplete="off">
                                 <span class="error error_payment_date"></span>
                             </div>
 
@@ -118,7 +122,7 @@
                                             @continue
                                         @endif
 
-                                        <option value="{{ $ac->id }}">
+                                        <option {{ $voucherCreditDescription->account_id == $ac->id ? 'SELECTED' : '' }} value="{{ $ac->id }}">
                                             @php
                                                 $acNo = $ac->account_number ? ', A/c No : ' . $ac->account_number : '';
                                                 $bank = $ac?->bank ? ', Bank : ' . $ac?->bank?->name : '';
@@ -135,7 +139,7 @@
                                 <label class="fw-bold">{{ __("Type/Method") }} <span class="text-danger">*</span></label>
                                 <select required name="payment_method_id" class="form-control" id="payment_payment_method_id" data-next="payment_transaction_no">
                                     @foreach ($methods as $method)
-                                        <option data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">{{ $method->name }}</option>
+                                        <option {{ $voucherCreditDescription->payment_method_id == $method->id ? 'SELECTED' : '' }} data-account_id="{{ $method->paymentMethodSetting ? $method->paymentMethodSetting->account_id : '' }}" value="{{ $method->id }}">{{ $method->name }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_payment_payment_method_id"></span>
@@ -143,27 +147,27 @@
 
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Transaction No") }}</label>
-                                <input name="transaction_no" class="form-control" id="payment_transaction_no" data-next="payment_cheque_no" placeholder="{{ __("Transaction No") }}">
+                                <input name="transaction_no" class="form-control" id="payment_transaction_no" data-next="payment_cheque_no" value="{{ $voucherCreditDescription->transaction_no }}" placeholder="{{ __("Transaction No") }}">
                             </div>
 
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Cheque No") }}</label>
-                                <input name="cheque_no" class="form-control" id="payment_cheque_no" data-next="payment_cheque_serial_no" placeholder="{{ __("Cheque No") }}">
+                                <input name="cheque_no" class="form-control" id="payment_cheque_no" data-next="payment_cheque_serial_no" value="{{ $voucherCreditDescription->cheque_no }}" placeholder="{{ __("Cheque No") }}">
                             </div>
 
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Cheque Serial No") }}</label>
-                                <input name="cheque_serial_no" class="form-control" id="payment_cheque_serial_no" data-next="payment_reference" placeholder="{{ __("Cheque Serial No") }}">
+                                <input name="cheque_serial_no" class="form-control" id="payment_cheque_serial_no" data-next="payment_reference" value="{{ $voucherCreditDescription->cheque_serial_no }}" placeholder="{{ __("Cheque Serial No") }}">
                             </div>
 
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Reference") }}</label>
-                                <input name="reference" class="form-control" id="payment_reference" data-next="payment_remarks" placeholder="{{ __("reference") }}">
+                                <input name="reference" class="form-control" id="payment_reference" data-next="payment_remarks" value="{{ $payment->reference }}" placeholder="{{ __("reference") }}">
                             </div>
 
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Remarks") }}</label>
-                                <input name="remarks" class="form-control" id="payment_remarks" data-next="payment_debit_account_id" placeholder="{{ __("Remarks") }}">
+                                <input name="remarks" class="form-control" id="payment_remarks" data-next="payment_debit_account_id" value="{{ $payment->remarks }}" placeholder="{{ __("Remarks") }}">
                             </div>
                         </div>
                     </div>
@@ -175,7 +179,7 @@
                                 <select name="debit_account_id" class="form-control select2" id="payment_debit_account_id" data-next="payment_paying_amount">
                                     <option value="">{{ __('Select Debit/Expense A/c') }}</option>
                                     @foreach ($expenseAccounts as $expenseAccount)
-                                        <option {{ $payroll->expense_account_id == $expenseAccount->id ? 'SELECTED' : '' }} value="{{ $expenseAccount->id }}">{{ $expenseAccount->name }}</option>
+                                        <option {{ $voucherDebitDescription->account_id == $expenseAccount->id ? 'SELECTED' : '' }} value="{{ $expenseAccount->id }}">{{ $expenseAccount->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -183,10 +187,10 @@
                             <div class="col-md-12 mt-1">
                                 <label class="fw-bold">{{ __("Paying Amount") }}</label>
                                 <div class="input-group">
-                                    <input required oninput="calculateCurrentBalance(); return false;" type="number" step="any" name="paying_amount" class="form-control fw-bold w-75" id="payment_paying_amount" data-next="save_and_print" placeholder="{{ __("Paying Amount") }}">
+                                    <input required oninput="calculateCurrentBalance(); return false;" type="number" step="any" name="paying_amount" class="form-control fw-bold w-75" id="payment_paying_amount" data-next="save_changes_btn" value="{{ $payment->total_amount }}" placeholder="{{ __("Paying Amount") }}">
 
-                                    <input readonly type="text" class="form-control fw-bold text-danger text-end w-25" id="closing_balance_string" value="{{ App\Utils\Converter::format_in_bdt($payroll->due) }}" placeholder="{{ __("Current Balance") }}">
-                                    <input type="hidden" id="closing_balance_flat_amount" value="{{ $payroll->due }}">
+                                    <input readonly type="text" class="form-control fw-bold text-danger text-end w-25" id="closing_balance_string" value="{{ App\Utils\Converter::format_in_bdt($payment->payrollRef->due) }}">
+                                    <input type="hidden" id="closing_balance_flat_amount" value="{{ $payment->payrollRef->due }}">
                                 </div>
 
                                 <span class="error error_payment_paying_amount"></span>
@@ -203,8 +207,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button payment_loading_btn d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
-                            <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success payment_submit_button me-2" value="save_and_print">{{ __("Save & Print") }}</button>
-                            <button type="submit" id="save" value="save" class="btn btn-sm btn-success payment_submit_button me-2" value="save">{{ __("Save") }}</button>
+                            <button type="submit" id="save_changes_btn" class="btn btn-sm btn-success payment_submit_button me-2">{{ __("Save Changes") }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
                         </div>
                     </div>
@@ -214,5 +217,5 @@
     </div>
 </div>
 
-@include('hrm.payroll_payments.js_partials.add_js')
+@include('hrm.payroll_payments.js_partials.edit_js')
 

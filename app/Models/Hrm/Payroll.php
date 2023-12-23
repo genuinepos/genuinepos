@@ -7,6 +7,7 @@ use App\Models\BaseModel;
 use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountingVoucher;
+use App\Models\Accounts\AccountingVoucherDescriptionReference;
 
 class Payroll extends BaseModel
 {
@@ -44,6 +45,11 @@ class Payroll extends BaseModel
     public function expenseAccount()
     {
         return $this->belongsTo(Account::class, 'expense_account_id');
+    }
+
+    public function references()
+    {
+        return $this->hasMany(AccountingVoucherDescriptionReference::class, 'payroll_id');
     }
 
     public function createdBy()

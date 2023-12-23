@@ -173,7 +173,7 @@
 
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Cheque No") }}</label>
-                                <input name="cheque_no" class="form-control" id="payment_cheque_no" data-next="payment_cheque_serial_no"  value="{{ $voucherCreditDescription->cheque_no }}" placeholder="{{ __("Cheque No") }}">
+                                <input name="cheque_no" class="form-control" id="payment_cheque_no" data-next="payment_cheque_serial_no" value="{{ $voucherCreditDescription->cheque_no }}" placeholder="{{ __("Cheque No") }}">
                             </div>
 
                             <div class="col-md-12">

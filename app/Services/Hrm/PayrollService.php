@@ -190,14 +190,19 @@ class PayrollService
 
     public function deletePayroll(int $id): array|object
     {
-        $deletePayroll = $this->singlePayroll()->where('id', $id)->first();
+        $deletePayroll = $this->singlePayroll(with: ['references'])->where('id', $id)->first();
 
         if (isset($deletePayroll)) {
+
+            if(count($deletePayroll->references)){
+
+                return ['pass' => false, 'msg' => __('Payroll can not be deleted. There is one or more payment against this payroll.')];
+            }
 
             $deletePayroll->delete();
         }
 
-        return $deletePayroll;
+        return ['pass' => true];
     }
 
     public function adjustPayrollAmounts(object $payroll): object

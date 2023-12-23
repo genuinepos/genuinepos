@@ -1,6 +1,8 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -26,7 +28,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month.'-'.$payroll->year }}</li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($payroll->date_ts)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($dateFormat, strtotime($payroll->date_ts)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Payroll Voucher No') }} : </strong> {{ $payroll->voucher_no }}</li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
@@ -109,8 +111,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" class="fw-bold text-end">{{ __("Total Allowance") }} : </td>
-                                        <td colspan="2" class="fw-bold">   {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
+                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total Allowance") }} : </td>
+                                        <td colspan="2" class="fw-bold" style="font-size:11px!important;">   {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -150,8 +152,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" class="fw-bold text-end">{{ __("Total Deduction") }} : </td>
-                                        <td colspan="2" class="fw-bold">   {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
+                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total Deduction") }} : </td>
+                                        <td colspan="2" class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -162,6 +164,7 @@
                 <div class="row">
                     <div class="col-md-7">
                         <p class="fw-bold">{{ __('Payments') }}</p>
+                        @include('hrm.payrolls.ajax_view.partials.payroll_details_payment_list')
                     </div>
 
                     <div class="col-md-5">
@@ -519,7 +522,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($dateFormat) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

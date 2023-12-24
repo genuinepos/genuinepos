@@ -12,9 +12,9 @@ use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;
 use App\Http\Controllers\HRM\DesignationController;
 use App\Http\Controllers\HRM\PayrollPaymentController;
-use App\Http\Controllers\Report\PayrollReportController;
 use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\HRM\AllowanceAndDeductionController;
+use App\Http\Controllers\HRM\Reports\PayrollReportController;
 use App\Http\Controllers\Report\PayrollPaymentReportController;
 
 Route::group(['prefix' => 'hrm'], function () {
@@ -102,10 +102,10 @@ Route::group(['prefix' => 'hrm'], function () {
 
         Route::get('/', 'index')->name('hrm.payrolls.index');
         Route::get('create', 'create')->name('hrm.payrolls.create');
+        Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
         Route::post('store',  'store')->name('hrm.payrolls.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payrolls.edit');
         Route::post('update/{id}', 'update')->name('hrm.payrolls.update');
-        Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
         Route::delete('delete/{id}', 'delete')->name('hrm.payrolls.delete');
     });
 
@@ -113,10 +113,10 @@ Route::group(['prefix' => 'hrm'], function () {
 
         Route::get('/', 'index')->name('hrm.payroll.payments.index');
         Route::get('create/{payrollId}', 'create')->name('hrm.payroll.payments.create');
+        Route::get('show/{id}', 'show')->name('hrm.payroll.payments.show');
         Route::post('store',  'store')->name('hrm.payroll.payments.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payroll.payments.edit');
         Route::post('update/{id}', 'update')->name('hrm.payroll.payments.update');
-        Route::get('show/{id}', 'show')->name('hrm.payroll.payments.show');
         Route::delete('delete/{id}', 'delete')->name('hrm.payroll.payments.delete');
     });
 
@@ -131,16 +131,16 @@ Route::group(['prefix' => 'hrm'], function () {
 
     Route::group(['prefix' => 'reports'], function () {
 
-        Route::group(['prefix' => 'payrolls'], function () {
+        Route::controller(PayrollReportController::class)->prefix('payrolls')->group(function () {
 
-            Route::get('/', [PayrollReportController::class, 'payrollReport'])->name('reports.payroll');
-            Route::get('print', [PayrollReportController::class, 'payrollReportPrint'])->name('reports.payroll.print');
+            Route::get('/', 'index')->name('payroll.reports.index');
+            Route::get('print', 'print')->name('payroll.reports.print');
         });
 
-        Route::group(['prefix' => 'payroll/payments'], function () {
+        Route::controller(PayrollPaymentReportController::class)->prefix('payroll/payments')->group(function () {
 
-            Route::get('/', [PayrollPaymentReportController::class, 'payrollPaymentReport'])->name('reports.payroll.payment');
-            Route::get('print', [PayrollPaymentReportController::class, 'payrollPaymentReportPrint'])->name('reports.payroll.payment.print');
+            Route::get('/', 'index')->name('reports.payroll.payments.index');
+            Route::get('print', 'print')->name('reports.payroll.payments.print');
         });
 
         Route::group(['prefix' => 'attendances'], function () {

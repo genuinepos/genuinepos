@@ -26,6 +26,7 @@ interface PayrollControllerMethodContainersInterface
         object $payrollAllowanceService,
         object $payrollDeductionService,
         object $dayBookService,
+        object $codeGenerator,
     ): void;
 
     public function editMethodContainer(

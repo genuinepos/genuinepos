@@ -169,20 +169,12 @@
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
             buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                    extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
                 {
-                    extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+                    extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
             ],
             "processing": true,
@@ -200,72 +192,24 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [{
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'invoice_id',
-                    name: 'purchases.invoice_id',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'branch',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'supplier_name',
-                    name: 'suppliers.name'
-                },
+            columns: [
+                { data: 'date', name: 'date' },
+                { data: 'invoice_id', name: 'purchases.invoice_id', className: 'fw-bold' },
+                { data: 'branch', name: 'branches.name' },
+                { data: 'supplier_name', name: 'suppliers.name' },
                 // {
                 //     data: 'created_by',
                 //     name: 'users.name'
                 // },
-                {
-                    data: 'total_item',
-                    name: 'total_item',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'total_qty',
-                    name: 'total_qty',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'net_total_amount',
-                    name: 'net_total_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'order_discount_amount',
-                    name: 'order_discount_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'purchase_tax_amount',
-                    name: 'purchase_tax_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'total_purchase_amount',
-                    name: 'total_purchase_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'paid',
-                    name: 'paid',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'purchase_return_amount',
-                    name: 'purchase_return_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'due',
-                    name: 'due',
-                    className: 'text-end fw-bold'
-                },
+                { data: 'total_item', name: 'total_item', className: 'text-end fw-bold' },
+                { data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold' },
+                { data: 'net_total_amount', name: 'net_total_amount', className: 'text-end fw-bold' },
+                { data: 'order_discount_amount', name: 'order_discount_amount', className: 'text-end fw-bold' },
+                { data: 'purchase_tax_amount', name: 'purchase_tax_amount', className: 'text-end fw-bold' },
+                { data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold' },
+                { data: 'paid', name: 'paid', className: 'text-end fw-bold' },
+                { data: 'purchase_return_amount', name: 'purchase_return_amount', className: 'text-end fw-bold' },
+                { data: 'due', name: 'due', className: 'text-end fw-bold' },
             ],
             fnDrawCallback: function() {
 

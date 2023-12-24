@@ -123,10 +123,42 @@ Route::get('my-test', function () {
     // $date = date('Y-11-01');
     // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
 
-    $branch = Branch::with('branchSettings')->where('id', 28)->first();
 
     // $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
-    // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent 
+    // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent
+
+    $query = DB::table('hrm_payrolls')
+        ->leftJoin('branches', 'hrm_payrolls.branch_id', 'branches.id')
+        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
+        ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id');
+
+    return $payrolls = $query->select(
+        'hrm_payrolls.id',
+        'hrm_payrolls.branch_id',
+        'hrm_payrolls.voucher_no',
+        'hrm_payrolls.duration_unit',
+        'hrm_payrolls.total_amount',
+        'hrm_payrolls.total_allowance',
+        'hrm_payrolls.total_deduction',
+        'hrm_payrolls.gross_amount',
+        'hrm_payrolls.month',
+        'hrm_payrolls.year',
+        'hrm_payrolls.paid',
+        'hrm_payrolls.due',
+        'hrm_payrolls.date',
+        'hrm_payrolls.date_ts',
+        'users.prefix as user_prefix',
+        'users.name as user_name',
+        'users.last_name as user_last_name',
+        'users.emp_id as user_emp_id',
+        'branches.name as branch_name',
+        'branches.area_name as branch_area_name',
+        'branches.branch_code',
+        'parentBranch.name as parent_branch_name',
+    )
+    // ->orderByRaw('YEAR(hrm_payrolls.year) DESC, MONTH(hrm_payrolls.month) DESC')
+    ->orderByRaw("STR_TO_DATE(CONCAT('1 ', month, ' ', year), '%d %M %Y') DESC")
+    ->get();
 });
 
 Route::get('t-id', function () {

@@ -13,7 +13,9 @@
                     <th>{{ __("Type") }}</th>
                     <th>{{ __("Account") }}</th>
                     <th>{{ __("Amount") }}</th>
-                    <th class="action_hideable">{{ __("Action") }}</th>
+                    @if ($previousRouteName == 'hrm.payrolls.index')
+                        <th class="action_hideable">{{ __("Action") }}</th>
+                    @endif
                 </tr>
             </thead>
             <tbody id="p_details_payment_list">
@@ -68,17 +70,19 @@
                                 $totalPaidAmount += $reference?->amount ? $reference?->amount : 0;
                             @endphp
 
-                            <td class="action_hideable">
-                                @if ($reference->voucherDescription)
-                                    @if ($reference->voucherDescription->accountingVoucher)
-                                        <a href="{{ route('hrm.payroll.payments.show', $reference->voucherDescription->accountingVoucher->id) }}" id="extraDetailsBtn" class="text-info me-1"><i class="fa-regular fa-eye"></i></a>
+                            @if ($previousRouteName == 'hrm.payrolls.index')
+                                <td class="action_hideable">
+                                    @if ($reference->voucherDescription)
+                                        @if ($reference->voucherDescription->accountingVoucher)
+                                            <a href="{{ route('hrm.payroll.payments.show', $reference->voucherDescription->accountingVoucher->id) }}" id="extraDetailsBtn" class="text-info me-1"><i class="fa-regular fa-eye"></i></a>
 
-                                        <a href="{{ route('hrm.payroll.payments.edit', $reference->voucherDescription->accountingVoucher->id) }}" id="editPayment" class="text-warning me-1"><i class="fa-regular fa-pen-to-square"></i></a>
+                                            <a href="{{ route('hrm.payroll.payments.edit', $reference->voucherDescription->accountingVoucher->id) }}" id="editPayment" class="text-warning me-1"><i class="fa-regular fa-pen-to-square"></i></a>
 
-                                        <a href="{{ route('hrm.payroll.payments.delete', $reference->voucherDescription->accountingVoucher->id) }}" id="deletePayment" class="text-danger"><i class="fa-solid fa-trash-can"></i></a>
+                                            <a href="{{ route('hrm.payroll.payments.delete', $reference->voucherDescription->accountingVoucher->id) }}" id="deletePayment" class="text-danger"><i class="fa-solid fa-trash-can"></i></a>
+                                        @endif
                                     @endif
-                                @endif
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                    @endforeach
                 @else
@@ -91,7 +95,9 @@
                 <tr>
                     <th colspan="5" class="text-end">{{ __("Total Paid") }} : </th>
                     <th>{{ App\Utils\Converter::format_in_bdt($totalPaidAmount) }}</th>
-                    <th></th>
+                    @if ($previousRouteName == 'hrm.payrolls.index')
+                        <th>---</th>
+                    @endif
                 </tr>
             </tfoot>
         </table>

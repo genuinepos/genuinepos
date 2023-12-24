@@ -2,13 +2,14 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $previousRouteName = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog col-60-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">
+                <h6 class="modal-title">
                     {{ __('Payroll Payment Details') }} ({{ __('Voucher No') }} : <strong>{{ $payment->voucher_no }}</strong>)
                 </h6>
                 <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
@@ -173,7 +174,7 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalExtraDetailsPrintBtn" filename="{{ 'Payroll Payment - ' . $payment->voucher_no . ' - ' . $payment->date }}">{{ __('Print') }}</button>
+                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="{{ $previousRouteName == 'hrm.payrolls.index' ? 'modalExtraDetailsPrintBtn' : 'modalDetailsPrintBtn' }}" filename="{{ 'Payroll Payment - ' . $payment->voucher_no . ' - ' . $payment->date }}">{{ __('Print') }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>

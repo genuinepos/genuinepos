@@ -83,7 +83,7 @@ class PayrollController extends Controller
         return view('hrm.payrolls.create', compact('user', 'expenseAccounts', 'month', 'year', 'totalHours', 'totalPresent', 'allowances', 'deductions'));
     }
 
-    public function store(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface, CodeGenerationServiceInterface $codeGenerator)
+    public function store(Request $request, CodeGenerationServiceInterface $codeGenerator, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
         if (!auth()->user()->can('payrolls_create')) {
 
@@ -101,6 +101,7 @@ class PayrollController extends Controller
                 payrollAllowanceService: $this->payrollAllowanceService,
                 payrollDeductionService: $this->payrollDeductionService,
                 dayBookService: $this->dayBookService,
+                codeGenerator: $codeGenerator,
             );
 
             DB::commit();

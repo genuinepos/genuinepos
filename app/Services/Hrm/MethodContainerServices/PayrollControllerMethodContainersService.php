@@ -97,6 +97,7 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         object $payrollAllowanceService,
         object $payrollDeductionService,
         object $dayBookService,
+        object $codeGenerator,
     ): void {
 
         $addPayroll = $payrollService->addPayroll(request: $request, codeGenerator: $codeGenerator);

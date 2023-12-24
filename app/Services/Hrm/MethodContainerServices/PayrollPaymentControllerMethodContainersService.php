@@ -30,6 +30,7 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
 
         return $data;
     }
+
     public function createMethodContainer(
         int $payrollId,
         object $payrollService,

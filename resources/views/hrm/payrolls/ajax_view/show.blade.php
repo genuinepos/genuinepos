@@ -2,10 +2,10 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-
+    $previousRouteName = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
 @endphp
 <!-- Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">

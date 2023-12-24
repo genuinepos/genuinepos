@@ -2004,7 +2004,7 @@
 
                                             @if (auth()->user()->can('payroll_report'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('reports.payroll') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('payroll.reports.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-money-bill-alt"></i></span>
@@ -2017,7 +2017,7 @@
 
                                             @if (auth()->user()->can('payroll_payment_report'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('reports.payroll.payment') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.payroll.payments.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-money-bill-alt"></i></span>

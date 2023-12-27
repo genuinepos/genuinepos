@@ -113,8 +113,8 @@ class HolidayService
     {
         $addHoliday = new Holiday();
         $addHoliday->name = $request->name;
-        $addHoliday->start_date = $request->start_date;
-        $addHoliday->end_date = $request->end_date;
+        $addHoliday->start_date = date('Y-m-d', strtotime($request->start_date));
+        $addHoliday->end_date = date('Y-m-d', strtotime($request->end_date));
         $addHoliday->note = $request->note;
         $addHoliday->save();
 
@@ -125,8 +125,8 @@ class HolidayService
     {
         $updateHoliday = $this->singleHoliday(id: $id, with: ['allowedBranches']);
         $updateHoliday->name = $request->name;
-        $updateHoliday->start_date = $request->start_date;
-        $updateHoliday->end_date = $request->end_date;
+        $updateHoliday->start_date = date('Y-m-d', strtotime($request->start_date));
+        $updateHoliday->end_date = date('Y-m-d', strtotime($request->end_date));
         $updateHoliday->note = $request->note;
         $updateHoliday->save();
 

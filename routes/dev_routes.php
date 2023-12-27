@@ -123,43 +123,85 @@ Route::get('my-test', function () {
     // $date = date('Y-11-01');
     // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
 
-
     // $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
     // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent
 
-    $query = DB::table('hrm_payrolls')
-        ->leftJoin('branches', 'hrm_payrolls.branch_id', 'branches.id')
-        ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-        ->leftJoin('users', 'hrm_payrolls.user_id', 'users.id');
+    //MONTH WISE DATES
+    // $month = 11;
+    // $year = 2023;
+    // // start with empty results
+    // // $resultDate = "";
+    // // $resultDays = "";
+    // $dates = [];
+    // $datesAndDay = [];
+    // // determine the number of days in the month
+    // $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    // for ($i = 1; $i <= $daysInMonth; $i++) {
+    //     // create a cell for the day and for the date
+    //     // $resultDate .= "<td>" . sprintf('%02d', $i) . "</td>";
+    //     // $resultDays .= "<td>" . date("l", mktime(0, 0, 0, $month, $i, $year)) . "</td>";
+    //     array_push($datesAndDay, date("d D", mktime(0, 0, 0, $month, $i, $year)));
+    //     array_push($dates, date('Y-m-d', strtotime($i . '-' . $month . '-' . $year)));
+    //     // $fullDays[] = $i.'-'.$month.'-'.$year;
+    // }
 
-    return $payrolls = $query->select(
-        'hrm_payrolls.id',
-        'hrm_payrolls.branch_id',
-        'hrm_payrolls.voucher_no',
-        'hrm_payrolls.duration_unit',
-        'hrm_payrolls.total_amount',
-        'hrm_payrolls.total_allowance',
-        'hrm_payrolls.total_deduction',
-        'hrm_payrolls.gross_amount',
-        'hrm_payrolls.month',
-        'hrm_payrolls.year',
-        'hrm_payrolls.paid',
-        'hrm_payrolls.due',
-        'hrm_payrolls.date',
-        'hrm_payrolls.date_ts',
-        'users.prefix as user_prefix',
-        'users.name as user_name',
-        'users.last_name as user_last_name',
-        'users.emp_id as user_emp_id',
-        'branches.name as branch_name',
-        'branches.area_name as branch_area_name',
-        'branches.branch_code',
-        'parentBranch.name as parent_branch_name',
-    )
-    // ->orderByRaw('YEAR(hrm_payrolls.year) DESC, MONTH(hrm_payrolls.month) DESC')
-    ->orderByRaw("STR_TO_DATE(CONCAT('1 ', month, ' ', year), '%d %M %Y') DESC")
-    ->get();
+    // return $datesAndDay;
+
+    // return the result wrapped in a table
+    // return "<table>" . PHP_EOL .
+    //     "<tr>" . $resultDate . "</tr>" . PHP_EOL .
+    //     "<tr>" . $resultDays . "</tr>" . PHP_EOL .
+    //     "</table>";
+
+    // return DB::table('users')->where('users.id', 1)
+    //     ->leftJoin('hrm_attendances', 'users.id', 'hrm_attendances.user_id')
+    //     ->whereIn(DB::raw('DATE(hrm_attendances.clock_in_ts)'), $dates)
+    //     ->get();
+    //MONTH WISE DATES END
+
+
+    //TEST
+    // $currentMonth = Carbon\Carbon::now()->month;
+    // return $results = App\Models\HRM\Holiday::whereYear('start_date', Carbon\Carbon::now()->year)
+    //     ->whereMonth('start_date', '<=', $currentMonth) // Start date month should be less than or equal to current month
+    //     ->whereYear('end_date', Carbon\Carbon::now()->year)
+    //     ->whereMonth('end_date', '>=', $currentMonth)   // End date month should be greater than or equal to current month
+    //     ->get();
+    //TEST END
+
+
+
+    //DATE RANGE WISE DATES
+
+
+    // $first = '2023-12-16';
+    // $last = '2023-12-16';
+    // $step = '+1 day';
+    // $output_format = 'Y-m-d';
+    // $dates = array();
+    // $current = strtotime($first);
+    // $last = strtotime($last);
+
+    // while( $current <= $last) {
+
+    //     $dates[] = date($output_format, $current);
+    //     $current = strtotime($step, $current);
+    // }
+
+    // return $dates;
+
+    $holidays =  \App\Models\HRM\HolidayBranch::query()->with(['holiday'])
+        ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')
+        ->whereYear('hrm_holidays.start_date', 2023)
+        ->whereMonth('hrm_holidays.start_date', '<=', 12) // Start date month should be less than or equal to current month
+        ->whereYear('hrm_holidays.end_date', 2023)
+        ->whereMonth('hrm_holidays.end_date', '>=', 12)
+        ->get();
+
+    return $holidays->where('branch_id', null);
 });
+
+
 
 Route::get('t-id', function () {
 });

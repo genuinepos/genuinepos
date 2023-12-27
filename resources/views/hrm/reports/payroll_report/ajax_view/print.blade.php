@@ -23,25 +23,9 @@
         }
     }
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
 
-    div#footer {
-        position: fixed;
-        bottom: 24px;
-        left: 0px;
-        width: 100%;
-        height: 0%;
-        color: #CCC;
-        background: #333;
-        padding: 0;
-        margin: 0;
-    }
+    div#footer { position: fixed; bottom: 24px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
 
     .print_table th {
         font-size: 11px !important;

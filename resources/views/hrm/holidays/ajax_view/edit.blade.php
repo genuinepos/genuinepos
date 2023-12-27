@@ -1,3 +1,6 @@
+@php
+    $dateFormat = $generalSettings['business__date_format'];
+@endphp
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -17,13 +20,13 @@
                 <div class="form-group row mt-1">
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('Start Date') }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="start_date" class="form-control" id="start_date" data-next="end_date" value="{{ $holiday->start_date }}" placeholder="{{ __('Start Date') }}" autocomplete="off">
+                        <input required type="text" name="start_date" class="form-control" id="start_date" data-next="end_date" value="{{ date($dateFormat, strtotime($holiday->start_date)) }}" placeholder="{{ __('Start Date') }}" autocomplete="off">
                         <span class="error error_start_date"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label class="fw-bold">{{ __('End Date') }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="end_date" class="form-control" id="end_date" data-next="allowed_branch_id" value="{{ $holiday->end_date }}" placeholder="{{ __('End Date') }}" autocomplete="off">
+                        <input required type="text" name="end_date" class="form-control" id="end_date" data-next="allowed_branch_id" value="{{ date($dateFormat, strtotime($holiday->end_date)) }}" placeholder="{{ __('End Date') }}" autocomplete="off">
                         <span class="error error_end_date"></span>
                     </div>
                 </div>

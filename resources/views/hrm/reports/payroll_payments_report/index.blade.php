@@ -29,7 +29,7 @@
                             <form id="filter_form">
                                 <div class="form-group row align-items-end">
                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option data-branch_name="All" value="">{{ __("All") }}</option>
@@ -47,29 +47,6 @@
                                             </select>
                                         </div>
                                     @endif
-
-                                    <div class="col-md-2">
-                                        <label><strong>{{ __("Department") }}</strong></label>
-                                        <select name="department_id" class="form-control select2" id="department_id">
-                                            <option data-department_name="{{ __("All") }}" value="all"> {{ __('All') }} </option>
-                                            @foreach($departments as $dep)
-                                               <option data-department_name="{{ $dep->name }}" value="{{ $dep->id }}">{{ $dep->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <label><strong>{{ __('Employee') }}</strong></label>
-                                        <select name="user_id" class="form-control select2" id="user_id">
-                                            <option value="">{{ __('Select Employee') }}</option>
-                                            @foreach($users as $user)
-                                                @php
-                                                    $empId = $user->emp_id ? '(' . $user->emp_id . ')' : '';
-                                                @endphp
-                                               <option data-user_name="{{ $user->prefix .' '. $user->name .' '. $user->last_name . $empId }}" value="{{ $user->id }}">{{ $user->prefix .' '. $user->name .' '. $user->last_name . $empId }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
 
                                     <div class="col-md-2">
                                         <label><strong>{{ __("From Date") }} : </strong></label>
@@ -148,74 +125,58 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // var table = $('.data_tbl').DataTable({
-    //     dom: "lBfrtip",
-    //     buttons: [
-    //         {extend: 'excel', text: "{{ __('Excel') }}", className: 'btn btn-primary'},
-    //         {extend: 'pdf', text: "{{ __('Pdf') }}", className: 'btn btn-primary'},
-    //     ],
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "searching" : true,
-    //     "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-    //     "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-    //     "ajax": {
-    //         "url": "{{ route('reports.payroll.payments.index') }}",
-    //         "data": function(d) {
-    //             d.branch_id = $('#branch_id').val();
-    //             d.department_id = $('#department_id').val();
-    //             d.user_id = $('#user_id').val();
-    //             d.from_date = $('#from_date').val();
-    //             d.to_date = $('#to_date').val();
-    //         }
-    //     }, columns: [
-    //         {data: 'month_year', name: 'hrm_payrolls.month'},
-    //         {data: 'user', name: 'users.name'},
-    //         {data: 'voucher_no', name: 'hrm_payrolls.voucher_no', className: 'fw-bold'},
-    //         {data: 'branch', name: 'branches.name'},
-    //         {data: 'payment_status', name: 'users.last_name'},
-    //         {data: 'duration_unit', name: 'hrm_payrolls.duration_unit'},
-    //         {data: 'total_amount', name: 'parentBranch.name', className: 'fw-bold'},
-    //         {data: 'total_allowance', name: 'parentBranch.name', className: 'fw-bold'},
-    //         {data: 'total_deduction', name: 'parentBranch.name', className: 'fw-bold'},
-    //         {data: 'gross_amount', name: 'parentBranch.name', className: 'fw-bold'},
-    //         {data: 'paid', name: 'hrm_payrolls.paid', className: 'fw-bold'},
-    //         {data: 'due', name: 'hrm_payrolls.due', className: 'fw-bold'},
-    //     ], fnDrawCallback: function() {
-    //         var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
-    //         $('#total_amount').text(parseFloat(total_amount).toFixed(2));
+    var table = $('.data_tbl').DataTable({
+        dom: "lBfrtip",
+        buttons: [
+            {extend: 'excel', text: "{{ __('Excel') }}", className: 'btn btn-primary'},
+            {extend: 'pdf', text: "{{ __('Pdf') }}", className: 'btn btn-primary'},
+        ],
+        "processing": true,
+        "serverSide": true,
+        "searching" : true,
+        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "ajax": {
+            "url": "{{ route('reports.payroll.payments.index') }}",
+            "data": function(d) {
+                d.branch_id = $('#branch_id').val();
+                d.from_date = $('#from_date').val();
+                d.to_date = $('#to_date').val();
+            }
+        }, columns: [
+            {data: 'date', name: 'accountingVoucher.date'},
+            {data: 'voucher_no', name: 'accountingVoucher.voucher_no', className: 'fw-bold'},
+            {data: 'branch', name: 'accountingVoucher.branch.name'},
+            {data: 'reference', name: 'accountingVoucher.payrollRef.voucher_no'},
+            {data: 'expense_account', name: 'account.name'},
+            {data: 'remarks', name: 'accountingVoucher.remarks'},
+            {data: 'paid_to', name: 'accountingVoucher.payrollRef.user.name'},
+            {data: 'paid_from', name: 'accountingVoucher.voucherCreditDescription.account.name'},
+            {data: 'payment_method', name: 'accountingVoucher.voucherCreditDescription.paymentMethod.name'},
+            {data: 'transaction_no', name: 'accountingVoucher.voucherCreditDescription.transaction_no'},
+            {data: 'cheque_no', name: 'accountingVoucher.voucherCreditDescription.cheque_no'},
+            {data: 'total_amount',name: 'accountingVoucher.voucherCreditDescription.cheque_serial_no', className: 'text-end fw-bold'},
+        ], fnDrawCallback: function() {
 
-    //         var total_allowance = sum_table_col($('.data_tbl'), 'total_allowance');
-    //         $('#total_allowance').text(parseFloat(total_allowance).toFixed(2));
+            var total_amount = sum_table_col($('.data_tbl'), 'total_amount');
+            $('#total_amount').text(parseFloat(total_amount).toFixed(2));
 
-    //         var total_deduction = sum_table_col($('.data_tbl'), 'total_deduction');
-    //         $('#total_deduction').text(parseFloat(total_deduction).toFixed(2));
+            $('.data_preloader').hide();
+        },
+    });
 
-    //         var gross_amount = sum_table_col($('.data_tbl'), 'gross_amount');
-    //         $('#gross_amount').text(parseFloat(gross_amount).toFixed(2));
+    function sum_table_col(table, class_name) {
+        var sum = 0;
+        table.find('tbody').find('tr').each(function() {
+            if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                sum += parseFloat(
+                    $(this).find('.' + class_name).data('value')
+                );
+            }
+        });
 
-    //         var paid = sum_table_col($('.data_tbl'), 'paid');
-    //         $('#paid').text(parseFloat(paid).toFixed(2));
-
-    //         var due = sum_table_col($('.data_tbl'), 'due');
-    //         $('#due').text(parseFloat(due).toFixed(2));
-
-    //         $('.data_preloader').hide();
-    //     },
-    // });
-
-    // function sum_table_col(table, class_name) {
-    //     var sum = 0;
-    //     table.find('tbody').find('tr').each(function() {
-    //         if (parseFloat($(this).find('.' + class_name).data('value'))) {
-    //             sum += parseFloat(
-    //                 $(this).find('.' + class_name).data('value')
-    //             );
-    //         }
-    //     });
-
-    //     return sum;
-    // }
+        return sum;
+    }
 
     //Submit filter form by select input changing
     $(document).on('submit', '#filter_form', function (e) {
@@ -224,58 +185,12 @@
         table.ajax.reload();
     });
 
-    $('#department_id').on('change', function(e){
-        e.preventDefault();
-
-        var department_id = $(this).val();
-
-        var url = "{{ route('hrm.departments.users', ':department_id') }}";
-        var route = url.replace(':department_id', department_id);
-
-        $.ajax({
-            url: route,
-            type: 'get',
-            success: function(users) {
-
-                $('#user_id').empty();
-                $('#user_id').append('<option data-user_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
-
-                $.each(users, function(key, user) {
-
-                    var prefix = user.prefix != null ? user.prefix : '';
-                    var name = user.name != null ? ' ' + user.name : '';
-                    var last_name = user.last_name != null ? ' ' + user.last_name : '';
-                    var emp_id = user.emp_id != null ? '(' + user.emp_id + ')' : '';
-
-                    var __name = prefix + name + last_name + emp_id;
-
-                    $('#user_id').append('<option ' + __name + ' value="' + user.id + '">' + __name + '</option>');
-                });
-            }, error: function(err) {
-
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error') }}");
-                    return;
-                } else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                    return;
-                }
-            }
-        });
-    });
-
     $(document).on('click', '#printReport',function (e) {
         e.preventDefault();
 
         $('.data_preloader').show();
         var branch_id = $('#branch_id').val();
         var branch_name = $('#branch_id').find('option:selected').data('branch_name');
-        var department_id = $('#department_id').val();
-        var department_name = $('#department_id').find('option:selected').data('department_name');
-        var user_id = $('#user_id').val();
-        var user_name = $('#user_id').find('option:selected').data('user_name');
         var from_date = $('#from_date').val();
         var to_date = $('#to_date').val();
 
@@ -284,7 +199,7 @@
         $.ajax({
             url:url,
             type:'get',
-            data: { branch_id, branch_name, user_id, user_name, department_id, department_name, from_date, to_date },
+            data: { branch_id, branch_name, from_date, to_date },
             success:function(data){
 
                 $(data).printThis({
@@ -301,6 +216,7 @@
                 $('.data_preloader').hide();
             }, error: function(err) {
 
+                $('.data_preloader').hide();
                 if (err.status == 0) {
 
                     toastr.error("{{ __('Net Connetion Error') }}");

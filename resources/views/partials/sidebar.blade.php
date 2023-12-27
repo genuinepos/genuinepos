@@ -1871,19 +1871,6 @@
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
                                         <div class="sub-menu-row">
-                                            @if (auth()->user()->can('hrm_dashboard'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('hrm.dashboard.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-tachometer-alt"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <p class="switch_text">@lang('menu.hrm_dashboard')</p>
-                                                    </a>
-                                                </div>
-                                            @endif
-
                                             @if (auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('hrm.leaves.index') }}" class="switch-bar-wrap">
@@ -2030,13 +2017,13 @@
 
                                             @if (auth()->user()->can('attendance_report'))
                                                 <div class="sub-menu-col">
-                                                    <a href="{{ route('reports.attendance') }}" class="switch-bar-wrap">
+                                                    <a href="{{ route('reports.attendances.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
                                                             <div class="bar-link">
                                                                 <span><i class="fas fa-paste"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Attendances") }}</p>
+                                                        <p class="switch_text">{{ __("Attendances Report") }}</p>
                                                     </a>
                                                 </div>
                                             @endif

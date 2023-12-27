@@ -64,7 +64,7 @@ class LeaveController extends Controller
         }
 
         $leaveTypes = DB::table('hrm_leave_types')->get(['id', 'name']);
-        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
         $leave = DB::table('hrm_leaves')->where('id', $id)->first();
 
         return view('hrm.leaves.ajax_view.leaves.edit', compact('leave', 'leaveTypes', 'users'));
@@ -79,7 +79,7 @@ class LeaveController extends Controller
 
         $this->leaveService->storeAndUpdateValidation(request: $request);
         $this->leaveService->updateLeave(request: $request, id: $id);
-        
+
         return response()->json(__('Leave Updated successfully'));
     }
 

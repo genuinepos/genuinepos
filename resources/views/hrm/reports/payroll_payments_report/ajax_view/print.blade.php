@@ -1,75 +1,27 @@
 <style>
     @media print {
-        table {
-            page-break-after: auto
-        }
-
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
-
-        td {
-            page-break-inside: avoid;
-            page-break-after: auto, font-size:9px !important;
-        }
-
-        thead {
-            display: table-header-group
-        }
-
-        tfoot {
-            display: table-footer-group
-        }
+        table { page-break-after: auto; }
+        tr { page-break-inside: avoid; page-break-after: auto; }
+        td { page-break-inside: avoid; page-break-after: auto, font-size:9px !important; }
+        thead { display: table-header-group; }
+        tfoot { display: table-footer-group; }
     }
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
 
-    div#footer {
-        position: fixed;
-        bottom: 24px;
-        left: 0px;
-        width: 100%;
-        height: 0%;
-        color: #CCC;
-        background: #333;
-        padding: 0;
-        margin: 0;
-    }
+    div#footer { position: fixed; bottom: 24px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
 
-    .print_table th {
-        font-size: 11px !important;
-        font-weight: 550 !important;
-        line-height: 12px !important
-    }
+    .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
 
-    .print_table tr td {
-        color: black;
-        font-size: 10px !important;
-        line-height: 12px !important
-    }
+    .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
 
-    .print_area {
-        font-family: Arial, Helvetica, sans-serif;
-    }
+    .print_area { font-family: Arial, Helvetica, sans-serif; }
 
-    .print_area h6 {
-        font-size: 14px !important;
-    }
+    .print_area h6 { font-size: 14px !important; }
 
-    .print_area p {
-        font-size: 11px !important;
-    }
+    .print_area p { font-size: 11px !important; }
 
-    .print_area small {
-        font-size: 8px !important;
-    }
+    .print_area small { font-size: 8px !important; }
 </style>
 
 <div class="print_area">
@@ -137,22 +89,24 @@
 
     <div class="row mt-2">
         <div class="col-12 text-center">
-            <h6 style="text-transform:uppercase;"><strong>{{ __('Payroll Report') }}</strong></h6>
+            <h6 style="text-transform:uppercase;"><strong>{{ __('Payroll Payroll Report') }}</strong></h6>
         </div>
     </div>
 
     <div class="row mt-1">
         <div class="col-12 text-center">
-            @if ($month && $year)
+            @if ($fromDate && $toDate)
                 <p>
-                    <strong>{{ __('Month') }} :</strong> {{ $month . ' - ' . $year }}
+                    <strong>{{ __("From") }} :</strong>
+                    {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
+                    <strong>{{ __("To") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
                 </p>
             @endif
         </div>
     </div>
 
     <div class="row mt-2">
-        <div class="col-4">
+        <div class="col-12">
             @php
                 $ownOrParentbranchName = $generalSettings['business__business_name'];
                 if (auth()->user()?->branch) {
@@ -165,23 +119,12 @@
             @endphp
             <p><strong>{{ __('Shop/Business') }} : </strong> {{ $filteredBranchName ? $filteredBranchName : $ownOrParentbranchName }} </p>
         </div>
-
-        <div class="col-4">
-            <p><strong>{{ __('Department') }} : </strong> {{ $filteredDepartmentName }} </p>
-        </div>
-
-        <div class="col-4">
-            <p><strong>{{ __('Employee') }} : </strong> {{ $filteredUserName }} </p>
-        </div>
     </div>
 
     @php
         $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
         $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-
-        $totalPayroll = 0;
         $totalPaid = 0;
-        $totalDue = 0;
     @endphp
 
     <div class="row mt-1">
@@ -189,60 +132,53 @@
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
                     <tr>
-                        <th>{{ __('Employee') }}</th>
-                        <th>{{ __("Payroll Voucher") }}</th>
+                        <th>{{ __("Payment Voucher") }}</th>
                         <th>{{ __("Shop/Business") }}</th>
-                        <th>{{ __("Pay Status") }}</th>
-                        <th>{{ __("Duration Unit") }}</th>
-                        <th class="text-end">{{ __("Total Amount") }}</th>
-                        <th class="text-end">{{ __("Allowance") }}</th>
-                        <th class="text-end">{{ __("Deduction") }}</th>
-                        <th class="text-end">{{ __("Gross Amount") }}</th>
-                        <th class="text-end">{{ __("Paid") }}</th>
-                        <th class="text-end">{{ __("Due") }}</th>
+                        <th>{{ __('Against Payroll') }}</th>
+                        <th>{{ __("Expense Ledger A/c") }}</th>
+                        <th>{{ __("Remarks") }}</th>
+                        <th>{{ __("Paid To") }}</th>
+                        <th>{{ __("Paid From") }}</th>
+                        <th>{{ __("Type/Method") }}</th>
+                        <th>{{ __("Trans No") }}</th>
+                        <th>{{ __("Cheque No") }}</th>
+                        <th class="text-end">{{ __("Paid Amount") }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @php
-                        $previousMonthYear = '';
+                        $previousDate = '';
                     @endphp
 
-                    @foreach ($payrolls as $payroll)
+                    @foreach ($payments as $payment)
                         @php
-                            $monthYear = $payroll->month.'-'.$payroll->year;
+                            $date = date($__date_format, strtotime($payment->accountingVoucher->date_ts))
                         @endphp
-                        @if ($previousMonthYear != $monthYear)
+                        @if ($previousDate != $date)
+
                             @php
-                                $previousMonthYear = $monthYear;
+                                $previousDate = $date;
                             @endphp
 
                             <tr>
-                                <th class="text-start" colspan="11">{{ $monthYear }}</th>
+                                <th class="text-start" colspan="12">{{ $date }}</th>
                             </tr>
                         @endif
 
                         <tr>
-                            <td class="text-start">{{ $payroll->voucher_no }}</td>
-
-                            <td class="text-start">
-                                @php
-                                    $empId = $payroll->user_emp_id ? ' (' . $payroll->user_emp_id . ')' : '';
-                                    $userName = $payroll->user_prefix . ' ' . $payroll->user_name . ' ' . $payroll->user_last_name .  $empId;
-                                @endphp
-                                {{ $userName }}
-                            </td>
+                            <td class="text-start">{{ $payment->accountingVoucher->voucher_no }}</td>
 
                             <td class="text-start">
                                 @php
                                     $branch = '';
-                                     if ($payroll->branch_id) {
+                                     if ($payment?->accountingVoucher?->branch) {
 
-                                        if ($payroll->parent_branch_name) {
+                                        if ($payment?->accountingVoucher?->branch?->parentBranch) {
 
-                                            $branch = $payroll->parent_branch_name . '(' . $payroll->branch_area_name . ')';
+                                            $branch = $payment?->accountingVoucher?->branch?->parentBranch->name . '(' . $payment?->accountingVoucher?->branch?->area_name . ')';
                                         } else {
 
-                                            $branch = $payroll->branch_name . '(' . $payroll->branch_area_name . ')';
+                                            $branch =  $payment?->accountingVoucher?->branch?->name . '(' . $payment?->accountingVoucher?->branch?->area_name . ')';
                                         }
                                     } else {
 
@@ -252,55 +188,26 @@
                                 {{ $branch }}
                             </td>
 
-                            <td class="text-start">
+                            <td class="text-start">{{ $payment?->accountingVoucher?->payrollRef?->voucher_no }}</td>
+
+                            <td class="text-start">{{ $payment?->account?->name }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->remarks }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->payrollRef?->user?->prefix . ' ' . $payment?->accountingVoucher?->payrollRef?->user?->name . ' ' . $payment?->accountingVoucher?->payrollRef?->user?->last_name . ' (' . $payment?->accountingVoucher?->payrollRef?->user?->emp_id . ')' }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->voucherCreditDescription?->account?->name }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->voucherCreditDescription?->paymentMethod?->name }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->voucherCreditDescription?->transaction_no }}</td>
+
+                            <td class="text-start">{{ $payment?->accountingVoucher?->voucherCreditDescription?->cheque_no }}</td>
+
+                            <td class="text-end fw-bold">
+                                {{ App\Utils\Converter::format_in_bdt($payment?->accountingVoucher?->total_amount) }}
                                 @php
-                                    $payStatus = '';
-                                    if ($payroll->due <= 0) {
-
-                                        $payStatus = __("Paid");
-                                    } elseif ($payroll->due > 0 && $payroll->due < $payroll->gross_amount) {
-
-                                        $payStatus = __("Partial");
-                                    } elseif ($payroll->gross_amount == $payroll->due) {
-
-                                        $payStatus = __("Due");
-                                    }
-                                @endphp
-                                {{ $payStatus }}
-                            </td>
-
-                            <td class="text-start">{{ $payroll->duration_unit }}</td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}
-                                @php
-                                    $totalPayroll += $payroll->gross_amount;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->paid) }}
-                                @php
-                                    $totalPaid += $payroll->paid;
-                                @endphp
-                            </td>
-
-                            <td class="text-end fw-bold">
-                                {{ App\Utils\Converter::format_in_bdt($payroll->due) }}
-                                @php
-                                    $totalDue += $payroll->due;
+                                    $totalPaid += $payment?->accountingVoucher?->total_amount;
                                 @endphp
                             </td>
                         </tr>
@@ -316,25 +223,10 @@
         <div class="col-6 offset-6">
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>
-
-                    <tr>
-                        <th class="text-end">{{ __('Total Payroll') }} : </th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}
-                        </td>
-                    </tr>
-
                     <tr>
                         <th class="text-end">{{ __('Total Paid') }} : </th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th class="text-end">{{ __('Total Due') }} : </th>
-                        <td class="text-end">
-                            {{ App\Utils\Converter::format_in_bdt($totalDue) }}
                         </td>
                     </tr>
                 </thead>

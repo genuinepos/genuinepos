@@ -167,7 +167,6 @@ class PayrollReportController extends Controller
             $month = $dateTime->format('F');
         }
 
-
         $payrolls = '';
         $query = DB::table('hrm_payrolls')
             ->leftJoin('branches', 'hrm_payrolls.branch_id', 'branches.id')

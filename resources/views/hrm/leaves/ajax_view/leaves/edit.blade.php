@@ -1,3 +1,6 @@
+@php
+    $dateFormat = $generalSettings['business__date_format'];
+@endphp
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -35,20 +38,14 @@
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-6">
-
-                    </div>
-                </div>
-
-                <div class="form-group row mt-1">
-                    <div class="form-group col-6">
                         <label class="fw-bold">{{ __("Start Date") }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="start_date" class="form-control" id="leave_start_date" data-next="leave_end_date" value="{{ $leave->start_date }}" placeholder="{{ __("Start Date") }}" autocomplete="off">
+                        <input required type="text" name="start_date" class="form-control" id="leave_start_date" data-next="leave_end_date" value="{{ date($dateFormat, strtotime($leave->start_date)) }}" placeholder="{{ __("Start Date") }}" autocomplete="off">
                         <span class="error error_leave_start_date"></span>
                     </div>
 
                     <div class="form-group col-6">
                       <label class="fw-bold">{{ __("End Date") }} <span class="text-danger">*</span></label>
-                      <input required type="text" name="end_date" class="form-control" id="leave_end_date" data-next="leave_reason" value="{{ $leave->end_date }}" placeholder="{{ __("End Date") }}" autocomplete="off">
+                      <input required type="text" name="end_date" class="form-control" id="leave_end_date" data-next="leave_reason" value="{{ date($dateFormat, strtotime($leave->end_date)) }}" placeholder="{{ __("End Date") }}" autocomplete="off">
                       <span class="error error_leave_end_date"></span>
                     </div>
                 </div>
@@ -179,4 +176,36 @@
             }
         });
     });
+</script>
+
+<script>
+    function litepicker(idName) {
+
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var _expectedDateFormat = '';
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById(idName),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat
+        });
+    }
+
+    litepicker('leave_start_date');
+    litepicker('leave_end_date');
 </script>

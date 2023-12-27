@@ -1,7 +1,7 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title">{{ __("Add Leave") }}</h6>
+            <h6 class="modal-title">{{ __('Add Leave') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -13,14 +13,14 @@
                         <select required class="form-control" name="user_id" id="leave_user_id" data-next="leave_type_id">
                             <option value="">{{ __('Select Employee') }}</option>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->prefix . ' ' . $user->name . ' ' . $user->last_name . '(' . $user->emp_id.')' }}</option>
+                                <option value="{{ $user->id }}">{{ $user->prefix . ' ' . $user->name . ' ' . $user->last_name . '(' . $user->emp_id . ')' }}</option>
                             @endforeach
                         </select>
                         <span class="error error_leave_user_id"></span>
                     </div>
 
                     <div class="form-group col-6">
-                        <label class="fw-bold">{{ __("Leave Type") }} <span class="text-danger">*</span></label>
+                        <label class="fw-bold">{{ __('Leave Type') }} <span class="text-danger">*</span></label>
                         <select required class="form-control" name="leave_type_id" id="leave_type_id" data-next="leave_start_date">
                             <option value="">{{ __('Select Leave Type') }}</option>
                             @foreach ($leaveTypes as $lt)
@@ -33,20 +33,20 @@
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-6">
-                        <label class="fw-bold">{{ __("Start Date") }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="start_date" class="form-control" id="leave_start_date" data-next="leave_end_date" placeholder="{{ __("Start Date") }}" autocomplete="off">
+                        <label class="fw-bold">{{ __('Start Date') }} <span class="text-danger">*</span></label>
+                        <input required type="text" name="start_date" class="form-control" id="leave_start_date" data-next="leave_end_date" placeholder="{{ __('Start Date') }}" autocomplete="off">
                     </div>
 
                     <div class="form-group col-6">
-                        <label class="fw-bold">{{ __("End Date") }} <span class="text-danger">*</span></label>
-                        <input required type="text" name="end_date" class="form-control" id="leave_end_date" data-next="leave_reason" placeholder="{{ __("End Date") }}" autocomplete="off">
+                        <label class="fw-bold">{{ __('End Date') }} <span class="text-danger">*</span></label>
+                        <input required type="text" name="end_date" class="form-control" id="leave_end_date" data-next="leave_reason" placeholder="{{ __('End Date') }}" autocomplete="off">
                     </div>
                 </div>
 
                 <div class="form-group row mt-1">
                     <div class="form-group col-12">
-                        <label>{{ __("Reason") }}</label>
-                        <input type="text" name="reason" class="form-control" id="leave_reason" data-next="leave_save_btn" placeholder="{{ __("Reason") }}">
+                        <label>{{ __('Reason') }}</label>
+                        <input type="text" name="reason" class="form-control" id="leave_reason" data-next="leave_save_btn" placeholder="{{ __('Reason') }}">
                     </div>
                 </div>
 
@@ -54,10 +54,10 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button leave_loading_btn d-hide">
-                                <i class="fas fa-spinner"></i><span>{{ __("Loading") }}...</span>
+                                <i class="fas fa-spinner"></i><span>{{ __('Loading') }}...</span>
                             </button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="leave_save_btn" class="btn btn-sm btn-success leave_submit_button">{{ __("Save") }}</button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="leave_save_btn" class="btn btn-sm btn-success leave_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,8 @@
                 toastr.success(data);
                 $('#leaveAddOrEditModal').modal('hide');
                 leavesTable.ajax.reload();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -183,4 +184,36 @@
             isAllowSubmit = true;
         }
     });
+</script>
+
+<script>
+    function litepicker(idName) {
+
+        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var _expectedDateFormat = '';
+        _expectedDateFormat = dateFormat.replace('d', 'DD');
+        _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
+        _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById(idName),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: _expectedDateFormat
+        });
+    }
+
+    litepicker('leave_start_date');
+    litepicker('leave_end_date');
 </script>

@@ -12,10 +12,10 @@ use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;
 use App\Http\Controllers\HRM\DesignationController;
 use App\Http\Controllers\HRM\PayrollPaymentController;
-use App\Http\Controllers\Report\AttendanceReportController;
 use App\Http\Controllers\HRM\AllowanceAndDeductionController;
 use App\Http\Controllers\HRM\Reports\PayrollReportController;
-use App\Http\Controllers\Report\PayrollPaymentReportController;
+use App\Http\Controllers\HRM\Reports\AttendanceReportController;
+use App\Http\Controllers\HRM\Reports\PayrollPaymentReportController;
 
 Route::group(['prefix' => 'hrm'], function () {
 
@@ -143,16 +143,11 @@ Route::group(['prefix' => 'hrm'], function () {
             Route::get('print', 'print')->name('reports.payroll.payments.print');
         });
 
-        Route::group(['prefix' => 'attendances'], function () {
+        Route::controller(AttendanceReportController::class)->prefix('attendances')->group(function () {
 
-            Route::get('/', [AttendanceReportController::class, 'attendanceReport'])->name('reports.attendance');
-            Route::get('print', [AttendanceReportController::class, 'attendanceReportPrint'])->name('reports.attendance.print');
+            Route::get('/', 'index')->name('reports.attendances.index');
+            Route::get('list/of/index', 'listOfIndex')->name('reports.attendances.list.of.index');
+            Route::get('print', 'print')->name('reports.attendances.print');
         });
     });
-});
-
-// HRM Dashboard, Need Help,  and Profile View Page Routes
-Route::group(['prefix' => 'pages'], function () {
-
-    Route::get('dashboard', fn () => view('dashboard.hrm_dashboard'));
 });

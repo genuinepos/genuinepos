@@ -52,7 +52,7 @@ class LeaveService
 
                         $html .= '<a href="' . route('hrm.leaves.edit', [$row->id]) . '" class="action-btn c-edit" id="editLeave" title="Edit"><span class="fas fa-edit"></span></a>';
                     }
-            
+
                     if (auth()->user()->can('leaves_delete')) {
 
                         $html .= '<a href="' . route('hrm.leaves.delete', [$row->id]) . '" class="action-btn c-delete" id="deleteLeave" title="Delete"><span class="fas fa-trash "></span></a>';
@@ -105,8 +105,8 @@ class LeaveService
         $addLeave->leave_no = $leaveNo;
         $addLeave->user_id = $request->user_id;
         $addLeave->leave_type_id = $request->leave_type_id;
-        $addLeave->start_date = $request->start_date;
-        $addLeave->end_date = $request->end_date;
+        $addLeave->start_date = date('Y-m-d', strtotime($request->start_date));
+        $addLeave->end_date = date('Y-m-d', strtotime($request->end_date));;
         $addLeave->reason = $request->reason;
         $addLeave->status = 0;
         $addLeave->created_by_id = auth()->user()->id;
@@ -118,8 +118,9 @@ class LeaveService
         $updateLeave = $this->singleLeave(id: $id);
         $updateLeave->user_id = $request->user_id;
         $updateLeave->leave_type_id = $request->leave_type_id;
-        $updateLeave->start_date = $request->start_date;
-        $updateLeave->end_date = $request->end_date;
+        $updateLeave->start_date = date('Y-m-d', strtotime($request->start_date));
+        $updateLeave
+        ->end_date = date('Y-m-d', strtotime($request->end_date));;
         $updateLeave->reason = $request->reason;
         $updateLeave->save();
     }

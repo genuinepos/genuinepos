@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('hrm_holidays', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->text('note')->nullable();
             $table->timestamps();
         });

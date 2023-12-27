@@ -1,11 +1,11 @@
 <style>
     @media print
     {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
+        table { page-break-after:auto; }
+        tr    { page-break-inside:avoid; page-break-after:auto; }
         td    { page-break-inside:avoid; page-break-after:auto, font-size:9px!important; }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+        thead { display:table-header-group; }
+        tfoot { display:table-footer-group; }
     }
 
     @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px;margin-right: 5px;}

@@ -46,7 +46,7 @@ class AttendanceService
 
         if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('hrm_attendances.branch_id', auth()->user()->branch_id);
+            $query->where('hrm_attendances.branch_id', auth()->user()->branch_id)->whereNotIn('role_type', [RoleType::SuperAdmin->value, RoleType::Admin->value]);
         }
 
         $attendances = $query->select(
@@ -70,7 +70,7 @@ class AttendanceService
 
                         $html .= '<a href="' . route('hrm.attendances.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit" title="Edit"><i class="la la-edit"></i> ' . __("Edit") . '</a>';
                     }
-       
+
                     if (auth()->user()->can('attendances_delete')) {
 
                         $html .= '<a href="' . route('hrm.attendances.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete"><i class="la la-trash"></i> ' . __("Delete") . '</a>';
@@ -139,6 +139,7 @@ class AttendanceService
                 $addOrUpdateAttendance = new Attendance();
             }
 
+            $addOrUpdateAttendance->branch_id = auth()->user()->branch_id;
             $addOrUpdateAttendance->user_id = $user_id;
             $addOrUpdateAttendance->clock_in_date = date($dateFormat);
             $addOrUpdateAttendance->at_date_ts = date('Y-m-d H:i:s');

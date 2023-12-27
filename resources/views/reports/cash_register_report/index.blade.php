@@ -12,7 +12,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-cash-register"></span>
                                 <h5>@lang('menu.cash_register_reports')</h5>
                             </div>
 

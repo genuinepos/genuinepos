@@ -9,7 +9,6 @@
             <div class="sec-name">
 
                 <div class="name-head">
-                    <span class="fas fa-money-bill"></span>
                     <h5>@lang('menu.expense_report')</h5>
                 </div>
 

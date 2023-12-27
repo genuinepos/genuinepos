@@ -36,7 +36,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-money-bill-wave"></span>
                     <h5>{{ __('Profit/Loss') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">

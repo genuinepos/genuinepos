@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Accounts\DayBookService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ProductStockService;
+use App\Services\Purchases\PurchaseProductService;
 use App\Services\Setups\BranchService;
 use App\Services\TransferStocks\ReceiveStockFromBranchService;
 use App\Services\TransferStocks\TransferStockProductService;
@@ -25,6 +26,7 @@ class ReceiveStockFromBranchController extends Controller
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private ProductLedgerService $productLedgerService,
+        private PurchaseProductService $purchaseProductService,
     ) {
     }
 
@@ -65,7 +67,7 @@ class ReceiveStockFromBranchController extends Controller
         try {
             DB::beginTransaction();
 
-            $transferStock = $transferStock = $this->transferStockService->singleTransferStock(
+           $transferStock = $this->transferStockService->singleTransferStock(
                 id: $transferStockId,
                 with: ['transferStockProducts']
             );
@@ -80,6 +82,11 @@ class ReceiveStockFromBranchController extends Controller
             foreach ($request->transfer_stock_product_ids as $index => $transfer_stock_product_id) {
 
                 $updateTransferStockProductQty = $this->transferStockProductService->updateTransferStockProductQty(request: $request, transferStockProductId: $transfer_stock_product_id, index: $index);
+
+                if ($transferStock->sender_branch_id != $transferStock->receiver_branch_id) {
+
+                    $this->purchaseProductService->addOrUpdatePurchaseProductForSalePurchaseChainMaintaining(transColName: 'transfer_stock_product_id', transId: $updateTransferStockProductQty->id, branchId: $transferStock->receiver_branch_id, productId: $updateTransferStockProductQty->product_id, variantId: $updateTransferStockProductQty->variant_id, quantity: $updateTransferStockProductQty->received_qty, unitCostIncTax: $updateTransferStockProductQty->unit_cost_inc_tax, sellingPrice: 0, subTotal: $updateTransferStockProductQty->subtotal, createdAt: date('Y-m-d H:i:s'));
+                }
 
                 $this->productLedgerService->updateProductLedgerEntry(voucherTypeId: ProductLedgerVoucherType::ReceiveStock->value, date: $transferStock->receive_date, productId: $updateTransferStockProductQty->product_id, transId: $updateTransferStockProductQty->id, rate: $updateTransferStockProductQty->unit_cost_inc_tax, quantityType: 'in', quantity: $updateTransferStockProductQty->received_qty, subtotal: $updateTransferStockProductQty->received_subtotal, variantId: $updateTransferStockProductQty->variant_id, branchId: $transferStock->receiver_branch_id);
 

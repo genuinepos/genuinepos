@@ -18,7 +18,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-file-alt"></span>
                                 <h5>@lang('menu.purchases') & @lang('menu.sales_report')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -35,7 +34,7 @@
                                                 <div class="col-md-10">
                                                     <form id="sale_purchase_filter" action="{{ route('reports.profit.sales.filter.purchases.amounts') }}" method="get">
                                                         <div class="form-group row">
-                                                
+
                                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                                     <div class="col-md-3">
                                                                         <label><strong>@lang('menu.business_location') : </strong></label>

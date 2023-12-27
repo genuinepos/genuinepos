@@ -10,7 +10,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-balance-scale"></span>
                                 <h5>@lang('menu.balance_sheet')</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -54,7 +53,7 @@
                                         </div>
                                     </div>
                                 @endif
-                       
+
 
                             <div class="row">
                                 <div class="col-md-12">

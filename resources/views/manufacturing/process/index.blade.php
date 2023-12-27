@@ -8,7 +8,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-dumpster-fire"></span>
                     <h6>{{ __("Process/Bill Of Materials") }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">

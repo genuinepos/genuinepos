@@ -1,75 +1,31 @@
 <style>
     @media print {
-        table {
-            page-break-after: auto
-        }
+        table { page-break-after: auto; }
 
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
+        tr {  page-break-inside: avoid; page-break-after: auto; }
 
-        td {
-            page-break-inside: avoid;
-            page-break-after: auto, font-size:9px !important;
-        }
+        td { page-break-inside: avoid; page-break-after: auto, font-size:9px !important; }
 
-        thead {
-            display: table-header-group
-        }
+        thead { display: table-header-group; }
 
-        tfoot {
-            display: table-footer-group
-        }
+        tfoot { display: table-footer-group; }
     }
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
 
-    div#footer {
-        position: fixed;
-        bottom: 20px;
-        left: 0px;
-        width: 100%;
-        height: 0%;
-        color: #CCC;
-        background: #333;
-        padding: 0;
-        margin: 0;
-    }
+    div#footer { position: fixed; bottom: 20px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
 
-    .print_table th {
-        font-size: 11px !important;
-        font-weight: 550 !important;
-        line-height: 12px !important
-    }
+    .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
 
-    .print_table tr td {
-        color: black;
-        font-size: 10px !important;
-        line-height: 12px !important
-    }
+    .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
 
-    .print_area {
-        font-family: Arial, Helvetica, sans-serif;
-    }
+    .print_area { font-family: Arial, Helvetica, sans-serif; }
 
-    .print_area h6 {
-        font-size: 14px !important;
-    }
+    .print_area h6 { font-size: 14px !important; }
 
-    .print_area p {
-        font-size: 11px !important;
-    }
+    .print_area p { font-size: 11px !important; }
 
-    .print_area small {
-        font-size: 8px !important;
-    }
+    .print_area small { font-size: 8px !important; }
 </style>
 
 @php
@@ -215,7 +171,7 @@
                         </td>
                     </tr>
 
-                    @if ($profitLossAmounts['grossProfit'] > 0)
+                    @if ($profitLossAmounts['grossProfit'] >= 0)
                         <tr>
                             <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
 
@@ -262,13 +218,13 @@
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Expense By Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
                         <td class="text-end">
-                            (0.00)
+                            ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalPayrollPayment']) }})
                         </td>
                     </tr>
 
-                    @if ($profitLossAmounts['netProfit'] > 0)
+                    @if ($profitLossAmounts['netProfit'] >= 0)
                         <tr>
                             <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
                             <td class="text-end fw-bold">

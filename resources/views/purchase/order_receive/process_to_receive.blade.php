@@ -12,7 +12,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-tasks"></span>
                     <h5>{{ __('Receive Purchase Order') }}</h5>
                 </div>
 

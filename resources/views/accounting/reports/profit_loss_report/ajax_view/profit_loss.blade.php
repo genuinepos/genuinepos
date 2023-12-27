@@ -40,7 +40,7 @@
                                 </td>
                             </tr>
 
-                            @if ($profitLossAmounts['grossProfit'] > 0)
+                            @if ($profitLossAmounts['grossProfit'] >= 0)
                                 <tr>
                                     <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
 
@@ -87,13 +87,13 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                <td class="text-end"><strong>{{ __('Total Expense By Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
                                 <td class="text-end text-danger">
-                                    (0.00)
+                                    ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalPayrollPayment']) }})
                                 </td>
                             </tr>
 
-                            @if ($profitLossAmounts['netProfit'] > 0)
+                            @if ($profitLossAmounts['netProfit'] >= 0)
                                 <tr>
                                     <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
                                     <td class="text-end text-success fw-bold">

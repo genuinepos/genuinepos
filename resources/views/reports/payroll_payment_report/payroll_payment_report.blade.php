@@ -13,7 +13,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-money-check"></span>
                     <h5>@lang('menu.payroll_payment_report')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -29,7 +28,7 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row">
-                           
+
                                         @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                             <div class="col-md-2">
                                                 <label><strong>@lang('menu.business_location') : </strong></label>

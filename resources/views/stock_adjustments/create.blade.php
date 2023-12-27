@@ -23,7 +23,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-plus-square"></span>
                     <h5>{{ __("Add Stock Adjustment") }}</h5>
                 </div>
 

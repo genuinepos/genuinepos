@@ -19,10 +19,8 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <!-- =====================================================================BODY CONTENT================== -->
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-tasks"></span>
                     <h5>@lang('menu.manage_task')</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i

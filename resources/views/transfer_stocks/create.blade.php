@@ -77,7 +77,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-exchange-alt"></span>
                     {{-- <h6>{{ __("Add Tranfer Stock (Shop/Business To Shop/Business)") }}</h6> --}}
                     <h6>{{ __('Add Tranfer Stock') }}</h6>
                 </div>

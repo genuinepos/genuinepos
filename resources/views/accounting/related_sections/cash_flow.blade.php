@@ -9,7 +9,6 @@
 
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="far fa-money-bill-alt"></span>
                     <h5>@lang('menu.total_cash_statement')</h5>
                 </div>
 
@@ -39,7 +38,7 @@
                                                 </select>
                                             </div>
                                         @endif
-                                 
+
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') </strong></label>

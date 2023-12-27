@@ -28,7 +28,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-user-edit"></span>
                     <h6>{{ __('Edit User') }}</h6>
                 </div>
 

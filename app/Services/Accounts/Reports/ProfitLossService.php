@@ -18,6 +18,7 @@ class ProfitLossService
         $saleReturns = '';
         $expanses = '';
         $saleProducts = '';
+        $payrollPayments = '';
 
         $saleProductQuery = DB::table('purchase_sale_product_chains')
             ->leftJoin('purchase_products', 'purchase_sale_product_chains.purchase_product_id', 'purchase_products.id')
@@ -43,6 +44,10 @@ class ProfitLossService
             ->leftJoin('branches', 'accounting_vouchers.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
 
+        $payrollPaymentQuery = DB::table('accounting_vouchers')->where('accounting_vouchers.voucher_type', AccountingVoucherType::PayrollPayment->value)
+            ->leftJoin('branches', 'accounting_vouchers.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id');
+
         if ($fromDate) {
 
             $fromDateYmd = date('Y-m-d', strtotime($fromDate));
@@ -53,6 +58,7 @@ class ProfitLossService
             $saleQuery->whereBetween('sales.sale_date_ts', $dateRange);
             $saleReturnQuery->whereBetween('sale_returns.date_ts', $dateRange);
             $expenseQuery->whereBetween('accounting_vouchers.date_ts', $dateRange);
+            $payrollPaymentQuery->whereBetween('accounting_vouchers.date_ts', $dateRange);
             $saleProductQuery->whereBetween('sales.sale_date_ts', $dateRange);
         }
 
@@ -88,6 +94,11 @@ class ProfitLossService
                     ->orWhere('parentBranch.id', $__branchId);
             });
 
+            $payrollPaymentQuery->where(function ($subQuery) use ($__branchId) {
+                $subQuery->where('accounting_vouchers.branch_id', $__branchId)
+                    ->orWhere('parentBranch.id', $__branchId);
+            });
+
             // $saleProductQuery->where('sales.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
 
             $saleProductQuery->where(function ($subQuery) use ($__branchId) {
@@ -102,6 +113,7 @@ class ProfitLossService
             $saleQuery->where('sales.branch_id', $childBranchId);
             $saleReturnQuery->where('sale_returns.branch_id', $childBranchId);
             $expenseQuery->where('accounting_vouchers.branch_id', $childBranchId);
+            $payrollPaymentQuery->where('accounting_vouchers.branch_id', $childBranchId);
             $saleProductQuery->where('sales.branch_id', $childBranchId);
         }
 
@@ -111,6 +123,7 @@ class ProfitLossService
             $saleQuery->where('sales.branch_id', auth()->user()->branch_id);
             $saleReturnQuery->where('sale_returns.branch_id', auth()->user()->branch_id);
             $expenseQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
+            $payrollPaymentQuery->where('accounting_vouchers.branch_id', auth()->user()->branch_id);
             $saleProductQuery->where('sales.branch_id', auth()->user()->branch_id);
         }
 
@@ -131,6 +144,7 @@ class ProfitLossService
 
         $saleReturns = $saleReturnQuery->select(DB::raw('sum(sale_returns.total_return_amount) as total_sale_return'))->get();
         $expense = $expenseQuery->select(DB::raw('sum(accounting_vouchers.total_amount) as total_expense'))->get();
+        $payrollPayments = $payrollPaymentQuery->select(DB::raw('sum(accounting_vouchers.total_amount) as total_payroll_payment'))->get();
 
         $totalSale = $sales->sum('total_sale');
         $totalUnitTax = $saleProducts->sum('total_unit_tax_amount');
@@ -143,8 +157,9 @@ class ProfitLossService
         $totalStockAdjustmentRecovered = $stockAdjustments->sum('total_recovered');
         $totalSaleReturn = $saleReturns->sum('total_sale_return');
         $totalExpense = $expense->sum('total_expense');
+        $totalPayrollPayment = $payrollPayments->sum('total_payroll_payment');
 
-        $netProfit = $grossProfit - $totalStockAdjustmentAmount + $totalStockAdjustmentRecovered - $totalSaleReturn - $totalExpense;
+        $netProfit = $grossProfit - $totalStockAdjustmentAmount + $totalStockAdjustmentRecovered - $totalSaleReturn - $totalExpense - $totalPayrollPayment;
 
         return [
             'totalSale' => $totalSale,
@@ -156,6 +171,7 @@ class ProfitLossService
             'totalStockAdjustmentRecovered' => $totalStockAdjustmentRecovered,
             'totalSaleReturn' => $totalSaleReturn,
             'totalExpense' => $totalExpense,
+            'totalPayrollPayment' => $totalPayrollPayment,
             'netProfit' => $netProfit,
         ];
     }

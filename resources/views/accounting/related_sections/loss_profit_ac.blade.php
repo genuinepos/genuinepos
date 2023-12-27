@@ -9,7 +9,6 @@
 
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="far fa-money-bill-alt"></span>
                     <h5>@lang('menu.profit_loss_account')</h5>
                 </div>
 

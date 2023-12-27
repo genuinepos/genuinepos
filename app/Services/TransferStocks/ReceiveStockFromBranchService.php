@@ -57,12 +57,9 @@ class ReceiveStockFromBranchService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-
                 $html .= '<a href="' . route('transfer.stocks.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
-
                 $html .= '<a href="' . route('receive.stock.from.branch.create', [$row->id]) . '" class="dropdown-item">' . __('Process To Receive') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';

@@ -9,7 +9,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-people-arrows"></span>
                     <h5>
                         @if ($type == \App\Enams\ContactType::Customer->value)
 
@@ -60,7 +59,7 @@
                         </div>
                     </div>
                 @endif
-          
+
 
             <div class="card">
                 <div class="section-header">

@@ -12,7 +12,6 @@
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <span class="fas fa-shopping-cart"></span>
                 <h6>{{ __("Cash Register") }}</h6>
             </div>
 

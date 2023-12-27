@@ -15,7 +15,6 @@
 
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="far fa-money-bill-alt"></span>
                     <h5>@lang('menu.financial_report')</h5>
                 </div>
 

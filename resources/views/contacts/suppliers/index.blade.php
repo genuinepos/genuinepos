@@ -8,7 +8,6 @@
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <span class="fas fa-users"></span>
                 <h5>@lang('menu.supplier')</h5>
             </div>
 

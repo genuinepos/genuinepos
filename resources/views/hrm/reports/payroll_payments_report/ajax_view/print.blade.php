@@ -217,9 +217,7 @@
         </div>
     </div>
 
-    {{-- <div style="page-break-after: {{ count($sales) > 30 ? 'always' : '' }};"></div> --}}
     <div class="row">
-        {{-- <div class="col-6"></div> --}}
         <div class="col-6 offset-6">
             <table class="table report-table table-sm table-bordered print_table">
                 <thead>

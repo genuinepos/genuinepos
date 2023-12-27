@@ -34,7 +34,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-exchange-alt"></span>
                     <h6>{{ __('Receive Stock From Shop/Business') }}</h6>
                 </div>
 

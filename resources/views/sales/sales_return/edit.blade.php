@@ -26,7 +26,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-edit"></span>
                     <h6>{{ __('Edit Sale Return') }}</h6>
                 </div>
 

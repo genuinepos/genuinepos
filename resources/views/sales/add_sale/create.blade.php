@@ -57,7 +57,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-cart-plus"></span>
                     <h6>{{ __('Add Sale') }}</h6>
                 </div>
 

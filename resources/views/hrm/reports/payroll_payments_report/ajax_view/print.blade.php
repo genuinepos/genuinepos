@@ -188,7 +188,7 @@
                                 {{ $branch }}
                             </td>
 
-                            <td class="text-start">{{ $payment?->accountingVoucher?->payrollRef?->voucher_no }}</td>
+                            <td class="text-start">{{ $payment?->accountingVoucher?->payrollRef?->voucher_no.'['. $payment?->accountingVoucher?->payrollRef?->month.'/'. $payment?->accountingVoucher?->payrollRef?->year.']' }}</td>
 
                             <td class="text-start">{{ $payment?->account?->name }}</td>
 

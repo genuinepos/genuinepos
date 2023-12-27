@@ -40,7 +40,7 @@ class PayrollPaymentReportController extends Controller
                     'accountingVoucher.voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                     'accountingVoucher.voucherCreditDescription.account:id,name',
                     'accountingVoucher.voucherCreditDescription.paymentMethod:id,name',
-                    'accountingVoucher.payrollRef:id,voucher_no,user_id',
+                    'accountingVoucher.payrollRef:id,voucher_no,user_id,month,year',
                     'accountingVoucher.payrollRef.user:id,prefix,name,last_name,emp_id',
                 ]);
 
@@ -92,7 +92,7 @@ class PayrollPaymentReportController extends Controller
 
                     if ($row?->accountingVoucher?->payrollRef) {
 
-                        return '<a href="' . route('hrm.payrolls.show', [$row?->accountingVoucher?->payrollRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->payrollRef?->voucher_no . '</a>';
+                        return '<a href="' . route('hrm.payrolls.show', [$row?->accountingVoucher?->payrollRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->payrollRef?->voucher_no.'['. $row?->accountingVoucher?->payrollRef?->month.'-'. $row?->accountingVoucher?->payrollRef?->year.']' . '</a>';
                     }
                 })
                 ->editColumn('remarks', fn ($row) => '<span title="' . $row?->accountingVoucher?->remarks . '">' . Str::limit($row?->accountingVoucher?->remarks, 25, '') . '</span>')
@@ -149,7 +149,7 @@ class PayrollPaymentReportController extends Controller
                 'accountingVoucher.voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'accountingVoucher.voucherCreditDescription.account:id,name',
                 'accountingVoucher.voucherCreditDescription.paymentMethod:id,name',
-                'accountingVoucher.payrollRef:id,voucher_no,user_id',
+                'accountingVoucher.payrollRef:id,voucher_no,user_id,month,year',
                 'accountingVoucher.payrollRef.user:id,prefix,name,last_name,emp_id',
             ]);
 

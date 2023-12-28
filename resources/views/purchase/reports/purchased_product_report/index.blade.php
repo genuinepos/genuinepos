@@ -39,7 +39,7 @@
                                 <div class="col-md-12">
                                     <div class="form_element rounded mt-0 mb-1">
                                         <div class="element-body">
-                                            <form id="sale_purchase_profit_filter" action="{{ route('reports.profit.filter.sale.purchase.profit') }}" method="get">
+                                            <form id="filter_form" method="get">
                                                 <div class="form-group row align-items-end">
                                                     <div class="col-md-2 search_area">
                                                         <label><strong>{{ __('Search Product') }} </strong></label>
@@ -294,7 +294,9 @@
     });
 
     $('body').keyup(function(e) {
+
         if (e.keyCode == 13 || e.keyCode == 9){
+
             $(".selectProduct").click();
             $('.search_result').hide();
             $('#list').empty();
@@ -302,6 +304,7 @@
     });
 
     $(document).on('mouseenter', '#list>li>a',function () {
+        
         $('#list>li>a').removeClass('selectProduct');
         $(this).addClass('selectProduct');
     });
@@ -366,7 +369,7 @@
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                 }else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

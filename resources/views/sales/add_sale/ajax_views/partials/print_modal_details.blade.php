@@ -14,72 +14,22 @@
 @if ($invoiceLayout->layout_design == 1)
     <style>
         @media print {
-            table {
-                page-break-after: auto
-            }
+            table { page-break-after: auto; }
 
-            tr {
-                page-break-inside: avoid;
-                page-break-after: auto
-            }
+            tr { page-break-inside: avoid; page-break-after: auto; }
 
-            td {
-                page-break-inside: avoid;
-                page-break-after: auto
-            }
+            td { page-break-inside: avoid; page-break-after: auto; }
 
-            thead {
-                display: table-header-group
-            }
+            thead { display: table-header-group; }
 
-            tfoot {
-                display: table-footer-group
-            }
+            tfoot { display: table-footer-group; }
         }
 
-        @page {
-            size: a4;
-            margin-top: 0.8cm;
-            margin-bottom: 35px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-
-        div#footer {
-            position: fixed;
-            bottom: 0px;
-            left: 0px;
-            width: 100%;
-            height: 0%;
-            color: #CCC;
-            background: #333;
-            padding: 0;
-            margin: 0;
-        }
+        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px; margin-right: 10px; }
+        div#footer { position: fixed; bottom: 20px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
 
     <div class="print_modal_details d-hide">
-        <style>
-            @page {
-                size: a4;
-                margin-top: 0.8cm;
-                /* margin-bottom: 35px;  */
-                margin-left: 10px;
-                margin-right: 10px;
-            }
-
-            div#footer {
-                position: fixed;
-                bottom: 0px;
-                left: 0px;
-                width: 100%;
-                height: 0%;
-                color: #CCC;
-                background: #333;
-                padding: 0;
-                margin: 0;
-            }
-        </style>
         <div class="details_area">
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row">

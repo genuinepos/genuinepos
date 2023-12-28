@@ -1,21 +1,21 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Products\UnitController;
 use App\Http\Controllers\Products\BrandController;
-use App\Http\Controllers\Products\BulkVariantController;
-use App\Http\Controllers\Products\CategoryController;
-use App\Http\Controllers\Products\ExpiredProductController;
-use App\Http\Controllers\Products\OpeningStockController;
-use App\Http\Controllers\Products\PriceGroupController;
-use App\Http\Controllers\Products\PriceGroupManageController;
 use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Products\CategoryController;
+use App\Http\Controllers\Products\WarrantyController;
+use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\SubCategoryController;
+use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ExpiredProductController;
 use App\Http\Controllers\Products\ProductSettingsController;
 use App\Http\Controllers\Products\QuickProductAddController;
+use App\Http\Controllers\Products\PriceGroupManageController;
 use App\Http\Controllers\Products\Reports\StockReportController;
-use App\Http\Controllers\Products\SubCategoryController;
-use App\Http\Controllers\Products\UnitController;
-use App\Http\Controllers\Products\WarrantyController;
-use App\Http\Controllers\Report\StockInOutReportController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Products\Reports\StockInOutReportController;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 
@@ -131,9 +131,10 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
             Route::get('warehouse/stock/print', 'warehouseStockPrint')->name('reports.product.stock.warehouse.stock.print');
         });
 
-        Route::group(['prefix' => 'stock/in/out'], function () {
-            Route::get('/', [StockInOutReportController::class, 'index'])->name('reports.stock.in.out.index');
-            Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
+        Route::controller(StockInOutReportController::class)->prefix('stock-in-out')->group(function () {
+
+            Route::get('/', 'index')->name('reports.stock.in.out.index');
+            Route::get('print', 'print')->name('reports.stock.in.out.print');
         });
     });
 });

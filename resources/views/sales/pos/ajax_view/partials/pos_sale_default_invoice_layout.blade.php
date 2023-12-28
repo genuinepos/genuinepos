@@ -424,7 +424,7 @@
                                     @endif
                                 </th>
                             </tr>
-
+                            
                             @if ($sale->branch)
                                 <tr>
                                     <th class="text-center">

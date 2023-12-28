@@ -366,6 +366,7 @@ class GeneralProductSearchService
             ->select(
                 'products.id',
                 'products.name',
+                'products.product_code',
                 'products.is_combo',
                 'products.is_manage_stock',
                 'products.is_show_emi_on_pos',

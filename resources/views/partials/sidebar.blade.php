@@ -1212,7 +1212,7 @@
                                         </div>
                                     @endif
 
-
+                                    @if (auth()->user()->can('sold_product_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sold.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1223,7 +1223,7 @@
                                                 <p class="switch_text">{{ __('Sold Products Report') }}</p>
                                             </a>
                                         </div>
-                            
+                                    @endif
 
                                     @if (auth()->user()->can('sales_report'))
                                         <div class="sub-menu-col">

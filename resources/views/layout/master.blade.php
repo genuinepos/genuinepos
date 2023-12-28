@@ -48,7 +48,7 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
         </footer>
     </div>
 
-    <div class="modal fade" id="todaySummeryModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
+    <div class="modal fade" id="todaySummeryModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     @include('layout._script')
     @stack('scripts')

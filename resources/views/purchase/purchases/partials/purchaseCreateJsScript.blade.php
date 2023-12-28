@@ -23,19 +23,6 @@
             $('#pay_term').val('');
             $('#pay_term_number').val('');
         }
-
-        // var url = "{{ route('contacts.supplier.amounts.branch.wise', [':supplier_id']) }}";
-        // var route = url.replace(':supplier_id', supplier_account_id);
-
-        // $.ajax({
-        //     url: route,
-        //     dataType: 'json',
-        //     success:function(supplier){
-
-        //         $('#closing_balance').val(supplier.total_purchase_due);
-        //         calculateTotalAmount();
-        //     }
-        // });
     });
 
     function calculateTotalAmount(){

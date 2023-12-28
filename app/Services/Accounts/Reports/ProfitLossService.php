@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProfitLossService
 {
-    public function profitLossAmounts(mixed $branchId = null, mixed $childBranchId = null, ?string $fromDate = null, ?string $toDate = null): array
+    public function profitLossAmounts(mixed $branchId = null, mixed $childBranchId = null, ?string $fromDate = null, ?string $toDate = null, bool $getParentBranchData = true): array
     {
         $stockAdjustments = '';
         $sales = '';
@@ -66,45 +66,71 @@ class ProfitLossService
 
             $__branchId = $branchId == 'NULL' ? null : $branchId;
 
-            // $adjustmentQuery->where('stock_adjustments.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
+            if ($getParentBranchData == true) {
 
-            $adjustmentQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('stock_adjustments.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+                $adjustmentQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('stock_adjustments.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
 
-            // $saleQuery->where('sales.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
+                $adjustmentQuery->where('stock_adjustments.branch_id', $__branchId);
+            }
 
-            $saleQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('sales.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+            if ($getParentBranchData == true) {
 
-            // $saleReturnQuery->where('sale_returns.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
+                $saleQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('sales.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
 
-            $saleReturnQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('sale_returns.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+                $saleQuery->where('sales.branch_id', $__branchId);
+            }
 
-            // $expenseQuery->where('accounting_vouchers.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
+            if ($getParentBranchData == true) {
 
-            $expenseQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('accounting_vouchers.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+                $saleReturnQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('sale_returns.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
 
-            $payrollPaymentQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('accounting_vouchers.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+                $saleReturnQuery->where('sale_returns.branch_id', $__branchId);
+            }
 
-            // $saleProductQuery->where('sales.branch_id', $__branchId)->orWhere('parentBranch.id', $__branchId);
+            if ($getParentBranchData == true) {
 
-            $saleProductQuery->where(function ($subQuery) use ($__branchId) {
-                $subQuery->where('sales.branch_id', $__branchId)
-                    ->orWhere('parentBranch.id', $__branchId);
-            });
+                $expenseQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('accounting_vouchers.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
+
+                $expenseQuery->where('accounting_vouchers.branch_id', $__branchId);
+            }
+
+            if ($getParentBranchData == true) {
+
+                $payrollPaymentQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('accounting_vouchers.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
+
+                $payrollPaymentQuery->where('accounting_vouchers.branch_id', $__branchId);
+            }
+
+            if ($getParentBranchData == true) {
+
+                $saleProductQuery->where(function ($subQuery) use ($__branchId) {
+                    $subQuery->where('sales.branch_id', $__branchId)
+                        ->orWhere('parentBranch.id', $__branchId);
+                });
+            } else {
+
+                $saleProductQuery->where('sales.branch_id', $__branchId);
+            }
         }
 
         if ($childBranchId) {

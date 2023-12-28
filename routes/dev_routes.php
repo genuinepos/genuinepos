@@ -169,8 +169,6 @@ Route::get('my-test', function () {
     //     ->get();
     //TEST END
 
-
-
     //DATE RANGE WISE DATES
 
 
@@ -190,15 +188,7 @@ Route::get('my-test', function () {
 
     // return $dates;
 
-    $holidays =  \App\Models\HRM\HolidayBranch::query()->with(['holiday'])
-        ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')
-        ->whereYear('hrm_holidays.start_date', 2023)
-        ->whereMonth('hrm_holidays.start_date', '<=', 12) // Start date month should be less than or equal to current month
-        ->whereYear('hrm_holidays.end_date', 2023)
-        ->whereMonth('hrm_holidays.end_date', '>=', 12)
-        ->get();
 
-    return $holidays->where('branch_id', null);
 });
 
 

@@ -43,7 +43,7 @@
                             @endif --}}
 
                             @if (auth()->user()->can('today_summery'))
-                                <li class="top-icon"><a href="#" class="nav-btn" id="today_summery"><span><i class="far fa-calendar"></i><br>{{ __('Today') }}</span></a></li>
+                                <li class="top-icon"><a href="#" class="nav-btn" id="todaySummeryBtn"><span><i class="far fa-calendar"></i><br>{{ __('Today') }}</span></a></li>
                             @endif
 
                             <li class="top-icon dropdown notification-dropdown">

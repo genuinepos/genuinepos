@@ -2,6 +2,7 @@
 
 use App\Models\Setups\Branch;
 use App\Models\Accounts\Account;
+use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
 use App\Models\Accounts\AccountingVoucherDescription;
@@ -189,6 +190,42 @@ Route::get('my-test', function () {
     // return $dates;
 
 
+    return DB::table('purchase_products')
+        ->leftJoin('products', 'purchase_products.product_id', 'products.id')
+        ->leftJoin('product_variants', 'purchase_products.variant_id', 'product_variants.id')
+        ->join('purchases', 'purchase_products.purchase_id', 'purchases.id')
+        ->leftJoin('accounts as supplier', 'purchases.supplier_account_id', 'supplier.id')
+        ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
+        ->where('purchases.branch_id', auth()->user()->branch_id)
+        ->where('purchase_products.label_left_qty', '>', 0)
+        ->select(
+            'products.id as product_id',
+            'products.tax_ac_id',
+            'products.name as product_name',
+            'products.product_code',
+            'products.product_price',
+            'product_variants.id as variant_id',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_price',
+            'supplier.id as supplier_account_id',
+            'supplier.name as supplier_name',
+            'tax.tax_percent',
+            DB::raw('SUM(purchase_products.label_left_qty) as total_left_qty')
+        )->groupBy([
+            'products.id',
+            'products.tax_ac_id',
+            'products.name',
+            'products.product_code',
+            'products.product_price',
+            'product_variants.id',
+            'product_variants.variant_name',
+            'product_variants.variant_code',
+            'product_variants.variant_price',
+            'supplier.id',
+            'supplier.name',
+            'tax.tax_percent',
+        ])->get();
 });
 
 

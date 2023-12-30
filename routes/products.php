@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Products\UnitController;
 use App\Http\Controllers\Products\BrandController;
+use App\Http\Controllers\Products\BarcodeController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\CategoryController;
 use App\Http\Controllers\Products\WarrantyController;
@@ -136,5 +137,22 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
             Route::get('/', 'index')->name('reports.stock.in.out.index');
             Route::get('print', 'print')->name('reports.stock.in.out.print');
         });
+    });
+
+    Route::controller(BarcodeController::class)->prefix('generate-barcode')->group(function () {
+
+        Route::get('/', 'index')->name('barcode.index');
+        Route::post('preview', 'preview')->name('barcode.preview');
+        Route::get('supplier/products', 'supplierProduct')->name('barcode.supplier.get.products');
+        Route::post('multiple/generate/completed', 'multipleGenerateCompleted')->name('barcode.multiple.generate.completed');
+        // Route::get('search/product/{searchKeyword}', [BarcodeController::class, 'searchProduct']);
+        // Route::get('get/selected/product/{productId}', [BarcodeController::class, 'getSelectedProduct']);
+        // Route::get('get/selected/product/variant/{productId}/{variantId}', [BarcodeController::class, 'getSelectedProductVariant']);
+        // Route::get('generate/product/barcode/{productId}', [BarcodeController::class, 'generateProductBarcode'])->name('products.generate.product.barcode');
+        // Route::get('get/specific/supplier/product/{productId}', [BarcodeController::class, 'getSpecificSupplierProduct'])->name('barcode.get.specific.supplier.product');
+
+        // Generate bar-codes on purchase.
+        // Route::get('purchase/products/{purchaseId}', [BarcodeController::class, 'onPurchaseBarcode'])->name('barcode.on.purchase.barcode');
+        // Route::get('get/purchase/products/{purchaseId}', [BarcodeController::class, 'getPurchaseProduct'])->name('barcode.get.purchase.products');
     });
 });

@@ -161,7 +161,7 @@
 
                         var product = product.product;
 
-                        if(product.product_variants.length == 0) {
+                        if(product.variants.length == 0) {
 
                             $('.select_area').hide();
 
@@ -218,7 +218,7 @@
                             var li = "";
                             var imgUrl = "{{asset('uploads/product/thumbnail')}}";
 
-                            $.each(product.product_variants, function(key, variant){
+                            $.each(product.variants, function(key, variant){
 
                                 li += '<li>';
                                 li += '<a class="select_variant_product" onclick="selectProduct(this); return false;" data-p_id="'+product.id+'" data-v_id="'+variant.id+'" data-p_name="'+product.name+'" data-v_name="'+variant.variant_name+'" data-has_batch_no_expire_date="'+product.has_batch_no_expire_date+'" data-p_tax_ac_id="'+(product.tax_ac_id != null ? product.tax_ac_id : '')+'" data-tax_type="'+product.tax_type+'" data-p_code="'+variant.variant_code+'" data-p_cost_exc_tax="'+variant.variant_cost+'" data-p_profit="'+variant.variant_profit+'" data-p_price="'+variant.variant_price+'" href="#"><img style="width:20px; height:20px;" src="'+imgUrl+'/'+product.thumbnail_photo+'"> '+ product.name +'</a>';

@@ -115,22 +115,6 @@ Route::group(['prefix' => 'product'], function () {
     });
 
     // Barcode route group
-    Route::group(['prefix' => 'barcode'], function () {
-
-        Route::get('/', [BarcodeController::class, 'index'])->name('barcode.index');
-        Route::post('preview', [BarcodeController::class, 'preview'])->name('barcode.preview');
-        Route::get('supplier/products', [BarcodeController::class, 'supplierProduct'])->name('barcode.supplier.get.products');
-        Route::post('multiple/generate/completed', [BarcodeController::class, 'multipleGenerateCompleted'])->name('barcode.multiple.generate.completed');
-        Route::get('search/product/{searchKeyword}', [BarcodeController::class, 'searchProduct']);
-        Route::get('get/selected/product/{productId}', [BarcodeController::class, 'getSelectedProduct']);
-        Route::get('get/selected/product/variant/{productId}/{variantId}', [BarcodeController::class, 'getSelectedProductVariant']);
-        Route::get('generate/product/barcode/{productId}', [BarcodeController::class, 'generateProductBarcode'])->name('products.generate.product.barcode');
-        Route::get('get/specific/supplier/product/{productId}', [BarcodeController::class, 'getSpecificSupplierProduct'])->name('barcode.get.specific.supplier.product');
-
-        // Generate bar-codes on purchase.
-        Route::get('purchase/products/{purchaseId}', [BarcodeController::class, 'onPurchaseBarcode'])->name('barcode.on.purchase.barcode');
-        Route::get('get/purchase/products/{purchaseId}', [BarcodeController::class, 'getPurchaseProduct'])->name('barcode.get.purchase.products');
-    });
 
     // Import product route group
     Route::group(['prefix' => 'imports'], function () {

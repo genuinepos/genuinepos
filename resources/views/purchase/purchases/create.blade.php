@@ -7,45 +7,15 @@
             font-size: 12px !important;
         }
 
-        .select_area {
-            position: relative;
-            background: #ffffff;
-            box-sizing: border-box;
-            position: absolute;
-            width: 100%;
-            z-index: 9999999;
-            padding: 0;
-            left: 0%;
-            display: none;
-            border: 1px solid var(--main-color);
-            margin-top: 1px;
-            border-radius: 0px;
-        }
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px; }
 
-        .select_area ul {
-            list-style: none;
-            margin-bottom: 0;
-            padding: 4px 4px;
-        }
+        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
 
-        .select_area ul li a {
-            color: #000000;
-            text-decoration: none;
-            font-size: 10px;
-            padding: 2px 2px;
-            display: block;
-            border: 1px solid gray;
-        }
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
 
-        .select_area ul li a:hover {
-            background-color: #999396;
-            color: #fff;
-        }
+        .select_area ul li a:hover { background-color: #999396; color: #fff; }
 
-        .selectProduct {
-            background-color: #746e70;
-            color: #fff !important;
-        }
+        .selectProduct { background-color: #746e70; color: #fff !important; }
 
         b {
             font-weight: 500;

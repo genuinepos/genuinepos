@@ -67,7 +67,7 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
                 type: 'get',
                 data: { branch_id },
                 success: function(data) {
-                    console.log(data);
+
                     $('.loader').hide();
                     $('#todaySummeryModal').empty();
                     $('#todaySummeryModal').html(data);

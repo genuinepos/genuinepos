@@ -15,7 +15,7 @@ class ShiftController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -29,7 +29,7 @@ class ShiftController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -38,7 +38,7 @@ class ShiftController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -48,7 +48,7 @@ class ShiftController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -59,7 +59,7 @@ class ShiftController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -71,7 +71,7 @@ class ShiftController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('shift')) {
+        if (!auth()->user()->can('shifts_delete')) {
             abort(403, 'Access Forbidden.');
         }
 

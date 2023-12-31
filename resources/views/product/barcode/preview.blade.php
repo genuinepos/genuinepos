@@ -155,7 +155,7 @@
                                                         $variant = isset($req->is_product_variant) ? '-' . $req->variant_names[$index] : '';
                                                     @endphp
                                                     {{ Str::limit($req->product_names[$index], 12, '') . $variant }}
-                                                    {{ isset($req->is_supplier_prefix) ? ':' . $req->supplier_prefixes[$index] : '' }}
+                                                    {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
                                                 @endif
                                             </th>
                                         </tr>
@@ -205,7 +205,7 @@
                                             $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                         @endphp
                                         {{ Str::limit($req->product_names[$index], 15, '.') . $variant }}
-                                        : {{ isset($req->is_supplier_prefix) ? $req->supplier_prefixes[$index] : '' }}
+                                         {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
                                     </p>
                                 @endif
 

@@ -189,19 +189,8 @@ Route::get('my-test', function () {
 
     // return $dates;
 
-    return $purchaseProducts = App\Models\Purchases\PurchaseProduct::query()
-        ->where('label_left_qty', '>', 0)
-        ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
-        ->where('purchases.supplier_account_id', 181)->where('purchase_products.product_id', 32)->where('purchase_products.variant_id', null)
-        ->where('purchases.branch_id', auth()->user()->branch_id)
-        ->select('purchase_products.id', 'purchase_products.product_id', 'purchase_products.variant_id', 'purchase_products.purchase_id', 'purchase_products.label_left_qty')
-        ->get();
-
-    foreach ($purchaseProducts as $purchaseProduct) {
-        echo $purchaseProduct->label_left_qty;
-        $purchaseProduct->label_left_qty = 100;
-        $purchaseProduct->save();
-    }
+    $str = 'C-000050';
+    return intval($str);
 });
 
 

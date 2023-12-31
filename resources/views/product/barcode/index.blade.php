@@ -11,10 +11,7 @@
 
         .selectProduct { background-color: #746e70; color: #fff !important; }
 
-        .table_product_list {
-            max-height: 70vh;
-            overflow-x: scroll;
-        }
+        .table_product_list { max-height: 70vh; overflow-x: scroll; }
     </style>
 @endpush
 @section('title', 'Generate Barcode - ')
@@ -189,7 +186,7 @@
                                                                     }
                                                                 @endphp
 
-                                                                <tr data-product_id="{{ $purchasedProduct->product_id }}" data-product_name="{{ $purchasedProduct->product_name }}" data-product_code="{{ $purchasedProduct->variant_code ? $purchasedProduct->variant_code : $purchasedProduct->product_code }}" data-variant_id="{{ $purchasedProduct->variant_id ? $purchasedProduct->variant_id : 'noid' }}" data-variant_name="{{ $purchasedProduct->variant_name }}" data-price_exc_tax="{{ $priceExcTax }}" data-tax_ac_id="{{ $purchasedProduct->tax_ac_id }}" data-tax_percent="{{ $purchasedProduct->tax_percent ? $purchasedProduct->tax_percent : 0 }}" data-tax_type="{{ $purchasedProduct->tax_type }}" data-price_inc_tax="{{ $priceIncTax }}" data-supplier_id="{{ $purchasedProduct->supplier_account_id }}" data-supplier_name="{{ $purchasedProduct->supplier_name }}" data-supplier_prefix="{{ 'AE1' }}" data-label_qty="{{ $purchasedProduct->total_left_qty }}">
+                                                                <tr data-product_id="{{ $purchasedProduct->product_id }}" data-product_name="{{ $purchasedProduct->product_name }}" data-product_code="{{ $purchasedProduct->variant_code ? $purchasedProduct->variant_code : $purchasedProduct->product_code }}" data-variant_id="{{ $purchasedProduct->variant_id ? $purchasedProduct->variant_id : 'noid' }}" data-variant_name="{{ $purchasedProduct->variant_name }}" data-price_exc_tax="{{ $priceExcTax }}" data-tax_ac_id="{{ $purchasedProduct->tax_ac_id }}" data-tax_percent="{{ $purchasedProduct->tax_percent ? $purchasedProduct->tax_percent : 0 }}" data-tax_type="{{ $purchasedProduct->tax_type }}" data-price_inc_tax="{{ $priceIncTax }}" data-supplier_id="{{ $purchasedProduct->supplier_account_id }}" data-supplier_name="{{ $purchasedProduct->supplier_name }}" data-supplier_prefix="{{ $purchasedProduct->supplier_prefix }}" data-label_qty="{{ $purchasedProduct->total_left_qty }}">
                                                                     <td class="text-start">
                                                                         <input type="checkbox" class="check">
                                                                     </td>
@@ -199,7 +196,7 @@
                                                                             <span id="span_variant_name">{{ ' - ' . $purchasedProduct->variant_name }}</span>
                                                                         @endif
                                                                     </td>
-                                                                    <td class="text-start">{{ $purchasedProduct->supplier_name . '-AE1' }}</td>
+                                                                    <td class="text-start">{{ $purchasedProduct->supplier_name . '-' . $purchasedProduct->supplier_prefix }}</td>
                                                                     <td class="text-end">{{ $purchasedProduct->total_left_qty }}</td>
                                                                     @php
                                                                         $totalPendingQty += $purchasedProduct->total_left_qty;

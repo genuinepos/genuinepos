@@ -269,14 +269,14 @@
         var productPrice = e.getAttribute('data-price_exc_tax');
 
         var priceExcTax = productPrice;
-        var priceIncTax = (priceExcTax / 100 * taxPercent) + priceExcTax;
+        var priceIncTax = (parseFloat(priceExcTax) / 100 * parseFloat(taxPercent)) + parseFloat(priceExcTax);
 
         if (taxType == 2) {
 
-            var inclusiveTax = 100 + taxPercent;
-            var calcAmount = priceExcTax / inclusiveTax * 100;
-            var taxAmount = priceExcTax - calcAmount;
-            priceIncTax = priceExcTax + taxAmount;
+            var inclusiveTax = 100 + parseFloat(taxPercent);
+            var calcAmount = (parseFloat(priceExcTax) / parseFloat(inclusiveTax)) * 100;
+            var taxAmount = parseFloat(priceExcTax) - parseFloat(calcAmount);
+            priceIncTax = parseFloat(priceExcTax) + (taxAmount);
         }
 
         var name = productName.length > 35 ? productName.substring(0, 35) + '...' : productName;

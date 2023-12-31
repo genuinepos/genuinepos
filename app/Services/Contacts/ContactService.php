@@ -11,6 +11,9 @@ class ContactService
     {
         $contactId = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $contactIdPrefix, digits: 4);
 
+        $prefixTypeSign = $type == ContactType::Supplier->value ? 'S' : 'C';
+        $contactPrefix = $codeGenerator->generateAndTypeWiseWithoutYearMonth(table: 'contacts', column: 'contact_id', typeColName: 'type', typeValue: $type, prefix: $prefixTypeSign, digits: 0, splitter : ':');
+
         $addContact = new Contact();
         $addContact->contact_id = $contactId;
         $addContact->type = $type;
@@ -39,6 +42,7 @@ class ContactService
         $addContact->zip_code = $zipCode;
         $addContact->country = $country;
         $addContact->shipping_address = $shippingAddress;
+        $addContact->prefix = $contactPrefix;
         $addContact->save();
 
         return $addContact;
@@ -110,7 +114,7 @@ class ContactService
     {
         $deleteContact = $this->singleContact(id: $id);
 
-        if (! is_null($deleteContact)) {
+        if (!is_null($deleteContact)) {
 
             $deleteContact->delete();
         }

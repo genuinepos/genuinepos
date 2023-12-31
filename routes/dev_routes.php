@@ -181,7 +181,7 @@ Route::get('my-test', function () {
     // $current = strtotime($first);
     // $last = strtotime($last);
 
-    // while( $current <= $last) {
+    // while($current <= $last) {
 
     //     $dates[] = date($output_format, $current);
     //     $current = strtotime($step, $current);
@@ -189,43 +189,19 @@ Route::get('my-test', function () {
 
     // return $dates;
 
-
-    return DB::table('purchase_products')
-        ->leftJoin('products', 'purchase_products.product_id', 'products.id')
-        ->leftJoin('product_variants', 'purchase_products.variant_id', 'product_variants.id')
-        ->join('purchases', 'purchase_products.purchase_id', 'purchases.id')
-        ->leftJoin('accounts as supplier', 'purchases.supplier_account_id', 'supplier.id')
-        ->leftJoin('accounts as tax', 'products.tax_ac_id', 'tax.id')
+    return $purchaseProducts = App\Models\Purchases\PurchaseProduct::query()
+        ->where('label_left_qty', '>', 0)
+        ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+        ->where('purchases.supplier_account_id', 181)->where('purchase_products.product_id', 32)->where('purchase_products.variant_id', null)
         ->where('purchases.branch_id', auth()->user()->branch_id)
-        ->where('purchase_products.label_left_qty', '>', 0)
-        ->select(
-            'products.id as product_id',
-            'products.tax_ac_id',
-            'products.name as product_name',
-            'products.product_code',
-            'products.product_price',
-            'product_variants.id as variant_id',
-            'product_variants.variant_name',
-            'product_variants.variant_code',
-            'product_variants.variant_price',
-            'supplier.id as supplier_account_id',
-            'supplier.name as supplier_name',
-            'tax.tax_percent',
-            DB::raw('SUM(purchase_products.label_left_qty) as total_left_qty')
-        )->groupBy([
-            'products.id',
-            'products.tax_ac_id',
-            'products.name',
-            'products.product_code',
-            'products.product_price',
-            'product_variants.id',
-            'product_variants.variant_name',
-            'product_variants.variant_code',
-            'product_variants.variant_price',
-            'supplier.id',
-            'supplier.name',
-            'tax.tax_percent',
-        ])->get();
+        ->select('purchase_products.id', 'purchase_products.product_id', 'purchase_products.variant_id', 'purchase_products.purchase_id', 'purchase_products.label_left_qty')
+        ->get();
+
+    foreach ($purchaseProducts as $purchaseProduct) {
+        echo $purchaseProduct->label_left_qty;
+        $purchaseProduct->label_left_qty = 100;
+        $purchaseProduct->save();
+    }
 });
 
 

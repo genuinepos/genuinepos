@@ -1,27 +1,62 @@
 <script>
     var categoriesTable = $('.data_tbl').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'pdf', 'title' : 'List of categories', text: 'Pdf', className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print', 'title' : 'List of categories', className: 'btn btn-primary', autoPrint: true, exportOptions: {columns: ':visible'}}
+        buttons: [{
+                extend: 'pdf',
+                'title': 'List of categories',
+                text: 'Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
+                extend: 'print',
+                'title': 'List of categories',
+                className: 'btn btn-primary',
+                autoPrint: true,
+                exportOptions: {
+                    columns: ':visible'
+                }
+            }
         ],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         processing: true,
         serverSide: true,
         searchable: true,
         ajax: "{{ route('categories.index') }}",
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'photo',name: 'categories.photo'},
-            {data: 'name',name: 'categories.name'},
-            {data: 'description',name: 'categories.description'},
-            {data: 'action'},
+        columns: [{
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex'
+            },
+            {
+                data: 'photo',
+                name: 'categories.photo'
+            },
+            {
+                data: 'name',
+                name: 'categories.name'
+            },
+            {
+                data: 'description',
+                name: 'categories.description'
+            },
+            {
+                data: 'action'
+            },
         ],
     });
 
     // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     // call jquery method
     $(document).ready(function() {
@@ -48,11 +83,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
@@ -84,18 +119,18 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
             });
         });
 
-        $(document).on('click', '#deleteCategory',function(e){
+        $(document).on('click', '#deleteCategory', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#deleted_category_form').attr('action', url);
@@ -103,8 +138,18 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_category_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_category_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
@@ -129,14 +174,15 @@
 
                         toastr.error(data.errorMsg);
                     }
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error('Net Connetion Error.');
-                    }else if(err.status == 500){
+                    } else if (err.status == 500) {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });

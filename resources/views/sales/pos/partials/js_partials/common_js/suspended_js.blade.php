@@ -1,14 +1,14 @@
 <script>
     // Pick hold invoice
-    $(document).on('click', '#suspendedInvoiceBtn', function (e) {
+    $(document).on('click', '#suspendedInvoiceBtn', function(e) {
         e.preventDefault();
 
         var url = $(this).attr('href');
 
         $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
+            url: url,
+            type: 'get',
+            success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -19,11 +19,12 @@
                 $('#suspendedSalesModal').empty();
                 $('#suspendedSalesModal').html(data);
                 $('#suspendedSalesModal').modal('show');
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

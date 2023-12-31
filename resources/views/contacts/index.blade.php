@@ -1,9 +1,8 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
-@section('title', \App\Enams\ContactType::tryFrom($type)->name.' List - ')
+@section('title', \App\Enams\ContactType::tryFrom($type)->name . ' List - ')
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
@@ -11,10 +10,8 @@
                 <div class="name-head">
                     <h5>
                         @if ($type == \App\Enams\ContactType::Customer->value)
-
                             {{ __('Customers') }}
                         @else
-
                             {{ __('Suppliers') }}
                         @endif
                     </h5>
@@ -25,40 +22,39 @@
 
         <div class="p-3">
 
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-3">
-                                <div class="element-body">
-                                    <form id="filter_form" class="p-2">
-                                        <div class="form-group row">
-                                            <div class="col-xl-2 col-lg-3 col-md-4">
-                                                <label><strong>@lang('menu.business_location') </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control submit_able select2" id="branch_id" autofocus>
-                                                    <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+            @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-3">
+                            <div class="element-body">
+                                <form id="filter_form" class="p-2">
+                                    <div class="form-group row">
+                                        <div class="col-xl-2 col-lg-3 col-md-4">
+                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-                                            <div class="col-xl-2 col-lg-3 col-md-4">
-                                                <label><strong></strong></label>
-                                                <div class="input-group">
-                                                    <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
-                                                </div>
+                                        <div class="col-xl-2 col-lg-3 col-md-4">
+                                            <label><strong></strong></label>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
+            @endif
 
 
             <div class="card">
@@ -129,14 +125,12 @@
     </div>
 
     <!-- Money Receipt list Modal-->
-    <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
+    <div class="modal fade" id="moneyReceiptListModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.payment_receipt_voucher')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="receipt_voucher_list_modal_body"></div>
             </div>
@@ -145,14 +139,12 @@
     <!-- Money Receipt list Modal End-->
 
     <!--add money receipt Modal-->
-    <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
+    <div class="modal fade" id="MoneyReciptModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">@lang('menu.generate_money_receipt')</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
+                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                 </div>
                 <div class="modal-body" id="money_receipt_modal"></div>
             </div>
@@ -161,8 +153,7 @@
     <!--add money receipt Modal End-->
 
     <!--add money receipt Modal-->
-    <div class="modal fade" id="changeReciptStatusModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop"
-        aria-hidden="true">
+    <div class="modal fade" id="changeReciptStatusModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
     </div>
     <!--add money receipt Modal End-->
 @endsection
@@ -172,15 +163,33 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: {columns: [3,4,5,6,7,8,9,10,11,12]}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    }
+                },
             ],
             "processing": true,
             "serverSide": true,
-            aaSorting: [[0, 'asc']],
+            aaSorting: [
+                [0, 'asc']
+            ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('contacts.customer.index') }}",
                 "data": function(d) {
@@ -188,23 +197,75 @@
                     d.branch_id = $('#branch_id').val();
                 }
             },
-            columnDefs: [{"targets": [0, 7],"orderable": false,"searchable": false}],
-            columns: [
-                {data: 'action',name: 'action'},
-                {data: 'contact_id',name: 'contact_id'},
-                {data: 'name',name: 'name'},
-                {data: 'business_name',name: 'business_name'},
-                {data: 'phone',name: 'phone'},
-                {data: 'group_name', name: 'customer_groups.group_name'},
-                {data: 'credit_limit', name: 'credit_limit'},
-                {data: 'opening_balance',name: 'opening_balance', className: 'text-end'},
-                {data: 'total_sale',name: 'total_sale', className: 'text-end'},
-                {data: 'total_paid',name: 'total_paid', className: 'text-end'},
-                {data: 'total_sale_due',name: 'total_sale_due', className: 'text-end'},
-                {data: 'total_return',name: 'total_return', className: 'text-end'},
-                {data: 'total_sale_return_due',name: 'total_sale_return_due', className: 'text-end'},
-                {data: 'status',name: 'status'},
-            ],fnDrawCallback: function() {
+            columnDefs: [{
+                "targets": [0, 7],
+                "orderable": false,
+                "searchable": false
+            }],
+            columns: [{
+                    data: 'action',
+                    name: 'action'
+                },
+                {
+                    data: 'contact_id',
+                    name: 'contact_id'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'business_name',
+                    name: 'business_name'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
+                },
+                {
+                    data: 'group_name',
+                    name: 'customer_groups.group_name'
+                },
+                {
+                    data: 'credit_limit',
+                    name: 'credit_limit'
+                },
+                {
+                    data: 'opening_balance',
+                    name: 'opening_balance',
+                    className: 'text-end'
+                },
+                {
+                    data: 'total_sale',
+                    name: 'total_sale',
+                    className: 'text-end'
+                },
+                {
+                    data: 'total_paid',
+                    name: 'total_paid',
+                    className: 'text-end'
+                },
+                {
+                    data: 'total_sale_due',
+                    name: 'total_sale_due',
+                    className: 'text-end'
+                },
+                {
+                    data: 'total_return',
+                    name: 'total_return',
+                    className: 'text-end'
+                },
+                {
+                    data: 'total_sale_return_due',
+                    name: 'total_sale_return_due',
+                    className: 'text-end'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var opening_balance = sum_table_col($('.data_tbl'), 'opening_balance');
                 $('#opening_balance').text(bdFormat(opening_balance));
@@ -240,14 +301,18 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             table.ajax.reload();
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         // call jquery method
         $(document).ready(function() {
@@ -266,20 +331,21 @@
                         $('#addOrEditContactModal').html(data);
                         $('#addOrEditContactModal').modal('show');
 
-                        setTimeout(function(){
+                        setTimeout(function() {
 
                             $('#contact_name').focus();
                         }, 500);
 
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                             return;
                         }
                     }
@@ -300,7 +366,7 @@
                 });
             });
 
-            $(document).on('click', '#delete',function(e){
+            $(document).on('click', '#delete', function(e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
                 $('#deleted_form').attr('action', url);
@@ -308,8 +374,18 @@
                     'title': 'Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
-                        'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#deleted_form').submit();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Deleted canceled.');
+                            }
+                        }
                     }
                 });
             });
@@ -340,14 +416,16 @@
             $(document).on('click', '#change_status', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                 $.confirm({
+                $.confirm({
                     'title': 'Changes Status Confirmation',
                     'message': 'Are you sure?',
                     'buttons': {
                         'Yes': {
-                            'class': 'yes btn-danger', 'action': function() {
+                            'class': 'yes btn-danger',
+                            'action': function() {
                                 $.ajax({
-                                    url: url,type: 'get',
+                                    url: url,
+                                    type: 'get',
                                     success: function(data) {
                                         toastr.success(data);
                                         table.ajax.reload();
@@ -355,7 +433,12 @@
                                 });
                             }
                         },
-                        'No': {'class': 'no btn-modal-primary','action': function() { console.log('Confirmation canceled.');}}
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Confirmation canceled.');
+                            }
+                        }
                     }
                 });
             });
@@ -516,7 +599,7 @@
                 });
             });
 
-            $(document).on('click', '#delete_receipt',function(e) {
+            $(document).on('click', '#delete_receipt', function(e) {
                 e.preventDefault();
 
                 var url = $(this).attr('href');
@@ -529,8 +612,19 @@
                     'content': 'Are you sure?',
                     'buttons': {
 
-                        'Yes': {'class': 'yes btn-danger', 'action': function() {$('#receipt_deleted_form').submit();tr.remove();}},
-                        'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                        'Yes': {
+                            'class': 'yes btn-danger',
+                            'action': function() {
+                                $('#receipt_deleted_form').submit();
+                                tr.remove();
+                            }
+                        },
+                        'No': {
+                            'class': 'no btn-modal-primary',
+                            'action': function() {
+                                console.log('Deleted canceled.');
+                            }
+                        }
                     }
                 });
             });
@@ -566,7 +660,7 @@
             });
 
             // Print single payment details
-            $('#print_payment').on('click', function (e) {
+            $('#print_payment').on('click', function(e) {
                 e.preventDefault();
                 var body = $('.sale_payment_print_area').html();
                 var header = $('.header_area').html();
@@ -575,7 +669,7 @@
                     debug: false,
                     importCSS: true,
                     importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                    loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
                     removeInline: true,
                     printDelay: 500,
                     header: header,
@@ -585,24 +679,26 @@
         });
 
         //Print supplier report
-        $(document).on('click', '.print_report', function (e) {
+        $(document).on('click', '.print_report', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = "{{ route('reports.customer.print') }}";
             var customer_id = $('#customer_id').val();
             console.log(customer_id);
             $.ajax({
-                url:url,
-                type:'get',
-                data: {customer_id},
-                success:function(data){
+                url: url,
+                type: 'get',
+                data: {
+                    customer_id
+                },
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
@@ -630,14 +726,14 @@
             format: 'YYYY-MM-DD',
         });
 
-        document.onkeyup = function () {
+        document.onkeyup = function() {
 
             var e = e || window.event; // for IE to cover IEs window event-object
 
-            if(e.ctrlKey && e.which == 13) {
+            if (e.ctrlKey && e.which == 13) {
 
                 $('#addModal').modal('show');
-                setTimeout(function () {
+                setTimeout(function() {
 
                     $('#name').focus();
                 }, 500);

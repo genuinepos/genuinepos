@@ -1,17 +1,35 @@
 <style>
-    .payment_top_card {background: #d7dfe8;}
-    .payment_top_card span {font-size: 12px;font-weight: 400;}
-    .payment_top_card li {font-size: 12px;}
-    .payment_top_card ul {padding: 6px;border: 1px solid #dcd1d1;}
-    .payment_list_table {position: relative;}
-    .payment_details_contant{background: azure!important;}
+    .payment_top_card {
+        background: #d7dfe8;
+    }
+
+    .payment_top_card span {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .payment_top_card li {
+        font-size: 12px;
+    }
+
+    .payment_top_card ul {
+        padding: 6px;
+        border: 1px solid #dcd1d1;
+    }
+
+    .payment_list_table {
+        position: relative;
+    }
+
+    .payment_details_contant {
+        background: azure !important;
+    }
 </style>
 <div class="modal-dialog col-60-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_liability_payment')</h6>
-            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                    class="fas fa-times"></span></a>
+            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body" id="payment_modal_body">
             <div class="info_area mb-2">
@@ -33,7 +51,7 @@
                                 <li><strong>@lang('menu.total_loan_get') </strong>
                                     <span class="card_text invoice_no">
                                         {{ $generalSettings['business__currency'] }}
-                                       <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
+                                        <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
                                     </span>
                                 </li>
 
@@ -69,8 +87,7 @@
                             </div>
 
                             <input type="hidden" id="p_available_amount" value="{{ $company->get_loan_due }}">
-                            <input type="number" name="paying_amount" class="form-control p_input" step="any"
-                                data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
+                            <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus />
                         </div>
                         <span class="error error_p_paying_amount"></span>
                     </div>
@@ -83,8 +100,7 @@
                                     <i class="fas fa-calendar-week text-dark input_i"></i>
                                 </span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input"
-                                autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -123,9 +139,9 @@
                                     <option value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            $balance = ' BL : '.$account->balance;
+                                            $balance = ' BL : ' . $account->balance;
                                         @endphp
-                                        {{ $account->name.$accountType.$balance}}
+                                        {{ $account->name . $accountType . $balance }}
                                     </option>
                                 @endforeach
                             </select>
@@ -136,8 +152,7 @@
 
                 <div class="form-group mt-2">
                     <label><strong> @lang('menu.payment_note') </strong></label>
-                    <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                        placeholder="Note"></textarea>
+                    <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 
                 <div class="form-group row mt-3">
@@ -157,7 +172,7 @@
 
 <script>
     //Add loan payment request by ajax
-    $('#loan_payment_form').on('submit',function(e){
+    $('#loan_payment_form').on('submit', function(e) {
         e.preventDefault();
         $('.loading_button_p').show();
         var available_amount = $('#p_available_amount').val();
@@ -177,28 +192,29 @@
         var url = $(this).attr('action');
         $('#submit_button').prop('type', 'button');
         $.ajax({
-            url:url,
-            type:'post',
+            url: url,
+            type: 'post',
             data: new FormData(this),
             contentType: false,
             cache: false,
             processData: false,
-            success:function(data){
+            success: function(data) {
                 $('#submit_button').prop('type', 'submit');
                 $('.loading_button_p').hide();
                 $('#loanPymentModal').modal('hide');
                 toastr.success(data);
                 companies_table.ajax.reload();
                 loans_table.ajax.reload();
-            },error: function(err) {
+            },
+            error: function(err) {
                 $('#submit_button').prop('type', 'submit');
                 $('.loading_button_p').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
                     toastr.error('Server error. Please contact the support team.');
                     return;
                 }
@@ -213,7 +229,7 @@
 
 <script>
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-    var _expectedDateFormat = '' ;
+    var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');

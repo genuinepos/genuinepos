@@ -7,7 +7,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h5>{{ __("Cash Counters") }}</h5>
+                    <h5>{{ __('Cash Counters') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -22,19 +22,18 @@
                                 <div class="form-group row">
                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-4">
-                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                            <select name="branch_id"
-                                                class="form-control select2" id="branch_id" autofocus>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                            $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                             $branchCode = '-' . $branch->branch_code;
                                                         @endphp
-                                                        {{  $branchName.$areaName.$branchCode }}
+                                                        {{ $branchName . $areaName . $branchCode }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -70,11 +69,11 @@
                         <table class="display data_tbl data__table">
                             <thead>
                                 <tr class="bg-navey-blue">
-                                    <th class="text-black">{{ __("Serial") }}</th>
-                                    <th class="text-black">{{ __("Counter Name") }}</th>
-                                    <th class="text-black">{{ __("Short Name") }}</th>
-                                    <th class="text-black">{{ __("Shop") }}</th>
-                                    <th class="text-black">{{ __("Action") }}</th>
+                                    <th class="text-black">{{ __('Serial') }}</th>
+                                    <th class="text-black">{{ __('Counter Name') }}</th>
+                                    <th class="text-black">{{ __('Short Name') }}</th>
+                                    <th class="text-black">{{ __('Shop') }}</th>
+                                    <th class="text-black">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -138,20 +137,35 @@
                 [50, 100, 500, 1000, -1],
                 [50, 100, 500, 1000, "All"]
             ],
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'counter_name', name: 'counter_name' },
-                { data: 'short_name', name: 'short_name' },
-                { data: 'branch', name: 'branch' },
-                { data: 'action', name: 'action' },
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'counter_name',
+                    name: 'counter_name'
+                },
+                {
+                    data: 'short_name',
+                    name: 'short_name'
+                },
+                {
+                    data: 'branch',
+                    name: 'branch'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 $('.data_preloader').hide();
             }
         });
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -197,10 +211,10 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
                     }
                 });
@@ -235,10 +249,10 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
                     }
                 });

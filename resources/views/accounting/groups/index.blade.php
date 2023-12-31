@@ -163,10 +163,10 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });
@@ -180,7 +180,9 @@
                 url: "{{ route('account.groups.list') }}",
                 async: true,
                 type: 'get',
-                data: { branch_id },
+                data: {
+                    branch_id
+                },
                 success: function(data) {
 
                     var div = $('#list_of_groups').html(data);
@@ -203,10 +205,10 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });

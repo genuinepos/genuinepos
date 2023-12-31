@@ -20,7 +20,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __("Add Sale Settings") }}</h6>
+                    <h6>{{ __('Add Sale Settings') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
@@ -68,8 +68,8 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <div class="btn-loading">
-                                        <button type="button" class="btn loading_button add_sale_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                                        <button type="button" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                        <button type="button" class="btn loading_button add_sale_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                        <button type="button" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __('Save Changes') }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -81,90 +81,90 @@
     </div>
 @endsection
 @push('scripts')
-<script>
-    $(document).on('click keypress focus blur change', '.form-control', function(event) {
+    <script>
+        $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
-         $('.submit_button').prop('type', 'button');
-     });
+            $('.submit_button').prop('type', 'button');
+        });
 
-     var isAllowSubmit = true;
-     $(document).on('click', '.submit_button', function() {
+        var isAllowSubmit = true;
+        $(document).on('click', '.submit_button', function() {
 
-         if (isAllowSubmit) {
+            if (isAllowSubmit) {
 
-             $(this).prop('type', 'submit');
-         } else {
+                $(this).prop('type', 'submit');
+            } else {
 
-             $(this).prop('type', 'button');
-         }
-     });
+                $(this).prop('type', 'button');
+            }
+        });
 
-     $('#add_sale_settings_form').on('submit', function(e) {
-         e.preventDefault();
-
-         $('.add_sale_loading_btn').show();
-         var url = $(this).attr('action');
-         var request = $(this).serialize();
-
-         $.ajax({
-             url: url,
-             type: 'post',
-             data: request,
-             success: function(data) {
-
-                 $('.add_sale_loading_btn').hide();
-
-                 if(!$.isEmptyObject(data.errorMsg)) {
-
-                     toastr.error(data.errorMsg);
-                     return;
-                 }
-
-                 toastr.success(data);
-             },
-             error: function(err) {
-
-                 $('.add_sale_loading_btn').hide();
-                 $('.error').html('');
-
-                 if (err.status == 0) {
-
-                     toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                     return;
-                 } else if (err.status == 500) {
-
-                     toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                     return;
-                 } else if (err.status == 403) {
-
-                     toastr.error("{{ __('Access Denied') }}");
-                     return;
-                 }
-             }
-         });
-     });
-
-
-    $(document).on('change keypress', 'input', function(e) {
-
-        var nextId = $(this).data('next');
-
-        if (e.which == 13) {
-
+        $('#add_sale_settings_form').on('submit', function(e) {
             e.preventDefault();
 
-            $('#' + nextId).focus().select();
-        }
-    });
+            $('.add_sale_loading_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
 
-     $(document).on('change keypress click', 'select', function(e) {
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
 
-         var nextId = $(this).data('next');
+                    $('.add_sale_loading_btn').hide();
 
-         if (e.which == 0) {
+                    if (!$.isEmptyObject(data.errorMsg)) {
 
-             $('#' + nextId).focus().select();
-         }
-     });
- </script>
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
+                    toastr.success(data);
+                },
+                error: function(err) {
+
+                    $('.add_sale_loading_btn').hide();
+                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('change keypress', 'input', function(e) {
+
+            var nextId = $(this).data('next');
+
+            if (e.which == 13) {
+
+                e.preventDefault();
+
+                $('#' + nextId).focus().select();
+            }
+        });
+
+        $(document).on('change keypress click', 'select', function(e) {
+
+            var nextId = $(this).data('next');
+
+            if (e.which == 0) {
+
+                $('#' + nextId).focus().select();
+            }
+        });
+    </script>
 @endpush

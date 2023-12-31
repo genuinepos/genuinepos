@@ -28,7 +28,7 @@
                                                     <div class="col-md-4">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option value="">{{ __("All") }}</option>
+                                                            <option value="">{{ __('All') }}</option>
                                                             <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -107,7 +107,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
@@ -170,19 +170,25 @@
                     extend: 'excel',
                     text: '<i class="fas fa-file-excel"></i> Excel',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:first-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
                 },
                 {
                     extend: 'pdf',
                     text: '<i class="fas fa-file-pdf"></i> Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:first-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
                 },
                 {
                     extend: 'print',
                     text: '<i class="fas fa-print"></i> Print',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:first-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
                 },
             ],
             "processing": true,
@@ -208,19 +214,57 @@
                 "orderable": false,
                 "searchable": false
             }],
-            columns: [
-                { data: 'action' },
-                { data: 'date', name: 'date' },
-                { data: 'invoice_id', name: 'invoice_id', className: 'fw-bold' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'supplier_name', name: 'suppliers.name' },
-                { data: 'payment_status', name: 'payment_status', className: 'fw-bold' },
-                { data: 'total_purchase_amount', name: 'total_purchase_amount', className: 'text-end fw-bold' },
-                { data: 'paid', name: 'paid', className: 'text-end fw-bold' },
-                { data: 'purchase_return_amount', name: 'purchase_return_amount', className: 'text-end fw-bold' },
-                { data: 'due', name: 'due', className: 'text-end fw-bold' },
-                { data: 'created_by', name: 'created_by.name' },
-            ], fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'invoice_id',
+                    name: 'invoice_id',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'supplier_name',
+                    name: 'suppliers.name'
+                },
+                {
+                    data: 'payment_status',
+                    name: 'payment_status',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'total_purchase_amount',
+                    name: 'total_purchase_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'paid',
+                    name: 'paid',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'purchase_return_amount',
+                    name: 'purchase_return_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'due',
+                    name: 'due',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'created_by',
+                    name: 'created_by.name'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var total_purchase_amount = sum_table_col($('.data_tbl'), 'total_purchase_amount');
                 $('#total_purchase_amount').text(bdFormat(total_purchase_amount));
@@ -278,7 +322,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -295,7 +339,7 @@
             $('#delete_form').attr('action', url);
             $.confirm({
                 'title': 'Confirmation',
-                'content': 'Are you sure, you want to delete?',
+                'content': "{{ __('Are you sure, you want to delete?') }}",
                 'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
@@ -337,7 +381,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

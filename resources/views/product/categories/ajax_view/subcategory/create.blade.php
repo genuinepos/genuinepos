@@ -1,21 +1,21 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Subcategory") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Subcategory') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
             <form id="add_sub_category_form" action="{{ route('subcategories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
+                    <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
                     <input required type="text" name="name" class="form-control" id="subcategory_name" data-next="subcategory_parent_category" placeholder="Sub category name" />
                     <span class="error error_subcategory_name"></span>
                 </div>
 
                 @if (!$fixedParentCategory)
                     <div class="form-group">
-                        <label><b>{{ __("Parent Category") }} <span class="text-danger">*</span></b></label>
+                        <label><b>{{ __('Parent Category') }} <span class="text-danger">*</span></b></label>
                         <select required name="parent_category_id" class="form-control" id="subcategory_parent_category" data-next="subcategory_description">
                             <option selected="" disabled="">@lang('menu.select_parent_category')</option>
                             @foreach ($categories as $row)
@@ -26,7 +26,7 @@
                     </div>
                 @else
                     <div class="form-group">
-                        <label><b>{{ __("Parent Cagorygory") }} <span class="text-danger">*</span></b></label>
+                        <label><b>{{ __('Parent Cagorygory') }} <span class="text-danger">*</span></b></label>
                         <select required name="parent_category_id" class="form-control" id="subcategory_parent_category" data-next="subcategory_description">
                             <option value="{{ $fixedParentCategory->id }}">{{ $fixedParentCategory->name }}</option>
                         </select>
@@ -35,8 +35,8 @@
                 @endif
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Description") }}</b> </label>
-                    <input name="description" class="form-control" id="subcategory_description" data-next="subcategory_save" placeholder="{{ __("Description") }}">
+                    <label><b>{{ __('Description') }}</b> </label>
+                    <input name="description" class="form-control" id="subcategory_description" data-next="subcategory_save" placeholder="{{ __('Description') }}">
                 </div>
 
                 <div class="form-group mt-2">
@@ -48,9 +48,9 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button subcategory_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="subcategory_save" class="btn btn-sm btn-success subcategory_submit_button">{{ __("Save") }}</button>
+                            <button type="button" class="btn loading_button subcategory_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="subcategory_save" class="btn btn-sm btn-success subcategory_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -160,11 +160,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 } else if (err.status == 403) {
 

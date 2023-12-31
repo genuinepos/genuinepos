@@ -13,7 +13,7 @@
                             <div class="name-head">
                                 <h5>{{ __('Received Against Sales Report') }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -26,18 +26,18 @@
                                             <div class="form-group row">
                                                 @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                                     <div class="col-md-3">
-                                                        <label><strong>{{ __("Shop/Business") }} </strong></label>
+                                                        <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                            <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 @php
                                                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                    $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                    $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                     $branchCode = '-' . $branch->branch_code;
                                                                 @endphp
-                                                                <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                                    {{  $branchName.$areaName.$branchCode }}
+                                                                <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                    {{ $branchName . $areaName . $branchCode }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -45,17 +45,17 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Customer") }}</strong></label>
+                                                    <label><strong>{{ __('Customer') }}</strong></label>
                                                     <select name="customer_account_id" class="form-control select2" id="customer_account_id" autofocus>
-                                                        <option data-customer_name="{{ __("All") }}" value="">{{ __("All") }}</option>
+                                                        <option data-customer_name="{{ __('All') }}" value="">{{ __('All') }}</option>
                                                         @foreach ($customerAccounts as $customerAccount)
-                                                            <option data-customer_name="{{ $customerAccount->name.'/'.$customerAccount->phone }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name.'/'.$customerAccount->phone }}</option>
+                                                            <option data-customer_name="{{ $customerAccount->name . '/' . $customerAccount->phone }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("From Date") }} : </strong></label>
+                                                    <label><strong>{{ __('From Date') }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -67,7 +67,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("To Date") }} : </strong></label>
+                                                    <label><strong>{{ __('To Date') }} : </strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
@@ -84,7 +84,7 @@
                                                             <label><strong></strong></label>
                                                             <div class="input-group">
                                                                 <button type="submit" class="btn text-white btn-sm btn-info float-start m-0">
-                                                                    <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                                    <i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -92,7 +92,7 @@
                                                         <div class="col-md-6">
                                                             <label></label>
                                                             <div class="input-group">
-                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __("Print") }}</a>
+                                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __('Print') }}</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -107,28 +107,28 @@
                         <div class="card">
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Receipt Voucher") }}</th>
-                                                <th>{{ __("Receipt Date") }}</th>
-                                                <th>{{ __("Shop/Business") }}</th>
+                                                <th>{{ __('Receipt Voucher') }}</th>
+                                                <th>{{ __('Receipt Date') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
                                                 <th>{{ __('Sales/Order') }}</th>
                                                 <th>{{ __('date') }}</th>
-                                                <th>{{ __("Customer") }}</th>
-                                                <th>{{ __("Total Invoice Amount") }}</th>
-                                                <th>{{ __("Debit A/c") }}</th>
-                                                <th>{{ __("Type/Method") }}</th>
-                                                <th>{{ __("Received Amount") }}</th>
+                                                <th>{{ __('Customer') }}</th>
+                                                <th>{{ __('Total Invoice Amount') }}</th>
+                                                <th>{{ __('Debit A/c') }}</th>
+                                                <th>{{ __('Type/Method') }}</th>
+                                                <th>{{ __('Received Amount') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="9" class="text-end text-white">{{ __("Total") }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="9" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
                                                 <th id="received_amount" class="text-white"></th>
                                             </tr>
                                         </tfoot>
@@ -155,15 +155,25 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary',},
-                { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary',},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                },
             ],
             "processing": true,
             "serverSide": true,
             //aaSorting: [[0, 'asc']],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('reports.receive.against.sales.report') }}",
                 "data": function(d) {
@@ -173,17 +183,50 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                { data: 'receipt_voucher', name: 'voucherDescription.accountingVoucher.voucher_no', className: 'fw-bold' },
-                { data: 'receipt_date', name: 'voucherDescription.accountingVoucher.voucher_no' },
-                { data: 'branch', name: 'voucherDescription.accountingVoucher.branch.name' },
-                { data: 'sales_or_order_id', name: 'sale.invoice_id', className: 'fw-bold' },
-                { data: 'sales_date', name: 'sale.date' },
-                { data: 'customer', name: 'sale.customer.name' },
-                { data: 'total_invoice_amount', name: 'sale.order_id', className: 'text-end fw-bold' },
-                { data: 'debit_account', name: 'voucherDescription.accountingVoucher.voucherDebitDescription.account.name', },
-                { data: 'payment_method', name: 'voucherDescription.accountingVoucher.voucherDebitDescription.paymentMethod.name', },
-                { data: 'received_amount', name: 'voucherDescription.accountingVoucher.branch.parentBranch.name', className: 'text-end fw-bold' },
+            columns: [{
+                    data: 'receipt_voucher',
+                    name: 'voucherDescription.accountingVoucher.voucher_no',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'receipt_date',
+                    name: 'voucherDescription.accountingVoucher.voucher_no'
+                },
+                {
+                    data: 'branch',
+                    name: 'voucherDescription.accountingVoucher.branch.name'
+                },
+                {
+                    data: 'sales_or_order_id',
+                    name: 'sale.invoice_id',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'sales_date',
+                    name: 'sale.date'
+                },
+                {
+                    data: 'customer',
+                    name: 'sale.customer.name'
+                },
+                {
+                    data: 'total_invoice_amount',
+                    name: 'sale.order_id',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'debit_account',
+                    name: 'voucherDescription.accountingVoucher.voucherDebitDescription.account.name',
+                },
+                {
+                    data: 'payment_method',
+                    name: 'voucherDescription.accountingVoucher.voucherDebitDescription.paymentMethod.name',
+                },
+                {
+                    data: 'received_amount',
+                    name: 'voucherDescription.accountingVoucher.branch.parentBranch.name',
+                    className: 'text-end fw-bold'
+                },
             ],
             fnDrawCallback: function() {
 
@@ -238,7 +281,8 @@
                     customer_name,
                     from_date,
                     to_date
-                }, success: function(data) {
+                },
+                success: function(data) {
 
                     $(data).printThis({
                         debug: false,
@@ -270,13 +314,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -302,34 +347,35 @@
         });
 
         // Print Packing slip
-        $(document).on('click', '#PrintChallanBtn', function (e) {
+        $(document).on('click', '#PrintChallanBtn', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
 
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
                     });
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -338,34 +384,35 @@
         });
 
         // Print Packing slip
-        $(document).on('click', '#printPackingSlipBtn', function (e) {
+        $(document).on('click', '#printPackingSlipBtn', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
 
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
                     });
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }

@@ -6,14 +6,14 @@
     var branch_name = "{{ $branchName }}";
 
     // Calculate total amount functionalitie
-    function calculateTotalAmount(){
+    function calculateTotalAmount() {
         var quantities = document.querySelectorAll('#quantity');
         var subtotals = document.querySelectorAll('#subtotal');
 
         // Update Total Item
         var total_item = 0;
         var total_qty = 0;
-        quantities.forEach(function(qty){
+        quantities.forEach(function(qty) {
 
             total_item += 1;
             total_qty += qty.value;
@@ -24,7 +24,7 @@
 
         // Update Net total Amount
         var netTotalAmount = 0;
-        subtotals.forEach(function(subtotal){
+        subtotals.forEach(function(subtotal) {
 
             netTotalAmount += parseFloat(subtotal.value);
         });
@@ -207,6 +207,7 @@
     };
 
     var keyName = 1;
+
     function selectProduct(e) {
 
         $('.select_area').hide();
@@ -588,9 +589,9 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
@@ -611,19 +612,19 @@
     });
 
     // Automatic remove searching product is found signal
-    setInterval(function(){
+    setInterval(function() {
 
         $('#search_product').removeClass('is-invalid');
     }, 500);
 
-    setInterval(function(){
+    setInterval(function() {
 
         $('#search_product').removeClass('is-valid');
     }, 1000);
 
-    $('body').keyup(function(e){
+    $('body').keyup(function(e) {
 
-        if (e.keyCode == 13 || e.keyCode == 9){
+        if (e.keyCode == 13 || e.keyCode == 9) {
 
             $(".selectProduct").click();
             $('#list').empty();
@@ -639,7 +640,7 @@
         }
     });
 
-    $('#payment_method_id').on('change', function () {
+    $('#payment_method_id').on('change', function() {
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
@@ -650,7 +651,7 @@
         if (account_id) {
 
             $('#account_id').val(account_id);
-        }else if(account_id === ''){
+        } else if (account_id === '') {
 
             return;
         }

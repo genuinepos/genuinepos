@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Stock Adjustment List- ')
 @section('content')
@@ -9,9 +9,9 @@
             <div class="main__content">
                 <div class="sec-name">
                     <div class="name-head">
-                        <h5>{{ __("Stock Adjustments") }}</h5>
+                        <h5>{{ __('Stock Adjustments') }}</h5>
                     </div>
-                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                 </div>
             </div>
 
@@ -24,19 +24,18 @@
                                     <div class="form-group row">
                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-2">
-                                                <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control select2" id="branch_id" autofocus>
+                                                <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                                <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                 $branchCode = '-' . $branch->branch_code;
                                                             @endphp
-                                                            {{  $branchName.$areaName.$branchCode }}
+                                                            {{ $branchName . $areaName . $branchCode }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -44,9 +43,9 @@
                                         @endif
 
                                         <div class="col-md-2">
-                                            <label><strong>{{ __("Type") }}</strong></label>
+                                            <label><strong>{{ __('Type') }}</strong></label>
                                             <select name="type" id="type" class="form-control" autofocus>
-                                                <option value="">{{ __("All") }}</option>
+                                                <option value="">{{ __('All') }}</option>
                                                 @foreach (\App\Enums\StockAdjustmentType::cases() as $type)
                                                     <option value="{{ $type->value }}">{{ $type->name }}</option>
                                                 @endforeach
@@ -54,14 +53,14 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><strong>{{ __("From Date") }}</strong></label>
+                                            <label><strong>{{ __('From Date') }}</strong></label>
                                             <div class="input-group">
                                                 <input name="from_date" class="form-control" id="from_date">
                                             </div>
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label><strong>{{ __("To Date") }}</strong></label>
+                                            <label><strong>{{ __('To Date') }}</strong></label>
                                             <div class="input-group">
                                                 <input name="to_date" class="form-control" id="to_date">
                                             </div>
@@ -70,7 +69,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -98,22 +97,22 @@
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-start">{{ __("Action") }}</th>
-                                        <th class="text-start">{{ __("Date") }}</th>
-                                        <th class="text-start">{{ __("Voucher No") }}</th>
-                                        <th class="text-start">{{ __("Shop/Business") }}</th>
-                                        <th class="text-start">{{ __("Ledger Account") }}</th>
-                                        <th class="text-start">{{ __("Reason") }}</th>
-                                        <th class="text-start">{{ __("Type") }}</th>
-                                        <th class="text-start">{{ __("Total Amount") }}</th>
-                                        <th class="text-start">{{ __("Received Amount") }}</th>
-                                        <th class="text-start">{{ __("Created By") }}</th>
+                                        <th class="text-start">{{ __('Action') }}</th>
+                                        <th class="text-start">{{ __('Date') }}</th>
+                                        <th class="text-start">{{ __('Voucher No') }}</th>
+                                        <th class="text-start">{{ __('Shop/Business') }}</th>
+                                        <th class="text-start">{{ __('Ledger Account') }}</th>
+                                        <th class="text-start">{{ __('Reason') }}</th>
+                                        <th class="text-start">{{ __('Type') }}</th>
+                                        <th class="text-start">{{ __('Total Amount') }}</th>
+                                        <th class="text-start">{{ __('Received Amount') }}</th>
+                                        <th class="text-start">{{ __('Created By') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="7" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
                                         <th id="net_total_amount" class="text-white text-end"></th>
                                         <th id="recovered_amount" class="text-white text-end"></th>
                                         <th class="text-white text-end">---</th>
@@ -141,15 +140,38 @@
     <script>
         var adjustment_table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: 'Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: 'Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
             ],
             "processing": true,
             "serverSide": true,
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('stock.adjustments.index') }}",
                 "data": function(d) {
@@ -159,19 +181,51 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                {data: 'action'},
-                {data: 'date', name: 'stock_adjustments.date'},
-                {data: 'voucher_no', name: 'stock_adjustments.voucher_no', className: 'fw-bold'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'expense_ledger', name: 'accounts.name'},
-                {data: 'reason', name: 'stock_adjustments.reason'},
-                {data: 'type', name: 'type'},
-                {data: 'net_total_amount', name: 'stock_adjustments.net_total_amount', className: 'text-end fw-bold'},
-                {data: 'recovered_amount', name: 'stock_adjustments.recovered_amount', className: 'text-end fw-bold'},
-                {data: 'created_by', name: 'users.name'},
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'stock_adjustments.date'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'stock_adjustments.voucher_no',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'expense_ledger',
+                    name: 'accounts.name'
+                },
+                {
+                    data: 'reason',
+                    name: 'stock_adjustments.reason'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
+                },
+                {
+                    data: 'net_total_amount',
+                    name: 'stock_adjustments.net_total_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'recovered_amount',
+                    name: 'stock_adjustments.recovered_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'created_by',
+                    name: 'users.name'
+                },
 
-            ],fnDrawCallback: function() {
+            ],
+            fnDrawCallback: function() {
                 var net_total_amount = sum_table_col($('.data_tbl'), 'net_total_amount');
                 $('#net_total_amount').text(bdFormat(net_total_amount));
                 var recovered_amount = sum_table_col($('.data_tbl'), 'recovered_amount');
@@ -193,7 +247,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             adjustment_table.ajax.reload();
@@ -213,13 +267,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -244,7 +299,7 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
@@ -252,22 +307,32 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-danger',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#deleted_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
 
                     if (!$.isEmptyObject(data.errorMsg)) {
 

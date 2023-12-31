@@ -17,9 +17,9 @@
                 <div class="btn-group">
                     <a href="{{ route('sales.helper.recent.transaction.sales', ['status' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => $saleScreenType, 'limit' => 20]) }}" onclick="saleRecentTransactions(this); return false;" class="btn btn-sm btn-primary tab_btn tab_active" id="tab_btn"><i class="fas fa-info-circle"></i> {{ __('Finals') }}</a>
 
-                    <a href="{{ route('sales.helper.recent.transaction.sales', ['status' => App\Enums\SaleStatus::Quotation->value, 'saleScreenType' => $saleScreenType, 'limit' => 20]) }}" onclick="saleRecentTransactions(this); return false;" class="btn btn-sm btn-primary tab_btn" id="tab_btn"><i class="fas fa-scroll"></i> {{ __("Quotations") }}</a>
+                    <a href="{{ route('sales.helper.recent.transaction.sales', ['status' => App\Enums\SaleStatus::Quotation->value, 'saleScreenType' => $saleScreenType, 'limit' => 20]) }}" onclick="saleRecentTransactions(this); return false;" class="btn btn-sm btn-primary tab_btn" id="tab_btn"><i class="fas fa-scroll"></i> {{ __('Quotations') }}</a>
 
-                    <a href="{{ route('sales.helper.recent.transaction.sales', ['status' => App\Enums\SaleStatus::Draft->value, 'saleScreenType' => $saleScreenType, 'limit' => 20]) }}" onclick="saleRecentTransactions(this); return false;" class="btn btn-sm btn-primary tab_btn" id="tab_btn"><i class="fas fa-shopping-bag"></i> {{ __("Drafts") }}</a>
+                    <a href="{{ route('sales.helper.recent.transaction.sales', ['status' => App\Enums\SaleStatus::Draft->value, 'saleScreenType' => $saleScreenType, 'limit' => 20]) }}" onclick="saleRecentTransactions(this); return false;" class="btn btn-sm btn-primary tab_btn" id="tab_btn"><i class="fas fa-shopping-bag"></i> {{ __('Drafts') }}</a>
                 </div>
             </div>
 
@@ -28,18 +28,18 @@
                     <div class="col-md-12">
                         <div class="table_area" style="position: relative;">
                             <div class="data_preloader" id="recent_trans_preloader">
-                                <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6>
+                                <h6><i class="fas fa-spinner"></i> {{ __('Processing') }}...</h6>
                             </div>
                             <div class="table-responsive">
                                 <table class="display modal-table table table-sm table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-start">{{ __("S/L") }}</th>
-                                            <th class="text-start">{{ __("Invoice ID") }}</th>
-                                            <th class="text-start">{{ __("Date") }}</th>
-                                            <th class="text-start">{{ __("Customer") }}</th>
-                                            <th class="text-start">{{ __("Total Amount") }}</th>
-                                            <th class="text-start">{{ __("Action") }}</th>
+                                            <th class="text-start">{{ __('S/L') }}</th>
+                                            <th class="text-start">{{ __('Invoice ID') }}</th>
+                                            <th class="text-start">{{ __('Date') }}</th>
+                                            <th class="text-start">{{ __('Customer') }}</th>
+                                            <th class="text-start">{{ __('Total Amount') }}</th>
+                                            <th class="text-start">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="data-list" id="recent_transection_list">
@@ -65,7 +65,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td class="fw-bold text-center" colspan="6">{{ __("Data Not Found") }}</td>
+                                                <td class="fw-bold text-center" colspan="6">{{ __('Data Not Found') }}</td>
                                             </tr>
                                         @endif
                                     </tbody>
@@ -78,7 +78,7 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">{{ __("Close") }}</button>
+                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -99,18 +99,19 @@
         var url = event.getAttribute('href');
 
         $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
+            url: url,
+            type: 'get',
+            success: function(data) {
 
                 $('#recent_transection_list').html(data);
                 $('#recent_trans_preloader').hide();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('#recent_trans_preloader').show();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -126,9 +127,9 @@
         var url = event.getAttribute('href');
 
         $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
+            url: url,
+            type: 'get',
+            success: function(data) {
 
                 $(data).printThis({
                     debug: false,
@@ -137,14 +138,15 @@
                     loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                     removeInline: false,
                     printDelay: 500,
-                    header : null,
-                    footer : null,
+                    header: null,
+                    footer: null,
                 });
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

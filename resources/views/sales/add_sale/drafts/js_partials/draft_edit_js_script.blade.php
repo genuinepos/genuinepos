@@ -963,7 +963,7 @@
         $('#add_item').html('Add');
     }
 
-    $(document).on('click', '#remove_product_btn',function(e){
+    $(document).on('click', '#remove_product_btn', function(e) {
 
         e.preventDefault();
 
@@ -971,7 +971,7 @@
 
         calculateTotalAmount();
 
-        setTimeout(function () {
+        setTimeout(function() {
 
             clearEditItemFileds();
         }, 5);
@@ -1054,14 +1054,14 @@
         $('.loading_button').show();
         var url = $(this).attr('action');
 
-         var status = $('#status').val();
+        var status = $('#status').val();
 
         var allTr = $('#sale_product_list').find('tr');
 
         if (status == 1) {
 
             var pass = true;
-            allTr.each(function (index, value) {
+            allTr.each(function(index, value) {
 
                 var check = __chackStockLimitation($(this), index);
 
@@ -1101,11 +1101,11 @@
 
                     window.location = "{{ route('sales.index') }}";
                     return;
-                }else if ($('#status').val() == 3) {
+                } else if ($('#status').val() == 3) {
 
                     window.location = "{{ route('sale.orders.index') }}";
                     return;
-                }else if ($('#status').val() == 4) {
+                } else if ($('#status').val() == 4) {
 
                     window.location = "{{ route('sale.quotations.index') }}";
                     return;
@@ -1120,11 +1120,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -1139,6 +1139,7 @@
     });
 
     var index = 0;
+
     function __chackStockLimitation(tr, index) {
 
         var quantity = tr.find('#quantity').val() ? tr.find('#quantity').val() : 0;
@@ -1148,9 +1149,9 @@
         var productName = tr.find('#stock_limit').data('product_name');
         var unitName = tr.find('#stock_limit').data('unit_name');
 
-        if(parseFloat(quantity) > parseFloat(stock_limit)) {
+        if (parseFloat(quantity) > parseFloat(stock_limit)) {
 
-            toastr.error("{{ __('Serial No: ') }} "+(index + 1) + ',' + " {{ __('Product Name: ') }}" + productName+ " {{ __('Only ') }}" + stock_limit + '/' + unitName + " {{ __('is available in the selected stock location.') }}");
+            toastr.error("{{ __('Serial No: ') }} " + (index + 1) + ',' + " {{ __('Product Name: ') }}" + productName + " {{ __('Only ') }}" + stock_limit + '/' + unitName + " {{ __('is available in the selected stock location.') }}");
             return false;
         }
 
@@ -1268,9 +1269,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -1284,7 +1285,8 @@
 
                 $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
@@ -1389,7 +1391,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1402,14 +1404,14 @@
     </script>
 @endif
 
-@if(auth()->user()->can('product_add'))
+@if (auth()->user()->can('product_add'))
     <script>
-        $('#addProduct').on('click', function () {
+        $('#addProduct').on('click', function() {
 
             $.ajax({
-                url:"{{ route('quick.product.create') }}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('quick.product.create') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').html(data);
@@ -1419,7 +1421,8 @@
 
                         $('#quick_product_name').focus();
                     }, 1000);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -1452,7 +1455,7 @@
         });
 
         // Add product by ajax
-        $(document).on('submit', '#add_quick_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form', function(e) {
             e.preventDefault();
             $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
@@ -1515,7 +1518,8 @@
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').modal('hide');
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     isQuickProductAjaxIn = true;
                     isAllowQuickProductSubmit = true;
@@ -1526,11 +1530,11 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    } else if(err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
-                    } else if(err.status == 403) {
+                    } else if (err.status == 403) {
 
                         toastr.error("{{ __('Access Denied') }}");
                         return;

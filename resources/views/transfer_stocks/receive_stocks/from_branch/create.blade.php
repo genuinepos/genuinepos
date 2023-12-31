@@ -56,16 +56,12 @@
                                             @php
                                                 $sendFrom = '';
                                                 if ($transferStock?->senderBranch) {
-
                                                     if ($transferStock?->senderBranch?->parentBranch) {
-
                                                         $sendFrom = $transferStock?->senderBranch?->parentBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     } else {
-
                                                         $sendFrom = $transferStock?->senderBranch?->area_name . '(' . $transferStock?->senderBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-
                                                     $sendFrom = $generalSettings['business__business_name'];
                                                 }
                                             @endphp
@@ -95,16 +91,12 @@
                                             @php
                                                 $sendTo = '';
                                                 if ($transferStock?->receiverBranch) {
-
                                                     if ($transferStock?->receiverBranch?->parentBranch) {
-
                                                         $sendTo = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                     } else {
-
                                                         $sendTo = $transferStock?->receiverBranch?->area_name . '(' . $transferStock?->receiverBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-
                                                     $sendTo = $generalSettings['business__business_name'];
                                                 }
                                             @endphp
@@ -169,16 +161,12 @@
                                                                         @php
                                                                             $storeLocation = '';
                                                                             if ($transferStock?->receiverBranch) {
-
                                                                                 if ($transferStock?->receiverBranch) {
-
                                                                                     $storeLocation = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                                                 } else {
-
                                                                                     $storeLocation = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                                                 }
                                                                             } else {
-
                                                                                 $storeLocation = $generalSettings['business__business_name'];
                                                                             }
                                                                         @endphp
@@ -217,7 +205,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label  class="col-4"><b>{{ __("Received Stock Value") }}</b></label>
+                                        <label class="col-4"><b>{{ __('Received Stock Value') }}</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" step="any" name="received_stock_value" class="form-control fw-bold" id="received_stock_value" value="{{ $transferStock->received_stock_value }}" tabindex="-1">
                                         </div>
@@ -226,9 +214,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __("Receiver Note") }}</b></label>
+                                        <label class="col-4"><b>{{ __('Receiver Note') }}</b></label>
                                         <div class="col-8">
-                                            <input name="receiver_note" type="text" class="form-control" id="receiver_note" data-next="save_changes" value="{{ $transferStock->receiver_note }}" placeholder="{{ __("Receiver Note") }}">
+                                            <input name="receiver_note" type="text" class="form-control" id="receiver_note" data-next="save_changes" value="{{ $transferStock->receiver_note }}" placeholder="{{ __('Receiver Note') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -274,14 +262,14 @@
             calculateTotalAmount();
         });
 
-        function calculateTotalAmount(){
+        function calculateTotalAmount() {
 
             var unitCostsIncTax = document.querySelectorAll('#unit_cost_inc_tax');
             var recevedQuantities = document.querySelectorAll('#received_qty');
             // Update Total Item
             var receivedStockValue = 0;
             var i = 0;
-            recevedQuantities.forEach(function(qty){
+            recevedQuantities.forEach(function(qty) {
 
                 var receivedQty = qty.value ? qty.value : 0;
                 var unitCostIncTax = unitCostsIncTax[i].value ? unitCostsIncTax[i].value : 0;
@@ -352,7 +340,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

@@ -18,18 +18,18 @@
                     <div class="col-md-12">
                         <div class="table_area" style="position: relative;">
                             <div class="data_preloader" id="recent_trans_preloader">
-                                <h6><i class="fas fa-spinner"></i> {{ __("Processing") }}...</h6>
+                                <h6><i class="fas fa-spinner"></i> {{ __('Processing') }}...</h6>
                             </div>
                             <div class="table-responsive">
                                 <table class="display modal-table table table-sm table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="text-start">{{ __("S/L") }}</th>
-                                            <th class="text-start">{{ __("Hold Invoice ID") }}</th>
-                                            <th class="text-start">{{ __("Date") }}</th>
-                                            <th class="text-start">{{ __("Customer") }}</th>
-                                            <th class="text-start">{{ __("Total Amount") }}</th>
-                                            <th class="text-start">{{ __("Action") }}</th>
+                                            <th class="text-start">{{ __('S/L') }}</th>
+                                            <th class="text-start">{{ __('Hold Invoice ID') }}</th>
+                                            <th class="text-start">{{ __('Date') }}</th>
+                                            <th class="text-start">{{ __('Customer') }}</th>
+                                            <th class="text-start">{{ __('Total Amount') }}</th>
+                                            <th class="text-start">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="data-list" id="recent_transection_list">
@@ -50,7 +50,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td class="fw-bold text-center" colspan="6">{{ __("Data Not Found") }}</td>
+                                                <td class="fw-bold text-center" colspan="6">{{ __('Data Not Found') }}</td>
                                             </tr>
                                         @endif
                                     </tbody>
@@ -63,7 +63,7 @@
 
             <div class="form-group">
                 <div class="col-md-12">
-                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">{{ __("Close") }}</button>
+                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger float-end">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -76,12 +76,12 @@
         var url = event.getAttribute('href');
 
         $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
+            url: url,
+            type: 'get',
+            success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
-                   
+
                     toastr.error(data.errorMsg);
                     return;
                 }
@@ -93,14 +93,15 @@
                     loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                     removeInline: false,
                     printDelay: 500,
-                    header : null,
-                    footer : null,
+                    header: null,
+                    footer: null,
                 });
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

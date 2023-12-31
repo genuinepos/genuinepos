@@ -286,6 +286,7 @@
     }
 
     var keyName = 1;
+
     function selectProduct(e) {
 
         var price_group_id = $('#price_group_id').val() ? $('#price_group_id').val() : 'no_id';
@@ -337,7 +338,7 @@
                         if (variant_id != 'noid') {
 
                             return value.price_group_id == price_group_id && value.product_id == product_id && value.variant_id == variant_id;
-                        }else {
+                        } else {
 
                             return value.price_group_id == price_group_id && value.product_id == product_id;
                         }
@@ -980,11 +981,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -1089,9 +1090,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -1105,12 +1106,13 @@
 
                 $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -1210,7 +1212,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -1223,14 +1225,14 @@
     </script>
 @endif
 
-@if(auth()->user()->can('product_add'))
+@if (auth()->user()->can('product_add'))
     <script>
-        $('#addProduct').on('click', function () {
+        $('#addProduct').on('click', function() {
 
             $.ajax({
-                url:"{{ route('quick.product.create') }}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('quick.product.create') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').html(data);
@@ -1240,7 +1242,8 @@
 
                         $('#quick_product_name').focus();
                     }, 1000);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -1273,7 +1276,7 @@
         });
 
         // Add product by ajax
-        $(document).on('submit', '#add_quick_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form', function(e) {
             e.preventDefault();
             $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
@@ -1331,7 +1334,8 @@
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').modal('hide');
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     isQuickProductAjaxIn = true;
                     isAllowQuickProductSubmit = true;
@@ -1342,11 +1346,11 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    } else if(err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
-                    } else if(err.status == 403) {
+                    } else if (err.status == 403) {
 
                         toastr.error("{{ __('Access Denied') }}");
                         return;

@@ -10,15 +10,18 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Setups\BarcodeSetting;
 use App\Services\Accounts\AccountService;
+use App\Services\Purchases\PurchaseProductService;
 use App\Services\Setups\BarcodeSettingService;
 
 class BarcodeController extends Controller
 {
-    public function __construct(private BarcodeSettingService $barcodeSettingService, private AccountService $accountService)
-    {
+    public function __construct(
+        private BarcodeSettingService $barcodeSettingService,
+        private AccountService $accountService,
+        private PurchaseProductService $purchaseProductService
+    ) {
     }
 
-    // Generate barcode index view
     public function index()
     {
         if (!auth()->user()->can('generate_barcode')) {
@@ -48,8 +51,7 @@ class BarcodeController extends Controller
                 'product_variants.variant_name',
                 'product_variants.variant_code',
                 'product_variants.variant_price',
-                'supplier.id as supplier_account_id',
-                'supplier.id as supplier_id',
+                'purchases.supplier_account_id',
                 'supplier.name as supplier_name',
                 'supplier.prefix as supplier_prefix',
                 'tax.tax_percent',
@@ -64,7 +66,7 @@ class BarcodeController extends Controller
                 'product_variants.variant_name',
                 'product_variants.variant_code',
                 'product_variants.variant_price',
-                'supplier.id',
+                'purchases.supplier_account_id',
                 'supplier.name',
                 'supplier.prefix',
                 'tax.tax_percent',
@@ -93,127 +95,29 @@ class BarcodeController extends Controller
         return view('product.barcode.preview', compact('barcodeSetting', 'req'));
     }
 
-    // Get all supplier products
-    public function supplierProduct()
+    public function emptyLabelQty($supplierAccountId, $productId, $variantId = null)
     {
-        $supplier_products = SupplierProduct::with(['supplier', 'product', 'product.tax', 'variant'])->where('label_qty', '>', 0)->get();
-        return view('product.barcode.ajax_view.purchase_product_list', compact('supplier_products'));
-    }
+        $supplierPurchasedProducts = $this->purchaseProductService->purchaseProducts()
+            ->where('label_left_qty', '>', 0)
+            ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+            ->where('purchases.supplier_account_id', $supplierAccountId)
+            ->where('purchase_products.product_id', $productId)
+            ->where('purchase_products.variant_id', $variantId)
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->select(
+                'purchase_products.id',
+                'purchase_products.product_id',
+                'purchase_products.variant_id',
+                'purchase_products.purchase_id',
+                'purchase_products.label_left_qty'
+            )->get();
 
-    public function multipleGenerateCompleted(Request $request)
-    {
-        $index = 0;
-        foreach ($request->product_ids as $product_id) {
+        foreach ($supplierPurchasedProducts as $supplierPurchasedProduct) {
 
-            $variant_id = $request->product_variant_ids[$index] != 'null' ? $request->product_variant_ids[$index] : null;
-
-            $supplierProduct = SupplierProduct::where('supplier_id', $request->supplier_ids[$index])
-                ->where('product_id', $product_id)
-                ->where('variant_id', $variant_id)
-                ->first();
-
-            if ($supplierProduct) {
-
-                $supplierProduct->label_qty = 0;
-                $supplierProduct->save();
-            }
-            $index++;
+            $supplierPurchasedProduct->label_left_qty = 0;
+            $supplierPurchasedProduct->save();
         }
 
-        return response()->json(['Successfully completed barcode row is deleted.']);
+        return response()->json(__('Successfully completed barcode row is deleted.'));
     }
-
-    // Search product
-    public function searchProduct($searchKeyword)
-    {
-        $products = Product::with(['product_purchased_variants'])
-            ->where('name', 'like', $searchKeyword . '%')
-            ->where('is_purchased', 1)->select(
-                'id',
-                'name',
-                'product_code',
-                'is_combo',
-                'is_featured',
-                'is_for_sale',
-                'is_manage_stock',
-                'is_purchased',
-                'is_variant',
-                'offer_price',
-                'product_cost',
-                'product_cost_with_tax',
-                'product_price',
-                'profit',
-                'quantity',
-                'tax_id',
-                'tax_type',
-                'type',
-                'unit_id',
-            )->limit(25)
-            ->get();
-        if ($products->count() > 0) {
-
-            return response()->json($products);
-        } else {
-
-            $products = Product::with(['product_purchased_variants'])
-                ->where('product_code', $searchKeyword)
-                ->where('is_purchased', 1)
-                ->get();
-
-            return response()->json($products);
-        }
-    }
-
-    // // Get selected product
-    // public function getSelectedProduct($productId)
-    // {
-    //     $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
-    //     return response()->json($supplierProducts);
-    // }
-
-    // // Get selected product variant
-    // public function getSelectedProductVariant($productId, $variantId)
-    // {
-    //     $supplierProducts = SupplierProduct::with(
-    //         'supplier',
-    //         'product',
-    //         'product.tax',
-    //         'variant'
-    //     )->where('product_id', $productId)->where('product_variant_id', $variantId)->get();
-
-    //     return response()->json($supplierProducts);
-    // }
-
-    // // Generate specific product barcode view
-    // public function generateProductBarcode($productId)
-    // {
-    //     $productId = $productId;
-    //     $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
-
-    //     return view('product.barcode.specific_product_barcode', compact('productId', 'bc_settings'));
-    // }
-
-    // // Get specific product's supplier product
-    // public function getSpecificSupplierProduct($productId)
-    // {
-    //     $supplierProducts = SupplierProduct::with('supplier', 'product', 'product.tax', 'variant')->where('product_id', $productId)->get();
-
-    //     return response()->json($supplierProducts);
-    // }
-
-    // // Generate barcode on purchase view
-    // public function onPurchaseBarcode($purchaseId)
-    // {
-    //     $purchaseId = $purchaseId;
-    //     $bc_settings = DB::table('barcode_settings')->orderBy('is_continuous', 'desc')->get(['id', 'name', 'is_default']);
-
-    //     return view('product.barcode.purchase_product_barcode_v2', compact('purchaseId', 'bc_settings'));
-    // }
-
-    // Get purchase products for generating barcode
-    // public function getPurchaseProduct($purchaseId)
-    // {
-    //     $purchaseProducts = PurchaseProduct::with(['purchase', 'purchase.supplier', 'product', 'variant'])->where('purchase_id', $purchaseId)->get();
-    //     return response()->json($purchaseProducts);
-    // }
 }

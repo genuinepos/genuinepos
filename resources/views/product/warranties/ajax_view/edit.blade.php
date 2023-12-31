@@ -25,7 +25,7 @@
                     <div class="col-md-8">
                         <label><b>{{ __('Duration') }}</b></label> <span class="text-danger">*</span>
                         <div class="input-group">
-                            <input required type="number" name="duration" class="form-control" id="warranty_duration" data-next="warranty_duration_type" value="{{ $warranty->duration }}" placeholder="{{ __("Warranty Duration") }}">
+                            <input required type="number" name="duration" class="form-control" id="warranty_duration" data-next="warranty_duration_type" value="{{ $warranty->duration }}" placeholder="{{ __('Warranty Duration') }}">
                             <select required name="duration_type" class="form-control form-select" id="warranty_duration_type" data-next="warranty_description">
                                 <option {{ $warranty->duration_type == 'Months' ? 'SELECTED' : '' }} value="Months">{{ __('Months') }}</option>
                                 <option {{ $warranty->duration_type == 'Days' ? 'SELECTED' : '' }} value="Days">{{ __('Days') }}</option>
@@ -133,7 +133,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

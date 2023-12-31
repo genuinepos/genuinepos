@@ -1,5 +1,4 @@
 <script>
-
     function saveAndPrintSuccessMsg() {
 
         var status = $('status').val();
@@ -19,7 +18,7 @@
         return actionMessage;
     }
 
-    $(document).on('click', '#credit_and_final', function (e) {
+    $(document).on('click', '#credit_and_final', function(e) {
         fullDue();
     });
 
@@ -42,7 +41,7 @@
         if (btnType == 'credit_and_final') {
 
             $('#is_full_credit_sale').val(1);
-        }else {
+        } else {
 
             $('#is_full_credit_sale').val(0);
         }
@@ -73,31 +72,31 @@
             beforeSend: function() {
                 isAjaxIn = true;
             },
-            url:url,
-            type:'post',
+            url: url,
+            type: 'post',
             data: request,
-            success:function(data){
+            success: function(data) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.submit_preloader').hide();
 
-                if(!$.isEmptyObject(data.errorMsg)) {
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'Attention');
                     return;
-                }else if(data.suspendMsg){
+                } else if (data.suspendMsg) {
 
                     toastr.success(data.suspendMsg);
                     afterSubmitForm();
                     document.getElementById('search_product').focus();
-                }else if(data.holdInvoiceMsg){
+                } else if (data.holdInvoiceMsg) {
 
                     toastr.success(data.holdInvoiceMsg);
                     afterSubmitForm();
                     document.getElementById('search_product').focus();
-                }else {
+                } else {
 
                     var msg = saveAndPrintSuccessMsg();
 
@@ -117,7 +116,8 @@
 
                     document.getElementById('search_product').focus();
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -125,9 +125,9 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server error. Please contact the support team.') }}");
                     return;
@@ -145,11 +145,11 @@
         }
     });
 
-    document.onkeyup = function () {
+    document.onkeyup = function() {
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        if(e.ctrlKey && e.which == 13) { // Ctrl + Enter
+        if (e.ctrlKey && e.which == 13) { // Ctrl + Enter
 
             $('#final').click();
             return false;
@@ -173,12 +173,12 @@
         activeSelectedItems();
     }
 
-    $(document).on('click enter','#final_and_quick_cash_receive', function(e) {
+    $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {
 
         $('#final').click();
     });
 
-     $('select').on('select2:close', function(e) {
+    $('select').on('select2:close', function(e) {
 
         var nextId = $(this).data('next');
 
@@ -212,7 +212,7 @@
         }
     });
 
-    $(".cat-button").on("click", function(){
+    $(".cat-button").on("click", function() {
 
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
@@ -221,12 +221,12 @@
     var width = $(".function-sec .btn-bg").width();
     $(".function-sec .btn-bg").height(width / 1.2);
 
-    if($(window).width() >= 992) {
+    if ($(window).width() >= 992) {
 
         $(".function-sec .btn-bg").height(width / 1.4);
     }
 
-    if($(window).width() >= 1200) {
+    if ($(window).width() >= 1200) {
 
         $(".function-sec .btn-bg").height(width / 1.6);
     }

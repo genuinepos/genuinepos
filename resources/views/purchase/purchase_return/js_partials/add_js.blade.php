@@ -632,7 +632,7 @@
 
             var inclusiveTax = 100 + parseFloat(e_tax_percent);
             var calcTax = parseFloat(unitCostWithDiscount) / parseFloat(inclusiveTax) * 100;
-            taxAmount =  parseFloat(unitCostWithDiscount) - parseFloat(calcTax);
+            taxAmount = parseFloat(unitCostWithDiscount) - parseFloat(calcTax);
             unitCostIncTax = parseFloat(unitCostWithDiscount) + parseFloat(taxAmount);
         }
 
@@ -771,9 +771,9 @@
 
         $('#total_return_amount').val(parseFloat(calcTotalAmount).toFixed(2));
 
-        var purchaseLedgerAmount = parseFloat(netTotalAmount)
-            - parseFloat(returnDiscountAmount)
-            - parseFloat(itemTotalTaxAmount);
+        var purchaseLedgerAmount = parseFloat(netTotalAmount) -
+            parseFloat(returnDiscountAmount) -
+            parseFloat(itemTotalTaxAmount);
 
         $('#purchase_ledger_amount').val(purchaseLedgerAmount);
 
@@ -804,7 +804,7 @@
         $('#return_tax_percent').val(parseFloat(returnTaxPercent).toFixed(2));
     });
 
-    $(document).on('input', '#received_amount', function(){
+    $(document).on('input', '#received_amount', function() {
         calculateTotalAmount();
     });
 
@@ -900,7 +900,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
                         removeInline: false,
                         printDelay: 1000,
                         header: null,
@@ -918,11 +918,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -1043,9 +1043,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -1059,7 +1059,8 @@
 
                 $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
@@ -1098,7 +1099,7 @@
         format: _expectedDateFormat,
     });
 
-    $('#payment_method_id').on('change', function () {
+    $('#payment_method_id').on('change', function() {
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
@@ -1109,7 +1110,7 @@
         if (account_id) {
 
             $('#account_id').val(account_id);
-        }else if(account_id === ''){
+        } else if (account_id === '') {
             return;
             // $('#account_id option:first-child').prop("selected", true);
         }

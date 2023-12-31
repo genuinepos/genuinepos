@@ -1,25 +1,25 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Category") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Category') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
             <form id="add_category_form" action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="category_name" data-next="category_description" placeholder="{{ __("Category name") }}" autofocus />
+                    <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
+                    <input required type="text" name="name" class="form-control" id="category_name" data-next="category_description" placeholder="{{ __('Category name') }}" autofocus />
                     <span class="error error_category_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Description") }}</b></label>
-                    <input name="description" class="form-control" id="category_description" data-next="category_save" placeholder="{{ __("Description") }}" autocomplete="off">
+                    <label><b>{{ __('Description') }}</b></label>
+                    <input name="description" class="form-control" id="category_description" data-next="category_save" placeholder="{{ __('Description') }}" autocomplete="off">
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Photo") }}</b><small class="text-danger"><b> ({{ __("size : 400px * 400px.") }})</b></small></label>
+                    <label><b>{{ __('Photo') }}</b><small class="text-danger"><b> ({{ __('size : 400px * 400px.') }})</b></small></label>
                     <input type="file" name="photo" class="form-control" id="category_photo">
                     <span class="error error_photo"></span>
                 </div>
@@ -27,9 +27,9 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button category_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="category_save" class="btn btn-sm btn-success category_submit_button">{{ __("Save") }}</button>
+                            <button type="button" class="btn loading_button category_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="category_save" class="btn btn-sm btn-success category_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,8 @@
                         categoriesTable.ajax.reload();
                     }
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -130,11 +131,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 } else if (err.status == 403) {
 

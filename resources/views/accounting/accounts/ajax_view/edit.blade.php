@@ -1,30 +1,26 @@
 <div class="modal-dialog col-50-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Account") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Account') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
             <form id="edit_account_form" action="{{ route('accounts.update', $account->id) }}">
                 @csrf
                 <div class="form-group">
-                    <label><strong>{{ __("Name") }} </strong> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="account_name" value="{{ $account->name }}" data-next="account_group_id" placeholder="{{ __("Account Name") }}" autocomplete="off" autofocus/>
+                    <label><strong>{{ __('Name') }} </strong> <span class="text-danger">*</span></label>
+                    <input required type="text" name="name" class="form-control" id="account_name" value="{{ $account->name }}" data-next="account_group_id" placeholder="{{ __('Account Name') }}" autocomplete="off" autofocus />
                     <span class="error error_name"></span>
                 </div>
 
                 @if ($account->is_main_pl_account == 0)
                     <div class="form-group mt-1">
-                        <label><strong>{{ __("Account Group") }} <span class="text-danger">*</span></strong></label>
+                        <label><strong>{{ __('Account Group') }} <span class="text-danger">*</span></strong></label>
                         <div class="input-group flex-nowrap">
                             <select required name="account_group_id" class="form-control select2 form-select" id="account_group_id">
-                                <option value="">{{ __("Select Account Group") }}</option>
+                                <option value="">{{ __('Select Account Group') }}</option>
                                 @foreach ($groups as $group)
-                                    @if (
-                                        ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11)
-                                        && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                    )
-
+                                    @if (($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2))
                                         <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                             {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                         </option>
@@ -46,7 +42,7 @@
                     </div>
                 @else
                     <div class="form-group mt-1">
-                        <label><strong>{{ __("Account Group") }}</strong></label>
+                        <label><strong>{{ __('Account Group') }}</strong></label>
                         <input readonly required type="text" class="form-control fw-bold" value="{{ $account?->group?->name }}" />
                         <input type="hidden" name="account_group_id" value="{{ $account->account_group_id }}">
                     </div>
@@ -54,39 +50,39 @@
 
                 <div class="form-group row mt-1 customer_account_field {{ $account->group->sub_sub_group_number == 6 ? '' : 'd-hide' }}">
                     <div class="col-md-12">
-                        <label><strong> {{ __("Phone No.") }} : </strong><span class="text-danger">*</span></label>
-                        <input {{ $account->group->sub_sub_group_number == 6 ? 'required' : '' }} type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" value="{{ $account->phone }}" data-next="customer_credit_limit" placeholder="{{ __("Phone Number") }}" />
+                        <label><strong> {{ __('Phone No.') }} : </strong><span class="text-danger">*</span></label>
+                        <input {{ $account->group->sub_sub_group_number == 6 ? 'required' : '' }} type="text" name="customer_phone_no" class="form-control hidden_required" id="customer_phone_no" value="{{ $account->phone }}" data-next="customer_credit_limit" placeholder="{{ __('Phone Number') }}" />
                         <span class="error error_customer_phone_no"></span>
                     </div>
 
                     <div class="col-md-12">
-                        <label><strong> {{ __("Credit Limit") }}</strong></label>
-                        <input type="number" name="customer_credit_limit" class="form-control" id="customer_credit_limit" value="{{ $account?->contact?->credit_limit }}" data-next="customer_address" placeholder="{{ __("Credit Limit") }}" />
+                        <label><strong> {{ __('Credit Limit') }}</strong></label>
+                        <input type="number" name="customer_credit_limit" class="form-control" id="customer_credit_limit" value="{{ $account?->contact?->credit_limit }}" data-next="customer_address" placeholder="{{ __('Credit Limit') }}" />
                     </div>
 
                     <div class="col-md-12">
-                        <label><strong> {{ __("Address") }}</strong></label>
-                        <input type="text" name="customer_address" class="form-control" id="customer_address" data-next="opening_balance" value="{{ $account->address }}" placeholder="{{ __("Customer Address") }}" />
+                        <label><strong> {{ __('Address') }}</strong></label>
+                        <input type="text" name="customer_address" class="form-control" id="customer_address" data-next="opening_balance" value="{{ $account->address }}" placeholder="{{ __('Customer Address') }}" />
                     </div>
                 </div>
 
                 <div class="form-group row mt-1 supplier_account_field {{ $account->group->sub_sub_group_number == 10 ? '' : 'd-hide' }}">
                     <div class="col-md-12">
-                        <label><strong> {{ __("Phone No.") }} </strong><span class="text-danger">*</span></label>
-                        <input {{ $account->group->sub_sub_group_number == 10 ? 'required' : '' }} type="text" name="supplier_phone_no" class="form-control hidden_required" id="supplier_phone_no" value="{{ $account->phone }}" data-next="supplier_address" placeholder="{{ __("Phone number") }}" />
+                        <label><strong> {{ __('Phone No.') }} </strong><span class="text-danger">*</span></label>
+                        <input {{ $account->group->sub_sub_group_number == 10 ? 'required' : '' }} type="text" name="supplier_phone_no" class="form-control hidden_required" id="supplier_phone_no" value="{{ $account->phone }}" data-next="supplier_address" placeholder="{{ __('Phone number') }}" />
                         <span class="error error_customer_phone_no"></span>
                     </div>
 
                     <div class="col-md-12">
-                        <label><strong> {{ __("Address") }} </strong></label>
-                        <input type="text" name="supplier_address" class="form-control" id="supplier_address" value="{{ $account->address }}" data-next="opening_balance" placeholder="{{ __("Supplier Address") }}" />
+                        <label><strong> {{ __('Address') }} </strong></label>
+                        <input type="text" name="supplier_address" class="form-control" id="supplier_address" value="{{ $account->address }}" data-next="opening_balance" placeholder="{{ __('Supplier Address') }}" />
                     </div>
                 </div>
 
                 <div class="form-group row mt-1 duties_and_tax_account_field  {{ $account->group->is_default_tax_calculator == 1 ? '' : 'd-hide' }}">
                     <div class="col-md-12">
-                        <label><strong>{{ __("Duties & Tax Calculation Percent") }}</strong> <span class="text-danger">*</span></label>
-                        <input type="number" step="any" name="tax_percent" class="form-control" id="tax_percent" value="{{ $account->tax_percent }}" data-next="opening_balance" placeholder="{{ __("Duties & Tax Calculation Percent") }}" />
+                        <label><strong>{{ __('Duties & Tax Calculation Percent') }}</strong> <span class="text-danger">*</span></label>
+                        <input type="number" step="any" name="tax_percent" class="form-control" id="tax_percent" value="{{ $account->tax_percent }}" data-next="opening_balance" placeholder="{{ __('Duties & Tax Calculation Percent') }}" />
                         <span class="error error_tax_percent"></span>
                     </div>
                 </div>
@@ -95,14 +91,14 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <label><strong>{{ __("Account Number") }}</strong></label>
-                                <input type="text" name="account_number" class="form-control" id="account_number" value="{{ $account->account_number }}" data-next="bank_id" placeholder="{{ __("Account Number") }}" />
+                                <label><strong>{{ __('Account Number') }}</strong></label>
+                                <input type="text" name="account_number" class="form-control" id="account_number" value="{{ $account->account_number }}" data-next="bank_id" placeholder="{{ __('Account Number') }}" />
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>{{ __("Bank Name") }}</strong></label>
+                                <label><strong>{{ __('Bank Name') }}</strong></label>
                                 <select name="bank_id" class="form-control" id="bank_id" data-next="bank_code">
-                                    <option value="">{{ __("Select Bank") }}</option>
+                                    <option value="">{{ __('Select Bank') }}</option>
                                     @foreach ($banks as $bank)
                                         <option {{ $account->bank_id == $bank->id ? 'SELECTED' : '' }} value="{{ $bank->id }}">
                                             {{ $bank->name }}
@@ -116,13 +112,13 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <label><strong>{{ __("Bank Code") }}</strong></label>
-                                <input type="text" name="bank_code" class="form-control" id="bank_code" value="{{ $account->bank_code }}" data-next="swift_code" placeholder="{{ __("Bank Code") }}" />
+                                <label><strong>{{ __('Bank Code') }}</strong></label>
+                                <input type="text" name="bank_code" class="form-control" id="bank_code" value="{{ $account->bank_code }}" data-next="swift_code" placeholder="{{ __('Bank Code') }}" />
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>{{ __("Swift Code") }}</strong></label>
-                                <input type="text" name="swift_code" class="form-control" id="swift_code" data-next="bank_branch" value="{{ $account->swift_code }}" placeholder="{{ __("Swift Code") }}" />
+                                <label><strong>{{ __('Swift Code') }}</strong></label>
+                                <input type="text" name="swift_code" class="form-control" id="swift_code" data-next="bank_branch" value="{{ $account->swift_code }}" placeholder="{{ __('Swift Code') }}" />
                             </div>
                         </div>
                     </div>
@@ -130,30 +126,30 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <label><strong>{{ __("Branch") }} </strong></label>
-                                <input type="text" name="bank_branch" class="form-control" id="bank_branch" value="{{ $account->bank_branch }}" data-next="bank_address" placeholder="{{ __("Bank Branch") }}" />
+                                <label><strong>{{ __('Branch') }} </strong></label>
+                                <input type="text" name="bank_branch" class="form-control" id="bank_branch" value="{{ $account->bank_branch }}" data-next="bank_address" placeholder="{{ __('Bank Branch') }}" />
                             </div>
 
                             <div class="col-md-6">
-                                <label><strong>{{ __("Address") }}</strong></label>
-                                <input type="text" name="bank_address" class="form-control" id="bank_address" value="{{ $account->bank_address }}" data-next="opening_balance" placeholder="{{ __("Bank Address") }}" />
+                                <label><strong>{{ __('Address') }}</strong></label>
+                                <input type="text" name="bank_address" class="form-control" id="bank_address" value="{{ $account->bank_address }}" data-next="opening_balance" placeholder="{{ __('Bank Address') }}" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group mt-1" >
-                    <label><strong>{{ __("Opening Balance") }}</strong></label>
+                <div class="form-group mt-1">
+                    <label><strong>{{ __('Opening Balance') }}</strong></label>
                     <div class="input-group">
                         @php
                             $openingBalanceAmount = $account?->openingBalance?->debit + $account?->openingBalance?->credit;
                             $openingBalanceType = $account?->openingBalance?->amount_type == 'debit' ? 'dr' : 'cr';
                         @endphp
-                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__account_start_date'])) }}" tabindex="-1"/>
-                        <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" value="{{ $openingBalanceAmount }}" data-next="opening_balance_type"/>
+                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__account_start_date'])) }}" tabindex="-1" />
+                        <input type="number" step="any" name="opening_balance" class="form-control w-50 fw-bold text-end" id="opening_balance" value="{{ $openingBalanceAmount }}" data-next="opening_balance_type" />
                         <select name="opening_balance_type" class="form-control w-25 text-end" id="opening_balance_type" data-next="remarks">
-                            <option value="dr">{{ __("Debit") }}</option>
-                            <option {{ $openingBalanceType == 'cr' ? 'SELECTED' : '' }} value="cr">{{ __("Credit") }}</option>
+                            <option value="dr">{{ __('Debit') }}</option>
+                            <option {{ $openingBalanceType == 'cr' ? 'SELECTED' : '' }} value="cr">{{ __('Credit') }}</option>
                         </select>
                     </div>
                 </div>
@@ -165,15 +161,11 @@
                         <input type="hidden" name="branch_count" id="branch_count" value="yes">
                         <select name="branch_ids[]" id="branch_id" class="form-control select2" multiple="multiple">
                             @foreach ($branches as $branch)
-                                <option
-                                    @foreach ($account->bankAccessBranches as $bankAccessBranch)
-                                        {{ $bankAccessBranch->branch_id == $branch->id ? 'SELECTED' : '' }}
-                                    @endforeach
-                                    value="{{ $branch->id }}"
-                                >
+                                <option @foreach ($account->bankAccessBranches as $bankAccessBranch)
+                                        {{ $bankAccessBranch->branch_id == $branch->id ? 'SELECTED' : '' }} @endforeach value="{{ $branch->id }}">
                                     @php
                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                        $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                         $branchCode = '-' . $branch->branch_code;
                                     @endphp
                                     {{ $branchName . $areaName . $branchCode }}
@@ -184,16 +176,16 @@
                 @endif
 
                 <div class="form-group mt-1">
-                    <label><strong>{{ __("Remarks") }}</strong></label>
-                    <input type="text" name="remark" class="form-control" id="remarks" value="{{ $account->remark }}" data-next="account_save_changes" placeholder="{{ __("Remarks") }}"/>
+                    <label><strong>{{ __('Remarks') }}</strong></label>
+                    <input type="text" name="remark" class="form-control" id="remarks" value="{{ $account->remark }}" data-next="account_save_changes" placeholder="{{ __('Remarks') }}" />
                 </div>
 
                 <div class="form-group row mt-3">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button account_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="account_save_changes" class="btn btn-sm btn-success account_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="button" class="btn loading_button account_loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="account_save_changes" class="btn btn-sm btn-success account_submit_button">{{ __('Save Changes') }}</button>
                         </div>
                     </div>
                 </div>
@@ -264,11 +256,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 } else if (err.status == 403) {
 

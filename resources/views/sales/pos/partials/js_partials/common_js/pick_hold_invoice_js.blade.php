@@ -1,15 +1,15 @@
 @if ($generalSettings['pos__is_enabled_hold_invoice'] == '1')
     <script>
         // Pick hold invoice
-        $(document).on('click', '#pick_hold_btn', function (e) {
+        $(document).on('click', '#pick_hold_btn', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -20,11 +20,12 @@
                     $('#holdInvoiceModal').empty();
                     $('#holdInvoiceModal').html(data);
                     $('#holdInvoiceModal').modal('show');
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

@@ -1,18 +1,64 @@
 <style>
-    .payment_top_card {background: #d7dfe8;}
-    .payment_top_card span {font-size: 12px;font-weight: 400;}
-    .payment_top_card li {font-size: 12px;}
-    .payment_top_card ul {padding: 6px;border: 1px solid #dcd1d1;}
-    .payment_list_table {position: relative;}
-    .payment_details_contant{background: azure!important;}
+    .payment_top_card {
+        background: #d7dfe8;
+    }
 
-    .due_all_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
-    .due_purchase_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
-    .due_order_table {min-height: 200px; max-height: 200px; overflow-x: hidden;}
-    .seperate_area {border: 1px solid gray; padding: 6px;}
-    .purchase_and_order_table_area  th {font-size: 8px!important;}
-    .purchase_and_order_table_area  td {font-size: 9px!important;}
-    .purchase_and_order_table_area table tbody tr:hover{background: gray;}
+    .payment_top_card span {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .payment_top_card li {
+        font-size: 12px;
+    }
+
+    .payment_top_card ul {
+        padding: 6px;
+        border: 1px solid #dcd1d1;
+    }
+
+    .payment_list_table {
+        position: relative;
+    }
+
+    .payment_details_contant {
+        background: azure !important;
+    }
+
+    .due_all_table {
+        min-height: 200px;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+
+    .due_purchase_table {
+        min-height: 200px;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+
+    .due_order_table {
+        min-height: 200px;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
+
+    .seperate_area {
+        border: 1px solid gray;
+        padding: 6px;
+    }
+
+    .purchase_and_order_table_area th {
+        font-size: 8px !important;
+    }
+
+    .purchase_and_order_table_area td {
+        font-size: 9px !important;
+    }
+
+    .purchase_and_order_table_area table tbody tr:hover {
+        background: gray;
+    }
 </style>
 <div class="modal-dialog five-col-modal" role="document" z-index="-1">
     <div class="modal-content">
@@ -75,7 +121,7 @@
                         <div class="row">
                             <div class="col-lg-12 mt-2">
                                 <label><strong>@lang('menu.business_location') </strong> </label>
-                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__business_name'].' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] . ' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
                             <div class="col-lg-12 mt-2">
@@ -86,7 +132,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all"  data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>@lang('menu.all')</b>
+                                                            <input type="radio" checked name="payment_against" id="payment_against" class="all" data-show_table="all_purchase_and_orders_area" value="all"> &nbsp; <b>@lang('menu.all')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -98,7 +144,7 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against"  data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>@lang('menu.payment_against_specific_purchase')</b>
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_table_area" value="purchases"> &nbsp; <b>@lang('menu.payment_against_specific_purchase')</b>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -110,7 +156,8 @@
                                                 <div class="col-12">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
-                                                        <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area"  value="purchase_orders"> &nbsp; <b>@lang('menu.payment_against_specific_purchase') @lang('menu.order')</b> </p>
+                                                            <input type="radio" name="payment_against" id="payment_against" class="payment_against" data-show_table="due_purchase_orders_table_area" value="purchase_orders"> &nbsp; <b>@lang('menu.payment_against_specific_purchase') @lang('menu.order')</b>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,19 +200,15 @@
                                                                         <td class="text-start">{{ date('d/m/Y', strtotime($row->date)) }}</td>
                                                                         <td class="text-start">
                                                                             @if ($row->purchase_status == 1)
-
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('purchases.show', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
                                                                             @else
-
                                                                                 <a class="details_button text-info" title="Details" href="{{ route('purchases.show.order', [$row->id]) }}"><strong>{{ $row->invoice_id }}</strong></a>
                                                                             @endif
                                                                         </td>
                                                                         <td class="text-start">
                                                                             @if ($row->purchase_status == 1)
-
                                                                                 Purchased
                                                                             @else
-
                                                                                 Order
                                                                             @endif
                                                                         </td>
@@ -175,13 +218,10 @@
                                                                             @endphp
 
                                                                             @if ($row->due <= 0)
-
                                                                                 <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($row->due > 0 && $row->due < $payable)
-
                                                                                 <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $row->due)
-
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
@@ -240,13 +280,10 @@
                                                                             @endphp
 
                                                                             @if ($purchase->due <= 0)
-
                                                                                 <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($purchase->due > 0 && $purchase->due < $payable)
-
                                                                                 <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $purchase->due)
-
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
@@ -304,13 +341,10 @@
                                                                             @endphp
 
                                                                             @if ($order->due <= 0)
-
                                                                                 <span class="text-success"><b>@lang('menu.paid')</b></span>
                                                                             @elseif ($order->due > 0 && $order->due < $payable)
-
                                                                                 <span class="text-primary"><b>@lang('menu.partial')</b></span>
                                                                             @elseif ($payable == $order->due)
-
                                                                                 <span class="text-danger"><b>@lang('menu.due')</b></span>
                                                                             @endif
                                                                         </td>
@@ -355,7 +389,7 @@
                                     </div>
 
                                     <input type="hidden" id="p_available_amount" value="{{ $supplier->total_purchase_due }}">
-                                    <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus/>
+                                    <input type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="" autocomplete="off" autofocus />
                                 </div>
                                 <span class="error error_p_paying_amount"></span>
                             </div>
@@ -366,22 +400,21 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
                                     </div>
-                                    <input type="text" name="date" class="form-control p_input"
-                                        autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
+                                    <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
                                 </div>
                                 <span class="error error_p_date"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label><strong>@lang('menu.reference') </strong> </label>
-                                <input type="text" name="reference" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off"/>
+                                <input type="text" name="reference" class="form-control" step="any" placeholder="Payment Reference" autocomplete="off" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
                             <div class="col-md-4">
                                 <label><strong>@lang('menu.less_amount') </strong> </label>
-                                <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="@lang('menu.less_amount')" autocomplete="off"/>
+                                <input type="number" step="any" name="less_amount" id="p_less_amount" class="form-control" placeholder="@lang('menu.less_amount')" autocomplete="off" />
                             </div>
 
                             <div class="col-md-4">
@@ -395,11 +428,11 @@
                                             <option value="{{ $account->id }}">
                                                 @php
                                                     $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                    $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                                    $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                                    $balance = ', BL : '.$account->balance;
+                                                    $bank = $account->bank ? ', BK : ' . $account->bank : '';
+                                                    $ac_no = $account->account_number ? ', A/c No : ' . $account->account_number : '';
+                                                    $balance = ', BL : ' . $account->balance;
                                                 @endphp
-                                                {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                                {{ $account->name . $accountType . $bank . $ac_no . $balance }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -415,9 +448,7 @@
                                     </div>
                                     <select required name="payment_method_id" class="form-control" id="p_payment_method_id">
                                         @foreach ($methods as $method)
-                                            <option
-                                                data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                value="{{ $method->id }}">
+                                            <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
                                                 {{ $method->name }}
                                             </option>
                                         @endforeach
@@ -462,7 +493,7 @@
 
 <script>
     //Add Supplier payment request by ajax
-    $('#payment_form').on('submit', function(e){
+    $('#payment_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
@@ -470,53 +501,53 @@
         var url = $(this).attr('action');
 
         $.ajax({
-            url:url,
-            type:'post',
+            url: url,
+            type: 'post',
             data: new FormData(this),
             contentType: false,
             cache: false,
             processData: false,
-            success:function(data){
+            success: function(data) {
 
                 $('.loading_button').hide();
                 $('.error').html('');
-                if(!$.isEmptyObject(data.errorMsg)){
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg);
-                }else{
+                } else {
 
                     $('#paymentModal').modal('hide');
                     toastr.success(data);
                     $('.data_tbl').DataTable().ajax.reload();
 
                     var filterObj = {
-                        branch_id : $('#payments_branch_id').val(),
-                        from_date : $('#payments_from_date').val(),
-                        to_date : $('#payments_to_date').val(),
+                        branch_id: $('#payments_branch_id').val(),
+                        from_date: $('#payments_from_date').val(),
+                        to_date: $('#payments_to_date').val(),
                     };
 
                     getSupplierAmountsBranchWise(filterObj, 'payments_', false);
 
                     filterObj = {
-                        branch_id : $('#ledger_branch_id').val(),
-                        from_date : $('#ledger_from_date').val(),
-                        to_date : $('#ledger_to_date').val(),
+                        branch_id: $('#ledger_branch_id').val(),
+                        from_date: $('#ledger_from_date').val(),
+                        to_date: $('#ledger_to_date').val(),
                     };
 
                     getSupplierAmountsBranchWise(filterObj, 'ledger_', false);
 
                     filterObj = {
-                        branch_id : $('#purchase_branch_id').val(),
-                        from_date : $('#purchase_from_date').val(),
-                        to_date : $('#purchase_to_date').val(),
+                        branch_id: $('#purchase_branch_id').val(),
+                        from_date: $('#purchase_from_date').val(),
+                        to_date: $('#purchase_to_date').val(),
                     };
 
                     getSupplierAmountsBranchWise(filterObj, 'purchase_', false);
 
                     filterObj = {
-                        branch_id : $('#order_branch_id').val(),
-                        from_date : $('#order_from_date').val(),
-                        to_date : $('#order_to_date').val(),
+                        branch_id: $('#order_branch_id').val(),
+                        from_date: $('#order_from_date').val(),
+                        to_date: $('#order_to_date').val(),
                     };
 
                     getSupplierAmountsBranchWise(filterObj, 'purchase_order_', false);
@@ -531,9 +562,9 @@
 
                     toastr.error('Net Connetion Error. Please Check the connection.');
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -546,7 +577,7 @@
     });
 
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-    var _expectedDateFormat = '' ;
+    var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
@@ -570,7 +601,7 @@
     });
 
 
-    $('#p_payment_method_id').on('change', function () {
+    $('#p_payment_method_id').on('change', function() {
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
@@ -581,7 +612,7 @@
         if (account_id) {
 
             $('#p_account_id').val(account_id);
-        }else if(account_id === ''){
+        } else if (account_id === '') {
 
             $('#p_account_id option:first-child').prop("selected", true);
         }
@@ -593,14 +624,14 @@
 
         var purchaseIds = document.querySelectorAll('#purchase_id');
 
-        purchaseIds.forEach(function(input){
+        purchaseIds.forEach(function(input) {
 
             $(input).prop('checked', false);
         });
 
         var show_table = $(this).data('show_table');
         $('.due_table').hide();
-        $('.'+show_table).show(300);
+        $('.' + show_table).show(300);
         $('#total_amount').html(0.00);
         $('#p_paying_amount').val(parseFloat(0).toFixed(2));
         document.getElementById('in_word').innerHTML = '';
@@ -611,7 +642,7 @@
         var purchaseIds = document.querySelectorAll('#purchase_id');
 
         var total = 0;
-        purchaseIds.forEach(function(input){
+        purchaseIds.forEach(function(input) {
 
             if ($(input).is(':CHECKED', true)) {
 
@@ -627,12 +658,12 @@
         calculateTotalDue();
     });
 
-    $(document).on('click', '#close', function (e) {
+    $(document).on('click', '#close', function(e) {
         e.preventDefault();
 
         var purchaseIds = document.querySelectorAll('#purchase_id');
 
-        purchaseIds.forEach(function(input){
+        purchaseIds.forEach(function(input) {
 
             $(input).prop('checked', false);
         });
@@ -642,12 +673,12 @@
         calculateTotalDue();
     });
 
-    $(document).on('input', '#p_paying_amount', function (e) {
+    $(document).on('input', '#p_paying_amount', function(e) {
 
         calculateTotalDue();
     });
 
-    $(document).on('input', '#p_less_amount', function (e) {
+    $(document).on('input', '#p_less_amount', function(e) {
 
         calculateTotalDue();
     });
@@ -665,7 +696,7 @@
         if (parseFloat(p_paying_amount) && parseFloat(p_paying_amount) > 0) {
 
             document.getElementById('in_word').innerHTML = inWords(parseInt(p_paying_amount)) + 'ONLY';
-        }else {
+        } else {
 
             document.getElementById('in_word').innerHTML = '';
         }
@@ -673,23 +704,24 @@
 </script>
 
 <script>
-    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-    var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+    var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+    var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-      function inWords (num) {
-          if ((num = num.toString()).length > 9) return 'overflow';
-          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-          if (!n) return; var str = '';
-          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
-          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
-          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
-          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
-          return str;
-      }
+    function inWords(num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+        return str;
+    }
 
-        $(document).on('click', '.purchase_and_order_table_area table tbody tr', function () {
-            $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr');
-            $(this).addClass('active_tr');
-        });
+    $(document).on('click', '.purchase_and_order_table_area table tbody tr', function() {
+        $('.purchase_and_order_table_area table tbody tr').removeClass('active_tr');
+        $(this).addClass('active_tr');
+    });
 </script>

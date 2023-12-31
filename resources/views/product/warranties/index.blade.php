@@ -70,18 +70,31 @@
             serverSide: true,
             dom: "lBfrtip",
             buttons: [{
-                    extend: 'excel', 'title': 'List Of Warranties/Guaranties', text: 'Excel',
+                    extend: 'excel',
+                    'title': 'List Of Warranties/Guaranties',
+                    text: 'Excel',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)'}
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
                 {
-                    extend: 'pdf', 'title': 'List Of Warranties/Guaranties', text: 'Pdf',
+                    extend: 'pdf',
+                    'title': 'List Of Warranties/Guaranties',
+                    text: 'Pdf',
                     className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
                 {
-                    extend: 'print', 'title': 'List Of Warranties/Guaranties', text: 'Print', className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
+                    extend: 'print',
+                    'title': 'List Of Warranties/Guaranties',
+                    text: 'Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
                 },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
@@ -146,7 +159,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -180,7 +193,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -238,7 +251,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

@@ -1,7 +1,6 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-<script src="{{asset('backend/asset/js/select2.min.js')}}"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
-
     $('.select2').select2();
 
     var productTable = $('.data_tbl').DataTable({
@@ -9,15 +8,31 @@
         "serverSide": true,
         // aaSorting: [[0, 'asc']],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         "ajax": {
             "url": "{{ route('products.index', App\Enums\BooleanType::True->value) }}",
         },
-        columns: [
-            {data: 'name', name: 'name'},
-            {data: 'product_cost_with_tax', name: 'product_cost_with_tax', className: 'fw-bold'},
-            {data: 'product_price', name: 'product_price', className: 'fw-bold'},
-            {data: 'action', name: 'name'},
+        columns: [{
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'product_cost_with_tax',
+                name: 'product_cost_with_tax',
+                className: 'fw-bold'
+            },
+            {
+                data: 'product_price',
+                name: 'product_price',
+                className: 'fw-bold'
+            },
+            {
+                data: 'action',
+                name: 'name'
+            },
         ],
     });
 
@@ -56,7 +71,7 @@
         $('#combo_price').val(parseFloat(calcTotalComboPrice).toFixed(2));
     }
 
-    $(document).on('input', '#product_cost',function() {
+    $(document).on('input', '#product_cost', function() {
 
         costCalculate();
     });
@@ -218,7 +233,7 @@
         html += '<tr id="more_new_variant">';
         html += '<td>';
         html += '<select class="form-control" name="" id="variants">';
-        html += '<option value="">'+"{{ __('Create Combination') }}"+'</option>';
+        html += '<option value="">' + "{{ __('Create Combination') }}" + '</option>';
 
         $.each(variantsWithChild, function(key, val) {
 
@@ -326,7 +341,11 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(document).on('change', '#category_id', function(e) {
             e.preventDefault();
@@ -337,22 +356,23 @@
             var route = url.replace(':category_id', categoryId);
 
             $.ajax({
-                url: route
-                , type: 'get'
-                , success: function(subCategories) {
+                url: route,
+                type: 'get',
+                success: function(subCategories) {
 
                     $('#sub_category_id').empty();
-                    $('#sub_category_id').append('<option value="">'+"{{ __('Select Subcategory') }}"+'</option>');
+                    $('#sub_category_id').append('<option value="">' + "{{ __('Select Subcategory') }}" + '</option>');
 
                     $.each(subCategories, function(key, val) {
 
                         $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                     });
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -382,14 +402,14 @@
             }
         });
 
-        document.onkeyup = function () {
+        document.onkeyup = function() {
             var e = e || window.event; // for IE to cover IEs window event-object
 
-            if(e.ctrlKey && e.which == 13) {
+            if (e.ctrlKey && e.which == 13) {
 
                 $('#save_and_new').click();
                 return false;
-            }else if (e.shiftKey && e.which == 13) {
+            } else if (e.shiftKey && e.which == 13) {
 
                 $('#save').click();
                 return false;
@@ -459,7 +479,8 @@
 
                         toastr.error(data.errorMsg);
                     }
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').addClass('d-hide');
                     $('.error').html('');
@@ -471,7 +492,7 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
@@ -600,7 +621,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -633,11 +654,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
             }
@@ -661,11 +682,12 @@
 
                     $('#brand_name').focus();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -699,7 +721,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

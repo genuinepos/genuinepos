@@ -3,17 +3,15 @@
     <div class="form-group row">
         <div class="col-md-12">
             <label><strong>@lang('menu.name') </strong> <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control add_input" data-name="Offer name" id="name"
-                placeholder="Discount name" value="{{ $discount->name }}" autocomplete="off"/>
+            <input type="text" name="name" class="form-control add_input" data-name="Offer name" id="name" placeholder="Discount name" value="{{ $discount->name }}" autocomplete="off" />
             <span class="error error_name"></span>
         </div>
     </div>
 
     <div class="form-group row mt-1">
         <div class="col-md-12">
-            <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> </strong> <span class="text-danger">*</span> </label>
-            <input type="number" name="priority" class="form-control add_input" data-name="Priority" id="priority" placeholder="Priority" value="{{ $discount->priority }}" autocomplete="off"/>
+            <label><strong>@lang('menu.priority') <i data-bs-toggle="tooltip" data-bs-placement="right" title="Leave empty to auto generate." class="fas fa-info-circle tp"></i> </strong> <span class="text-danger">*</span> </label>
+            <input type="number" name="priority" class="form-control add_input" data-name="Priority" id="priority" placeholder="Priority" value="{{ $discount->priority }}" autocomplete="off" />
             <span class="error error_priority"></span>
         </div>
     </div>
@@ -37,11 +35,8 @@
             <label><strong>@lang('menu.products') </strong> </label>
             <select name="product_ids[]" class="form-control select2" multiple="multiple" id="e_product_ids">
                 @foreach ($products as $product)
-                    <option
-                        @foreach ($discountProducts as $discountProduct)
-                            {{ $product->id == $discountProduct->product_id ? 'SELECTED' : '' }}
-                        @endforeach
-                    value="{{ $product->id }}">{{ $product->name . ' (' . $product->product_code . ')' }}</option>
+                    <option @foreach ($discountProducts as $discountProduct)
+                            {{ $product->id == $discountProduct->product_id ? 'SELECTED' : '' }} @endforeach value="{{ $product->id }}">{{ $product->name . ' (' . $product->product_code . ')' }}</option>
                 @endforeach
             </select>
         </div>
@@ -168,7 +163,8 @@
                 $('.loading_button').hide();
                 $('#editModal').modal('hide');
                 $('.submit_button').prop('type', 'submit');
-            },error: function(err) {
+            },
+            error: function(err) {
 
                 $('.submit_button').prop('type', 'sumbit');
                 $('.loading_button').hide();
@@ -176,9 +172,9 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500){
+                } else if (err.status == 500) {
 
                     toastr.error('Server error please contact to the support.');
                     return;
@@ -192,20 +188,20 @@
         });
     });
 
-    $('#e_product_ids').on('change', function () {
+    $('#e_product_ids').on('change', function() {
 
         $('.e_brand_category_area').removeClass('d-hide');
         if ($(this).val().length > 0) {
 
             $('.e_brand_category_area').hide();
-        }else{
+        } else {
 
             $('.e_brand_category_area').show();
         }
     });
 
     var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-    var _expectedDateFormat = '' ;
+    var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');

@@ -45,7 +45,7 @@
                 <div class="col-md-4">
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                 </div>
-                
+
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST">
@@ -546,9 +546,8 @@
                                 @if(!isset($product))
 
                                     <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save And Add Another") }}</button>
-                                
                                     <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save") }}</button>
-                                @else   
+                                @else
 
                                     <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save And Duplicate") }}</button>
                                 @endif

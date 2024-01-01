@@ -170,6 +170,11 @@ class ProductService
                         $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or edit opening stock') . '</a>';
                     }
 
+                    if (auth()->user()->can('product_add')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('products.create', [$row->id]) . '">' . __('Duplicate Product') . '</a>';
+                    }
+
                     $html .= ' </div>';
                     $html .= '</div>';
 

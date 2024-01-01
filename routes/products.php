@@ -22,7 +22,7 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
 
     Route::get('index/{isForCreatePage?}', 'index')->name('products.index');
     Route::get('show/{id}', 'show')->name('products.show');
-    Route::get('create', 'create')->name('products.create');
+    Route::get('create/{id?}', 'create')->name('products.create');
     Route::post('store', 'store')->name('products.store');
     Route::get('edit/{id}', 'edit')->name('products.edit');
     Route::post('update/{id}', 'update')->name('products.update');

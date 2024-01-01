@@ -39,7 +39,7 @@ class ProductController extends Controller
 
     public function index(Request $request, $isForCreatePage = 0)
     {
-        if (! auth()->user()->can('product_all')) {
+        if (!auth()->user()->can('product_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -76,9 +76,9 @@ class ProductController extends Controller
         return view('product.products.ajax_view.show', compact('product', 'ownBranchAndWarehouseStocks', 'globalWareHouseStocks', 'priceGroups'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $id = null)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -99,17 +99,21 @@ class ProductController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
-
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
-
         $lastProductSerialCode = $this->productService->getLastProductSerialCode();
 
-        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode'));
+        $product = null;
+        if ($id) {
+
+            $product = $this->productService->singleProduct(id: $id, with: ['variants', 'category', 'category.subcategories']);
+        }
+
+        return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
     public function edit(Request $request, $id)
     {
-        if (! auth()->user()->can('product_edit')) {
+        if (!auth()->user()->can('product_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -128,9 +132,7 @@ class ProductController extends Controller
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
-
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
-
         $lastProductSerialCode = $this->productService->getLastProductSerialCode();
 
         return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
@@ -138,7 +140,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_add')) {
+        if (!auth()->user()->can('product_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -202,7 +204,7 @@ class ProductController extends Controller
             $request,
             [
                 'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,'.$id,
+                'code' => 'sometimes|unique:products,product_code,' . $id,
                 'unit_id' => 'required',
                 'photo' => 'sometimes|image|max:2048',
             ],

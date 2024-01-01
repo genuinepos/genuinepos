@@ -25,16 +25,27 @@
     <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
-@section('title', 'Add Product - ')
+@section('title', isset($product) ? 'Duplicate Product - ' : 'Add Product - ')
 
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <div class="sec-name">
-                <div class="name-head">
-                    <h6>{{ __("Add Product") }}</h6>
+            <div class="sec-name g-1">
+                <div class="col-md-4">
+                    <h6>{{ isset($product) ? __('Duplicate Product')  :  __("Add Product") }}</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+
+                <div class="col-md-4">
+                    @if(isset($product))
+
+                        <p class="text-danger"><b>{{ __("Product duplicate from : ") }}</b> <span class="fw-bold">{{ $product->name }}</span></h6>
+                    @endif
+                </div>
+
+                <div class="col-md-4">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                </div>
+                
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST">
@@ -52,7 +63,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Product Name") }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="name" class="form-control" id="name" data-next="code" placeholder="{{ __("Product Name") }}" autofocus >
+                                                    <input required type="text" name="name" class="form-control" id="name" data-next="code" placeholder="{{ __("Product Name") }}" value="{{ isset($product) ? $product?->name . ' (Copy)' : '' }}">
                                                     <span class="error error_name"></span>
                                                 </div>
                                             </div>
@@ -80,10 +91,13 @@
                                                         <select required class="form-control select2" name="unit_id" id="unit_id" data-next="barcode_type">
                                                             <option value="">{{ __("Select Unit") }}</option>
                                                             @php
-                                                                $defaultUnit = $generalSettings['product__default_unit_id'];
+                                                                $productUnitId = isset($product) ? $product?->unit_id : '';
+                                                                $defaultUnitId = $generalSettings['product__default_unit_id'];
+                                                                $unitId = $productUnitId ? $productUnitId : $defaultUnitId;
                                                             @endphp
                                                             @foreach ($units as $unit)
-                                                                <option {{ $defaultUnit ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+
+                                                                <option {{ $unitId ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -120,8 +134,12 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select class="form-control select2 flex-nowrap" name="category_id" id="category_id" data-next="sub_category_id">
                                                                 <option value="">{{ __("Select Category") }}</option>
+                                                                @php
+                                                                    $productCategoryId = isset($product) ? $product->category_id : '';
+                                                                @endphp
                                                                 @foreach ($categories as $category)
-                                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+
+                                                                    <option {{ $productCategoryId == $category->id ? 'SELECTED' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
@@ -139,6 +157,14 @@
                                                     <div class="col-8">
                                                         <select class="form-control select2" name="sub_category_id" id="sub_category_id" data-next="brand_id">
                                                             <option value="">{{ __("Select Category First") }}</option>
+                                                            @if (isset($product) && isset($product?->category) && count($product?->category?->subcategories) > 0)
+                                                                @php
+                                                                    $productSubcategoryId = $product?->sub_category_id
+                                                                @endphp
+                                                                @foreach ($product?->category?->subcategories as $subcategory)
+                                                                    <option {{ $productSubcategoryId == $subcategory->id ? 'SELECTED' : '' }} value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                                                @endforeach
+                                                            @endif
                                                         </select>
                                                     </div>
                                                 </div>
@@ -155,8 +181,11 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select class="form-control select2" name="brand_id" id="brand_id" data-next="alert_quantity">
                                                                 <option value="">{{ __("Select Brand") }}</option>
+                                                                @php
+                                                                    $productBrandId = isset($product) ? $product->brand_id : '';
+                                                                @endphp
                                                                 @foreach ($brands as $brand)
-                                                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                                                    <option {{ $productBrandId == $brand->id ? "SELECTED" : '' }} value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                                 @endforeach
                                                             </select>
 
@@ -173,7 +202,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Alert Quantity") }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="number" step="any" name="alert_quantity" class="form-control" id="alert_quantity" value="0" data-next="warranty_id" autocomplete="off">
+                                                    <input type="number" step="any" name="alert_quantity" class="form-control" id="alert_quantity" value="{{ isset($product) ? $product->alert_quantity : 0 }}" data-next="warranty_id" autocomplete="off">
                                                     <span class="error error_alert_quantity"></span>
                                                 </div>
                                             </div>
@@ -189,8 +218,11 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select class="form-control select2" name="warranty_id" id="warranty_id" data-next="access_branch_id">
                                                                 <option value="">{{ __("Select Warranty") }}</option>
+                                                                @php
+                                                                    $productWarrantyId = isset($product) ? $product->warranty_id : '';
+                                                                @endphp
                                                                 @foreach ($warranties as $warranty)
-                                                                    <option value="{{ $warranty->id }}">{{ $warranty->name }}</option>
+                                                                    <option {{ $productWarrantyId == $warranty->id ? 'SELECTED' : '' }} value="{{ $warranty->id }}">{{ $warranty->name }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
@@ -211,7 +243,15 @@
                                                             <input type="hidden" name="access_branch_count" value="access_branch_count">
                                                             <select class="form-control select2" name="access_branch_ids[]" id="access_branch_id" multiple>
                                                                 @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                                    <option
+                                                                        @if (isset($product) && count($product->productAccessBranches) > 0)
+                                                                            @foreach ($product->productAccessBranches as $productAccessBranche)
+                                                                                {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }}
+                                                                            @endforeach
+                                                                        @endif
+                                                                        value="{{ $branch->id }}">
+                                                                        {{ $branch->name }}
+                                                                    </option>
                                                                 @endforeach
                                                             </select>
                                                             <span class="error error_access_branch_ids"></span>
@@ -228,8 +268,11 @@
                                                 <label class="col-4"><b>{{ __("Condition") }}</b></label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="product_condition" id="product_condition" data-next="is_manage_stock">
+                                                        @php
+                                                            $condition = isset($product) ? $product->product_condition : '';
+                                                        @endphp
                                                         <option value="New">{{ __("New") }}</option>
-                                                        <option value="Used">{{ __("Used") }}</option>
+                                                        <option {{ $condition == 'Used' ? 'SELECTED' : '' }} value="Used">{{ __("Used") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -240,8 +283,11 @@
                                                 <label class="col-4"><b>{{ __("Stock Type") }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('menu.stock_type_msg')" class="fas fa-info-circle tp"></i></b> </label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="is_manage_stock" id="is_manage_stock" data-next="product_cost">
+                                                        @php
+                                                            $isManageStock = isset($product) ? $product->is_manage_stock : '';
+                                                        @endphp
                                                         <option value="1">{{ __("Manageable Stock") }}</option>
-                                                        <option value="0">{{ __("Service/Digital Product") }}</option>
+                                                        <option {{ $isManageStock == 0 ? 'SELECTED' : '' }} value="0">{{ __("Service/Digital Product") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -260,7 +306,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Unit Cost(Exc. Tax)") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="product_cost" placeholder="0.00" data-next="tax_ac_id" autocomplete="off">
+                                                        <input type="number" step="any" name="product_cost" class="form-control fw-bold" id="product_cost" placeholder="0.00" value="{{ isset($product) ? $product->product_cost : '' }}" data-next="tax_ac_id" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -269,7 +315,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Unit Cost(Inc. Tax)") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control fw-bold" id="product_cost_with_tax" placeholder="0.00" data-next="tax_ac_id" autocomplete="off">
+                                                        <input type="number" step="any" readonly name="product_cost_with_tax" class="form-control fw-bold" id="product_cost_with_tax" placeholder="0.00" value="{{ isset($product) ? $product->product_cost_with_tax : '' }}" data-next="tax_ac_id" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,10 +328,12 @@
                                                         <label class="col-4"><b> {{ __("Vat/Tax") }}</b></label>
                                                         <div class="col-8">
                                                             <select class="form-control" name="tax_ac_id" id="tax_ac_id" data-next="tax_type">
-                                                                <option data-tax_percent="0" value="">
-                                                                    @lang('menu.no_tax')</option>
+                                                                <option data-tax_percent="0" value="">{{ __("NoVat/Tax") }}</option>
+                                                                @php
+                                                                    $productTaxAcId = isset($product) ? $product?->tax_ac_id : '';
+                                                                @endphp
                                                                 @foreach ($taxAccounts as $tax)
-                                                                    <option data-tax_percent="{{ $tax->tax_percent }}" value="{{ $tax->id }}">
+                                                                    <option {{ $productTaxAcId == $tax->id ? 'SELECTED' : '' }} data-tax_percent="{{ $tax->tax_percent }}" value="{{ $tax->id }}">
                                                                         {{ $tax->name }}</option>
                                                                 @endforeach
                                                             </select>
@@ -298,8 +346,11 @@
                                                         <label class="col-4"><b>{{ __("Vat/Tax Type") }}</b> </label>
                                                         <div class="col-8">
                                                             <select name="tax_type" class="form-control" id="tax_type" data-next="profit">
+                                                                @php
+                                                                    $productTaxType = isset($product) ? $product->tax_type : '';
+                                                                @endphp
                                                                 <option value="1">{{ __("Exclusive") }}</option>
-                                                                <option value="2">{{ __("Inclusive") }}</option>
+                                                                <option {{ $productTaxType == 2 ? 'SELECTED' : '' }} value="2">{{ __("Inclusive") }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -312,7 +363,12 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Profit Margin(%)") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" name="profit" class="form-control fw-bold" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}" data-next="product_price" placeholder="0.00" autocomplete="off">
+                                                        @php
+                                                            $defaultProfit = $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0;
+                                                            $productProfit = isset($product) ? $product->profit : '';
+                                                            $profit = $productProfit ? $productProfit : $defaultProfit;
+                                                        @endphp
+                                                        <input type="number" step="any" name="profit" class="form-control fw-bold" id="profit" value="{{ $profit }}" data-next="product_price" placeholder="0.00" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +377,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Unit Price(Exc. Tax)") }}</b></label>
                                                     <div class="col-8">
-                                                        <input type="number" step="any" name="product_price" class="form-control fw-bold" id="product_price" data-next="is_variant" placeholder="0.00" autocomplete="off">
+                                                        <input type="number" step="any" name="product_price" class="form-control fw-bold" id="product_price" data-next="is_variant" placeholder="0.00" value="{{ isset($product) ? $product->product_price : '' }}" autocomplete="off">
                                                     </div>
                                                 </div>
                                             </div>
@@ -333,8 +389,11 @@
                                                     <label class="col-4"><b>{{ __("Has Variant?") }}</b> </label>
                                                     <div class="col-8">
                                                         <select name="is_variant" class="form-control" id="is_variant" data-next="type">
+                                                            @php
+                                                                $productIsVariant = isset($product) ? $product->is_variant : 0;
+                                                            @endphp
                                                             <option value="0">{{ __("No") }}</option>
-                                                            <option value="1">{{ __("Yes") }}</option>
+                                                            <option {{ $productIsVariant == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -352,7 +411,7 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="dynamic_variant_create_area d-hide">
+                                            <div class="dynamic_variant_create_area {{ $productIsVariant == 0 ? 'd-hide' : '' }}">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="add_more_btn">
@@ -361,63 +420,7 @@
                                                     </div>
 
                                                     <div class="col-md-12">
-                                                        <div class="table-responsive mt-1">
-                                                            <table class="table modal-table table-sm">
-                                                                <thead>
-                                                                    <tr class="text-center bg-primary variant_header">
-                                                                        <th class="text-white text-start">{{ __("Select Variant") }}</th>
-                                                                        <th class="text-white text-start">{{ __("Variant Code") }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __("Also known as SKU. Variant code(SKU) must be unique.") }}" class="fas fa-info-circle tp"></i></th>
-                                                                        <th colspan="2" class="text-white text-start">{{ __("Unit Cost (Exc. Tax) & (Inc. Tax)") }}</th>
-                                                                        <th class="text-white text-start">{{ __("Profit(%)") }}</th>
-                                                                        <th class="text-white text-start">{{ __("Unit Price(Exc. Tax)") }}</th>
-                                                                        <th class="text-white text-start">{{ __('Variant Photo') }}</th>
-                                                                        <th><i class="fas fa-trash-alt text-white"></i></th>
-                                                                    </tr>
-                                                                </thead>
-
-                                                                <tbody class="dynamic_variant_body">
-                                                                    <tr>
-                                                                        <td class="text-start">
-                                                                            <select class="form-control form-control" name="" id="variants">
-                                                                                <option value="">{{ __("Create Combination") }}</option>
-                                                                                @foreach ($bulkVariants as $bulkVariant)
-                                                                                    <option value="{{ $bulkVariant->id }}">{{ $bulkVariant->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            <input type="text" name="variant_combinations[]" id="variant_combination" class="form-control reqireable fw-bold" placeholder="Variant Combination">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="text" name="variant_codes[]" id="variant_code" class="form-control reqireable fw-bold" placeholder="Variant Code">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" name="variant_costings[]" step="any" class="form-control requireable fw-bold" placeholder="Cost" id="variant_costing">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_costings_with_tax[]" class="form-control requireable fw-bold" placeholder="Cost inc.tax" id="variant_costing_with_tax">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_profits[]" class="form-control requireable fw-bold" placeholder="Profit" value="0.00" id="variant_profit">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable fw-bold" placeholder="@lang('menu.price_include_tax')" id="variant_price_exc_tax">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="file" name="variant_image[]" class="form-control" id="variant_image">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                        @include('product.products.partials.add_product_variant_add_partial')
                                                     </div>
                                                 </div>
                                             </div>
@@ -447,7 +450,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Weight") }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" name="weight" class="form-control" id="weight" placeholder="{{ __("Weight") }}" data-next="is_show_in_ecom">
+                                                    <input type="text" name="weight" class="form-control" id="weight" placeholder="{{ __("Weight") }}" value="{{ isset($product) ? $product->weight : '' }}" data-next="is_show_in_ecom">
                                                 </div>
                                             </div>
                                         </div>
@@ -459,8 +462,11 @@
                                                 <label class="col-4"><b>{{ __("Displayed In E-com") }}</b></label>
                                                 <div class="col-8">
                                                     <select name="is_show_in_ecom" class="form-control" id="is_show_in_ecom" data-next="is_show_emi_on_pos">
+                                                        @php
+                                                            $productIsShowInEcom = isset($product) ? $product->is_show_in_ecom : '';
+                                                        @endphp
                                                         <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option {{ $productIsShowInEcom == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -471,8 +477,11 @@
                                                 <label class="col-4"><b>{{ __("Enable IMEI/SL No") }}</b></label>
                                                 <div class="col-8">
                                                     <select name="is_show_emi_on_pos" class="form-control" id="is_show_emi_on_pos" data-next="is_for_sale">
+                                                        @php
+                                                            $productIsShowEmiOnPos = isset($product) ? $product->is_show_emi_on_pos : '';
+                                                        @endphp
                                                         <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option {{ $productIsShowEmiOnPos == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -485,8 +494,11 @@
                                                 <label class="col-4"><b>{{ __("Is For Sale") }}</b></label>
                                                 <div class="col-8">
                                                     <select name="is_for_sale" class="form-control" id="is_for_sale" data-next="has_batch_no_expire_date">
+                                                        @php
+                                                            $productIsForSale = isset($product) ? $product->is_for_sale : '';
+                                                        @endphp
                                                         <option value="1">{{ __("Yes") }}</option>
-                                                        <option value="0">{{ __("No") }}</option>
+                                                        <option {{ $productIsForSale == 0 ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -496,9 +508,12 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("BatchNo/Expire Date") }}</b></label>
                                                 <div class="col-8">
-                                                    <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date" data-next="save_and_new">
+                                                    <select name="has_batch_no_expire_date" class="form-control" id="has_batch_no_expire_date" data-next="{{ isset($product) ? 'save' : 'save_and_new' }}">
+                                                        @php
+                                                            $productHasBatchNoExpireDate = isset($product) ? $product->has_batch_no_expire_date : '';
+                                                        @endphp
                                                         <option value="0">{{ __("No") }}</option>
-                                                        <option value="1">{{ __("Yes") }}</option>
+                                                        <option {{ $productHasBatchNoExpireDate == 0 ? 'SELECTED' : '' }}  value="1">{{ __("Yes") }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -516,7 +531,7 @@
                                             <div class="input-group">
                                                 <label class="col-2"><b>{{ __("Description") }}</b></label>
                                                 <div class="col-10">
-                                                    <textarea name="product_details" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new"></textarea>
+                                                    <textarea name="product_details" class="ckEditor form-control" cols="50" rows="5" tabindex="4" style="display: none; width: 653px; height: 160px;" data-next="save_and_new">{{ isset($product) ? $product->product_details : '' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -528,8 +543,15 @@
                         <div class="col-md-12 d-flex justify-content-end">
                             <div class="btn-loading">
                                 <button type="button" class="btn loading_button product_loading_btn d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
-                                <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save And Add Another") }}</button>
-                                <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save") }}</button>
+                                @if(!isset($product))
+
+                                    <button type="submit" name="action" value="save_and_new" class="btn btn-success product_submit_button p-1" id="save_and_new">{{ __("Save And Add Another") }}</button>
+                                
+                                    <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save") }}</button>
+                                @else   
+
+                                    <button type="submit" name="action" value="save" class="btn btn-success product_submit_button p-1" id="save">{{ __("Save And Duplicate") }}</button>
+                                @endif
                             </div>
                         </div>
                     </div>

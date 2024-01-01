@@ -67,6 +67,7 @@ class LoginController extends Controller
 
         $user = User::where('username', $request->username)->where('allow_login', 1)->first();
         if (isset($user) && $user->allow_login == 1) {
+            
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
                 if (!Session::has($user->language)) {

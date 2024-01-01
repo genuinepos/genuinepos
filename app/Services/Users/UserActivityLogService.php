@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Utils;
+namespace App\Services\Users;
 
 use App\Models\UserActivityLog;
 
-class UserActivityLogUtil
+class UserActivityLogService
 {
     public function subjectTypes()
     {
@@ -28,7 +28,6 @@ class UserActivityLogUtil
             33 => 'Suspend Invoice',
             8 => 'Sales Order',
             9 => 'Sale Return',
-            20 => 'POS Sale',
             34 => 'Exchange Invoice',
             10 => 'Transfer Stock',
             13 => 'Stock Adjustment',
@@ -185,7 +184,7 @@ class UserActivityLogUtil
         ];
     }
 
-    public function addLog($action, $subject_type, $data_obj, $branch_id = null, $user_id = null)
+    public function addLog($action, $subjectType, $dataObj, $branchId = null, $userId = null)
     {
         $generalSettings = config('generalSettings');
         $dateFormat = $generalSettings['business__date_format'];
@@ -193,20 +192,19 @@ class UserActivityLogUtil
 
         $descriptionModel = $this->descriptionModel();
         $addLog = new UserActivityLog();
-        $addLog->branch_id = $branch_id ? $branch_id : auth()->user()->branch_id;
-        $addLog->user_id = $user_id ? $user_id : auth()->user()->id;
+        $addLog->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
+        $addLog->user_id = $userId ? $userId : auth()->user()->id;
         $addLog->action = $action;
-        $addLog->subject_type = $subject_type;
+        $addLog->subject_type = $subjectType;
         $addLog->date = date($__dateFormat);
         $addLog->report_date = date('Y-m-d H:i:s');
 
-        // prepare the descriptions
         $description = '';
 
         $index = 0;
-        foreach ($descriptionModel[$subject_type]['fields'] as $field) {
+        foreach ($descriptionModel[$subjectType]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index].(isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A').', ';
+            $description .= $descriptionModel[$subjectType]['texts'][$index].(isset($dataObj->{$field}) ? $dataObj->{$field} : 'N/A').', ';
             $index++;
         }
 

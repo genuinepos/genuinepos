@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\CategoryService;
-use App\Utils\UserActivityLogUtil;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Services\Products\CategoryService;
+use App\Services\Users\UserActivityLogService;
 
 class CategoryController extends Controller
 {
     public function __construct(
         private CategoryService $categoryService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_category_index')) {
+        if (!auth()->user()->can('product_category_index')) {
 
             abort(403, __('Access Forbidden.'));
         }
@@ -34,7 +35,7 @@ class CategoryController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('product_category_add')) {
+        if (!auth()->user()->can('product_category_add')) {
 
             abort(403, __('Access Forbidden.'));
         }
@@ -44,17 +45,12 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_category_add')) {
+        if (!auth()->user()->can('product_category_add')) {
 
-            return response()->json(__('Access Denied'));
+            return response()->json(__('Access Forbidden'));
         }
 
-        $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', null);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
+        $this->categoryService->storeValidation(request: $request);
 
         try {
 
@@ -64,7 +60,7 @@ class CategoryController extends Controller
 
             if ($addCategory) {
 
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 20, data_obj: $addCategory);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $addCategory);
             }
 
             DB::commit();
@@ -78,9 +74,9 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('product_category_edit')) {
+        if (!auth()->user()->can('product_category_edit')) {
 
-            return response()->json(__('Access Denied'));
+            return response()->json(__('Access Forbidden'));
         }
 
         $category = $this->categoryService->singleCategory($id);
@@ -90,17 +86,12 @@ class CategoryController extends Controller
 
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('product_category_edit')) {
+        if (!auth()->user()->can('product_category_edit')) {
 
-            return response()->json(__('Access Denied'));
+            return response()->json(__('Access Forbidden'));
         }
 
-        $this->validate($request, [
-            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($id) {
-                return $query->where('parent_category_id', null)->where('id', '!=', $id);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
+        $this->categoryService->updateValidation(request: $request, id: $id);
 
         try {
 
@@ -110,7 +101,7 @@ class CategoryController extends Controller
 
             if ($updateCategory) {
 
-                $this->userActivityLogUtil->addLog(action: 2, subject_type: 20, data_obj: $updateCategory);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $updateCategory);
             }
 
             DB::commit();
@@ -124,9 +115,9 @@ class CategoryController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('product_category_delete')) {
+        if (!auth()->user()->can('product_category_delete')) {
 
-            return response()->json(__('Access Denied'));
+            return response()->json(__('Access Forbidden'));
         }
 
         try {
@@ -142,7 +133,7 @@ class CategoryController extends Controller
 
             if ($deleteCategory['pass'] == true) {
 
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 20, data_obj: $deleteCategory['data']);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Categories->value, dataObj: $deleteCategory['data']);
             }
 
             DB::commit();

@@ -75,7 +75,7 @@ class PosSaleController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('pos_all')) {
+        if (!auth()->user()->can('pos_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -97,7 +97,7 @@ class PosSaleController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('pos_add')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -345,7 +345,7 @@ class PosSaleController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('pos_edit')) {
+        if (!auth()->user()->can('pos_edit')) {
 
             abort(403, 'Access Forbidden.');
         }

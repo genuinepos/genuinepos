@@ -311,13 +311,8 @@
     });
 
     // call jquery method
-    var action_direction = '';
+    var actionDirection = '';
     $(document).ready(function() {
-
-        $(document).on('click', '.submit_button', function() {
-
-            action_direction = $(this).val();
-        });
 
         // Select product and show specific product creation fields or area
         $('#type').on('change', function() {
@@ -391,7 +386,7 @@
         var isAllowSubmit = true;
         $(document).on('click', '.product_submit_button', function() {
 
-            var action_direction = $(this).val();
+            actionDirection = $(this).val();
 
             if (isAllowSubmit) {
 
@@ -449,7 +444,7 @@
                         toastr.success("{{ __('Product added successfully.') }}");
                         variant_code_sequel = 0;
 
-                        if (action_direction == 'save') {
+                        if (actionDirection == 'save') {
 
                             window.location = "{{ route('products.index') }}";
                         } else {
@@ -731,4 +726,10 @@
             }
         });
     });
+
+    @if (isset($product) && count($product->variants) > 0)
+        regenerateVariantCode();
+    @endif
+
+    $('#name').focus().select();
 </script>

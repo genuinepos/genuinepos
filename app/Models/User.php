@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Hrm\Leave;
 use App\Models\Hrm\Shift;
 use App\Models\Setups\Branch;
-use Laravel\Cashier\Billable;
 use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;
 use App\Models\Hrm\Designation;
@@ -15,10 +14,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+partition
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasFactory, HasRoles, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $guarded = [];
 

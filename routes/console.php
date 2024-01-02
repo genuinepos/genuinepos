@@ -1,84 +1,51 @@
 <?php
 
-use App\Models\GeneralSetting;
+use App\Jobs\SaleMailJob;
+use App\Mail\CustomerRegistered;
+use App\Mail\NewProductArrived;
+use App\Mail\PurchaseCreated;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
-use Database\Seeders\AccountGroupSeeder;
-use Illuminate\Database\Schema\Blueprint;
+use Modules\Communication\Interface\EmailServiceInterface;
 
-require_once base_path('deployment/db-migrations/001.php');
+/*
+|--------------------------------------------------------------------------
+| Console Routes
+|--------------------------------------------------------------------------
+|
+| This file is where you may define all of your Closure based console
+| commands. Each Closure is bound to a command instance allowing a
+| simple approach to interacting with each command's IO methods.
+|
+*/
 
-Artisan::command('dev:m', function () {
-    // Schema::table('users', function (Blueprint $table) {
-    //     $table->ipAddress()->nullable();
-    // });
+// Artisan::command('hello', function(EmailServiceInterface  $emailService) {
+//     $customer = new Customer();
+//     $customer->name = '...';
+//     .....
+//     $customer->save();
 
-    Schema::table('accounting_vouchers', function (Blueprint $table) {
+//     $customer = Customer::first();
+//     if(isset($customer)) {
+//         $emailService->send($customer->email, new CustomerRegistered($customer));
+//     }
+// });
+// Artisan::command('product', function(EmailServiceInterface  $emailService) {
+//     $customers = Customer::pluck('email', 'id')->toArray();
+//     $product = Product::latest()->first();
+//     $emailService->sendMultiple(array_values($customers), new NewProductArrived($customers, $product));
 
-        $table->unsignedBigInteger('payroll_ref_id')->after('stock_adjustment_ref_id')->nullable();
+// });
 
-        $table->foreign('payroll_ref_id')->references('id')->on('hrm_payrolls')->onDelete('set null');
-        $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
-    });
+Artisan::command('test', function () {
 
-    Schema::table('voucher_description_references', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('payroll_id')->after('stock_adjustment_id')->nullable();
-        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
-    });
-
-    Schema::table('day_books', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('payroll_id')->after('transfer_stock_id')->nullable();
-        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
-    });
+    $key = "";
+    $keyLength = 8;
+    for ($x = 1; $x <= $keyLength; $x++) {
+        // Set each digit
+        $key .= random_int(0, 9);
+    }
+    echo $key;
 });
 
-Artisan::command('dev:init', function () {
-    Artisan::call('db:seed --class=TenancyDatabaseSeeder');
-});
-
-Artisan::command('dev:seed', function () {
-    (new AccountGroupSeeder)->run();
-});
-
-Artisan::command('t:1', function () {
-    $s = GeneralSetting::where('parent_branch_id', auth()->user()?->branch_id)
-        ->orWhere('branch_id', auth()->user()?->branch_id)
-        ->orWhereNull('branch_id')
-        ->distinct('key')
-        ->pluck('value', 'key')
-        ->toArray();
-    dd($s);
-});
-
-Artisan::command('t:2', function () {
-
-    $generalSettings = GeneralSetting::where(function ($query) {
-        $query->whereNotNull('branch_id')
-            ->whereNotNull('parent_branch_id')
-            ->orderBy('branch_id')
-            ->orderBy('parent_branch_id');
-    })
-        ->orWhere(function ($query) {
-            $query->whereNotNull('branch_id')
-                ->whereNull('parent_branch_id')
-                ->orderBy('branch_id');
-        })
-        ->orWhere(function ($query) {
-            $query->whereNull('branch_id')
-                ->whereNotNull('parent_branch_id')
-                ->orderBy('parent_branch_id');
-        })
-        ->orWhere(function ($query) {
-            $query->whereNull('branch_id')
-                ->whereNull('parent_branch_id')
-                ->orderBy(DB::raw('RAND()')); // Random order for global settings
-        })
-        ->distinct('key')
-        ->pluck('value', 'key');
-    // ->get();
-
-    dd($generalSettings);
-});
+// Just merged this line of text.

@@ -30,8 +30,8 @@ return new class extends Migration
             $table->unsignedBigInteger('adjustment_id')->nullable();
             $table->unsignedBigInteger('payroll_id')->nullable();
             $table->unsignedBigInteger('loan_id')->nullable();
-            $table->unsignedBigInteger('loan_payment_id')->nullable()->index('account_ledgers_loan_payment_id_foreign');
-            $table->unsignedBigInteger('voucher_description_id')->nullable(0);
+            $table->unsignedBigInteger('loan_payment_id')->nullable();
+            $table->unsignedBigInteger('voucher_description_id')->nullable();
             $table->decimal('debit', 22)->default(0);
             $table->decimal('credit', 22)->default(0);
             $table->decimal('running_balance', 22)->default(0);

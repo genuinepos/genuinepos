@@ -209,7 +209,7 @@ class InvoiceLayoutService
         $updateLayout->save();
     }
 
-    public function invoiceLayouts(int $branchId = null, array $with = null): object
+    public function invoiceLayouts(?int $branchId = null, array $with = null): object
     {
         $query = InvoiceLayout::query();
 

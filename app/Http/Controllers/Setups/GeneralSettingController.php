@@ -9,6 +9,7 @@ use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
+use App\Services\Setups\InvoiceLayoutService;
 use App\Services\GeneralSettingServiceInterface;
 
 class GeneralSettingController extends Controller
@@ -19,6 +20,7 @@ class GeneralSettingController extends Controller
         private CurrencyService $currencyService,
         private TimezoneService $timezoneService,
         private PriceGroupService $priceGroupService,
+        private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
     }
@@ -35,6 +37,7 @@ class GeneralSettingController extends Controller
         $units = $this->unitService->units()->where('base_unit_id', null)->get();
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $timezones = $this->timezoneService->all();
+        $invoiceLayouts = $this->invoiceLayoutService->invoiceLayouts(branchId: null);
 
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
@@ -47,7 +50,8 @@ class GeneralSettingController extends Controller
             'timezones',
             'units',
             'priceGroups',
-            'taxAccounts'
+            'taxAccounts',
+            'invoiceLayouts',
         ));
     }
 
@@ -207,6 +211,18 @@ class GeneralSettingController extends Controller
         $this->generalSettingService->updateAndSync($settings);
 
         return response()->json(__('Prefix settings updated Successfully'));
+    }
+
+    public function invoiceLayoutSettings(Request $request)
+    {
+        $settings = [
+            'invoice_layout__add_sale_invoice_layout_id' => $request->add_sale_invoice_layout_id,
+            'invoice_layout__pos_sale_invoice_layout_id' => $request->pos_sale_invoice_layout_id,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Invoice Layout settings updated Successfully'));
     }
 
     public function systemSettings(Request $request)

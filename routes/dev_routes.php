@@ -189,8 +189,21 @@ Route::get('my-test', function () {
 
     // return $dates;
 
-    $str = 'C-000050';
-    return intval($str);
+    // $str = 'C-000050';
+    // return intval($str);
+
+    // return request()->generalSettings['business__business_name'];
+
+    $branchName = 'Farea Super Market';
+
+    $exp = explode(' ', $branchName);
+    $prefix = '';
+    foreach($exp as $ex){
+        $str = str_split($ex);
+        $prefix .= $str[0];
+    }
+
+    return strtoupper($prefix);
 });
 
 

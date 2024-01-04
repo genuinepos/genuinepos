@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Listeners;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Exception;
+use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Auth\Events\Authenticated;
+
+class GeneralSettingsListener
+{
+    /**
+     * Create the event listener.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     */
+    public function handle(Authenticated $event)
+    {
+        try {
+            if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
+
+                $generalSettings = Cache::get('generalSettings');
+                if (!isset($generalSettings)) {
+
+                    $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id ?? null)->pluck('value', 'key')->toArray();
+                    Cache::rememberForever('generalSettings', function () use ($generalSettings) {
+
+                        return $generalSettings;
+                    });
+                }
+
+                request()->merge(['generalSettings' => $generalSettings]);
+
+                config([
+                    'generalSettings' => $generalSettings,
+                    // Tenant separated email config start
+                    // 'mail.mailers.smtp.transport' => $generalSettings['email_config__MAIL_MAILER'] ?? config('mail.mailers.smtp.transport'),
+                    // 'mail.mailers.smtp.host' => $generalSettings['email_config__MAIL_HOST'] ?? config('mail.mailers.smtp.host'),
+                    // 'mail.mailers.smtp.port' => $generalSettings['email_config__MAIL_PORT'] ?? config('mail.mailers.smtp.port'),
+                    // 'mail.mailers.smtp.encryption' => $generalSettings['email_config__MAIL_ENCRYPTION'] ?? config('mail.mailers.smtp.encryption'),
+                    // 'mail.mailers.smtp.username' => $generalSettings['email_config__MAIL_USERNAME'] ?? config('mail.mailers.smtp.username'),
+                    // 'mail.mailers.smtp.password' => $generalSettings['email_config__MAIL_PASSWORD'] ?? config('mail.mailers.smtp.password'),
+                    // 'mail.mailers.smtp.timeout' => $generalSettings['email_config__MAIL_TIMEOUT'] ?? config('mail.mailers.smtp.timeout'),
+                    // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
+                    // Tenant separated email config ends
+                ]);
+
+                $dateFormat = $generalSettings['business__date_format'];
+                $__date_format = str_replace('-', '/', $dateFormat);
+
+                if (isset($generalSettings)) {
+
+                    view()->share('generalSettings', $generalSettings);
+                    view()->share('__date_format', $__date_format);
+                }
+            }
+        } catch (Exception $e) {
+        }
+    }
+}

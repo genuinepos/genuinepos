@@ -111,7 +111,7 @@ class BranchController extends Controller
 
             $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: 'Default Invoice Layout');
 
-            $this->branchSettingService->addBranchSettings(branchId: $addBranch->id, parentBranchId: $request->parent_branch_id, defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService);
+            $this->branchSettingService->addBranchSettings(branchId: $addBranch->id, parentBranchId: $addBranch->parent_branch_id, defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService, request: $request);
 
             if ($request->add_opening_user) {
 

@@ -26,6 +26,7 @@ Route::prefix('setups')->group(function () {
         Route::post('manufacturing/settings', 'manufacturingSettings')->name('settings.manufacturing.settings');
         Route::post('dashboard/settings', 'dashboardSettings')->name('settings.dashboard.settings');
         Route::post('prefix/settings', 'prefixSettings')->name('settings.prefix.settings');
+        Route::post('invoice/layout/settings', 'invoiceLayoutSettings')->name('settings.invoice.layout.settings');
         Route::post('system/settings', 'systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'moduleSettings')->name('settings.module.settings');
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
@@ -53,6 +54,7 @@ Route::prefix('setups')->group(function () {
             Route::post('add/sale/{id}', 'addSaleSettings')->name('branches.settings.add.sale');
             Route::post('pos/{id}', 'posSettings')->name('branches.settings.pos');
             Route::post('purchase/{id}', 'purchaseSettings')->name('branches.settings.purchase');
+            Route::post('manufacturing/{id}', 'manufacturingSettings')->name('branches.settings.manufacturing');
             Route::post('dashboard/{id}', 'dashboardSettings')->name('branches.settings.dashboard');
             Route::post('prefix/{id}', 'prefixSettings')->name('branches.settings.prefix');
             Route::post('invoice/layout/{id}', 'invoiceLayoutSettings')->name('branches.settings.invoice.layout');

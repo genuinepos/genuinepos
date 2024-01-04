@@ -112,7 +112,7 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                         <th id="net_total_amount" class="text-white text-end"></th>
                                         <th id="recovered_amount" class="text-white text-end"></th>
                                         <th class="text-white text-end">---</th>

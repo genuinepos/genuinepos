@@ -73,8 +73,8 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         }
 
         $manufacturingSetting = $manufacturingSettingService->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
-        $voucherPrefix = $manufacturingSetting?->production_voucher_prefix ? $manufacturingSetting?->production_voucher_prefix : 'MF';
-        $isUpdateProductCostAndPrice = $manufacturingSetting ? $manufacturingSetting?->is_update_product_cost_and_price_in_production : BooleanType::True->value;
+        $voucherPrefix = 'MF';
+        $isUpdateProductCostAndPrice = BooleanType::True->value;
 
         $addProduction = $productionService->addProduction(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -201,8 +201,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         object $dayBookService,
     ): ?array {
 
-        $manufacturingSetting = $manufacturingSettingService->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
-        $isUpdateProductCostAndPrice = $manufacturingSetting ? $manufacturingSetting?->is_update_product_cost_and_price_in_production : BooleanType::True->value;
+        $isUpdateProductCostAndPrice = BooleanType::True->value;
 
         $restrictions = $productionService->restrictions($request);
         if ($restrictions['pass'] = false) {

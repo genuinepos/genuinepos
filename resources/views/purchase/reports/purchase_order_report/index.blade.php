@@ -132,7 +132,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="4" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="4" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                 <th id="total_po_qty" class="text-white"></th>
                                                 <th id="total_received_qty" class="text-white"></th>
                                                 <th id="total_pending_qty" class="text-white"></th>

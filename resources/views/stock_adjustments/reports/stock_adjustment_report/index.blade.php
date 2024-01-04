@@ -126,12 +126,12 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Normal') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Normal') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                             <td style="padding: 0px;line-height:1;font-size:12px;" class="text-end" id="total_normal"></td>
                                                         </tr>
 
                                                         <tr>
-                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Abnormal') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Abnormal') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                             <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_abnormal"></td>
                                                         </tr>
                                                     </tbody>
@@ -146,12 +146,12 @@
                                                 <table class="table modal-table table-sm">
                                                     <tbody>
                                                         <tr>
-                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                             <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_adjustment"></td>
                                                         </tr>
 
                                                         <tr>
-                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Amount Recovered') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                            <th style="padding: 5px;line-height:1;font-size:12px;" class="text-end">{{ __('Total Amount Recovered') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                             <td style="padding: 5px;line-height:1;font-size:12px;" class="text-end" id="total_recovered"></td>
                                                         </tr>
                                                     </tbody>
@@ -182,7 +182,7 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                         <th id="net_total_amount" class="text-white text-end"></th>
                                         <th id="recovered_amount" class="text-white text-end"></th>
                                     </tr>

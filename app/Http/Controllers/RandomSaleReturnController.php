@@ -138,7 +138,7 @@ class RandomSaleReturnController extends Controller
             // database queries here. Access any $var_N directly
 
             $generalSettings = config('generalSettings');
-            $invoicePrefix = $generalSettings['prefix__sale_return'];
+            $invoicePrefix = $generalSettings['prefix__sales_return_prefix'];
 
             $sale = Sale::where('id', $request->sale_id)->first();
 
@@ -356,7 +356,7 @@ class RandomSaleReturnController extends Controller
         ]);
 
         $generalSettings = config('generalSettings');
-        $invoicePrefix = $generalSettings['prefix__sale_return'];
+        $invoicePrefix = $generalSettings['prefix__sales_return_prefix'];
 
         $sale = Sale::where('id', $request->sale_id)->first();
 

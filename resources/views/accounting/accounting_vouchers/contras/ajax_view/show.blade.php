@@ -121,7 +121,7 @@
                                     <tr>
                                         <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Send Amount") }}</th>
                                         <td class="text-start fw-bold" style="font-size:11px!important;">
-                                           : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business__currency'] }}
+                                           : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business__currency_symbol'] }}
                                         </td>
                                     </tr>
                                 </thead>
@@ -162,9 +162,9 @@
                                     </tr>
 
                                     <tr>
-                                        <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} {{ $generalSettings['business__currency'] }}</th>
+                                        <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} {{ $generalSettings['business__currency_symbol'] }}</th>
                                         <td class="text-start fw-bold" style="font-size:11px!important;">
-                                           : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business__currency'] }}
+                                           : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business__currency_symbol'] }}
                                         </td>
                                     </tr>
                                 </thead>
@@ -375,7 +375,7 @@
                         <tr>
                             <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Send Amount") }}</th>
                             <td class="text-start fw-bold" style="font-size:11px!important;">
-                               : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business__currency'] }}
+                               : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business__currency_symbol'] }}
                             </td>
                         </tr>
                     </thead>
@@ -414,9 +414,9 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __("Received Amount") }} {{ $generalSettings['business__currency_symbol'] }}</th>
                             <td class="text-start fw-bold" style="font-size:11px!important;">
-                               : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business__currency'] }}
+                               : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business__currency_symbol'] }}
                             </td>
                         </tr>
                     </thead>

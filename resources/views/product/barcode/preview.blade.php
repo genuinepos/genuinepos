@@ -162,7 +162,7 @@
                                         <tr>
                                             <th class="product_price">
                                                 @if (isset($req->is_price))
-                                                    {{ $generalSettings['business__currency'] }}
+                                                    {{ $generalSettings['business__currency_symbol'] }}
                                                     {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                                     {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }}
                                                 @endif
@@ -205,13 +205,13 @@
                                             $variant = isset($req->is_product_variant) ? (isset($req->variant_names[$index]) ? '-' . $req->variant_names[$index] : '') : '';
                                         @endphp
                                         {{ Str::limit($req->product_names[$index], 15, '.') . $variant }}
-                                         {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
+                                        {{ isset($req->is_supplier_prefix) ? ' - ' . $req->supplier_prefixes[$index] : '' }}
                                     </p>
                                 @endif
 
                                 @if (isset($req->is_price))
                                     <p class="price_details" style="margin: 0px;padding: 0px;font-size: 8px;">
-                                        {{ $generalSettings['business__currency'] }}
+                                        {{ $generalSettings['business__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($req->prices_inc_tax[$index]) }}
                                         {{ isset($req->is_tax) ? '+ ' . $req->tax_percents[$index] . '%' : '' }}
                                     </p>

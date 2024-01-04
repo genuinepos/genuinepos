@@ -36,7 +36,6 @@ class GeneralSettingController extends Controller
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $timezones = $this->timezoneService->all();
 
-
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->where('account_groups.sub_sub_group_number', 8)
@@ -87,8 +86,8 @@ class GeneralSettingController extends Controller
             'business__account_start_date' => $request->account_start_date,
             'business__financial_year_start_month' => $request->financial_year_start_month,
             'business__default_profit' => $request->default_profit ? $request->default_profit : 0,
-            'business__currency' => $request->currency,
-            'business__currency_placement' => $request->currency_placement,
+            'business__currency_id' => $request->currency_id,
+            'business__currency_symbol' => $request->currency_symbol,
             'business__date_format' => $request->date_format,
             'business__stock_accounting_method' => $request->stock_accounting_method,
             'business__time_format' => $request->time_format,
@@ -140,6 +139,19 @@ class GeneralSettingController extends Controller
         return response()->json(__('Purchase settings updated successfully.'));
     }
 
+    public function manufacturingSettings(Request $request)
+    {
+        $settings = [
+            'manufacturing__production_voucher_prefix' => $request->production_voucher_prefix,
+            'manufacturing__is_edit_ingredients_qty_in_production' => $request->is_edit_ingredients_qty_in_production,
+            'manufacturing__is_update_product_cost_and_price_in_production' => $request->is_update_product_cost_and_price_in_production,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Manufacturing settings updated successfully.'));
+    }
+
     public function addSaleSettings(Request $request)
     {
         $settings = [
@@ -176,17 +188,20 @@ class GeneralSettingController extends Controller
     public function prefixSettings(Request $request)
     {
         $settings = [
-            'prefix__purchase_invoice' => $request->purchase_invoice,
-            'prefix__sale_invoice' => $request->sale_invoice,
-            'prefix__purchase_return' => $request->purchase_return,
-            // 'prefix__stock_transfer' => $request->stock_transfer,
-            'prefix__stock_adjustment' => $request->stock_adjustment,
-            'prefix__sale_return' => $request->sale_return,
-            'prefix__expenses' => $request->expenses,
+            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix,
+            'prefix__quotation_prefix' => $request->quotation_prefix,
+            'prefix__sales_order_prefix' => $request->sales_order_prefix,
+            'prefix__sales_return_prefix' => $request->sales_return_prefix,
+            'prefix__payment_voucher_prefix' => $request->payment_voucher_prefix,
+            'prefix__receipt_voucher_prefix' => $request->receipt_voucher_prefix,
+            'prefix__expense_voucher_prefix' => $request->expense_voucher_prefix,
+            'prefix__contra_voucher_prefix' => $request->contra_voucher_prefix,
+            'prefix__purchase_invoice_prefix' => $request->purchase_invoice_prefix,
+            'prefix__purchase_order_prefix' => $request->purchase_order_prefix,
+            'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
+            'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
-            'prefix__payment' => $request->payment,
-            'prefix__receipt' => $request->receipt,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

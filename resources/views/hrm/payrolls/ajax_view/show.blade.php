@@ -2,7 +2,10 @@
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business__date_format'];
     $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $previousRouteName = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
+    $previousRouteName = app('router')
+        ->getRoutes()
+        ->match(app('request')->create(url()->previous()))
+        ->getName();
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
@@ -19,7 +22,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Employee') }} : - </strong></li>
-                            <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong> {{  $payroll?->user?->prefix . '  ' . $payroll?->user?->name . '  ' . $payroll?->user?->last_name }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Name') }} : </strong> {{ $payroll?->user?->prefix . '  ' . $payroll?->user?->name . '  ' . $payroll?->user?->last_name }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Phone') }}: </strong> {{ $payroll->user->phone }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Address') }} : </strong> {{ $payroll->user->current_address }}</li>
                         </ul>
@@ -27,7 +30,7 @@
 
                     <div class="col-md-4">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month.'-'.$payroll->year }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month . '-' . $payroll->year }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($dateFormat, strtotime($payroll->date_ts)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Payroll Voucher No') }} : </strong> {{ $payroll->voucher_no }}</li>
 
@@ -79,7 +82,7 @@
                 <br>
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="fw-bold">{{ __("Allowances") }}</p>
+                        <p class="fw-bold">{{ __('Allowances') }}</p>
                         <div class="table-responsive">
                             <table id="" class="table modal-table table-sm">
                                 <thead>
@@ -111,8 +114,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total Allowance") }} : </td>
-                                        <td colspan="2" class="fw-bold" style="font-size:11px!important;">   {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
+                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __('Total Allowance') }} : </td>
+                                        <td colspan="2" class="fw-bold" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -120,7 +123,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <p class="fw-bold">{{ __("Deductions") }}</p>
+                        <p class="fw-bold">{{ __('Deductions') }}</p>
                         <div class="table-responsive">
                             <table id="" class="table modal-table table-sm">
                                 <thead>
@@ -152,7 +155,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total Deduction") }} : </td>
+                                        <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __('Total Deduction') }} : </td>
                                         <td colspan="2" class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                                     </tr>
                                 </tfoot>
@@ -171,42 +174,42 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($payroll->due) }}
                                     </td>
@@ -223,11 +226,10 @@
                         <div class="btn-box">
                             @if (auth()->user()->branch_id == $payroll->branch_id)
                                 @can('payrolls_edit')
-
                                     <a href="{{ route('hrm.payrolls.edit', $payroll->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                                 @endcan
                             @endif
-                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn" filename="{{ 'Payroll - ' . $payroll->voucher_no . ' - ' . $payroll->month.'-'.$payroll->year }}">{{ __('Print') }}</button>
+                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn" filename="{{ 'Payroll - ' . $payroll->voucher_no . ' - ' . $payroll->month . '-' . $payroll->year }}">{{ __('Print') }}</button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -239,15 +241,27 @@
 
 <style>
     @media print {
-        table { page-break-after: auto; }
+        table {
+            page-break-after: auto;
+        }
 
-        tr { page-break-inside: avoid; page-break-after: auto; }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        td { page-break-inside: avoid; page-break-after: auto; }
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        thead { display: table-header-group; }
+        thead {
+            display: table-header-group;
+        }
 
-        tfoot { display: table-footer-group; }
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
     @page {
@@ -258,7 +272,17 @@
         margin-right: 5px;
     }
 
-    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <!-- Pay Slip print templete-->
@@ -314,11 +338,11 @@
 
                 <p style="font-size:12px!important;">
                     @if ($payroll?->branch)
-                        <strong>{{ __("Email") }} : </strong> {{ $payroll?->branch?->email }},
-                        <strong>{{ __("Phone") }} : </strong> {{ $payroll?->branch?->phone }}
+                        <strong>{{ __('Email') }} : </strong> {{ $payroll?->branch?->email }},
+                        <strong>{{ __('Phone') }} : </strong> {{ $payroll?->branch?->phone }}
                     @else
-                        <strong>{{ __("Email") }} : </strong> {{ $generalSettings['business__email'] }},
-                        <strong>{{ __("Phone") }} : </strong> {{ $generalSettings['business__phone'] }}
+                        <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business__email'] }},
+                        <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business__phone'] }}
                     @endif
                 </p>
             </div>
@@ -342,7 +366,7 @@
 
             <div class="col-6">
                 <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month.'-'.$payroll->year }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Month') }} : </strong> {{ $payroll->month . '-' . $payroll->year }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __('Generated On') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($payroll->date_ts)) }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __('Payroll Voucher No') }} : </strong> {{ $payroll->voucher_no }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __('Payment Status') }} : </strong>
@@ -368,7 +392,7 @@
 
         <div class="row mt-2">
             <div class="col-6">
-                <p class="fw-bold">{{ __("Allowances") }}</p>
+                <p class="fw-bold">{{ __('Allowances') }}</p>
                 <div class="table-responsive">
                     <table id="" class="table print-table table-sm">
                         <thead>
@@ -400,7 +424,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total") }} : </td>
+                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __('Total') }} : </td>
                                 <td class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                             </tr>
                         </tfoot>
@@ -409,7 +433,7 @@
             </div>
 
             <div class="col-6">
-                <p class="fw-bold">{{ __("Deductions") }}</p>
+                <p class="fw-bold">{{ __('Deductions') }}</p>
                 <div class="table-responsive">
                     <table id="" class="table print-table table-sm">
                         <thead>
@@ -441,7 +465,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __("Total") }} : </td>
+                                <td colspan="2" class="fw-bold text-end" style="font-size:11px!important;">{{ __('Total') }} : </td>
                                 <td class="fw-bold" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                             </tr>
                         </tfoot>
@@ -455,34 +479,34 @@
                 <table class="table print-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payroll->total_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <th class="text-end">{{ __('Total Allowance') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_allowance) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <th class="text-end">{{ __('Total Deduction') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->total_deduction) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <th class="text-end">{{ __('Gross Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->gross_amount) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <th class="text-end">{{ __('Paid') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->paid) }}</td>
                         </tr>
 
                         <tr>
-                            <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency'] }} </th>
+                            <th class="text-end">{{ __('Due') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
                             <td class="text-end">{{ App\Utils\Converter::format_in_bdt($payroll->due) }}</td>
                         </tr>
                     </thead>
@@ -527,7 +551,7 @@
 
                 <div class="col-4 text-center">
                     @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __("SpeedDigit Software Solution.") }}</strong></small>
+                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __('SpeedDigit Software Solution.') }}</strong></small>
                     @endif
                 </div>
 

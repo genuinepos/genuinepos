@@ -84,7 +84,7 @@ class PurchaseController extends Controller
         if (!auth()->user()->can('purchase_all')) {
             abort(403, 'Access Forbidden.');
         }
-        
+
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
             'supplier:id,name,phone,address',
@@ -192,8 +192,8 @@ class PurchaseController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_invoice_prefix ? $branchSetting?->purchase_invoice_prefix : $generalSettings['prefix__purchase_invoice'];
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_invoice_prefix ? $branchSetting?->purchase_invoice_prefix : $generalSettings['prefix__purchase_invoice_prefix'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $updateLastCreated = $this->purchaseService->purchaseByAnyConditions()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
@@ -444,7 +444,7 @@ class PurchaseController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $purchase = $this->purchaseService->singlePurchase(id: $id, with: ['purchaseProducts']);

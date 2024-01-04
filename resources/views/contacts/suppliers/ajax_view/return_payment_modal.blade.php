@@ -51,7 +51,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>{{ __('Total Returnable Amount') }} </strong>
                                     <span class="card_text branch">
-                                        {{ $generalSettings['business__currency'] }}
+                                        {{ $generalSettings['business__currency_symbol'] }}
                                         {{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}
                                     </span>
                                 </li>

@@ -1,17 +1,56 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
-    .print_table th { font-size:9px!important; font-weight: 550!important;}
-    .print_table tr td{font-size: 9px!important;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    div#footer {
+        position: fixed;
+        bottom: 20px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
+
+    .print_table th {
+        font-size: 9px !important;
+        font-weight: 550 !important;
+    }
+
+    .print_table tr td {
+        font-size: 9px !important;
+    }
 </style>
 @php
     $allTotalSale = 0;
@@ -25,10 +64,8 @@
 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
     <div class="col-4" style="border-right: 1px solid black;!important;">
         @if ($generalSettings['business__business_logo'] != null)
-
             <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
         @else
-
             <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
         @endif
     </div>
@@ -78,7 +115,7 @@
                     @endphp
 
                     <tr>
-                        <td class="text-start">{!! $report->name.'(<b>'.$report->phone.'</b>)' !!}</td>
+                        <td class="text-start">{!! $report->name . '(<b>' . $report->phone . '</b>)' !!}</td>
                         <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($openingBalance) }}</td>
                         <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($totalSale) }}</td>
                         <td class="text-end fw-bold">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
@@ -97,27 +134,27 @@
         <table class="table modal-table table-sm table-bordered print_table">
             <tbody>
                 <tr>
-                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_sale') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalSale) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_sale_due') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>

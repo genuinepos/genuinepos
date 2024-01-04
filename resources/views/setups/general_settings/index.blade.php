@@ -59,6 +59,10 @@
                                         </li>
 
                                         <li class="menu_list">
+                                            <a class="menu_btn" data-form="manufacturing_settings_form" href="#">{{ __("Manufacturing Settings") }}</a>
+                                        </li>
+
+                                        <li class="menu_list">
                                             <a class="menu_btn" data-form="add_sale_settings_form" href="#">{{ __("Add Sale Settings") }}</a>
                                         </li>
 
@@ -141,24 +145,25 @@
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Currency') }} <span class="text-danger">*</span></label>
-                                            <select name="currency" class="form-control" data-name="Currency" id="currency">
+                                            <select name="currency_id" class="form-control select2" id="currency_id">
                                                 @foreach ($currencies as $currency)
-                                                    <option {{ $generalSettings['business__currency'] == $currency->symbol ? 'SELECTED' : '' }} value="{{ $currency->symbol }}">
+                                                    <option data-currency_symbol="{{ $currency->symbol }}" {{ $generalSettings['business__currency_id'] == $currency->id ? 'SELECTED' : '' }} value="{{ $currency->id }}">
                                                         {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <span class="error error_currency"></span>
+                                            <input type="hidden" name="currency_symbol" id="currency_symbol" value="{{ $generalSettings['business__currency_symbol'] }}">
+                                            <span class="error error_currency_id"></span>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Stock Accounting Method') }} <span class="text-danger">*</span></label>
                                             <select name="stock_accounting_method" class="form-control bs_input" data-name="Stock Accounting Method" id="stock_accounting_method">
                                                 @php
-                                                    $stock_accounting_method = $generalSettings['business__stock_accounting_method'] ?? null;
+                                                    $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
                                                 @endphp
                                                 @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                                    <option {{ $stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                                    <option {{ $stockAccountingMethod == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="error error_financial_year_start"></span>
@@ -169,12 +174,9 @@
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Date Format') }} <span class="text-danger">*</span></label>
                                             <select name="date_format" class="form-control bs_input" data-name="Date format" id="date_format">
-                                                <option value="d-m-Y" {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>
-                                                    dd-mm-yyyy</option>
-                                                <option value="m-d-Y" {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>
-                                                    mm-dd-yyyy</option>
-                                                <option value="Y-m-d" {{ $generalSettings['business__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>
-                                                    yyyy-mm-dd</option>
+                                                <option value="d-m-Y" {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ __("DD-MM-YYYY") }} | {{ date('d-m-Y') }} </option>
+                                                <option value="m-d-Y" {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ __("MM-DD-YYYY") }} | {{ date('m-d-Y') }}</option>
+                                                <option value="Y-m-d" {{ $generalSettings['business__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ __("YYYY-MM-DD") }} | {{ date('Y-m-d') }}</option>
                                             </select>
                                             <span class="error error_date_format"></span>
                                         </div>
@@ -190,7 +192,7 @@
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                            <select name="timezone" class="form-control bs_input" data-name="Time format" id="time_format">
+                                            <select name="timezone" class="form-control select2" data-name="Time format" id="time_format">
                                                 <option value="">{{ __('Time Zone') }}</option>
                                                 @foreach ($timezones as $key => $timezone)
                                                     <option {{ ($generalSettings['business__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
@@ -255,7 +257,7 @@
                                             <div class="input-group">
                                                 <input type="number" name="view_stock_expiry_alert_for" class="form-control dbs_input" id="dbs_view_stock_expiry_alert_for" data-name="Day amount" autocomplete="off" value="{{ $generalSettings['dashboard__view_stock_expiry_alert_for'] }}">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text input-group-text-sm" id="basic-addon1">@lang('menu.days')</span>
+                                                    <span class="input-group-text input-group-text-sm" id="basic-addon1">{{ __("Days") }}</span>
                                                 </div>
                                             </div>
                                             <span class="error error_dbs_view_stock_expiry_alert_for"></span>
@@ -265,7 +267,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
@@ -344,7 +346,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
                                                 <button id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
@@ -373,6 +375,49 @@
                                             <select name="is_enable_lot_no" class="form-control" id="is_enable_lot_no" data-next="save_changes_btn">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['purchase__is_enable_lot_no'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button type="submit" id="save_changes_btn" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="manufacturing_settings_form" class="setting_form hide-all" action="{{ route('settings.manufacturing.settings') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">{{ __("Manufacturing Settings") }}</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <label class="fw-bold">{{ __('Production Voucher Prefix') }}</label>
+                                            <input type="text" name="production_voucher_prefix" class="form-control" id="production_voucher_prefix" placeholder="{{ __('Product Voucher Prefix') }}" value="{{ $generalSettings['manufacturing__production_voucher_prefix'] }}" autocomplete="off">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="fw-bold">{{ __('Enable Editing Ingredients Quantity In Production') }}</label>
+                                            <select name="is_edit_ingredients_qty_in_production" class="form-control" id="is_edit_ingredients_qty_in_production">
+                                                <option value="1">{{ __('Yes') }}</option>
+                                                <option {{ $generalSettings['manufacturing__is_edit_ingredients_qty_in_production'] == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-1">
+                                        <div class="col-md-6">
+                                            <label class="fw-bold">{{ __('Update Product Cost And Selling Price Based On Net Cost') }}</strong> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Update Product Cost And Selling Price Based On Total Production Cost, On Finalizing Production') }}" class="fas fa-info-circle tp"></i></label>
+                                            <select name="is_update_product_cost_and_price_in_production" class="form-control" id="is_update_product_cost_and_price_in_production">
+                                                <option value="1">{{ __('Yes') }}</option>
+                                                <option {{ $generalSettings['manufacturing__is_update_product_cost_and_price_in_production'] == 0 ? 'SELECTED' : '' }} value="0">{{ __('No') }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -547,69 +592,79 @@
                                     </div>
                                     @csrf
                                     <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Purchase Invoice') }}</strong></label>
-                                            <input type="text" name="purchase_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_invoice'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Sales Invoice Prefix") }}</label>
+                                            <input type="text" name="sales_invoice_prefix" class="form-control" id="invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __("Invoice Prefix") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Sale Invoice") }}</strong></label>
-                                            <input type="text" name="sale_invoice" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__sale_invoice'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Quotation Prefix") }}</label>
+                                            <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __("Quotation Prefix") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Purchase Return") }}</strong></label>
-                                            <input type="text" name="purchase_return" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__purchase_return'] }}">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Sales Order Prefix") }}</label>
+                                            <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __("Sales Order Prefix") }}" />
                                         </div>
 
-                                        {{-- <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Transfer') }} </strong></label>
-                                            <input type="text" name="stock_transfer" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__stock_transfer'] }}">
-                                        </div> --}}
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Stock Adjustment') }}</strong></label>
-                                            <input type="text" name="stock_adjustment" class="form-control" value="{{ $generalSettings['prefix__stock_adjustment'] }}" autocomplete="off">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Sales Return") }}</strong></label>
-                                            <input type="text" name="sale_return" class="form-control" value="{{ $generalSettings['prefix__sale_return'] }}" autocomplete="off">
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __("Expense") }}</strong></label>
-                                            <input type="text" name="expenses" class="form-control" value="{{ $generalSettings['prefix__expenses'] }}" autocomplete="off">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Sales Return Prefix") }}</label>
+                                            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __("Sales Return Prefix") }}"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        {{-- <div class="col-md-4">
-                                            <label><strong>{{ __('Expense Payment') }} </strong></label>
-                                            <input type="text" name="expanse_payment" class="form-control" value="{{ $generalSettings['prefix__expanse_payment'] }}" autocomplete="off">
-                                        </div> --}}
-
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Payment') }} </strong></label>
-                                            <input type="text" name="payment" class="form-control" value="{{ $generalSettings['prefix__payment'] }}" autocomplete="off">
+                                    <div class="form-group row mt-1">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Payment Voucher Prefix") }}</label>
+                                            <input type="text" name="payment_voucher_prefix" class="form-control" id="payment_voucher_prefix" value="{{ $generalSettings['prefix__payment_voucher_prefix'] }}" placeholder="{{ __("Payment Voucher Prefix") }}"/>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Receipt') }} </strong></label>
-                                            <input type="text" name="receipt" class="form-control" value="{{ $generalSettings['prefix__receipt'] }}" autocomplete="off">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Receipt Voucher Prefix") }}</label>
+                                            <input type="text" name="receipt_voucher_prefix" class="form-control" id="receipt_voucher_prefix" value="{{ $generalSettings['prefix__receipt_voucher_prefix'] }}" placeholder="{{ __("Receipt Voucher Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Expense Voucher Prefix") }}</label>
+                                            <input type="text" name="expense_voucher_prefix" class="form-control" id="expense_voucher_prefix" value="{{ $generalSettings['prefix__expense_voucher_prefix'] }}" placeholder="{{ __("Expense Voucher Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Contra Voucher Prefix") }}</label>
+                                            <input type="text" name="contra_voucher_prefix" class="form-control" id="contra_voucher_prefix" value="{{ $generalSettings['prefix__contra_voucher_prefix'] }}" placeholder="{{ __("Expense Voucher Prefix") }}"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Supplier ID') }}</strong></label>
+                                    <div class="form-group row mt-1">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Invoice Prefix") }}</label>
+                                            <input type="text" name="purchase_invoice_prefix" class="form-control" id="purchase_invoice_prefix" value="{{ $generalSettings['prefix__purchase_invoice_prefix'] }}" placeholder="{{ __("Purchase Invoice Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Order Voucher Prefix") }}</label>
+                                            <input required type="text" name="purchase_order_prefix" class="form-control" id="purchase_order_prefix" value="{{ $generalSettings['prefix__purchase_order_prefix'] }}" placeholder="{{ __("Purchase Order Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Return Voucher Prefix") }}</label>
+                                            <input type="text" name="purchase_return_prefix" class="form-control" id="purchase_return_prefix" value="{{ $generalSettings['prefix__purchase_return_prefix'] }}" placeholder="{{ __("Purchase Return Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Stock Adjustment Voucher Prefix") }}</label>
+                                            <input type="text" name="stock_adjustment_prefix" class="form-control" id="stock_adjustment_prefix" value="{{ $generalSettings['prefix__stock_adjustment_prefix'] }}" placeholder="{{ __("Stock Adjustment Voucher Prefix") }}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-1">
+                                        <div class="col-md-3">
+                                            <label class="fw-bold">{{ __('Supplier ID') }}</label>
                                             <input type="text" name="supplier_id" class="form-control" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <label><strong>{{ __('Customer ID') }} </strong></label>
+                                        <div class="col-md-3">
+                                            <label class="fw-bold">{{ __('Customer ID') }}</label>
                                             <input type="text" name="customer_id" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__customer_id'] }}">
                                         </div>
                                     </div>
@@ -627,7 +682,7 @@
                                 <form id="system_settings_form" class="setting_form hide-all" action="{{ route('settings.system.settings') }}" method="post">
                                     <div class="form-group">
                                         <div class="setting_form_heading">
-                                            <h6 class="text-primary">@lang('menu.system_settings')</h6>
+                                            <h6 class="text-primary">{{ __("System Settings") }}</h6>
                                         </div>
                                     </div>
                                     @csrf
@@ -659,8 +714,8 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -669,7 +724,7 @@
                                 <form id="point_settings_form" class="setting_form hide-all" action="{{ route('settings.reward.point.settings') }}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <h6 class="text-primary mb-3"><b>@lang('menu.reward_point_settings')</b></h6>
+                                        <h6 class="text-primary mb-3"><b>{{ __("Reward Point Settings") }}</b></h6>
                                     </div>
 
                                     <div class="form-group row mt-2">
@@ -734,8 +789,8 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
-                                                <button class="btn btn-sm btn-success submit_button float-end">@lang('menu.save_change')</button>
+                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -821,6 +876,7 @@
                                             </div>
                                         @endif
                                     </div>
+
                                     <div class="form-group row mt-2">
                                         <div class="col-md-4">
                                             <div class="row ">
@@ -1120,6 +1176,23 @@
             });
         });
 
+        $('#manufacturing_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.loading_button').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.loading_button').hide();
+                }
+            });
+        });
+
         $('#add_sale_settings_form').on('submit', function(e) {
             e.preventDefault();
             $('.loading_button').show();
@@ -1236,6 +1309,11 @@
                     $('.loading_button').hide();
                 }
             });
+        });
+
+        $(document).on('change', '#currency_id', function(e) {
+            var currencySymbol = $(this).find('option:selected').data('currency_symbol');
+            $('#currency_symbol').valcurrencySymbol
         });
     </script>
 @endpush

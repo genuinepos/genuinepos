@@ -2,20 +2,48 @@
 
 <style>
     @media print {
-        table { page-break-after: auto }
+        table {
+            page-break-after: auto
+        }
 
-        tr { page-break-inside: avoid; page-break-after: auto }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
 
-        td { page-break-inside: avoid; page-break-after: auto }
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
 
-        thead { display: table-header-group }
+        thead {
+            display: table-header-group
+        }
 
-        tfoot { display: table-footer-group }
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px; margin-right: 10px; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <div class="print_modal_details d-hide">
@@ -74,13 +102,11 @@
 
                     <p>
                         @if ($quotation?->branch)
-
                             {{ $invoiceLayout->branch_city == 1 ? $quotation->branch->city . ', ' : '' }}
                             {{ $invoiceLayout->branch_state == 1 ? $quotation->branch->state . ', ' : '' }}
                             {{ $invoiceLayout->branch_zipcode == 1 ? $quotation->branch->zip_code . ', ' : '' }}
                             {{ $invoiceLayout->branch_country == 1 ? $quotation->branch->country : '' }}
                         @else
-
                             {{ $generalSettings['business__address'] }}
                         @endif
                     </p>
@@ -147,7 +173,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
+                        <h5 style="text-transform: uppercase;">{{ __('Sales Order') }}</h5>
                     </div>
                 @endif
 
@@ -255,7 +281,7 @@
             <br>
             <div class="row page_break">
                 <div class="col-12 text-end">
-                    <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                    <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                 </div>
             </div>
 
@@ -269,7 +295,7 @@
         <div class="row">
             <div class="col-6">
                 @if ($invoiceLayout->show_total_in_word == 1)
-                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __("Inword") }} : </strong> <span id="inword"></span> {{ $generalSettings['business__currency'] }} {{ __('Only') }}.</p>
+                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ $generalSettings['business__currency_symbol'] }} {{ __('Only') }}.</p>
                 @endif
             </div>
 
@@ -277,11 +303,11 @@
                 <table class="table print-table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}</td>
                         </tr>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Order Discount') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Order Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($quotation->order_discount_type == 1)
                                     ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($quotation->order_discount_amount) }}
@@ -293,21 +319,21 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Order Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Order Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $quotation->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Ordered Amount') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Ordered Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                             </td>

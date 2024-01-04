@@ -222,7 +222,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                                     <th id="ledger_table_total_debit" class="text-white text-end"></th>
                                                     <th id="ledger_table_total_credit" class="text-white text-end"></th>
                                                     <th id="ledger_table_current_balance" class="text-white text-end"></th>
@@ -392,7 +392,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                                     <th id="total_item" class="text-white text-end"></th>
                                                     <th id="total_qty" class="text-white text-end"></th>
                                                     <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -537,7 +537,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                                     <th id="total_item" class="text-white text-end"></th>
                                                     <th id="total_qty" class="text-white text-end"></th>
                                                     <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -679,7 +679,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                     <th id="total_purchase_amount" class="text-white"></th>
                                                     <th id="paid" class="text-white"></th>
                                                     <th id="purchase_return_amount" class="text-white"></th>
@@ -820,7 +820,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                                     <th class="text-white text-end" id="total_purchase_amount"></th>
                                                     <th class="text-white text-end" id="paid"></th>
                                                     <th class="text-white text-end" id="due"></th>
@@ -960,7 +960,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                     <th id="total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>
@@ -1098,7 +1098,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                                     <th id="payments_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>

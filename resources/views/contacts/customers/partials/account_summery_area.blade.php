@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.opening_balance') : {{ $generalSettings['business__currency'] }}</strong>
+                        <strong>@lang('menu.opening_balance') : {{ $generalSettings['business__currency_symbol'] }}</strong>
                     </td>
 
                     <td class="text-end opening_balance"> {{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</td>
@@ -16,36 +16,36 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_sale') : {{ $generalSettings['business__currency'] }}</strong>
+                        <strong>@lang('menu.total_sale') : {{ $generalSettings['business__currency_symbol'] }}</strong>
                     </td>
 
                     <td class="text-end total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_return') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_return') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                     <td class="text-end total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_less') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_less') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                     <td class="text-end total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                     <td class="text-end total_paid text-success">
                         {{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                     <td class="text-end total_sale_due text-danger">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>{{ __('Returnable Due') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>{{ __('Returnable Due') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                     <td class="text-end total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</td>
                 </tr>
             </tbody>

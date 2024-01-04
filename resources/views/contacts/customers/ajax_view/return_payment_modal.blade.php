@@ -51,7 +51,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>{{ __('Total Sale Return Due') }} </strong>
                                     <span class="card_text branch">
-                                        {{ $generalSettings['business__currency'] }}
+                                        {{ $generalSettings['business__currency_symbol'] }}
                                         {{ $returnDue }}
                                     </span>
                                 </li>

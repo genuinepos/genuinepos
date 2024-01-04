@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="tax_sum">
                     <h6 class="text-muted">@lang('menu.output_tax_input_expense_tax') :
-                        {{ $generalSettings['business__currency'] }} <span id="tax_sum"></span>
+                        {{ $generalSettings['business__currency_symbol'] }} <span id="tax_sum"></span>
                     </h6>
                 </div>
             </div>
@@ -74,15 +74,15 @@
                                 <tfoot>
                                     <tr class="bg-secondary">
                                         <th colspan="4" class="text-white"><b>@lang('menu.total') </b></th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $totalPurchaseAmount, 2, '.', '') }}</b>
                                         </th>
-                                        <th  class="text-white"> </th>
-                                        <th  class="text-white"> </th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $totalPurchaseTax, 2, '.', '') }}</b>
+                                        <th class="text-white"> </th>
+                                        <th class="text-white"> </th>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $totalPurchaseTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -144,15 +144,15 @@
                                 <tfoot>
                                     <tr class="bg-secondary">
                                         <th colspan="4" class="text-center text-white"><b>@lang('menu.total') </b></th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $totalSaleAmount, 2, '.', '') }}</b>
                                         </th>
-                                        <th  class="text-white"> </th>
-                                        <th  class="text-white"> </th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $TotalsaleTax, 2, '.', '') }}</b>
+                                        <th class="text-white"> </th>
+                                        <th class="text-white"> </th>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $TotalsaleTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -190,10 +190,10 @@
                                             </td>
                                             <td class="text-navy-blue">({{ $expense->tax_percent }}%)</td>
                                             @php
-                                                $taxAmount = $expense->total_amount / 100 * $expense->tax_percent;
+                                                $taxAmount = ($expense->total_amount / 100) * $expense->tax_percent;
                                             @endphp
                                             <td class="text-navy-blue">
-                                                {{ $generalSettings['business__currency'].' '.$taxAmount}}
+                                                {{ $generalSettings['business__currency'] . ' ' . $taxAmount }}
                                                 @php
                                                     $totalExpense += $expense->total_amount;
                                                     $totalExpenseTax += $taxAmount;
@@ -205,14 +205,14 @@
                                 <tfoot>
                                     <tr class="bg-secondary">
                                         <th colspan="2" class="text-center text-white"><b>@lang('menu.total') </b></th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $totalExpense, 2, '.', '') }}</b>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $totalExpense, 2, '.', '') }}</b>
                                         </th>
-                                        <th  class="text-white"> </th>
-                                        <th  class="text-white">
-                                            <b>{{ $generalSettings['business__currency'] }}
-                                            {{ number_format((float) $totalExpenseTax, 2, '.', '') }}</b>
+                                        <th class="text-white"> </th>
+                                        <th class="text-white">
+                                            <b>{{ $generalSettings['business__currency_symbol'] }}
+                                                {{ number_format((float) $totalExpenseTax, 2, '.', '') }}</b>
                                         </th>
                                     </tr>
                                 </tfoot>
@@ -235,5 +235,5 @@
 </script>
 <!--Data table js active link end-->
 <script>
-    document.getElementById('tax_sum').innerHTML = parseFloat({{$tax_sum}}).toFixed(2);
+    document.getElementById('tax_sum').innerHTML = parseFloat({{ $tax_sum }}).toFixed(2);
 </script>

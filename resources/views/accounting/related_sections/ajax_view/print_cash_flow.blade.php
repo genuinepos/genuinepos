@@ -1,21 +1,66 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4; margin-top: 0.8cm;margin-bottom: 35px; margin-left: 15px;margin-right: 15px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 
 <div class="row">
@@ -35,7 +80,7 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
@@ -71,20 +116,20 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.net_profit_before_tax') </em>
+                                        <em>@lang('menu.net_profit_before_tax') </em>
                                     </td>
 
                                     <td class="text-start">
-                                       <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em>
-                                       @php
-                                         $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];
-                                       @endphp
+                                        <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em>
+                                        @php
+                                            $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];
+                                        @endphp
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.customer_balance') </em>
+                                        <em>@lang('menu.customer_balance') </em>
                                     </td>
 
                                     <td class="text-start">
@@ -97,11 +142,11 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.supplier_balance') </em>
+                                        <em>@lang('menu.supplier_balance') </em>
                                     </td>
 
                                     <td class="text-start">
-                                         <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
+                                        <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
                                         @php
                                             $oparationTotal += $supplierPayable->sum('total_due');
                                         @endphp
@@ -110,7 +155,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.current_stock_value') </em>
+                                        <em>@lang('menu.current_stock_value') </em>
                                     </td>
 
                                     <td class="text-start">
@@ -127,7 +172,7 @@
                                     </td>
 
                                     <td class="text-start">
-                                         <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>
+                                        <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>
                                         @php
                                             $oparationTotal += $currentAssets->sum('total_current_asset');
                                         @endphp
@@ -136,7 +181,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.current_liability') </em>
+                                        <em>@lang('menu.current_liability') </em>
                                     </td>
 
                                     <td class="text-start">
@@ -149,7 +194,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.tax_payable') </em>
+                                        <em>@lang('menu.tax_payable') </em>
                                     </td>
 
                                     <td class="text-start">
@@ -164,13 +209,13 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_operations') :
-                                                ({{ $generalSettings['business__currency'] }})
+                                                ({{ $generalSettings['business__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
 
                                     <td class="text-start">
-                                        <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
+                                        <b>{{ $oparationTotal < 0 ? '(' . App\Utils\Converter::format_in_bdt($oparationTotal) . ')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
                                         @php
                                             $totalCashFlow += $oparationTotal;
                                         @endphp
@@ -204,7 +249,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_investing') :
-                                                ({{ $generalSettings['business__currency'] }})
+                                                ({{ $generalSettings['business__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -239,7 +284,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_financing') :
-                                                ({{ $generalSettings['business__currency'] }})
+                                                ({{ $generalSettings['business__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -259,7 +304,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>
-                                                @lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency'] }})
+                                                @lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -267,10 +312,10 @@
                                     <td class="text-start">
                                         <b class="total_cash_flow">
                                             <em>
-                                                {{ $totalCashFlow < 0 ? '('.App\Utils\Converter::format_in_bdt($totalCashFlow).')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
+                                                {{ $totalCashFlow < 0 ? '(' . App\Utils\Converter::format_in_bdt($totalCashFlow) . ')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
                                             </em>
-                                        </span>
-                                    </th>
+                                            </span>
+                                            </th>
                                 </tr>
                             </tfoot>
                         </table>

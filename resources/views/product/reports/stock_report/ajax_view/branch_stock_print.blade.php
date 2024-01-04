@@ -256,7 +256,7 @@
                     </tr>
 
                     <tr>
-                        <th class="text-end">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency'] }}</th>
+                        <th class="text-end">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($totalStockValue) }}
                         </td>

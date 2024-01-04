@@ -92,7 +92,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th colspan="6" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
                                     <th id="total_paid" class="text-white text-end"></th>

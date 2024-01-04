@@ -34,16 +34,16 @@
                         <ul class="list-unstyled">
                             <li><strong>@lang('menu.sale_from') </strong></li>
                             @if ($sale->branch)
-                            <li>
-                                <strong>@lang('menu.stock_location') </strong>
-                                {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
-                            </li>
-                            <li>
-                                <strong>@lang('menu.address') </strong>
-                                {{ $sale->branch->city }}, {{ $sale->branch->state }},
+                                <li>
+                                    <strong>@lang('menu.stock_location') </strong>
+                                    {{ $sale->branch->name }}/{{ $sale->branch->branch_code }}
+                                </li>
+                                <li>
+                                    <strong>@lang('menu.address') </strong>
+                                    {{ $sale->branch->city }}, {{ $sale->branch->state }},
                                     {{ $sale->branch->zip_code }}, {{ $sale->branch->country }}
-                            </li>
-                            <li><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</li>
+                                </li>
+                                <li><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</li>
                             @else
                                 <li><strong>@lang('menu.stock_location') </strong>
                                     {{ $generalSettings['business__business_name'] }} <b></b>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong>@lang('menu.invoice_id') </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.sale_status') </strong>
                                 @if ($sale->status == 1)
@@ -162,7 +162,7 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="net_total">
                                             {{ $sale->net_total_amount }}
@@ -171,7 +171,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="order_discount">
                                             @php
@@ -183,7 +183,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="order_tax">
                                             {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) . ' (' . $sale->order_tax_percent . '%)' }}
@@ -192,7 +192,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="shipment_charge">
                                             {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
@@ -201,7 +201,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_payable_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
@@ -210,7 +210,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.sale_return') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.sale_return') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="sale_return_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
@@ -219,7 +219,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_paid">
                                             {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -228,7 +228,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_due">
                                             {{ App\Utils\Converter::format_in_bdt($sale->due) }}
@@ -262,8 +262,7 @@
                 @endif
 
                 @if (auth()->user()->can('shipment_access'))
-                    <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}"
-                    class="btn btn-sm btn-success">{{ __('Print Packing Slip') }}</button>
+                    <button type="button" id="print_packing_slip" href="{{ route('sales.packing.slip', $sale->id) }}" class="btn btn-sm btn-success">{{ __('Print Packing Slip') }}</button>
                 @endif
 
                 <button type="button" class="btn btn-sm btn-info print_challan_btn text-white">@lang('menu.print_challan')</button>
@@ -291,19 +290,20 @@
 @endif
 <!-- Challan print templete end-->
 <script>
-    var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-      var b= ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+    var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
+    var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
-      function inWords (num) {
-          if ((num = num.toString()).length > 9) return 'overflow';
-          n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-          if (!n) return; var str = '';
-          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
-          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
-          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
-          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
-          return str;
-      }
-      document.getElementById('inword').innerHTML = inWords(parseInt("{{ $sale->total_payable_amount }}"));
+    function inWords(num) {
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+        return str;
+    }
+    document.getElementById('inword').innerHTML = inWords(parseInt("{{ $sale->total_payable_amount }}"));
 </script>

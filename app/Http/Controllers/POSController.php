@@ -114,7 +114,7 @@ class POSController extends Controller
 
             $generalSettings = config('generalSettings');
 
-            $invoicePrefix = $generalSettings['prefix__sale_invoice'];
+            $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'];
 
             $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 

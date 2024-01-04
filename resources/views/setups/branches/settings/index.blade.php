@@ -113,19 +113,19 @@
                                             <div class="row">
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Shop Name") }} <span class="text-danger">*</span></label>
-                                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
+                                                    <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'readonly' : 'required' }} type="text" name="name" class="form-control" id="name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
                                                     <span class="error error_branch_name"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Shop ID") }}</label>
-                                                    <input readonly type="text" name="branch_code" class="form-control" id="branch_code" data-next="phone" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
+                                                    <input readonly type="text" name="branch_code" class="form-control" id="branch_code" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
                                                     <span class="error error_branch_code"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Area Name") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
+                                                    <input required type="text" name="area_name" class="form-control" id="area_name" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
                                                     <span class="error error_code"></span>
                                                 </div>
                                             </div>
@@ -133,32 +133,32 @@
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Phone") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="phone" class="form-control" id="phone" data-next="alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
+                                                    <input required type="text" name="phone" class="form-control" id="phone" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
                                                     <span class="error error_phone"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Alternative Phone") }}</label>
-                                                    <input type="text" name="alternate_phone_number" class="form-control" id="alternate_phone_number" data-next="country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __("Alternative Phone") }}"/>
+                                                    <input type="text" name="alternate_phone_number" class="form-control" id="alternate_phone_number" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __("Alternative Phone") }}"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Country") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="country" class="form-control" id="country" data-next="state" value="{{ $branch->country }}" placeholder="{{ __("Country") }}"/>
+                                                    <input required type="text" name="country" class="form-control" id="country" value="{{ $branch->country }}" placeholder="{{ __("Country") }}"/>
                                                     <span class="error error_country"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("State") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="state" class="form-control" id="state" data-next="city" value="{{ $branch->state }}" placeholder="{{ __("State") }}" />
+                                                    <input required type="text" name="state" class="form-control" id="state" value="{{ $branch->state }}" placeholder="{{ __("State") }}" />
                                                     <span class="error error_state"></span>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("City") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="city" class="form-control" id="city" data-next="zip_code" value="{{ $branch->city }}" placeholder="{{ __("City") }}" />
+                                                    <input required type="text" name="city" class="form-control" id="city" value="{{ $branch->city }}" placeholder="{{ __("City") }}" />
                                                     <span class="error error_city"></span>
                                                 </div>
                                             </div>
@@ -166,25 +166,25 @@
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Zip-Code") }} <span class="text-danger">*</span></label>
-                                                    <input required type="text" name="zip_code" class="form-control" id="zip_code" data-next="address" value="{{ $branch->zip_code }}" placeholder="Zip code" />
+                                                    <input required type="text" name="zip_code" class="form-control" id="zip_code" value="{{ $branch->zip_code }}" placeholder="Zip code" />
                                                     <span class="error error_code"></span>
                                                 </div>
 
                                                 <div class="col-lg-8 col-md-6">
                                                     <label class="fw-bold">{{ __("Address") }}</label>
-                                                    <input required type="text" name="address" class="form-control" id="address" data-next="email" value="{{ $branch->address }}" placeholder="{{ __("Address") }}"/>
+                                                    <input required type="text" name="address" class="form-control" id="address" value="{{ $branch->address }}" placeholder="{{ __("Address") }}"/>
                                                 </div>
                                             </div>
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Email") }}</label>
-                                                    <input type="text" name="email" class="form-control" id="email" data-next="website" value="{{ $branch->email }}" placeholder="{{ __("Email address") }}" />
+                                                    <input type="text" name="email" class="form-control" id="email" value="{{ $branch->email }}" placeholder="{{ __("Email Address") }}" />
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __("Website") }}</label>
-                                                    <input type="text" name="website" class="form-control" id="website" data-next="date_format" value="{{ $branch->website }}" placeholder="{{ __("Website Url") }}" />
+                                                    <input type="text" name="website" class="form-control" id="website" value="{{ $branch->website }}" placeholder="{{ __("Website Url") }}" />
                                                 </div>
 
                                                 @if ($branch->branch_type == \App\Enums\BranchType::DifferentShop->value)
@@ -200,7 +200,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">{{ __('Date Format') }}</label>
-                                                    <select name="date_format" class="form-control" id="date_format" data-next="branch_time_format">
+                                                    <select name="date_format" class="form-control" id="date_format">
                                                         <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
                                                         <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
                                                         <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
@@ -212,7 +212,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">{{ __('Time Format') }}</label>
-                                                    <select name="time_format" class="form-control" id="time_format" data-next="timezone">
+                                                    <select name="time_format" class="form-control" id="time_format">
                                                         <option {{ $branch->time_format == '12' ? 'SELECTED' : '' }} value="12">{{ __("12 Hour") }}</option>
                                                         <option {{ $branch->time_format == '24' ? 'SELECTED' : '' }} value="24">{{ __("24 Hour") }}</option>
                                                     </select>
@@ -223,7 +223,7 @@
                                             <div class="row mt-1">
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                                    <select required name="timezone" class="form-control select2" id="timezone" data-next="stock_accounting_method">
+                                                    <select required name="timezone" class="form-control select2" id="timezone">
                                                         <option value="">{{ __('Time Zone') }}</option>
                                                         @foreach ($timezones as $key => $timezone)
                                                             <option {{ ($branch->timezone ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
@@ -237,7 +237,7 @@
                                                 <div class="row mt-1" id="stock_accounting_method_field">
                                                     <div class="col-md-12">
                                                         <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
-                                                        <select name="stock_accounting_method" class="form-control" id="stock_accounting_method" data-next="account_start_date">
+                                                        <select name="stock_accounting_method" class="form-control" id="stock_accounting_method">
                                                             @php
                                                                 $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
                                                             @endphp
@@ -252,7 +252,7 @@
                                                 <div class="form-group row mt-1" id="account_start_date_field">
                                                     <div class="col-md-12">
                                                         <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                                        <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                                        <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ $branch->account_start_date }}" autocomplete="off">
                                                         <span class="error error_account_start_date"></span>
                                                     </div>
                                                 </div>
@@ -261,7 +261,7 @@
                                                     <div class="col-md-12">
                                                         <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
                                                         <div class="input-group">
-                                                            <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="branch_save_changes">
+                                                            <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2">
                                                                 @php
                                                                     $months = \App\Enums\Months::cases();
                                                                 @endphp
@@ -327,12 +327,12 @@
                                     <div class="form-group row">
                                         <div class="col-lg-3 col-sm-6">
                                             <label class="fw-bold">{{ __('Product Code Prefix(SKU)') }}</label>
-                                            <input type="text" name="product_code_prefix" class="form-control" id="product_code_prefix" data-next="default_unit_id" value="{{ $generalSettings['product__product_code_prefix'] }}" autocomplete="off">
+                                            <input type="text" name="product_code_prefix" class="form-control" id="product_code_prefix" value="{{ $generalSettings['product__product_code_prefix'] }}" autocomplete="off">
                                         </div>
 
                                         <div class="col-lg-3 col-sm-6">
                                             <label class="fw-bold">{{ __("Default Unit") }}</label>
-                                            <select name="default_unit_id" class="form-control" id="default_unit_id" data-next="is_enable_brands">
+                                            <select name="default_unit_id" class="form-control" id="default_unit_id">
                                                 <option value="null">{{ __("None") }}</option>
                                                 @foreach ($units as $unit)
                                                     <option {{ $generalSettings['product__default_unit_id'] == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}
@@ -345,7 +345,7 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-lg-3 col-md-4">
                                             <label class="fw-bold">{{ __("Enable Brands") }}</label>
-                                            <select name="is_enable_brands" class="form-control" id="is_enable_brands" data-next="is_enable_categories">
+                                            <select name="is_enable_brands" class="form-control" id="is_enable_brands">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['product__is_enable_brands'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -353,7 +353,7 @@
 
                                         <div class="col-lg-3 col-md-4">
                                             <label class="fw-bold">{{ __("Enable Categories") }}</label>
-                                            <select name="is_enable_categories" class="form-control" id="is_enable_categories" data-next="is_enable_sub_categories">
+                                            <select name="is_enable_categories" class="form-control" id="is_enable_categories">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['product__is_enable_categories'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -361,7 +361,7 @@
 
                                         <div class="col-lg-3 col-md-4">
                                             <label class="fw-bold">{{ __("Enable Subcategories") }}</label>
-                                            <select name="is_enable_sub_categories" class="form-control" id="is_enable_sub_categories" data-next="is_enable_price_tax">
+                                            <select name="is_enable_sub_categories" class="form-control" id="is_enable_sub_categories">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['product__is_enable_sub_categories'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -369,7 +369,7 @@
 
                                         <div class="col-lg-3 col-md-4">
                                             <label class="fw-bold">{{ __("Enable Price Vat/Tax") }}</label>
-                                            <select name="is_enable_price_tax" class="form-control" id="is_enable_price_tax" data-next="is_enable_warranty">
+                                            <select name="is_enable_price_tax" class="form-control" id="is_enable_price_tax">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['product__is_enable_price_tax'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -379,7 +379,7 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-lg-3 col-md-4">
                                             <label class="fw-bold">{{ __("Enable Product Warranty") }}</label>
-                                            <select name="is_enable_warranty" class="form-control" id="is_enable_warranty" data-next="save_changes">
+                                            <select name="is_enable_warranty" class="form-control" id="is_enable_warranty">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['product__is_enable_warranty'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -407,7 +407,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label class="fw-bold">{{ __('Enable Editing Product Price From Purchase Screen') }}</label>
-                                            <select name="is_edit_pro_price" class="form-control" id="is_edit_pro_price" autofocus data-next="is_enable_lot_no">
+                                            <select name="is_edit_pro_price" class="form-control" id="is_edit_pro_price" autofocus>
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['purchase__is_edit_pro_price'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -415,7 +415,7 @@
 
                                         <div class="col-md-6">
                                             <label class="fw-bold">{{ __('Enable Lot Number') }}</label>
-                                            <select name="is_enable_lot_no" class="form-control" id="is_enable_lot_no" data-next="save_changes_btn">
+                                            <select name="is_enable_lot_no" class="form-control" id="is_enable_lot_no">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['purchase__is_enable_lot_no'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -447,13 +447,13 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1"><i class="fas fa-percent text-dark input_f"></i></span>
                                                 </div>
-                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['add_sale__default_sale_discount'] }}" data-next="sales_commission" autofocus>
+                                                <input type="text" name="default_sale_discount" class="form-control" id="default_sale_discount" autocomplete="off" value="{{ $generalSettings['add_sale__default_sale_discount'] }}" autofocus>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Default Selling Price Group') }}</label>
-                                            <select name="default_price_group_id" class="form-control" id="default_price_group_id" data-next="save_changes">
+                                            <select name="default_price_group_id" class="form-control" id="default_price_group_id">
                                                 <option value="null">{{ __("None") }}</option>
                                                 @foreach ($priceGroups as $priceGroup)
                                                     <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
@@ -463,7 +463,7 @@
 
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __("Add Sale Default Tax") }}</label>
-                                            <select class="form-control" name="default_tax_ac_id" id="add_sale_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                            <select class="form-control" name="default_tax_ac_id" id="add_sale_default_tax_ac_id">
                                                 <option value="">{{ __("None") }}</option>
                                                 @foreach ($taxAccounts as $tax)
                                                     <option {{ $generalSettings['add_sale__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id }}">{{ $tax->name }}</option>
@@ -487,7 +487,7 @@
                                     <div class="form-group row">
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Multiple Payment") }} </strong></label>
-                                            <select class="form-control" name="is_enabled_multiple_pay" id="is_enabled_multiple_pay" data-next="is_enabled_draft" autofocus>
+                                            <select class="form-control" name="is_enabled_multiple_pay" id="is_enabled_multiple_pay" autofocus>
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_multiple_pay'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -495,7 +495,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Draft") }}</label>
-                                            <select class="form-control" name="is_enabled_draft" id="is_enabled_draft" data-next="is_enabled_quotation">
+                                            <select class="form-control" name="is_enabled_draft" id="is_enabled_draft">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_draft'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -503,7 +503,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Quotation") }}</label>
-                                            <select class="form-control" name="is_enabled_quotation" id="is_enabled_quotation" data-next="is_enabled_suspend">
+                                            <select class="form-control" name="is_enabled_quotation" id="is_enabled_quotation">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_quotation'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -511,7 +511,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Suspend") }}</label>
-                                            <select class="form-control" name="is_enabled_suspend" id="is_enabled_suspend" data-next="is_enabled_discount">
+                                            <select class="form-control" name="is_enabled_suspend" id="is_enabled_suspend">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_suspend'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -521,7 +521,7 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Discount") }}</label>
-                                            <select class="form-control" name="is_enabled_discount" id="is_enabled_discount" data-next="is_enabled_order_tax">
+                                            <select class="form-control" name="is_enabled_discount" id="is_enabled_discount">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_discount'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -529,7 +529,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Sale Tax") }}</label>
-                                            <select class="form-control" name="is_enabled_order_tax" id="is_enabled_order_tax" data-next="is_show_recent_transactions">
+                                            <select class="form-control" name="is_enabled_order_tax" id="is_enabled_order_tax">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_order_tax'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -537,7 +537,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Pos Sale Default Tax") }}</label>
-                                            <select class="form-control" name="default_tax_ac_id" id="pos_default_tax_ac_id" data-next="is_show_recent_transactions">
+                                            <select class="form-control" name="default_tax_ac_id" id="pos_default_tax_ac_id">
                                                 <option value="">{{ __("None") }}</option>
                                                 @foreach ($taxAccounts as $tax)
                                                     <option {{ $generalSettings['pos__default_tax_ac_id'] == $tax->id ? 'SELECTED' : '' }} value="{{ $tax->id }}">{{ $tax->name }}</option>
@@ -547,7 +547,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Show Recent Transactions") }}</label>
-                                            <select class="form-control" name="is_show_recent_transactions" id="is_show_recent_transactions" data-next="is_enabled_credit_full_sale">
+                                            <select class="form-control" name="is_show_recent_transactions" id="is_show_recent_transactions">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_show_recent_transactions'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -555,7 +555,7 @@
 
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Full Credit Sale") }}</label>
-                                            <select class="form-control" name="is_enabled_credit_full_sale" id="is_enabled_credit_full_sale" data-next="is_enabled_hold_invoice">
+                                            <select class="form-control" name="is_enabled_credit_full_sale" id="is_enabled_credit_full_sale">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_credit_full_sale'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -565,7 +565,7 @@
                                     <div class="form-group row mt-1">
                                         <div class="col-md-3">
                                             <label class="fw-bold">{{ __("Enable Hold Invoice") }}</label>
-                                            <select class="form-control" name="is_enabled_hold_invoice" id="is_enabled_hold_invoice" data-next="save_changes">
+                                            <select class="form-control" name="is_enabled_hold_invoice" id="is_enabled_hold_invoice">
                                                 <option value="1">{{ __("Yes") }}</option>
                                                 <option {{ $generalSettings['pos__is_enabled_hold_invoice'] == '0' ? 'SELECTED' : '' }} value="0">{{ __("No") }}</option>
                                             </select>
@@ -592,56 +592,90 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Invoice Prefix") }}</label>
-                                            <input type="text" name="invoice_prefix" class="form-control" id="invoice_prefix" data-next="quotation_prefix" value="$branchSetting->invoice_prefix" placeholder="{{ __("Invoice Prefix") }}"/>
+                                            <input type="text" name="invoice_prefix" class="form-control" id="invoice_prefix" value="$branchSetting->invoice_prefix" placeholder="{{ __("Invoice Prefix") }}"/>
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Quotation Prefix") }}</label>
-                                            <input required type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" data-next="setting_sales_order_prefix" value=" $branchSetting->quotation_prefix" placeholder="{{ __("Shop ID") }}"/>
+                                            <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="$branchSetting->quotation_prefix" placeholder="{{ __("Shop ID") }}"/>
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Sales Order Prefix") }}</label>
-                                            <input required type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" data-next="sales_return_prefix" value=" $branchSetting->sales_order_prefix" placeholder="{{ __("Sales Order Prefix") }}" />
+                                            <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value=" $branchSetting->sales_order_prefix" placeholder="{{ __("Sales Order Prefix") }}" />
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Sales Return Prefix") }}</label>
-                                            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" data-next="payment_voucher_prefix" value="$branchSetting->sales_return_prefix" placeholder="{{ __("Sales Return Prefix") }}"/>
+                                            <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="$branchSetting->sales_return_prefix" placeholder="{{ __("Sales Return Prefix") }}"/>
                                         </div>
                                     </div>
 
                                     <div class="row mt-1">
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Payment Voucher Prefix") }}</label>
-                                            <input required type="text" name="payment_voucher_prefix" class="form-control" id="branch_setting_payment_voucher_prefix" data-next="branch_setting_receipt_voucher_prefix" value="$branchSetting->payment_voucher_prefix" placeholder="{{ __("Payment Voucher Prefix") }}"/>
+                                            <input type="text" name="payment_voucher_prefix" class="form-control" id="branch_setting_payment_voucher_prefix" value="$branchSetting->payment_voucher_prefix" placeholder="{{ __("Payment Voucher Prefix") }}"/>
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Receipt Voucher Prefix") }}</label>
-                                            <input required type="text" name="receipt_voucher_prefix" class="form-control" id="branch_setting_receipt_voucher_prefix" data-next="branch_setting_purchase_invoice_prefix" value="$branchSetting->receipt_voucher_prefix" placeholder="{{ __("Receipt Voucher Prefix") }}" />
+                                            <input type="text" name="receipt_voucher_prefix" class="form-control" id="branch_setting_receipt_voucher_prefix" value="$branchSetting->receipt_voucher_prefix" placeholder="{{ __("Receipt Voucher Prefix") }}" />
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
-                                            <label class="fw-bold">{{ __("Purchase Invoice Prefix") }}</label>
-                                            <input required type="text" name="purchase_invoice_prefix" class="form-control" id="branch_setting_purchase_invoice_prefix" data-next="branch_setting_purchase_order_prefix" value="$branchSetting->purchase_invoice_prefix" placeholder="{{ __("Purchase Invoice Prefix") }}"/>
+                                            <label class="fw-bold">{{ __("Expense Voucher Prefix") }}</label>
+                                            <input type="text" name="expense_voucher_prefix" class="form-control" id="branch_setting_expense_voucher_prefix" value="$branchSetting->expense_voucher_prefix" placeholder="{{ __("Expense Voucher Prefix") }}" />
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
-                                            <label class="fw-bold">{{ __("Purchase Order Voucher Prefix") }}</label>
-                                            <input required type="text" name="purchase_order_prefix" class="form-control" id="branch_setting_purchase_order_prefix" data-next="branch_setting_purchase_return_prefix" value=" $branchSetting->purchase_order_prefix" placeholder="{{ __("Purchase Order Prefix") }}" />
+                                            <label class="fw-bold">{{ __("Contra Voucher Prefix") }}</label>
+                                            <input type="text" name="contra_voucher_prefix" class="form-control" id="branch_setting_contra_voucher_prefix" value="$branchSetting->expense_voucher_prefix" placeholder="{{ __("Expense Voucher Prefix") }}" />
                                         </div>
                                     </div>
 
                                     <div class="row mt-1">
                                         <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Invoice Prefix") }}</label>
+                                            <input type="text" name="purchase_invoice_prefix" class="form-control" id="branch_setting_purchase_invoice_prefix" value="$branchSetting->purchase_invoice_prefix" placeholder="{{ __("Purchase Invoice Prefix") }}"/>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Purchase Order Voucher Prefix") }}</label>
+                                            <input type="text" name="purchase_order_prefix" class="form-control" id="branch_setting_purchase_order_prefix" value=" $branchSetting->purchase_order_prefix" placeholder="{{ __("Purchase Order Prefix") }}" />
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Purchase Return Voucher Prefix") }}</label>
-                                            <input type="text" name="purchase_return_prefix" class="form-control" id="branch_setting_purchase_return_prefix" data-next="branch_setting_stock_adjustment_prefix" value="$branchSetting->purchase_return_prefix" placeholder="{{ __("Purchase Return Prefix") }}" />
+                                            <input type="text" name="purchase_return_prefix" class="form-control" id="branch_setting_purchase_return_prefix" value="$branchSetting->purchase_return_prefix" placeholder="{{ __("Purchase Return Prefix") }}" />
                                         </div>
 
                                         <div class="col-lg-3 col-md-6">
                                             <label class="fw-bold">{{ __("Stock Adjustment Voucher Prefix") }}</label>
-                                            <input type="text" name="stock_adjustment_prefix" class="form-control" id="branch_setting_stock_adjustment_prefix" data-next="branch_setting_add_sale_invoice_layout_id" value="$branchSetting->stock_adjustment_prefix" placeholder="{{ __("Stock Adjustment Voucher Prefix") }}" />
+                                            <input type="text" name="stock_adjustment_prefix" class="form-control" id="branch_setting_stock_adjustment_prefix" value="$branchSetting->stock_adjustment_prefix" placeholder="{{ __("Stock Adjustment Voucher Prefix") }}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Payroll Voucher Prefix") }}</label>
+                                            <input type="text" name="payroll_voucher_prefix" class="form-control" id="branch_setting_payroll_voucher_prefix" value="$branchSetting->stock_adjustment_prefix" placeholder="{{ __("Payroll Voucher Prefix") }}" />
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <label class="fw-bold">{{ __("Payroll Payment Voucher Prefix") }}</label>
+                                            <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="branch_setting_payroll_payment_voucher_prefix" value="$branchSetting->stock_adjustment_prefix" placeholder="{{ __("Payroll Voucher Prefix") }}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-1">
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __('Supplier ID') }}</strong></label>
+                                            <input type="text" name="supplier_id" class="form-control" value="{{ $generalSettings['prefix__supplier_id'] }}" autocomplete="off">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label><strong>{{ __('Customer ID') }} </strong></label>
+                                            <input type="text" name="customer_id" class="form-control" autocomplete="off" value="{{ $generalSettings['prefix__customer_id'] }}">
                                         </div>
                                     </div>
 
@@ -665,7 +699,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <label class="fw-bold">{{ __("Add Sale Default Invoice Layout") }}</label>
-                                            <select name="add_sale_invoice_layout_id" class="form-control" id="add_sale_invoice_layout_id" data-next="pos_sale_invoice_layout_id">
+                                            <select name="add_sale_invoice_layout_id" class="form-control" id="add_sale_invoice_layout_id">
                                                 @foreach ($invoiceLayouts as $invoiceLayout)
                                                     <option value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
                                                 @endforeach
@@ -674,7 +708,7 @@
 
                                         <div class="col-lg-6 col-md-6">
                                             <label class="fw-bold">{{ __("Pos Sale Default Invoice Layout") }}</label>
-                                            <select name="pos_sale_invoice_layout_id" class="form-control" id="pos_sale_invoice_layout_id" data-next="default_tax_ac_id">
+                                            <select name="pos_sale_invoice_layout_id" class="form-control" id="pos_sale_invoice_layout_id">
                                                 @foreach ($invoiceLayouts as $invoiceLayout)
                                                     <option value="{{ $invoiceLayout->id }}">{{ $invoiceLayout->name }}</option>
                                                 @endforeach

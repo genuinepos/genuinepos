@@ -11,11 +11,27 @@
 <!-- Sale print templete-->
 <style>
     @media print {
-        table { page-break-after: auto }
-        tr { page-break-inside: avoid; page-break-after: auto }
-        td { page-break-inside: avoid; page-break-after: auto }
-        thead { display: table-header-group; }
-        tfoot { display: table-footer-group; }
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
     @page {
@@ -41,8 +57,25 @@
 
 <div class="sale_print_template">
     <style>
-        @page { size: a4; margin-top: 0.8cm; /* margin-bottom: 35px;  */ margin-left: 10px; margin-right: 10px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            /* margin-bottom: 35px;  */
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <div class="details_area">
         @if ($invoiceLayout->is_header_less == 0)
@@ -292,7 +325,7 @@
         <div class="row">
             <div class="col-6">
                 @if ($invoiceLayout->show_total_in_word == 1)
-                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __("Inword") }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
+                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
                 @endif
             </div>
 
@@ -300,12 +333,12 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}</td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($quotation->order_discount_type == 1)
                                     ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($quotation->order_discount_amount) }}
@@ -317,21 +350,21 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $quotation->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($quotation->order_tax_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                             </td>

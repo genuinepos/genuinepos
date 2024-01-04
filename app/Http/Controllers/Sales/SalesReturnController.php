@@ -194,8 +194,8 @@ class SalesReturnController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $salesReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->sales_return_prefix ? $branchSetting?->sales_return_prefix : $generalSettings['prefix__sale_return'];
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $salesReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->sales_return_prefix ? $branchSetting?->sales_return_prefix : $generalSettings['prefix__sales_return_prefix'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
 
             $addReturn = $this->salesReturnService->addSalesReturn(request: $request, voucherPrefix: $salesReturnVoucherPrefix, codeGenerator: $codeGenerator);
 

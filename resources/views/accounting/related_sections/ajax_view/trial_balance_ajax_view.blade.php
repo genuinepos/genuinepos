@@ -3,8 +3,13 @@
     $totalCredit = 0;
 @endphp
 <style>
-    .debit {font-weight: 450;}
-    .credit {font-weight: 450;}
+    .debit {
+        font-weight: 450;
+    }
+
+    .credit {
+        font-weight: 450;
+    }
 </style>
 <div class="table-responsive">
     <table class="table modal-table table-sm table-bordered">
@@ -127,7 +132,7 @@
 
         <tfoot>
             <tr class="bg-secondary">
-                <th class="text-white text-end"><em>@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</em></th>
+                <th class="text-white text-end"><em>@lang('menu.total') : ({{ $generalSettings['business__currency_symbol'] }})</em></th>
 
                 <th class="text-white text-end">
                     <em class="total_debit">{{ App\Utils\Converter::format_in_bdt($totalDebit) }}</em>

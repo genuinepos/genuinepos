@@ -3,33 +3,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px;}
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid var(--main-color);
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 4px 4px;
+        }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 10px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid gray;
+        }
 
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
 
-        .selectProduct { background-color: #746e70; color: #fff !important; }
+        .selectProduct {
+            background-color: #746e70;
+            color: #fff !important;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-        h6.collapse_table:hover { background: lightgray;padding: 3px; cursor: pointer; }
+        h6.collapse_table:hover {
+            background: lightgray;
+            padding: 3px;
+            cursor: pointer;
+        }
 
-        .c-delete:focus { border: 1px solid gray; padding: 2px; }
+        .c-delete:focus {
+            border: 1px solid gray;
+            padding: 2px;
+        }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .checkbox_input_wrap { text-align: right; }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
 
-        .big_amount_field { height: 36px;  font-size: 24px!important; margin-bottom: 3px; }
+        .big_amount_field {
+            height: 36px;
+            font-size: 24px !important;
+            margin-bottom: 3px;
+        }
     </style>
 @endpush
 
@@ -42,7 +93,7 @@
                     <h6>{{ __('Add Purchase Order') }}</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-1">
@@ -65,7 +116,7 @@
                                                     @endforeach
                                                 </select>
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                    <span class="input-group-text {{ !auth()->user()->can('supplier_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('supplier_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                 </div>
                                             </div>
                                             <span class="error error_supplier_id"></span>
@@ -84,7 +135,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('P/o ID.') }}</b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" name="order_id" id="order_id" class="form-control" data-next="pay_term_number" placeholder="{{ __("Purchase Order Id") }}" autocomplete="off">
+                                            <input readonly type="text" name="order_id" id="order_id" class="form-control" data-next="pay_term_number" placeholder="{{ __('Purchase Order Id') }}" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -94,9 +145,9 @@
                                             <div class="input-group">
                                                 <input type="text" name="pay_term_number" class="form-control" id="pay_term_number" data-next="pay_term" placeholder="Number">
                                                 <select name="pay_term" class="form-control" id="pay_term" data-next="date">
-                                                    <option value="">{{ __("Pay-Term") }}</option>
-                                                    <option value="1">{{ __("Days") }}</option>
-                                                    <option value="2">{{ __("Months") }}</option>
+                                                    <option value="">{{ __('Pay-Term') }}</option>
+                                                    <option value="1">{{ __('Days') }}</option>
+                                                    <option value="2">{{ __('Months') }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -179,7 +230,7 @@
                                         <div class="input-group">
                                             <input type="number" step="any" class="form-control w-60 fw-bold" id="e_quantity" value="0.00" placeholder="0.00" autocomplete="off">
                                             <select id="e_unit_id" class="form-control w-40">
-                                                <option value="">{{ __("Unit") }}</option>
+                                                <option value="">{{ __('Unit') }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -320,8 +371,8 @@
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <select name="order_discount_type" class="form-control" id="order_discount_type" data-next="order_discount">
-                                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
-                                                                        <option value="2">{{ __("Percentage") }}(%)</option>
+                                                                        <option value="1">{{ __('Fixed') }}(0.00)</option>
+                                                                        <option value="2">{{ __('Percentage') }}(%)</option>
                                                                     </select>
                                                                 </div>
 
@@ -389,7 +440,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Paying Amount') }}</b> {{ $generalSettings['business__currency'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>{{ __('Paying Amount') }}</b> {{ $generalSettings['business__currency_symbol'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control big_amount_field fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>
@@ -481,7 +532,7 @@
         </div>
     </div>
 
-    @if(auth()->user()->can('supplier_add'))
+    @if (auth()->user()->can('supplier_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

@@ -176,7 +176,7 @@
                                     <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
 
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus"> = {{ $generalSettings['business__currency'] }}</span>
+                                        <span class="input-group-text valus"> = {{ $generalSettings['business__currency_symbol'] }}</span>
                                     </div>
 
                                     <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">

@@ -29,7 +29,7 @@ class TransferStockUtil
     public function addExpenseFromTransferStock($request, $transfer_id)
     {
         $generalSettings = config('generalSettings');
-        $invoicePrefix = $generalSettings['prefix__expenses'];
+        $invoicePrefix = $generalSettings['prefix__expense_voucher_prefix'];
         $paymentInvoicePrefix = $generalSettings['prefix__expanse_payment'];
 
         $transferCostCategory = DB::table('expanse_categories')->where('name', 'Transferring Cost')->first();

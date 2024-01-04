@@ -37,7 +37,7 @@
                 <div class="main__content">
                     <div class="welcome-user">
                         <div class="alert mb-1 py-0 w-100 h-auto alert-success">
-                            <span>{{ __("Welcome") }} <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}</strong></span>
+                            <span>{{ __('Welcome') }} <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}</strong></span>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap mt-2 switch_bar_cards">
@@ -242,9 +242,9 @@
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
                                 <h6>
-                                    <span class="fas fa-table"></span>{{ __("Stock Alert") }}
+                                    <span class="fas fa-table"></span>{{ __('Stock Alert') }}
                                 </h6>
-                                <a href="#">{{ __("See More") }}</a>
+                                <a href="#">{{ __('See More') }}</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -299,8 +299,8 @@
                     <section>
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
-                                <h6><span class="fas fa-table"></span>{{ __("Sales Due Invoices") }}</h6>
-                                <a href="#">{{ __("See More") }}</a>
+                                <h6><span class="fas fa-table"></span>{{ __('Sales Due Invoices') }}</h6>
+                                <a href="#">{{ __('See More') }}</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -308,12 +308,12 @@
                                     <table id="sales_due_invoices" class="display data__table data_tble due_table" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Date") }}</th>
-                                                <th>{{ __("Customer") }}</th>
-                                                <th>{{ __("Invoice ID") }}</th>
-                                                <th>{{ __("Shop/Business") }}</th>
-                                                <th>{{ __("Invoice Amount") }}</th>
-                                                <th>{{ __("Curr. Due") }}</th>
+                                                <th>{{ __('Date') }}</th>
+                                                <th>{{ __('Customer') }}</th>
+                                                <th>{{ __('Invoice ID') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ __('Invoice Amount') }}</th>
+                                                <th>{{ __('Curr. Due') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -328,8 +328,8 @@
                     <section>
                         <div class="form_element rounded m-0">
                             <div class="section-header justify-content-between">
-                                <h6><span class="fas fa-table"></span>{{ __("Purchase Due Invoices") }}</h6>
-                                <a href="#">{{ __("See More") }}</a>
+                                <h6><span class="fas fa-table"></span>{{ __('Purchase Due Invoices') }}</h6>
+                                <a href="#">{{ __('See More') }}</a>
                             </div>
                             <div class="widget_content">
                                 <div class="table-responsive">
@@ -337,12 +337,12 @@
                                     <table id="purchase_due_invoices_table" class="display data__table data_tble" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Date") }}</th>
-                                                <th>{{ __("Supplier") }}</th>
-                                                <th>{{ __("Invoice ID") }}</th>
-                                                <th>{{ __("Shop/Business") }}</th>
-                                                <th>{{ __("Purchased Amount") }}</th>
-                                                <th>{{ __("Curr. Due") }}</th>
+                                                <th>{{ __('Date') }}</th>
+                                                <th>{{ __('Supplier') }}</th>
+                                                <th>{{ __('Invoice ID') }}</th>
+                                                <th>{{ __('Shop/Business') }}</th>
+                                                <th>{{ __('Purchased Amount') }}</th>
+                                                <th>{{ __('Curr. Due') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -360,7 +360,7 @@
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="payment_heading">{{ __("Add Shortcut Menus") }}</h6>
+                        <h6 class="modal-title" id="payment_heading">{{ __('Add Shortcut Menus') }}</h6>
                         <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
                     </div>
                     <div class="modal-body" id="modal-body_shortcuts"></div>
@@ -375,7 +375,7 @@
             <br><br><br>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 class="text-primary display-5">{{ __("Welcome") }},
+                    <h1 class="text-primary display-5">{{ __('Welcome') }},
                         <strong>{{ auth()->user()->prefix . ' ' . auth()->user()->name . ' ' . auth()->user()->last_name }}!</strong>
                     </h1>
                 </div>
@@ -421,13 +421,31 @@
                         d.branch_id = $('#branch_id').val()
                     }
                 },
-                columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                    { data: 'name', name: 'products.name' },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'name',
+                        name: 'products.name'
+                    },
                     // { data: 'code', name: 'products.product_code' },
-                    { data: 'branch', name: 'branches.name' },
-                    { data: 'alert_quantity', name: 'product_variants.variant_name', className: 'fw-bold' },
-                    { data: 'stock', name: 'product_variants.variant_code', className: 'fw-bold' },
+                    {
+                        data: 'branch',
+                        name: 'branches.name'
+                    },
+                    {
+                        data: 'alert_quantity',
+                        name: 'product_variants.variant_name',
+                        className: 'fw-bold'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'product_variants.variant_code',
+                        className: 'fw-bold'
+                    },
                 ],
             });
 
@@ -441,13 +459,32 @@
                         d.date_range = $('#date_range').val();
                     }
                 },
-                columns: [
-                    { data: 'date', name: 'sales.date' },
-                    { data: 'order_id', name: 'sales.order_id' },
-                    { data: 'branch', name: 'branches.name' },
-                    { data: 'customer', name: 'accounts.name' },
-                    { data: 'delivery_status', name: 'parentBranch.name', className: 'text-danger fw-bold'},
-                    { data: 'total_invoice_amount',  name: 'sales.total_invoice_amount', className: 'fw-bold'},
+                columns: [{
+                        data: 'date',
+                        name: 'sales.date'
+                    },
+                    {
+                        data: 'order_id',
+                        name: 'sales.order_id'
+                    },
+                    {
+                        data: 'branch',
+                        name: 'branches.name'
+                    },
+                    {
+                        data: 'customer',
+                        name: 'accounts.name'
+                    },
+                    {
+                        data: 'delivery_status',
+                        name: 'parentBranch.name',
+                        className: 'text-danger fw-bold'
+                    },
+                    {
+                        data: 'total_invoice_amount',
+                        name: 'sales.total_invoice_amount',
+                        className: 'fw-bold'
+                    },
                 ],
             });
 
@@ -461,13 +498,32 @@
                         d.date_range = $('#date_range').val();
                     }
                 },
-                columns: [
-                    { data: 'date', name: 'sales.date' },
-                    { data: 'customer', name: 'accounts.name' },
-                    { data: 'invoice_id', name: 'sales.invoice_id' },
-                    { data: 'branch', name: 'branches.name' },
-                    { data: 'total_invoice_amount', name: 'parentBranch.name', className: 'fw-bold' },
-                    { data: 'due', name: 'sales.due', className: 'text-danger fw-bold' },
+                columns: [{
+                        data: 'date',
+                        name: 'sales.date'
+                    },
+                    {
+                        data: 'customer',
+                        name: 'accounts.name'
+                    },
+                    {
+                        data: 'invoice_id',
+                        name: 'sales.invoice_id'
+                    },
+                    {
+                        data: 'branch',
+                        name: 'branches.name'
+                    },
+                    {
+                        data: 'total_invoice_amount',
+                        name: 'parentBranch.name',
+                        className: 'fw-bold'
+                    },
+                    {
+                        data: 'due',
+                        name: 'sales.due',
+                        className: 'text-danger fw-bold'
+                    },
                 ],
             });
 
@@ -481,17 +537,34 @@
                         d.date_range = $('#date_range').val();
                     }
                 },
-                columns: [
-                    { data: 'date', name: 'purchases.date' },
-                    { data: 'invoice_id', name: 'purchases.invoice_id' },
-                    { data: 'supplier', name: 'accounts.name' },
-                    { data: 'branch', name: 'branches.name' },
-                    { data: 'total_purchase_amount', name: 'parentBranch.name' },
-                    { data: 'due', name: 'purchases.due' },
+                columns: [{
+                        data: 'date',
+                        name: 'purchases.date'
+                    },
+                    {
+                        data: 'invoice_id',
+                        name: 'purchases.invoice_id'
+                    },
+                    {
+                        data: 'supplier',
+                        name: 'accounts.name'
+                    },
+                    {
+                        data: 'branch',
+                        name: 'branches.name'
+                    },
+                    {
+                        data: 'total_purchase_amount',
+                        name: 'parentBranch.name'
+                    },
+                    {
+                        data: 'due',
+                        name: 'purchases.due'
+                    },
                 ],
             });
 
-            var __currency = "{{ $generalSettings['business__currency'] }}";
+            var __currency = "{{ $generalSettings['business__currency_symbol'] }}";
 
             function getCardAmount() {
 
@@ -575,13 +648,14 @@
                         $('#details').html(data);
                         $('#detailsModal').modal('show');
                         $('.data_preloader').hide();
-                    },error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
@@ -607,34 +681,35 @@
             });
 
             // Print Packing slip
-            $(document).on('click', '#PrintChallanBtn', function (e) {
+            $(document).on('click', '#PrintChallanBtn', function(e) {
                 e.preventDefault();
                 $('.data_preloader').show();
 
                 var url = $(this).attr('href');
 
                 $.ajax({
-                    url:url,
-                    type:'get',
-                    success:function(data){
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
 
                         $('.data_preloader').hide();
                         $(data).printThis({
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                             removeInline: false,
                             printDelay: 700,
                             header: null,
                         });
-                    },error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
@@ -643,34 +718,35 @@
             });
 
             // Print Packing slip
-            $(document).on('click', '#printPackingSlipBtn', function (e) {
+            $(document).on('click', '#printPackingSlipBtn', function(e) {
                 e.preventDefault();
                 $('.data_preloader').show();
 
                 var url = $(this).attr('href');
 
                 $.ajax({
-                    url:url,
-                    type:'get',
-                    success:function(data){
+                    url: url,
+                    type: 'get',
+                    success: function(data) {
 
                         $('.data_preloader').hide();
                         $(data).printThis({
                             debug: false,
                             importCSS: true,
                             importStyle: true,
-                            loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                             removeInline: false,
                             printDelay: 700,
                             header: null,
                         });
-                    },error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
                             toastr.error("{{ __('Net Connetion Error.') }}");
-                        }else if (err.status == 500) {
+                        } else if (err.status == 500) {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }

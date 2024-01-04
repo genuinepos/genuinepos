@@ -134,7 +134,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-end">
-                                                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                                                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency_symbol'] }}</strong>
                                                         </td>
 
                                                         <td class="text-end text-success">
@@ -143,14 +143,14 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
@@ -158,7 +158,7 @@
 
                                                     <tr>
                                                         <td class="text-end">
-                                                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                                                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency_symbol'] }}</strong>
                                                         </td>
 
                                                         <td class="text-end text-danger">
@@ -167,7 +167,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
 
                                                         <td class="text-end text-success fw-bold">
                                                             0.00
@@ -177,42 +177,42 @@
 
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-success">
                                                             0.00
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-success fw-bold">
                                                             0.00
                                                         </td>

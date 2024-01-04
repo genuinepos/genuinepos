@@ -90,12 +90,12 @@
                     <th class="text-start">@lang('menu.sale_date')</th>
                     <th class="text-start">{{ __('B. Location') }}</th>
                     <th class="text-end">{{ __('Sold/Out Qty') }}</th>
-                    <th class="text-end">{{ __('Sold Price') }}({{ $generalSettings['business__currency'] }})</th>
+                    <th class="text-end">{{ __('Sold Price') }}({{ $generalSettings['business__currency_symbol'] }})</th>
 
                     <th class="text-start">@lang('menu.customer')</th>
                     <th class="text-start">{{ __('Stock In By') }}</th>
                     <th class="text-start">{{ __('Stock In Date') }}</th>
-                    <th class="text-end">@lang('menu.unit_cost')({{ $generalSettings['business__currency'] }})</th>
+                    <th class="text-end">@lang('menu.unit_cost')({{ $generalSettings['business__currency_symbol'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">

@@ -168,7 +168,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                     <td class="text-end" style="font-size:11px!important;">
                                         {{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}
                                     </td>
@@ -176,7 +176,7 @@
 
                                 @if ($transferStock->received_stock_value > 0)
                                     <tr>
-                                        <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Stock Value') }} : {{ $generalSettings['business__currency'] }}</th>
+                                        <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                         <td class="text-end" style="font-size:11px!important;">
                                             {{ App\Utils\Converter::format_in_bdt($transferStock->received_stock_value) }}
                                         </td>
@@ -451,7 +451,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}
                             </td>
@@ -459,7 +459,7 @@
 
                         @if ($transferStock->received_stock_value > 0)
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Stock Value') }} : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($transferStock->received_stock_value) }}
                                 </td>

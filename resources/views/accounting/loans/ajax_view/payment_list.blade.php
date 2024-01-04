@@ -1,17 +1,35 @@
 <style>
-    .payment_top_card {background: #d7dfe8;}
-    .payment_top_card span {font-size: 12px;font-weight: 400;}
-    .payment_top_card li {font-size: 12px;}
-    .payment_top_card ul {padding: 6px;}
-    .payment_list_table {position: relative;}
-    .payment_details_contant{background: azure!important;}
+    .payment_top_card {
+        background: #d7dfe8;
+    }
+
+    .payment_top_card span {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .payment_top_card li {
+        font-size: 12px;
+    }
+
+    .payment_top_card ul {
+        padding: 6px;
+    }
+
+    .payment_list_table {
+        position: relative;
+    }
+
+    .payment_details_contant {
+        background: azure !important;
+    }
 </style>
 <div class="info_area mb-2">
     <div class="row">
         <div class="col-md-4">
             <div class="payment_top_card">
                 <ul class="list-unstyled">
-                    <li><strong>@lang('menu.company')/@lang('menu.people') </strong>{{ $company->name  }}</li>
+                    <li><strong>@lang('menu.company')/@lang('menu.people') </strong>{{ $company->name }}</li>
                     <li><strong>@lang('menu.phone') </strong>{{ $company->phone }}</li>
                     <li><strong>@lang('menu.address') </strong>{{ $company->address }}</li>
                 </ul>
@@ -23,22 +41,22 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b >@lang('menu.total_loan_advance') </b> {{ $generalSettings['business__currency'] }}
+                            <b>@lang('menu.total_loan_advance') </b> {{ $generalSettings['business__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->pay_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">@lang('menu.total_received') </b> {{ $generalSettings['business__currency'] }}
+                            <b class="text-success">@lang('menu.total_received') </b> {{ $generalSettings['business__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_receive) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">@lang('menu.total_due') </b>  {{ $generalSettings['business__currency'] }}
-                             {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}
+                            <b class="text-danger">@lang('menu.total_due') </b> {{ $generalSettings['business__currency_symbol'] }}
+                            {{ App\Utils\Converter::format_in_bdt($company->pay_loan_due) }}
                         </p>
                     </li>
                 </ul>
@@ -50,22 +68,22 @@
                 <ul class="list-unstyled">
                     <li>
                         <p>
-                            <b>@lang('menu.total_loan_liability')  </b> {{ $generalSettings['business__currency'] }}
+                            <b>@lang('menu.total_loan_liability') </b> {{ $generalSettings['business__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-success">@lang('menu.total_paid') </b> {{ $generalSettings['business__currency'] }}
+                            <b class="text-success">@lang('menu.total_paid') </b> {{ $generalSettings['business__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($company->total_pay) }}
                         </p>
                     </li>
 
                     <li>
                         <p>
-                            <b class="text-danger">@lang('menu.total_due') </b> {{ $generalSettings['business__currency'] }}
-                             {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
+                            <b class="text-danger">@lang('menu.total_due') </b> {{ $generalSettings['business__currency_symbol'] }}
+                            {{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}
                         </p>
                     </li>
                 </ul>
@@ -89,7 +107,7 @@
                     <th class="text-white text-start">@lang('menu.payment_type')</th>
                     <th class="text-white text-start">@lang('menu.method')</th>
                     <th class="text-white text-start">@lang('menu.account')</th>
-                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business__currency']}})</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -110,7 +128,7 @@
                                 @endif
                             </td>
                             <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C: '.$payment->ac_no.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name . ' (A/C: ' . $payment->ac_no . ')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                             </td>

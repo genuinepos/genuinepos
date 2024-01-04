@@ -74,8 +74,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
 
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $voucherPrefix = isset($branchSetting) && $branchSetting?->stock_adjustment_prefix ? $branchSetting?->stock_adjustment_prefix : $generalSettings['prefix__stock_adjustment'];
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+        $voucherPrefix = isset($branchSetting) && $branchSetting?->stock_adjustment_prefix ? $branchSetting?->stock_adjustment_prefix : $generalSettings['prefix__stock_adjustment_prefix'];
+        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
         $addStockAdjustment = $stockAdjustmentService->addStockAdjustment(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 

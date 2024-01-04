@@ -3,7 +3,7 @@
 @endphp
 <style>
     .modal-table tbody tr {
-         background: #fff;
+        background: #fff;
     }
 </style>
 <table class="table modal-table table-sm table-bordered">
@@ -24,20 +24,20 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.net_profit_before_tax') </em>
+                                <em>@lang('menu.net_profit_before_tax') </em>
                             </td>
 
                             <td class="text-start">
-                               <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em>
-                               @php
-                                 $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];
-                               @endphp
+                                <em>{{ App\Utils\Converter::format_in_bdt($netProfitLossAccount['net_profit_before_tax']) }}</em>
+                                @php
+                                    $oparationTotal += $netProfitLossAccount['net_profit_before_tax'];
+                                @endphp
                             </td>
                         </tr>
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.customer_balance') </em>
+                                <em>@lang('menu.customer_balance') </em>
                             </td>
 
                             <td class="text-start">
@@ -50,11 +50,11 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.supplier_balance') </em>
+                                <em>@lang('menu.supplier_balance') </em>
                             </td>
 
                             <td class="text-start">
-                                 <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
+                                <em>{{ App\Utils\Converter::format_in_bdt($supplierPayable->sum('total_due')) }}</em>
                                 @php
                                     $oparationTotal += $supplierPayable->sum('total_due');
                                 @endphp
@@ -63,7 +63,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.current_stock_value') </em>
+                                <em>@lang('menu.current_stock_value') </em>
                             </td>
 
                             <td class="text-start">
@@ -80,7 +80,7 @@
                             </td>
 
                             <td class="text-start">
-                                 <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>
+                                <em>{{ App\Utils\Converter::format_in_bdt($currentAssets->sum('total_current_asset')) }}</em>
                                 @php
                                     $oparationTotal += $currentAssets->sum('total_current_asset');
                                 @endphp
@@ -89,7 +89,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.current_liability') </em>
+                                <em>@lang('menu.current_liability') </em>
                             </td>
 
                             <td class="text-start">
@@ -102,7 +102,7 @@
 
                         <tr>
                             <td class="text-start">
-                               <em>@lang('menu.tax_payable') </em>
+                                <em>@lang('menu.tax_payable') </em>
                             </td>
 
                             <td class="text-start">
@@ -117,13 +117,13 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_operations') :
-                                        ({{ $generalSettings['business__currency'] }})
+                                        ({{ $generalSettings['business__currency_symbol'] }})
                                     </em>
                                 </b>
                             </td>
 
                             <td class="text-start">
-                                <b>{{ $oparationTotal < 0 ? '('. App\Utils\Converter::format_in_bdt($oparationTotal).')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
+                                <b>{{ $oparationTotal < 0 ? '(' . App\Utils\Converter::format_in_bdt($oparationTotal) . ')' : App\Utils\Converter::format_in_bdt($oparationTotal) }}</b>
                                 @php
                                     $totalCashFlow += $oparationTotal;
                                 @endphp
@@ -179,7 +179,7 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_investing') :
-                                        ({{ $generalSettings['business__currency'] }})
+                                        ({{ $generalSettings['business__currency_symbol'] }})
                                     </em>
                                 </b>
                             </td>
@@ -214,7 +214,7 @@
                             <td class="text-end">
                                 <b>
                                     <em>@lang('menu.total_financing') :
-                                        ({{ $generalSettings['business__currency'] }})
+                                        ({{ $generalSettings['business__currency_symbol'] }})
                                     </em>
                                 </b>
                             </td>
@@ -247,16 +247,16 @@
                         <tr class="bg-secondary">
                             <td class="text-end text-white">
                                 <b>
-                                    <em>@lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency'] }})</em>
+                                    <em>@lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency_symbol'] }})</em>
                                 </b>
                             </td>
                             <td class="text-start text-white">
                                 <b class="total_cash_flow">
                                     <em>
-                                        {{ $totalCashFlow < 0 ? '('.App\Utils\Converter::format_in_bdt($totalCashFlow).')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
+                                        {{ $totalCashFlow < 0 ? '(' . App\Utils\Converter::format_in_bdt($totalCashFlow) . ')' : App\Utils\Converter::format_in_bdt($totalCashFlow) }}
                                     </em>
                                 </b>
-                            </th>
+                                </th>
                         </tr>
                     </tfoot>
                 </table>

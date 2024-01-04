@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 Artisan::command('db:v001', function () {
     echo 'DB v001 migrating...' . PHP_EOL;
-    
+
     Schema::disableForeignKeyConstraints();
     DB::statement(defineNewSQLForShoptSettings());
     Schema::enableForeignKeyConstraints();

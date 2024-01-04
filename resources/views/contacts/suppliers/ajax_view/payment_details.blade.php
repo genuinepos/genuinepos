@@ -5,10 +5,8 @@
             <h3>
                 <strong>
                     @if ($supplierPayment->branch)
-
                         {{ $supplierPayment->branch->name . '/' . $supplierPayment->branch->branch_code }}
                     @else
-
                         {{ $generalSettings['business__business_name'] }}
                     @endif
                 </strong>
@@ -41,7 +39,7 @@
                         <tr>
                             <td width="50%" class="text-start"><strong>@lang('menu.paid_amount') </strong></td>
                             <td width="50%" class="text-start">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($supplierPayment->paid_amount) }}
                             </td>
                         </tr>
@@ -122,7 +120,8 @@
                     @foreach ($supplierPayment->supplier_payment_invoices as $pi)
                         <tr>
                             <td class="text-start">{{ date($generalSettings['business__date_format'], strtotime($pi->purchase->date)) }}</td>
-                            <td class="text-start">{{ $pi->purchase->invoice_id }}</h6></td>
+                            <td class="text-start">{{ $pi->purchase->invoice_id }}</h6>
+                            </td>
                             <td class="text-start">{{ App\Utils\Converter::format_in_bdt($pi->paid_amount) }}</td>
                             @php
                                 $total_paid += $pi->paid_amount;

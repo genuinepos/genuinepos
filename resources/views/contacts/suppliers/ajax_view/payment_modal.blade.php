@@ -88,21 +88,21 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.total_purchase') </strong>
-                                    {{ $generalSettings['business__currency'] }}
+                                    {{ $generalSettings['business__currency_symbol'] }}
                                     <span class="card_text">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>@lang('menu.total_paid') </strong>
-                                    {{ $generalSettings['business__currency'] }}
+                                    {{ $generalSettings['business__currency_symbol'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>@lang('menu.total_due') </strong>
-                                    {{ $generalSettings['business__currency'] }}
+                                    {{ $generalSettings['business__currency_symbol'] }}
                                     <span class="card_text text-danger">
                                         <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_purchase_due'] }}">

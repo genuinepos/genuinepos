@@ -187,8 +187,8 @@ class PurchaseReturnController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $purchaseReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->purchase_return_prefix ? $branchSetting?->purchase_return_prefix : $generalSettings['prefix__purchase_return'];
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+            $purchaseReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->purchase_return_prefix ? $branchSetting?->purchase_return_prefix : $generalSettings['prefix__purchase_return_prefix'];
+            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
             $addReturn = $this->purchaseReturnService->addPurchaseReturn(request: $request, voucherPrefix: $purchaseReturnVoucherPrefix, codeGenerator: $codeGenerator);
 
@@ -395,7 +395,7 @@ class PurchaseReturnController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
             $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: ['purchaseReturnProducts']);
 

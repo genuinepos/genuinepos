@@ -50,19 +50,19 @@
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.total_loan_get') </strong>
                                     <span class="card_text invoice_no">
-                                        {{ $generalSettings['business__currency'] }}
+                                        {{ $generalSettings['business__currency_symbol'] }}
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_amount) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>@lang('menu.total_due_paid') </strong>
-                                    {{ $generalSettings['business__currency'] }}
+                                    {{ $generalSettings['business__currency_symbol'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->total_pay) }}</b>
                                     </span>
                                 </li>
                                 <li><strong>@lang('menu.total_payment_due') </strong>
-                                    {{ $generalSettings['business__currency'] }}
+                                    {{ $generalSettings['business__currency_symbol'] }}
                                     <span class="card_text text-danger">
                                         <b>{{ App\Utils\Converter::format_in_bdt($company->get_loan_due) }}</b>
                                     </span>

@@ -1,17 +1,56 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    div#footer {position:fixed;bottom:20px;left:0px;width:100%;height:0%;color:#CCC;background:#333; padding: 0; margin: 0;}
-    .print_table th { font-size:9px!important; font-weight: 550!important;}
-    .print_table tr td{font-size: 9px!important;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    div#footer {
+        position: fixed;
+        bottom: 20px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
+
+    .print_table th {
+        font-size: 9px !important;
+        font-weight: 550 !important;
+    }
+
+    .print_table tr td {
+        font-size: 9px !important;
+    }
 </style>
 
 @php
@@ -26,18 +65,14 @@
     <div class="col-4 align-items-center">
         @if ($branch_id == '')
             @if ($generalSettings['business__business_logo'] != null)
-
                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
             @else
-
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
             @endif
         @elseif($branch_id == 'NULL')
             @if ($generalSettings['business__business_logo'] != null)
-
                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
             @else
-
                 <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
             @endif
         @else
@@ -49,10 +84,8 @@
             @endphp
 
             @if ($branch->logo != null)
-
                 <img style="height: 45px; width:200px;" src="{{ asset('uploads/branch_logo/' . $branch->logo) }}" class="logo__img">
             @else
-
                 <h4 class="text-uppercase fw-bold">{{ $branch->name }}</h4>
             @endif
         @endif
@@ -60,22 +93,19 @@
 
     <div class="col-8 text-end">
         @if ($branch_id == '')
-
             <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h5>
             <p class="text-uppercase fw-bold">@lang('menu.all_business_location')</p>
             <p>{{ $generalSettings['business__address'] }}</p>
             <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>
             <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</p>
         @elseif ($branch_id == 'NULL')
-
             <h5 class="text-uppercase">{{ $generalSettings['business__business_name'] }}</h5>
             <p>{{ $generalSettings['business__address'] }}</p>
             <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>
             <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</p>
         @else
-
             <h5 class="text-uppercase fw-bold">{{ $branch->name }}</h5>
-            <p>{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p>{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
             <p><strong>@lang('menu.email') : </strong>{{ $branch->email }}</p>
             <p><strong>@lang('menu.phone') : </strong>{{ $branch->phone }}</p>
         @endif
@@ -132,12 +162,11 @@
                         $totalDue += $ex->due;
 
                         $date = date($__date_format, strtotime($ex->report_date));
-                        $isSameGroup = (null != $lastDate && $lastDate == $date) ? true : false;
+                        $isSameGroup = null != $lastDate && $lastDate == $date ? true : false;
                         $lastDate = $date;
                     @endphp
 
                     @if ($isSameGroup == true)
-
                         @php
                             $dateTotalExpense += $ex->net_total_amount;
                             $dateTotalPaid += $ex->paid;
@@ -181,7 +210,7 @@
                                     ->get();
                             @endphp
                             @foreach ($expenseDescriptions as $exDescription)
-                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . ') : </b>'. App\Utils\Converter::format_in_bdt($exDescription->amount) !!} <br>
+                                {!! '<b>' . $exDescription->name . '(' . $exDescription->code . ') : </b>' . App\Utils\Converter::format_in_bdt($exDescription->amount) !!} <br>
                             @endforeach
                         </td>
 
@@ -202,15 +231,13 @@
                         $__veryLastDate = date($__date_format, strtotime($veryLastDate));
                         $currentDate = $date;
                         if ($currentDate == $__veryLastDate) {
-
                             $lastDateTotalExpense += $ex->net_total_amount;
                             $lastDateTotalPaid += $ex->paid;
                             $lastDateTotalDue += $ex->due;
                         }
                     @endphp
 
-                    @if($loop->index == $lastRow)
-
+                    @if ($loop->index == $lastRow)
                         <tr>
                             <td colspan="3" class="fw-bold text-end">@lang('menu.total') : </td>
                             <td class="fw-bold text-end">{{ App\Utils\Converter::format_in_bdt($lastDateTotalExpense) }}</td>
@@ -230,21 +257,21 @@
         <table class="table modal-table table-sm table-bordered print_table">
             <thead>
                 <tr>
-                    <th class="text-end">@lang('menu.total_expense') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_expense') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalExpense) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{$generalSettings['business__currency']}}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalPaid) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalDue) }}
                     </td>
@@ -271,4 +298,3 @@
         </div>
     </div>
 </div>
-

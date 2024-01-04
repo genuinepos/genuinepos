@@ -102,7 +102,7 @@
                                         </tr>
 
                                         <tr>
-                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                             <td class="text-end fw-bold" style="font-size:11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                             </td>
@@ -553,7 +553,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                 </td>

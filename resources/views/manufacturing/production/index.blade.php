@@ -1,6 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Productions - ')
 @section('content')
@@ -8,10 +8,10 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __("Productions") }}</h6>
+                    <h6>{{ __('Productions') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
                 </a>
             </div>
         </div>
@@ -25,11 +25,10 @@
                                 <div class="form-group row">
                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-2">
-                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
-                                            <select name="branch_id"
-                                                class="form-control select2" id="branch_id" autofocus>
-                                                <option value="">{{ __("All") }}</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
+                                            <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
+                                                <option value="">{{ __('All') }}</option>
+                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -37,7 +36,7 @@
                                                             $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                             $branchCode = '-(' . $branch->branch_code . ')';
                                                         @endphp
-                                                        {{  $branchName . $areaName . $branchCode }}
+                                                        {{ $branchName . $areaName . $branchCode }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -45,10 +44,10 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("Status") }}</strong></label>
+                                        <label><strong>{{ __('Status') }}</strong></label>
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
-                                                <option value="">{{ __("All") }}</option>
+                                                <option value="">{{ __('All') }}</option>
                                                 @foreach (\App\Enums\ProductionStatus::cases() as $productionStatus)
                                                     <option value="{{ $productionStatus->value }}">{{ $productionStatus->name }}</option>
                                                 @endforeach
@@ -57,7 +56,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("From Date") }} </strong></label>
+                                        <label><strong>{{ __('From Date') }} </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -69,7 +68,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("To Date") }} </strong></label>
+                                        <label><strong>{{ __('To Date') }} </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -84,7 +83,7 @@
                                         <label><strong></strong></label>
                                         <div class="input-group">
                                             <button type="submit" class="btn text-white btn-sm btn-info float-start">
-                                                <i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}
+                                                <i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}
                                             </button>
                                         </div>
                                     </div>
@@ -97,7 +96,9 @@
 
             <div class="card">
                 <div class="section-header">
-                    <div class="col-6"><h6>{{ __("List Of Productions") }}</h6></div>
+                    <div class="col-6">
+                        <h6>{{ __('List Of Productions') }}</h6>
+                    </div>
                     @if (auth()->user()->can('production_add'))
                         <div class="col-6 d-flex justify-content-end">
                             <a class="btn btn-sm btn-primary" href="{{ route('manufacturing.productions.create') }}"><i class="fas fa-plus-square"></i>@lang('menu.add')</a>
@@ -107,31 +108,31 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                     </div>
                     <div class="table-responsive">
                         <form id="update_product_cost_form" action="">
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-black">{{ __("Action") }}</th>
-                                        <th class="text-black">{{ __("Date") }}</th>
-                                        <th class="text-black">{{ __("Voucher No") }}</th>
-                                        <th class="text-black">{{ __("Shop/Business") }}</th>
-                                        <th class="text-black">{{ __("Mfd. Product") }}</th>
-                                        <th class="text-black">{{ __("Status") }}</th>
-                                        <th class="text-black">{{ __("Per Unit Cost Inc. Tax") }}</th>
-                                        <th class="text-black">{{ __("Selling Price Exc. Tax") }}</th>
-                                        <th class="text-black">{{ __("Final Qty") }}</th>
-                                        <th class="text-black">{{ __("Total Ingredient Cost") }}</th>
-                                        <th class="text-black">{{ __("Addl. Production Cost") }}</th>
-                                        <th class="text-black">{{ __("Net Cost") }}</th>
+                                        <th class="text-black">{{ __('Action') }}</th>
+                                        <th class="text-black">{{ __('Date') }}</th>
+                                        <th class="text-black">{{ __('Voucher No') }}</th>
+                                        <th class="text-black">{{ __('Shop/Business') }}</th>
+                                        <th class="text-black">{{ __('Mfd. Product') }}</th>
+                                        <th class="text-black">{{ __('Status') }}</th>
+                                        <th class="text-black">{{ __('Per Unit Cost Inc. Tax') }}</th>
+                                        <th class="text-black">{{ __('Selling Price Exc. Tax') }}</th>
+                                        <th class="text-black">{{ __('Final Qty') }}</th>
+                                        <th class="text-black">{{ __('Total Ingredient Cost') }}</th>
+                                        <th class="text-black">{{ __('Addl. Production Cost') }}</th>
+                                        <th class="text-black">{{ __('Net Cost') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="8" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
                                         <th id="total_final_output_quantity" class="text-white text-end"></th>
                                         <th id="total_ingredient_cost" class="text-white text-end"></th>
                                         <th id="additional_production_cost" class="text-white text-end"></th>
@@ -162,13 +163,36 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10]}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                    }
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('manufacturing.productions.index') }}",
                 "data": function(d) {
@@ -178,20 +202,62 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                {data: 'action'},
-                {data: 'date', name: 'productions.date'},
-                {data: 'voucher_no', name: 'productions.voucher_no'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'product', name: 'products.name'},
-                {data: 'status', name: 'product_variants.variant_name', className: 'fw-bold'},
-                {data: 'per_unit_cost_inc_tax', name: 'parentBranch.name', className: 'text-end fw-bold'},
-                {data: 'per_unit_price_exc_tax', name: 'per_unit_price_exc_tax', className: 'text-end fw-bold'},
-                {data: 'total_final_output_quantity', name: 'total_final_output_quantity', className: 'text-end fw-bold'},
-                {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end fw-bold'},
-                {data: 'additional_production_cost', name: 'additional_production_cost', className: 'text-end fw-bold'},
-                {data: 'net_cost', name: 'net_cost', className: 'text-end fw-bold'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'productions.date'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'productions.voucher_no'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'product',
+                    name: 'products.name'
+                },
+                {
+                    data: 'status',
+                    name: 'product_variants.variant_name',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'per_unit_cost_inc_tax',
+                    name: 'parentBranch.name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'per_unit_price_exc_tax',
+                    name: 'per_unit_price_exc_tax',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_final_output_quantity',
+                    name: 'total_final_output_quantity',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_ingredient_cost',
+                    name: 'total_ingredient_cost',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'additional_production_cost',
+                    name: 'additional_production_cost',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'net_cost',
+                    name: 'net_cost',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var total_final_output_quantity = sum_table_col($('.data_tbl'), 'total_final_output_quantity');
                 $('#total_final_output_quantity').text(bdFormat(total_final_output_quantity));
@@ -224,7 +290,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             production_table.ajax.reload();
@@ -245,13 +311,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -259,8 +326,8 @@
             });
         });
 
-         // Make print
-         $(document).on('click', '#modalDetailsPrintBtn', function(e) {
+        // Make print
+        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
             e.preventDefault();
 
             var body = $('.print_modal_details').html();
@@ -276,7 +343,7 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#deleted_form').attr('action', url);
@@ -284,28 +351,38 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e) {
+        $(document).on('submit', '#deleted_form', function(e) {
             e.preventDefault();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
                     production_table.ajax.reload();
                     toastr.error(data);
                 }
             });
         });
-   </script>
+    </script>
 
     <script type="text/javascript">
         new Litepicker({

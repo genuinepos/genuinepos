@@ -182,7 +182,7 @@ class PurchaseOrderController extends Controller
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
             $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_order_prefix ? $branchSetting?->purchase_order_prefix : 'PO';
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $addPurchaseOrder = $this->purchaseOrderService->addPurchaseOrder(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
@@ -333,7 +333,7 @@ class PurchaseOrderController extends Controller
 
             $generalSettings = config('generalSettings');
             $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             // get updatable purchase row

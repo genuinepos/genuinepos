@@ -165,7 +165,7 @@
         @if ($invoiceLayout->is_header_less == 0)
             <div class="row mt-2">
                 <div class="col-12 text-center">
-                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
+                    <h5 class="fw-bold" style="text-transform: uppercase;">{{ __('Sales Order') }}</h5>
                 </div>
             </div>
         @endif
@@ -206,7 +206,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Sales Order") }}</h5>
+                        <h5 style="text-transform: uppercase;">{{ __('Sales Order') }}</h5>
                     </div>
                 @endif
 
@@ -328,7 +328,7 @@
         <div class="row">
             <div class="col-6">
                 @if ($invoiceLayout->show_total_in_word == 1)
-                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __("Inword") }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
+                    <p style="text-transform: uppercase;" style="font-size:10px!important;"><strong>{{ __('Inword') }} : </strong> <span id="inword"></span> {{ __('Only') }}.</p>
                 @endif
             </div>
 
@@ -336,11 +336,11 @@
                 <table class="table print-table table-sm">
                     <tbody>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($order->net_total_amount) }}</td>
                         </tr>
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Order Discount') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Order Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($order->order_discount_type == 1)
                                     ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($order->order_discount_amount) }}
@@ -352,42 +352,42 @@
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Order Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Order Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 ({{ $order->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($order->order_tax_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($order->shipment_charge) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Ordered Amount') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Ordered Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($order->total_invoice_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Advance Received') }} : {{ $generalSettings['business__currency'] }} </strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Advance Received') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($__receivedAmount > 0 ? $__receivedAmount : $order->paid) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Due (On Order)') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Due (On Order)') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($order->due) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Current Balance') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt(0) }}
                             </td>

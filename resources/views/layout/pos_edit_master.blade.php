@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,39 +14,38 @@
 
     {{-- creat pate link start --}}
 
-    <link rel="stylesheet" href="{{asset('backend/asset/css/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/fontawesome/css/all.min.css') }}">
     {{-- <link rel="stylesheet" href="{{asset('backend/asset/css/bootstrap.min.css') }}"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link href="{{asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/typography.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/body.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/reset.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('backend/css/gradient.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Calculator -->
     <link rel="stylesheet" href="{{ asset('backend/asset/css/calculator.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/comon.css') }}">
-    <link rel="stylesheet" href="{{asset('backend/asset/css/pos.css') }}">
-    <link href="{{asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet"
-    type="text/css"/>
-    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="{{asset('backend/asset/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/comon.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/pos.css') }}">
+    <link href="{{ asset('assets/plugins/custom/toastrjs/toastr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/asset/css/pos-theme.css') }}">
     <!-- <style> .btn-bg {padding: 2px!important;} </style> -->
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     @stack('css')
-    <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
+    <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
     <!--Toaster.js js link-->
     <script src="{{ asset('assets/plugins/custom/toastrjs/toastr.min.js') }}"></script>
     <!--Toaster.js js link end-->
 
-    <script src="{{asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
+    <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }} "></script>
     <script src="{{ asset('assets/plugins/custom/print_this/printThis.min.js') }}"></script>
-    <script src="{{asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/Shortcuts-master/shortcuts.js') }}"></script>
     <!--alert js link-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="{{ asset('assets/plugins/custom/digital_clock/digital_clock.js') }}"></script>
-    <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
+    <script src="{{ asset('backend/js/number-bdt-formater.js') }}"></script>
 
     {{-- creat pate link end --}}
 
@@ -224,7 +224,7 @@
     <div class="modal fade" id="holdInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
     <!-- Hold invoice list modal End-->
 
-    @if(auth()->user()->can('product_add'))
+    @if (auth()->user()->can('product_add'))
         <!--Add Product Modal-->
         <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -243,7 +243,7 @@
     @endif
 
     <!--Add Customer Modal-->
-    @if(auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif
@@ -275,7 +275,7 @@
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business__currency'] }}</span>
+                                    <span>{{ $generalSettings['business__currency_symbol'] }}</span>
                                     <span id="unit_cost"></span>
                                 </span>
 
@@ -428,9 +428,9 @@
         // Get all pos shortcut menus by ajax
         function allPosShortcutMenus() {
             $.ajax({
-                url: "{{ route('pos.short.menus.edit.page.show') }}"
-                , type: 'get'
-                , success: function(data) {
+                url: "{{ route('pos.short.menus.edit.page.show') }}",
+                type: 'get',
+                success: function(data) {
                     $('#pos-shortcut-menus').html(data);
                 }
             });
@@ -440,16 +440,16 @@
         $(document).on('click', '#pos_exit_button', function(e) {
             e.preventDefault();
             $.confirm({
-                'title': 'Confirmation'
-                , 'content': 'Are you sure, you want to exit?'
-                , 'buttons': {
+                'title': 'Confirmation',
+                'content': 'Are you sure, you want to exit?',
+                'buttons': {
                     'Yes': {
                         'class': 'yes btn-modal-primary',
                         'action': function() {
                             window.location = "{{ route('sales.pos.create') }}";
                         }
-                    }
-                    , 'No': {
+                    },
+                    'No': {
                         'class': 'no btn-danger',
                         'action': function() {
                             console.log('Deleted canceled.');
@@ -485,4 +485,5 @@
     </script>
     @stack('js')
 </body>
+
 </html>

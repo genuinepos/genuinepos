@@ -71,8 +71,8 @@
 @endphp
 <div class="row">
     <div class="col-md-12 text-center">
-        <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-        <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+        <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+        <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         <h6 style="margin-top: 10px;"><b>@lang('menu.supplier_report')</b></h6>
     </div>
 </div>
@@ -119,27 +119,27 @@
         <table class="table modal-table table-sm table-bordered">
             <tbody>
                 <tr>
-                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_purchase') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_purchase') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPurchase) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_purchase_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_purchase_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Returnable/Refundable Due') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable/Refundable Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>

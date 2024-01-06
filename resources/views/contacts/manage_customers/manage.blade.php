@@ -100,7 +100,7 @@
                                                     <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                     <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
                                                         @if (!$branch)
-                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                         @else
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -222,7 +222,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
+                                                    <th colspan="4" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                     <th id="ledger_table_total_debit" class="text-white text-end"></th>
                                                     <th id="ledger_table_total_credit" class="text-white text-end"></th>
                                                     <th id="ledger_table_current_balance" class="text-white text-end"></th>
@@ -285,7 +285,7 @@
                                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
                                                                 @if (!$branch)
-                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                 @else
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -392,7 +392,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                     <th id="total_item" class="text-white text-end"></th>
                                                     <th id="total_qty" class="text-white text-end"></th>
                                                     <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -430,7 +430,7 @@
                                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
                                                                 @if (!$branch)
-                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                 @else
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -537,7 +537,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
+                                                    <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                     <th id="total_item" class="text-white text-end"></th>
                                                     <th id="total_qty" class="text-white text-end"></th>
                                                     <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -574,7 +574,7 @@
                                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
                                                                 @if (!$branch)
-                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                 @else
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -679,7 +679,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                                    <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                     <th id="total_purchase_amount" class="text-white"></th>
                                                     <th id="paid" class="text-white"></th>
                                                     <th id="purchase_return_amount" class="text-white"></th>
@@ -715,7 +715,7 @@
                                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                             <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
                                                                 @if (!$branch)
-                                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                 @else
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -820,7 +820,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency_symbol'] }})</th>
+                                                    <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                     <th class="text-white text-end" id="total_purchase_amount"></th>
                                                     <th class="text-white text-end" id="paid"></th>
                                                     <th class="text-white text-end" id="due"></th>
@@ -856,7 +856,7 @@
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>
                                                                     @if (!$branch)
-                                                                        <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                     @else
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -960,7 +960,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                     <th id="total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>
@@ -994,7 +994,7 @@
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
                                                                     @if (!$branch)
-                                                                        <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                     @else
                                                                         @php
                                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -1098,7 +1098,7 @@
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                                    <th colspan="10" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                     <th id="payments_total_amount" class="text-white"></th>
                                                     {{-- <th></th> --}}
                                                 </tr>

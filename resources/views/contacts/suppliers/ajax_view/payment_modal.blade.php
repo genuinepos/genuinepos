@@ -88,21 +88,21 @@
                         <div class="payment_top_card">
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.total_purchase') </strong>
-                                    {{ $generalSettings['business__currency_symbol'] }}
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                     <span class="card_text">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>@lang('menu.total_paid') </strong>
-                                    {{ $generalSettings['business__currency_symbol'] }}
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                     <span class="card_text text-success">
                                         <b>{{ App\Utils\Converter::format_in_bdt($amounts['total_paid']) }}</b>
                                     </span>
                                 </li>
 
                                 <li><strong>@lang('menu.total_due') </strong>
-                                    {{ $generalSettings['business__currency_symbol'] }}
+                                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                     <span class="card_text text-danger">
                                         <b id="card_total_due_show">{{ App\Utils\Converter::format_in_bdt($amounts['total_purchase_due']) }}</b>
                                         <input type="hidden" id="card_total_due" value="{{ $amounts['total_purchase_due'] }}">
@@ -121,7 +121,7 @@
                         <div class="row">
                             <div class="col-lg-12 mt-2">
                                 <label><strong>@lang('menu.business_location') </strong> </label>
-                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] . ' (HO)' }}" style="font-weight: 600; font-size:12px;">
+                                <input readonly type="text" name="branch_id" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] . ' (HO)' }}" style="font-weight: 600; font-size:12px;">
                             </div>
 
                             <div class="col-lg-12 mt-2">
@@ -400,7 +400,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_f"></i></span>
                                     </div>
-                                    <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}">
+                                    <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business_or_shop__date_format']) }}">
                                 </div>
                                 <span class="error error_p_date"></span>
                             </div>
@@ -576,7 +576,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

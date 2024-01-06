@@ -27,7 +27,7 @@ class PurchaseProductReportController extends Controller
     // Index view of supplier report
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_purchase_report')) {
+        if (!auth()->user()->can('product_purchase_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -131,9 +131,9 @@ class PurchaseProductReportController extends Controller
             return DataTables::of($purchaseProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                    return Str::limit($row->name, 35, '').$variant;
+                    return Str::limit($row->name, 35, '') . $variant;
                 })
                 ->editColumn('date', function ($row) {
 
@@ -145,28 +145,28 @@ class PurchaseProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->branch_area_name.')';
+                            return $row->branch_name . '(' . $row->branch_area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->quantity).'/<span class="quantity" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
                 })
-                ->editColumn('invoice_id', fn ($row) => '<a href="'.route('purchases.show', [$row->purchase_id]).'" class="text-hover" id="details_btn" title="View">'.$row->invoice_id.'</a>')
+                ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
                 ->editColumn('unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_exc_tax))
                 ->editColumn('unit_discount_amount', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_discount_amount))
-                ->editColumn('unit_tax_amount', fn ($row) => '('.\App\Utils\Converter::format_in_bdt($row->unit_tax_percent).'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '(' . \App\Utils\Converter::format_in_bdt($row->unit_tax_percent) . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
                 ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_unit_cost))
 
-                ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="'.$row->line_total.'">'.\App\Utils\Converter::format_in_bdt($row->line_total).'</span>')
+                ->editColumn('line_total', fn ($row) => '<span class="line_total" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt($row->line_total) . '</span>')
 
                 ->rawColumns(['product', 'product_code', 'date', 'branch', 'quantity', 'invoice_id', 'unit_cost_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'net_unit_cost', 'line_total'])
                 ->make(true);

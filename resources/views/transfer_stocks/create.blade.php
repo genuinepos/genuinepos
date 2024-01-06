@@ -122,7 +122,7 @@
                                         <div class="col-7">
                                             <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                 <option value="" class="fw-bold">{{ __('Select Receiver Shop/Business') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -152,7 +152,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Transfer Date') }}</b></label>
                                         <div class="col-7">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="search_product" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="search_product" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -998,7 +998,7 @@
             });
         });
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

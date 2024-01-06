@@ -364,7 +364,7 @@
                                                     <label class="col-4"><b>{{ __("Profit Margin(%)") }}</b></label>
                                                     <div class="col-8">
                                                         @php
-                                                            $defaultProfit = $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0;
+                                                            $defaultProfit = $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0;
                                                             $productProfit = isset($product) ? $product->profit : '';
                                                             $profit = $productProfit ? $productProfit : $defaultProfit;
                                                         @endphp

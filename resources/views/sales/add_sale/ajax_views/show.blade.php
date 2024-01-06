@@ -1,7 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $sale?->customer;
     $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
@@ -84,7 +84,7 @@
                                         {{ $sale?->branch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business__business_name'] }}
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </li>
 
@@ -92,7 +92,7 @@
                                 @if ($sale->branch)
                                     {{ $sale->branch->email }}
                                 @else
-                                    {{ $generalSettings['business__email'] }}
+                                    {{ $generalSettings['business_or_shop__email'] }}
                                 @endif
                             </li>
 
@@ -100,7 +100,7 @@
                                 @if ($sale->branch)
                                     {{ $sale->branch->phone }}
                                 @else
-                                    {{ $generalSettings['business__phone'] }}
+                                    {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -149,7 +149,7 @@
                                                             {{ $saleProduct?->branch?->name . '(' . $saleProduct?->branch?->area_name . ')' . '-(' . $saleProduct?->branch?->branch_code . ')' }}
                                                         @endif
                                                     @else
-                                                        {{ $generalSettings['business__business_name'] }}
+                                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
                                                 @endif
                                             </td>
@@ -189,53 +189,53 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ $sale->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $sale->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $sale->order_tax_percent . '%)=' . $sale->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>

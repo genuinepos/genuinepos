@@ -57,7 +57,7 @@
                                     <div class="select-dropdown">
                                         <select name="branch_id" id="branch_id" autofocus>
                                             <option value="">{{ __('All Shop/Business') }}</option>
-                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                             @foreach ($branches as $branch)
                                                 <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                             @endforeach
@@ -564,7 +564,7 @@
                 ],
             });
 
-            var __currency = "{{ $generalSettings['business__currency_symbol'] }}";
+            var __currency = "{{ $generalSettings['business_or_shop__currency_symbol'] }}";
 
             function getCardAmount() {
 

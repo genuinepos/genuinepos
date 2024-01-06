@@ -59,12 +59,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -78,8 +78,8 @@
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') </b>
-                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.cash_register_reports') </b></h6>
@@ -125,7 +125,7 @@
                             @if ($row->b_name)
                                 {!! $row->b_name . '/' . $row->b_code . '(<b>BL</b>)' !!}
                             @else
-                                {!! $generalSettings['business__business_name'] . '(<b>HO</b>)' !!}
+                                {!! $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
@@ -185,28 +185,28 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end"> @lang('menu.all_total_sale') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end"> @lang('menu.all_total_sale') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalSaleAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.all_total_paid') : {{ $generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.all_total_paid') : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalReceivedAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">All @lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">All @lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalDueAmount) }}
                     </td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.all_total_closing_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.all_total_closing_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalClosedAmount) }}
                     </td>

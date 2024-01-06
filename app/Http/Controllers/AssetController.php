@@ -19,8 +19,8 @@ class AssetController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('accounting.assets.asset.type.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="'.route('accounting.assets.asset.type.delete', [$row->id]).'" class="action-btn c-delete" id="delete_type" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('accounting.assets.asset.type.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('accounting.assets.asset.type.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_type" title="Delete"><span class="fas fa-trash"></span></a>';
                     $html .= '</div>';
 
                     return $html;
@@ -57,7 +57,7 @@ class AssetController extends Controller
     public function assetTypeUpdate(Request $request, $typeId)
     {
         $this->validate($request, [
-            'asset_type_name' => 'required|unique:asset_types,asset_type_name,'.$typeId,
+            'asset_type_name' => 'required|unique:asset_types,asset_type_name,' . $typeId,
         ]);
 
         $updateType = AssetType::where('id', $typeId)->first();
@@ -74,7 +74,7 @@ class AssetController extends Controller
     {
         $deleteType = AssetType::find($typeId);
 
-        if (! is_null($deleteType)) {
+        if (!is_null($deleteType)) {
 
             $deleteType->delete();
         }
@@ -160,27 +160,27 @@ class AssetController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('accounting.assets.edit', [$row->id]).'" class="action-btn c-edit" id="edit_asset" title="Edit Asset"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="'.route('accounting.assets.delete', [$row->id]).'" class="action-btn c-delete" id="delete_asset" title="Delete Asset"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('accounting.assets.edit', [$row->id]) . '" class="action-btn c-edit" id="edit_asset" title="Edit Asset"><span class="fas fa-edit"></span></a>';
+                    $html .= '<a href="' . route('accounting.assets.delete', [$row->id]) . '" class="action-btn c-delete" id="delete_asset" title="Delete Asset"><span class="fas fa-trash"></span></a>';
                     $html .= '</div>';
 
                     return $html;
                 })
                 ->editColumn('asset_type', function ($row) {
-                    return $row->asset_type_name.'/'.$row->asset_type_code;
+                    return $row->asset_type_name . '/' . $row->asset_type_code;
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('per_unit_value', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].$row->per_unit_value;
+                    return $generalSettings['business_or_shop__currency'] . $row->per_unit_value;
                 })
                 ->editColumn('total_value', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].$row->total_value;
+                    return $generalSettings['business_or_shop__currency'] . $row->total_value;
                 })
                 ->rawColumns(['action', 'branch', 'per_unit_value', 'total_value'])
                 ->make(true);
@@ -222,7 +222,7 @@ class AssetController extends Controller
     public function assetDelete(Request $request, $assetId)
     {
         $delete = Asset::find($assetId);
-        if (! is_null($delete)) {
+        if (!is_null($delete)) {
             $delete->delete();
         }
 

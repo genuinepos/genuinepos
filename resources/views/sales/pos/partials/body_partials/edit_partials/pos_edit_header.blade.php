@@ -81,10 +81,10 @@
                                         @endif
                                     @endif
                                 @else
-                                    @if ($generalSettings['business__business_logo'] != null)
-                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                                        <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                     @else
-                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__business_name'] }}</span>
+                                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                                     @endif
                                 @endif
                             </div>
@@ -105,11 +105,11 @@
                                 </p>
                             @else
                                 <p class="store-name">
-                                    {{ $generalSettings['business__business_name'] }}
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                 </p>
 
                                 <p class="address-name">
-                                    {{ Str::limit($generalSettings['business__address'], 45) }}
+                                    {{ Str::limit($generalSettings['business_or_shop__address'], 45) }}
                                 </p>
                             @endif
 
@@ -176,7 +176,7 @@
                                     <input readonly type="number" step="any" class="form-control" name="earned_point" id="earned_point" tabindex="-1">
 
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text valus"> = {{ $generalSettings['business__currency_symbol'] }}</span>
+                                        <span class="input-group-text valus"> = {{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
                                     </div>
 
                                     <input readonly type="text" class="form-control" id="trial_point_amount" tabindex="-1">

@@ -162,7 +162,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Store Location') }}</b></label>
                                             <div class="col-8">
-                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] }}" />
+                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] }}" />
                                             </div>
                                         </div>
                                     @endif
@@ -172,7 +172,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="pay_term_number" placeholder="dd-mm-yyyy" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="pay_term_number" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -387,7 +387,7 @@
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>{{ __('Net Total Amount') }}</b> {{ $generalSettings['business__currency_symbol'] }}</label>
+                                                    <label class=" col-4"><b>{{ __('Net Total Amount') }}</b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                     <div class="col-8">
                                                         <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
                                                     </div>

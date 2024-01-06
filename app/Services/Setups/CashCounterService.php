@@ -52,8 +52,8 @@ class CashCounterService
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="'.route('cash.counters.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="'.route('cash.counters.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="' . route('cash.counters.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('cash.counters.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -64,14 +64,14 @@ class CashCounterService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')-'.$row->branch_code;
+                        return $row->parent_branch_name . '(' . $row->area_name . ')-' . $row->branch_code;
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')-'.$row->branch_code;
+                        return $row->branch_name . '(' . $row->area_name . ')-' . $row->branch_code;
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->rawColumns(['branch', 'action'])
@@ -115,7 +115,7 @@ class CashCounterService
     {
         $delete = CashCounter::find($id);
 
-        if (! is_null($delete)) {
+        if (!is_null($delete)) {
 
             $delete->delete();
         }

@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <html>
 
@@ -11,10 +11,10 @@
                     @if ($sale->branch)
                         <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                     @else
-                        <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}">
+                        <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}">
                     @endif
                 </th>
-                <th style="text-align:right;font-weight:400;">{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</th>
+                <th style="text-align:right;font-weight:400;">{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</th>
             </tr>
         </thead>
         <tbody>
@@ -42,15 +42,15 @@
                     </p>
                     <p style="font-size:14px;margin:0 0 0 0;">
                         <span style="font-weight:bold;display:inline-block;min-width:146px">Total Payable : </span>
-                        {{ $generalSettings['business__currency_symbol'] }} {{ number_format($sale->total_payable_amount, 2) }}
+                        {{ $generalSettings['business_or_shop__currency_symbol'] }} {{ number_format($sale->total_payable_amount, 2) }}
                     </p>
                     <p style="font-size:14px;margin:0 0 0 0;">
                         <span style="font-weight:bold;display:inline-block;min-width:146px">Total Paid : </span>
-                        {{ $generalSettings['business__currency_symbol'] }} {{ $sale->paid }}
+                        {{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $sale->paid }}
                     </p>
                     <p style="font-size:14px;margin:0 0 0 0;">
                         <span style="font-weight:bold;display:inline-block;min-width:146px">Due : </span>
-                        {{ $generalSettings['business__currency_symbol'] }} {{ $sale->due }}
+                        {{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $sale->due }}
                     </p>
                 </td>
             </tr>
@@ -74,7 +74,7 @@
 
                 @if ($sale->branch)
                     <td style="width:50%;padding:20px;vertical-align:top">
-                        <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__business_name'] }}</span> </h6>
+                        <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business_or_shop__business_name'] }}</span> </h6>
                         <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">
                                 {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                 {{ $defaultLayout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -86,9 +86,9 @@
                     </td>
                 @else
                     <td style="width:50%;padding:20px;vertical-align:top">
-                        <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__business_name'] }}</span> </h6>
-                        <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business__address'] }}</span> </p>
-                        <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $generalSettings['business__phone'] }}</p>
+                        <h6 style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business_or_shop__business_name'] }}</span> </h6>
+                        <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">{{ $generalSettings['business_or_shop__address'] }}</span> </p>
+                        <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span style="display:block;font-weight:bold;font-size:13px;">Phone :</span> {{ $generalSettings['business_or_shop__phone'] }}</p>
                     </td>
                 @endif
             </tr>
@@ -117,8 +117,8 @@
                     <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
                     If you need any support, Feel free to contact us.
                     <br><br>
-                    <b>Phone:</b> {{ $generalSettings['business__phone'] }}<br>
-                    <b>Email:</b> {{ $generalSettings['business__email'] }}
+                    <b>Phone:</b> {{ $generalSettings['business_or_shop__phone'] }}<br>
+                    <b>Email:</b> {{ $generalSettings['business_or_shop__email'] }}
                 </td>
             </tr>
         </tfoot>

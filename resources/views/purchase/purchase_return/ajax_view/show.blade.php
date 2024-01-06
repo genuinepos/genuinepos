@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $return?->supplier;
     $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
@@ -32,7 +32,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($return->date)) . ' ' . date($timeFormat, strtotime($return->time)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($return->date)) . ' ' . date($timeFormat, strtotime($return->time)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong> {{ $return->voucher_no }}</li>
 
                             <li style="font-size:11px!important;">
@@ -53,7 +53,7 @@
                                         {{ $return?->branch?->name . '(' . $return?->branch?->area_name . ')' . '-(' . $return?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business__business_name'] }}
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </li>
 
@@ -61,7 +61,7 @@
                                 @if ($return->branch)
                                     {{ $return->branch->phone }}
                                 @else
-                                    {{ $generalSettings['business__phone'] }}
+                                    {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -107,7 +107,7 @@
                                                         {{ $purchaseReturnProduct?->branch?->name . '(' . $purchaseReturnProduct?->branch?->area_name . ')' . '-(' . $purchaseReturnProduct?->branch?->branch_code . ')' }}
                                                     @endif
                                                 @else
-                                                    {{ $generalSettings['business__business_name'] }}
+                                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                                 @endif
                                             @endif
                                         </td>
@@ -152,49 +152,49 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Return Discount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Return Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ $return->return_discount_type == 1 ? '(Fixed)=' : '%=' }} {{ $return->return_discount_amount }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Return Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Return Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Returned Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Returned Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->received_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($return->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>
@@ -269,10 +269,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -287,7 +287,7 @@
                                 {{ $return?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -296,7 +296,7 @@
                     @if ($return?->branch)
                         {{ $return->branch->city . ', ' . $return->branch->state . ', ' . $return->branch->zip_code . ', ' . $return->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -305,8 +305,8 @@
                         <strong>{{ __('Email') }} : </strong> {{ $return?->branch?->email }},
                         <strong>{{ __('Phone') }} : </strong> {{ $return?->branch?->phone }}
                     @else
-                        <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business__email'] }},
-                        <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business__phone'] }}
+                        <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business_or_shop__email'] }},
+                        <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business_or_shop__phone'] }}
                     @endif
                 </p>
             </div>
@@ -400,14 +400,14 @@
                 <table class="table modal-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($return->net_total_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($return->return_discount_type == 1)
                                     ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}
@@ -419,35 +419,35 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Return Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ '(' . $return->return_tax_percent . '%)=' . $return->return_tax_amount }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Returned Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Returned Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($return->received_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Return Voucher)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($return->due) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ $amounts['closing_balance_in_flat_amount_string'] }}
                             </td>
@@ -490,7 +490,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

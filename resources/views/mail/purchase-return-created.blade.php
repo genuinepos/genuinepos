@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <html>
 
@@ -15,10 +15,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $return->branch->name }}</span>
                         @endif
                     @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business_or_shop__business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </th>
@@ -34,7 +34,7 @@
                 @endif
             </span>
         </th> --}}
-                <th colspan="2" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}</th>
+                <th colspan="2" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business_or_shop__date_format'], strtotime($return->date)) }}</th>
             </tr>
             <tr>
                 <td style="height:35px;"></td>
@@ -45,7 +45,7 @@
                         @if ($return->branch)
                             {!! $return->branch->name . ' ' . $return->branch->branch_code . ' <b>(BL)</b>' !!}
                         @else
-                            {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
+                            {{ $generalSettings['business_or_shop__business_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;">
@@ -54,7 +54,7 @@
                             {{ $return->branch->city }}, {{ $return->branch->state }},
                             {{ $return->branch->zip_code }}, {{ $return->branch->country }}
                         @else
-                            {{ $generalSettings['business__address'] }}
+                            {{ $generalSettings['business_or_shop__address'] }}
                         @endif
                     </p>
                 </td>
@@ -73,7 +73,7 @@
                             @elseif($return->branch)
                                 {{ $return->branch->name . '/' . $return->branch->branch_code }} <b>(B.L)</b>
                             @else
-                                {{ $generalSettings['business__business_name'] }}<b>(@lang('menu.head_office'))</b>
+                                {{ $generalSettings['business_or_shop__business_name'] }}<b>(@lang('menu.head_office'))</b>
                         @endif
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.tax_number') : </strong> {{ $return->supplier->tax_number }}</p>
@@ -85,7 +85,7 @@
                         {{ $return->purchase ? $return->purchase->date : 'N/A' }}
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.delivery_date') : </strong>
-                        {{ $return->delivery_date ? date($generalSettings['business__date_format'], strtotime($return->delivery_date)) : '' }}
+                        {{ $return->delivery_date ? date($generalSettings['business_or_shop__date_format'], strtotime($return->delivery_date)) : '' }}
                     </p>
                     {{-- <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.created_by') : </strong>
                 {{ $return->admin->prefix.' '.$return->admin->name.' '.$return->admin->last_name }}
@@ -158,12 +158,12 @@
                 @php $index++; @endphp
             @endforeach
             <tr>
-                <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_return_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_return_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="1" style="font-size:11px; text-align:end">{{ App\Utils\Converter::format_in_bdt($return->total_return_amount) }}</td>
             </tr>
 
             <tr>
-                <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="4" style="font-size:11px; text-align:end">@lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
 
                 <td colspan="1" style="font-size:11px; text-align:end">
 
@@ -181,8 +181,8 @@
                     <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
                     If you need any support, Feel free to contact us.
                     <br><br>
-                    <b>@lang('menu.phone')</b> {{ $generalSettings['business__phone'] }}<br>
-                    <b>@lang('menu.email')</b> {{ $generalSettings['business__email'] }}
+                    <b>@lang('menu.phone')</b> {{ $generalSettings['business_or_shop__phone'] }}<br>
+                    <b>@lang('menu.email')</b> {{ $generalSettings['business_or_shop__email'] }}
                 </td>
             </tr>
         </tfoot>

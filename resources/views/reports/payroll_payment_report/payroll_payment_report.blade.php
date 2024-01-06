@@ -46,7 +46,7 @@
                                             <label><strong>@lang('menu.business_location') : </strong></label>
                                             <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' . $branch->branch_code }}
@@ -121,7 +121,7 @@
                             <tfoot>
                                 <tr class="bg-secondary">
                                     <th colspan="3" class="text-end text-white">@lang('menu.total') : </th>
-                                    <th class="text-white">{{ $generalSettings['business__currency_symbol'] }} <span id="paid"></span></th>
+                                    <th class="text-white">{{ $generalSettings['business_or_shop__currency_symbol'] }} <span id="paid"></span></th>
                                     <th class="text-white">--</th>
                                     <th class="text-white">--</th>
                                 </tr>

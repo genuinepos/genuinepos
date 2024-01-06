@@ -66,10 +66,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -85,7 +85,7 @@
                                 {{ $adjustment?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -94,7 +94,7 @@
                     @if ($adjustment?->branch)
                         {{ $adjustment->branch->city . ', ' . $adjustment->branch->state . ', ' . $adjustment->branch->zip_code . ', ' . $adjustment->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -103,8 +103,8 @@
                         <strong>@lang('menu.email') : </strong> {{ $adjustment?->branch?->email }},
                         <strong>@lang('menu.phone') : </strong> {{ $adjustment?->branch?->phone }}
                     @else
-                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
-                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
+                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business_or_shop__email'] }},
+                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business_or_shop__phone'] }}
                     @endif
                 </p>
             </div>
@@ -120,7 +120,7 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        {{ date($generalSettings['business__date_format'], strtotime($adjustment->date)) }}
+                        {{ date($generalSettings['business_or_shop__date_format'], strtotime($adjustment->date)) }}
                     </li>
 
                     <li style="font-size:11px!important;"><strong>{{ __('Voucehr No') }} : </strong>{{ $adjustment->voucher_no }}</li>
@@ -175,7 +175,7 @@
                                             {{ $adjustmentProduct?->branch?->name . '(' . $adjustmentProduct?->branch?->area_name . ')' . '-(' . $adjustmentProduct?->branch?->branch_code . ')' }}
                                         @endif
                                     @else
-                                        {{ $generalSettings['business__business_name'] }}
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 @endif
                             </td>
@@ -197,14 +197,14 @@
                 <table class="table print-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($adjustment->net_total_amount) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Recovered Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Recovered Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($adjustment->recovered_amount) }}
                             </td>
@@ -246,7 +246,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

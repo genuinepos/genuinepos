@@ -66,12 +66,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -85,8 +85,8 @@
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') </b>
-                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.total_cash_statement') </b></h6>
@@ -209,7 +209,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_operations') :
-                                                ({{ $generalSettings['business__currency_symbol'] }})
+                                                ({{ $generalSettings['business_or_shop__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -249,7 +249,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_investing') :
-                                                ({{ $generalSettings['business__currency_symbol'] }})
+                                                ({{ $generalSettings['business_or_shop__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -284,7 +284,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>@lang('menu.total_financing') :
-                                                ({{ $generalSettings['business__currency_symbol'] }})
+                                                ({{ $generalSettings['business_or_shop__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>
@@ -304,7 +304,7 @@
                                     <td class="text-end">
                                         <b>
                                             <em>
-                                                @lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency_symbol'] }})
+                                                @lang('menu.total_cash_flow') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})
                                             </em>
                                         </b>
                                     </td>

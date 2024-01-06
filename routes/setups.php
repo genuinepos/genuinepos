@@ -46,7 +46,7 @@ Route::prefix('setups')->group(function () {
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
-            Route::get('index/{id?}', 'index')->name('branches.settings.index');
+            Route::get('index/{id}', 'index')->name('branches.settings.index');
             Route::get('edit/{id}', 'edit')->name('branches.settings.edit');
             Route::post('update/{id}', 'update')->name('branches.settings.update');
 

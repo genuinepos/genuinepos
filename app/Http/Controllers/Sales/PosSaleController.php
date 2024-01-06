@@ -180,7 +180,7 @@ class PosSaleController extends Controller
             // $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
             $receiptVoucherPrefix = 'RV';
 
-            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService);
             if ($restrictions['pass'] == false) {
@@ -188,7 +188,7 @@ class PosSaleController extends Controller
                 return response()->json(['errorMsg' => $restrictions['msg']]);
             }
 
-            $addPosSale = $this->posSaleService->addPosSale(request: $request, saleScreenType: SaleScreenType::PosSale->value, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business__date_format']);
+            $addPosSale = $this->posSaleService->addPosSale(request: $request, saleScreenType: SaleScreenType::PosSale->value, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business_or_shop__date_format']);
 
             if ($request->status == SaleStatus::Final->value) {
 
@@ -436,7 +436,7 @@ class PosSaleController extends Controller
             $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
             $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
-            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $id);
             if ($restrictions['pass'] == false) {
@@ -448,7 +448,7 @@ class PosSaleController extends Controller
             $storedCurrSaleTaxAccountId = $sale->sale_tax_ac_id;
             $storedCurrTotalInvoiceAmount = $sale->total_invoice_amount;
 
-            $updatePosSale = $this->posSaleService->updatePosSale(updateSale: $sale, request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business__date_format']);
+            $updatePosSale = $this->posSaleService->updatePosSale(updateSale: $sale, request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix, quotationPrefix: $quotationPrefix, dateFormat: $generalSettings['business_or_shop__date_format']);
 
             if ($request->status == SaleStatus::Final->value) {
 

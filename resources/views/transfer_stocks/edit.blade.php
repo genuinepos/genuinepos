@@ -107,7 +107,7 @@
                                                         $branchName = $transferStock?->senderBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     }
                                                 } else {
-                                                    $branchName = $generalSettings['business__business_name'];
+                                                    $branchName = $generalSettings['business_or_shop__business_name'];
                                                 }
                                             @endphp
 
@@ -136,7 +136,7 @@
                                             <div class="col-7">
                                                 <select name="receiver_branch_id" class="form-control" id="receiver_branch_id" data-next="receiver_warehouse_id" autofocus>
                                                     <option value="" class="fw-bold">{{ __('Select Receiver Shop/Business') }}</option>
-                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                    <option {{ $transferStock->receiver_branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option {{ $branch->id == $transferStock->receiver_branch_id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                             @php
@@ -174,7 +174,7 @@
                                                 $receiverBranch = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                             }
                                         } else {
-                                            $receiverBranch = $generalSettings['business__business_name'];
+                                            $receiverBranch = $generalSettings['business_or_shop__business_name'];
                                         }
                                     @endphp
                                     <div class="col-md-4">
@@ -203,7 +203,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Transfer Date') }}</b></label>
                                         <div class="col-7">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}" data-next="search_product" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($transferStock->date)) }}" data-next="search_product" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -1081,7 +1081,7 @@
             });
         });
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

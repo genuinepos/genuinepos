@@ -130,7 +130,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
         $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $restrictions = $saleService->restrictions(request: $request, accountService: $accountService);
         if ($restrictions['pass'] == false) {
@@ -358,7 +358,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
         $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $sale = $saleService->singleSale(id: $id, with: ['saleProducts']);
 

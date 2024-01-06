@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <html>
 
@@ -15,10 +15,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business_or_shop__business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </th>
@@ -35,7 +35,7 @@
                         @endif
                     </span>
                 </th>
-                <th colspan="3" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}</th>
+                <th colspan="3" style="text-align:right;font-weight:400;">{{ __('Date:') }}{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}</th>
             </tr>
             <tr>
                 <td style="height:35px;"></td>
@@ -46,7 +46,7 @@
                         @if ($purchase->branch)
                             {!! $purchase->branch->name . ' ' . $purchase->branch->branch_code . ' <b>(BL)</b>' !!}
                         @else
-                            {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
+                            {{ $generalSettings['business_or_shop__business_name'] }} (<b>@lang('menu.head_office')</b>)
                         @endif
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;">
@@ -55,7 +55,7 @@
                             {{ $purchase->branch->city }}, {{ $purchase->branch->state }},
                             {{ $purchase->branch->zip_code }}, {{ $purchase->branch->country }}
                         @else
-                            {{ $generalSettings['business__address'] }}
+                            {{ $generalSettings['business_or_shop__address'] }}
                         @endif
                     </p>
                 </td>
@@ -74,10 +74,10 @@
                 <td colspan="4" style="border: solid 1px #ddd; padding:10px 20px;">
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>{{ __('P/O ID') }} : </strong> {{ $purchase->invoice_id }}</p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.purchase_date') : </strong>
-                        {{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
+                        {{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.delivery_date') : </strong>
-                        {{ $purchase->delivery_date ? date($generalSettings['business__date_format'], strtotime($purchase->delivery_date)) : '' }}
+                        {{ $purchase->delivery_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchase->delivery_date)) : '' }}
                     </p>
                     <p style="font-size:14px;margin:0 0 6px 0;"><strong>@lang('menu.created_by') : </strong>
                         {{ $purchase->admin->prefix . ' ' . $purchase->admin->name . ' ' . $purchase->admin->last_name }}
@@ -118,10 +118,10 @@
                 <th style="text-align:left; font-size:11px;">@lang('menu.sl')</th>
                 <th scope="col" style="font-size:11px;">@lang('menu.description')</th>
                 <th scope="col" style="font-size:11px;">@lang('menu.ordered_quantity')</th>
-                <th scope="col" style="font-size:11px;">@lang('menu.unit_cost')({{ $generalSettings['business__currency_symbol'] }}) : </th>
-                <th scope="col" style="font-size:11px;">@lang('menu.unit_cost')({{ $generalSettings['business__currency_symbol'] }}) : </th>
+                <th scope="col" style="font-size:11px;">@lang('menu.unit_cost')({{ $generalSettings['business_or_shop__currency_symbol'] }}) : </th>
+                <th scope="col" style="font-size:11px;">@lang('menu.unit_cost')({{ $generalSettings['business_or_shop__currency_symbol'] }}) : </th>
                 <th scope="col" style="font-size:11px;">@lang('menu.tax')(%)</th>
-                <th scope="col" style="font-size:11px; text-align:end">@lang('menu.subtotal')({{ $generalSettings['business__currency_symbol'] }})</th>
+                <th scope="col" style="font-size:11px; text-align:end">@lang('menu.subtotal')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                 <th scope="col" style="font-size:11px; text-align:end">@lang('menu.pending_qty')</th>
                 <th scope="col" style="font-size:11px; text-align:end">@lang('menu.received_qty')</th>
             </tr>
@@ -149,48 +149,48 @@
                 @php $index++; @endphp
             @endforeach
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.net_total_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                 </td>
             </tr>
             <tr>
                 <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.order_discount') :
-                    {{ $generalSettings['business__currency_symbol'] }}
+                    {{ $generalSettings['business_or_shop__currency_symbol'] }}
                 </th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                 </td>
             </tr>
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.order_tax') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.order_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->purchase_tax_amount) . ' (' . $purchase->purchase_tax_percent . '%)' }}
                 </td>
             </tr>
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.shipment_charge') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                 </td>
             </tr>
 
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">{{ __('Order Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">{{ __('Order Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                 </td>
             </tr>
 
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                 </td>
             </tr>
 
             <tr>
-                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                <th colspan="7" style="font-size:11px; text-align:end">@lang('menu.due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                 <td colspan="2" style="font-size:11px; text-align:end">
                     {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                 </td>
@@ -202,8 +202,8 @@
                     <strong style="display:block;margin:0 0 10px 0;">Regards</strong> <br>
                     If you need any support, Feel free to contact us.
                     <br><br>
-                    <b>@lang('menu.phone')</b> {{ $generalSettings['business__phone'] }}<br>
-                    <b>@lang('menu.email')</b> {{ $generalSettings['business__email'] }}
+                    <b>@lang('menu.phone')</b> {{ $generalSettings['business_or_shop__phone'] }}<br>
+                    <b>@lang('menu.email')</b> {{ $generalSettings['business_or_shop__email'] }}
                 </td>
             </tr>
         </tfoot>

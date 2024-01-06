@@ -261,7 +261,7 @@ class ProductService
 
                     $branchName = $productAccessBranch?->branch?->parent_branch_id ? $productAccessBranch?->branch?->name : $productAccessBranch?->branch?->name;
 
-                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business__business_name'];
+                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business_or_shop__business_name'];
 
                     $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
 

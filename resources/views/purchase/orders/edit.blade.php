@@ -164,7 +164,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($order->date)) }}" data-next="delivery_date" placeholder="dd-mm-yyyy" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($order->date)) }}" data-next="delivery_date" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('Delivery Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="purchase_account_id" value="{{ $order->delivery_date }}" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
+                                            <input required type="text" name="delivery_date" class="form-control" id="delivery_date" data-next="purchase_account_id" value="{{ $order->delivery_date }}" placeholder="{{ $generalSettings['business_or_shop__date_format'] }}" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -534,7 +534,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>{{ __('Paying Amount') }}</b> {{ $generalSettings['business__currency_symbol'] }} <strong>>></strong></label>
+                                                        <label class=" col-4"><b>{{ __('Paying Amount') }}</b> {{ $generalSettings['business_or_shop__currency_symbol'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <input type="number" step="any" name="paying_amount" class="form-control big_amount_field fw-bold" id="paying_amount" value="0.00" data-next="payment_method_id" autocomplete="off">
                                                         </div>

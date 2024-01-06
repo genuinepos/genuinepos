@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <style>
     @media print {
@@ -80,10 +80,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business_or_shop__business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -120,7 +120,7 @@
                             @if ($purchase->branch)
                                 {!! $purchase->branch->name . ' ' . $purchase->branch->branch_code . ' <b>(BL)</b>' !!}
                             @else
-                                {{ $generalSettings['business__business_name'] }} (<b>HO</b>)
+                                {{ $generalSettings['business_or_shop__business_name'] }} (<b>HO</b>)
                             @endif
                         </li>
 
@@ -132,7 +132,7 @@
                                 {{ $purchase->branch->name . '/' . $purchase->branch->branch_code }}
                                 (<b>B.L</b>)
                             @else
-                                {{ $generalSettings['business__business_name'] }} (<b>HO</b>)
+                                {{ $generalSettings['business_or_shop__business_name'] }} (<b>HO</b>)
                             @endif
                         </li>
 
@@ -142,7 +142,7 @@
                             @elseif($purchase->warehouse_id)
                                 {{ $purchase->warehouse->phone }}
                             @else
-                                {{ $generalSettings['business__phone'] }}
+                                {{ $generalSettings['business_or_shop__phone'] }}
                             @endif
                         </li>
                     </ul>
@@ -151,7 +151,7 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li><strong>{{ __('P.Invoice ID') }} </strong> {{ $purchase->invoice_id }}</li>
-                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
+                        <li><strong>@lang('menu.date') : </strong>{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) . ' ' . date($timeFormat, strtotime($purchase->time)) }}</li>
                         <li><strong>@lang('menu.purchases_status') : </strong>
                             <span class="purchase_status">
                                 @if ($purchase->purchase_status == 1)
@@ -189,12 +189,12 @@
                     <tr>
                         <th>@lang('menu.description')</th>
                         <th>@lang('menu.quantity')</th>
-                        <th>@lang('menu.unit_cost')({{ $generalSettings['business__currency_symbol'] }}) : </th>
-                        <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business__currency_symbol'] }})</th>
+                        <th>@lang('menu.unit_cost')({{ $generalSettings['business_or_shop__currency_symbol'] }}) : </th>
+                        <th scope="col">@lang('menu.unit_cost')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                         <th scope="col">@lang('menu.tax')(%)</th>
-                        <th scope="col">{{ __('Net Unit Cost') }}({{ $generalSettings['business__currency_symbol'] }})</th>
+                        <th scope="col">{{ __('Net Unit Cost') }}({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                         <th scope="col">@lang('menu.lot_number')</th>
-                        <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business__currency_symbol'] }})</th>
+                        <th scope="col">@lang('menu.subtotal')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                     </tr>
                 </thead>
                 <tbody class="purchase_print_product_list">
@@ -222,49 +222,49 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.purchase_discount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.purchase_discount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }} {{ $purchase->order_discount_type == 1 ? '(Fixed)' : '%' }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.purchase_tax') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.purchase_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ $purchase->purchase_tax_amount . ' (' . $purchase->purchase_tax_percent . '%)' }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">{{ __('Purchase Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">{{ __('Purchase Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->paid) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <th colspan="7" class="text-end">@lang('menu.due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="7" class="text-end">@lang('menu.due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($purchase->due) }}
                         </td>

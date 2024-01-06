@@ -58,24 +58,24 @@
     $allTotalOpDue = 0;
     $allTotalDue = 0;
     $allTotalReturnDue = 0;
-    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
     <div class="col-4" style="border-right: 1px solid black;!important;">
-        @if ($generalSettings['business__business_logo'] != null)
-            <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+        @if ($generalSettings['business_or_shop__business_logo'] != null)
+            <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
         @else
-            <h4 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h4>
+            <h4 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h4>
         @endif
     </div>
 
     <div class="col-8 text-end">
-        <h5 class="text-uppercase fw-bold">{{ $generalSettings['business__business_name'] }}</h5>
+        <h5 class="text-uppercase fw-bold">{{ $generalSettings['business_or_shop__business_name'] }}</h5>
         <p class="text-uppercase fw-bold">@lang('menu.all_business_location')</p>
-        <p>{{ $generalSettings['business__address'] }}</p>
-        <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }}</p>
-        <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}</p>
+        <p>{{ $generalSettings['business_or_shop__address'] }}</p>
+        <p><strong>@lang('menu.email') : </strong>{{ $generalSettings['business_or_shop__email'] }}</p>
+        <p><strong>@lang('menu.phone') : </strong>{{ $generalSettings['business_or_shop__phone'] }}</p>
     </div>
 </div>
 
@@ -134,27 +134,27 @@
         <table class="table modal-table table-sm table-bordered print_table">
             <tbody>
                 <tr>
-                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.opening_balance') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalOpDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_sale') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalSale) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_sale_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">@lang('menu.total_sale_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalDue) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                    <th class="text-end">{{ __('Total Returnable Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($allTotalReturnDue) }}</td>
                 </tr>
             </tbody>
@@ -165,7 +165,7 @@
 <div id="footer">
     <div class="row">
         <div class="col-4 text-start">
-            <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+            <small>@lang('menu.print_date') : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
         </div>
 
         @if (env('PRINT_SD_OTHERS') == 'true')

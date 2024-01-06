@@ -4,7 +4,7 @@
     }
 </style>
 @php
-    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 @endphp
 <div class="modal-dialog col-50-modal" role="document">
     <div class="modal-content">

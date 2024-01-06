@@ -95,7 +95,7 @@ class StockInOutReportController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date($generalSettings['business__date_format'], strtotime($row->sale_date_ts));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->sale_date_ts));
                 })
 
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -111,7 +111,7 @@ class StockInOutReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
 
@@ -154,10 +154,10 @@ class StockInOutReportController extends Controller
 
                     if ($row->stock_in_date) {
 
-                        return date($generalSettings['business__date_format'], strtotime($row->stock_in_date));
+                        return date($generalSettings['business_or_shop__date_format'], strtotime($row->stock_in_date));
                     } else {
 
-                        return date($generalSettings['business__date_format'], strtotime($row->product_created_at));
+                        return date($generalSettings['business_or_shop__date_format'], strtotime($row->product_created_at));
                     }
                 })
 

@@ -1,10 +1,12 @@
 <?php
 
 use App\Models\Setups\Branch;
+use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
@@ -192,18 +194,61 @@ Route::get('my-test', function () {
     // $str = 'C-000050';
     // return intval($str);
 
-    // return request()->generalSettings['business__business_name'];
+    // return request()->generalSettings['business_or_shop__business_name'];
 
-    $branchName = 'Farea Super Market';
+    $generalSettings =  GeneralSetting::where('branch_id', 39)->orWhereIn('key', [
+        'addons__hrm',
+        'addons__manage_task',
+        'addons__service',
+        'addons__manufacturing',
+        'addons__e_commerce',
+        'addons__branch_limit',
+        'addons__cash_counter_limit',
+        'business_or_shop__business_name'
+    ])->pluck('value', 'key');
 
-    $exp = explode(' ', $branchName);
-    $prefix = '';
-    foreach($exp as $ex){
-        $str = str_split($ex);
-        $prefix .= $str[0];
+    // $parentBranchId = 38;
+    // if (isset($parentBranchId)) {
+    //     $query->addSelect([
+    //         DB::raw("(CASE
+    //                     WHEN branch_id = $parentBranchId AND key = business_or_shop__financial_year_start_month
+    //                     THEN value -- Assuming 'value' is the column containing the financial year value
+    //                     ELSE NULL
+    //                 END) AS business_or_shop__financial_year_start_month")
+    //     ]);
+    // }
+    $prefixes = [
+        'business_or_shop__',
+        'reward_point_settings__',
+        'send_email__',
+        'send_sms__',
+    ];
+
+    $query = GeneralSetting::query()->where('branch_id', 38)
+    ->whereNotIn('key',
+        [
+            'business_or_shop__currency_id',
+            'business_or_shop__currency_symbol',
+            'business_or_shop__date_format',
+            'business_or_shop__time_format',
+            'business_or_shop__timezone',
+            'business_or_shop__currency_symbol',
+            'business_or_shop__currency_symbol',
+        ]
+    );
+
+    $query->where(function ($query) use ($prefixes) {
+        foreach ($prefixes as $prefix) {
+            $query->orWhere('key', 'LIKE', $prefix . '%');
+        }
+    });
+
+    $parentBranchGeneralSettings = $query->get();
+    foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
+        $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
     }
 
-    return strtoupper($prefix);
+    return $generalSettings;
 });
 
 

@@ -76,17 +76,17 @@ class ExpanseReportController extends Controller
 
             return DataTables::of($expenses)
                 ->editColumn('date', function ($row) use ($generalSettings) {
-                    return date($generalSettings['business__date_format'], strtotime($row->date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
                 })
                 ->editColumn('from', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                     } else {
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user_name', function ($row) {
-                    return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
+                    return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
                 })
                 ->editColumn('payment_status', function ($row) {
                     $html = '';
@@ -104,11 +104,11 @@ class ExpanseReportController extends Controller
                 ->editColumn('tax_percent', function ($row) use ($converter) {
                     $tax_amount = $row->total_amount / 100 * $row->tax_percent;
 
-                    return '<b><span class="tax_amount" data-value="'.$tax_amount.'">'.$converter->format_in_bdt($tax_amount).'('.$row->tax_percent.'%)</span></b>';
+                    return '<b><span class="tax_amount" data-value="' . $tax_amount . '">' . $converter->format_in_bdt($tax_amount) . '(' . $row->tax_percent . '%)</span></b>';
                 })
-                ->editColumn('net_total', fn ($row) => '<span class="net_total" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
-                ->editColumn('paid', fn ($row) => '<span class="paid" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
-                ->editColumn('due', fn ($row) => '<span class="due" data-value="'.$row->due.'" class="text-danger">'.$this->converter->format_in_bdt($row->due).'</span>')
+                ->editColumn('net_total', fn ($row) => '<span class="net_total" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
+                ->editColumn('due', fn ($row) => '<span class="due" data-value="' . $row->due . '" class="text-danger">' . $this->converter->format_in_bdt($row->due) . '</span>')
                 ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'paid', 'due', 'net_total'])
                 ->make(true);
         }
@@ -152,7 +152,6 @@ class ExpanseReportController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
         } else {
 
             $expenses = $query->where('expanses.branch_id', auth()->user()->branch_id);

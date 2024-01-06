@@ -29,7 +29,7 @@
                                                     <label><strong>@lang('menu.business_location') </strong></label>
                                                     <select name="branch_id" class="form-control submit_able  select2" id="filter_branch_id" autofocus>
                                                         <option value="">@lang('menu.all')</option>
-                                                        <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                         @foreach ($branches as $br)
                                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                                         @endforeach
@@ -239,7 +239,7 @@
                                 <div class="col-md-12">
                                     <label><b>@lang('menu.branch') </b> <span class="text-danger">*</span></label>
                                     <select name="branch_id" class="form-control" id="branch_id">
-                                        <option value="">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                        <option value="">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                         @foreach ($branches as $br)
                                             <option value="{{ $br->id }}">{{ $br->name.'/'.$br->branch_code }}</option>
                                         @endforeach

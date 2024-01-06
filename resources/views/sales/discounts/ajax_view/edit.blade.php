@@ -24,13 +24,13 @@
                 <div class="form-group row mt-1">
                     <div class="col-md-6">
                         <label><strong>{{ __('Start At') }}</strong> <span class="text-danger">*</span></label>
-                        <input required type="text" name="start_at" class="form-control" id="discount_start_at" value="{{ date($generalSettings['business__date_format'], strtotime($discount->start_at)) }}" data-next="discount_end_at" placeholder="{{ __('Ex: YYYY-MM-DD/DD-MM-YYYY') }}" autocomplete="off">
+                        <input required type="text" name="start_at" class="form-control" id="discount_start_at" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($discount->start_at)) }}" data-next="discount_end_at" placeholder="{{ __('Ex: YYYY-MM-DD/DD-MM-YYYY') }}" autocomplete="off">
                         <span class="error error_discount_start_at"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label><strong>{{ __('End At') }}</strong> <span class="text-danger">*</span></label>
-                        <input required type="text" name="end_at" class="form-control" id="discount_end_at" value="{{ date($generalSettings['business__date_format'], strtotime($discount->end_at)) }}" data-next="discount_product_ids" placeholder="{{ __('Ex: YYYY-MM-DD/DD-MM-YYYY') }}" autocomplete="off">
+                        <input required type="text" name="end_at" class="form-control" id="discount_end_at" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($discount->end_at)) }}" data-next="discount_product_ids" placeholder="{{ __('Ex: YYYY-MM-DD/DD-MM-YYYY') }}" autocomplete="off">
                         <span class="error error_discount_end_at"></span>
                     </div>
                 </div>
@@ -249,7 +249,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -41,7 +41,7 @@
 
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <strong>{{ __('Shop') }}: </strong> {{ $moneyReceipt?->branch ? $moneyReceipt?->branch->name : $generalSettings['business__business_name'] }}
+                    <strong>{{ __('Shop') }}: </strong> {{ $moneyReceipt?->branch ? $moneyReceipt?->branch->name : $generalSettings['business_or_shop__business_name'] }}
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
                                     @if ($moneyReceipt?->contact?->account?->branch)
                                         {{ $moneyReceipt?->contact?->account?->branch?->name }}
                                     @else
-                                        {{ $generalSettings['business__business_name'] }}
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 </td>
                             </tr>
@@ -147,7 +147,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ $moneyReceipt->date_ts ? date($generalSettings['business__date_format'], strtotime($moneyReceipt->date_ts)) : '' }}" data-next="mr_account_details" autocomplete="off">
+                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ $moneyReceipt->date_ts ? date($generalSettings['business_or_shop__date_format'], strtotime($moneyReceipt->date_ts)) : '' }}" data-next="mr_account_details" autocomplete="off">
                             <span class="error error_mr_date"></span>
                         </div>
                     </div>
@@ -328,7 +328,7 @@
         }
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

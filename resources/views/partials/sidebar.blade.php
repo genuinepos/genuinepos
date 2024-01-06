@@ -2063,7 +2063,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('general_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
+                                        <a href="{{ auth()->user()->branch_id ? route('branches.settings.index', auth()->user()->branch_id) : route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-cogs"></i></span>

@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s a';
 @endphp
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-full-display">
@@ -46,16 +46,16 @@
                                 <li><strong>@lang('menu.phone') </strong> {{ $sale->branch->phone }}</li>
                             @else
                                 <li><strong>@lang('menu.stock_location') </strong>
-                                    {{ $generalSettings['business__business_name'] }} <b></b>
+                                    {{ $generalSettings['business_or_shop__business_name'] }} <b></b>
                                 </li>
-                                <li><strong>@lang('menu.address') </strong>{{ $generalSettings['business__address'] }}</li>
-                                <li><strong>@lang('menu.phone') </strong>{{ $generalSettings['business__phone'] }}</li>
+                                <li><strong>@lang('menu.address') </strong>{{ $generalSettings['business_or_shop__address'] }}</li>
+                                <li><strong>@lang('menu.phone') </strong>{{ $generalSettings['business_or_shop__phone'] }}</li>
                             @endif
                         </ul>
                     </div>
                     <div class="col-md-4 text-start">
                         <ul class="list-unstyled">
-                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . $sale->time }}</li>
+                            <li><strong>@lang('menu.date') </strong>{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) . ' ' . $sale->time }}</li>
                             <li><strong>@lang('menu.invoice_id') </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.sale_status') </strong>
                                 @if ($sale->status == 1)
@@ -162,7 +162,7 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.net_total_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="net_total">
                                             {{ $sale->net_total_amount }}
@@ -171,7 +171,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.order_discount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="order_discount">
                                             @php
@@ -183,7 +183,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.order_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="order_tax">
                                             {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) . ' (' . $sale->order_tax_percent . '%)' }}
@@ -192,7 +192,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.shipment_charge') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="shipment_charge">
                                             {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
@@ -201,7 +201,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.grand_total') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_payable_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
@@ -210,7 +210,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.sale_return') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.sale_return') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="sale_return_amount">
                                             {{ App\Utils\Converter::format_in_bdt($sale->sale_return_amount) }}
@@ -219,7 +219,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_paid">
                                             {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -228,7 +228,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">@lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         <span class="total_due">
                                             {{ App\Utils\Converter::format_in_bdt($sale->due) }}

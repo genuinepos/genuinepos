@@ -40,7 +40,7 @@
                                     <form action="{{ route('barcode.preview') }}" method="get" target="_blank">
                                         @csrf
                                         <div class="card-body">
-                                            <input type="hidden" id="business_name" value="{{ $generalSettings['business__business_name'] }}">
+                                            <input type="hidden" id="business_name" value="{{ $generalSettings['business_or_shop__business_name'] }}">
                                             <div class="form-group row">
                                                 <div class="col-md-8">
                                                     <select name="br_setting_id" class="form-control">

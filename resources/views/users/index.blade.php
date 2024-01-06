@@ -27,7 +27,7 @@
                                                 <label><strong>@lang('menu.business_location') </strong></label>
                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id">
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
@@ -141,8 +141,7 @@
                 , {
                     data: 'branch',
                     name: 'branches.name'
-                }
-            ,   {
+                }, {
                     data: 'role_name',
                     name: 'role_name'
                 }, {

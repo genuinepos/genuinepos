@@ -223,7 +223,7 @@ $netProfitOrLoss = $netProfitLossAccount['net_profit'];
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ $generalSettings['business__currency_symbol'] }}) </em> </td>
+                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ $generalSettings['business_or_shop__currency_symbol'] }}) </em> </td>
                                 <td class="text-end">
                                     <em class="total_liability">{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
                                 </td>
@@ -235,7 +235,7 @@ $netProfitOrLoss = $netProfitLossAccount['net_profit'];
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ $generalSettings['business__currency_symbol'] }})</em></td>
+                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</em></td>
                                 <td class="text-end">
                                     <em class="total_asset">{{ App\Utils\Converter::format_in_bdt($totalAsset) }}</em>
                                 </td>

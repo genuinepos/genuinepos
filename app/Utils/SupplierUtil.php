@@ -23,16 +23,16 @@ class SupplierUtil
                 $html .= '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="'.route('contacts.supplier.view', [$row->id]).'"><i class="fas fa-tasks text-primary"></i> Manage</a>';
+                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.supplier.view', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage</a>';
 
                 if (auth()->user()->can('supplier_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('contacts.supplier.edit', [$row->id]).'" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.supplier.edit', [$row->id]) . '" id="edit"><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
                 if (auth()->user()->can('supplier_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('contacts.supplier.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('contacts.supplier.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // if ($row->status == 1) :
@@ -63,55 +63,55 @@ class SupplierUtil
 
                 $openingBalance = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['opening_balance'];
 
-                return '<span class="opening_balance" data-value="'.$openingBalance.'">'.\App\Utils\Converter::format_in_bdt($openingBalance).'</span>';
+                return '<span class="opening_balance" data-value="' . $openingBalance . '">' . \App\Utils\Converter::format_in_bdt($openingBalance) . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
 
                 $totalPurchase = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase'];
 
-                return '<span class="total_purchase" data-value="'.$totalPurchase.'">'.\App\Utils\Converter::format_in_bdt($totalPurchase).'</span>';
+                return '<span class="total_purchase" data-value="' . $totalPurchase . '">' . \App\Utils\Converter::format_in_bdt($totalPurchase) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
 
                 $totalPaid = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_paid'];
 
-                return '<span class="total_paid" data-value="'.$totalPaid.'">'.\App\Utils\Converter::format_in_bdt($totalPaid).'</span>';
+                return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
             })
 
             ->editColumn('total_purchase_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
 
                 $totalPurchaseDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_due'];
 
-                return '<span class="total_purchase_due" data-value="'.$totalPurchaseDue.'">'.\App\Utils\Converter::format_in_bdt($totalPurchaseDue).'</span>';
+                return '<span class="total_purchase_due" data-value="' . $totalPurchaseDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseDue) . '</span>';
             })
 
             ->editColumn('total_return', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
 
                 $totalReturn = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_return'];
 
-                return '<span class="total_return" data-value="'.$totalReturn.'">'.\App\Utils\Converter::format_in_bdt($totalReturn).'</span>';
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
             })
 
             ->editColumn('total_purchase_return_due', function ($row) use ($request, $branchWiseSupplierAmountUtil) {
 
                 $totalPurchaseReturnDue = $branchWiseSupplierAmountUtil->branchWiseSupplierAmount($row->id, $request->branch_id)['total_purchase_return_due'];
 
-                return '<span class="total_purchase_return_due" data-value="'.$totalPurchaseReturnDue.'">'.\App\Utils\Converter::format_in_bdt($totalPurchaseReturnDue).'</span>';
+                return '<span class="total_purchase_return_due" data-value="' . $totalPurchaseReturnDue . '">' . \App\Utils\Converter::format_in_bdt($totalPurchaseReturnDue) . '</span>';
             })
 
             ->editColumn('status', function ($row) {
 
                 if ($row->status == 1) {
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input"  id="change_status" data-url="'.route('contacts.supplier.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
+                    $html .= '<input class="form-check-input"  id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked />';
                     $html .= '</div>';
 
                     return $html;
                 } else {
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.supplier.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.supplier.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;
@@ -153,7 +153,6 @@ class SupplierUtil
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-
         } else {
 
             $query->where('purchases.branch_id', auth()->user()->branch_id);
@@ -177,16 +176,16 @@ class SupplierUtil
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item details_button" href="'.route('purchases.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                            <a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                 if (auth()->user()->can('purchase_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('purchases.edit', [$row->id, 'purchased']).' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                 }
 
                 if (auth()->user()->can('purchase_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.delete', $row->id).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
@@ -197,17 +196,17 @@ class SupplierUtil
 
                         if ($row->due > 0) {
 
-                            $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="'.route('purchases.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                            $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                         }
 
                         if ($row->purchase_return_due > 0) {
 
-                            $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('purchases.return.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
+                            $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
                         }
                     }
                 }
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="'.route('purchase.payment.list', $row->id).'"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
                 // if (auth()->user()->can('purchase_return')) {
 
@@ -237,25 +236,25 @@ class SupplierUtil
             ->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->warehouse_name) {
 
-                    return $row->warehouse_name.'<b>(WH)</b>';
+                    return $row->warehouse_name . '<b>(WH)</b>';
                 } elseif ($row->branch_name) {
 
-                    return $row->branch_name.'<b>(BL)</b>';
+                    return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__business_name'].' (<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . ' (<b>HO</b>)';
                 }
             })
 
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
-            ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="'.$row->purchase_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->purchase_return_amount).'</span>')
+            ->editColumn('return_amount', fn ($row) => '<span class="return_amount" data-value="' . $row->purchase_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_amount) . '</span>')
 
-            ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="'.$row->purchase_return_due.'">'.\App\Utils\Converter::format_in_bdt($row->purchase_return_due).'</span>')
+            ->editColumn('return_due', fn ($row) => '<span class="return_due text-danger" data-value="' . $row->purchase_return_due . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_due) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -288,7 +287,7 @@ class SupplierUtil
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'return_amount', 'return_due', 'payment_status', 'status', 'created_by'])
@@ -372,7 +371,7 @@ class SupplierUtil
         return DataTables::of($supplierLedgers)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business__date_format'];
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
 
                 return date($__date_format, strtotime($row->report_date));
@@ -381,17 +380,17 @@ class SupplierUtil
             ->editColumn('particulars', function ($row) {
 
                 $type = $this->voucherType($row->voucher_type);
-                $__agp = $row->agp_purchase ? '/'.'AGP:<b>'.$row->agp_purchase.'</b>' : '';
-                $__less = $row->less_amount > 0 ? '/'.'Less:(<b class="text-success">'.$row->less_amount.'</b>)' : '';
+                $__agp = $row->agp_purchase ? '/' . 'AGP:<b>' . $row->agp_purchase . '</b>' : '';
+                $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-success">' . $row->less_amount . '</b>)' : '';
 
-                return '<b>'.$type['name'].'</b>'.$__agp.$__less.($row->{$type['par']} ? '/'.$row->{$type['par']} : '');
+                return '<b>' . $type['name'] . '</b>' . $__agp . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
             })
 
             ->editColumn('b_name', function ($row) use ($generalSettings) {
                 if ($row->b_name) {
                     return $row->b_name;
                 } else {
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
 
@@ -402,11 +401,11 @@ class SupplierUtil
                 return $row->{$type['voucher_no']};
             })
 
-            ->editColumn('debit', fn ($row) => '<span class="debit" data-value="'.$row->debit.'">'.\App\Utils\Converter::format_in_bdt($row->debit).'</span>')
+            ->editColumn('debit', fn ($row) => '<span class="debit" data-value="' . $row->debit . '">' . \App\Utils\Converter::format_in_bdt($row->debit) . '</span>')
 
-            ->editColumn('credit', fn ($row) => '<span class="credit" data-value="'.$row->credit.'">'.\App\Utils\Converter::format_in_bdt($row->credit).'</span>')
+            ->editColumn('credit', fn ($row) => '<span class="credit" data-value="' . $row->credit . '">' . \App\Utils\Converter::format_in_bdt($row->credit) . '</span>')
 
-            ->editColumn('running_balance', fn ($row) => '<span class="running_balance">'.\App\Utils\Converter::format_in_bdt($row->running_balance).'</span>')
+            ->editColumn('running_balance', fn ($row) => '<span class="running_balance">' . \App\Utils\Converter::format_in_bdt($row->running_balance) . '</span>')
 
             ->rawColumns(['date', 'particulars', 'b_name', 'voucher_no', 'debit', 'credit', 'running_balance'])
             ->make(true);
@@ -483,14 +482,14 @@ class SupplierUtil
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item details_button" href="'.route('purchases.show.order', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                            <a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('purchases.po.receive.process', [$row->id]).'"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
                 }
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="'.route('purchase.payment.list', $row->id).'"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -498,19 +497,19 @@ class SupplierUtil
 
                         if ($row->due > 0) {
 
-                            $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="'.route('purchases.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Payment</a>';
+                            $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Payment</a>';
                         }
                     }
 
                     if (auth()->user()->can('purchase_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('purchases.edit', [$row->id, 'ordered']).' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
                 if (auth()->user()->can('purchase_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.delete', $row->id).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 $html .= '</div>';
@@ -521,32 +520,32 @@ class SupplierUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('from', function ($row) use ($generalSettings) {
 
                 if ($row->warehouse_name) {
 
-                    return $row->warehouse_name.'<b>(WH)</b>';
+                    return $row->warehouse_name . '<b>(WH)</b>';
                 } elseif ($row->branch_name) {
 
-                    return $row->branch_name.'<b>(BL)</b>';
+                    return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__business_name'].' (<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . ' (<b>HO</b>)';
                 }
             })
 
-            ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="'.$row->po_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_qty).'</span>')
+            ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="' . $row->po_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_qty) . '</span>')
 
-            ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="'.$row->po_received_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_received_qty).'</span>')
+            ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="' . $row->po_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_received_qty) . '</span>')
 
-            ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="'.$row->po_pending_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_pending_qty).'</span>')
+            ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_pending_qty) . '</span>')
 
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="po_total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="po_total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="po_paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="po_paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="po_due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="po_due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
 
             ->editColumn('po_receiving_status', function ($row) {
 
@@ -577,7 +576,7 @@ class SupplierUtil
             })
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'from', 'total_purchase_amount', 'po_qty', 'po_received_qty', 'po_pending_qty', 'paid', 'due', 'payment_status', 'po_receiving_status', 'created_by'])
             ->make(true);
@@ -797,8 +796,8 @@ class SupplierUtil
         $addSupplierLedger = new SupplierLedger();
         $addSupplierLedger->branch_id = $branch_id;
         $addSupplierLedger->supplier_id = $supplier_id;
-        $addSupplierLedger->date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
-        $addSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
+        $addSupplierLedger->date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
+        $addSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         $addSupplierLedger->{$voucher_type['id']} = $trans_id;
         $addSupplierLedger->{$voucher_type['amt']} = $amount;
         $addSupplierLedger->amount = $amount;
@@ -824,7 +823,7 @@ class SupplierUtil
             $previousTime = date('H:i:s', strtotime($updateSupplierLedger->report_date));
             $updateSupplierLedger->branch_id = $new_branch_id ? $new_branch_id : $previous_branch_id;
             $updateSupplierLedger->date = $fixed_date ? date('d-m-Y', strtotime($fixed_date)) : $date;
-            $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date.$previousTime));
+            $updateSupplierLedger->report_date = $fixed_date ? $fixed_date : date('Y-m-d H:i:s', strtotime($date . $previousTime));
             $updateSupplierLedger->{$voucher_type['amt']} = $amount;
             $updateSupplierLedger->amount = $amount;
             $updateSupplierLedger->save();

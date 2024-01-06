@@ -53,7 +53,7 @@
         <div class="col-md-12">
             <label><b>@lang('menu.due_date') </b></label>
 
-            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date($generalSettings['business__date_format'], strtotime($todo->due_date)) }}">
+            <input required type="text" name="due_date" class="form-control datepicker" id="due_date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($todo->due_date)) }}">
         </div>
     </div>
 
@@ -76,7 +76,7 @@
 </form>
 <script>
     $('.select2').select2();
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

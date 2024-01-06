@@ -51,7 +51,7 @@
                                                 <label><strong>@lang('menu.branch') : </strong></label>
                                                 <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -97,7 +97,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="tax_sum">
-                                                    <h4 class="text-muted">@lang('menu.output_tax_input_expense_tax') : {{ $generalSettings['business__currency_symbol'] }} 00.00 </h4>
+                                                    <h4 class="text-muted">@lang('menu.output_tax_input_expense_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }} 00.00 </h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,9 +144,9 @@
                                                                         <td>SI000555</td>
                                                                         <td>{{ __('Walk-In-Customer') }}</td>
                                                                         <td>@lang('menu.tax_number')</td>
-                                                                        <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                        <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                         <td>(5.00%)</td>
-                                                                        <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                        <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -177,9 +177,9 @@
                                                                         <td>SI000555</td>
                                                                         <td>Freedan Joo</td>
                                                                         <td>@lang('menu.tax_number')</td>
-                                                                        <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                        <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                         <td>(0.00%)</td>
-                                                                        <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                        <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -210,7 +210,7 @@
                                                                         <td>@lang('menu.expense_category')</td>
                                                                         <td>Dhaka Branch - D8557</td>
                                                                         <td>(0.00%)</td>
-                                                                        <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                        <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>

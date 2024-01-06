@@ -2,15 +2,16 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Exception;
 use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class GeneralSettingsListener
 {
@@ -31,16 +32,92 @@ class GeneralSettingsListener
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
 
                 $generalSettings = Cache::get('generalSettings');
+
                 if (!isset($generalSettings)) {
 
-                    $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id ?? null)->pluck('value', 'key')->toArray();
+                    $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
+                        ->orWhereIn('key', [
+                            'addons__hrm',
+                            'addons__manage_task',
+                            'addons__service',
+                            'addons__manufacturing',
+                            'addons__e_commerce',
+                            'addons__branch_limit',
+                            'addons__cash_counter_limit',
+                            'business_or_shop__business_name'
+                        ])->pluck('value', 'key')->toArray();
+
+                    $branch = $event?->user?->branch;
+                    if (isset($branch) && isset($branch->parent_branch_id)) {
+
+                        $prefixes = [
+                            'business_or_shop__',
+                            'reward_point_settings__',
+                            'send_email__',
+                            'send_sms__',
+                        ];
+
+                        $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
+                            ->whereNotIn(
+                                'key',
+                                [
+                                    'business_or_shop__business_name',
+                                    'business_or_shop__currency_id',
+                                    'business_or_shop__currency_symbol',
+                                    'business_or_shop__date_format',
+                                    'business_or_shop__time_format',
+                                    'business_or_shop__timezone',
+                                    'business_or_shop__currency_symbol',
+                                    'business_or_shop__currency_symbol',
+                                ]
+                            );
+
+                        $query->where(function ($query) use ($prefixes) {
+                            foreach ($prefixes as $prefix) {
+                                $query->orWhere('key', 'LIKE', $prefix . '%');
+                            }
+                        });
+
+                        $parentBranchGeneralSettings = $query->get();
+                        foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
+                            $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
+                        }
+                    }
+
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
 
                         return $generalSettings;
                     });
                 }
 
-                request()->merge(['generalSettings' => $generalSettings]);
+                // request()->merge(['generalSettings' => $generalSettings]);
+
+                if (isset($generalSettings['invoice_layout__add_sale_invoice_layout_id'])) {
+
+                    $columns = Schema::getColumnListing('invoice_layouts');
+                    $excludedColumns = ['created_at', 'updated_at'];
+                    $selectedColumns = array_diff($columns, $excludedColumns);
+
+                    $invoiceAddSaleLayout = DB::table('invoice_layouts')
+                        ->where('id', $generalSettings['invoice_layout__add_sale_invoice_layout_id'])
+                        ->select($selectedColumns)
+                        ->first();
+
+                    if (isset($invoiceAddSaleLayout)) {
+
+                        $generalSettings['add_sale_invoice_layout'] = $invoiceAddSaleLayout;
+                    }
+
+                    $invoicePosSaleLayout = DB::table('invoice_layouts')
+                        ->where('id', $generalSettings['invoice_layout__pos_sale_invoice_layout_id'])
+                        ->select($selectedColumns)
+                        ->first();
+
+                    if (isset($invoicePosSaleLayout)) {
+
+                        $generalSettings['pos_sale_invoice_layout'] = $invoicePosSaleLayout;
+                    }
+                }
 
                 config([
                     'generalSettings' => $generalSettings,
@@ -56,7 +133,7 @@ class GeneralSettingsListener
                     // Tenant separated email config ends
                 ]);
 
-                $dateFormat = $generalSettings['business__date_format'];
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
 
                 if (isset($generalSettings)) {

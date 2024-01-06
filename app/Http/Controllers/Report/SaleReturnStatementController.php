@@ -67,7 +67,7 @@ class SaleReturnStatementController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                     return date($__date_format, strtotime($row->date));
                 })
@@ -76,30 +76,30 @@ class SaleReturnStatementController extends Controller
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
 
                 ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-                ->editColumn('created_by', fn ($row) => $row->u_prefix.' '.$row->u_name.' '.$row->u_last_name)
+                ->editColumn('created_by', fn ($row) => $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name)
 
-                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.$this->converter->format_in_bdt($row->total_item).'</span>')
+                ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . $this->converter->format_in_bdt($row->total_item) . '</span>')
 
-                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.$this->converter->format_in_bdt($row->total_qty).'</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . $this->converter->format_in_bdt($row->total_qty) . '</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
 
-                ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="'.$row->return_discount_amount.'">'.$this->converter->format_in_bdt($row->return_discount_amount).'</span>')
+                ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . $row->return_discount_amount . '">' . $this->converter->format_in_bdt($row->return_discount_amount) . '</span>')
 
-                ->editColumn('return_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="'.$row->return_tax_amount.'">'.$this->converter->format_in_bdt($row->return_tax_amount).'('.$row->return_tax.'%)'.'</span>')
+                ->editColumn('return_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . $row->return_tax_amount . '">' . $this->converter->format_in_bdt($row->return_tax_amount) . '(' . $row->return_tax . '%)' . '</span>')
 
-                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="'.$row->total_return_amount.'">'.$this->converter->format_in_bdt($row->total_return_amount).'</span>')
+                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount text-danger" data-value="' . $row->total_return_amount . '">' . $this->converter->format_in_bdt($row->total_return_amount) . '</span>')
 
-                ->editColumn('total_return_due_pay', fn ($row) => '<span class="total_return_due_pay text-success" data-value="'.$row->total_return_due_pay.'">'.$this->converter->format_in_bdt($row->total_return_due_pay).'</span>')
+                ->editColumn('total_return_due_pay', fn ($row) => '<span class="total_return_due_pay text-success" data-value="' . $row->total_return_due_pay . '">' . $this->converter->format_in_bdt($row->total_return_due_pay) . '</span>')
 
                 ->rawColumns(['date', 'invoice_id', 'from', 'customer', 'created_by', 'total_item', 'total_qty', 'net_total_amount', 'return_discount_amount', 'return_tax_amount', 'total_return_amount', 'total_return_amount', 'total_return_due_pay'])
                 ->make(true);

@@ -137,7 +137,7 @@
                 <div class="form-group mt-1">
                     <label><strong>{{ __('Opening Balance') }}</strong></label>
                     <div class="input-group">
-                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business__account_start_date'])) }}" tabindex="-1" />
+                        <input readonly type="text" name="opening_balance_date" class="form-control w-25 fw-bold" id="opening_balance_date" value="{{ __('On') }} : {{ date('d-M-y', strtotime($generalSettings['business_or_shop__account_start_date'])) }}" tabindex="-1" />
                         <input type="number" step="any" name="opening_balance" class="form-control w-50" id="opening_balance" data-next="opening_balance_type" value="0.00" placeholder="0.00" />
                         <select name="opening_balance_type" class="form-control w-25" id="opening_balance_type" data-next="remarks">
                             <option value="dr">{{ __('Debit') }}</option>

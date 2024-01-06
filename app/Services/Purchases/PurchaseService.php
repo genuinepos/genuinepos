@@ -23,7 +23,7 @@ class PurchaseService
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -34,7 +34,7 @@ class PurchaseService
             }
         }
 
-        if (! empty($request->warehouse_id)) {
+        if (!empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }
@@ -106,54 +106,54 @@ class PurchaseService
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
                 $html .= $row->invoice_id;
                 $html .= $row->is_return_available ? ' <span class="badge bg-danger p-1"><i class="fas fa-undo text-white"></i></span>' : '';
 
-                return '<a href="'.route('purchases.show', [$row->id]).'" id="details_btn">'.$html.'</a>';
+                return '<a href="' . route('purchases.show', [$row->id]) . '" id="details_btn">' . $html . '</a>';
             })->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
 
-            ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="'.$row->purchase_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->purchase_return_amount).'</span>')
+            ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . $row->purchase_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->purchase_return_amount) . '</span>')
 
             ->editColumn('payment_status', function ($row) {
 
                 $payable = $row->total_purchase_amount - $row->purchase_return_amount;
                 if ($row->due <= 0) {
 
-                    return '<span class="text-success"><b>'.__('Paid').'</b></span>';
+                    return '<span class="text-success"><b>' . __('Paid') . '</b></span>';
                 } elseif ($row->due > 0 && $row->due < $payable) {
 
-                    return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
+                    return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
                 } elseif ($payable == $row->due) {
 
-                    return '<span class="text-danger"><b>'.__('Due').'</b></span>';
+                    return '<span class="text-danger"><b>' . __('Due') . '</b></span>';
                 }
             })->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'invoice_id', 'branch', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'payment_status', 'created_by'])
             ->make(true);
@@ -191,7 +191,7 @@ class PurchaseService
         $addPurchase->purchase_status = PurchaseStatus::Purchase->value;
         $addPurchase->is_purchased = 1;
         $addPurchase->date = $request->date;
-        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchase->is_last_created = 1;
         $addPurchase->save();
 
@@ -227,7 +227,7 @@ class PurchaseService
         $updatePurchase->shipment_charge = $request->shipment_charge ? $request->shipment_charge : 0;
         $updatePurchase->date = $request->date;
         $time = date(' H:i:s', strtotime($updatePurchase->report_date));
-        $updatePurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.$time));
+        $updatePurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updatePurchase->shipment_details = $request->shipment_details;
         $updatePurchase->save();
 
@@ -281,10 +281,10 @@ class PurchaseService
 
             if (count($purchaseProduct->purchaseSaleChains) > 0) {
 
-                $variant = $purchaseProduct->variant ? ' - '.$purchaseProduct->variant->name : '';
-                $product = $purchaseProduct->product->name.$variant;
+                $variant = $purchaseProduct->variant ? ' - ' . $purchaseProduct->variant->name : '';
+                $product = $purchaseProduct->product->name . $variant;
 
-                return ['pass' => false, 'msg' => __('Can not delete is purchase. Mismatch between sold and purchase stock account method. Product:').$product];
+                return ['pass' => false, 'msg' => __('Can not delete is purchase. Mismatch between sold and purchase stock account method. Product:') . $product];
             }
         }
 
@@ -333,7 +333,7 @@ class PurchaseService
 
     public function restrictions(object $request, bool $checkSupplierChangeRestriction = false, int $purchaseId = null): array
     {
-        if (! isset($request->product_ids)) {
+        if (!isset($request->product_ids)) {
 
             return ['pass' => false, 'msg' => __('Product table is empty.')];
         } elseif (count($request->product_ids) > 60) {
@@ -363,16 +363,16 @@ class PurchaseService
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-        $html .= '<a href="'.route('purchases.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+        $html .= '<a href="' . route('purchases.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
         if (auth()->user()->can('purchase_edit')) {
 
-            $html .= '<a href="'.route('purchases.edit', [$row->id]).' " class="dropdown-item">'.__('Edit').'</a>';
+            $html .= '<a href="' . route('purchases.edit', [$row->id]) . ' " class="dropdown-item">' . __('Edit') . '</a>';
         }
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a href="'.route('purchases.delete', $row->id).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+            $html .= '<a href="' . route('purchases.delete', $row->id) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
         }
 
         $html .= '</div>';

@@ -2,37 +2,114 @@
 @push('stylesheets')
     <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
 
-        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
-        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
-        .select_area ul li a:hover { background-color: #999396; color: #fff; }
-        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
-        .input-group-text-sale { font-size: 7px !important; }
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
-        .border_red { border: 1px solid red !important; }
+        .select_area {
+            position: relative;
+            background: #ffffff;
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            z-index: 9999999;
+            padding: 0;
+            left: 0%;
+            display: none;
+            border: 1px solid #706a6d;
+            margin-top: 1px;
+            border-radius: 0px;
+        }
 
-        .big_amount_field { height: 36px; font-size: 24px; margin-bottom: 3px; }
+        .select_area ul {
+            list-style: none;
+            margin-bottom: 0;
+            padding: 0px 2px;
+        }
+
+        .select_area ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 11px;
+            padding: 2px 2px;
+            display: block;
+            border: 1px solid lightgray;
+            margin: 2px 0px;
+        }
+
+        .select_area ul li a:hover {
+            background-color: #999396;
+            color: #fff;
+        }
+
+        .selectProduct {
+            background-color: #746e70 !important;
+            color: #fff !important;
+        }
+
+        .input-group-text-sale {
+            font-size: 7px !important;
+        }
+
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .border_red {
+            border: 1px solid red !important;
+        }
+
+        .big_amount_field {
+            height: 36px;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
 
         input[type=number]#quantity::-webkit-inner-spin-button,
-        input[type=number]#quantity::-webkit-outer-spin-button { opacity: 1; margin: 0; }
+        input[type=number]#quantity::-webkit-outer-spin-button {
+            opacity: 1;
+            margin: 0;
+        }
 
-        .select2-container .select2-selection--single .select2-selection__rendered { display: inline-block; width: 143px; }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            display: inline-block;
+            width: 143px;
+        }
 
         /*.select2-selection:focus {
-                 box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-            } */
+                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                } */
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 { text-align: right; padding-right: 10px; }
+        label.col-6 {
+            text-align: right;
+            padding-right: 10px;
+        }
 
-        .checkbox_input_wrap { text-align: right; }
-        .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
-        .btn-sale { width: calc(50% - 4px); padding-left: 0; padding-right: 0; }
-        .sale-item-sec { height: 215px; }
+        .checkbox_input_wrap {
+            text-align: right;
+        }
+
+        .select2-selection:focus {
+            box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+            color: #212529;
+            background-color: #fff;
+            border-color: #86b7fe;
+            outline: 0;
+        }
+
+        .btn-sale {
+            width: calc(50% - 4px);
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .sale-item-sec {
+            height: 215px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
@@ -53,7 +130,7 @@
                     <h6>{{ __('Edit Quotation') }}</h6>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-1">
@@ -73,12 +150,11 @@
                                                         <div class="input-group flex-nowrap">
                                                             <select name="customer_account_id" class="form-control select2" id="customer_account_id" data-next="status">
                                                                 @foreach ($customerAccounts as $customerAccount)
-
                                                                     <option data-default_balance_type="{{ $customerAccount->default_balance_type }}" data-sub_sub_group_number="{{ $customerAccount->sub_sub_group_number }}" {{ $customerAccount->id == $quotation->customer_account_id ? 'SELECTED' : '' }} data-pay_term="{{ $customerAccount->pay_term }}" data-pay_term_number="{{ $customerAccount->pay_term_number }}" value="{{ $customerAccount->id }}">{{ $customerAccount->name . '/' . $customerAccount->phone }}</option>
                                                                 @endforeach
                                                             </select>
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button"  id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('customer_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('customer_add')? 'addContact': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                         <span class="error error_customer_account_id"></span>
@@ -106,16 +182,16 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Quotation ID") }}</b></label>
+                                                    <label class="col-4"><b>{{ __('Quotation ID') }}</b></label>
                                                     <div class="col-8">
                                                         <input readonly type="text" class="form-control fw-bold" value="{{ $quotation->quotation_id }}" autocomplete="off" tabindex="-1">
                                                     </div>
                                                 </div>
 
                                                 <div class="input-group">
-                                                    <label class=" col-4"><b>{{ __("Date") }} <span class="text-danger">*</span></b></label>
+                                                    <label class=" col-4"><b>{{ __('Date') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($quotation->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
                                                     </div>
                                                 </div>
@@ -123,7 +199,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Sales Account") }} <span class="text-danger">*</span></b></label>
+                                                    <label class="col-4"><b>{{ __('Sales Account') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
                                                         <select name="sale_account_id" class="form-control" id="sale_account_id" data-next="price_group_id">
                                                             @foreach ($saleAccounts as $saleAccount)
@@ -137,10 +213,10 @@
                                                 </div>
 
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Price Group") }}</b></label>
+                                                    <label class="col-4"><b>{{ __('Price Group') }}</b></label>
                                                     <div class="col-8">
                                                         <select name="price_group_id" class="form-control" id="price_group_id" data-next="search_product">
-                                                            <option value="">{{ __("Default Selling Price Group") }}</option>
+                                                            <option value="">{{ __('Default Selling Price Group') }}</option>
                                                             @foreach ($priceGroups as $priceGroup)
                                                                 <option {{ $generalSettings['add_sale__default_price_group_id'] == $priceGroup->id ? 'SELECTED' : '' }} value="{{ $priceGroup->id }}">{{ $priceGroup->name }}</option>
                                                             @endforeach
@@ -159,7 +235,7 @@
                                                 <div class="searching_area" style="position: relative;">
                                                     <label class="fw-bold">{{ __('Search Product') }}</label>
                                                     <div class="input-group">
-                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __("Search Product By Name/Code") }}" autocomplete="off">
+                                                        <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                         @if (auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
                                                                 <span id="addProduct" class="input-group-text add_button"><i class="fas fa-plus-square text-dark input_f"></i></span>
@@ -196,7 +272,7 @@
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
@@ -205,8 +281,8 @@
                                                     <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
 
                                                     <select id="e_discount_type" class="form-control">
-                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
-                                                        <option value="2">{{ __("Percentage") }}(%)</option>
+                                                        <option value="1">{{ __('Fixed') }}(0.00)</option>
+                                                        <option value="2">{{ __('Percentage') }}(%)</option>
                                                     </select>
 
                                                     <input type="hidden" id="e_discount_amount">
@@ -236,7 +312,7 @@
                                         <div class="row g-2 align-items-end">
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('IMEI/SL No./Other Info') }}</label>
-                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __("IMEI/SL No./Other Info.") }}">
+                                                <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
@@ -257,11 +333,11 @@
                                                         <table class="display data__table table sale-product-table">
                                                             <thead class="staky">
                                                                 <tr>
-                                                                    <th class="text-start">{{ __("Product") }}</th>
-                                                                    <th class="text-start">{{ __("Quantity") }}</th>
-                                                                    <th class="text-start">{{ __("Unit") }}</th>
-                                                                    <th class="text-start">{{ __("Price Inc. Tax") }}</th>
-                                                                    <th class="text-start">{{ __("Subtotal") }}</th>
+                                                                    <th class="text-start">{{ __('Product') }}</th>
+                                                                    <th class="text-start">{{ __('Quantity') }}</th>
+                                                                    <th class="text-start">{{ __('Unit') }}</th>
+                                                                    <th class="text-start">{{ __('Price Inc. Tax') }}</th>
+                                                                    <th class="text-start">{{ __('Subtotal') }}</th>
                                                                     <th class="text-start"><i class="fas fa-minus text-dark"></i></th>
                                                                 </tr>
                                                             </thead>
@@ -273,7 +349,6 @@
                                                                 @foreach ($quotation->saleProducts as $saleProduct)
                                                                     @php
                                                                         if (isset($saleProduct->product_id)) {
-
                                                                             $itemUnitsArray[$saleProduct->product_id][] = [
                                                                                 'unit_id' => $saleProduct->product->unit->id,
                                                                                 'unit_name' => $saleProduct->product->unit->name,
@@ -305,7 +380,7 @@
                                                                             <input type="hidden" name="tax_ac_ids[]" id="tax_ac_id" value="{{ $saleProduct->tax_ac_id }}">
                                                                             <input type="hidden" name="unit_tax_percents[]" id="unit_tax_percent" value="{{ $saleProduct->unit_tax_percent }}">
                                                                             <input type="hidden" name="unit_tax_amounts[]" id="unit_tax_amount" value="{{ $saleProduct->unit_tax_amount }}">
-                                                                            <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $saleProduct->unit_discount_type }}" >
+                                                                            <input type="hidden" name="unit_discount_types[]" id="unit_discount_type" value="{{ $saleProduct->unit_discount_type }}">
                                                                             <input type="hidden" name="unit_discounts[]" id="unit_discount" value="{{ $saleProduct->unit_discount }}">
                                                                             <input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="{{ $saleProduct->unit_discount_amount }}">
                                                                             <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $saleProduct->unit_cost_inc_tax }}">
@@ -355,7 +430,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Ship. Details') }} </b></label>
                                                     <div class="col-8">
-                                                        <input type="text" name="shipment_details" class="form-control" id="shipment_details" value="{{ $quotation->shipment_details }}" data-next="shipment_address" placeholder="{{ __("Shipment Details") }}">
+                                                        <input type="text" name="shipment_details" class="form-control" id="shipment_details" value="{{ $quotation->shipment_details }}" data-next="shipment_address" placeholder="{{ __('Shipment Details') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -364,7 +439,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __('Ship. Address') }} </b></label>
                                                     <div class="col-8">
-                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $quotation->shipment_address }}" data-next="shipment_status" placeholder="{{ __("Shipment Address") }}">
+                                                        <input name="shipment_address" type="text" class="form-control" id="shipment_address" value="{{ $quotation->shipment_address }}" data-next="shipment_status" placeholder="{{ __('Shipment Address') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -374,7 +449,7 @@
                                                     <label class="col-4"><b>{{ __('Ship. Status') }} </b></label>
                                                     <div class="col-8">
                                                         <select name="shipment_status" class="form-control" id="shipment_status" data-next="delivered_to">
-                                                            <option value="">{{ __("Shipment Status") }}</option>
+                                                            <option value="">{{ __('Shipment Status') }}</option>
                                                             @foreach (\App\Enums\ShipmentStatus::cases() as $shipmentStatus)
                                                                 <option {{ $quotation->shipment_status == $shipmentStatus->value ? 'SELECTED' : '' }} value="{{ $shipmentStatus->value }}">{{ $shipmentStatus->name }}</option>
                                                             @endforeach
@@ -394,9 +469,9 @@
 
                                             <div class="col-md-4">
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Note") }}</b></label>
+                                                    <label class="col-4"><b>{{ __('Note') }}</b></label>
                                                     <div class="col-8">
-                                                        <input name="note" type="text" class="form-control" id="note" value="{{ $quotation->note }}" data-next="order_discount" placeholder="{{ __("Note") }}">
+                                                        <input name="note" type="text" class="form-control" id="note" value="{{ $quotation->note }}" data-next="order_discount" placeholder="{{ __('Note') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -409,46 +484,46 @@
                                 <div class="form_element rounded m-0">
                                     <div class="element-body">
                                         <div class="row gx-2">
-                                            <label class="col-md-5 text-end"><b>{{ __("Total Item") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Total Item') }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" name="total_item" id="total_item" class="form-control fw-bold" value="{{ $quotation->total_item }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Total Qty") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Total Qty') }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" name="total_qty" id="total_qty" class="form-control fw-bold" value="{{ $quotation->total_qty }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Net Total Amount") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Net Total Amount') }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" class="form-control fw-bold" name="net_total_amount" id="net_total_amount" value="{{ $quotation->net_total_amount }}" tabindex="-1">
                                             </div>
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Sale Discount") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Sale Discount') }}</b></label>
                                             <div class="col-md-7">
                                                 <div class="input-group">
                                                     <input type="number" step="any" name="order_discount" class="form-control fw-bold" id="order_discount" data-next="order_discount_type" value="{{ $quotation->order_discount }}">
                                                     <input type="number" step="any" name="order_discount_amount" class="d-hide" id="order_discount_amount" value="{{ $quotation->order_discount_amount }}" tabindex="-1">
 
                                                     <select name="order_discount_type" class="form-control" id="order_discount_type" data-next="sale_tax_ac_id">
-                                                        <option value="1">{{ __("Fixed") }}(0.00)</option>
-                                                        <option {{ $quotation->order_discount_type == 2 ? 'SELECTED' : '' }} value="2">{{ __("Percentage") }}(%)</option>
+                                                        <option value="1">{{ __('Fixed') }}(0.00)</option>
+                                                        <option {{ $quotation->order_discount_type == 2 ? 'SELECTED' : '' }} value="2">{{ __('Percentage') }}(%)</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Sale Tax") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Sale Tax') }}</b></label>
                                             <div class="col-md-7">
                                                 <select name="sale_tax_ac_id" class="form-control" id="sale_tax_ac_id" data-next="shipment_charge">
-                                                    <option data-order_tax_percent="0.00" value="">{{ __("No Vat/Tax") }}</option>
+                                                    <option data-order_tax_percent="0.00" value="">{{ __('No Vat/Tax') }}</option>
                                                     @foreach ($taxAccounts as $taxAccount)
                                                         <option {{ $quotation->sale_tax_ac_id == $taxAccount->id ? 'SELECTED' : '' }} data-order_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                             {{ $taxAccount->name }}
@@ -461,14 +536,14 @@
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Shipment Charge") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Shipment Charge') }}</b></label>
                                             <div class="col-md-7">
                                                 <input name="shipment_charge" type="number" step="any" class="form-control fw-bold" id="shipment_charge" data-next="save_changes" value="{{ $quotation->shipment_charge }}">
                                             </div>
                                         </div>
 
                                         <div class="row gx-2 mt-1">
-                                            <label class="col-md-5 text-end"><b>{{ __("Total Amount") }}</b></label>
+                                            <label class="col-md-5 text-end"><b>{{ __('Total Amount') }}</b></label>
                                             <div class="col-md-7">
                                                 <input readonly type="number" step="any" name="total_invoice_amount" id="total_invoice_amount" class="form-control fw-bold" value="{{ $quotation->total_invoice_amount }}" tabindex="-1">
                                                 <input type="number" step="any" name="sales_ledger_amount" id="sales_ledger_amount" class="d-none" value="0.00" tabindex="-1">
@@ -477,14 +552,14 @@
 
                                         <div class="payment_body">
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Received Amt.") }} >></b></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Received Amt.') }} >></b></label>
                                                 <div class="col-md-7">
                                                     <input type="number" step="any" name="received_amount" class="form-control fw-bold big_amount_field" id="received_amount" data-next="payment_method_id" value="0.00" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Debit A/c") }}</b> <span class="text-danger">*</span></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Debit A/c') }}</b> <span class="text-danger">*</span></label>
                                                 <div class="col-md-7">
                                                     <select name="account_id" class="form-control" id="account_id" data-next="payment_method_id">
                                                         @foreach ($accounts as $ac)
@@ -506,7 +581,7 @@
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Type/Method") }}</b></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Type/Method') }}</b></label>
                                                 <div class="col-md-7">
                                                     <select name="payment_method_id" class="form-control" id="payment_method_id" data-next="payment_note">
                                                         @foreach ($methods as $method)
@@ -520,21 +595,21 @@
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Payment Note") }}</b></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Payment Note') }}</b></label>
                                                 <div class="col-md-7">
-                                                    <input type="number" step="any" class="form-control text-success" name="payment_note" id="payment_note" data-next="save_changes" placeholder="{{ __("Payment Note") }}">
+                                                    <input type="number" step="any" class="form-control text-success" name="payment_note" id="payment_note" data-next="save_changes" placeholder="{{ __('Payment Note') }}">
                                                 </div>
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Previous Received") }}</b></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Previous Received') }}</b></label>
                                                 <div class="col-md-7">
                                                     <input readonly type="number" step="any" class="form-control fw-bold text-success" name="previous_received" id="previous_received" value="{{ $quotation->paid }}" tabindex="-1">
                                                 </div>
                                             </div>
 
                                             <div class="row gx-2 mt-1">
-                                                <label class="col-md-5 text-end"><b>{{ __("Curr. Balance") }}</b></label>
+                                                <label class="col-md-5 text-end"><b>{{ __('Curr. Balance') }}</b></label>
                                                 <div class="col-md-7">
                                                     <input readonly type="number" step="any" class="form-control fw-bold text-danger" name="current_balance" id="current_balance" value="{{ $amounts['closing_balance_in_flat_amount'] }}" tabindex="-1">
                                                 </div>
@@ -559,7 +634,7 @@
         </div>
     </div>
 
-    @if(auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif

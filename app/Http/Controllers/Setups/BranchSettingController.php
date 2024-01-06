@@ -29,7 +29,7 @@ class BranchSettingController extends Controller
     ) {
     }
 
-    public function index($id = null)
+    public function index($id)
     {
         $generalSettings = config('generalSettings');
         $currencies = $this->currencyService->currencies();
@@ -45,6 +45,11 @@ class BranchSettingController extends Controller
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
         $branch = $this->branchService->singleBranch(id: $id, with: ['parentBranch']);
+
+        if(!auth()->user()->branch_id){
+
+            return redirect()->route('settings.general.index');
+        }
 
         return view('setups.branches.settings.index', compact('generalSettings', 'currencies', 'units', 'priceGroups', 'timezones', 'branch', 'taxAccounts', 'invoiceLayouts'));
     }
@@ -125,7 +130,7 @@ class BranchSettingController extends Controller
     public function prefixSettings($id, Request $request)
     {
         $settings = [
-            'prefix__invoice_prefix' => $request->invoice_prefix,
+            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix,
             'prefix__quotation_prefix' => $request->quotation_prefix,
             'prefix__sales_order_prefix' => $request->sales_order_prefix,
             'prefix__sales_return_prefix' => $request->sales_return_prefix,
@@ -134,7 +139,10 @@ class BranchSettingController extends Controller
             'prefix__purchase_invoice_prefix' => $request->purchase_invoice_prefix,
             'prefix__purchase_order_prefix' => $request->purchase_order_prefix,
             'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
-            'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
+            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
+            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
+            'prefix__supplier_id' => $request->supplier_id,
+            'prefix__customer_id' => $request->customer_id,
         ];
 
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);

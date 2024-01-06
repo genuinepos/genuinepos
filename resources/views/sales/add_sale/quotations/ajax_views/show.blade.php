@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')
         ->where('branch_id', null)
         ->where('is_default', 1)
@@ -31,7 +31,7 @@
 
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
-                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($quotation->date)) }}</li>
+                            <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($quotation->date)) }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Quotation ID') }} : </strong> {{ $quotation->quotation_id }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Shipment Status') }} : </strong>
                                 @if ($quotation->shipment_status == App\Enums\ShipmentStatus::NoStatus->value)
@@ -69,7 +69,7 @@
                                         {{ $quotation?->branch?->name . '(' . $quotation?->branch?->area_name . ')' . '-(' . $quotation?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business__business_name'] }}
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </li>
 
@@ -77,7 +77,7 @@
                                 @if ($quotation->branch)
                                     {{ $quotation->branch->email }}
                                 @else
-                                    {{ $generalSettings['business__email'] }}
+                                    {{ $generalSettings['business_or_shop__email'] }}
                                 @endif
                             </li>
 
@@ -85,7 +85,7 @@
                                 @if ($quotation->branch)
                                     {{ $quotation->branch->phone }}
                                 @else
-                                    {{ $generalSettings['business__phone'] }}
+                                    {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -152,32 +152,32 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ $quotation->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $quotation->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $quotation->order_tax_percent . '%)=' . $quotation->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($quotation->total_invoice_amount) }}
                                     </td>

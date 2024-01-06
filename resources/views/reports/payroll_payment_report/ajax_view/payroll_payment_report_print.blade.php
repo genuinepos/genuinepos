@@ -65,12 +65,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__business_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -84,8 +84,8 @@
 
         @if ($s_date && $e_date)
             <p><b>@lang('menu.date') </b>
-                {{ date($generalSettings['business__date_format'], strtotime($s_date)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($e_date)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($s_date)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($e_date)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;">@lang('menu.payroll_payment_report')</h6>
@@ -129,7 +129,7 @@
                 <tr>
                     <th colspan="2" class="text-start"></th>
                     <th class="text-end">@lang('menu.total') </th>
-                    <th class="text-start">{{ $generalSettings['business__currency_symbol'] }} {{ bcadd($total_paid, 0, 2) }}</th>
+                    <th class="text-start">{{ $generalSettings['business_or_shop__currency_symbol'] }} {{ bcadd($total_paid, 0, 2) }}</th>
                     <th>--</th>
                     <th>--</th>
                 </tr>

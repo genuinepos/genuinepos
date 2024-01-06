@@ -82,7 +82,7 @@
                                                         <label><strong>{{ __('Shop/Business') }} : </strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }} ({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -192,7 +192,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white fw-bold">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white fw-bold"><span id="total_subtotal"></span></th>

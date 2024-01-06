@@ -44,6 +44,11 @@ class GeneralSettingController extends Controller
             ->where('account_groups.sub_sub_group_number', 8)
             ->get(['accounts.id', 'accounts.name', 'tax_percent']);
 
+        if (auth()->user()->branch_id) {
+
+            return redirect()->route('branches.settings.index', auth()->user()->branch_id);
+        }
+
         return view('setups.general_settings.index', compact(
             'generalSettings',
             'currencies',
@@ -63,9 +68,9 @@ class GeneralSettingController extends Controller
 
         if ($request->hasFile('business_logo')) {
 
-            if ($generalSettings['business__business_logo'] != null) {
+            if ($generalSettings['business_or_shop__business_logo'] != null) {
 
-                $bLogo = $generalSettings['business__business_logo'];
+                $bLogo = $generalSettings['business_or_shop__business_logo'];
 
                 if (file_exists(public_path('uploads/business_logo/' . $bLogo))) {
 
@@ -79,24 +84,24 @@ class GeneralSettingController extends Controller
             $business_logo = $logoName;
         } else {
 
-            $business_logo = $generalSettings['business__business_logo'] != null ? $generalSettings['business__business_logo'] : null;
+            $business_logo = $generalSettings['business_or_shop__business_logo'] != null ? $generalSettings['business_or_shop__business_logo'] : null;
         }
 
         $settings = [
-            'business__business_name' => $request->shop_name,
-            'business__address' => $request->address,
-            'business__phone' => $request->phone,
-            'business__email' => $request->email,
-            'business__account_start_date' => $request->account_start_date,
-            'business__financial_year_start_month' => $request->financial_year_start_month,
-            'business__default_profit' => $request->default_profit ? $request->default_profit : 0,
-            'business__currency_id' => $request->currency_id,
-            'business__currency_symbol' => $request->currency_symbol,
-            'business__date_format' => $request->date_format,
-            'business__stock_accounting_method' => $request->stock_accounting_method,
-            'business__time_format' => $request->time_format,
-            'business__business_logo' => $business_logo,
-            'business__timezone' => $request->timezone,
+            'business_or_shop__business_name' => $request->shop_name,
+            'business_or_shop__address' => $request->address,
+            'business_or_shop__phone' => $request->phone,
+            'business_or_shop__email' => $request->email,
+            'business_or_shop__account_start_date' => $request->account_start_date,
+            'business_or_shop__financial_year_start_month' => $request->financial_year_start_month,
+            'business_or_shop__default_profit' => $request->default_profit ? $request->default_profit : 0,
+            'business_or_shop__currency_id' => $request->currency_id,
+            'business_or_shop__currency_symbol' => $request->currency_symbol,
+            'business_or_shop__date_format' => $request->date_format,
+            'business_or_shop__stock_accounting_method' => $request->stock_accounting_method,
+            'business_or_shop__time_format' => $request->time_format,
+            'business_or_shop__business_logo' => $business_logo,
+            'business_or_shop__timezone' => $request->timezone,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -204,6 +209,8 @@ class GeneralSettingController extends Controller
             'prefix__purchase_order_prefix' => $request->purchase_order_prefix,
             'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
             'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
+            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
+            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];

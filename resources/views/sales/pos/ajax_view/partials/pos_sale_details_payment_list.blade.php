@@ -18,9 +18,9 @@
                         <tr data-info="{{ $payment }}">
                             <td class="text-start">{{ date('d/m/Y', strtotime($payment->date)) }}</td>
                             <td class="text-start">{{ $payment->invoice_id }}</td>
-                            
+
                             <td class="text-start">
-                                {{ $generalSettings['business__currency'] . ' ' . $payment->paid_amount }}
+                                {{ $generalSettings['business_or_shop__currency'] . ' ' . $payment->paid_amount }}
                             </td>
 
                             <td class="text-start">
@@ -34,26 +34,20 @@
                             <td class="text-start">
                                 {{ $payment->payment_type == 1 ? 'Sale due' : 'Return due' }}
                             </td>
-                            
+
                             <td class="text-start">
                                 @if (auth()->user()->branch_id == $sale->branch_id)
                                     @if ($payment->payment_type == 1)
-                                        <a href="{{ route('sales.payment.edit', $payment->id) }}"
-                                            id="edit_payment" class="btn-sm"><i
-                                                class="fas fa-edit text-info"></i></a>
+                                        <a href="{{ route('sales.payment.edit', $payment->id) }}" id="edit_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                     @else
-                                        <a href="{{ route('sales.return.payment.edit', $payment->id) }}"
-                                            id="edit_return_payment" class="btn-sm"><i
-                                                class="fas fa-edit text-info"></i></a>
+                                        <a href="{{ route('sales.return.payment.edit', $payment->id) }}" id="edit_return_payment" class="btn-sm"><i class="fas fa-edit text-info"></i></a>
                                     @endif
 
-                                    <a href="{{ route('sales.payment.details', $payment->id) }}"
-                                        id="payment_details" class="btn-sm">
+                                    <a href="{{ route('sales.payment.details', $payment->id) }}" id="payment_details" class="btn-sm">
                                         <i class="fas fa-eye text-primary"></i>
                                     </a>
 
-                                    <a href="{{ route('sales.payment.delete', $payment->id) }}"
-                                        id="delete_payment" class="btn-sm">
+                                    <a href="{{ route('sales.payment.delete', $payment->id) }}" id="delete_payment" class="btn-sm">
                                         <i class="far fa-trash-alt text-danger"></i>
                                     </a>
                                 @else

@@ -24,7 +24,7 @@ class SalesHelperService
             ->leftJoin('units', 'products.unit_id', 'units.id');
         // ->leftJoin('purchase_products as updateProductCost', function ($join) use ($generalSettings) {
 
-        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         //     if ($stockAccountingMethod == 1) {
 
@@ -43,7 +43,7 @@ class SalesHelperService
         //     // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
         // })->leftJoin('purchase_products as updateVariantCost', function ($join) use ($generalSettings) {
 
-        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         //     if ($stockAccountingMethod == 1) {
 
@@ -103,7 +103,7 @@ class SalesHelperService
             ]
         )->distinct('product_access_branches.branch_id');
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 
@@ -114,11 +114,11 @@ class SalesHelperService
         }
 
         $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (! $request->category_id && ! $request->brand_id) {
+        if (!$request->category_id && !$request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {

@@ -89,10 +89,10 @@
                                 @endif
                             @endif
                         @else
-                            @if ($generalSettings['business__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                            @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                         @endif
                     </div>
@@ -107,7 +107,7 @@
                                         {{ $sale?->branch?->name }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business__business_name'] }}
+                                    {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             </strong>
                         </p>
@@ -119,14 +119,14 @@
                                 {{ $invoiceLayout->branch_zipcode == 1 ? $sale->branch->zip_code . ', ' : '' }}
                                 {{ $invoiceLayout->branch_country == 1 ? $sale->branch->country : '' }}
                             @else
-                                {{ $generalSettings['business__address'] }}
+                                {{ $generalSettings['business_or_shop__address'] }}
                             @endif
                         </p>
 
                         <p>
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business__phone'];
+                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)
@@ -348,11 +348,11 @@
                     <table class="table print-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Net Total Amount') }} :{{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}</td>
                             </tr>
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong> {{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     @if ($sale->order_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
@@ -364,42 +364,42 @@
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     ({{ $sale->order_tax_percent }} %)={{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Invoice Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Total Invoice Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Due (On Invoice)') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-end" style="font-size:11px!important;"><strong>{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-end" style="font-size:11px!important;">
                                     {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                 </td>
@@ -445,7 +445,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-start">
-                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                        <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                     </div>
 
                     <div class="col-4 text-center">
@@ -492,10 +492,10 @@
                                             @endif
                                         @endif
                                     @else
-                                        @if ($generalSettings['business__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                        @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
+                                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                                         @else
-                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                                         @endif
                                     @endif
                                 </th>
@@ -541,14 +541,14 @@
                             @else
                                 <tr>
                                     <th class="text-center" style="font-size:11px;">
-                                        <span>{{ $generalSettings['business__address'] }} </span>
+                                        <span>{{ $generalSettings['business_or_shop__address'] }} </span>
                                     </th>
                                 </tr>
 
                                 @if ($invoiceLayout->branch_email)
                                     <tr>
                                         <th class="text-center" style="font-size:11px;">
-                                            <span><b>{{ __('Phone') }} : </b> {{ $generalSettings['business__phone'] }} </span>
+                                            <span><b>{{ __('Phone') }} : </b> {{ $generalSettings['business_or_shop__phone'] }} </span>
                                         </th>
                                     </tr>
                                 @endif
@@ -556,7 +556,7 @@
                                 @if ($invoiceLayout->branch_phone)
                                     <tr>
                                         <th class="text-center" style="font-size:11px;">
-                                            <span><b>{{ __('Email') }} : </b> {{ $generalSettings['business__email'] }} </span>
+                                            <span><b>{{ __('Email') }} : </b> {{ $generalSettings['business_or_shop__email'] }} </span>
                                         </th>
                                     </tr>
                                 @endif
@@ -619,7 +619,7 @@
                     <table class="w-100">
                         <thead>
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Net Total') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Net Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
@@ -628,7 +628,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Sale Discount') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
@@ -637,7 +637,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Sale Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         ({{ $sale->order_tax_percent }} %)
@@ -646,7 +646,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Total Invoice Amt.') }} : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Total Invoice Amt.') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
@@ -655,7 +655,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -664,7 +664,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end" style="font-size:11px;">{{ __('Due') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                <th class="text-end" style="font-size:11px;">{{ __('Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-end" style="font-size:11px;">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}

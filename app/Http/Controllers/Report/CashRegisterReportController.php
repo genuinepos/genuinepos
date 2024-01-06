@@ -16,7 +16,6 @@ class CashRegisterReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
-
     }
 
     // Index view of cash register report
@@ -87,7 +86,7 @@ class CashRegisterReportController extends Controller
 
             return DataTables::of($cashRegisters)
                 ->addColumn('action', function ($row) {
-                    return '<a id="register_details_btn" href="'.route('sales.cash.register.details.for.report', [$row->id]).'" class="btn btn-sm btn-primary">View</a>';
+                    return '<a id="register_details_btn" href="' . route('sales.cash.register.details.for.report', [$row->id]) . '" class="btn btn-sm btn-primary">View</a>';
                 })
                 ->editColumn('created_at', function ($row) {
 
@@ -105,15 +104,15 @@ class CashRegisterReportController extends Controller
 
                     if ($row->b_name) {
 
-                        return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
+                        return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
                     } else {
 
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
                 ->editColumn('user', function ($row) {
 
-                    return $row->u_prefix.' '.$row->u_first_name.' '.$row->u_last_name;
+                    return $row->u_prefix . ' ' . $row->u_first_name . ' ' . $row->u_last_name;
                 })
                 ->editColumn('status', function ($row) {
 
@@ -121,7 +120,7 @@ class CashRegisterReportController extends Controller
                 })
                 ->editColumn('closed_amount', function ($row) {
 
-                    return '<span class="closed_amount" data-value="'.$row->closed_amount.'">'.$this->converter->format_in_bdt($row->closed_amount).'</span>';
+                    return '<span class="closed_amount" data-value="' . $row->closed_amount . '">' . $this->converter->format_in_bdt($row->closed_amount) . '</span>';
                 })
                 ->rawColumns(['action', 'created_at', 'closed_time', 'branch', 'user', 'status', 'closed_amount'])
                 ->make(true);

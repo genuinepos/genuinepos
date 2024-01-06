@@ -1,5 +1,5 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -25,7 +25,7 @@
                                         {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
-                                    {{ $generalSettings['business__business_name'] . '(Business)' }}
+                                    {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
                                 @endif
                             </li>
                         </ul>
@@ -60,7 +60,7 @@
                         </tbody>
                         <tfoot class="display data_tbl data__table">
                             <tr>
-                                <th colspan="5" class="text-end">{{ __('Total Ingredients') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                <th colspan="5" class="text-end">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <th class="text-start">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                             </tr>
                         </tfoot>
@@ -90,11 +90,11 @@
                             <table class="display table modal-table table-sm">
                                 <tbody>
                                     <tr>
-                                        <th class="text-end">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                        <th class="text-end">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                         <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-end">{{ __('Net Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                        <th class="text-end">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                         <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                                     </tr>
                                 </tbody>
@@ -167,24 +167,24 @@
     <div class="details_area">
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
             <div class="col-4">
-                @if ($generalSettings['business__business_logo'] != null)
-                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                @if ($generalSettings['business_or_shop__business_logo'] != null)
+                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             </div>
 
             <div class="col-8 text-end">
                 <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>{{ $generalSettings['business__business_name'] }}</strong>
+                    <strong>{{ $generalSettings['business_or_shop__business_name'] }}</strong>
                 </p>
 
-                <p>{{ $generalSettings['business__address'] }}</p>
+                <p>{{ $generalSettings['business_or_shop__address'] }}</p>
 
                 <p>
                     @php
-                        $email = $generalSettings['business__email'];
-                        $phone = $generalSettings['business__phone'];
+                        $email = $generalSettings['business_or_shop__email'];
+                        $phone = $generalSettings['business_or_shop__phone'];
                     @endphp
 
                     <strong>{{ __('Email') }} : </strong> {{ $email }},
@@ -215,7 +215,7 @@
                                 {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] . '(Business)' }}
+                            {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
                         @endif
                     </li>
                 </ul>
@@ -250,7 +250,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                        <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredients') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                         <th class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($process->total_ingredient_cost) }}</th>
                     </tr>
                 </tfoot>
@@ -271,11 +271,11 @@
                 <table class="table modal-table table-sm">
                     <tbody>
                         <tr>
-                            <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->additional_production_cost) }}</td>
                         </tr>
                         <tr>
-                            <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->net_cost) }}</td>
                         </tr>
                     </tbody>
@@ -301,7 +301,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

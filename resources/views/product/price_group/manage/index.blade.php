@@ -130,7 +130,7 @@
                                                             </td>
                                                             <td class="text-center">
 
-                                                                <b>{{ $generalSettings['business__currency_symbol'] }} {{ $item->variant_price}}</b>
+                                                                <b>{{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $item->variant_price}}</b>
                                                             </td>
                                                             @foreach ($priceGroups as $pg)
                                                                 <td class="text-start">
@@ -156,7 +156,7 @@
                                                             <td class="text-center">
                                                                 <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
                                                                 <input type="hidden" name="variant_ids[]" value="noid">
-                                                                <b>{{ $generalSettings['business__currency_symbol'] }} {{ $item->product_price }}</b>
+                                                                <b>{{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $item->product_price }}</b>
                                                             </td>
                                                             @foreach ($priceGroups as $pg)
                                                                 <td>

@@ -30,7 +30,7 @@
                         @csrf
                         <div class="select-dropdown">
                             <select name="branch_id" id="switch_branch_id">
-                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                 @foreach ($branches as $branch)
                                     <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                         @php

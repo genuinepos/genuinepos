@@ -131,7 +131,7 @@
                         <ul class="list-unstyled">
                             <li><strong> @lang('menu.invoice_no') </strong> {{ $sale->invoice_id }}</li>
                             <li><strong>@lang('menu.date')</strong>
-                                {{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
+                                {{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}
                             </li>
                             <li><strong> @lang('menu.user') </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                         </ul>
@@ -253,14 +253,14 @@
                     <table class="table modal-table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.net_total_amount') : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-endx"><strong>@lang('menu.net_total_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.order_discount') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.order_discount') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-endx">
                                     @if ($sale->order_discount_type == 1)
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }} (Fixed)
@@ -271,7 +271,7 @@
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong> @lang('menu.order_tax') : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-endx"><strong> @lang('menu.order_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->order_tax_amount) }}
                                     ({{ $sale->order_tax_percent }} %)
@@ -279,28 +279,28 @@
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.shipment_charge') : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-endx"><strong>@lang('menu.shipment_charge') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.total_payable') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-endx"><strong>@lang('menu.total_payable') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</strong></td>
+                                <td class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                 <td class="text-endx">
                                     {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }} </strong></td>
+                                <td class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></td>
                                 <td class="total_paid text-end">
                                     {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                 </td>
@@ -355,7 +355,7 @@
             <div id="footer">
                 <div class="row mt-1">
                     <div class="col-4 text-center">
-                        <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                        <small>@lang('menu.print_date') : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                     </div>
 
                     @if (config('company.print_on_sale'))
@@ -426,7 +426,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <b>@lang('menu.date')</b> <span>{{ date($generalSettings['business__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
+                                    <b>@lang('menu.date')</b> <span>{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) . ' ' . date($timeFormat, strtotime($sale->time)) }}</span>
                                 </th>
                             </tr>
 
@@ -476,7 +476,7 @@
                     <table class="w-100 float-end">
                         <thead>
                             <tr>
-                                <th class="text-endx">@lang('menu.discount') : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-endx">@lang('menu.discount') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->order_discount_amount) }}
@@ -485,7 +485,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx">@lang('menu.order_tax') : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-endx">@lang('menu.order_tax') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         ({{ App\Utils\Converter::format_in_bdt($sale->order_tax_percent) }} %)
@@ -494,7 +494,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"> @lang('menu.total_payable') : {{ $generalSettings['business__currency_symbol'] }} </th>
+                                <th class="text-endx"> @lang('menu.total_payable') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_payable_amount) }}
@@ -503,7 +503,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency_symbol'] }}</strong></th>
+                                <th class="text-endx"><strong> @lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
@@ -512,7 +512,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong> @lang('menu.change_amount') : {{ $generalSettings['business__currency_symbol'] }} </strong></th>
+                                <th class="text-endx"><strong> @lang('menu.change_amount') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->change_amount) }}
@@ -521,7 +521,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business__currency_symbol'] }} </strong></th>
+                                <th class="text-endx"><strong>@lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }} </strong></th>
                                 <th class="text-endx">
                                     <span>
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}

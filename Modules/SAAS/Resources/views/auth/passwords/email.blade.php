@@ -7,12 +7,12 @@
                 <div class="col-lg-4 col-md-5 col-12">
                     <div class="form-head">
                         <div class="head">
-                            @if ($generalSettings['business__business_logo'] != null)
+                            @if ($generalSettings['business_or_shop__business_logo'] != null)
 
-                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                                <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                             @else
 
-                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business__business_name'] }}</span>
+                                <span style="font-family: 'Anton', sans-serif;font-size:15px;color:white;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                             @endif
                             <span class="head-text">
                                 {{ __('GPOSS, Point of Sale software by SpeedDigit') }}

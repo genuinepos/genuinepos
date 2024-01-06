@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <style>
     @media print {
@@ -81,10 +81,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -99,7 +99,7 @@
                                 {{ $receipt?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -108,7 +108,7 @@
                     @if ($receipt?->branch)
                         {{ $receipt->branch->city . ', ' . $receipt->branch->state . ', ' . $receipt->branch->zip_code . ', ' . $receipt->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -117,8 +117,8 @@
                         <strong>@lang('menu.email') : </strong> {{ $receipt?->branch?->email }},
                         <strong>@lang('menu.phone') : </strong> {{ $receipt?->branch?->phone }}
                     @else
-                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business__email'] }},
-                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business__phone'] }}
+                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business_or_shop__email'] }},
+                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business_or_shop__phone'] }}
                     @endif
                 </p>
             </div>
@@ -134,7 +134,7 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        {{ date($generalSettings['business__date_format'], strtotime($receipt->date)) }}
+                        {{ date($generalSettings['business_or_shop__date_format'], strtotime($receipt->date)) }}
                     </li>
                     <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $receipt->voucher_no }}</li>
                     <li style="font-size:11px!important;"><strong>{{ __('Received Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
@@ -197,7 +197,7 @@
                             </tr>
 
                             <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                 <td class="text-end fw-bold" style="font-size:11px!important;">
                                     {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
                                 </td>
@@ -477,7 +477,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

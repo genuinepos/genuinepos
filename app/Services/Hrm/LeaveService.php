@@ -76,7 +76,7 @@ class LeaveService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('user', function ($row) {
@@ -120,7 +120,7 @@ class LeaveService
         $updateLeave->leave_type_id = $request->leave_type_id;
         $updateLeave->start_date = date('Y-m-d', strtotime($request->start_date));
         $updateLeave
-        ->end_date = date('Y-m-d', strtotime($request->end_date));;
+            ->end_date = date('Y-m-d', strtotime($request->end_date));;
         $updateLeave->reason = $request->reason;
         $updateLeave->save();
     }

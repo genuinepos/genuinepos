@@ -1,9 +1,17 @@
 @php
-    $defaultLayout = DB::table('invoice_layouts')->where('is_default', 1)->first();
+    $defaultLayout = DB::table('invoice_layouts')
+        ->where('is_default', 1)
+        ->first();
 @endphp
 <div class="challan_print_template d-hide">
     <style>
-        @page {size:a4;margin-top: 0.8cm; /*margin-bottom: 35px;*/ margin-left: 4%;margin-right: 4%;}
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            /*margin-bottom: 35px;*/
+            margin-left: 4%;
+            margin-right: 4%;
+        }
     </style>
     <div class="details_area">
         @if ($defaultLayout->is_header_less == 0)
@@ -24,7 +32,7 @@
                             @if ($sale->branch)
                                 <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $sale->branch->logo) }}">
                             @else
-                                <img style="height: 60px; width:200px;" src="{{asset('uploads/business_logo/'.$generalSettings['business__business_logo']) }}">
+                                <img style="height: 60px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}">
                             @endif
                         @endif
                     </div>
@@ -37,7 +45,7 @@
                         <div class="heading text-end">
                             @if ($sale->branch)
                                 <h3 class="company_name">
-                                    {{ $generalSettings['business__business_name'] }}</h3>
+                                    {{ $generalSettings['business_or_shop__business_name'] }}</h3>
                                 <h6 class="company_address">
                                     {{ $sale->branch->name . '/' . $sale->branch->branch_code }},
                                     {{ $sale->branch->pos_sale_invoice_layout->branch_city == 1 ? $sale->branch->city : '' }},
@@ -55,17 +63,17 @@
                                 @endif
                             @else
                                 <h3 class="company_name">
-                                    {{ $generalSettings['business__business_name'] }}</h3>
+                                    {{ $generalSettings['business_or_shop__business_name'] }}</h3>
                                 <h6 class="company_address">
-                                    {{ $generalSettings['business__address'] }}
+                                    {{ $generalSettings['business_or_shop__address'] }}
                                 </h6>
 
                                 @if ($defaultLayout->branch_phone)
-                                    <h6>@lang('menu.phone') : {{ $generalSettings['business__phone'] }}</h6>
+                                    <h6>@lang('menu.phone') : {{ $generalSettings['business_or_shop__phone'] }}</h6>
                                 @endif
 
                                 @if ($defaultLayout->branch_email)
-                                    <h6>@lang('menu.email') : {{ $generalSettings['business__email'] }}</h6>
+                                    <h6>@lang('menu.email') : {{ $generalSettings['business_or_shop__email'] }}</h6>
                                 @endif
                             @endif
                         </div>
@@ -111,9 +119,9 @@
                 <div class="col-lg-4">
                     <ul class="list-unstyled">
                         <li><strong>@lang('menu.challan_no') </strong> {{ $sale->invoice_id }}
-                            </li>
-                        <li><strong>@lang('menu.date')</strong> {{ date($generalSettings['business__date_format'] ,strtotime($sale->date)) . ' ' . $sale->time }} </li>
-                        <li><strong> @lang('menu.user') </strong> {{$sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
+                        </li>
+                        <li><strong>@lang('menu.date')</strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) . ' ' . $sale->time }} </li>
+                        <li><strong> @lang('menu.user') </strong> {{ $sale->admin ? $sale->admin->prefix . ' ' . $sale->admin->name . ' ' . $sale->admin->last_name : 'N/A' }} </li>
                     </ul>
                 </div>
             </div>
@@ -182,7 +190,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-center">
-                    <small>@lang('menu.print_date') : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small>@lang('menu.print_date') : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 @if (config('company.print_on_sale'))

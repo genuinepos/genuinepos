@@ -64,7 +64,7 @@ class PayrollPaymentReportController extends Controller
             return DataTables::of($payments)
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                     return date($__date_format, strtotime($row?->accountingVoucher->date));
                 })
@@ -85,14 +85,14 @@ class PayrollPaymentReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('reference', function ($row) {
 
                     if ($row?->accountingVoucher?->payrollRef) {
 
-                        return '<a href="' . route('hrm.payrolls.show', [$row?->accountingVoucher?->payrollRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->payrollRef?->voucher_no.'['. $row?->accountingVoucher?->payrollRef?->month.'-'. $row?->accountingVoucher?->payrollRef?->year.']' . '</a>';
+                        return '<a href="' . route('hrm.payrolls.show', [$row?->accountingVoucher?->payrollRef?->id]) . '" id="details_btn">' . $row?->accountingVoucher?->payrollRef?->voucher_no . '[' . $row?->accountingVoucher?->payrollRef?->month . '-' . $row?->accountingVoucher?->payrollRef?->year . ']' . '</a>';
                     }
                 })
                 ->editColumn('remarks', fn ($row) => '<span title="' . $row?->accountingVoucher?->remarks . '">' . Str::limit($row?->accountingVoucher?->remarks, 25, '') . '</span>')

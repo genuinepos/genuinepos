@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use App\Services\GeneralSettingService;
 use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use App\Services\Setups\CashCounterService;
@@ -22,6 +23,7 @@ class BranchController extends Controller
         private CurrencyService $currencyService,
         private TimezoneService $timezoneService,
         private BranchSettingService $branchSettingService,
+        private GeneralSettingService $generalSettingService,
     ) {
     }
 
@@ -139,7 +141,18 @@ class BranchController extends Controller
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         $branch = $this->branchService->singleBranch($id);
 
-        return view('setups.branches.ajax_view.edit', compact('branches', 'branch', 'currencies', 'timezones'));
+        $branchSettings = $this->generalSettingService->generalSettings(branchId: $id, keys: [
+            'business_or_shop__date_format',
+            'business_or_shop__time_forma',
+            'business_or_shop__timezone',
+            'business_or_shop__currency_id',
+            'business_or_shop__currency_symbol',
+            'business_or_shop__account_start_date',
+            'business_or_shop__financial_year_start_month',
+            'business_or_shop__stock_accounting_method',
+        ]);
+
+        return view('setups.branches.ajax_view.edit', compact('branches', 'branch', 'currencies', 'timezones', 'branchSettings'));
     }
 
     public function update(Request $request, $id)
@@ -170,6 +183,22 @@ class BranchController extends Controller
             DB::beginTransaction();
 
             $this->branchService->updateBranch(id: $id, request: $request);
+
+            $settings = [
+                'business_or_shop__date_format' => $request->date_format,
+                'business_or_shop__time_forma' => $request->time_format,
+                'business_or_shop__timezone' => $request->timezone,
+                'business_or_shop__currency_id' => $request->currency_id,
+                'business_or_shop__currency_symbol' => $request->currency_symbol,
+            ];
+
+            if ($request->branch_type == BranchType::DifferentShop->value) {
+                $settings['business_or_shop__account_start_date'] = $request->account_start_date;
+                $settings['business_or_shop__financial_year_start_month'] = $request->financial_year_start_month;
+                $settings['business_or_shop__stock_accounting_method'] = $request->stock_accounting_method;
+            }
+
+            $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
             DB::commit();
         } catch (Exception $e) {

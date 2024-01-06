@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <style>
     @media print {
@@ -69,10 +69,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -87,7 +87,7 @@
                                 {{ $transferStock?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -96,7 +96,7 @@
                     @if ($transferStock?->branch)
                         {{ $transferStock->branch->city . ', ' . $transferStock->branch->state . ', ' . $transferStock->branch->zip_code . ', ' . $transferStock->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -105,8 +105,8 @@
                         <strong>{{ __('Email') }} : </strong> <b>{{ $transferStock?->branch?->email }}</b>,
                         <strong>{{ __('Phone') }} : </strong> <b>{{ $transferStock?->branch?->phone }}</b>
                     @else
-                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business_or_shop__email'] }}</b>,
+                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business_or_shop__phone'] }}</b>
                     @endif
                 </p>
             </div>
@@ -131,7 +131,7 @@
                                     {{ $transferStock?->senderBranch?->name }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         </b>
                     </li>
@@ -153,7 +153,7 @@
                                     {{ $transferStock?->receiverBranch?->name }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         </b>
                     </li>
@@ -171,7 +171,7 @@
             <div class="col-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        <b>{{ date($generalSettings['business__date_format'], strtotime($transferStock->date)) }}</b>
+                        <b>{{ date($generalSettings['business_or_shop__date_format'], strtotime($transferStock->date)) }}</b>
                     </li>
 
                     <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong><b>{{ $transferStock->voucher_no }}</b></li>
@@ -250,7 +250,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Stock Value') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($transferStock->total_stock_value) }}</b>
                             </td>
@@ -292,7 +292,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

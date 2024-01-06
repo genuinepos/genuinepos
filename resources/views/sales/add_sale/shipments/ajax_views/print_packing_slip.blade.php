@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')
         ->where('branch_id', null)
         ->where('is_default', 1)
@@ -9,16 +9,48 @@
 @endphp
 <style>
     @media print {
-        table { page-break-after: auto; }
-        tr { page-break-inside: avoid; page-break-after: auto; }
-        td { page-break-inside: avoid; page-break-after: auto; }
-        thead { display: table-header-group; }
-        tfoot { display: table-footer-group; }
+        table {
+            page-break-after: auto;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 10px; margin-right: 10px;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-    div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 </style>
 
 <div class="print_challan">
@@ -43,10 +75,10 @@
                             @endif
                         @endif
                     @else
-                        @if ($generalSettings['business__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business_or_shop__business_logo'] != null && $invoiceLayout->show_shop_logo == 1)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -61,7 +93,7 @@
                                     {{ $sale?->branch?->name }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         </strong>
                     </p>
@@ -73,14 +105,14 @@
                             {{ $invoiceLayout->branch_zipcode == 1 ? $sale->branch->zip_code . ', ' : '' }}
                             {{ $invoiceLayout->branch_country == 1 ? $sale->branch->country : '' }}
                         @else
-                            {{ $generalSettings['business__address'] }}
+                            {{ $generalSettings['business_or_shop__address'] }}
                         @endif
                     </p>
 
                     <p>
                         @php
-                            $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business__email'];
-                            $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business__phone'];
+                            $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                            $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                         @endphp
 
                         @if ($invoiceLayout->branch_email)
@@ -132,7 +164,7 @@
             <div class="col-lg-4 text-center">
                 @if ($invoiceLayout->is_header_less == 1)
                     <div class="middle_header_text text-center">
-                        <h5 style="text-transform: uppercase;">{{ __("Packing Slip") }}</h5>
+                        <h5 style="text-transform: uppercase;">{{ __('Packing Slip') }}</h5>
                     </div>
                 @endif
 
@@ -146,7 +178,7 @@
                     </li>
 
                     <li style="font-size:11px!important;">
-                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}
+                        <strong>{{ __('Date') }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) }}
                     </li>
 
                     <li style="font-size:11px!important;">
@@ -228,7 +260,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

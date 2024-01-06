@@ -23,7 +23,7 @@ class ExpiredProductService
             ->where('purchase_products.expire_date', '!=', 'NULL')
             ->whereDate('purchase_products.expire_date', '<', date('Y-m-d'));
 
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -34,7 +34,7 @@ class ExpiredProductService
             }
         }
 
-        if (! empty($request->supplier_account_id)) {
+        if (!empty($request->supplier_account_id)) {
 
             $query->where('purchases.supplier_account_id', $request->supplier_account_id);
         }
@@ -70,11 +70,11 @@ class ExpiredProductService
             // })
             ->editColumn('name', function ($row) {
 
-                return $row->name.($row->variant_name ? ' - '.$row->variant_name : '');
+                return $row->name . ($row->variant_name ? ' - ' . $row->variant_name : '');
             })
             ->editColumn('invoice_id', function ($row) {
 
-                return '<a href="'.route('purchases.show', [$row->purchase_id]).'" id="details_btn">'.$row->purchase_invoice_id.'</a>';
+                return '<a href="' . route('purchases.show', [$row->purchase_id]) . '" id="details_btn">' . $row->purchase_invoice_id . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -82,19 +82,19 @@ class ExpiredProductService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('expire_date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->expire_date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->expire_date));
             })
             ->rawColumns(['name', 'invoice_id', 'branch'])
             ->smart(true)->make(true);

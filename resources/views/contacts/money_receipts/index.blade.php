@@ -57,7 +57,7 @@
                                     @if ($contact?->account?->branch)
                                         {{ $contact?->account?->branch?->name }}
                                     @else
-                                        {{ $generalSettings['business__business_name'] }}
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 </td>
                             </tr>
@@ -159,7 +159,7 @@
                                                     {{ $receipt?->branch?->name }}({{ $receipt->branch->area_name }})
                                                 @endif
                                             @else
-                                                {{ $generalSettings['business__business_name'] }}({{ __('Business') }})
+                                                {{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})
                                             @endif
                                         </td>
 

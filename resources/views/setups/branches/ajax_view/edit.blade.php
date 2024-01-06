@@ -117,9 +117,9 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Date Format') }}</label>
                                 <select name="date_format" class="form-control" id="branch_date_format" data-next="branch_time_format">
-                                    <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
-                                    <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
-                                    <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                    <option value="d-m-Y" {{ $branchSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
+                                    <option value="m-d-Y" {{ $branchSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
+                                    <option value="Y-m-d" {{ $branchSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
                                 </select>
                                 <span class="error error_date_format"></span>
                             </div>
@@ -129,8 +129,8 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Format') }}</label>
                                 <select name="time_format" class="form-control" id="branch_time_format" data-next="branch_timezone">
-                                    <option {{ $branch->time_format == '12' ? 'SELECTED' : '' }} value="12">{{ __('12 Hour') }}</option>
-                                    <option {{ $branch->time_format == '24' ? 'SELECTED' : '' }} value="24">{{ __('24 Hour') }}</option>
+                                    <option {{ $branchSettings['business_or_shop__time_format'] == '12' ? 'SELECTED' : '' }} value="12">{{ __('12 Hour') }}</option>
+                                    <option {{ $branchSettings['business_or_shop__time_format'] == '24' ? 'SELECTED' : '' }} value="24">{{ __('24 Hour') }}</option>
                                 </select>
                                 <span class="error error_time_format"></span>
                             </div>
@@ -142,7 +142,7 @@
                                 <select required name="timezone" class="form-control" id="branch_timezone" data-next="branch_stock_accounting_method">
                                     <option value="">{{ __('Time Zone') }}</option>
                                     @foreach ($timezones as $key => $timezone)
-                                        <option {{ ($branch->timezone ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
+                                        <option {{ ($branchSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_time_format"></span>
@@ -154,10 +154,10 @@
                                 <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
                                 <select name="stock_accounting_method" class="form-control" id="branch_stock_accounting_method" data-next="branch_account_start_date">
                                     @php
-                                        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
+                                        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                                     @endphp
                                     @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                        <option {{ $branch->stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                        <option {{ $branchSettings['business_or_shop__stock_accounting_method'] == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_financial_year_start"></span>
@@ -167,7 +167,7 @@
                         <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="account_start_date_field">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $branchSettings['business_or_shop__account_start_date'] }}" data-next="branch_financial_year_start_month" autocomplete="off">
                                 <span class="error error_account_start_date"></span>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                             $months = \App\Enums\Months::cases();
                                         @endphp
                                         @foreach ($months as $month)
-                                            <option {{ $branch->financial_year_start_month == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                            <option {{ $branchSettings['business_or_shop__financial_year_start_month'] == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

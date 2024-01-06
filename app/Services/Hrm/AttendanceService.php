@@ -87,12 +87,12 @@ class AttendanceService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->at_date_ts));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->at_date_ts));
             })
             ->editColumn('clock_in_out', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business__date_format'];
-                $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
                 $clockOut = $row->clock_out_ts ? ' - ' . date($dateFormat . ' ' . $timeFormat, strtotime($row->clock_out_ts)) : '';
 
@@ -121,7 +121,7 @@ class AttendanceService
     public function addAttendances(object $request): void
     {
         $generalSettings = config('generalSettings');
-        $dateFormat = $generalSettings['business__date_format'];
+        $dateFormat = $generalSettings['business_or_shop__date_format'];
 
         foreach ($request->user_ids as $key => $user_id) {
 

@@ -55,7 +55,7 @@
                                                                     <label><strong>@lang('menu.business_location') : </strong></label>
                                                                     <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                                         <option value="">@lang('menu.all')</option>
-                                                                        <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                                         @foreach ($branches as $branch)
                                                                             <option value="{{ $branch->id }}">
                                                                                 {{ $branch->name . '/' . $branch->branch_code }}
@@ -132,17 +132,17 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th>@lang('menu.total_purchase') : </th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th>@lang('menu.purchase_including_tax') : </th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th> @lang('menu.purchase_due')</th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -161,17 +161,17 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th>@lang('menu.total_sale') : </th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th>@lang('menu.sale_including_tax') : </th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th>{{ __('Sale Due') }} </th>
-                                                                    <td>{{ $generalSettings['business__currency_symbol'] }} 0.00</td>
+                                                                    <td>{{ $generalSettings['business_or_shop__currency_symbol'] }} 0.00</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

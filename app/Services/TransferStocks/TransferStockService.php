@@ -85,7 +85,7 @@ class TransferStockService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -106,7 +106,7 @@ class TransferStockService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('send_from', function ($row) use ($generalSettings) {
@@ -125,7 +125,7 @@ class TransferStockService
                     }
                 } else {
 
-                    $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $generalSettings['business__business_name'];
+                    $senderBranch = '<strong>' . __("Send From") . ':</strong> ' . $generalSettings['business_or_shop__business_name'];
                 }
 
                 if ($row->sender_warehouse_id) {
@@ -151,7 +151,7 @@ class TransferStockService
                     }
                 } else {
 
-                    $receiverBranch = '<strong>' . __("Send To") . ':</strong> ' . $generalSettings['business__business_name'];
+                    $receiverBranch = '<strong>' . __("Send To") . ':</strong> ' . $generalSettings['business_or_shop__business_name'];
                 }
 
                 if ($row->receiver_warehouse_id) {

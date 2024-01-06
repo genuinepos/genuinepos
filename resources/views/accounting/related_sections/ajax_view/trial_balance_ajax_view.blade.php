@@ -132,7 +132,7 @@
 
         <tfoot>
             <tr class="bg-secondary">
-                <th class="text-white text-end"><em>@lang('menu.total') : ({{ $generalSettings['business__currency_symbol'] }})</em></th>
+                <th class="text-white text-end"><em>@lang('menu.total') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</em></th>
 
                 <th class="text-white text-end">
                     <em class="total_debit">{{ App\Utils\Converter::format_in_bdt($totalDebit) }}</em>

@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <style>
     @media print {
@@ -69,10 +69,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -87,7 +87,7 @@
                                 {{ $production?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -96,7 +96,7 @@
                     @if ($production?->branch)
                         {{ $production->branch->city . ', ' . $production->branch->state . ', ' . $production->branch->zip_code . ', ' . $production->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -105,8 +105,8 @@
                         <strong>{{ __('Email') }} : </strong> <b>{{ $production?->branch?->email }}</b>,
                         <strong>{{ __('Phone') }} : </strong> <b>{{ $production?->branch?->phone }}</b>
                     @else
-                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business_or_shop__email'] }}</b>,
+                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business_or_shop__phone'] }}</b>
                     @endif
                 </p>
             </div>
@@ -134,7 +134,7 @@
                                     {{ $production?->branch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         @endif
                     </li>
@@ -152,7 +152,7 @@
                                     {{ $production?->branch?->name . '(' . $production?->branch?->area_name . ')' . '-(' . $production?->branch?->branch_code . ')' }}
                                 @endif
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         @endif
                     </li>
@@ -176,7 +176,7 @@
             <div class="col-4">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Voucher No ') }} : </strong> {{ $production->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ date($generalSettings['business__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
+                    <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>{{ date($generalSettings['business_or_shop__date_format'], strtotime($production->date)) . ' ' . date($timeFormat, strtotime($production->time)) }}</li>
                 </ul>
             </div>
         </div>
@@ -219,7 +219,7 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredient Cost') }} ({{ $generalSettings['business__currency_symbol'] }})</th>
+                    <th colspan="5" class="text-end" style="font-size:11px!important;">{{ __('Total Ingredient Cost') }} ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                     <th class="text-end" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($totalIngredientCost) }}</th>
                 </tfoot>
             </table>
@@ -252,14 +252,14 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Additional Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($production->additional_production_cost) }}
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($production->net_cost) }}
                             </td>
@@ -273,7 +273,7 @@
                 <table class="table print-table table-sm table-bordered">
                     <tbody>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_exc_tax) }}
                             </td>
@@ -287,7 +287,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Per Unit Cost Inc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($production->per_unit_cost_inc_tax) }}
                             </td>
@@ -301,7 +301,7 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Selling Price Exc. Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 {{ App\Utils\Converter::format_in_bdt($production->per_unit_price_exc_tax) }}
                             </td>
@@ -343,7 +343,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

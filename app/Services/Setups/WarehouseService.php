@@ -69,7 +69,7 @@ class WarehouseService
                         return $row->b_name . '/' . $row->b_code;
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 }
             })

@@ -71,7 +71,7 @@
                     @if ($loan->branch)
                         {{ $loan->branch->name . '/' . $loan->branch->branch_code }}
                     @else
-                        {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business_or_shop__business_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -80,7 +80,7 @@
                 @if ($loan->branch)
                     {{ $loan->branch->city . ', ' . $loan->branch->branch->state . ', ' . $loan->branch->zip_code . ', ' . $loan->branch->country }}
                 @else
-                    {{ $generalSettings['business__address'] }}
+                    {{ $generalSettings['business_or_shop__address'] }}
                 @endif
             </p>
             <br>
@@ -111,7 +111,7 @@
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount :' : 'Receive Loan Amount :' }}</th>
                             <td width="50%" class="text-start">
-                                {{ $generalSettings['business__currency_symbol'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             </td>
                         </tr>

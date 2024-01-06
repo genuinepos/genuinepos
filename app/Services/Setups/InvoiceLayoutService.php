@@ -48,25 +48,25 @@ class InvoiceLayoutService
             ->addIndexColumn()
             ->editColumn('name', function ($row) {
 
-                return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">'.__('Default').'</span>' : '');
+                return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">' . __('Default') . '</span>' : '');
             })
             ->editColumn('is_header_less', function ($row) {
 
-                return $row->is_header_less == 1 ? '<span class="badge bg-info">'.__('Yes').'</span>' : '<span class="badge bg-secondary">'.__('No').'</span>';
+                return $row->is_header_less == 1 ? '<span class="badge bg-info">' . __('Yes') . '</span>' : '<span class="badge bg-secondary">' . __('No') . '</span>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->parent_branch_id) {
 
-                    return __('Chain Shop Of').'  <span class="badge badge-sm bg-success">'.$row->parent_branch_name.'</span>-('.$row->branch_code.')';
+                    return __('Chain Shop Of') . '  <span class="badge badge-sm bg-success">' . $row->parent_branch_name . '</span>-(' . $row->branch_code . ')';
                 } else {
 
                     if ($row->branch_name) {
 
-                        return $row->branch_name.'-('.$row->branch_code.')';
+                        return $row->branch_name . '-(' . $row->branch_code . ')';
                     } else {
 
-                        return $generalSettings['business__business_name'].'(<b>'.__('Business').'</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Business') . '</b>)';
                     }
                 }
             })
@@ -74,14 +74,14 @@ class InvoiceLayoutService
 
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="'.route('invoices.layouts.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('invoices.layouts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
 
                 if ($row->is_default == 0) {
 
-                    $html .= '<a href="'.route('invoices.layouts.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
 
-                    $html .= '<a href="'.route('invoices.layouts.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn">
-                    '.__('Set As Default').'
+                    $html .= '<a href="' . route('invoices.layouts.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn">
+                    ' . __('Set As Default') . '
                     </a>';
                 }
                 $html .= '</div>';
@@ -189,7 +189,7 @@ class InvoiceLayoutService
     {
         $deleteInvoice = InvoiceLayout::find($schemaId);
 
-        if (! is_null($deleteInvoice)) {
+        if (!is_null($deleteInvoice)) {
 
             $deleteInvoice->delete();
         }

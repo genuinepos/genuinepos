@@ -23,7 +23,7 @@
         </td>
 
         <td class="text-start">
-            <span id="span_unit_cost_inc_tax" class="fw-bold">{{  $purchaseProduct->unit_cost_exc_tax }}</span>
+            <span id="span_unit_cost_inc_tax" class="fw-bold">{{ $purchaseProduct->unit_cost_exc_tax }}</span>
             <input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="{{ $purchaseProduct->unit_cost_exc_tax }}">
             <input type="hidden" name="unit_costs_inc_tax[]" id="unit_cost_inc_tax" value="{{ $purchaseProduct->net_unit_cost }}">
         </td>
@@ -38,19 +38,14 @@
         @php
             $stockLocationName = '';
             if ($purchaseProduct?->purchase?->warehouse) {
-
                 $stockLocationName = $purchaseProduct?->purchase?->warehouse->warehouse_name . '/' . $purchaseProduct?->purchase?->warehouse->warehouse_code;
             } else {
-
-                $stockLocationName = $generalSettings['business__business_name'];
+                $stockLocationName = $generalSettings['business_or_shop__business_name'];
 
                 if ($purchase->branch) {
-
                     if ($purchase?->branch?->parentBranch) {
-
                         $stockLocationName = $purchase?->branch?->parentBranch->name . '(' . $purchase?->branch?->parentBranch->area_name . ')';
-                    }else {
-
+                    } else {
                         $stockLocationName = $purchase?->branch?->name . '(' . $purchase?->branch->area_name . ')';
                     }
                 }

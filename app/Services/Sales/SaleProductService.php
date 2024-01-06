@@ -68,7 +68,7 @@ class SaleProductService
             $query->whereBetween('sales.sale_date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value ) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }
@@ -130,7 +130,7 @@ class SaleProductService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
 
@@ -152,7 +152,7 @@ class SaleProductService
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 }
             })

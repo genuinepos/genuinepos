@@ -1,6 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <style>
     @media print {
@@ -69,10 +69,10 @@
                         @endif
                     @endif
                 @else
-                    @if ($generalSettings['business__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                     @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                     @endif
                 @endif
             </div>
@@ -87,7 +87,7 @@
                                 {{ $purchase?->branch?->name }}
                             @endif
                         @else
-                            {{ $generalSettings['business__business_name'] }}
+                            {{ $generalSettings['business_or_shop__business_name'] }}
                         @endif
                     </strong>
                 </p>
@@ -96,7 +96,7 @@
                     @if ($purchase?->branch)
                         {{ $purchase->branch->city . ', ' . $purchase->branch->state . ', ' . $purchase->branch->zip_code . ', ' . $purchase->branch->country }}
                     @else
-                        {{ $generalSettings['business__address'] }}
+                        {{ $generalSettings['business_or_shop__address'] }}
                     @endif
                 </p>
 
@@ -105,8 +105,8 @@
                         <strong>{{ __('Email') }} : </strong> <b>{{ $purchase?->branch?->email }}</b>,
                         <strong>{{ __('Phone') }} : </strong> <b>{{ $purchase?->branch?->phone }}</b>
                     @else
-                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business__email'] }}</b>,
-                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business__phone'] }}</b>
+                        <strong>{{ __('Email') }} : </strong> <b>{{ $generalSettings['business_or_shop__email'] }}</b>,
+                        <strong>{{ __('Phone') }} : </strong> <b>{{ $generalSettings['business_or_shop__phone'] }}</b>
                     @endif
                 </p>
             </div>
@@ -130,7 +130,7 @@
             <div class="col-6">
                 <ul class="list-unstyled">
                     <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        <b>{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}</b>
+                        <b>{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}</b>
                     </li>
 
                     <li style="font-size:11px!important;"><strong>{{ __('Invoice ID') }} : </strong><b>{{ $purchase->invoice_id }}</b></li>
@@ -180,7 +180,7 @@
                                 <p>{{ Str::limit($purchaseProduct->product->name, 25) . ' ' . $variant }}</p>
                                 <small class="d-block text-muted" style="font-size: 9px!important;">{!! $purchaseProduct->description ? $purchaseProduct->description : '' !!}</small>
                                 @if ($purchaseProduct?->product?->has_batch_no_expire_date)
-                                    <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
+                                    <small class="d-block text-muted" style="font-size: 9px!important;">{{ __('Batch No') }} : {{ $purchaseProduct->batch_number }}, {{ __('Expire Date') }} : {{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}</small>
                                 @endif
                             </td>
                             <td class="text-start" style="font-size:11px!important;">{{ $purchaseProduct->quantity }}</td>
@@ -203,14 +203,14 @@
                 <table class="table print-table table-sm">
                     <thead>
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->net_total_amount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Discount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 @if ($purchase->order_discount_type == 1)
                                     <b>({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($purchase->order_discount) }}</b>
@@ -222,42 +222,42 @@
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Tax') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Purchase Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ '(' . $purchase->purchase_tax_percent . '%)=' . $purchase->purchase_tax_amount }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->shipment_charge) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Purchased Amount') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Total Purchased Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->total_purchase_amount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Paid') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($payingAmount) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt($purchase->due) }}</b>
                             </td>
                         </tr>
 
                         <tr>
-                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business__currency_symbol'] }}</th>
+                            <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                             <td class="text-end" style="font-size:11px!important;">
                                 <b>{{ App\Utils\Converter::format_in_bdt(0) }}</b>
                             </td>
@@ -299,7 +299,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

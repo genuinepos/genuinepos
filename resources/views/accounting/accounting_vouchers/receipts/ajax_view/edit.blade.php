@@ -1,6 +1,6 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $dateFormat = $generalSettings['business__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
 @endphp
 <style>
     .top_card table tbody th{ line-height: 1; height: 17px; font-size: 11px; }
@@ -120,7 +120,7 @@
                         <div class="row" style="border-right:1px solid black;">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Date") }} <span class="text-danger">*</span></label>
-                                <input required name="date" class="form-control" id="receipt_date" data-next="receipt_payment_method_id" value="{{ date($generalSettings['business__date_format'], strtotime($receipt->date)) }}" placeholder="{{ __("Date") }}" autocomplete="off">
+                                <input required name="date" class="form-control" id="receipt_date" data-next="receipt_payment_method_id" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($receipt->date)) }}" placeholder="{{ __("Date") }}" autocomplete="off">
                                 <span class="error error_receipt_date"></span>
                             </div>
 

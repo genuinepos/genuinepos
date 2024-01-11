@@ -2233,19 +2233,6 @@
                                                 </a>
                                             </div>
                                         @endif
-
-                                        @if (auth()->user()->can('manufacturing_settings'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-sliders-h"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Manufacturing Setting') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
 

@@ -22,7 +22,6 @@ use App\Services\Sales\DraftService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
 use App\Utils\UserActivityLogUtil;
@@ -35,7 +34,6 @@ class DraftController extends Controller
         private DraftService $draftService,
         private SaleService $saleService,
         private DayBookService $dayBookService,
-        private BranchSettingService $branchSettingService,
         private DraftProductService $draftProductService,
         private SaleProductService $saleProductService,
         private AccountService $accountService,
@@ -133,7 +131,6 @@ class DraftController extends Controller
                 saleService: $this->saleService,
                 draftService: $this->draftService,
                 draftProductService: $this->draftProductService,
-                branchSettingService: $this->branchSettingService,
                 dayBookService: $this->dayBookService,
                 accountLedgerService: $this->accountLedgerService,
                 productStockService: $this->productStockService,

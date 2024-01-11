@@ -46,7 +46,6 @@ class BranchService
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a class="dropdown-item" id="edit" href="' . route('branches.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                 $html .= '<a class="dropdown-item" id="delete" href="' . route('branches.delete', [$row->id]) . '">' . __('Delete') . '</a>';
-                $html .= '<a class="dropdown-item" id="branchSettings" href="' . route('branches.settings.edit', [$row->id]) . '">' . __('Shop Settings') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -293,7 +292,7 @@ class BranchService
         $directIncomeGroup = DB::table('account_groups')->where('sub_group_number', 13)->first();
         $salesAccountGroup = DB::table('account_groups')->where('sub_group_number', 15)->first();
         $purchaseAccountGroup = DB::table('account_groups')->where('sub_group_number', 12)->first();
-        $accountReceivablesAccountGroup = DB::table('account_groups')->where('sub_group_number', 6)->first();
+        $accountReceivablesAccountGroup = DB::table('account_groups')->where('sub_sub_group_number', 6)->first();
         $suspenseAccountGroup = DB::table('account_groups')->where('sub_group_number', 9)->first();
         // $capitalAccountGroup = DB::table('account_groups')->where('sub_group_number', 6)->first();
         // $dutiesAndTaxAccountGroup = AccountGroup::where('sub_sub_group_number', 8)->where('branch_id', $branchId)->first();

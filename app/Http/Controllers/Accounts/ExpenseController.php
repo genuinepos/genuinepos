@@ -13,7 +13,6 @@ use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\ExpenseService;
 use App\Services\CodeGenerationService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +27,6 @@ class ExpenseController extends Controller
         private AccountLedgerService $accountLedgerService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
     ) {
@@ -99,7 +97,6 @@ class ExpenseController extends Controller
             $storeMethodContainer = $expenseControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
                 expenseService: $this->expenseService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
@@ -168,7 +165,6 @@ class ExpenseController extends Controller
                 id: $id,
                 request: $request,
                 expenseService: $this->expenseService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,

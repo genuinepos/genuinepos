@@ -95,11 +95,12 @@
                 if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
+                    return;
                 }
 
                 toastr.success(data);
                 $('#editQuotationStatusModal').modal('hide');
-                table.ajax.reload();
+                quotationsTable.ajax.reload();
             },
             error: function(err) {
 

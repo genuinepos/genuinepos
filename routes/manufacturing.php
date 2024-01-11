@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Manufacturing\ManufacturingSettingController;
 use App\Http\Controllers\Manufacturing\ProcessController;
 use App\Http\Controllers\Manufacturing\ProcessIngredientController;
 use App\Http\Controllers\Manufacturing\ProductionController;
@@ -36,12 +35,6 @@ Route::group(['prefix' => 'manufacturing'], function () {
         Route::get('edit/{id}', 'edit')->name('manufacturing.productions.edit');
         Route::post('update/{id}', 'update')->name('manufacturing.productions.update');
         Route::delete('delete/{id}', 'delete')->name('manufacturing.productions.delete');
-    });
-
-    Route::controller(ManufacturingSettingController::class)->prefix('settings')->group(function () {
-
-        Route::get('/', 'index')->name('manufacturing.settings.index');
-        Route::post('store/or/update', 'storeOrUpdate')->name('manufacturing.settings.store.or.update');
     });
 
     Route::group(['prefix' => 'reports'], function () {

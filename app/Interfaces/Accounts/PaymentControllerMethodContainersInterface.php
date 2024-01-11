@@ -23,7 +23,6 @@ interface PaymentControllerMethodContainersInterface
     public function storeMethodContainer(
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -46,7 +45,6 @@ interface PaymentControllerMethodContainersInterface
         int $id,
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

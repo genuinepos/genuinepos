@@ -100,7 +100,9 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         object $codeGenerator,
     ): void {
 
-        $addPayroll = $payrollService->addPayroll(request: $request, codeGenerator: $codeGenerator);
+        $generalSettings = config('generalSettings');
+        $payrollVoucherPrefix = $generalSettings['prefix__payroll_voucher_prefix'] ? $generalSettings['prefix__payroll_voucher_prefix'] : 'PRL';
+        $addPayroll = $payrollService->addPayroll(request: $request, payrollVoucherPrefix: $payrollVoucherPrefix, codeGenerator: $codeGenerator);
         $payrollAllowanceService->addPayrollAllowances(request: $request, payroll: $addPayroll);
         $payrollDeductionService->addPayrollDeductions(request: $request, payroll: $addPayroll);
 

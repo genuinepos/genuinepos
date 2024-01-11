@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\Sales\AddSalesController;
-use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\CashRegisterController;
 use App\Http\Controllers\Sales\DiscountController;
 use App\Http\Controllers\Sales\DraftController;
 use App\Http\Controllers\Sales\PosSaleController;
 use App\Http\Controllers\Sales\PosSaleExchangeController;
-use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\QuotationController;
 use App\Http\Controllers\Sales\Reports\ReceivedAgainstSalesReportController;
 use App\Http\Controllers\Sales\Reports\SalesOrderedProductReportController;
@@ -136,18 +134,6 @@ Route::prefix('sales')->group(function () {
         Route::post('update/{id}', 'update')->name('sales.discounts.update');
         Route::get('change/status/{id}', 'changeStatus')->name('sales.discounts.change.status');
         Route::delete('delete/{id}', 'delete')->name('sales.discounts.delete');
-    });
-
-    Route::controller(AddSaleSettingController::class)->prefix('add-sales-settings')->group(function () {
-
-        Route::get('edit', 'edit')->name('add.sales.settings.edit');
-        Route::post('update', 'update')->name('add.sales.settings.update');
-    });
-
-    Route::controller(PosSaleSettingController::class)->prefix('pos-sales-settings')->group(function () {
-
-        Route::get('edit', 'edit')->name('pos.sales.settings.edit');
-        Route::post('update', 'update')->name('pos.sales.settings.update');
     });
 
     Route::group(['prefix' => 'reports'], function () {

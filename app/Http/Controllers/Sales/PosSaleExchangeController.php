@@ -23,7 +23,6 @@ use App\Services\Sales\SaleExchange;
 use App\Services\Sales\SaleExchangeProduct;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
-use App\Services\Setups\BranchSettingService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +37,6 @@ class PosSaleExchangeController extends Controller
         private CashRegisterService $cashRegisterService,
         private CashRegisterTransactionService $cashRegisterTransactionService,
         private PurchaseProductService $purchaseProductService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountService $accountService,
@@ -173,8 +171,7 @@ class PosSaleExchangeController extends Controller
             }
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+            $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
             $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             $sale = $this->saleService->singleSale(id: $request->ex_sale_id, with: ['saleProducts']);
@@ -247,8 +244,6 @@ class PosSaleExchangeController extends Controller
                 with: [
                     'branch',
                     'branch.parentBranch',
-                    'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    'branch.branchSetting.addSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',
@@ -282,8 +277,9 @@ class PosSaleExchangeController extends Controller
             DB::rollBack();
         }
 
+        $printPageSize = $request->print_page_size;
         $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
 
-        return view('sales.save_and_print_template.sale_print', compact('sale', 'changeAmount', 'customerCopySaleProducts'));
+        return view('sales.print_templates.sale_print', compact('sale', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
     }
 }

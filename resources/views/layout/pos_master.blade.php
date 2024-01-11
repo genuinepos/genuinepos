@@ -292,7 +292,7 @@
     @endif
 
     <!--Add Customer Modal-->
-    @if(auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         <div class="modal fade" id="addOrEditContactModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="true" aria-labelledby="staticBackdrop" aria-hidden="true">
         </div>
     @endif
@@ -324,7 +324,7 @@
                         @if (auth()->user()->can('view_product_cost_is_sale_screed'))
                             <p>
                                 <span class="btn btn-sm btn-primary d-hide" id="show_cost_section">
-                                    <span>{{ $generalSettings['business__currency'] }}</span>
+                                    <span>{{ $generalSettings['business_or_shop__currency_symbol'] }}</span>
                                     <span id="unit_cost"></span>
                                 </span>
 

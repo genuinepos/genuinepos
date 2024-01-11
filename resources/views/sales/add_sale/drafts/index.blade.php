@@ -29,7 +29,7 @@
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -122,7 +122,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_item" class="text-white text-end"></th>
                                                 <th id="total_qty" class="text-white text-end"></th>
                                                 <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -295,8 +295,7 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
@@ -307,23 +306,6 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
 

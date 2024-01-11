@@ -132,7 +132,7 @@ class Product extends Model
     {
         $generalSettings = config('generalSettings');
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 

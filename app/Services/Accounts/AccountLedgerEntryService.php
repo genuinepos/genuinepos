@@ -13,7 +13,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
@@ -53,7 +53,7 @@ class AccountLedgerEntryService
         return DataTables::of($ledgers)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business__date_format'];
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
 
                 return $row->date ? date($__date_format, strtotime($row->date)) : '';
@@ -98,7 +98,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
@@ -387,7 +387,7 @@ class AccountLedgerEntryService
                 }
             } else {
 
-                $branchName = $generalSettings['business__business_name'] . '(' . __('Business') . ')';
+                $branchName = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
             }
         }
 

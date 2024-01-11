@@ -1,8 +1,8 @@
 @php
     use Carbon\Carbon;
     $generalSettings = config('generalSettings');
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 @if ($attendance)
     <tr data-user_id="{{ $attendance->user_id }}">

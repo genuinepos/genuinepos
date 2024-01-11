@@ -54,7 +54,7 @@
                                     @if ($contact?->account?->branch)
                                         {{ $contact?->account?->branch?->name }}
                                     @else
-                                        {{ $generalSettings['business__business_name'] }}
+                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                     @endif
                                 </td>
                             </tr>
@@ -146,7 +146,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ date($generalSettings['business__date_format']) }}" data-next="mr_account_details" autocomplete="off">
+                            <input required type="text" name="date" class="form-control" id="mr_date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="mr_account_details" autocomplete="off">
                             <span class="error error_mr_date"></span>
                         </div>
                     </div>
@@ -342,7 +342,7 @@
         }
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

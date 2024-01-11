@@ -59,15 +59,15 @@ class QuotationService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="'.route('sale.quotations.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+                $html .= '<a href="' . route('sale.quotations.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sale.quotations.edit', [$row->id]).'">'.__('Edit').'</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sale.quotations.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
                 }
 
@@ -75,7 +75,7 @@ class QuotationService
 
                     if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a href="'.route('sales.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
@@ -83,13 +83,13 @@ class QuotationService
 
                     if (auth()->user()->can('sale_quotation')) {
 
-                        $html .= '<a href="'.route('sale.quotations.status.edit', [$row->id]).'" class="dropdown-item" id="changeQuotationStatusBtn">'.__('Change Current Status').'</a>';
+                        $html .= '<a href="' . route('sale.quotations.status.edit', [$row->id]) . '" class="dropdown-item" id="changeQuotationStatusBtn">' . __('Change Current Status') . '</a>';
                     }
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="'.route('sale.shipments.edit', [$row->id]).'">'.__('Edit Shipment Details').'</a>';
+                    $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -99,13 +99,13 @@ class QuotationService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('quotation_id', function ($row) {
 
-                return '<a href="'.route('sale.quotations.show', [$row->id]).'" id="details_btn">'.$row->quotation_id.'</a>';
+                return '<a href="' . route('sale.quotations.show', [$row->id]) . '" id="details_btn">' . $row->quotation_id . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -113,37 +113,37 @@ class QuotationService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('current_status', function ($row) {
 
                 if ($row->order_status == 1) {
 
-                    return '<span class="badge badge-sm bg-primary">'.__('Ordered').'</span>';
+                    return '<span class="badge badge-sm bg-primary">' . __('Ordered') . '</span>';
                 } else {
 
-                    return '<span class="badge badge-sm bg-info">'.__('Quotation').'</span>';
+                    return '<span class="badge badge-sm bg-info">' . __('Quotation') . '</span>';
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
+            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'quotation_id', 'branch', 'current_status', 'customer', 'created_by'])
@@ -164,8 +164,8 @@ class QuotationService
         $updateQuotation->pay_term_number = $request->pay_term_number;
         $updateQuotation->date = $request->date;
         $time = date(' H:i:s', strtotime($updateQuotation->date_ts));
-        $updateQuotation->date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
-        $updateQuotation->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+        $updateQuotation->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateQuotation->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateQuotation->total_item = $request->total_item;
         $updateQuotation->total_qty = $request->total_qty;
         $updateQuotation->total_ordered_qty = $request->total_qty;
@@ -200,7 +200,7 @@ class QuotationService
             $quotation->order_id = $quotation->order_id == null ? $orderId : $quotation->order_id;
             $quotation->order_status = BooleanType::True->value;
             $quotation->total_ordered_qty = $quotation->total_quotation_qty;
-            $quotation->order_date_ts = ! isset($quotation->order_date) ? date('Y-m-d H:i:s') : $quotation->order_date;
+            $quotation->order_date_ts = !isset($quotation->order_date) ? date('Y-m-d H:i:s') : $quotation->order_date;
             $quotation->save();
         } else {
 

@@ -91,7 +91,7 @@ class HolidayService
 
                     $branchName = $allowedBranch?->branch?->parent_branch_id ? $allowedBranch?->branch?->name : $allowedBranch?->branch?->name;
 
-                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business__business_name'];
+                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business_or_shop__business_name'];
 
                     $areaName = $allowedBranch?->branch?->area_name ? '(' . $allowedBranch?->branch?->area_name . ')' : '';
 
@@ -102,7 +102,7 @@ class HolidayService
             })
             ->addColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business__date_format'];
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
                 return date($dateFormat, strtotime($row->start_date)) . ' ' . __('To') . ' ' . date($dateFormat, strtotime($row->end_date));
             })
             ->rawColumns(['action', 'allowed_branches', 'date'])

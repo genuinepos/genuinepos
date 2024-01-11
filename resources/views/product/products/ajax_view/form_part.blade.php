@@ -54,7 +54,7 @@
         <div class="input-group">
             <label class="col-4"><b>{{ __('Profit Margin(%)') }}</b></label>
             <div class="col-8">
-                <input type="number" step="any" name="profit" class="form-control fw-bold" id="profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}" data-next="product_price" placeholder="0.00" autocomplete="off">
+                <input type="number" step="any" name="profit" class="form-control fw-bold" id="profit" value="{{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }}" data-next="product_price" placeholder="0.00" autocomplete="off">
             </div>
         </div>
     </div>

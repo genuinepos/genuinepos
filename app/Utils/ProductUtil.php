@@ -247,7 +247,7 @@ class ProductUtil
                 $text = '';
                 foreach ($productBranches as $productBranch) {
 
-                    $text .= '<p class="m-0 p-0">' . ($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business__business_name']) . ',</p>';
+                    $text .= '<p class="m-0 p-0">' . ($productBranch->b_name != null ? $productBranch->b_name : $generalSettings['business_or_shop__business_name']) . ',</p>';
                 }
 
                 return $text;
@@ -335,7 +335,7 @@ class ProductUtil
                 return $row->name . ($row->variant_name ? ' - ' . $row->variant_name : '');
             })->editColumn('expire_date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->expire_date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->expire_date));
             })
             ->rawColumns(['name', 'multiple_check', 'action'])
             ->smart(true)->make(true);

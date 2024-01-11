@@ -128,7 +128,7 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
 
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
 

@@ -12,6 +12,12 @@ interface StockAdjustmentControllerMethodContainersInterface
         object $stockAdjustmentService,
     ): ?array;
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $stockAdjustmentService,
+    ): ?array;
+
     public function createMethodContainer(
         object $branchService,
         object $accountService,

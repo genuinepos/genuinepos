@@ -1,6 +1,6 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $dateFormat = $generalSettings['business__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
 @endphp
 <style>
     .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
@@ -29,7 +29,7 @@
                         <div class="row" style="border-right:1px solid black;">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Date") }} <span class="text-danger">*</span></label>
-                                <input required name="date" class="form-control" id="contra_date" data-next="contra_credit_account_id" value="{{ date($generalSettings['business__date_format'], strtotime($contra->date)) }}" placeholder="{{ __("Date") }}" placeholder="{{ __("Date") }}" autocomplete="off">
+                                <input required name="date" class="form-control" id="contra_date" data-next="contra_credit_account_id" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($contra->date)) }}" placeholder="{{ __("Date") }}" placeholder="{{ __("Date") }}" autocomplete="off">
                                 <span class="error error_contra_date"></span>
                             </div>
 

@@ -27,7 +27,7 @@
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
@@ -55,14 +55,14 @@
                                         <div class="col-md-2">
                                             <label><strong>{{ __('From Date') }}</strong></label>
                                             <div class="input-group">
-                                                <input name="from_date" class="form-control" id="from_date">
+                                                <input name="from_date" class="form-control" id="from_date" value="{{ $generalSettings['business_or_shop__financial_year_start_date'] }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-2">
                                             <label><strong>{{ __('To Date') }}</strong></label>
                                             <div class="input-group">
-                                                <input name="to_date" class="form-control" id="to_date">
+                                                <input name="to_date" class="form-control" id="to_date" value="{{ $generalSettings['business_or_shop__financial_year_end_date'] }}">
                                             </div>
                                         </div>
 
@@ -112,7 +112,7 @@
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="7" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                         <th id="net_total_amount" class="text-white text-end"></th>
                                         <th id="recovered_amount" class="text-white text-end"></th>
                                         <th class="text-white text-end">---</th>

@@ -19,6 +19,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
     Route::get('index/{supplierAccountId?}', 'index')->name('purchases.index');
     Route::get('show/{id}', 'show')->name('purchases.show');
+    Route::get('print/{id}', 'print')->name('purchases.print');
     Route::get('create', 'create')->name('purchases.create');
     Route::post('store', 'store')->name('purchases.store');
     Route::get('edit/{id}', 'edit')->name('purchases.edit');
@@ -37,6 +38,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::get('create', 'create')->name('purchase.orders.create');
         Route::post('store', 'store')->name('purchase.orders.store');
         Route::get('show/{id}', 'show')->name('purchase.orders.show');
+        Route::get('print/{id}', 'print')->name('purchase.orders.print');
         Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
         Route::post('update/{id}', 'update')->name('purchase.orders.update');
         Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
@@ -47,6 +49,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
         Route::get('/', 'index')->name('purchase.returns.index');
         Route::get('show/{id}', 'show')->name('purchase.returns.show');
+        Route::get('print/{id}', 'print')->name('purchase.returns.print');
         Route::get('create', 'create')->name('purchase.returns.create');
         Route::post('store', 'store')->name('purchase.returns.store');
         Route::get('edit/{id}', 'edit')->name('purchase.returns.edit');

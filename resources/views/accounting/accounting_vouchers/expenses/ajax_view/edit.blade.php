@@ -1,6 +1,6 @@
 @php
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $dateFormat = $generalSettings['business__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
 @endphp
 <style>
     .sale-item-sec { height: 400px; }
@@ -29,7 +29,7 @@
                         <div class="row" style="border-right:1px solid black;">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __("Date") }} <span class="text-danger">*</span></label>
-                                <input required name="date" class="form-control" id="expense_date" data-next="expense_payment_method_id" value="{{ date($generalSettings['business__date_format'], strtotime($expense->date)) }}" placeholder="{{ __("Date") }}" autocomplete="off">
+                                <input required name="date" class="form-control" id="expense_date" data-next="expense_payment_method_id" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($expense->date)) }}" placeholder="{{ __("Date") }}" autocomplete="off">
                                 <span class="error error_expense_date"></span>
                             </div>
 

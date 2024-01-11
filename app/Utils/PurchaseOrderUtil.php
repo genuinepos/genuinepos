@@ -19,7 +19,7 @@ class PurchaseOrderUtil
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -30,7 +30,7 @@ class PurchaseOrderUtil
             }
         }
 
-        if (! empty($request->warehouse_id)) {
+        if (!empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }
@@ -93,22 +93,22 @@ class PurchaseOrderUtil
             ->addColumn('action', fn ($row) => $this->createPurchaseOrderAction($row))
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('from', function ($row) use ($generalSettings) {
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'<b>(BL)</b>';
+                    return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -137,7 +137,7 @@ class PurchaseOrderUtil
                 }
             })->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
             ->make(true);
@@ -145,7 +145,7 @@ class PurchaseOrderUtil
 
     public function addPurchaseOrder($request, $invoiceVoucherRefIdUtil, $purchaseOrderIdPrefix)
     {
-        $poId = $purchaseOrderIdPrefix.str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, '0', STR_PAD_LEFT);
+        $poId = $purchaseOrderIdPrefix . str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, '0', STR_PAD_LEFT);
         $addOrder = new Purchase();
         $addOrder->invoice_id = $poId;
         $addOrder->supplier_id = $request->supplier_id;
@@ -169,7 +169,7 @@ class PurchaseOrderUtil
         $addOrder->po_receiving_status = 'Pending';
         $addOrder->date = $request->date;
         $addOrder->delivery_date = $request->delivery_date;
-        $addOrder->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addOrder->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addOrder->time = date('h:i:s a');
         $addOrder->is_last_created = 1;
         $addOrder->save();
@@ -181,16 +181,16 @@ class PurchaseOrderUtil
     {
         $html = '<div class="btn-group" role="group">';
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
-        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" id="detailsBtn" href="'.route('purchases.order.show', [$row->id]).'">'.__('view').'</a>';
+        $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"> <a class="dropdown-item" id="detailsBtn" href="' . route('purchases.order.show', [$row->id]) . '">' . __('view') . '</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            $html .= '<a class="dropdown-item" href="'.route('purchases.po.receive.process', [$row->id]).'">'.__('Add Receive Stock').'</a>';
+            $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '">' . __('Add Receive Stock') . '</a>';
         }
 
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
-        $html .= '<a class="dropdown-item" id="view_payment" href="'.route('purchase.payment.list', $row->id).'">'.__('View Payment').'</a>';
+        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '">' . __('View Payment') . '</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -198,19 +198,19 @@ class PurchaseOrderUtil
 
                 if ($row->due > 0) {
 
-                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="'.route('purchases.payment.modal', [$row->id]).'">'.__('Add Payment').'</a>';
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '">' . __('Add Payment') . '</a>';
                 }
             }
 
             if (auth()->user()->can('purchase_edit')) {
 
-                $html .= '<a class="dropdown-item" href="'.route('purchases.order.edit', [$row->id]).' ">'.__('Edit').'</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.order.edit', [$row->id]) . ' ">' . __('Edit') . '</a>';
             }
         }
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.delete', $row->id).'">'.__('Delete').'</a>';
+            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '">' . __('Delete') . '</a>';
         }
 
         $html .= '</div>';

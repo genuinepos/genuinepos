@@ -1,21 +1,66 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 35px; margin-left: 10px;margin-right: 10px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 @php $generator = new Picqer\Barcode\BarcodeGeneratorPNG(); @endphp
 <div class="loan_details_print_area">
@@ -26,7 +71,7 @@
                     @if ($loan->branch)
                         {{ $loan->branch->name . '/' . $loan->branch->branch_code }}
                     @else
-                        {{ $generalSettings['business__business_name'] }} (<b>@lang('menu.head_office')</b>)
+                        {{ $generalSettings['business_or_shop__business_name'] }} (<b>@lang('menu.head_office')</b>)
                     @endif
                 </b>
             </h3>
@@ -35,7 +80,7 @@
                 @if ($loan->branch)
                     {{ $loan->branch->city . ', ' . $loan->branch->branch->state . ', ' . $loan->branch->zip_code . ', ' . $loan->branch->country }}
                 @else
-                    {{ $generalSettings['business__address'] }}
+                    {{ $generalSettings['business_or_shop__address'] }}
                 @endif
             </p>
             <br>
@@ -45,7 +90,7 @@
 
     <div class="reference_area pt-3">
         <p><b>@lang('menu.title') </b>
-        {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
+            {{ $loan->type == 1 ? 'Loan pay' : 'Loan Receive' }} </p>
         <p><b>@lang('menu.company')/@lang('menu.people') </b> {{ $loan->company->name }}</p>
         <p><b>@lang('menu.address') </b></p>
         <p><b>@lang('menu.phone') </b></p>
@@ -66,14 +111,14 @@
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Pay Loan Amount :' : 'Receive Loan Amount :' }}</th>
                             <td width="50%" class="text-start">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             </td>
                         </tr>
 
                         <tr>
                             <th width="50%" class="text-start">{{ $loan->type == 1 ? 'Debit Account :' : 'Credit Account :' }}</th>
-                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name.' (A/C '.$loan->account->account_number.')' : 'N/A' }}</td>
+                            <td width="50%" class="text-start">{{ $loan->account ? $loan->account->name . ' (A/C ' . $loan->account->account_number . ')' : 'N/A' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -118,7 +163,7 @@
 
                 <tr>
                     <td colspan="2" class="text-center">
-                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($loan->reference_no , $generator::TYPE_CODE_128)) }}">
+                        <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($loan->reference_no, $generator::TYPE_CODE_128)) }}">
                         <p>{{ $loan->reference_no }}</p>
                     </td>
                 </tr>

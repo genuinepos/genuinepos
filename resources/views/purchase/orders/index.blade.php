@@ -30,7 +30,7 @@
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -133,7 +133,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                <th colspan="8" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th class="text-white text-end" id="total_purchase_amount"></th>
                                                 <th class="text-white text-end" id="paid"></th>
                                                 <th class="text-white text-end" id="due"></th>
@@ -313,37 +313,6 @@
             });
         });
 
-        // Print Packing slip
-        $(document).on('click', '#printSupplierCopy', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
         $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -396,21 +365,6 @@
             e.preventDefault();
             $('.data_preloader').show();
             purchaseOrderstable.ajax.reload();
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-            var body = $('.print_modal_details').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
         });
     </script>
 

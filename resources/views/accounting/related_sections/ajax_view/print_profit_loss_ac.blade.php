@@ -22,13 +22,13 @@
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
 
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
 
             @php
@@ -45,8 +45,8 @@
         @if ($fromDate && $toDate)
 
             <p><b>@lang('menu.date') </b>
-                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.profit_loss_account') </b></h6>

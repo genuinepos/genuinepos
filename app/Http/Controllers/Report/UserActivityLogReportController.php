@@ -57,36 +57,36 @@ class UserActivityLogReportController extends Controller
 
             return DataTables::of($logs)
                 ->editColumn('date', function ($row) use ($generalSettings) {
-                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
-                    return date($__date_format.' h:i:s a', strtotime($row->report_date));
+                    return date($__date_format . ' h:i:s a', strtotime($row->report_date));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_name) {
-                        return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                        return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })
-                ->editColumn('action_by', fn ($row) => $row->u_prefix.' '.$row->u_name.' '.$row->u_last_name)
+                ->editColumn('action_by', fn ($row) => $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name)
 
                 ->editColumn('action', function ($row) use ($actions) {
 
                     if ($actions[$row->action] == 'Deleted') {
 
-                        return '<strong class="text-danger">'.$actions[$row->action].'</strong>';
+                        return '<strong class="text-danger">' . $actions[$row->action] . '</strong>';
                     } elseif ($actions[$row->action] == 'Added') {
 
-                        return '<strong class="text-success">'.$actions[$row->action].'</strong>';
+                        return '<strong class="text-success">' . $actions[$row->action] . '</strong>';
                     } elseif ($actions[$row->action] == 'Updated') {
 
-                        return '<strong class="text_color_updated">'.$actions[$row->action].'</strong>';
+                        return '<strong class="text_color_updated">' . $actions[$row->action] . '</strong>';
                     } elseif ($actions[$row->action] == 'User Login') {
 
-                        return '<strong class="text-success">'.$actions[$row->action].'</strong>';
+                        return '<strong class="text-success">' . $actions[$row->action] . '</strong>';
                     } elseif ($actions[$row->action] == 'User Logout') {
 
-                        return '<strong class="text-danger">'.$actions[$row->action].'</strong>';
+                        return '<strong class="text-danger">' . $actions[$row->action] . '</strong>';
                     }
 
                     return $actions[$row->action];

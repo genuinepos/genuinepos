@@ -20,11 +20,11 @@
 <div class="row">
     <div class="col-12 text-center">
 
-        <h6 style="width: 60%; margin:0 auto;">{{ $generalSettings['business__business_name'] }}</h6>
-        <p>{{ $generalSettings['business__address'] }}</p>
+        <h6 style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+        <p>{{ $generalSettings['business_or_shop__address'] }}</p>
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') </b> {{date($generalSettings['business_or_shop__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
         <p class="mt-2"><b>@lang('menu.supplier_payments') </b></p>
@@ -66,7 +66,7 @@
                     <tr>
                         <td class="text-start">
                             @php
-                                $dateFormat = $generalSettings['business__date_format'];
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
 

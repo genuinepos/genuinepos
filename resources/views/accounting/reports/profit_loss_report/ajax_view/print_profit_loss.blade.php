@@ -1,36 +1,80 @@
 <style>
     @media print {
-        table { page-break-after: auto; }
+        table {
+            page-break-after: auto;
+        }
 
-        tr {  page-break-inside: avoid; page-break-after: auto; }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
 
-        td { page-break-inside: avoid; page-break-after: auto, font-size:9px !important; }
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto, font-size:9px !important;
+        }
 
-        thead { display: table-header-group; }
+        thead {
+            display: table-header-group;
+        }
 
-        tfoot { display: table-footer-group; }
+        tfoot {
+            display: table-footer-group;
+        }
     }
 
-    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 5px; margin-right: 5px; }
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
 
-    div#footer { position: fixed; bottom: 20px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+    div#footer {
+        position: fixed;
+        bottom: 20px;
+        left: 0px;
+        width: 100%;
+        height: 0%;
+        color: #CCC;
+        background: #333;
+        padding: 0;
+        margin: 0;
+    }
 
-    .print_table th { font-size: 11px !important; font-weight: 550 !important; line-height: 12px !important; }
+    .print_table th {
+        font-size: 11px !important;
+        font-weight: 550 !important;
+        line-height: 12px !important;
+    }
 
-    .print_table tr td { color: black; font-size: 10px !important; line-height: 12px !important; }
+    .print_table tr td {
+        color: black;
+        font-size: 10px !important;
+        line-height: 12px !important;
+    }
 
-    .print_area { font-family: Arial, Helvetica, sans-serif; }
+    .print_area {
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-    .print_area h6 { font-size: 14px !important; }
+    .print_area h6 {
+        font-size: 14px !important;
+    }
 
-    .print_area p { font-size: 11px !important; }
+    .print_area p {
+        font-size: 11px !important;
+    }
 
-    .print_area small { font-size: 8px !important; }
+    .print_area small {
+        font-size: 8px !important;
+    }
 </style>
 
 @php
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 
 <div class="print_area">
@@ -52,10 +96,10 @@
                     @endif
                 @endif
             @else
-                @if ($generalSettings['business__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                @if ($generalSettings['business_or_shop__business_logo'] != null)
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -70,7 +114,7 @@
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-                        {{ $generalSettings['business__business_name'] }}
+                        {{ $generalSettings['business_or_shop__business_name'] }}
                     @endif
                 </strong>
             </p>
@@ -79,7 +123,7 @@
                 @if (auth()->user()?->branch)
                     {{ auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
                 @else
-                    {{ $generalSettings['business__address'] }}
+                    {{ $generalSettings['business_or_shop__address'] }}
                 @endif
             </p>
 
@@ -88,8 +132,8 @@
                     <strong>{{ __('Email') }} : </strong> {{ auth()->user()?->branch?->email }},
                     <strong>{{ __('Phone') }} : </strong> {{ auth()->user()?->branch?->phone }}
                 @else
-                    <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business__email'] }},
-                    <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business__phone'] }}
+                    <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business_or_shop__email'] }},
+                    <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business_or_shop__phone'] }}
                 @endif
             </p>
         </div>
@@ -116,7 +160,7 @@
     <div class="row mt-2">
         <div class="col-6">
             @php
-                $ownOrParentbranchName = $generalSettings['business__business_name'];
+                $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
                     if (auth()->user()?->branch->parentBranch) {
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
@@ -139,7 +183,7 @@
                 <tbody>
                     <tr>
                         <td class="text-end">
-                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                         </td>
 
                         <td class="text-end">
@@ -148,14 +192,14 @@
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalUnitTax']) }})
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalOrderTax']) }})
                         </td>
@@ -163,7 +207,7 @@
 
                     <tr>
                         <td class="text-end">
-                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                         </td>
 
                         <td class="text-end">
@@ -173,7 +217,7 @@
 
                     @if ($profitLossAmounts['grossProfit'] >= 0)
                         <tr>
-                            <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
 
                             <td class="text-end fw-bold">
                                 {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['grossProfit']) }}
@@ -181,7 +225,7 @@
                         </tr>
                     @elseif ($profitLossAmounts['grossProfit'] < 0)
                         <tr>
-                            <td class="text-end fw-bold"><strong>{{ __('Gross Loss') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end fw-bold"><strong>{{ __('Gross Loss') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
 
                             <td class="text-end fw-bold">
                                 {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['grossProfit']) }}
@@ -190,35 +234,35 @@
                     @endif
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockAdjustmentAmount']) }})
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalStockAdjustmentRecovered']) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalExpense']) }})
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalSaleReturn']) }})
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="text-end"><strong>{{ __('Total Expense By Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                        <td class="text-end"><strong>{{ __('Total Expense By Payroll') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                         <td class="text-end">
                             ({{ App\Utils\Converter::format_in_bdt($profitLossAmounts['totalPayrollPayment']) }})
                         </td>
@@ -226,14 +270,14 @@
 
                     @if ($profitLossAmounts['netProfit'] >= 0)
                         <tr>
-                            <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end fw-bold">
                                 {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['netProfit']) }}
                             </td>
                         </tr>
                     @elseif ($profitLossAmounts['netProfit'] < 0)
                         <tr>
-                            <td class="text-end fw-bold"><strong>{{ __('Net Loss') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                            <td class="text-end fw-bold"><strong>{{ __('Net Loss') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                             <td class="text-end fw-bold">
                                 {{ App\Utils\Converter::format_in_bdt($profitLossAmounts['netProfit']) }}
                             </td>

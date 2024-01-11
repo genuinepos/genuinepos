@@ -141,7 +141,7 @@
     }
 
     // Get default profit
-    var defaultProfit = {{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }};
+    var defaultProfit = {{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }};
 
     $(document).on('click', '#add_more_variant_btn', function(e) {
         e.preventDefault();

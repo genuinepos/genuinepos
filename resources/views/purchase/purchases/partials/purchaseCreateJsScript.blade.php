@@ -1064,8 +1064,7 @@
                         header: null,
                     });
                 }
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -1160,7 +1159,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -1249,6 +1248,11 @@
 
         $('#supplier_account_id').focus().select();
     }, 1000);
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 @if (auth()->user()->can('supplier_add'))

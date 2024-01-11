@@ -29,7 +29,7 @@
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -129,7 +129,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="6" class="text-end text-white">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th id="total_purchase_amount" class="text-white"></th>
                                                 <th id="paid" class="text-white"></th>
                                                 <th id="purchase_return_amount" class="text-white"></th>
@@ -387,30 +387,6 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var filename = $(this).attr('filename');
-            var body = $('.print_modal_details').html();
-
-            document.title = filename;
-
-            setTimeout(function() {
-                document.title = "Purchase List - GPOSS";
-            }, 1000);
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
     </script>

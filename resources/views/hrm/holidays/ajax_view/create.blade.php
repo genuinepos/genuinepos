@@ -34,7 +34,7 @@
                             <label class="fw-bold">{{ __('Allowed Shop/Business') }} <span class="text-danger">*</span></label>
                             <input type="hidden" name="allowed_branch_count" value="allowed_branch_count">
                             <select class="form-control select2" name="allowed_branch_ids[]" id="allowed_branch_id" multiple>
-                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                 @foreach ($branches as $branch)
                                     <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
@@ -163,7 +163,7 @@
 
     function litepicker(idName) {
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '' ;
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

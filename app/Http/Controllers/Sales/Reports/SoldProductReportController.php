@@ -105,7 +105,7 @@ class SoldProductReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('stock_location', function ($row) use ($generalSettings) {
@@ -126,7 +126,7 @@ class SoldProductReportController extends Controller
                             }
                         } else {
 
-                            return $generalSettings['business__business_name'];
+                            return $generalSettings['business_or_shop__business_name'];
                         }
                     }
                 })

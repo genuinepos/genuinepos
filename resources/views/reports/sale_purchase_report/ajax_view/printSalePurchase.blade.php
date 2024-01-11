@@ -1,21 +1,66 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 15px;margin-right: 15px;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 33px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 @php
     $total_purchase = 0;
@@ -48,12 +93,12 @@
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }}</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -62,11 +107,11 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') </b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }} </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.sale') / {{ __('Purchase Report') }} </b></h6>
     </div>
@@ -85,7 +130,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.total_purchase') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase) }}
                             </td>
                         </tr>
@@ -93,7 +138,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.purchase_including_tax') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_inc_tax) }}
                             </td>
                         </tr>
@@ -101,7 +146,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.purchase_return_including_tax') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_return) }}
                             </td>
                         </tr>
@@ -109,7 +154,7 @@
                         <tr>
                             <th class="text-start"> @lang('menu.purchase_due') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_purchase_due) }}
                             </td>
                         </tr>
@@ -131,7 +176,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.total_sale') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale) }}
                             </td>
                         </tr>
@@ -139,7 +184,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sale_including_tax') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_inc_tax) }}
                             </td>
                         </tr>
@@ -147,7 +192,7 @@
                         <tr>
                             <th class="text-start">@lang('menu.sale_return_including_tax') </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_return) }}
                             </td>
                         </tr>
@@ -155,7 +200,7 @@
                         <tr>
                             <th class="text-start">{{ __('Sale Due') }} </th>
                             <td class="text-end">
-                                {{ $generalSettings['business__currency'] }}
+                                {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                 {{ App\Utils\Converter::format_in_bdt($total_sale_due) }}
                             </td>
                         </tr>
@@ -177,13 +222,13 @@
                 <div class="compare_area mt-3">
                     <h5 class="text-muted">@lang('menu.sale') - @lang('menu.purchase') :
                         <span class="{{ $saleMinusPurchase < 0 ? 'text-danger' : '' }}">
-                            {{ $generalSettings['business__currency'] }}
+                            {{ $generalSettings['business_or_shop__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleMinusPurchase) }}
                         </span>
                     </h5>
                     <h5 class="text-muted">@lang('menu.due_amount') ({{ __('Sale Due') }} - @lang('menu.purchase_due')) :
                         <span class="{{ $saleDueMinusPurchaseDue < 0 ? 'text-danger' : '' }}">
-                            {{ $generalSettings['business__currency'] }}
+                            {{ $generalSettings['business_or_shop__currency_symbol'] }}
                             {{ App\Utils\Converter::format_in_bdt($saleDueMinusPurchaseDue) }}
                         </span>
                     </h5>

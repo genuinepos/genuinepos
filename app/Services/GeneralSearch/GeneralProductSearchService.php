@@ -83,7 +83,7 @@ class GeneralProductSearchService
             ->leftJoin('discounts', 'discount_products.discount_id', 'discounts.id')
             ->where('discounts.is_active', 1)
             ->where('discounts.price_group_id', $__priceGroupId)
-            ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`')
+            ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
             ->orderBy('discounts.priority', 'desc')
             ->first();
 
@@ -98,7 +98,7 @@ class GeneralProductSearchService
             $discountBrandCategoryWiseQ = DB::table('discounts')
                 ->where('discounts.is_active', 1)
                 //->where('discounts.price_group_id', $__priceGroupId)
-                ->whereRaw('"'.$presentDate.'" between `start_at` and `end_at`');
+                ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
 
             if (isset($__brandId) && isset($__categoryId)) {
 
@@ -106,12 +106,12 @@ class GeneralProductSearchService
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
                 $discountBrandCategoryWiseQ->where('discounts.category_id', $__categoryId);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
-            } elseif (isset($__brandId) && ! ($__categoryId)) {
+            } elseif (isset($__brandId) && !($__categoryId)) {
 
                 $discountBrandCategoryWiseQ->where('discounts.category_id', null);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', '!=', null);
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', $__brandId);
-            } elseif (! isset($__brandId) && isset($__categoryId)) {
+            } elseif (!isset($__brandId) && isset($__categoryId)) {
 
                 $discountBrandCategoryWiseQ->where('discounts.brand_id', null);
                 $discountBrandCategoryWiseQ->where('discounts.category_id', '!=', null);
@@ -350,14 +350,14 @@ class GeneralProductSearchService
         $query = DB::table('products')
             ->where('products.status', BooleanType::True->value)
             ->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId)
-            ->where('products.name', 'LIKE', '%'.$keyword.'%');
+            ->where('products.name', 'LIKE', '%' . $keyword . '%');
 
         if ($isShowNotForSaleItem == BooleanType::False->value) {
 
             $query->where('is_for_sale', BooleanType::True->value);
         }
 
-        $query->orWhere('product_variants.variant_name', 'LIKE', '%'.$keyword.'%');
+        $query->orWhere('product_variants.variant_name', 'LIKE', '%' . $keyword . '%');
 
         $query->leftJoin('accounts as taxes', 'products.tax_ac_id', 'taxes.id')
             ->leftJoin('units', 'products.unit_id', 'units.id')
@@ -393,7 +393,7 @@ class GeneralProductSearchService
             )->distinct('product_access_branches.branch_id');
         // ->where('products.name', 'LIKE',  $keyword . '%')->orderBy('id', 'desc')->limit(25)
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 
@@ -404,8 +404,8 @@ class GeneralProductSearchService
         }
 
         $namedProducts = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
         ])->orderBy('products.name', 'asc')->limit(25)->get();
 
         if ($namedProducts && count($namedProducts) > 0) {

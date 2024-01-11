@@ -72,7 +72,7 @@ class UserService
                         return $row->branch_name . ' (' . $row->area_name . ')';
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 }
             })
@@ -211,7 +211,7 @@ class UserService
         }
 
         $currentRole = $updateUser?->roles?->first();
-        if($currentRole->name != 'superadmin'){
+        if ($currentRole->name != 'superadmin') {
 
             if ($request->allow_login == BooleanType::True->value) {
 
@@ -242,7 +242,7 @@ class UserService
                 $updateUser->allow_login = BooleanType::False->value;
                 $updateUser->branch_id = $branchId;
             }
-        }else {
+        } else {
 
             $updateUser->allow_login = BooleanType::True->value;
             $updateUser->username = $request->username;

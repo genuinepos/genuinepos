@@ -33,13 +33,13 @@ class ContactController extends Controller
     public function create($type)
     {
         if ($type == ContactType::Customer->value) {
-            if (! auth()->user()->can('customer_add')) {
+            if (!auth()->user()->can('customer_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (! auth()->user()->can('supplier_add')) {
+            if (!auth()->user()->can('supplier_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -53,13 +53,13 @@ class ContactController extends Controller
     public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
         if ($type == ContactType::Customer->value) {
-            if (! auth()->user()->can('customer_add')) {
+            if (!auth()->user()->can('customer_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (! auth()->user()->can('supplier_add')) {
+            if (!auth()->user()->can('supplier_add')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -70,7 +70,7 @@ class ContactController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__account_start_date'];
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
             $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
             $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
@@ -124,13 +124,13 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (! auth()->user()->can('customer_edit')) {
+            if (!auth()->user()->can('customer_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (! auth()->user()->can('supplier_edit')) {
+            if (!auth()->user()->can('supplier_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -146,13 +146,13 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (! auth()->user()->can('customer_edit')) {
+            if (!auth()->user()->can('customer_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (! auth()->user()->can('supplier_edit')) {
+            if (!auth()->user()->can('supplier_edit')) {
 
                 abort(403, 'Access Forbidden.');
             }
@@ -163,7 +163,7 @@ class ContactController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__account_start_date'];
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
 
             $customerAccountGroup = $this->accountGroupService->singleAccountGroupByAnyCondition()
                 ->where('sub_sub_group_number', 6)->where('is_reserved', 1)->first();
@@ -225,7 +225,7 @@ class ContactController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('supplier_delete')) {
+        if (!auth()->user()->can('supplier_delete')) {
 
             abort(403, 'Access Forbidden.');
         }

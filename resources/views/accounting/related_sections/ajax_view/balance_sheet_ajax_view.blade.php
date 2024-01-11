@@ -1,7 +1,7 @@
 <?php
-    $totalLiability = 0;
-    $totalAsset = 0;
-    $netProfitOrLoss = $netProfitLossAccount['net_profit'];
+$totalLiability = 0;
+$totalAsset = 0;
+$netProfitOrLoss = $netProfitLossAccount['net_profit'];
 ?>
 <div class="table-responsive">
     <table class="table modal-table table-sm table-bordered">
@@ -17,7 +17,7 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.supplier_balance') </em>  </td>
+                                <td class="text-start"><em>@lang('menu.supplier_balance') </em> </td>
                                 <td class=" text-end">
                                     <span class="supplier_due"><em>{{ App\Utils\Converter::format_in_bdt($suppliers->sum('total_due')) }}</em> </span>
                                     @php $totalLiability += $suppliers->sum('total_due')  @endphp
@@ -223,26 +223,26 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ $generalSettings['business__currency'] }}) </em> </td>
+                                <td class="text-start"><em>@lang('menu.total_liability') : ({{ $generalSettings['business_or_shop__currency_symbol'] }}) </em> </td>
                                 <td class="text-end">
                                     <em class="total_liability">{{ App\Utils\Converter::format_in_bdt($totalLiability) }}</em>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </th>
+                    </th>
                 <td class="total_asset_area">
                     <table class="table table-sm">
                         <tbody>
                             <tr>
-                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ $generalSettings['business__currency'] }})</em></td>
+                                <td class="text-start"><em>@lang('menu.total_asset') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</em></td>
                                 <td class="text-end">
                                     <em class="total_asset">{{ App\Utils\Converter::format_in_bdt($totalAsset) }}</em>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </th>
+                    </th>
             </tr>
         </tfoot>
     </table>

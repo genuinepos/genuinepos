@@ -133,11 +133,11 @@ class DraftControllerMethodContainersService implements DraftControllerMethodCon
 
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sale_invoice'];
+        $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sales_invoice_prefix'];
         $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
         $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $draft = $draftService->singleDraft(id: $id, with: ['saleProducts']);
 

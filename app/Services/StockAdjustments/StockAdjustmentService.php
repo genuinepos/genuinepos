@@ -38,15 +38,15 @@ class StockAdjustmentService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item" id="details_btn" href="'.route('stock.adjustments.show', [$row->id]).'">'.__('View').'</a>';
+                $html .= '<a class="dropdown-item" id="details_btn" href="' . route('stock.adjustments.show', [$row->id]) . '">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('stock_adjustment_delete')) {
 
-                        $html .= '<a class="dropdown-item" id="delete" href="'.route('stock.adjustments.delete', $row->id).'">'.__('Delete').'</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('stock.adjustments.delete', $row->id) . '">' . __('Delete') . '</a>';
                     }
                 }
 
@@ -57,11 +57,11 @@ class StockAdjustmentService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })
             ->editColumn('voucher_no', function ($row) {
 
-                return '<a href="'.route('stock.adjustments.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
+                return '<a href="' . route('stock.adjustments.show', [$row->id]) . '" id="details_btn">' . $row->voucher_no . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -69,27 +69,27 @@ class StockAdjustmentService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
 
             ->editColumn('type', function ($row) {
 
-                return '<span class="fw-bold">'.StockAdjustmentType::tryFrom($row->type)->name.'</span>';
+                return '<span class="fw-bold">' . StockAdjustmentType::tryFrom($row->type)->name . '</span>';
             })
 
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
 
-            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="'.$row->recovered_amount.'">'.\App\Utils\Converter::format_in_bdt($row->recovered_amount).'</span>')
+            ->editColumn('recovered_amount', fn ($row) => '<span class="recovered_amount" data-value="' . $row->recovered_amount . '">' . \App\Utils\Converter::format_in_bdt($row->recovered_amount) . '</span>')
 
-            ->editColumn('created_by', fn ($row) => $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name)
+            ->editColumn('created_by', fn ($row) => $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name)
 
             ->rawColumns(['action', 'date', 'voucher_no', 'business_location', 'adjustment_location', 'type', 'net_total_amount', 'recovered_amount', 'created_by'])
             ->make(true);
@@ -109,7 +109,7 @@ class StockAdjustmentService
         $addStockAdjustment->net_total_amount = $request->net_total_amount;
         $addStockAdjustment->recovered_amount = $request->recovered_amount ? $request->recovered_amount : 0;
         $addStockAdjustment->date = $request->date;
-        $addStockAdjustment->date_ts = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addStockAdjustment->date_ts = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addStockAdjustment->created_by_id = auth()->user()->id;
         $addStockAdjustment->reason = $request->reason;
         $addStockAdjustment->save();
@@ -131,7 +131,7 @@ class StockAdjustmentService
             return ['pass' => false, 'msg' => __('Stock Adjustment can not be deleted. There is one or more receipt which is against this voucher.')];
         }
 
-        if (! is_null($deleteAdjustment)) {
+        if (!is_null($deleteAdjustment)) {
 
             $deleteAdjustment->delete();
         }
@@ -193,5 +193,18 @@ class StockAdjustmentService
         }
 
         return $query;
+    }
+
+    public function stockAdjustmentValidation(object $request): ?array
+    {
+        return $request->validate([
+            'date' => 'required',
+            'type' => 'required',
+            'expense_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'expense_account_id.required' => __('Expense Ledger A/c is required.'),
+            'account_id.required' => __('Debit A/c is required.'),
+        ]);
     }
 }

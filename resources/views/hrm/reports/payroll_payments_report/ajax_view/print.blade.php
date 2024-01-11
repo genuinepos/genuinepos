@@ -43,10 +43,10 @@
                     @endif
                 @endif
             @else
-                @if ($generalSettings['business__business_logo'] != null)
-                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                @if ($generalSettings['business_or_shop__business_logo'] != null)
+                    <img style="height: 45px; width:200px;" src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                 @endif
             @endif
         </div>
@@ -62,7 +62,7 @@
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-                        {{ $generalSettings['business__business_name'] }}
+                        {{ $generalSettings['business_or_shop__business_name'] }}
                     @endif
                 </strong>
             </p>
@@ -71,7 +71,7 @@
                 @if (auth()->user()?->branch)
                     {{ auth()->user()?->branch?->city . ', ' . auth()->user()?->branch?->state . ', ' . auth()->user()?->branch?->zip_code . ', ' . auth()->user()?->branch?->country }}
                 @else
-                    {{ $generalSettings['business__address'] }}
+                    {{ $generalSettings['business_or_shop__address'] }}
                 @endif
             </p>
 
@@ -80,8 +80,8 @@
                     <strong>{{ __('Email') }} : </strong> {{ auth()->user()?->branch?->email }},
                     <strong>{{ __('Phone') }} : </strong> {{ auth()->user()?->branch?->phone }}
                 @else
-                    <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business__email'] }},
-                    <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business__phone'] }}
+                    <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business_or_shop__email'] }},
+                    <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business_or_shop__phone'] }}
                 @endif
             </p>
         </div>
@@ -98,8 +98,8 @@
             @if ($fromDate && $toDate)
                 <p>
                     <strong>{{ __("From") }} :</strong>
-                    {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                    <strong>{{ __("To") }} : </strong> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                    {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                    <strong>{{ __("To") }} : </strong> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
                 </p>
             @endif
         </div>
@@ -108,7 +108,7 @@
     <div class="row mt-2">
         <div class="col-12">
             @php
-                $ownOrParentbranchName = $generalSettings['business__business_name'];
+                $ownOrParentbranchName = $generalSettings['business_or_shop__business_name'];
                 if (auth()->user()?->branch) {
                     if (auth()->user()?->branch->parentBranch) {
                         $ownOrParentbranchName = auth()->user()?->branch->parentBranch?->name . '(' . auth()->user()?->branch->parentBranch?->area_name . ')';
@@ -122,8 +122,8 @@
     </div>
 
     @php
-        $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
-        $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+        $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
+        $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
         $totalPaid = 0;
     @endphp
 
@@ -182,7 +182,7 @@
                                         }
                                     } else {
 
-                                        $branch = $generalSettings['business__business_name'];
+                                        $branch = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
                                 {{ $branch }}

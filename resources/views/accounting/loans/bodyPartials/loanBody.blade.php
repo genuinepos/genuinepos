@@ -13,7 +13,7 @@
                     <div class="form-group row gx-3">
                         <div class="col-md-6">
                             <label><strong>@lang('menu.date') : <span class="text-danger">*</span></strong></label>
-                            <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date($generalSettings['business__date_format'])) }}">
+                            <input type="text" name="date" class="form-control" id="date" value="{{ str_replace('/', '-', date($generalSettings['business_or_shop__date_format'])) }}">
                             <span class="error error_date"></span>
                         </div>
 
@@ -23,7 +23,7 @@
                                 <option value="">@lang('menu.select_loan_account')</option>
                                 @foreach ($loanAccounts as $loanAc)
                                     <option value="{{ $loanAc->id }}">
-                                        {{ $loanAc->name.' ('.App\Utils\Util::accountType($loanAc->account_type).')' }}
+                                        {{ $loanAc->name . ' (' . App\Utils\Util::accountType($loanAc->account_type) . ')' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -53,7 +53,7 @@
                     <div class="form-group row gx-3 mt-1">
                         <div class="col-md-6">
                             <label><b>@lang('menu.loan_amount') </b> <span class="text-danger">*</span> </label>
-                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')"/>
+                            <input type="number" step="any" name="loan_amount" class="form-control" id="loan_amount" placeholder="@lang('menu.loan_amount')" />
                             <span class="error error_loan_amount"></span>
                         </div>
 
@@ -65,11 +65,11 @@
                                     <option value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            $bank = $account->bank ? ', BK : '.$account->bank : '';
-                                            $ac_no = $account->account_number ? ', A/c No : '.$account->account_number : '';
-                                            $balance = ', BL : '.$account->balance;
+                                            $bank = $account->bank ? ', BK : ' . $account->bank : '';
+                                            $ac_no = $account->account_number ? ', A/c No : ' . $account->account_number : '';
+                                            $balance = ', BL : ' . $account->balance;
                                         @endphp
-                                        {{ $account->name.$accountType.$bank.$ac_no.$balance }}
+                                        {{ $account->name . $accountType . $bank . $ac_no . $balance }}
                                     </option>
                                 @endforeach
                             </select>
@@ -150,9 +150,7 @@
                                         <i class="fas fa-calendar-week input_i"></i>
                                     </span>
                                 </div>
-                                <input type="text" name="from_date" id="datepicker"
-                                    class="form-control from_date date"
-                                    autocomplete="off">
+                                <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                             </div>
                         </div>
 
@@ -181,7 +179,7 @@
                     <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
                 </div>
 
-                <div class="table-responsive" >
+                <div class="table-responsive">
                     <table class="display data_tbl2 data__table asset_table w-100">
                         <thead>
                             <tr>
@@ -192,9 +190,9 @@
                                 <th>@lang('menu.company')/@lang('menu.people')</th>
                                 <th>@lang('menu.type')</th>
                                 <th>@lang('menu.loan_by')</th>
-                                <th>@lang('menu.loan_amount')({{ $generalSettings['business__currency'] }})</th>
-                                <th>@lang('menu.due')({{ $generalSettings['business__currency'] }})</th>
-                                <th>@lang('menu.total_paid')({{ $generalSettings['business__currency'] }})</th>
+                                <th>@lang('menu.loan_amount')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                <th>@lang('menu.due')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
+                                <th>@lang('menu.total_paid')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -215,8 +213,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="exampleModalLabel">@lang('menu.loan_details')</h6>
-                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                    class="fas fa-times"></span></a>
+                <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
             </div>
             <div class="modal-body">
                 <div id="loan_details">

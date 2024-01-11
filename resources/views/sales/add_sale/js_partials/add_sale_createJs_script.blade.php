@@ -1466,7 +1466,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -1495,6 +1495,11 @@
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
+    });
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
     });
 
     function setMethodAccount(account_id) {

@@ -3,6 +3,7 @@
 namespace App\Services\Purchases;
 
 use Carbon\Carbon;
+use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,8 @@ class PurchaseProductService
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('units', 'purchase_products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id');
+            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
+            ->whereNotNull('purchase_products.purchase_id');
 
         if ($request->product_id) {
 
@@ -73,9 +75,9 @@ class PurchaseProductService
             $query->whereBetween('purchases.report_date', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('purchases.is_purchased', 1)->where('purchases.branch_id', auth()->user()->branch_id);
+            $query->where('purchases.is_purchased', BooleanType::True->value)->where('purchases.branch_id', auth()->user()->branch_id);
         }
 
         $purchaseProducts = $query->select(
@@ -129,7 +131,7 @@ class PurchaseProductService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('quantity', function ($row) {

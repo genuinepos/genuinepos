@@ -48,10 +48,7 @@ class StockAdjustmentController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('stock_adjustment_all')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('stock_adjustment_all'), 403);
 
         if ($request->ajax()) {
 
@@ -76,12 +73,22 @@ class StockAdjustmentController extends Controller
         return view('stock_adjustments.ajax_view.show', compact('adjustment'));
     }
 
+    public function print($id, Request $request, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
+    {
+        $printMethodContainer = $stockAdjustmentControllerMethodContainersInterface->printMethodContainer(
+            id: $id,
+            request: $request,
+            stockAdjustmentService: $this->stockAdjustmentService,
+        );
+
+        extract($printMethodContainer);
+
+        return view('stock_adjustments.print_templates.print_stock_adjustment', compact('adjustment', 'printPageSize'));
+    }
+
     public function create(StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('stock_adjustment_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('stock_adjustment_add'), 403);
 
         $createMethodContainer = $stockAdjustmentControllerMethodContainersInterface->createMethodContainer(
             branchService: $this->branchService,
@@ -101,20 +108,9 @@ class StockAdjustmentController extends Controller
         StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface,
         CodeGenerationService $codeGenerator
     ) {
-        if (! auth()->user()->can('stock_adjustment_add')) {
+        abort_if(!auth()->user()->can('stock_adjustment_add'), 403);
 
-            return response()->json('Access Denied.');
-        }
-
-        $this->validate($request, [
-            'date' => 'required',
-            'type' => 'required',
-            'expense_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'expense_account_id.required' => __('Expense Ledger A/c is required.'),
-            'account_id.required' => __('Debit A/c is required.'),
-        ]);
+        $this->stockAdjustmentService->stockAdjustmentValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -153,10 +149,7 @@ class StockAdjustmentController extends Controller
 
     public function delete($id, StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('stock_adjustment_delete')) {
-
-            return response()->json('Access Denied.');
-        }
+        abort_if(!auth()->user()->can('stock_adjustment_delete'), 403);
 
         try {
             DB::beginTransaction();

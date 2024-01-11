@@ -99,7 +99,7 @@ class PurchaseOrderService
             ->addColumn('action', fn ($row) => $this->createPurchaseOrderAction($row))
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->branch_id) {
@@ -113,8 +113,12 @@ class PurchaseOrderService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
+            })
+            ->editColumn('invoice_id', function ($row) {
+
+                return '<a href="' . route('purchase.orders.show', [$row->id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
             })
             ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
@@ -344,5 +348,22 @@ class PurchaseOrderService
         $html .= '</div>';
 
         return $html;
+    }
+
+    public function purchaseOrderValidation(object $request): ?array
+    {
+        return $request->validate([
+            'supplier_account_id' => 'required',
+            'date' => 'required|date',
+            'delivery_date' => 'required|date',
+            'payment_method_id' => 'required',
+            'purchase_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit A/c is required.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_id.required' => __('Supplier is required.'),
+        ]);
     }
 }

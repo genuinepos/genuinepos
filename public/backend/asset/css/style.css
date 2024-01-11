@@ -2508,3 +2508,7 @@ label.col-6 {
 .disabled_element i {
     color: gray !important;
 }
+
+.modal-footer{
+    padding: 0px .5rem!important;
+}

@@ -1,7 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $dateFormat = $generalSettings['business__date_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 
 <style>
@@ -63,10 +63,10 @@
                             <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $purchase->branch->name }}</span>
                         @endif
                     @else
-                        @if ($generalSettings['business__business_logo'] != null)
-                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business__business_logo']) }}" alt="logo" class="logo__img">
+                        @if ($generalSettings['business_or_shop__business_logo'] != null)
+                            <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
                         @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business__business_name'] }}</span>
+                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
                         @endif
                     @endif
                 </div>
@@ -77,7 +77,7 @@
                             @if ($moneyReceipt->branch)
                                 {!! $moneyReceipt->branch->name !!}
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         </strong>
                     </p>
@@ -86,7 +86,7 @@
                         @if ($moneyReceipt?->branch)
                             {{ $moneyReceipt->branch->city . ', ' . $moneyReceipt->branch->state . ', ' . $moneyReceipt->branch->zip_code . ', ' . $moneyReceipt->branch->country }}
                         @else
-                            {{ $generalSettings['business__address'] }}
+                            {{ $generalSettings['business_or_shop__address'] }}
                         @endif
                     </p>
 
@@ -95,8 +95,8 @@
                             <strong>@lang('menu.email') : </strong>{{ $moneyReceipt?->branch?->email }},
                             <strong>@lang('menu.phone') : </strong>{{ $moneyReceipt?->branch?->phone }}
                         @else
-                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business__email'] }},
-                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business__phone'] }}
+                            <strong>@lang('menu.email') : </strong>{{ $generalSettings['business_or_shop__email'] }},
+                            <strong>@lang('menu.phone') : </strong>{{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -127,7 +127,7 @@
             </div>
 
             <div class="col-4 text-end">
-                <p style="font-size:11px!important"><b>{{ __('Date') }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business__date_format'], strtotime($moneyReceipt->date_ts)) : '.......................................' }}</p>
+                <p style="font-size:11px!important"><b>{{ __('Date') }}</b> : {{ $moneyReceipt->is_date ? date($generalSettings['business_or_shop__date_format'], strtotime($moneyReceipt->date_ts)) : '.......................................' }}</p>
             </div>
         </div><br>
 
@@ -146,7 +146,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business__currency'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
+                        <p style="font-size:11px!important"><b>{{ __('Amount Of Money') }}</b> : {{ $moneyReceipt->amount > 0 ? $generalSettings['business_or_shop__currency'] . ' ' . App\Utils\Converter::format_in_bdt($moneyReceipt->amount) : '' }}</p>
                     </div>
                     <div class="col-md-12">
                         <h6 class="borderTop d-block"></h6>
@@ -228,7 +228,7 @@
         <div id="footer">
             <div class="row mt-1">
                 <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business__date_format']) }}</small>
+                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
                 </div>
 
                 <div class="col-4 text-center">

@@ -1,7 +1,7 @@
 @php
     $generalSettings = config('generalSettings');
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">

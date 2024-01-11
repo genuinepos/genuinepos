@@ -52,7 +52,7 @@ class ExpenseUtil
 
         if ($request->cate_id) {
 
-            $query->where('expanses.category_ids', 'LIKE', '%'.$request->cate_id.'%');
+            $query->where('expanses.category_ids', 'LIKE', '%' . $request->cate_id . '%');
         }
 
         if ($request->from_date) {
@@ -93,21 +93,21 @@ class ExpenseUtil
 
                     if (auth()->user()->can('edit_expense')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('expanses.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('expanses.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
 
                     if (auth()->user()->can('delete_expense')) {
 
-                        $html .= '<a class="dropdown-item" id="delete" href="'.route('expanses.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                        $html .= '<a class="dropdown-item" id="delete" href="' . route('expanses.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     }
 
                     if ($row->due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="add_payment" href="'.route('expanses.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('expanses.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                     }
                 }
 
-                $html .= '<a class="dropdown-item" id="view_payment" href="'.route('expanses.payment.view', [$row->id]).'"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
+                $html .= '<a class="dropdown-item" id="view_payment" href="' . route('expanses.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt mr-1 text-primary"></i> View Payment</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -128,27 +128,27 @@ class ExpenseUtil
 
                 foreach ($expenseDescriptions as $exDescription) {
 
-                    $html .= '<b>'.$exDescription->name.'('.$exDescription->code.'):</b> '.$exDescription->amount.'</br>';
+                    $html .= '<b>' . $exDescription->name . '(' . $exDescription->code . '):</b> ' . $exDescription->amount . '</br>';
                 }
 
                 return $html;
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('from', function ($row) use ($generalSettings) {
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BR</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
                 } else {
 
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('user_name', function ($row) {
 
-                return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
+                return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
             })
             ->editColumn('payment_status', function ($row) {
 
@@ -170,10 +170,10 @@ class ExpenseUtil
             })
             ->editColumn('tax_percent', function ($row) {
 
-                return $row->tax_percent.'%';
+                return $row->tax_percent . '%';
             })
-            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.$this->converter->format_in_bdt($row->net_total_amount).'</span>')
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
+            ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . $this->converter->format_in_bdt($row->net_total_amount) . '</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
             ->rawColumns(['action', 'date', 'from', 'user_name', 'payment_status', 'tax_percent', 'due', 'net_total_amount', 'descriptions'])
             ->make(true);
     }
@@ -207,7 +207,7 @@ class ExpenseUtil
         if ($request->from_date) {
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-            $date_range = [$from_date.' 00:00:00', $to_date.' 00:00:00'];
+            $date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
             $query->whereBetween('expanses.report_date', $date_range); // Final
         }
 
@@ -233,22 +233,22 @@ class ExpenseUtil
 
         return DataTables::of($expenses)
             ->editColumn('date', function ($row) use ($generalSettings) {
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })->editColumn('category_name', function ($row) {
-                return $row->name.' ('.$row->code.')';
+                return $row->name . ' (' . $row->code . ')';
             })->editColumn('user_name', function ($row) {
                 if ($row->cr_name) {
-                    return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
+                    return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
                 } else {
                     return '---';
                 }
-            })->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.$this->converter->format_in_bdt($row->amount).'</span>')
+            })->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
             ->rawColumns(['date', 'from', 'category_name', 'user_name', 'amount'])
             ->make(true);
     }
@@ -272,7 +272,7 @@ class ExpenseUtil
     public function addPaymentGetId($voucher_prefix, $expense_id, $request, $another_amount = 0)
     {
         $addExpensePayment = new ExpansePayment();
-        $addExpensePayment->invoice_id = ($voucher_prefix != null ? $voucher_prefix : 'EPV').str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 5, '0', STR_PAD_LEFT);
+        $addExpensePayment->invoice_id = ($voucher_prefix != null ? $voucher_prefix : 'EPV') . str_pad($this->invoiceVoucherRefIdUtil->getLastId('expanse_payments'), 5, '0', STR_PAD_LEFT);
         $addExpensePayment->expanse_id = $expense_id;
         $addExpensePayment->account_id = $request->account_id;
         $addExpensePayment->payment_method_id = $request->payment_method_id;
@@ -286,7 +286,7 @@ class ExpenseUtil
 
         if ($request->hasFile('attachment')) {
             $expensePaymentAttachment = $request->file('attachment');
-            $expensePaymentAttachmentName = uniqid().'-'.'.'.$expensePaymentAttachment->getClientOriginalExtension();
+            $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
             $expensePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
             $addExpensePayment->attachment = $expensePaymentAttachmentName;
         }
@@ -308,12 +308,12 @@ class ExpenseUtil
 
         if ($request->hasFile('attachment')) {
             if ($expensePayment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/'.$expensePayment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/'.$expensePayment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/' . $expensePayment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $expensePayment->attachment));
                 }
             }
             $expensePaymentAttachment = $request->file('attachment');
-            $expensePaymentAttachmentName = uniqid().'-'.'.'.$expensePaymentAttachment->getClientOriginalExtension();
+            $expensePaymentAttachmentName = uniqid() . '-' . '.' . $expensePaymentAttachment->getClientOriginalExtension();
             // $expansePaymentAttachment->move(public_path('uploads/payment_attachment/'), $expensePaymentAttachmentName);
             $expensePayment->attachment = $expensePaymentAttachmentName;
         }
@@ -327,7 +327,7 @@ class ExpenseUtil
 
         $storedExpensePayments = $deleteExpense->expense_payments;
 
-        if (! is_null($deleteExpense)) {
+        if (!is_null($deleteExpense)) {
 
             $deleteExpense->delete();
 
@@ -337,9 +337,9 @@ class ExpenseUtil
 
                     if ($payment->attachment) {
 
-                        if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
+                        if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
 
-                            unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                            unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                         }
                     }
 

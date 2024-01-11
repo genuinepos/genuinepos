@@ -1,7 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 
     $account = $sale?->customer;
     $accountBalanceService = new App\Services\Accounts\AccountBalanceService();
@@ -76,23 +76,31 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
-                                @if ($sale->branch_id)
+                                @php
+                                    $branchName = '';
+                                    if ($sale->branch_id) {
 
-                                    @if ($sale?->branch?->parentBranch)
-                                        {{ $sale?->branch?->parentBranch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')' }}
-                                    @else
-                                        {{ $sale?->branch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')' }}
-                                    @endif
-                                @else
-                                    {{ $generalSettings['business__business_name'] }}
-                                @endif
+                                        if ($sale?->branch?->parentBranch) {
+
+                                            $branchName = $sale?->branch?->parentBranch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')';
+                                        } else {
+
+                                            $branchName = $sale?->branch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')';
+                                        }
+                                    } else {
+
+                                        $branchName = $generalSettings['business_or_shop__business_name'];
+                                    }
+                                @endphp
+
+                                {{ $branchName }}
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Email') }} : </strong>
                                 @if ($sale->branch)
                                     {{ $sale->branch->email }}
                                 @else
-                                    {{ $generalSettings['business__email'] }}
+                                    {{ $generalSettings['business_or_shop__email'] }}
                                 @endif
                             </li>
 
@@ -100,7 +108,7 @@
                                 @if ($sale->branch)
                                     {{ $sale->branch->phone }}
                                 @else
-                                    {{ $generalSettings['business__phone'] }}
+                                    {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -149,7 +157,7 @@
                                                             {{ $saleProduct?->branch?->name . '(' . $saleProduct?->branch?->area_name . ')' . '-(' . $saleProduct?->branch?->branch_code . ')' }}
                                                         @endif
                                                     @else
-                                                        {{ $generalSettings['business__business_name'] }}
+                                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
                                                 @endif
                                             </td>
@@ -189,53 +197,53 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ $sale->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $sale->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $sale->order_tax_percent . '%)=' . $sale->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Total Invoice Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->total_invoice_amount) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->paid) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Due (On Invoice)') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($sale->due) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Current Balance') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ $amounts['closing_balance_in_flat_amount_string'] }}
                                     </td>
@@ -248,41 +256,197 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><strong>{{ __('Shipment Details') }}</strong></p>
+                            <p style="font-size:11px!important;" class="fw-bold">{{ __('Shipment Details') }}</p>
                             <p class="shipping_details" style="font-size:11px!important;">{{ $sale->shipment_details }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="details_area">
-                            <p style="font-size:11px!important;"><strong>{{ __('Sale Note') }}</strong></p>
+                            <p style="font-size:11px!important;" class="fw-bold">{{ __('Sale Note') }}</p>
                             <p class="purchase_note" style="font-size:11px!important;">{{ $sale->note }}</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="m-0 mt-3">
+
+                <div class="row g-0 mt-1">
+                    <div class="col-md-6 offset-6">
+                        <div class="input-group p-0">
+                            <label class="col-3 text-end pe-1"><b>{{ __("Print") }}</b></label>
+                            <div class="col-9">
+                                <select id="print_page_size" class="form-control">
+                                    @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
+                                        <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <div class="row">
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <div class="btn-box">
-                            @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
-                                <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
-                                <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            @endif
+                <div class="btn-box">
+                    @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
+                        <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                    @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
+                        <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                    @endif
 
-                            <a href="{{ route('sale.shipments.print.packing.slip', [$sale->id]) }}" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn">{{ __('Print Packing Slip') }}</a>
-                            <a href="{{ route('sales.print.challan', [$sale->id]) }}" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn">{{ __('Print Challan') }}</a>
-                            <button type="button" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print Invoice') }}</button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
-                        </div>
-                    </div>
+                    @php
+                        $filename = $sale->invoice_id.'__'.$sale->date.'__'.$branchName;
+                    @endphp
+
+                    <a href="{{ route('sales.helper.print.packing.slip', [$sale->id]) }}" onclick="printPackingSlip(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn" data-filename="{{ __('Packing Slip').'_'.$filename }}">{{ __('Print Packing Slip') }}</a>
+
+                    <a href="{{ route('sales.helper.print.challan', [$sale->id]) }}" onclick="printChallan(this); return false;" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn" data-filename="{{ __('Challan').'_'.$filename }}">{{ __('Print Challan') }}</a>
+
+                    <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Invoice') }}</a>
+
+                    <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Sale print templete-->
-@include('sales.add_sale.ajax_views.partials.print_modal_details')
-<!-- Sale print templete end-->
+<script>
+    function printSalesRelatedVoucher(event) {
+
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {print_page_size},
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                    footer: null,
+                });
+
+                document.title = filename;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
+
+    function printChallan(event) {
+
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {print_page_size},
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                });
+
+                document.title = filename;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    };
+
+    // Print Packing slip
+    function printPackingSlip(event) {
+
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {print_page_size},
+            success: function(data) {
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                });
+
+                document.title = filename;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    };
+</script>

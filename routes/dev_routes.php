@@ -1,10 +1,12 @@
 <?php
 
 use App\Models\Setups\Branch;
+use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
@@ -121,9 +123,6 @@ Route::get('my-test', function () {
     //     )
     //     ->get();
 
-    // $date = date('Y-11-01');
-    // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
-
     // $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
     // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent
 
@@ -189,8 +188,18 @@ Route::get('my-test', function () {
 
     // return $dates;
 
-    $str = 'C-000050';
-    return intval($str);
+    // $str = 'C-000050';
+    // return intval($str);
+
+    // return request()->generalSettings['business_or_shop__business_name'];
+
+    $generalSettings = config('generalSettings');
+    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
+    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
+    $startDate = date($startDateFormat);
+    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
+    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
 });
 
 

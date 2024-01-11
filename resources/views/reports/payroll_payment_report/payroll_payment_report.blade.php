@@ -1,11 +1,23 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .top-menu-area ul li {display: inline-block;margin-right: 3px;}
-        .top-menu-area a {border: 1px solid lightgray;padding: 1px 5px;border-radius: 3px;font-size: 11px;}
-        .form-control {padding: 4px!important;}
+        .top-menu-area ul li {
+            display: inline-block;
+            margin-right: 3px;
+        }
+
+        .top-menu-area a {
+            border: 1px solid lightgray;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .form-control {
+            padding: 4px !important;
+        }
     </style>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('title', 'Payroll Payment Report - ')
 @section('content')
@@ -29,33 +41,29 @@
                             <form id="filter_form">
                                 <div class="form-group row">
 
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') : </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control submit_able select2" id="branch_id" autofocus>
-                                                    <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.business_location') : </strong></label>
+                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -63,8 +71,7 @@
                                         <label><strong>@lang('menu.to_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_i"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
                                             </div>
                                             <input type="text" name="to_date" id="datepicker2" class="form-control to_date date" autocomplete="off">
                                         </div>
@@ -93,7 +100,9 @@
 
             <div class="card">
                 <div class="widget_content">
-                    <div class="data_preloader"> <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6></div>
+                    <div class="data_preloader">
+                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                    </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
                             <thead>
@@ -112,7 +121,7 @@
                             <tfoot>
                                 <tr class="bg-secondary">
                                     <th colspan="3" class="text-end text-white">@lang('menu.total') : </th>
-                                    <th class="text-white">{{ $generalSettings['business__currency'] }} <span id="paid"></span></th>
+                                    <th class="text-white">{{ $generalSettings['business_or_shop__currency_symbol'] }} <span id="paid"></span></th>
                                     <th class="text-white">--</th>
                                     <th class="text-white">--</th>
                                 </tr>
@@ -131,136 +140,162 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    var table = $('.data_tbl').DataTable({
-        dom: "lBfrtip",
-        buttons: [
-            {
-                extend: 'excel',
-                text: '@lang('menu.excel')',
-                className: 'btn btn-primary',
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var table = $('.data_tbl').DataTable({
+            dom: "lBfrtip",
+            buttons: [{
+                    extend: 'excel',
+                    text: '@lang('menu.excel')',
+                    className: 'btn btn-primary',
+                },
+                {
+                    extend: 'pdf',
+                    text: '@lang('menu.pdf')',
+                    className: 'btn btn-primary',
+                },
+            ],
+            "processing": true,
+            "serverSide": true,
+            "searching": true,
+            aaSorting: [
+                [0, 'asc']
+            ],
+            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
+            "ajax": {
+                "url": "{{ route('reports.payroll.payment') }}",
+                "data": function(d) {
+                    d.branch_id = $('#branch_id').val();
+                    d.from_date = $('.from_date').val();
+                    d.to_date = $('.to_date').val();
+                }
             },
-            {
-                extend: 'pdf',
-                text: '@lang('menu.pdf')',
-                className: 'btn btn-primary',
-            },
-        ],
-        "processing": true,
-        "serverSide": true,
-        "searching" : true,
-        aaSorting: [[0, 'asc']],
-        "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
-        "ajax": {
-            "url": "{{ route('reports.payroll.payment') }}",
-            "data": function(d) {
-                d.branch_id = $('#branch_id').val();
-                d.from_date = $('.from_date').val();
-                d.to_date = $('.to_date').val();
-            }
-        },
-        columns: [
-            {data: 'date', name: 'date'},
-            {data: 'employee', name: 'users.name'},
-            {data: 'voucher_no', name: 'hrm_payrolls.reference_no'},
-            {data: 'paid', name: 'paid'},
-            {data: 'reference_no', name: 'reference_no'},
-            {data: 'paid_by', name: 'paid_by.name'},
-        ],
-        fnDrawCallback: function() {
-            var paid = sum_table_col($('.data_tbl'), 'paid');
-            $('#paid').text(parseFloat(paid).toFixed(2));
-            $('.data_preloader').hide();
-        },
-    });
-
-    function sum_table_col(table, class_name) {
-        var sum = 0;
-        table.find('tbody').find('tr').each(function() {
-            if (parseFloat($(this).find('.' + class_name).data('value'))) {
-                sum += parseFloat(
-                    $(this).find('.' + class_name).data('value')
-                );
-            }
-        });
-        return sum;
-    }
-
-    //Submit filter form by select input changing
-    $(document).on('submit', '#filter_form', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        table.ajax.reload();
-    });
-
-    $(document).on('click', '#print_report',function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-        var branch_id = $('#branch_id').val();
-        var department_id = $('#department_id').val();
-        var from_date = $('.to_date').val();
-        var to_date = $('.to_date').val();
-        var url = $(this).attr('href');
-        $.ajax({
-            url:url,
-            type:'get',
-            data: { branch_id, department_id, from_date, to_date },
-            success:function(data){
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                    removeInline: false,
-                    printDelay: 500,
-                    header : null,
-                    footer : null,
-                });
+            columns: [{
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'employee',
+                    name: 'users.name'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'hrm_payrolls.reference_no'
+                },
+                {
+                    data: 'paid',
+                    name: 'paid'
+                },
+                {
+                    data: 'reference_no',
+                    name: 'reference_no'
+                },
+                {
+                    data: 'paid_by',
+                    name: 'paid_by.name'
+                },
+            ],
+            fnDrawCallback: function() {
+                var paid = sum_table_col($('.data_tbl'), 'paid');
+                $('#paid').text(parseFloat(paid).toFixed(2));
                 $('.data_preloader').hide();
-            }
+            },
         });
-    });
-</script>
 
-<script type="text/javascript">
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY'
-    });
+        function sum_table_col(table, class_name) {
+            var sum = 0;
+            table.find('tbody').find('tr').each(function() {
+                if (parseFloat($(this).find('.' + class_name).data('value'))) {
+                    sum += parseFloat(
+                        $(this).find('.' + class_name).data('value')
+                    );
+                }
+            });
+            return sum;
+        }
 
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker2'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY',
-    });
-</script>
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_form', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            table.ajax.reload();
+        });
+
+        $(document).on('click', '#print_report', function(e) {
+            e.preventDefault();
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            var department_id = $('#department_id').val();
+            var from_date = $('.to_date').val();
+            var to_date = $('.to_date').val();
+            var url = $(this).attr('href');
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    department_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: null,
+                        footer: null,
+                    });
+                    $('.data_preloader').hide();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+    </script>
 @endpush

@@ -1,28 +1,73 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed; top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 4%;
+        margin-right: 4%;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 
 <div class="row">
     <div class="col-md-12 text-center">
         @if (!auth()->user()->branch_id)
-            <h5>{{ $generalSettings['business__business_name'] }} <b>(@lang('menu.head_office'))</b></h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} <b>(@lang('menu.head_office'))</b></h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -31,13 +76,13 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') : </b>
-                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>{{ __('Loan Report') }} </b></h6>
@@ -46,7 +91,9 @@
 
 @if ($company_id)
     @php
-        $company = DB::table('loan_companies')->where('id', $company_id)->first();
+        $company = DB::table('loan_companies')
+            ->where('id', $company_id)
+            ->first();
     @endphp
     <div class="customer_details_area">
         <div class="row">
@@ -73,28 +120,28 @@
                     <th class="text-start">@lang('menu.company')/@lang('menu.people')</th>
                     <th class="text-start">@lang('menu.type')</th>
                     <th class="text-start">@lang('menu.loan_by')</th>
-                    <th class="text-end">@lang('menu.loan_amount')({{$generalSettings['business__currency']}})</th>
-                    <th class="text-end">@lang('menu.total_paid')({{$generalSettings['business__currency']}})</th>
-                    <th class="text-end">{{ __('Loan Due') }}({{$generalSettings['business__currency']}})</th>
+                    <th class="text-end">@lang('menu.loan_amount')({{ $generalSettings['business_or_shop__currency'] }})</th>
+                    <th class="text-end">@lang('menu.total_paid')({{ $generalSettings['business_or_shop__currency'] }})</th>
+                    <th class="text-end">{{ __('Loan Due') }}({{ $generalSettings['business_or_shop__currency'] }})</th>
                 </tr>
             </thead>
             <tbody class="sale_print_product_list">
                 @php
-                   $totalPayLoan = 0;
-                   $totalGetLoan = 0;
-                   $totalPaid = 0;
-                   $totalReceive = 0;
-                   $totalPayLoanDue = 0;
-                   $totalGetLoanDue = 0;
+                    $totalPayLoan = 0;
+                    $totalGetLoan = 0;
+                    $totalPaid = 0;
+                    $totalReceive = 0;
+                    $totalPayLoanDue = 0;
+                    $totalGetLoanDue = 0;
                 @endphp
                 @foreach ($loans as $loan)
                     <tr>
-                        <td class="text-start">{{ date($generalSettings['business__date_format'], strtotime($loan->report_date)) }}</td>
+                        <td class="text-start">{{ date($generalSettings['business_or_shop__date_format'], strtotime($loan->report_date)) }}</td>
                         <td class="text-start">
                             @if ($loan->b_name)
                                 {!! $loan->b_name . '/' . $loan->b_code . '(<b>BL</b>)' !!}
-                             @else
-                                {!! $generalSettings['business__business_name'] . '(<b>HO</b>)' !!}
+                            @else
+                                {!! $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)' !!}
                             @endif
                         </td>
 
@@ -111,16 +158,16 @@
 
                         <td class="text-start">
                             @if ($loan->loan_by)
-                                 {{ $loan->loan_by }}
+                                {{ $loan->loan_by }}
                             @else
-                                 {{ __('Cash Loan pay') }}
+                                {{ __('Cash Loan pay') }}
                             @endif
                         </td>
                         <td class="text-end">{{ App\Utils\Converter::format_in_bdt($loan->loan_amount) }}
                             @php
                                 if ($loan->type == 1) {
                                     $totalPayLoan += $loan->loan_amount;
-                                }else {
+                                } else {
                                     $totalGetLoan += $loan->loan_amount;
                                 }
                             @endphp
@@ -136,7 +183,7 @@
                             @php
                                 if ($loan->type == 1) {
                                     $totalPayLoanDue += $loan->due;
-                                }else {
+                                } else {
                                     $totalGetLoanDue += $loan->due;
                                 }
                             @endphp
@@ -154,17 +201,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Get loan') }} : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Get loan') }} : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoan) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">@lang('menu.total_due_paid') : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">@lang('menu.total_due_paid') : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPaid) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Get Loan Due') }} : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Get Loan Due') }} : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalGetLoanDue) }}</td>
                 </tr>
             </thead>
@@ -175,17 +222,17 @@
         <table class="table modal-table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th class="text-end">{{ __('Total Pay loan') }} : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Pay loan') }} : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoan) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Due Receive') }} : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Due Receive') }} : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalReceive) }}</td>
                 </tr>
 
                 <tr>
-                    <th class="text-end">{{ __('Total Pay Loan Due') }} : {{$generalSettings['business__currency'] }}</th>
+                    <th class="text-end">{{ __('Total Pay Loan Due') }} : {{ $generalSettings['business_or_shop__currency'] }}</th>
                     <td class="text-end">{{ App\Utils\Converter::format_in_bdt($totalPayLoanDue) }}</td>
                 </tr>
             </thead>

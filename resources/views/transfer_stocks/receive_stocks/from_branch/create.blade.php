@@ -62,7 +62,7 @@
                                                         $sendFrom = $transferStock?->senderBranch?->area_name . '(' . $transferStock?->senderBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-                                                    $sendFrom = $generalSettings['business__business_name'];
+                                                    $sendFrom = $generalSettings['business_or_shop__business_name'];
                                                 }
                                             @endphp
 
@@ -97,7 +97,7 @@
                                                         $sendTo = $transferStock?->receiverBranch?->area_name . '(' . $transferStock?->receiverBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-                                                    $sendTo = $generalSettings['business__business_name'];
+                                                    $sendTo = $generalSettings['business_or_shop__business_name'];
                                                 }
                                             @endphp
 
@@ -110,7 +110,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Received Date') }}</b></label>
                                         <div class="col-7">
-                                            <input readonly type="text" name="receive_date" class="form-control fw-bold" id="receive_date" value="{{ $transferStock?->receive_date ? date($generalSettings['business__date_format'], strtotime($transferStock->receive_date)) : date($generalSettings['business__date_format']) }}" data-next="search_product" autocomplete="off">
+                                            <input readonly type="text" name="receive_date" class="form-control fw-bold" id="receive_date" value="{{ $transferStock?->receive_date ? date($generalSettings['business_or_shop__date_format'], strtotime($transferStock->receive_date)) : date($generalSettings['business_or_shop__date_format']) }}" data-next="search_product" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +167,7 @@
                                                                                     $storeLocation = $transferStock?->receiverBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                                                 }
                                                                             } else {
-                                                                                $storeLocation = $generalSettings['business__business_name'];
+                                                                                $storeLocation = $generalSettings['business_or_shop__business_name'];
                                                                             }
                                                                         @endphp
                                                                         {{ $storeLocation }}

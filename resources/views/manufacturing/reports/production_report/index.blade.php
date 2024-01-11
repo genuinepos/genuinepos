@@ -1,20 +1,49 @@
 @extends('layout.master')
 @push('stylesheets')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-         .data_preloader{top:2.3%}
+        .data_preloader {
+            top: 2.3%
+        }
+
         /* Search Product area style */
-        .selectProduct { background-color: #5f555a; color: #fff !important; }
+        .selectProduct {
+            background-color: #5f555a;
+            color: #fff !important;
+        }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
-        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
+        .search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 8px;
+            margin-top: 1px;
+        }
 
-        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
+        .search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 3px;
+        }
 
-        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
+        .search_result ul li a {
+            color: #7b7676;
+            font-size: 12px;
+            display: block;
+            padding: 3px;
+        }
 
-        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
+        .search_result ul li a:hover {
+            color: white;
+            background-color: #ccc1c6;
+        }
+
         /* Search Product area style end */
     </style>
 @endpush
@@ -24,10 +53,10 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __("Production Report") }}</h6>
+                    <h6>{{ __('Production Report') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}
+                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
                 </a>
             </div>
         </div>
@@ -53,18 +82,18 @@
 
                                     @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                         <div class="col-md-2">
-                                            <label><strong>{{ __("Shop/Business") }}</strong></label>
+                                            <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                <option data-branch_name="{{ __("All") }}" value="">{{ __("All") }}</option>
-                                                <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __("Business") }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     @php
                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                        $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                        $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                         $branchCode = '-' . $branch->branch_code;
                                                     @endphp
-                                                    <option data-branch_name="{{ $branchName.$areaName.$branchCode }}" value="{{ $branch->id }}">
-                                                        {{  $branchName . $areaName . $branchCode }}
+                                                    <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                        {{ $branchName . $areaName . $branchCode }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -72,18 +101,18 @@
                                     @endif
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("Status") }}</strong></label>
+                                        <label><strong>{{ __('Status') }}</strong></label>
                                         <div class="input-group">
                                             <select name="status" class="form-control" id="status" autofocus>
-                                                <option data-status_name="All" value="">{{ __("All") }}</option>
-                                                <option data-status_name="{{ __("Final") }}" value="1">{{ __("Final") }}</option>
-                                                <option data-status_name="{{ __("Hold") }}" value="0">{{ __("Hold") }}</option>
+                                                <option data-status_name="All" value="">{{ __('All') }}</option>
+                                                <option data-status_name="{{ __('Final') }}" value="1">{{ __('Final') }}</option>
+                                                <option data-status_name="{{ __('Hold') }}" value="0">{{ __('Hold') }}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("From Date") }}</strong></label>
+                                        <label><strong>{{ __('From Date') }}</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -95,7 +124,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label><strong>{{ __("To Date") }}</strong></label>
+                                        <label><strong>{{ __('To Date') }}</strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -110,12 +139,12 @@
                                         <div class="row align-items-end">
                                             <div class="col-6">
                                                 <div class="input-group">
-                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                    <button type="button" id="filter_button" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                 </div>
                                             </div>
 
                                             <div class="col-6">
-                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __("Print") }}</a>
+                                                <a href="#" class="btn btn-sm btn-primary float-end m-0" id="print_report"><i class="fas fa-print "></i> {{ __('Print') }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -129,34 +158,34 @@
             <div class="card">
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                     </div>
                     <div class="table-responsive">
                         <form id="update_product_cost_form" action="">
                             <table class="display data_tbl data__table">
                                 <thead>
                                     <tr>
-                                        <th class="text-black">{{ __("Date") }}</th>
-                                        <th class="text-black">{{ __("Voucher No") }}</th>
-                                        <th class="text-black">{{ __("Shop/Business") }}</th>
-                                        <th class="text-black">{{ __("Mfd. Product") }}</th>
-                                        <th class="text-black">{{ __("Status") }}</th>
-                                        <th class="text-black">{{ __("Unit Cost Exc. Tax") }}</th>
-                                        <th class="text-black">{{ __("Vat/Tax") }}</th>
-                                        <th class="text-black">{{ __("Unit Cost Inc. Tax") }}</th>
-                                        <th class="text-black">{{ __("Selling Price Exc. Tax") }}</th>
-                                        <th class="text-black">{{ __("Output Qty") }}</th>
-                                        <th class="text-black">{{ __("Wasted Qty") }}</th>
-                                        <th class="text-black">{{ __("Final Qty") }}</th>
-                                        <th class="text-black">{{ __("Total Ingred. Cost") }}</th>
-                                        <th class="text-black">{{ __("Addl. Cost") }}</th>
-                                        <th class="text-black">{{ __("Net Cost") }}</th>
+                                        <th class="text-black">{{ __('Date') }}</th>
+                                        <th class="text-black">{{ __('Voucher No') }}</th>
+                                        <th class="text-black">{{ __('Shop/Business') }}</th>
+                                        <th class="text-black">{{ __('Mfd. Product') }}</th>
+                                        <th class="text-black">{{ __('Status') }}</th>
+                                        <th class="text-black">{{ __('Unit Cost Exc. Tax') }}</th>
+                                        <th class="text-black">{{ __('Vat/Tax') }}</th>
+                                        <th class="text-black">{{ __('Unit Cost Inc. Tax') }}</th>
+                                        <th class="text-black">{{ __('Selling Price Exc. Tax') }}</th>
+                                        <th class="text-black">{{ __('Output Qty') }}</th>
+                                        <th class="text-black">{{ __('Wasted Qty') }}</th>
+                                        <th class="text-black">{{ __('Final Qty') }}</th>
+                                        <th class="text-black">{{ __('Total Ingred. Cost') }}</th>
+                                        <th class="text-black">{{ __('Addl. Cost') }}</th>
+                                        <th class="text-black">{{ __('Net Cost') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
                                 <tfoot>
                                     <tr class="bg-secondary">
-                                        <th colspan="9" class="text-white text-end">{{ __("Total") }} : ({{ $generalSettings['business__currency'] }})</th>
+                                        <th colspan="9" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                         <th id="total_output_quantity" class="text-white text-end"></th>
                                         <th id="total_wasted_quantity" class="text-white text-end"></th>
                                         <th id="total_final_output_quantity" class="text-white text-end"></th>
@@ -183,12 +212,22 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary'
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('reports.production.report.index') }}",
                 "data": function(d) {
@@ -200,23 +239,79 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                {data: 'date', name: 'productions.date'},
-                {data: 'voucher_no', name: 'productions.voucher_no'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'product', name: 'products.name'},
-                {data: 'status', name: 'product_variants.variant_name', className: 'fw-bold'},
-                {data: 'per_unit_cost_exc_tax', name: 'per_unit_cost_exc_tax', className: 'text-end fw-bold'},
-                {data: 'unit_tax_amount', name: 'unit_tax_amount', className: 'text-end fw-bold'},
-                {data: 'per_unit_cost_inc_tax', name: 'parentBranch.name', className: 'text-end fw-bold'},
-                {data: 'per_unit_price_exc_tax', name: 'per_unit_price_exc_tax', className: 'text-end fw-bold'},
-                {data: 'total_output_quantity', name: 'total_output_quantity', className: 'text-end fw-bold'},
-                {data: 'total_wasted_quantity', name: 'total_wasted_quantity', className: 'text-end fw-bold'},
-                {data: 'total_final_output_quantity', name: 'total_final_output_quantity', className: 'text-end fw-bold'},
-                {data: 'total_ingredient_cost', name: 'total_ingredient_cost', className: 'text-end fw-bold'},
-                {data: 'additional_production_cost', name: 'additional_production_cost', className: 'text-end fw-bold'},
-                {data: 'net_cost', name: 'net_cost', className: 'text-end fw-bold'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'date',
+                    name: 'productions.date'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'productions.voucher_no'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'product',
+                    name: 'products.name'
+                },
+                {
+                    data: 'status',
+                    name: 'product_variants.variant_name',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'per_unit_cost_exc_tax',
+                    name: 'per_unit_cost_exc_tax',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'unit_tax_amount',
+                    name: 'unit_tax_amount',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'per_unit_cost_inc_tax',
+                    name: 'parentBranch.name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'per_unit_price_exc_tax',
+                    name: 'per_unit_price_exc_tax',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_output_quantity',
+                    name: 'total_output_quantity',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_wasted_quantity',
+                    name: 'total_wasted_quantity',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_final_output_quantity',
+                    name: 'total_final_output_quantity',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_ingredient_cost',
+                    name: 'total_ingredient_cost',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'additional_production_cost',
+                    name: 'additional_production_cost',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'net_cost',
+                    name: 'net_cost',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var total_output_quantity = sum_table_col($('.data_tbl'), 'total_output_quantity');
                 $('#total_output_quantity').text(bdFormat(total_output_quantity));
@@ -255,7 +350,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('click', '#filter_button', function (e) {
+        $(document).on('click', '#filter_button', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -263,7 +358,7 @@
         });
 
         //Submit filter form by date-range field blur
-        $(document).on('click', '#search_product', function () {
+        $(document).on('click', '#search_product', function() {
             $(this).val('');
             $('#product_id').val('');
             $('#variant_id').val('');
@@ -288,7 +383,7 @@
 
             var url = "{{ route('general.product.search.by.only.name', ':keyword', ':branchId') }}";
             var route = url.replace(':keyword', keyword);
-                route = route.replace(':branchId', branchId);
+            route = route.replace(':branchId', branchId);
 
             $.ajax({
                 url: route,
@@ -308,7 +403,7 @@
             });
         });
 
-        $(document).on('click', '#select_product', function (e) {
+        $(document).on('click', '#select_product', function(e) {
             e.preventDefault();
             var product_name = $(this).html();
             $('#search_product').val(product_name.trim());
@@ -320,14 +415,14 @@
         });
 
         $('body').keyup(function(e) {
-            if (e.keyCode == 13 || e.keyCode == 9){
+            if (e.keyCode == 13 || e.keyCode == 9) {
                 $(".selectProduct").click();
                 $('.search_result').hide();
                 $('#list').empty();
             }
         });
 
-        $(document).on('mouseenter', '#list>li>a',function () {
+        $(document).on('mouseenter', '#list>li>a', function() {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });
@@ -356,13 +451,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -388,7 +484,7 @@
         });
 
         //Print purchase report
-        $(document).on('click', '#print_report', function (e) {
+        $(document).on('click', '#print_report', function(e) {
             e.preventDefault();
             var url = "{{ route('reports.production.report.print') }}";
             var search_product = $('#search_product').val();
@@ -401,15 +497,25 @@
             var from_date = $('#from_date').val();
             var to_date = $('#to_date').val();
             $.ajax({
-                url:url,
-                type:'get',
-                data: {search_product, branch_id, branch_name, product_id, status, status_name, variant_id, from_date, to_date},
-                success:function(data){
+                url: url,
+                type: 'get',
+                data: {
+                    search_product,
+                    branch_id,
+                    branch_name,
+                    product_id,
+                    status,
+                    status_name,
+                    variant_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,

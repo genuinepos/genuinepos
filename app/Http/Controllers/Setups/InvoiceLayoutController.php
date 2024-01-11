@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use App\Services\Setups\InvoiceLayoutService;
 use Exception;
 use Illuminate\Http\Request;
@@ -10,20 +11,22 @@ use Illuminate\Support\Facades\DB;
 
 class InvoiceLayoutController extends Controller
 {
-    public function __construct(private InvoiceLayoutService $invoiceLayoutService)
+    public function __construct(private InvoiceLayoutService $invoiceLayoutService, private BranchService $branchService)
     {
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('invoice_layout')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('invoice_layout'), 403);
+
         if ($request->ajax()) {
             return $this->invoiceLayoutService->invoiceLayoutListTable($request);
         }
 
-        return view('setups.invoices.layouts.index');
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        return view('setups.invoices.layouts.index', compact('branches'));
     }
 
     public function create()
@@ -58,7 +61,7 @@ class InvoiceLayoutController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Successfully invoice layout is created');
+        return response()->json(__('Invoice layout is created successfully'));
     }
 
     public function edit($id)
@@ -72,7 +75,7 @@ class InvoiceLayoutController extends Controller
     {
         $this->validate($request, [
 
-            'name' => 'required|unique:invoice_layouts,name,'.$layoutId,
+            'name' => 'required|unique:invoice_layouts,name,' . $layoutId,
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',
             'sales_order_heading' => 'required',
@@ -99,16 +102,20 @@ class InvoiceLayoutController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Successfully invoice layout is updated');
+        return response()->json(__('Invoice layout is updated successfully.'));
     }
 
     public function delete(Request $request, $id)
     {
         try {
-
             DB::beginTransaction();
 
-            $this->invoiceLayoutService->deleteInvoiceLayout(id: $id);
+            $deleteInvoiceLayout = $this->invoiceLayoutService->deleteInvoiceLayout(id: $id);
+
+            if ($deleteInvoiceLayout['pass'] == false) {
+
+                return response()->json(['errorMsg' => $deleteInvoiceLayout['msg']]);
+            }
 
             DB::commit();
         } catch (Exception $e) {
@@ -116,13 +123,6 @@ class InvoiceLayoutController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Successfully Invoice layout is deleted');
-    }
-
-    public function setDefault($id)
-    {
-        $this->invoiceLayoutService->setDefaultInvoiceLayout($id);
-
-        return response()->json('Default set successfully');
+        // return response()->json(__('Invoice layout is deleted successfully'));
     }
 }

@@ -11,8 +11,8 @@ class CashRegisterService
     public function addCashRegister(object $request)
     {
         $generalSettings = config('generalSettings');
-        $dateFormat = $generalSettings['business__date_format'];
-        $timeFormat = $generalSettings['business__time_format'];
+        $dateFormat = $generalSettings['business_or_shop__date_format'];
+        $timeFormat = $generalSettings['business_or_shop__time_format'];
 
         $__timeFormat = '';
         if ($timeFormat == '12') {
@@ -25,7 +25,7 @@ class CashRegisterService
 
         $addCashRegister = new CashRegister();
         $addCashRegister->user_id = auth()->user()->id;
-        $addCashRegister->date = date($dateFormat.$__timeFormat);
+        $addCashRegister->date = date($dateFormat . $__timeFormat);
         $addCashRegister->cash_counter_id = $request->cash_counter_id;
         $addCashRegister->cash_account_id = $request->cash_account_id;
         $addCashRegister->sale_account_id = $request->sale_account_id;

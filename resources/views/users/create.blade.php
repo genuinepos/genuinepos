@@ -19,7 +19,9 @@
             text-align: right;
         }
 
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
     </style>
 @endpush
 @section('title', 'Add User - ')
@@ -107,7 +109,7 @@
                                                         <input type="hidden" name="branch_count" value="YES">
                                                         <select required name="branch_id" class="form-control" id="branch_id" data-next="allow_login">
                                                             <option value="">{{ __('Select Shop/Business') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php

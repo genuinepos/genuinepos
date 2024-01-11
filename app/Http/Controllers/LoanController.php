@@ -32,7 +32,6 @@ class LoanController extends Controller
         $this->loanUtil = $loanUtil;
         $this->converter = $converter;
         $this->invoiceVoucherRefIdUtil = $invoiceVoucherRefIdUtil;
-
     }
 
     public function index(Request $request)
@@ -75,22 +74,22 @@ class LoanController extends Controller
                     $html .= '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" id="view" href="'.route('accounting.loan.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                    $html .= '<a class="dropdown-item" id="view" href="' . route('accounting.loan.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
                     // $html .= '<a class="dropdown-item" href="' . route('accounting.loan.edit', [$row->id]) . '" id="edit_loan"><i class="far fa-edit text-primary"></i> Edit</a>';
 
-                    $html .= '<a class="dropdown-item" id="delete_loan" href="'.route('accounting.loan.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete_loan" href="' . route('accounting.loan.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
 
                     return $html;
                 })->editColumn('report_date', function ($row) use ($generalSettings) {
-                    return date($generalSettings['business__date_format'], strtotime($row->report_date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->report_date));
                 })->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->b_name) {
-                        return $row->b_name.'/'.$row->b_code.'(<b>BL</b>)';
+                        return $row->b_name . '/' . $row->b_code . '(<b>BL</b>)';
                     } else {
-                        return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                        return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                     }
                 })->editColumn('type', function ($row) {
                     if ($row->type == 1) {
@@ -163,7 +162,7 @@ class LoanController extends Controller
 
         $prefix = $request->type == 1 ? 'LA' : 'LL';
         $addLoan = new Loan();
-        $addLoan->reference_no = $prefix.$refId;
+        $addLoan->reference_no = $prefix . $refId;
         $addLoan->loan_account_id = $request->loan_account_id;
         $addLoan->branch_id = auth()->user()->branch_id;
         $addLoan->loan_company_id = $request->company_id;
@@ -174,7 +173,7 @@ class LoanController extends Controller
         $addLoan->loan_by = 'Cash';
         $addLoan->loan_reason = $request->loan_reason;
         $addLoan->created_user_id = auth()->id();
-        $addLoan->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addLoan->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addLoan->save();
 
         if ($request->type == 1) {
@@ -312,7 +311,6 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
-
         } else {
             $this->loanUtil->adjustCompanyLoanLiabilityAmount($request->company_id);
             // Update loan A/C Ledger
@@ -334,7 +332,6 @@ class LoanController extends Controller
                 amount: $request->loan_amount,
                 balance_type: 'debit'
             );
-
         }
 
         return response()->json('Loan updated Successfully');

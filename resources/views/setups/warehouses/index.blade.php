@@ -10,12 +10,12 @@
                 <div class="name-head">
                     <h5>{{ __('Warehouses') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
         <div class="p-1">
-            @if (auth()->user()->is_delonging_an_area == 0)
+            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">
@@ -27,7 +27,7 @@
                                                 <label><strong>{{ __('Created From') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
@@ -45,7 +45,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Warehouses') }}</h6>
+                                <h6>{{ __('List of Warehouses') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
@@ -73,7 +73,7 @@
 
                         <div class="widget_content">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                             </div>
                             <div class="table-responsive">
                                 <table class="display data_tbl data__table">
@@ -116,60 +116,22 @@
             dom: "lBfrtip",
             buttons: [
                 //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:last-child)'
-                    }
-                },
+                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' } },
+                { extend: 'print', text: 'Print', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' } },
             ],
-            "lengthMenu": [
-                [50, 100, 500, 1000, -1],
-                [50, 100, 500, 1000, "All"]
-            ],
+            "lengthMenu": [ [50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"] ],
             "ajax": {
                 "url": "{{ route('warehouses.index') }}",
-                "data": function(d) {
-                    d.branch_id = $('#branch_id').val();
-                }
+                "data": function(d) { d.branch_id = $('#branch_id').val(); }
             },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
-                },
-                {
-                    data: 'name',
-                    name: 'warehouses.warehouse_name'
-                },
-                {
-                    data: 'branch',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'code',
-                    name: 'warehouses.warehouse_code'
-                },
-                {
-                    data: 'phone',
-                    name: 'warehouses.phone'
-                },
-                {
-                    data: 'address',
-                    name: 'warehouses.address'
-                },
-                {
-                    data: 'action'
-                },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'name', name: 'warehouses.warehouse_name' },
+                { data: 'branch', name: 'branches.name' },
+                { data: 'code', name: 'warehouses.warehouse_code' },
+                { data: 'phone', name: 'warehouses.phone' },
+                { data: 'address', name: 'warehouses.address' },
+                { data: 'action' },
             ],
         });
 
@@ -210,8 +172,7 @@
 
                         $('.data_preloader').hide();
 
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
@@ -267,8 +228,8 @@
                 $('#deleted_form').attr('action', url);
                 $('#deleteId').val(id);
                 $.confirm({
-                    'title': 'Confirmation',
-                    'content': 'Are you sure?',
+                    'title': "{{ __('Confirmation') }}",
+                    'content': "{{ __('Are you sure?') }}",
                     'buttons': {
                         'Yes': {
                             'class': 'yes btn-danger',

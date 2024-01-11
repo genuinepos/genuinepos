@@ -100,16 +100,16 @@ class BranchService
         $addBranch->alternate_phone_number = $request->alternate_phone_number;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        $addBranch->date_format = $request->date_format;
-        $addBranch->time_format = $request->time_format;
-        $addBranch->timezone = $request->timezone;
+        // $addBranch->date_format = $request->date_format;
+        // $addBranch->time_format = $request->time_format;
+        // $addBranch->timezone = $request->timezone;
 
-        if ($request->branch_type == BranchType::DifferentShop->value) {
+        // if ($request->branch_type == BranchType::DifferentShop->value) {
 
-            $addBranch->stock_accounting_method = $request->stock_accounting_method;
-            $addBranch->account_start_date = $request->account_start_date;
-            $addBranch->financial_year_start_month = $request->financial_year_start_month;
-        }
+        //     $addBranch->stock_accounting_method = $request->stock_accounting_method;
+        //     $addBranch->account_start_date = $request->account_start_date;
+        //     $addBranch->financial_year_start_month = $request->financial_year_start_month;
+        // }
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -123,7 +123,7 @@ class BranchService
 
         $addBranch->save();
 
-        return $addBranch;
+        return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
     }
 
     public function updateBranch(int $id, object $request): void
@@ -144,21 +144,21 @@ class BranchService
         $updateBranch->email = $request->email;
         $updateBranch->website = $request->website;
 
-        $updateBranch->date_format = $request->date_format;
-        $updateBranch->time_format = $request->time_format;
-        $updateBranch->timezone = $request->timezone;
+        // $updateBranch->date_format = $request->date_format;
+        // $updateBranch->time_format = $request->time_format;
+        // $updateBranch->timezone = $request->timezone;
 
-        if ($request->branch_type == BranchType::DifferentShop->value) {
+        // if ($request->branch_type == BranchType::DifferentShop->value) {
 
-            $updateBranch->stock_accounting_method = $request->stock_accounting_method;
-            $updateBranch->account_start_date = $request->account_start_date;
-            $updateBranch->financial_year_start_month = $request->financial_year_start_month;
-        } else {
+        //     $updateBranch->stock_accounting_method = $request->stock_accounting_method;
+        //     $updateBranch->account_start_date = $request->account_start_date;
+        //     $updateBranch->financial_year_start_month = $request->financial_year_start_month;
+        // } else {
 
-            $updateBranch->stock_accounting_method = null;
-            $updateBranch->account_start_date = null;
-            $updateBranch->financial_year_start_month = null;
-        }
+        //     $updateBranch->stock_accounting_method = null;
+        //     $updateBranch->account_start_date = null;
+        //     $updateBranch->financial_year_start_month = null;
+        // }
 
         if ($request->hasFile('logo')) {
 
@@ -370,7 +370,7 @@ class BranchService
     public function branchName(object $transObject = null): string
     {
         $generalSettings = config('generalSettings');
-        $branchName = $generalSettings['business__business_name'];
+        $branchName = $generalSettings['business_or_shop__business_name'];
 
         if (isset($transObject)) {
 

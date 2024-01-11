@@ -2,20 +2,47 @@
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .data_preloader { top: 2.3%; }
+        .data_preloader {
+            top: 2.3%;
+        }
 
         /* Search Product area style */
-        .selectProduct {  background-color: #5f555a; color: #fff !important; }
+        .selectProduct {
+            background-color: #5f555a;
+            color: #fff !important;
+        }
 
-        .search_area { position: relative; }
+        .search_area {
+            position: relative;
+        }
 
-        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
+        .search_result {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #E4E6EF;
+            background: white;
+            z-index: 1;
+            padding: 8px;
+            margin-top: 1px;
+        }
 
-        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
+        .search_result ul li {
+            width: 100%;
+            border: 1px solid lightgray;
+            margin-top: 3px;
+        }
 
-        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
+        .search_result ul li a {
+            color: #7b7676;
+            font-size: 12px;
+            display: block;
+            padding: 3px;
+        }
 
-        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
+        .search_result ul li a:hover {
+            color: white;
+            background-color: #ccc1c6;
+        }
 
         /* Search Product area style end */
     </style>
@@ -57,7 +84,7 @@
                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         @php
                                                             $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -130,24 +157,24 @@
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th>{{ __("Product") }}</th>
-                                            <th>{{ __("Sale Date") }}</th>
-                                            <th>{{ __("Sale") }}</th>
+                                            <th>{{ __('Product') }}</th>
+                                            <th>{{ __('Sale Date') }}</th>
+                                            <th>{{ __('Sale') }}</th>
                                             <th>{{ __('Shop') }}</th>
                                             <th>{{ __('Sold Qty') }}</th>
                                             <th>{{ __('Sold Price') }}</th>
-                                            <th>{{ __("Customer") }}</th>
+                                            <th>{{ __('Customer') }}</th>
                                             <th>{{ __('Stock In By') }}</th>
                                             <th>{{ __('Stock In Date') }}</th>
                                             <th>{{ __('Lot No') }}</th>
                                             {{-- <th>Stock In Qty</th> --}}
-                                            <th>{{ __("Unit Cost") }}</th>
+                                            <th>{{ __('Unit Cost') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr class="bg-secondary">
-                                            <th colspan="4" class="text-white text-end">{{ __("Total Sold Qty") }}</th>
+                                            <th colspan="4" class="text-white text-end">{{ __('Total Sold Qty') }}</th>
                                             <th id="sold_qty" class="text-white text-end"></th>
                                             <th class="text-white text-end">---</th>
                                             <th class="text-white text-start">---</th>
@@ -176,14 +203,24 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                { extend: 'excel', text: "{{ __('Excel') }}", className: 'btn btn-primary' },
-                { extend: 'pdf', text: "{{ __('Excel') }}", className: 'btn btn-primary' },
+            buttons: [{
+                    extend: 'excel',
+                    text: "{{ __('Excel') }}",
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: "{{ __('Excel') }}",
+                    className: 'btn btn-primary'
+                },
             ],
             "processing": true,
             "serverSide": true,
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('reports.stock.in.out.index') }}",
                 "data": function(d) {
@@ -194,20 +231,58 @@
                     d.from_date = $('#from_date').val();
                     d.to_date = $('#to_date').val();
                 }
-            }, columns: [
-                { data: 'product', name: 'products.name' },
-                { data: 'date', name: 'sales.date' },
-                { data: 'sale', name: 'sales.invoice_id' },
-                { data: 'branch', name: 'branches.name' },
-                { data: 'sold_qty', name: 'purchase_sale_product_chains.sold_qty', className: 'text-end fw-bold' },
-                { data: 'unit_price_inc_tax', name: 'sale_products.unit_price_inc_tax', className: 'text-end fw-bold' },
-                { data: 'customer_name', name: 'customers.name' },
-                { data: 'stock_in_by', name: 'purchases.invoice_id' },
-                { data: 'stock_in_date', name: 'purchase_products.created_at' },
+            },
+            columns: [{
+                    data: 'product',
+                    name: 'products.name'
+                },
+                {
+                    data: 'date',
+                    name: 'sales.date'
+                },
+                {
+                    data: 'sale',
+                    name: 'sales.invoice_id'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'sold_qty',
+                    name: 'purchase_sale_product_chains.sold_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'unit_price_inc_tax',
+                    name: 'sale_products.unit_price_inc_tax',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'customer_name',
+                    name: 'customers.name'
+                },
+                {
+                    data: 'stock_in_by',
+                    name: 'purchases.invoice_id'
+                },
+                {
+                    data: 'stock_in_date',
+                    name: 'purchase_products.created_at'
+                },
                 // {data: 'stock_in_qty', name: 'purchase_products.quantity', className: 'text-end'},
-                { data: 'lot_no', name: 'purchase_products.lot_no', className: 'text-end' },
-                { data: 'net_unit_cost', name: 'purchase_products.net_unit_cost', className: 'text-end fw-bold' },
-            ], fnDrawCallback: function() {
+                {
+                    data: 'lot_no',
+                    name: 'purchase_products.lot_no',
+                    className: 'text-end'
+                },
+                {
+                    data: 'net_unit_cost',
+                    name: 'purchase_products.net_unit_cost',
+                    className: 'text-end fw-bold'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var sold_qty = sum_table_col($('.data_tbl'), 'sold_qty');
                 $('#sold_qty').text(bdFormat(sold_qty));
@@ -241,7 +316,7 @@
         });
 
         //Submit filter form by date-range field blur
-        $(document).on('click', '#search_product', function () {
+        $(document).on('click', '#search_product', function() {
             $(this).val('');
             $('#product_id').val('');
             $('#variant_id').val('');
@@ -266,7 +341,7 @@
 
             var url = "{{ route('general.product.search.by.only.name', ':keyword', ':branchId') }}";
             var route = url.replace(':keyword', keyword);
-                route = route.replace(':branchId', branchId);
+            route = route.replace(':branchId', branchId);
 
             $.ajax({
                 url: route,
@@ -286,7 +361,7 @@
             });
         });
 
-        $(document).on('click', '#select_product', function (e) {
+        $(document).on('click', '#select_product', function(e) {
             e.preventDefault();
             var product_name = $(this).html();
             $('#search_product').val(product_name.trim());
@@ -298,14 +373,14 @@
         });
 
         $('body').keyup(function(e) {
-            if (e.keyCode == 13 || e.keyCode == 9){
+            if (e.keyCode == 13 || e.keyCode == 9) {
                 $(".selectProduct").click();
                 $('.search_result').hide();
                 $('#list').empty();
             }
         });
 
-        $(document).on('mouseenter', '#list>li>a',function () {
+        $(document).on('mouseenter', '#list>li>a', function() {
             $('#list>li>a').removeClass('selectProduct');
             $(this).addClass('selectProduct');
         });
@@ -334,13 +409,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -365,7 +441,7 @@
             });
         });
 
-        $(document).on('click', '#printReport', function (e) {
+        $(document).on('click', '#printReport', function(e) {
             e.preventDefault();
 
             var url = "{{ route('reports.stock.in.out.print') }}";
@@ -380,10 +456,20 @@
             var to_date = $('#to_date').val();
 
             $.ajax({
-                url:url,
-                type:'get',
-                data: {search_product, branch_id, branch_name, product_id, customer_account_id, customer_name, variant_id, from_date, to_date},
-                success:function(data){
+                url: url,
+                type: 'get',
+                data: {
+                    search_product,
+                    branch_id,
+                    branch_name,
+                    product_id,
+                    customer_account_id,
+                    customer_name,
+                    variant_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
 
                     $(data).printThis({
                         debug: false,

@@ -118,10 +118,10 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Date Format') }}</label>
-                                <select name="date_format" class="form-control" id="branch_date_format" data-next="branch_time_format">
-                                    <option value="d-m-Y" {{ $generalSettings['business__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
-                                    <option value="m-d-Y" {{ $generalSettings['business__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
-                                    <option value="Y-m-d" {{ $generalSettings['business__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                <select name="date_format" class="form-control" id="date_format" data-next="time_format">
+                                    <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }} | {{ __("DD-MM-YYYY") }}</option>
+                                    <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }} | {{ __("MM-DD-YYYY") }}</option>
+                                    <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }} | {{ __("YYYY-MM-DD") }}</option>
                                 </select>
                                 <span class="error error_date_format"></span>
                             </div>
@@ -130,7 +130,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Format') }}</label>
-                                <select name="time_format" class="form-control" id="branch_time_format" data-next="branch_timezone">
+                                <select name="time_format" class="form-control" id="time_format" data-next="timezone">
                                     <option value="12">{{ __('12 Hour') }}</option>
                                     <option value="24">{{ __('24 Hour') }}</option>
                                 </select>
@@ -141,10 +141,10 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                <select required name="timezone" class="form-control" id="branch_timezone" data-next="branch_stock_accounting_method">
+                                <select required name="timezone" class="form-control" id="timezone" data-next="stock_accounting_method">
                                     <option value="">{{ __('Time Zone') }}</option>
                                     @foreach ($timezones as $key => $timezone)
-                                        <option {{ ($generalSettings['business__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
+                                        <option {{ ($generalSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_time_format"></span>
@@ -154,9 +154,9 @@
                         <div class="row mt-1" id="stock_accounting_method_field">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
-                                <select name="stock_accounting_method" class="form-control" id="branch_stock_accounting_method" data-next="branch_account_start_date">
+                                <select name="stock_accounting_method" class="form-control" id="stock_accounting_method" data-next="account_start_date">
                                     @php
-                                        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
+                                        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                                     @endphp
                                     @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
                                         <option value="{{ $key }}">{{ $item }}</option>
@@ -169,7 +169,7 @@
                         <div class="form-group row mt-1" id="account_start_date_field">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ date('Y-m-d') }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                <input type="text" name="account_start_date" class="form-control" id="account_start_date" value="{{ date('Y-m-d') }}" data-next="branch_financial_year_start_month" autocomplete="off">
                                 <span class="error error_account_start_date"></span>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
                                 <div class="input-group">
-                                    <select name="financial_year_start_month" id="branch_financial_year_start_month" class="form-control select2" data-next="add_initial_user_btn">
+                                    <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="add_initial_user_btn">
                                         @php
                                             $months = \App\Enums\Months::cases();
                                         @endphp

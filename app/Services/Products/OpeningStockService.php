@@ -9,7 +9,7 @@ class OpeningStockService
     public function addOrEditProductOpeningStock(object $request, int $index, int $productId = null, int $variantId = null): object
     {
         $generalSettings = config('generalSettings');
-        $accountStartDate = $generalSettings['business__account_start_date'];
+        $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
         $date = $accountStartDate;
 
         $branchId = isset($request->branch_ids[$index]) ? $request->branch_ids[$index] : null;
@@ -40,7 +40,7 @@ class OpeningStockService
         $addOrEditOpeningStock->unit_cost_inc_tax = isset($request->unit_costs_inc_tax[$index]) ? $request->unit_costs_inc_tax[$index] : 0;
         $addOrEditOpeningStock->subtotal = isset($request->subtotals[$index]) ? $request->subtotals[$index] : 0;
         $addOrEditOpeningStock->date = $date;
-        $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date.' 01:00:00'));
+        $addOrEditOpeningStock->date_ts = date('Y-m-d H:i:s', strtotime($date . ' 01:00:00'));
         $addOrEditOpeningStock->save();
 
         return $addOrEditOpeningStock;

@@ -24,7 +24,7 @@ class SalesReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sales_report')) {
+        if (!auth()->user()->can('sales_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -67,7 +67,7 @@ class SalesReportController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date($generalSettings['business__date_format'], strtotime($row->date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
                 })
 
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -76,39 +76,39 @@ class SalesReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->branch_area_name.')';
+                            return $row->branch_name . '(' . $row->branch_area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
 
                 ->editColumn('invoice_id', function ($row) {
 
-                    return '<a href="'.route('sales.show', $row->id).'" id="details_btn">'.$row->invoice_id.'</a>';
+                    return '<a href="' . route('sales.show', $row->id) . '" id="details_btn">' . $row->invoice_id . '</a>';
                 })
 
-                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
 
-                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="'.$row->order_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->order_discount_amount).'</span>')
+                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->order_discount_amount) . '</span>')
 
-                ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="'.$row->shipment_charge.'">'.\App\Utils\Converter::format_in_bdt($row->shipment_charge).'</span>')
+                ->editColumn('shipment_charge', fn ($row) => '<span class="shipment_charge" data-value="' . $row->shipment_charge . '">' . \App\Utils\Converter::format_in_bdt($row->shipment_charge) . '</span>')
 
-                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="'.$row->order_tax_amount.'">'.'('.$row->order_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->order_tax_amount).'</span>')
+                ->editColumn('order_tax_amount', fn ($row) => '<span class="order_tax_amount" data-value="' . $row->order_tax_amount . '">' . '(' . $row->order_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->order_tax_amount) . '</span>')
 
-                ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
+                ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 
-                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="'.$row->received_amount.'">'.\App\Utils\Converter::format_in_bdt($row->received_amount).'</span>')
+                ->editColumn('received_amount', fn ($row) => '<span class="received_amount text-success" data-value="' . $row->received_amount . '">' . \App\Utils\Converter::format_in_bdt($row->received_amount) . '</span>')
 
-                ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="'.$row->sale_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->sale_return_amount).'</span>')
+                ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->sale_return_amount) . '</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
 
                 ->rawColumns(['date', 'branch', 'invoice_id', 'total_qty', 'net_total_amount', 'order_discount_amount', 'shipment_charge', 'order_tax_amount', 'total_invoice_amount', 'received_amount', 'sale_return_amount', 'due'])
                 ->make(true);
@@ -180,7 +180,7 @@ class SalesReportController extends Controller
 
     private function filter(object $request, object $query): object
     {
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 

@@ -1426,8 +1426,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('stock_adjustment_add') ||
-                                        auth()->user()->can('stock_adjustment_list'))
+                                @if (auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_list'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Stock Adjustment') }}</p>
                                         <div class="sub-menu-row">
@@ -1444,7 +1443,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('stock_adjustment_list'))
+                                            @if (auth()->user()->can('stock_adjustment_all'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('stock.adjustments.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -2063,7 +2062,7 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('general_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
+                                        <a href="{{ auth()->user()->branch_id ? route('branches.settings.index', auth()->user()->branch_id) : route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-cogs"></i></span>

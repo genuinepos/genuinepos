@@ -256,7 +256,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label><b>{{ __('Profit Margin(%)') }}</b></label>
-                                <input type="number" step="any" name="profit" class="form-control fw-bold" id="quick_product_profit" value="{{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }}" data-next="quick_product_price" placeholder="0.00" autocomplete="off">
+                                <input type="number" step="any" name="profit" class="form-control fw-bold" id="quick_product_profit" value="{{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }}" data-next="quick_product_price" placeholder="0.00" autocomplete="off">
                             </div>
                         </div>
 
@@ -292,7 +292,7 @@
                                                     {{ auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch?->branch_code }}
                                                 @endif
                                             @else
-                                                {{ $generalSettings['business__business_name'] . '(' . __('Business') . ')' }}
+                                                {{ $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')' }}
                                             @endif
                                             <input type="hidden" name="branch_ids[]" value="{{ auth()->user()->branch_id }}">
                                             <input type="hidden" name="warehouse_ids[]">

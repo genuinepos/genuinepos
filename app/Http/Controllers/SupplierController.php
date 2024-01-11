@@ -59,12 +59,11 @@ class SupplierController extends Controller
         $this->userActivityLogUtil = $userActivityLogUtil;
         $this->supplierPaymentUtil = $supplierPaymentUtil;
         $this->branchWiseSupplierAmountsUtil = $branchWiseSupplierAmountsUtil;
-
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('supplier_all')) {
+        if (!auth()->user()->can('supplier_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -81,7 +80,7 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('supplier_add')) {
+        if (!auth()->user()->can('supplier_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -95,7 +94,7 @@ class SupplierController extends Controller
         $firstLetterOfSupplier = str_split($request->name)[0];
         $supIdPrefix = $generalSettings['prefix__supplier_id'];
         $addSupplier = Supplier::create([
-            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix.str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, '0', STR_PAD_LEFT),
+            'contact_id' => $request->contact_id ? $request->contact_id : $supIdPrefix . str_pad($this->invoiceVoucherRefIdUtil->getLastId('suppliers'), 4, '0', STR_PAD_LEFT),
             'name' => $request->name,
             'business_name' => $request->business_name,
             'email' => $request->email,
@@ -112,7 +111,7 @@ class SupplierController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'shipping_address' => $request->shipping_address,
-            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier.$this->invoiceVoucherRefIdUtil->getLastId('suppliers'),
+            'prefix' => $request->prefix ? $request->prefix : $firstLetterOfSupplier . $this->invoiceVoucherRefIdUtil->getLastId('suppliers'),
             'opening_balance' => $request->opening_balance ? $request->opening_balance : 0,
             'total_purchase_due' => $request->opening_balance ? $request->opening_balance : 0,
         ]);
@@ -139,7 +138,7 @@ class SupplierController extends Controller
 
     public function edit($supplierId)
     {
-        if (! auth()->user()->can('supplier_edit')) {
+        if (!auth()->user()->can('supplier_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -153,7 +152,7 @@ class SupplierController extends Controller
 
     public function update(Request $request)
     {
-        if (! auth()->user()->can('supplier_edit')) {
+        if (!auth()->user()->can('supplier_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -236,7 +235,7 @@ class SupplierController extends Controller
 
     public function delete(Request $request, $supplierId)
     {
-        if (! auth()->user()->can('supplier_delete')) {
+        if (!auth()->user()->can('supplier_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -248,7 +247,7 @@ class SupplierController extends Controller
         }
         // $deleteSupplier = Supplier::find($supplierId);
 
-        if (! is_null($deleteSupplier)) {
+        if (!is_null($deleteSupplier)) {
 
             $deleteSupplier->delete();
         }
@@ -280,7 +279,7 @@ class SupplierController extends Controller
     // Supplier view method
     public function view(Request $request, $supplierId)
     {
-        if (! auth()->user()->can('supplier_all')) {
+        if (!auth()->user()->can('supplier_all')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -447,7 +446,7 @@ class SupplierController extends Controller
 
             // Add Supplier Payment Record
             $supplierPayment = new SupplierPayment();
-            $supplierPayment->voucher_no = 'SPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, '0', STR_PAD_LEFT);
+            $supplierPayment->voucher_no = 'SPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, '0', STR_PAD_LEFT);
             $supplierPayment->reference = $request->reference;
             $supplierPayment->branch_id = auth()->user()->branch_id;
             $supplierPayment->supplier_id = $supplierId;
@@ -456,7 +455,7 @@ class SupplierController extends Controller
             $supplierPayment->less_amount = $request->less_amount ? $request->less_amount : 0;
             $supplierPayment->payment_method_id = $request->payment_method_id;
             $supplierPayment->date = $request->date;
-            $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+            $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
             $supplierPayment->time = date('h:i:s a');
             $supplierPayment->month = date('F');
             $supplierPayment->year = date('Y');
@@ -464,7 +463,7 @@ class SupplierController extends Controller
             if ($request->hasFile('attachment')) {
 
                 $PaymentAttachment = $request->file('attachment');
-                $paymentAttachmentName = uniqid().'-'.'.'.$PaymentAttachment->getClientOriginalExtension();
+                $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
                 $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
                 $supplierPayment->attachment = $paymentAttachmentName;
             }
@@ -561,7 +560,7 @@ class SupplierController extends Controller
 
         // Add Supplier Payment Record
         $supplierPayment = new SupplierPayment();
-        $supplierPayment->voucher_no = 'RPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, '0', STR_PAD_LEFT);
+        $supplierPayment->voucher_no = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('supplier_payments'), 5, '0', STR_PAD_LEFT);
         $supplierPayment->branch_id = auth()->user()->branch_id;
         $supplierPayment->supplier_id = $supplierId;
         $supplierPayment->account_id = $request->account_id;
@@ -569,7 +568,7 @@ class SupplierController extends Controller
         $supplierPayment->type = 2;
         $supplierPayment->payment_method_id = $request->payment_method_id;
         $supplierPayment->date = $request->date;
-        $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $supplierPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $supplierPayment->time = date('h:i:s a');
         $supplierPayment->month = date('F');
         $supplierPayment->year = date('Y');
@@ -577,7 +576,7 @@ class SupplierController extends Controller
         if ($request->hasFile('attachment')) {
 
             $PaymentAttachment = $request->file('attachment');
-            $paymentAttachmentName = uniqid().'-'.'.'.$PaymentAttachment->getClientOriginalExtension();
+            $paymentAttachmentName = uniqid() . '-' . '.' . $PaymentAttachment->getClientOriginalExtension();
             $PaymentAttachment->move(public_path('uploads/payment_attachment/'), $paymentAttachmentName);
             $supplierPayment->attachment = $paymentAttachmentName;
         }
@@ -623,7 +622,7 @@ class SupplierController extends Controller
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
-                        $addPurchasePayment->invoice_id = 'RPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT);
+                        $addPurchasePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT);
 
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
@@ -634,7 +633,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -667,7 +666,7 @@ class SupplierController extends Controller
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
-                        $addPurchasePayment->invoice_id = 'RPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT);
+                        $addPurchasePayment->invoice_id = 'RPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('purchase_payments'), 5, '0', STR_PAD_LEFT);
 
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
@@ -678,7 +677,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $request->paying_amount;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -710,7 +709,7 @@ class SupplierController extends Controller
                         // Add purchase payment
                         $addPurchasePayment = new PurchasePayment();
 
-                        $addPurchasePayment->invoice_id = 'RPV'.$this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                        $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
 
                         $addPurchasePayment->purchase_id = $returnPurchase->id;
                         $addPurchasePayment->supplier_id = $supplierId;
@@ -721,7 +720,7 @@ class SupplierController extends Controller
                         $addPurchasePayment->paid_amount = $returnPurchase->purchase_return_due;
                         $addPurchasePayment->payment_type = 2;
                         $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                         $addPurchasePayment->month = date('F');
                         $addPurchasePayment->year = date('Y');
                         $addPurchasePayment->note = $request->note;
@@ -775,7 +774,7 @@ class SupplierController extends Controller
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
 
-                            $addPurchasePayment->invoice_id = 'RPV'.$this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
 
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -785,7 +784,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $request->paying_amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
@@ -811,7 +810,7 @@ class SupplierController extends Controller
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
 
-                            $addPurchasePayment->invoice_id = 'RPV'.$this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
 
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -821,7 +820,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $request->paying_amount;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
@@ -847,7 +846,7 @@ class SupplierController extends Controller
                             // Add purchase payment
                             $addPurchasePayment = new PurchasePayment();
 
-                            $addPurchasePayment->invoice_id = 'RPV'.$this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+                            $addPurchasePayment->invoice_id = 'RPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
 
                             $addPurchasePayment->supplier_id = $supplierId;
                             $addPurchasePayment->supplier_payment_id = $supplierPayment->id;
@@ -857,7 +856,7 @@ class SupplierController extends Controller
                             $addPurchasePayment->paid_amount = $dueSupplierReturnInvoice->total_return_due;
                             $addPurchasePayment->payment_type = 2;
                             $addPurchasePayment->date = date('d-m-y', strtotime($request->date));
-                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                            $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             $addPurchasePayment->month = date('F');
                             $addPurchasePayment->year = date('Y');
                             $addPurchasePayment->note = $request->note;
@@ -910,9 +909,9 @@ class SupplierController extends Controller
 
         if ($deleteSupplierPayment->attachment != null) {
 
-            if (file_exists(public_path('uploads/payment_attachment/'.$deleteSupplierPayment->attachment))) {
+            if (file_exists(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment))) {
 
-                unlink(public_path('uploads/payment_attachment/'.$deleteSupplierPayment->attachment));
+                unlink(public_path('uploads/payment_attachment/' . $deleteSupplierPayment->attachment));
             }
         }
 
@@ -1059,14 +1058,14 @@ class SupplierController extends Controller
 
                     if ($row->supplier_payment_id) {
 
-                        $html .= '<a href="'.route('suppliers.view.details', $row->supplier_payment_id).'" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+                        $html .= '<a href="' . route('suppliers.view.details', $row->supplier_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
 
-                        $html .= '<a href="'.route('suppliers.payment.delete', $row->supplier_payment_id).'" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                        $html .= '<a href="' . route('suppliers.payment.delete', $row->supplier_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
                     } else {
 
-                        $html .= '<a href="'.route('purchases.payment.details', $row->purchase_payment_id).'" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
+                        $html .= '<a href="' . route('purchases.payment.details', $row->purchase_payment_id) . '" id="payment_details" class="dropdown-item"><i class="fas fa-eye text-primary"></i> Details</a>';
 
-                        $html .= '<a href="'.route('purchases.payment.delete', $row->purchase_payment_id).'" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
+                        $html .= '<a href="' . route('purchases.payment.delete', $row->purchase_payment_id) . '" id="delete_payment" class="dropdown-item"><i class="far fa-trash-alt text-danger"></i> Delete</a>';
                     }
 
                     $html .= '</div>';
@@ -1076,11 +1075,11 @@ class SupplierController extends Controller
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date($generalSettings['business__date_format'], strtotime($row->date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 
-                    return $row->supplier_payment_voucher.$row->purchase_payment_voucher;
+                    return $row->supplier_payment_voucher . $row->purchase_payment_voucher;
                 })
                 ->editColumn('against_invoice', function ($row) {
 
@@ -1088,18 +1087,18 @@ class SupplierController extends Controller
 
                         if ($row->purchase_inv) {
 
-                            return 'Purchase : '.$row->purchase_inv;
+                            return 'Purchase : ' . $row->purchase_inv;
                         } else {
 
-                            return 'Purchase Return : '.$row->return_inv;
+                            return 'Purchase Return : ' . $row->return_inv;
                         }
                     } else {
                         if ($row->supplier_payment_id) {
 
-                            return '<a href="'.route('suppliers.view.details', $row->supplier_payment_id).'" id="payment_details" class="btn btn-sm text-info"> Details</a>';
+                            return '<a href="' . route('suppliers.view.details', $row->supplier_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
                         } else {
 
-                            return '<a href="'.route('purchases.payment.details', $row->purchase_payment_id).'" id="payment_details" class="btn btn-sm text-info"> Details</a>';
+                            return '<a href="' . route('purchases.payment.details', $row->purchase_payment_id) . '" id="payment_details" class="btn btn-sm text-info"> Details</a>';
                         }
                     }
                 })
@@ -1115,21 +1114,21 @@ class SupplierController extends Controller
                 })
                 ->editColumn('method', function ($row) {
 
-                    return $row->sp_pay_mode.$row->sp_payment_method.$row->pp_pay_mode.$row->pp_payment_method;
+                    return $row->sp_pay_mode . $row->sp_payment_method . $row->pp_pay_mode . $row->pp_payment_method;
                 })
                 ->editColumn('account', function ($row) {
 
                     if ($row->sp_account) {
 
-                        return $row->sp_account.'(A/C:'.$row->sp_account_number.')';
+                        return $row->sp_account . '(A/C:' . $row->sp_account_number . ')';
                     } else {
 
-                        return $row->pp_account.'(A/C:'.$row->pp_account_number.')';
+                        return $row->pp_account . '(A/C:' . $row->pp_account_number . ')';
                     }
                 })
-                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="'.$row->less_amount.'">'.$this->converter->format_in_bdt($row->less_amount).'</span>')
+                ->editColumn('less_amount', fn ($row) => '<span class="less_amount" data-value="' . $row->less_amount . '">' . $this->converter->format_in_bdt($row->less_amount) . '</span>')
 
-                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="'.$row->amount.'">'.$this->converter->format_in_bdt($row->amount).'</span>')
+                ->editColumn('amount', fn ($row) => '<span class="amount" data-value="' . $row->amount . '">' . $this->converter->format_in_bdt($row->amount) . '</span>')
 
                 ->rawColumns(['date', 'against_invoice', 'type', 'method', 'account', 'less_amount', 'amount', 'action'])
                 ->make(true);

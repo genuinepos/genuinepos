@@ -74,7 +74,7 @@ class PayrollReportController extends Controller
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('voucher_no', function ($row) {
@@ -200,10 +200,10 @@ class PayrollReportController extends Controller
             'parentBranch.name as parent_branch_name',
 
         )
-        // ->orderBy('hrm_payrolls.id', 'desc')
-        // ->orderByRaw('YEAR(hrm_payrolls.date_ts) DESC, MONTH(hrm_payrolls.date_ts) DESC')
-        ->orderByRaw("STR_TO_DATE(CONCAT('1 ', month, ' ', year), '%d %M %Y') DESC")
-        ->get();
+            // ->orderBy('hrm_payrolls.id', 'desc')
+            // ->orderByRaw('YEAR(hrm_payrolls.date_ts) DESC, MONTH(hrm_payrolls.date_ts) DESC')
+            ->orderByRaw("STR_TO_DATE(CONCAT('1 ', month, ' ', year), '%d %M %Y') DESC")
+            ->get();
 
         return view('hrm.reports.payroll_report.ajax_view.print', compact('payrolls', 'ownOrParentBranch', 'filteredBranchName', 'filteredDepartmentName', 'filteredUserName', 'fromDate', 'toDate', 'month', 'year'));
     }

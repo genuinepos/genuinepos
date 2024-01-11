@@ -24,7 +24,6 @@ use App\Services\Sales\SaleService;
 use App\Services\Sales\SalesReturnProductService;
 use App\Services\Sales\SalesReturnService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
 use App\Utils\UserActivityLogUtil;
@@ -45,7 +44,6 @@ class SalesReturnController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
@@ -59,7 +57,7 @@ class SalesReturnController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sales_return_index')) {
+        if (!auth()->user()->can('sales_return_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -105,16 +103,36 @@ class SalesReturnController extends Controller
         return view('sales.sales_return.ajax_view.show', compact('return'));
     }
 
+    public function print($id, Request $request)
+    {
+        $return = $this->salesReturnService->singleSalesReturn(id: $id, with: [
+            'sale',
+            'customer:id,name,phone,address,account_group_id',
+            'customer.group',
+            'createdBy:id,prefix,name,last_name',
+            'saleReturnProducts',
+            'saleReturnProducts.product',
+            'saleReturnProducts.variant',
+            'saleReturnProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'saleReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $printPageSize = $request->print_page_size;
+
+        $paidAmount = $return->paid;
+
+        return view('sales.print_templates.sales_return_print', compact('return', 'paidAmount', 'printPageSize'));
+    }
+
     public function create()
     {
-        if (! auth()->user()->can('create_sales_return')) {
+        if (!auth()->user()->can('create_sales_return')) {
 
             abort(403, 'Access Forbidden.');
         }
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
-        $generalSettings = config('generalSettings');
         $branchName = $this->branchService->branchName();
 
         $accounts = $this->accountService->accounts(with: [
@@ -158,7 +176,7 @@ class SalesReturnController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('create_sales_return')) {
+        if (!auth()->user()->can('create_sales_return')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -193,9 +211,8 @@ class SalesReturnController extends Controller
             }
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $salesReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->sales_return_prefix ? $branchSetting?->sales_return_prefix : $generalSettings['prefix__sale_return'];
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $salesReturnVoucherPrefix = $generalSettings['prefix__sales_return_prefix'] ? $generalSettings['prefix__sales_return_prefix'] : 'SR';
+            $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
 
             $addReturn = $this->salesReturnService->addSalesReturn(request: $request, voucherPrefix: $salesReturnVoucherPrefix, codeGenerator: $codeGenerator);
 
@@ -302,8 +319,9 @@ class SalesReturnController extends Controller
         if ($request->action == 'save_and_print') {
 
             $paidAmount = $request->paying_amount;
+            $printPageSize = $request->print_page_size;
 
-            return view('sales.save_and_print_template.sales_return_print', compact('return', 'paidAmount'));
+            return view('sales.print_templates.sales_return_print', compact('return', 'paidAmount', 'printPageSize'));
         } else {
 
             return response()->json(['successMsg' => __('Sales Return Created Successfully.')]);

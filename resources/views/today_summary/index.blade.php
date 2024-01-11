@@ -1,5 +1,5 @@
 @php
-    $currency = $generalSettings['business__currency'];
+    $currency = $generalSettings['business_or_shop__currency'];
 @endphp
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
@@ -14,7 +14,7 @@
                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                         <select name="branch_id" class="form-control select2" id="today_summary_branch_id" autofocus>
                             <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                            <option {{ $branchId == 'NULL' ? 'SELECTED' : '' }} data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                            <option {{ $branchId == 'NULL' ? 'SELECTED' : '' }} data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                             @foreach ($branches as $branch)
                                 @php
                                     $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
@@ -40,7 +40,7 @@
                                     $branch = auth()->user()?->branch?->name . '(' . auth()->user()?->branch?->area_name . ')-' . auth()->user()?->branch?->branch_code;
                                 }
                             } else {
-                                $branch = $generalSettings['business__business_name'] . '(' . __('Business') . ')';
+                                $branch = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
                             }
                         @endphp
                         <input readonly type="text" class="form-control" value="{{ $branch }}">

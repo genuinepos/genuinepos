@@ -18,7 +18,7 @@ class StockAdjustedProductReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('stock_adjustment_report')) {
+        if (!auth()->user()->can('stock_adjustment_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -67,13 +67,13 @@ class StockAdjustedProductReportController extends Controller
             return DataTables::of($adjustmentProducts)
                 ->editColumn('product', function ($row) {
 
-                    $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                    $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                    return Str::limit($row->name, 35, '').$variant;
+                    return Str::limit($row->name, 35, '') . $variant;
                 })
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                     return date($__date_format, strtotime($row->date));
                 })
@@ -83,49 +83,49 @@ class StockAdjustedProductReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->branch_area_name.')';
+                            return $row->branch_name . '(' . $row->branch_area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('stock_location', function ($row) use ($generalSettings) {
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name.'('.$row->warehouse_code.')';
+                        return $row->warehouse_name . '(' . $row->warehouse_code . ')';
                     } else {
 
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                                return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                             } else {
 
-                                return $row->branch_name.'('.$row->branch_area_name.')';
+                                return $row->branch_name . '(' . $row->branch_area_name . ')';
                             }
                         } else {
 
-                            return $generalSettings['business__business_name'];
+                            return $generalSettings['business_or_shop__business_name'];
                         }
                     }
                 })
 
-                ->editColumn('voucher_no', fn ($row) => '<a href="'.route('stock.adjustments.show', [$row->stock_adjustment_id]).'" class="text-hover" id="details_btn" title="View">'.$row->voucher_no.'</a>')
+                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('stock.adjustments.show', [$row->stock_adjustment_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->voucher_no . '</a>')
 
                 ->editColumn('quantity', function ($row) {
 
-                    return \App\Utils\Converter::format_in_bdt($row->quantity).'/<span class="quantity" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>';
+                    return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="quantity" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
                 })
 
                 ->editColumn('unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->unit_cost_inc_tax))
 
-                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->subtotal).'</span>')
+                ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
 
                 ->rawColumns(['product', 'date', 'branch', 'stock_location', 'quantity', 'voucher_no', 'unit_cost_inc_tax', 'subtotal'])
                 ->make(true);

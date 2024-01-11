@@ -113,11 +113,11 @@ class AccountService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a id="editAccount" class="dropdown-item" href="'.route('accounts.edit', [$row->id]).'" > '.__('Edit').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.ledger.index', [$row->id]).'">'.__('Ledger').'</a>';
-                $html .= '<a class="dropdown-item" href="'.route('accounts.delete', [$row->id]).'" id="delete">'.__('Delete').'</a>';
+                $html .= '<a id="editAccount" class="dropdown-item" href="' . route('accounts.edit', [$row->id]) . '" > ' . __('Edit') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.ledger.index', [$row->id]) . '">' . __('Ledger') . '</a>';
+                $html .= '<a class="dropdown-item" href="' . route('accounts.delete', [$row->id]) . '" id="delete">' . __('Delete') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -125,7 +125,7 @@ class AccountService
             })
             ->editColumn('ac_number', fn ($row) => $row->account_number ? $row->account_number : 'N/A')
             ->editColumn('bank', fn ($row) => $row->b_name ? $row->b_name : 'N/A')
-            ->editColumn('group', fn ($row) => '<b>'.$row->group_name.'</b>')
+            ->editColumn('group', fn ($row) => '<b>' . $row->group_name . '</b>')
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
                 if ($row->is_global == 0) {
@@ -134,16 +134,16 @@ class AccountService
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->area_name.')';
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->area_name.')';
+                            return $row->branch_name . '(' . $row->area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
-                // return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business__business_name'];
+                    // return $row->branch_name ? $row->branch_name . '/' . $row->branch_code : $generalSettings['business_or_shop__business_name'];
                 } else {
 
                     return __('Global Access');
@@ -168,19 +168,19 @@ class AccountService
 
                 if ($currOpeningBalanceSide == 'dr') {
 
-                    return '<span class="dr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
+                    return '<span class="dr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
                 } elseif ($currOpeningBalanceSide == 'cr') {
 
-                    return '<span class="cr_opening_balance" data-value="'.$currOpeningBalance.'">'.\App\Utils\Converter::format_in_bdt($currOpeningBalance).' '.ucfirst($currOpeningBalanceSide).'.</span>';
+                    return '<span class="cr_opening_balance" data-value="' . $currOpeningBalance . '">' . \App\Utils\Converter::format_in_bdt($currOpeningBalance) . ' ' . ucfirst($currOpeningBalanceSide) . '.</span>';
                 }
             })
             ->editColumn('debit', function ($row) {
 
-                return '<span class="debit" data-value="'.$row->curr_total_debit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_debit).'</span>';
+                return '<span class="debit" data-value="' . $row->curr_total_debit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_debit) . '</span>';
             })
             ->editColumn('credit', function ($row) {
 
-                return '<span class="credit" data-value="'.$row->curr_total_credit.'">'.\App\Utils\Converter::format_in_bdt($row->curr_total_credit).'</span>';
+                return '<span class="credit" data-value="' . $row->curr_total_credit . '">' . \App\Utils\Converter::format_in_bdt($row->curr_total_credit) . '</span>';
             })
             ->editColumn('closing_balance', function ($row) {
 
@@ -219,10 +219,10 @@ class AccountService
 
                 if ($closingBalanceSide == 'dr') {
 
-                    return '<span class="dr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
+                    return '<span class="dr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
                 } elseif ($closingBalanceSide == 'cr') {
 
-                    return '<span class="cr_closing_balance" data-value="'.$closingBalance.'">'.\App\Utils\Converter::format_in_bdt($closingBalance).' '.ucfirst($closingBalanceSide).'.</span>';
+                    return '<span class="cr_closing_balance" data-value="' . $closingBalance . '">' . \App\Utils\Converter::format_in_bdt($closingBalance) . ' ' . ucfirst($closingBalanceSide) . '.</span>';
                 }
             })
             ->rawColumns(['action', 'ac_number', 'bank', 'group', 'branch', 'opening_balance', 'debit', 'credit', 'closing_balance'])
@@ -293,7 +293,7 @@ class AccountService
             return ['success' => false, 'msg' => __('Account can not be deleted. One or more ledger entries are belonging in this account.')];
         }
 
-        if (! is_null($deleteAccount)) {
+        if (!is_null($deleteAccount)) {
 
             $deleteAccount->delete();
             $deleteAccount?->contact?->delete();
@@ -506,7 +506,7 @@ class AccountService
             count($account->accountLedgersWithOutOpeningBalances) > 0
         ) {
 
-            return ['pass' => false, 'msg' => $account?->group->name.' '.__('can be changed to other account group. One or more ledger entries are belonging in this account')];
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
         }
 
         if (
@@ -515,7 +515,7 @@ class AccountService
             count($account->accountLedgersWithOutOpeningBalances) > 0
         ) {
 
-            return ['pass' => false, 'msg' => $account?->group->name.' '.__('can be changed to other account group. One or more ledger entries are belonging in this account')];
+            return ['pass' => false, 'msg' => $account?->group->name . ' ' . __('can be changed to other account group. One or more ledger entries are belonging in this account')];
         }
 
         return ['pass' => true];

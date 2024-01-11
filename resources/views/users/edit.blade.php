@@ -19,7 +19,9 @@
             text-align: right;
         }
 
-        .input-group-text { font-size: 12px !important; }
+        .input-group-text {
+            font-size: 12px !important;
+        }
     </style>
 @endpush
 @section('title', 'Edit User - ')
@@ -105,7 +107,7 @@
                                                             <input type="hidden" name="branch_count" value="YES">
                                                             <select required name="branch_id" class="form-control" id="branch_id" data-next="allow_login">
                                                                 <option value="">{{ __('Select Shop/Business') }}</option>
-                                                                <option {{ $user->branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                                <option {{ $user->branch_id == null ? 'SELECTED' : '' }} value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                                 @foreach ($branches as $branch)
                                                                     <option {{ $user->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                                                         @php
@@ -183,7 +185,7 @@
                                                         <div class="input-group">
                                                             <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <input readonly type="text" class="form-control fw-bold" value="{{ __("superadmin") }}">
+                                                                <input readonly type="text" class="form-control fw-bold" value="{{ __('superadmin') }}">
                                                                 <input type="hidden" name="role_id" value="{{ $userRole = $user?->roles?->first()->id }}">
                                                             </div>
                                                         </div>
@@ -491,7 +493,7 @@
                                                                 <span class="error error_shift_id"></span>
 
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text {{ !auth()->user()->can('shift') ? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('shift') ? 'addShift': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                    <span class="input-group-text {{ !auth()->user()->can('shift')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('shift')? 'addShift': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -506,7 +508,7 @@
                                                         <div class="col-8">
                                                             <div class="input-group flex-nowrap">
                                                                 <select name="department_id" class="form-control select2" id="department_id" data-next="designation_id">
-                                                                    <option value="">{{ __("Select Department") }}</option>
+                                                                    <option value="">{{ __('Select Department') }}</option>
                                                                     @foreach ($departments as $department)
                                                                         <option {{ $user->department_id == $department->id ? 'SELECTED' : '' }} value="{{ $department->id }}">{{ $department->name }}</option>
                                                                     @endforeach
@@ -533,7 +535,7 @@
                                                                 </select>
 
                                                                 <div class="input-group-prepend">
-                                                                    <span class="input-group-text {{ !auth()->user()->can('designation') ? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('designation') ? 'addDesignation': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                    <span class="input-group-text {{ !auth()->user()->can('designation')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('designation')? 'addDesignation': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                                 </div>
                                                             </div>
                                                         </div>

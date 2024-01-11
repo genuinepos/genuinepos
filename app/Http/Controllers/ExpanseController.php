@@ -128,7 +128,7 @@ class ExpanseController extends Controller
         }
 
         $generalSettings = config('generalSettings');
-        $invoicePrefix = $generalSettings['prefix__expenses'];
+        $invoicePrefix = $generalSettings['prefix__expense_voucher_prefix'];
         $paymentInvoicePrefix = $generalSettings['prefix__expanse_payment'];
 
         $this->validate($request, [

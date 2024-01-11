@@ -19,13 +19,13 @@
     <div class="form-group row mt-1">
         <div class="col-md-6">
             <label><strong>@lang('menu.start_at') </strong><span class="text-danger">*</span></label>
-            <input type="text" name="start_at" id="e_start_at" class="form-control add_input" value="{{ date($generalSettings['business__date_format'], strtotime($discount->start_at)) }}">
+            <input type="text" name="start_at" id="e_start_at" class="form-control add_input" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($discount->start_at)) }}">
             <span class="error error_start_at"></span>
         </div>
 
         <div class="col-md-6">
             <label><strong>@lang('menu.end_at') </strong><span class="text-danger">*</span></label>
-            <input type="text" name="end_at" id="e_end_at" class="form-control add_input" value="{{ date($generalSettings['business__date_format'], strtotime($discount->end_at)) }}">
+            <input type="text" name="end_at" id="e_end_at" class="form-control add_input" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($discount->end_at)) }}">
             <span class="error error_end_at"></span>
         </div>
     </div>
@@ -200,7 +200,7 @@
         }
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

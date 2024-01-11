@@ -74,8 +74,8 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
 
         $generalSettings = config('generalSettings');
         $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $voucherPrefix = isset($branchSetting) && $branchSetting?->stock_adjustment_prefix ? $branchSetting?->stock_adjustment_prefix : $generalSettings['prefix__stock_adjustment'];
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
+        $voucherPrefix = isset($branchSetting) && $branchSetting?->stock_adjustment_prefix ? $branchSetting?->stock_adjustment_prefix : $generalSettings['prefix__stock_adjustment_prefix'];
+        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
 
         $addStockAdjustment = $stockAdjustmentService->addStockAdjustment(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -189,6 +189,28 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
             'references.voucherDescription.accountingVoucher.voucherDescriptions.account.bank:id,name',
             'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
         ]);
+
+        return $data;
+    }
+
+    public function printMethodContainer(int $id, object $request, object $stockAdjustmentService): ?array
+    {
+        $data = [];
+        $data['adjustment'] = $stockAdjustmentService->singleStockAdjustment(id: $id, with: [
+            'branch:id,name,branch_code,area_name,parent_branch_id',
+            'branch.parentBranch:id,name,branch_code,area_name',
+            'adjustmentProducts',
+            'adjustmentProducts.product',
+            'adjustmentProducts.variant',
+            'adjustmentProducts.branch:id,name,branch_code,area_name,parent_branch_id',
+            'adjustmentProducts.branch.parentBranch:id,name,branch_code,area_name',
+            'adjustmentProducts.warehouse:id,warehouse_name,warehouse_code',
+            'adjustmentProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'adjustmentProducts.unit.baseUnit:id,base_unit_id,code_name',
+            'createdBy:id,prefix,name,last_name',
+        ]);
+
+        $data['printPageSize'] = $request->print_page_size;
 
         return $data;
     }

@@ -1,5 +1,5 @@
 @php
-    $dateFormat = $generalSettings['business__date_format'];
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
 @endphp
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
@@ -181,7 +181,7 @@
 <script>
     function litepicker(idName) {
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

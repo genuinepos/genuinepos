@@ -244,7 +244,7 @@
                                                             @endif
                                                         @else
 
-                                                            {{ $generalSettings['business__business_name'] }}
+                                                            {{ $generalSettings['business_or_shop__business_name'] }}
                                                         @endif
                                                     @endif
                                                 </td>
@@ -319,7 +319,7 @@
                                                         @endif
                                                     @else
 
-                                                        {{ $generalSettings['business__business_name'] }}
+                                                        {{ $generalSettings['business_or_shop__business_name'] }}
                                                     @endif
                                                 @endif
                                             </td>

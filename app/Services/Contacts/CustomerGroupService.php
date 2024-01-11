@@ -31,8 +31,8 @@ class CustomerGroupService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('contacts.customers.groups.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="'.route('contacts.customers.groups.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                $html .= '<a href="' . route('contacts.customers.groups.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('contacts.customers.groups.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -44,7 +44,7 @@ class CustomerGroupService
             ->editColumn('calculation_percentage', function ($row) {
 
                 if ($row->calculation_percentage != 0) {
-                    return \App\Utils\Converter::format_in_bdt($row->calculation_percentage).'%';
+                    return \App\Utils\Converter::format_in_bdt($row->calculation_percentage) . '%';
                 }
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -57,7 +57,7 @@ class CustomerGroupService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->rawColumns(['action', 'price_calculation_type', 'calculation_percentage', 'branch'])
@@ -106,7 +106,7 @@ class CustomerGroupService
     {
         $deleteCustomerGroup = $this->singleCustomerGroup(id: $id);
 
-        if (! is_null($deleteCustomerGroup)) {
+        if (!is_null($deleteCustomerGroup)) {
 
             $deleteCustomerGroup->delete();
         }

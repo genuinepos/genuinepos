@@ -187,7 +187,7 @@ class UserActivityLogService
     public function addLog($action, $subjectType, $dataObj, $branchId = null, $userId = null)
     {
         $generalSettings = config('generalSettings');
-        $dateFormat = $generalSettings['business__date_format'];
+        $dateFormat = $generalSettings['business_or_shop__date_format'];
         $__dateFormat = str_replace('y', 'Y', $dateFormat);
 
         $descriptionModel = $this->descriptionModel();
@@ -204,7 +204,7 @@ class UserActivityLogService
         $index = 0;
         foreach ($descriptionModel[$subjectType]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subjectType]['texts'][$index].(isset($dataObj->{$field}) ? $dataObj->{$field} : 'N/A').', ';
+            $description .= $descriptionModel[$subjectType]['texts'][$index] . (isset($dataObj->{$field}) ? $dataObj->{$field} : 'N/A') . ', ';
             $index++;
         }
 

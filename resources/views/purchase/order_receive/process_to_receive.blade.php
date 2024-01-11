@@ -60,7 +60,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><span class="text-danger">*</span> <b>@lang('menu.b_location') </b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] . ' (HO)' }}">
+                                                <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] . ' (HO)' }}">
                                             </div>
                                         </div>
                                     @endif
@@ -79,7 +79,7 @@
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.date') </b></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control changeable" id="datepicker" value="{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}">
+                                            <input required type="text" name="date" class="form-control changeable" id="datepicker" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +254,7 @@
                                                     <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}" tabindex="-1">
                                                     <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}" tabindex="-1">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.order_discount') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.order_discount') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1">
                                                         </div>
@@ -272,7 +272,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.shipment_cost') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.shipment_cost') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1">
                                                         </div>
@@ -281,7 +281,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_payable') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class="col-4"><b>@lang('menu.total_payable') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_purchase_amount" type="number" step="any" class="form-control" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                         </div>
@@ -290,7 +290,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b> @lang('menu.paid') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b> @lang('menu.paid') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}" tabindex="-1">
                                                         </div>
@@ -311,7 +311,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class=" col-4"><b>{{ __('Current Order Due') }} </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>{{ __('Current Order Due') }} </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="due" id="due" class="form-control text-danger bold_input_field" value="{{ $purchase->due }}" tabindex="-1">
                                                         </div>
@@ -320,7 +320,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.paying_amount') </b> {{ $generalSettings['business__currency'] }} <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.paying_amount') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-7">
@@ -328,7 +328,7 @@
                                                                 </div>
 
                                                                 <div class="col-md-5">
-                                                                    <input type="text" step="any" name="fixed_payment_date" class="form-control" id="fixed_payment_date" value="{{ date($generalSettings['business__date_format']) }}" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                                    <input type="text" step="any" name="fixed_payment_date" class="form-control" id="fixed_payment_date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="DD-MM-YYYY" autocomplete="off">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -570,7 +570,7 @@
             $('#purchase_due').val(parseFloat(calcDueAmount).toFixed(2));
         });
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -167,7 +167,7 @@
         <div class="card-title mt-1 ps-4">
             <select name="branch_id" id="branch_id" class="form-control w-25 submit_able" autofocus>
                 <option value="">{{ __('All Business Location') }}</option>
-                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                 {{-- @foreach ($branches as $branch)
                     <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                 @endforeach --}}

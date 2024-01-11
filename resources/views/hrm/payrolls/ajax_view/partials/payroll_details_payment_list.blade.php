@@ -59,7 +59,7 @@
 
                         <tr>
                             <td>{{ $voucherType }}</td>
-                            <td>{{ date($generalSettings['business__date_format'], strtotime($date)) }}</td>
+                            <td>{{ date($generalSettings['business_or_shop__date_format'], strtotime($date)) }}</td>
                             <td>{{ $reference->voucherDescription->accountingVoucher->voucher_no }}</td>
                             <td>{{ $method }}</td>
                             {{-- <td class="fw-bold">{{ $cashBankAccount?->account?->name.$accountNo.$bank }}</td> --}}

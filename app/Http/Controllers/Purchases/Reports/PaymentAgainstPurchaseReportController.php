@@ -23,7 +23,7 @@ class PaymentAgainstPurchaseReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('received_against_sales_report')) {
+        if (!auth()->user()->can('received_against_sales_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -66,14 +66,14 @@ class PaymentAgainstPurchaseReportController extends Controller
                     $paymentVoucherNo = $row->voucherDescription?->accountingVoucher?->voucher_no;
                     $paymentVoucherId = $row->voucherDescription?->accountingVoucher?->id;
 
-                    return '<a href="'.route('payments.show', $paymentVoucherId).'" id="details_btn">'.$paymentVoucherNo.'</a>';
+                    return '<a href="' . route('payments.show', $paymentVoucherId) . '" id="details_btn">' . $paymentVoucherNo . '</a>';
                 })
 
                 ->editColumn('payment_date', function ($row) use ($generalSettings) {
 
                     $date = $row->voucherDescription?->accountingVoucher?->date;
 
-                    return date($generalSettings['business__date_format'], strtotime($date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($date));
                 })
 
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -85,14 +85,14 @@ class PaymentAgainstPurchaseReportController extends Controller
                         $parentBranch = $row?->voucherDescription?->accountingVoucher?->branch?->parentBranch;
                         if ($parentBranch) {
 
-                            return $parentBranch->name.'('.$branch->area_name.')';
+                            return $parentBranch->name . '(' . $branch->area_name . ')';
                         } else {
 
-                            return $branch->name.'('.$branch->area_name.')';
+                            return $branch->name . '(' . $branch->area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
 
@@ -104,10 +104,10 @@ class PaymentAgainstPurchaseReportController extends Controller
 
                     if ($purchaseStatus == PurchaseStatus::Purchase->value) {
 
-                        return __('Purchase').':<a href="'.route('purchases.show', $purchaseId).'" id="details_btn">'.$invoiceId.'</a>';
+                        return __('Purchase') . ':<a href="' . route('purchases.show', $purchaseId) . '" id="details_btn">' . $invoiceId . '</a>';
                     } elseif ($purchaseStatus == PurchaseStatus::PurchaseOrder->value) {
 
-                        return __('P/o').':<a href="'.route('purchase.orders.show', $purchaseId).'" id="details_btn">'.$invoiceId.'</a>';
+                        return __('P/o') . ':<a href="' . route('purchase.orders.show', $purchaseId) . '" id="details_btn">' . $invoiceId . '</a>';
                     }
                 })
 
@@ -115,7 +115,7 @@ class PaymentAgainstPurchaseReportController extends Controller
 
                     $purchaseDate = $row?->purchase?->date;
 
-                    return date($generalSettings['business__date_format'], strtotime($purchaseDate));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($purchaseDate));
                 })
 
                 ->editColumn('supplier', function ($row) {
@@ -133,9 +133,9 @@ class PaymentAgainstPurchaseReportController extends Controller
                     $accountName = $row->voucherDescription?->accountingVoucher?->voucherCreditDescription?->account?->name;
                     $accountNumber = $row->voucherDescription?->accountingVoucher?->voucherCreditDescription?->account?->account_number;
 
-                    $__accountNumber = $accountNumber ? ' / '.$accountNumber : '';
+                    $__accountNumber = $accountNumber ? ' / ' . $accountNumber : '';
 
-                    return $accountName.$__accountNumber;
+                    return $accountName . $__accountNumber;
                 })
 
                 ->editColumn('payment_method', function ($row) {
@@ -143,7 +143,7 @@ class PaymentAgainstPurchaseReportController extends Controller
                     return $row->voucherDescription?->accountingVoucher?->voucherCreditDescription?->paymentMethod?->name;
                 })
 
-                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount text-danger" data-value="'.$row->amount.'">'.\App\Utils\Converter::format_in_bdt($row->amount).'</span>')
+                ->editColumn('paid_amount', fn ($row) => '<span class="paid_amount text-danger" data-value="' . $row->amount . '">' . \App\Utils\Converter::format_in_bdt($row->amount) . '</span>')
 
                 ->rawColumns(['payment_voucher', 'payment_date', 'branch', 'purchase_or_order_id', 'purchase_date', 'supplier', 'total_purchase_amount', 'credit_account', 'payment_method', 'paid_amount'])
                 ->make(true);
@@ -211,7 +211,7 @@ class PaymentAgainstPurchaseReportController extends Controller
 
     private function filter(object $request, object $query): object
     {
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 

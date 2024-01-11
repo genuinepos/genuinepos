@@ -29,7 +29,7 @@
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -136,7 +136,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                                <th colspan="6" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                 <th id="total_item" class="text-white text-end"></th>
                                                 <th id="total_qty" class="text-white text-end"></th>
                                                 <th id="total_invoice_amount" class="text-white text-end"></th>
@@ -221,69 +221,21 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [{
-                    data: 'action'
-                },
-                {
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'invoice_id',
-                    name: 'sales.invoice_id',
-                    className: 'fw-bold'
-                },
-                {
-                    data: 'branch',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'customer_name',
-                    name: 'customers.name'
-                },
-                {
-                    data: 'payment_status',
-                    name: 'created_by.name',
-                    className: 'text-start'
-                },
-                {
-                    data: 'total_item',
-                    name: 'total_item',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'total_qty',
-                    name: 'total_qty',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'total_invoice_amount',
-                    name: 'total_invoice_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'received_amount',
-                    name: 'paid',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'sale_return_amount',
-                    name: 'sale_return_amount',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'due',
-                    name: 'due',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'created_by',
-                    name: 'created_by.name',
-                    className: 'text-end fw-bold'
-                },
-
-            ],
-            fnDrawCallback: function() {
+            columns: [
+                { data: 'action' },
+                { data: 'date', name: 'date' },
+                { data: 'invoice_id', name: 'sales.invoice_id', className: 'fw-bold' },
+                { data: 'branch', name: 'branches.name' },
+                { data: 'customer_name', name: 'customers.name' },
+                { data: 'payment_status', name: 'created_by.name', className: 'text-start' },
+                { data: 'total_item', name: 'total_item', className: 'text-end fw-bold' },
+                { data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold' },
+                { data: 'total_invoice_amount', name: 'total_invoice_amount', className: 'text-end fw-bold' },
+                { data: 'received_amount', name: 'paid', className: 'text-end fw-bold' },
+                { data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end fw-bold' },
+                { data: 'due', name: 'due', className: 'text-end fw-bold' },
+                { data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold' },
+            ], fnDrawCallback: function() {
                 var total_item = sum_table_col($('.data_tbl'), 'total_item');
                 $('#total_item').text(bdFormat(total_item));
 
@@ -307,7 +259,9 @@
         });
 
         function sum_table_col(table, class_name) {
+
             var sum = 0;
+
             table.find('tbody').find('tr').each(function() {
 
                 if (parseFloat($(this).find('.' + class_name).data('value'))) {
@@ -317,6 +271,7 @@
                     );
                 }
             });
+
             return sum;
         }
 
@@ -375,97 +330,6 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },
-                error: function(err) {
-
-                    $('.data_preloader').hide();
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
-        });
-
-        // Print Packing slip
-        $(document).on('click', '#PrintChallanBtn', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-
-            var url = $(this).attr('href');
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('.data_preloader').hide();
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
-                },
-                error: function(err) {
-
-                    $('.data_preloader').hide();
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
-        // Print Packing slip
-        $(document).on('click', '#printPackingSlipBtn', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-
-            var url = $(this).attr('href');
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('.data_preloader').hide();
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
                 },
                 error: function(err) {
 

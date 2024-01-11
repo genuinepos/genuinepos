@@ -19,7 +19,6 @@ interface AddSaleControllerMethodContainersInterface
 
     public function storeMethodContainer(
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $saleProductService,
         object $dayBookService,
@@ -56,7 +55,6 @@ interface AddSaleControllerMethodContainersInterface
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $saleProductService,
         object $dayBookService,

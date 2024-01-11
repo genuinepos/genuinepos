@@ -1,7 +1,7 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-    $dateFormat = $generalSettings['business__date_format'];
-    $timeFormat = $generalSettings['business__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+    $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
     $defaultLayout = DB::table('invoice_layouts')
         ->where('branch_id', null)
         ->where('is_default', 1)
@@ -43,23 +43,30 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
-                                @if ($draft->branch_id)
+                                @php
+                                    $branchName = '';
+                                    if ($draft->branch_id) {
 
-                                    @if ($draft?->branch?->parentBranch)
-                                        {{ $draft?->branch?->parentBranch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')' }}
-                                    @else
-                                        {{ $draft?->branch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')' }}
-                                    @endif
-                                @else
-                                    {{ $generalSettings['business__business_name'] }}
-                                @endif
+                                        if ($draft?->branch?->parentBranch) {
+
+                                            $branchName = $draft?->branch?->parentBranch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')';
+                                        } else {
+
+                                            $branchName = $draft?->branch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')';
+                                        }
+                                    } else {
+
+                                        $branchName = $generalSettings['business_or_shop__business_name'];
+                                    }
+                                @endphp
+                                {{ $branchName }}
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Email') }} : </strong>
                                 @if ($draft->branch)
                                     {{ $draft->branch->email }}
                                 @else
-                                    {{ $generalSettings['business__email'] }}
+                                    {{ $generalSettings['business_or_shop__email'] }}
                                 @endif
                             </li>
 
@@ -67,7 +74,7 @@
                                 @if ($draft->branch)
                                     {{ $draft->branch->phone }}
                                 @else
-                                    {{ $generalSettings['business__phone'] }}
+                                    {{ $generalSettings['business_or_shop__phone'] }}
                                 @endif
                             </li>
                         </ul>
@@ -134,32 +141,32 @@
                         <div class="table-responsive">
                             <table class="display table modal-table table-sm">
                                 <tr>
-                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Net Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->net_total_amount) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business__currency'] }} </th>
+                                    <th class="text-end">{{ __('Sale Discount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }} </th>
                                     <td class="text-end">
                                         {{ $draft->order_discount_type == 1 ? '(Fixed)=' : '(%)=' }}{{ $draft->order_discount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ '(' . $draft->order_tax_percent . '%)=' . $draft->order_tax_amount }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Shipment Charge') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->shipment_charge) }}
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business__currency'] }}</th>
+                                    <th class="text-end">{{ __('Total Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                     <td class="text-end">
                                         {{ App\Utils\Converter::format_in_bdt($draft->total_invoice_amount) }}
                                     </td>
@@ -175,14 +182,34 @@
                         <p style="font-size:11px!important;">{{ $draft->note }}</p>
                     </div>
                 </div>
+
+                <hr class="m-0 mt-3">
+
+                <div class="row g-0 mt-1">
+                    <div class="col-md-6 offset-6">
+                        <div class="input-group p-0">
+                            <label class="col-3"><b>{{ __("Print Layout Page Size") }}</b></label>
+                            <div class="col-9">
+                                <select id="print_page_size" class="form-control">
+                                    @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
+                            @php
+                                $filename = $draft->draft_id.'__'.$draft->date.'__'.$branchName;
+                            @endphp
                             <a href="{{ route('sale.drafts.edit', [$draft->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            <button type="button" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print Draft') }}</button>
+                            <a href="{{ route('sales.helper.related.voucher.print', $draft->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Draft') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -192,6 +219,54 @@
     </div>
 </div>
 
-<!-- Sales Order print templete-->
-@include('sales.add_sale.drafts.ajax_views.partials.print_modal_details')
-<!-- Sales Order print templete end-->
+<script>
+    function printSalesRelatedVoucher(event) {
+
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {print_page_size},
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                    footer: null,
+                });
+
+                document.title = filename;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
+</script>

@@ -1,6 +1,6 @@
 <p>
-    <b>{{ __("Shop") }} :
-    {!! auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code.' (BL)' : $generalSettings['business__business_name'].'' !!}
+    <b>{{ __('Shop') }} :
+        {!! auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code . ' (BL)' : $generalSettings['business_or_shop__business_name'] . '' !!}
     </b>
 </p>
 <table class="table modal-table table-sm table-striped" id="data_table">
@@ -19,8 +19,8 @@
                     <tr>
                         <td class="text-start">{{ $loop->index + 1 }}</td>
                         <td class="text-start">
-                            {{ $product->pro_name. ' ('.$product->var_name.') ' }}
-                            <small>({{$product->var_code}})</small>
+                            {{ $product->pro_name . ' (' . $product->var_name . ') ' }}
+                            <small>({{ $product->var_code }})</small>
                         </td>
                         <td class="text-start">{!! $product->variant_quantity !!}</td>
                         <td class="text-start">{{ $product->u_code }}</td>
@@ -29,7 +29,7 @@
                     <tr>
                         <td class="text-start">{{ $loop->index + 1 }}</td>
                         <td class="text-start">
-                            {{ $product->pro_name }} <small>({{$product->pro_code}})</small>
+                            {{ $product->pro_name }} <small>({{ $product->pro_code }})</small>
                         </td>
                         <td class="text-start">{!! $product->product_quantity !!}</td>
 
@@ -53,4 +53,3 @@
 <script>
     $('#data_table').DataTable();
 </script>
-

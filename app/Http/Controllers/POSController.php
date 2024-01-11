@@ -40,7 +40,7 @@ class POSController extends Controller
     // Create pos view
     public function create()
     {
-        if (! auth()->user()->can('pos_add')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -114,11 +114,11 @@ class POSController extends Controller
 
             $generalSettings = config('generalSettings');
 
-            $invoicePrefix = $generalSettings['prefix__sale_invoice'];
+            $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'];
 
             $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
-            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             $branchInvoiceSchema = DB::table('branches')
                 ->leftJoin('invoice_schemas', 'branches.invoice_schema_id', 'invoice_schemas.id')
@@ -134,13 +134,13 @@ class POSController extends Controller
             $invoicePrefix = '';
             if ($branchInvoiceSchema && $branchInvoiceSchema->prefix !== null) {
 
-                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y').$branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix.$branchInvoiceSchema->start_from;
+                $invoicePrefix = $branchInvoiceSchema->format == 2 ? date('Y') . $branchInvoiceSchema->start_from : $branchInvoiceSchema->prefix . $branchInvoiceSchema->start_from;
             } else {
 
                 $defaultSchemas = DB::table('invoice_schemas')->where('is_default', 1)->first();
                 if ($defaultSchemas) {
 
-                    $invoicePrefix = $defaultSchemas->format == 2 ? date('Y').$defaultSchemas->start_from : $defaultSchemas->prefix.$defaultSchemas->start_from;
+                    $invoicePrefix = $defaultSchemas->format == 2 ? date('Y') . $defaultSchemas->start_from : $defaultSchemas->prefix . $defaultSchemas->start_from;
                 }
             }
 
@@ -151,7 +151,7 @@ class POSController extends Controller
 
             if ($request->action == 2 || $request->action == 4) {
 
-                if (! $request->customer_id) {
+                if (!$request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required for draft or quotation.']);
                 }
@@ -159,7 +159,7 @@ class POSController extends Controller
 
             if ($request->action == 1) {
 
-                if ($request->received_amount < $request->total_receivable_amount && ! $request->customer_id) {
+                if ($request->received_amount < $request->total_receivable_amount && !$request->customer_id) {
 
                     return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
                 }
@@ -197,7 +197,7 @@ class POSController extends Controller
             $invoiceId = $invoiceId = str_pad($this->invoiceVoucherRefIdUtil->getLastId('sales'), 5, '0', STR_PAD_LEFT);
 
             $addSale = new Sale();
-            $addSale->invoice_id = $invoicePrefix.$invoiceId;
+            $addSale->invoice_id = $invoicePrefix . $invoiceId;
             $addSale->admin_id = auth()->user()->id;
             $addSale->sale_account_id = $request->sale_account_id;
 
@@ -596,7 +596,7 @@ class POSController extends Controller
 
         $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $updateSale = Sale::with([
             'sale_payments',
@@ -618,7 +618,7 @@ class POSController extends Controller
 
         if ($request->action == 1) {
 
-            if ($request->received_amount < $request->current_receivable && ! $updateSale->customer_id) {
+            if ($request->received_amount < $request->current_receivable && !$updateSale->customer_id) {
 
                 return response()->json(['errorMsg' => 'Listed Customer is required when sale is credit or partial receive.']);
             }
@@ -909,7 +909,7 @@ class POSController extends Controller
             $query->where('products.brand_id', $request->brand_id);
         }
 
-        if (! $request->category_id && ! $request->brand_id) {
+        if (!$request->category_id && !$request->brand_id) {
 
             $query->orderBy('products.id', 'DESC')->limit(90);
         }
@@ -1125,7 +1125,7 @@ class POSController extends Controller
 
             $generalSettings = config('generalSettings');
             $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
-            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             // Add new payment
             if ($request->received_amount > 0) {

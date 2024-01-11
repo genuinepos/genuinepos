@@ -93,7 +93,7 @@ class PayrollService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('voucher_no', function ($row) {
@@ -194,7 +194,7 @@ class PayrollService
 
         if (isset($deletePayroll)) {
 
-            if(count($deletePayroll->references)){
+            if (count($deletePayroll->references)) {
 
                 return ['pass' => false, 'msg' => __('Payroll can not be deleted. There is one or more payment against this payroll.')];
             }

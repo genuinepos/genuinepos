@@ -9,6 +9,7 @@ Route::controller(TransferStockController::class)->prefix('transfer-stocks')->gr
 
     Route::get('index/{type?}', 'index')->name('transfer.stocks.index');
     Route::get('show/{id}', 'show')->name('transfer.stocks.show');
+    Route::get('print/{id}', 'print')->name('transfer.stocks.print');
     Route::get('create', 'create')->name('transfer.stocks.create');
     Route::post('store', 'store')->name('transfer.stocks.store');
     Route::get('edit/{id}', 'edit')->name('transfer.stocks.edit');

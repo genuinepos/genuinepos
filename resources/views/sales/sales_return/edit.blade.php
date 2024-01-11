@@ -130,7 +130,7 @@
                                     <div class="input-group mt-1">
                                         <label class="col-4"><b>{{ __('B. Location') }} </b></label>
                                         <div class="col-8">
-                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] . '(HO)' }}" tabindex="-1">
+                                            <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] . '(HO)' }}" tabindex="-1">
                                             <input type="hidden" value="{{ $return->branch_id ? $return->branch_id : 'NULL' }}" id="branch_id">
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                         </label>
 
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
+                                            <input type="text" name="date" class="form-control add_input" data-name="Date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return->date)) }}" autocomplete="off" id="date">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -811,7 +811,7 @@
             addSingleProduct(productInfoObj);
         });
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
         var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

@@ -193,13 +193,8 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $generalSettings = config('generalSettings');
-    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
-    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
-    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
-    $startDate = date($startDateFormat);
-    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
-    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
+
+    return auth()->user();
 });
 
 

@@ -400,7 +400,7 @@ class ProductService
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_ac_id = $request->tax_ac_id;
-        $addProduct->tax_type = $request->tax_type;
+        $addProduct->tax_type = $request->tax_type ? $request->tax_type : 1;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $addProduct->is_for_sale = $request->is_for_sale;

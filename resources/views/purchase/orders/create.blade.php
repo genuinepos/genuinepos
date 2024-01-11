@@ -89,17 +89,39 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h6>{{ __('Add Purchase Order') }}</h6>
+                <div class="col-md-7">
+                    <div class="name-head">
+                        <h6>{{ __('Add Purchase Order') }}</h6>
+                    </div>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="col-4"><b>{{ __("Print") }}</b></label>
+                                <div class="col-8">
+                                    <select id="select_print_page_size" class="form-control">
+                                        @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
+                                            <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button d-inline"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="p-1">
             <form id="add_purchase_order_form" action="{{ route('purchase.orders.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="1">
                 <section>
                     <div class="form_element rounded mt-0 mb-lg-1">
                         <div class="element-body">

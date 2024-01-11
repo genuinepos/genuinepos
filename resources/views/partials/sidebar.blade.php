@@ -1426,8 +1426,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('stock_adjustment_add') ||
-                                        auth()->user()->can('stock_adjustment_list'))
+                                @if (auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_list'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Stock Adjustment') }}</p>
                                         <div class="sub-menu-row">
@@ -1444,7 +1443,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('stock_adjustment_list'))
+                                            @if (auth()->user()->can('stock_adjustment_all'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('stock.adjustments.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">

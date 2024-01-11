@@ -1049,6 +1049,11 @@
             $('#list').empty();
         }
     });
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 @if (auth()->user()->can('supplier_add'))

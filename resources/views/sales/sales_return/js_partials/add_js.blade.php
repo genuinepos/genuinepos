@@ -1144,6 +1144,11 @@
 
         $('#customer_account_id').focus().select();
     }, 1000);
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>

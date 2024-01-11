@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
-use App\Enums\DayBookVoucherType;
-use App\Enums\IsDeleteInUpdate;
-use App\Enums\ProductLedgerVoucherType;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\WarehouseService;
-use App\Services\TransferStocks\TransferStockProductService;
-use App\Services\TransferStocks\TransferStockService;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use App\Enums\IsDeleteInUpdate;
+use App\Enums\DayBookVoucherType;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Enums\ProductLedgerVoucherType;
+use App\Services\CodeGenerationService;
+use App\Services\Accounts\DayBookService;
+use App\Services\Setups\WarehouseService;
+use App\Services\Products\ProductStockService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\TransferStocks\TransferStockService;
+use App\Services\TransferStocks\TransferStockProductService;
 
 class TransferStockController extends Controller
 {
@@ -32,9 +33,7 @@ class TransferStockController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('transfer_stock_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_index'), 403);
 
         if ($request->ajax()) {
 
@@ -68,11 +67,31 @@ class TransferStockController extends Controller
         return view('transfer_stocks.ajax_view.show', compact('transferStock'));
     }
 
+    public function print($id, Request $request)
+    {
+        $transferStock = $this->transferStockService->singleTransferStock(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'senderBranch',
+                'senderBranch.parentBranch',
+                'receiverWarehouse',
+                'transferStockProducts',
+                'transferStockProducts.product',
+                'transferStockProducts.variant',
+                'transferStockProducts.unit',
+                'sendBy',
+            ]
+        );
+
+        $printPageSize = $request->print_page_size;
+        return view('transfer_stocks.print_templates.print_transfer_stock', compact('transferStock', 'printPageSize'));
+    }
+
     public function create()
     {
-        if (! auth()->user()->can('transfer_stock_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
 
         $branchName = $this->branchService->branchName();
         $branches = $this->branchService->branches(with: ['parentBranch'])
@@ -85,22 +104,15 @@ class TransferStockController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('transfer_stock_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'receiver_branch_id' => 'required',
-        ], [
-            'receiver_branch_id.required' => __('Receiver branch is required.'),
-        ]);
+        $this->transferStockService->transferStockValidation(request: $request);
 
         try {
             DB::beginTransaction();
 
             $branchCode = auth()?->user()?->branch?->branch_code;
-            $voucherPrefix = 'TS'.auth()?->user()?->branch?->branch_code;
+            $voucherPrefix = 'TS' . auth()?->user()?->branch?->branch_code;
 
             $addTransferStock = $this->transferStockService->addTransferStock(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -152,18 +164,17 @@ class TransferStockController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('transfer_stocks.save_and_print_template.print_transfer_stock', compact('transferStock'));
+            $printPageSize = $request->print_page_size;
+            return view('transfer_stocks.print_templates.print_transfer_stock', compact('transferStock', 'printPageSize'));
         } else {
 
-            return response()->json(['successMsg' => __('Successfully Transfer Stock is created.')]);
+            return response()->json(['successMsg' => __('Successfully transfer stock is created.')]);
         }
     }
 
     public function edit($id)
     {
-        if (! auth()->user()->can('transfer_stock_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
 
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -187,26 +198,19 @@ class TransferStockController extends Controller
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', $transferStock->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         $selectedBranchWarehouses = $this->warehouseService->warehouses()->where('branch_id', $transferStock->receiver_branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         return view('transfer_stocks.edit', compact('transferStock', 'branches', 'warehouses', 'selectedBranchWarehouses'));
     }
 
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('transfer_stock_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'receiver_branch_id' => 'required',
-        ], [
-            'receiver_branch_id.required' => __('Receiver branch is required.'),
-        ]);
+        $this->transferStockService->transferStockValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -262,9 +266,7 @@ class TransferStockController extends Controller
 
     public function delete($id)
     {
-        if (! auth()->user()->can('transfer_stock_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('transfer_stock_delete'), 403);
 
         try {
             DB::beginTransaction();

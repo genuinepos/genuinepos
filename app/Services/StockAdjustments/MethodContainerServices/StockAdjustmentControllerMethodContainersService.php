@@ -192,4 +192,26 @@ class StockAdjustmentControllerMethodContainersService implements StockAdjustmen
 
         return $data;
     }
+
+    public function printMethodContainer(int $id, object $request, object $stockAdjustmentService): ?array
+    {
+        $data = [];
+        $data['adjustment'] = $stockAdjustmentService->singleStockAdjustment(id: $id, with: [
+            'branch:id,name,branch_code,area_name,parent_branch_id',
+            'branch.parentBranch:id,name,branch_code,area_name',
+            'adjustmentProducts',
+            'adjustmentProducts.product',
+            'adjustmentProducts.variant',
+            'adjustmentProducts.branch:id,name,branch_code,area_name,parent_branch_id',
+            'adjustmentProducts.branch.parentBranch:id,name,branch_code,area_name',
+            'adjustmentProducts.warehouse:id,warehouse_name,warehouse_code',
+            'adjustmentProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'adjustmentProducts.unit.baseUnit:id,base_unit_id,code_name',
+            'createdBy:id,prefix,name,last_name',
+        ]);
+
+        $data['printPageSize'] = $request->print_page_size;
+
+        return $data;
+    }
 }

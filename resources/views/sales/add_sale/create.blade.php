@@ -6,69 +6,26 @@
             font-size: 12px !important;
         }
 
-        .select_area {
-            position: relative;
-            background: #ffffff;
-            box-sizing: border-box;
-            position: absolute;
-            width: 100%;
-            z-index: 9999999;
-            padding: 0;
-            left: 0%;
-            display: none;
-            border: 1px solid #706a6d;
-            margin-top: 1px;
-            border-radius: 0px;
-        }
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid #706a6d; margin-top: 1px; border-radius: 0px; }
 
-        .select_area ul {
-            list-style: none;
-            margin-bottom: 0;
-            padding: 0px 2px;
-        }
+        .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
 
-        .select_area ul li a {
-            color: #000000;
-            text-decoration: none;
-            font-size: 11px;
-            padding: 2px 2px;
-            display: block;
-            border: 1px solid lightgray;
-            margin: 2px 0px;
-        }
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
 
-        .select_area ul li a:hover {
-            background-color: #999396;
-            color: #fff;
-        }
+        .select_area ul li a:hover { background-color: #999396; color: #fff; }
 
-        .selectProduct {
-            background-color: #746e70 !important;
-            color: #fff !important;
-        }
+        .selectProduct { background-color: #746e70 !important; color: #fff !important; }
 
-        .input-group-text-sale {
-            font-size: 7px !important;
-        }
+        .input-group-text-sale { font-size: 7px !important; }
 
-        b {
-            font-weight: 500;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
 
-        .border_red {
-            border: 1px solid red !important;
-        }
+        .border_red { border: 1px solid red !important; }
 
-        #display_pre_due {
-            font-weight: 600;
-        }
+        #display_pre_due { font-weight: 600; }
 
         input[type=number]#quantity::-webkit-inner-spin-button,
-        input[type=number]#quantity::-webkit-outer-spin-button {
-            opacity: 1;
-            margin: 0;
-        }
+        input[type=number]#quantity::-webkit-outer-spin-button { opacity: 1; margin: 0; }
 
         .select2-container .select2-selection--single .select2-selection__rendered {
             display: inline-block;
@@ -82,42 +39,19 @@
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 {
-            text-align: right;
-            padding-right: 10px;
-        }
+        label.col-6 { text-align: right; padding-right: 10px; }
 
-        .side-number-field input {
-            font-size: 14px;
-        }
+        .side-number-field input { font-size: 14px; }
 
-        .big_amount_field {
-            height: 36px;
-            font-size: 24px !important;
-            margin-bottom: 3px;
-        }
+        .big_amount_field { height: 36px; font-size: 24px !important; margin-bottom: 3px; }
 
-        .checkbox_input_wrap {
-            text-align: right;
-        }
+        .checkbox_input_wrap { text-align: right; }
 
-        .select2-selection:focus {
-            box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-            color: #212529;
-            background-color: #fff;
-            border-color: #86b7fe;
-            outline: 0;
-        }
+        .select2-selection:focus { box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%); color: #212529; background-color: #fff; border-color: #86b7fe; outline: 0; }
 
-        .btn-sale {
-            width: calc(50% - 4px);
-            padding-left: 0;
-            padding-right: 0;
-        }
+        .btn-sale { width: calc(50% - 4px); padding-left: 0; padding-right: 0; }
 
-        .sale-item-sec {
-            height: 215px;
-        }
+        .sale-item-sec { height: 215px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
@@ -126,19 +60,40 @@
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
-            <div class="sec-name">
-                <div class="name-head">
-                    <h6>{{ __('Add Sale') }}</h6>
+            <div class="sec-name g-0">
+                <div class="col-md-7">
+                    <div class="name-head">
+                        <h6>{{ __('Add Sale') }}</h6>
+                    </div>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="col-4"><b>{{ __("Print") }}</b></label>
+                                <div class="col-8">
+                                    <select id="select_print_page_size" class="form-control">
+                                        @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
+                                            <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button d-inline"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="p-1">
             <form id="add_sale_form" action="{{ route('sales.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-
+                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['add_sale_invoice_layout']->page_size }}">
                 <section>
                     <div class="sale-content">
                         <div class="row g-1">
@@ -451,6 +406,8 @@
 
                             <div class="col-md-3">
                                 <div class="form_element rounded m-0 mb-1 p-1 text-end">
+
+
                                     <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => App\Enums\SaleScreenType::AddSale->value, 'limit' => 20]) }}" class="btn btn-sm btn-secondary text-white resent-tn" id="recentTransactionsBtn">{{ __('Recent Transaction') }}</a>
                                 </div>
 

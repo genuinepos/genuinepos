@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('name')->nullable();
-            $table->tinyInteger('layout_design')->comment('1=normal_printer;2=pos_printer');
+            $table->tinyInteger('page_size');
             $table->boolean('show_shop_logo')->default(false);
             $table->text('header_text')->nullable();
             $table->boolean('is_header_less')->default(false);

@@ -55,14 +55,14 @@
                                         <div class="col-md-2">
                                             <label><strong>{{ __('From Date') }}</strong></label>
                                             <div class="input-group">
-                                                <input name="from_date" class="form-control" id="from_date">
+                                                <input name="from_date" class="form-control" id="from_date" value="{{ $generalSettings['business_or_shop__financial_year_start_date'] }}">
                                             </div>
                                         </div>
 
                                         <div class="col-md-2">
                                             <label><strong>{{ __('To Date') }}</strong></label>
                                             <div class="input-group">
-                                                <input name="to_date" class="form-control" id="to_date">
+                                                <input name="to_date" class="form-control" id="to_date" value="{{ $generalSettings['business_or_shop__financial_year_end_date'] }}">
                                             </div>
                                         </div>
 

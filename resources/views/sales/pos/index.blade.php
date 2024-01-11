@@ -11,7 +11,7 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <h5>{{ __('Manage Add Sales') }}</h5>
+                                <h5>{{ __('Manage Pos Sales') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
@@ -374,97 +374,6 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },
-                error: function(err) {
-
-                    $('.data_preloader').hide();
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
-        });
-
-        // Print Packing slip
-        $(document).on('click', '#PrintChallanBtn', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-
-            var url = $(this).attr('href');
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('.data_preloader').hide();
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
-                },
-                error: function(err) {
-
-                    $('.data_preloader').hide();
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
-        // Print Packing slip
-        $(document).on('click', '#printPackingSlipBtn', function(e) {
-            e.preventDefault();
-            $('.data_preloader').show();
-
-            var url = $(this).attr('href');
-
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-
-                    $('.data_preloader').hide();
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
                 },
                 error: function(err) {
 

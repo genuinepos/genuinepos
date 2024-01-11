@@ -384,23 +384,6 @@
             });
         });
 
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
-        });
-
         $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');

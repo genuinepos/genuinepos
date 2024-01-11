@@ -2,14 +2,15 @@
 
 namespace App\Services\Sales;
 
+use Carbon\Carbon;
+use App\Enums\SaleStatus;
 use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
 use App\Enums\PaymentStatus;
 use App\Enums\SaleScreenType;
-use App\Enums\SaleStatus;
 use App\Enums\ShipmentStatus;
-use App\Models\Sales\Sale;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Enums\SalesInvoicePageSize;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleService
@@ -56,8 +57,7 @@ class SaleService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
                 $html .= '<a href="' . route('sales.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
@@ -91,10 +91,10 @@ class SaleService
                     $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
                 }
 
-                if (auth()->user()->can('shipment_access')) {
+                // if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
-                }
+                //     $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
+                // }
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -364,7 +364,21 @@ class SaleService
     {
         $customer = $accountService->singleAccount(id: $request->customer_account_id);
 
+        if (
+            isset($request->print_page_size) &&
+            $request->print_page_size == SalesInvoicePageSize::PosPrinterPageThreeIncs->value &&
+            $request->status != SaleStatus::Final->value
+        ) {
+
+            return ['pass' => false, 'msg' => __('Pos printer only supported for final sale.')];
+        }
+
         if ($request->ex_sale_id) {
+
+            if ($request->status != SaleStatus::Final->value) {
+
+                return ['pass' => false, 'msg' => __('Can not create another entry when exchange in going on.')];
+            }
 
             if ($request->status != SaleStatus::Final->value) {
 
@@ -524,5 +538,18 @@ class SaleService
         }
 
         return $query;
+    }
+
+    public function addSaleValidation(object $request): ?array
+    {
+        return $request->validate([
+            'status' => 'required',
+            'date' => 'required|date',
+            'sale_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'sale_account_id.required' => 'Sales A/c is required',
+            'account_id.required' => 'Debit A/c is required',
+        ]);
     }
 }

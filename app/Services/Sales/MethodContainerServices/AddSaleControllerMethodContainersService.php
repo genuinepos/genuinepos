@@ -22,9 +22,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         $data = [];
         $sale = $saleService->singleSale(id: $id, with: [
             'branch',
-            'branch.branchSetting',
-            'branch.branchSetting.addSaleInvoiceLayout',
-            'branch.branchSetting.posSaleInvoiceLayout',
             'branch.parentBranch',
             'customer:id,name,phone,address',
             'createdBy:id,prefix,name,last_name',
@@ -108,7 +105,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
     public function storeMethodContainer(
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $saleProductService,
         object $dayBookService,
@@ -125,11 +121,10 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     ): ?array {
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sales_invoice_prefix'];
-        $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
-        $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+        $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+        $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+        $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'SO';
+        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $restrictions = $saleService->restrictions(request: $request, accountService: $accountService);
@@ -208,8 +203,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             with: [
                 'branch',
                 'branch.parentBranch',
-                'branch.branchSetting:id,add_sale_invoice_layout_id',
-                'branch.branchSetting.addSaleInvoiceLayout',
                 'customer',
                 'saleProducts',
                 'saleProducts.product',
@@ -332,7 +325,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $saleProductService,
         object $dayBookService,
@@ -356,8 +348,7 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
         }
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $sale = $saleService->singleSale(id: $id, with: ['saleProducts']);

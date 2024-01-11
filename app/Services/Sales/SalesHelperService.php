@@ -134,6 +134,8 @@ class SalesHelperService
         $sales = '';
         $query = DB::table('sales')
             ->leftJoin('accounts as customer', 'sales.customer_account_id', 'customer.id')
+            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->where('sales.branch_id', auth()->user()->branch_id)
             ->where('sales.created_by_id', auth()->user()->id)
             ->where('sales.status', $status)
@@ -146,6 +148,7 @@ class SalesHelperService
 
         $sales = $query->select(
             'sales.id',
+            'sales.branch_id',
             'sales.total_item',
             'sales.total_qty',
             'sales.invoice_id',
@@ -157,7 +160,11 @@ class SalesHelperService
             'sales.sale_screen',
             'sales.total_invoice_amount',
             'sales.date',
-            'customer.name as customer_name'
+            'customer.name as customer_name',
+            'branches.name as branch_name',
+            'branches.area_name as branch_area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
         )->orderBy('sales.date_ts', 'desc')->get();
 
         return $sales;

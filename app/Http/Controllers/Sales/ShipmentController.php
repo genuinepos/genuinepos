@@ -82,21 +82,4 @@ class ShipmentController extends Controller
 
         return response()->json(__('Shipment is updated successfully.'));
     }
-
-    public function printPackingSlip($id)
-    {
-        $sale = $this->saleService->singleSale(id: $id, with: [
-            'customer:id,name,phone,address',
-            'createdBy:id,prefix,name,last_name',
-        ]);
-
-        if ($sale->status != SaleStatus::Final->value) {
-
-            return response()->json(['errorMsg' => __('Invoice yet not to be available. Please created an invoice first.')]);
-        }
-
-        $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
-
-        return view('sales.add_sale.shipments.ajax_views.print_packing_slip', compact('sale', 'customerCopySaleProducts'));
-    }
 }

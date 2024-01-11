@@ -20,7 +20,6 @@ use App\Services\Products\ProductStockService;
 use App\Services\Purchases\PurchaseProductService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
 use App\Utils\UserActivityLogUtil;
@@ -40,7 +39,6 @@ class PurchaseController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductService $productService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
@@ -54,9 +52,7 @@ class PurchaseController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (!auth()->user()->can('purchase_all')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_all'), 403);
 
         if ($request->ajax()) {
 
@@ -81,9 +77,7 @@ class PurchaseController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('purchase_all')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_all'), 403);
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
@@ -110,12 +104,28 @@ class PurchaseController extends Controller
         return view('purchase.purchases.ajax_view.show', compact('purchase'));
     }
 
+    function print($id, Request $request) {
+
+        $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
+            'warehouse:id,warehouse_name,warehouse_code',
+            'supplier:id,name,phone,address',
+            'admin:id,prefix,name,last_name',
+            'purchaseAccount:id,name',
+            'purchaseProducts',
+            'purchaseProducts.product',
+            'purchaseProducts.product.warranty',
+            'purchaseProducts.variant',
+            'purchaseProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $printPageSize = $request->print_page_size;
+        return view('purchase.print_templates.print_purchase', compact('purchase', 'printPageSize'));
+    }
+
     public function create()
     {
-        if (!auth()->user()->can('purchase_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_add'), 403);
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -154,26 +164,11 @@ class PurchaseController extends Controller
         return view('purchase.purchases.create', compact('warehouses', 'methods', 'accounts', 'purchaseAccounts', 'taxAccounts', 'supplierAccounts'));
     }
 
-    // add purchase method
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_add')) {
+        abort_if(!auth()->user()->can('purchase_add'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'invoice_id' => 'sometimes|unique:purchases,invoice_id',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
+        $this->purchaseService->purchaseValidation(request: $request);
 
         if (isset($request->warehouse_count)) {
 
@@ -191,9 +186,8 @@ class PurchaseController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_invoice_prefix ? $branchSetting?->purchase_invoice_prefix : $generalSettings['prefix__purchase_invoice_prefix'];
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
+            $invoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'] ? $generalSettings['prefix__purchase_invoice_prefix'] : 'PI';
+            $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $updateLastCreated = $this->purchaseService->purchaseByAnyConditions()->where('is_last_created', 1)->where('branch_id', auth()->user()->branch_id)->select('id', 'is_last_created')->first();
@@ -343,17 +337,14 @@ class PurchaseController extends Controller
         } else {
 
             $payingAmount = $request->paying_amount;
-
-            return view('purchase.save_and_print_template.print_purchase', compact('purchase', 'payingAmount'));
+            $printPageSize = $request->print_page_size;
+            return view('purchase.print_templates.print_purchase', compact('purchase', 'payingAmount', 'printPageSize'));
         }
     }
 
     public function edit($id)
     {
-        if (!auth()->user()->can('purchase_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_edit'), 403);
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'branch',
@@ -409,23 +400,9 @@ class PurchaseController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_edit')) {
+        abort_if(!auth()->user()->can('purchase_edit'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
+        $this->purchaseService->purchaseValidation(request: $request);
 
         if (isset($request->warehouse_count)) {
 
@@ -439,12 +416,10 @@ class PurchaseController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
+            $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $purchase = $this->purchaseService->singlePurchase(id: $id, with: ['purchaseProducts']);
@@ -598,13 +573,10 @@ class PurchaseController extends Controller
         return response()->json(__('Purchase updated Successfully.'));
     }
 
-    // delete purchase method
     public function delete($id)
     {
-        if (!auth()->user()->can('purchase_delete')) {
+        abort_if(!auth()->user()->can('purchase_delete'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
         try {
             DB::beginTransaction();
 

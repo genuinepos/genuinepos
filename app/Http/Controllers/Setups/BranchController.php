@@ -111,7 +111,9 @@ class BranchController extends Controller
 
             $this->cashCounterService->addCashCounter(branchId: $addBranch->id, cashCounterName: 'Cash Counter 1', shortName: 'CN1');
 
-            $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: 'Default Invoice Layout');
+            $defaultBranchName = $addBranch?->parentBranch ? $addBranch?->parentBranch . '(' . $addBranch?->area_name . ') Default Invoice Layout' :  $addBranch?->name . '(' . $addBranch?->area_name . ') Default Invoice Layout';
+
+            $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: $defaultBranchName);
 
             $this->branchSettingService->addBranchSettings(branchId: $addBranch->id, parentBranchId: $addBranch->parent_branch_id, defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService, request: $request);
 

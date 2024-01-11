@@ -69,10 +69,10 @@ class ShipmentService
                     $html .= '<a class="dropdown-item" id="editShipmentDetails" href="' . route('sale.shipments.edit', [$row->id]) . '">' . __('Edit Shipment Details') . '</a>';
                 }
 
-                if (auth()->user()->can('shipment_access')) {
+                // if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
-                }
+                //     $html .= '<a href="' . route('sale.shipments.print.packing.slip', [$row->id]) . '" class="dropdown-item" id="printPackingSlipBtn">' . __('Print Packing Slip') . '</a>';
+                // }
 
                 $html .= '</div>';
                 $html .= '</div>';

@@ -67,8 +67,6 @@ class GeneralSettingsListener
                                     'business_or_shop__date_format',
                                     'business_or_shop__time_format',
                                     'business_or_shop__timezone',
-                                    'business_or_shop__currency_symbol',
-                                    'business_or_shop__currency_symbol',
                                 ]
                             );
 
@@ -84,6 +82,17 @@ class GeneralSettingsListener
                         }
                     }
 
+                    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+                    $dateFormat = $generalSettings['business_or_shop__date_format'];
+                    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
+                    $startDateFormat = 'Y' . '-' . $__financialYearStartMonth . '-' . '1';
+                    $startDate = date($startDateFormat);
+                    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
+                    $financialYear = date('d M Y', strtotime($startDate)) . ' - ' . date('d M Y', strtotime($endDate));
+                    $generalSettings['business_or_shop__financial_year'] = $financialYear;
+                    $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
+                    $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
+                    
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
 
                         return $generalSettings;
@@ -132,6 +141,8 @@ class GeneralSettingsListener
                     // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
                     // Tenant separated email config ends
                 ]);
+
+
 
                 $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);

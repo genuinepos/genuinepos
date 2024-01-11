@@ -389,30 +389,6 @@
                 }
             });
         });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var filename = $(this).attr('filename');
-            var body = $('.print_modal_details').html();
-
-            document.title = filename;
-
-            setTimeout(function() {
-                document.title = "Purchase List - GPOSS";
-            }, 1000);
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
-        });
     </script>
 
     <script type="text/javascript">

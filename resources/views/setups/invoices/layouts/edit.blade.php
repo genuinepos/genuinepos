@@ -1,14 +1,9 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {
-            border: 1px solid #7e0d3d;
-        }
+        .form_element { border: 1px solid #7e0d3d; }
 
-        b {
-            font-weight: 500;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
     </style>
 @endpush
 @section('title', 'Edit Invoice Layout')
@@ -20,21 +15,21 @@
                     <h5>{{ __('Edit Invoice Layout') }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
         <div class="p-1">
             <form id="edit_layout_form" action="{{ route('invoices.layouts.update', $invoiceLayout->id) }}" method="POST">
                 @csrf
                 <section>
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="element-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Name') }}</b></label>
                                         <div class="col-8">
-                                            <input required type="text" name="name" class="form-control" id="name" data-next="design" value="{{ $invoiceLayout->name }}" placeholder="{{ __('Invoice Layout Name') }}" autofocus>
+                                            <input required type="text" name="name" class="form-control" id="name" data-next="page_size" value="{{ $invoiceLayout->name }}" placeholder="{{ __('Invoice Layout Name') }}" autofocus>
                                             <span class="error error_name"></span>
                                         </div>
                                     </div>
@@ -42,12 +37,13 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4 text-end pe-1"><b>{{ __('Design') }}</b></label>
+                                        <label class="col-4 text-end pe-1"><b>{{ __('Page Size') }}</b></label>
 
                                         <div class="col-8">
-                                            <select name="design" id="design" class="form-control" data-next="show_business_shop_logo">
-                                                <option value="1">{{ __('Classic From Normal Printer') }}</option>
-                                                <option {{ $invoiceLayout->design == 2 ? 'SELECTED' : '' }} value="2">{{ __('Slim For POS Printer') }}</option>
+                                            <select name="page_size" id="page_size" class="form-control" data-next="show_business_shop_logo">
+                                                @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
+                                                    <option {{ $item->value == $invoiceLayout->page_size ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -82,9 +78,9 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>@lang('menu.header_option')</b></p>
+                            <p class="p-1 text-primary"><b>{{ __("Header Option") }}</b></p>
                         </div>
 
                         <div class="element-body">
@@ -143,7 +139,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __('Paper Main Heading') }}</b></p>
                         </div>
@@ -195,7 +191,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __('Field For Shop Address') }}</b></p>
                         </div>
@@ -279,7 +275,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __('Field For Customer') }}</b></p>
                         </div>
@@ -338,9 +334,9 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>@lang('menu.field_for_product')</b></p>
+                            <p class="p-1 text-primary"><b>{{ __("Field For Product") }}</b></p>
                         </div>
 
                         <div class="element-body">
@@ -399,7 +395,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __('Bank Details') }}</b></p>
                         </div>
@@ -447,7 +443,7 @@
                         </div>
                     </div>
 
-                    <div class="form_element rounded mt-0 mb-2">
+                    <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
                             <p class="p-1 text-primary"><b>{{ __('Footer Text') }}</b></p>
                         </div>

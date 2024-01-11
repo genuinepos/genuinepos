@@ -35,7 +35,6 @@ use App\Services\Sales\PosSaleService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
@@ -58,7 +57,6 @@ class PosSaleController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
@@ -166,19 +164,14 @@ class PosSaleController extends Controller
 
     public function store(Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        // return $request->all();
         try {
 
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            // $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sales_invoice_prefix'];
-            $invoicePrefix = 'INV';
-            // $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
-            $quotationPrefix = 'Q';
-            // $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
-            $receiptVoucherPrefix = 'RV';
+            $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+            $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+            $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
 
             $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
@@ -259,8 +252,6 @@ class PosSaleController extends Controller
                 with: [
                     'branch',
                     'branch.parentBranch',
-                    // 'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    // 'branch.branchSetting.posSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',
@@ -318,22 +309,23 @@ class PosSaleController extends Controller
             DB::rollBack();
         }
 
+        $printPageSize = $request->print_page_size;
         if ($request->status == SaleStatus::Final->value) {
 
             $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $receivedAmount = $request->received_amount;
 
-            return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
 
-            return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $quotation = $sale;
 
-            return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
         } elseif ($request->status == SaleStatus::Hold->value) {
 
             return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);
@@ -425,17 +417,14 @@ class PosSaleController extends Controller
 
     public function update($id, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
-        // return $request->all();
         try {
 
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $invoicePrefix = isset($branchSetting) && $branchSetting?->sale_invoice_prefix ? $branchSetting?->sale_invoice_prefix : $generalSettings['prefix__sales_invoice_prefix'];
-            $quotationPrefix = isset($branchSetting) && $branchSetting?->quotation_prefix ? $branchSetting?->quotation_prefix : 'Q';
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
-
+            $invoicePrefix = $generalSettings['prefix__sales_invoice_prefix'] ? $generalSettings['prefix__sales_invoice_prefix'] : 'SI';
+            $quotationPrefix = $generalSettings['prefix__quotation_prefix'] ? $generalSettings['prefix__quotation_prefix'] : 'Q';
+            $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
             $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
             $restrictions = $this->saleService->restrictions(request: $request, accountService: $this->accountService, checkCustomerChangeRestriction: true, saleId: $id);
@@ -571,8 +560,6 @@ class PosSaleController extends Controller
                 with: [
                     'branch',
                     'branch.parentBranch',
-                    'branch.branchSetting:id,add_sale_invoice_layout_id',
-                    'branch.branchSetting.posSaleInvoiceLayout',
                     'customer',
                     'saleProducts',
                     'saleProducts.product',
@@ -625,17 +612,17 @@ class PosSaleController extends Controller
             $changeAmount = $request->change_amount > 0 ? $request->change_amount : 0;
             $receivedAmount = $request->received_amount;
 
-            return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Draft->value) {
 
             $draft = $sale;
 
-            return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $quotation = $sale;
 
-            return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts'));
         } elseif ($request->status == SaleStatus::Hold->value) {
 
             return response()->json(['holdInvoiceMsg' => __('Invoice is hold.')]);

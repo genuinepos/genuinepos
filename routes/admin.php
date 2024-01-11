@@ -466,22 +466,6 @@ Route::group(['prefix' => 'accounting'], function () {
     });
 });
 
-Route::group(['prefix' => 'settings'], function () {
-
-    Route::group(['prefix' => 'invoices'], function () {
-
-        Route::group(['prefix' => 'schemas'], function () {
-
-            Route::get('/', [InvoiceSchemaController::class, 'index'])->name('invoices.schemas.index');
-            Route::post('store', [InvoiceSchemaController::class, 'store'])->name('invoices.schemas.store');
-            Route::get('edit/{schemaId}', [InvoiceSchemaController::class, 'edit'])->name('invoices.schemas.edit');
-            Route::post('update/{schemaId}', [InvoiceSchemaController::class, 'update'])->name('invoices.schemas.update');
-            Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
-            Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
-        });
-    });
-});
-
 Route::group(['prefix' => 'reports'], function () {
 
     Route::group(['prefix' => 'taxes'], function () {

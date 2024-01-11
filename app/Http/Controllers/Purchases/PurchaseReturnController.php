@@ -16,7 +16,6 @@ use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\Setups\WarehouseService;
 use App\Services\Purchases\PurchaseService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Products\ProductStockService;
 use App\Services\Accounts\AccountFilterService;
@@ -42,7 +41,6 @@ class PurchaseReturnController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
@@ -53,13 +51,9 @@ class PurchaseReturnController extends Controller
     ) {
     }
 
-    // Sale return index view
     public function index(Request $request)
     {
-        if (!auth()->user()->can('purchase_return_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_return_index'), 403);
 
         if ($request->ajax()) {
 
@@ -107,13 +101,33 @@ class PurchaseReturnController extends Controller
         return view('purchase.purchase_return.ajax_view.show', compact('return'));
     }
 
-    // create purchase return view
+    public function print($id, Request $request)
+    {
+        $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
+            'purchase',
+            'branch',
+            'branch.parentBranch',
+            'supplier:id,name,phone,address,account_group_id',
+            'supplier.group',
+            'createdBy:id,prefix,name,last_name',
+            'purchaseReturnProducts',
+            'purchaseReturnProducts.product',
+            'purchaseReturnProducts.variant',
+            'purchaseReturnProducts.branch:id,name,branch_code,area_name,parent_branch_id',
+            'purchaseReturnProducts.branch.parentBranch:id,name,branch_code,area_name',
+            'purchaseReturnProducts.warehouse:id,warehouse_name,warehouse_code',
+            'purchaseReturnProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseReturnProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $printPageSize = $request->print_page_size;
+
+        return view('purchase.print_templates.print_purchase_return', compact('return', 'printPageSize'));
+    }
+
     public function create()
     {
-        if (!auth()->user()->can('purchase_return_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_return_add'), 403);
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -157,26 +171,11 @@ class PurchaseReturnController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_return_add')) {
+        abort_if(!auth()->user()->can('purchase_return_add'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
+        $this->purchaseReturnService->purchaseReturnValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $restrictions = $this->purchaseReturnService->restrictions($request);
@@ -186,9 +185,8 @@ class PurchaseReturnController extends Controller
             }
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $purchaseReturnVoucherPrefix = isset($branchSetting) && $branchSetting?->purchase_return_prefix ? $branchSetting?->purchase_return_prefix : $generalSettings['prefix__purchase_return_prefix'];
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+            $purchaseReturnVoucherPrefix = $generalSettings['prefix__purchase_return_prefix'] ? $generalSettings['prefix__purchase_return_prefix'] : 'PR';
+            $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
 
             $addReturn = $this->purchaseReturnService->addPurchaseReturn(request: $request, voucherPrefix: $purchaseReturnVoucherPrefix, codeGenerator: $codeGenerator);
 
@@ -266,7 +264,7 @@ class PurchaseReturnController extends Controller
             if ($request->purchase_id) {
 
                 $purchase = $this->purchaseService->singlePurchase(id: $request->purchase_id);
-                $this->purchaseService->adjustPurchaseInvoiceAmounts($purchase);
+                $this->purchaseService->adjustPurchaseInvoiceAmounts(purchase: $purchase);
             }
 
             $this->userActivityLogUtil->addLog(action: 1, subject_type: 6, data_obj: $addReturn);
@@ -279,6 +277,7 @@ class PurchaseReturnController extends Controller
 
         if ($request->action == 'save_and_print') {
 
+            $printPageSize = $request->print_page_size;
             $receivedAmount = $request->received_amount;
             $return = $this->purchaseReturnService->singlePurchaseReturn(id: $addReturn->id, with: [
                 'purchase',
@@ -292,7 +291,7 @@ class PurchaseReturnController extends Controller
                 'purchaseReturnProducts.unit',
             ]);
 
-            return view('purchase.save_and_print_template.print_purchase_return', compact('return', 'receivedAmount'));
+            return view('purchase.print_templates.print_purchase_return', compact('return', 'receivedAmount', 'printPageSize'));
         } else {
 
             return response()->json(['successMsg' => __('Purchase Return Created Successfully.')]);
@@ -301,10 +300,7 @@ class PurchaseReturnController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('purchase_return_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_return_edit'), 403);
 
         $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: [
             'branch',
@@ -365,23 +361,9 @@ class PurchaseReturnController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (!auth()->user()->can('purchase_return_edit')) {
+        abort_if(!auth()->user()->can('purchase_return_edit'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => __('Purchase A/c is required.'),
-            'account_id.required' => __('Credit field must not be is empty.'),
-            'payment_method_id.required' => __('Payment method field is required.'),
-            'supplier_account_id.required' => __('Supplier is required.'),
-        ]);
+        $this->purchaseReturnService->purchaseReturnValidation(request: $request);
 
         $restrictions = $this->purchaseReturnService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseReturnId: $id);
         if ($restrictions['pass'] == false) {
@@ -394,8 +376,7 @@ class PurchaseReturnController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+            $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
 
             $return = $this->purchaseReturnService->singlePurchaseReturn(id: $id, with: ['purchaseReturnProducts']);
 
@@ -528,13 +509,9 @@ class PurchaseReturnController extends Controller
         return response()->json(__('Purchase return updated Successfully.'));
     }
 
-    //Deleted purchase return
     public function delete($id)
     {
-        if (!auth()->user()->can('purchase_return_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_return_delete'), 403);
 
         try {
 

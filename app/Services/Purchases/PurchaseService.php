@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseService
 {
-    public function purchaseListTable(object $request, int $supplierAccountId = null)
+    public function purchaseListTable(object $request, int $supplierAccountId = null): object
     {
         $generalSettings = config('generalSettings');
         $purchases = '';
@@ -379,5 +379,22 @@ class PurchaseService
         $html .= '</div>';
 
         return $html;
+    }
+
+    public function purchaseValidation(object $request): ?array
+    {
+        return $request->validate([
+            'supplier_account_id' => 'required',
+            'invoice_id' => 'sometimes|unique:purchases,invoice_id',
+            'date' => 'required|date',
+            'payment_method_id' => 'required',
+            'purchase_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'purchase_account_id.required' => __('Purchase A/c is required.'),
+            'account_id.required' => __('Credit field must not be is empty.'),
+            'payment_method_id.required' => __('Payment method field is required.'),
+            'supplier_account_id.required' => __('Supplier is required.'),
+        ]);
     }
 }

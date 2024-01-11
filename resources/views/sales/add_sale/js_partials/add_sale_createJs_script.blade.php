@@ -1497,6 +1497,11 @@
         setMethodAccount(account_id);
     });
 
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
+
     function setMethodAccount(account_id) {
 
         if (account_id) {

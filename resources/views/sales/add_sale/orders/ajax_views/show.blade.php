@@ -1,12 +1,6 @@
 @php
     $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
-    $defaultLayout = DB::table('invoice_layouts')
-        ->where('branch_id', null)
-        ->where('is_default', 1)
-        ->first();
-
-    $invoiceLayout = $order?->branch?->branchSetting?->addSaleInvoiceLayout ? $order?->branch?->branchSetting?->addSaleInvoiceLayout : $defaultLayout;
 @endphp
 <!-- Details Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,16 +73,23 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
-                                @if ($order->branch_id)
+                                @php
+                                    $branchName = '';
+                                    if ($order->branch_id) {
 
-                                    @if ($order?->branch?->parentBranch)
-                                        {{ $order?->branch?->parentBranch?->name . '(' . $order?->branch?->area_name . ')' . '-(' . $order?->branch?->branch_code . ')' }}
-                                    @else
-                                        {{ $order?->branch?->name . '(' . $order?->branch?->area_name . ')' . '-(' . $order?->branch?->branch_code . ')' }}
-                                    @endif
-                                @else
-                                    {{ $generalSettings['business_or_shop__business_name'] }}
-                                @endif
+                                        if ($order?->branch?->parentBranch) {
+
+                                            $branchName = $order?->branch?->parentBranch?->name . '(' . $order?->branch?->area_name . ')' . '-(' . $order?->branch?->branch_code . ')';
+                                        } else {
+
+                                            $branchName = $order?->branch?->name . '(' . $order?->branch?->area_name . ')' . '-(' . $order?->branch?->branch_code . ')';
+                                        }
+                                    } else {
+
+                                        $branchName = $generalSettings['business_or_shop__business_name'];
+                                    }
+                                @endphp
+                                {{ $branchName }}
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Email') }} : </strong>
@@ -253,14 +254,34 @@
                         </div>
                     </div>
                 </div>
+
+                <hr class="m-0 mt-3">
+
+                <div class="row g-0 mt-1">
+                    <div class="col-md-6 offset-6">
+                        <div class="input-group p-0">
+                            <label class="col-3"><b>{{ __("Print Layout Page Size") }}</b></label>
+                            <div class="col-9">
+                                <select id="print_page_size" class="form-control">
+                                    @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
+                        @php
+                            $filename = $order->order_id.'__'.$order->date.'__'.$branchName;
+                        @endphp
                         <div class="btn-box">
                             <a href="{{ route('sale.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-                            <button type="button" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print Order') }}</button>
+                            <a href="{{ route('sales.helper.related.voucher.print', $order->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Sales Order') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -270,6 +291,55 @@
     </div>
 </div>
 
-<!-- Sales Order print templete-->
-@include('sales.add_sale.orders.ajax_views.partials.print_modal_details')
-<!-- Sales Order print templete end-->
+<script>
+    function printSalesRelatedVoucher(event) {
+
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {print_page_size},
+            success: function(data) {
+
+                if (!$.isEmptyObject(data.errorMsg)) {
+
+                    toastr.error(data.errorMsg);
+                    return;
+                }
+
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 1000,
+                    header: null,
+                    footer: null,
+                });
+
+                document.title = filename;
+
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    }
+</script>
+

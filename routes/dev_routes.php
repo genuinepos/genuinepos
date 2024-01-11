@@ -123,9 +123,6 @@ Route::get('my-test', function () {
     //     )
     //     ->get();
 
-    // $date = date('Y-11-01');
-    // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
-
     // $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
     // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent
 
@@ -196,59 +193,13 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $generalSettings =  GeneralSetting::where('branch_id', 39)->orWhereIn('key', [
-        'addons__hrm',
-        'addons__manage_task',
-        'addons__service',
-        'addons__manufacturing',
-        'addons__e_commerce',
-        'addons__branch_limit',
-        'addons__cash_counter_limit',
-        'business_or_shop__business_name'
-    ])->pluck('value', 'key');
-
-    // $parentBranchId = 38;
-    // if (isset($parentBranchId)) {
-    //     $query->addSelect([
-    //         DB::raw("(CASE
-    //                     WHEN branch_id = $parentBranchId AND key = business_or_shop__financial_year_start_month
-    //                     THEN value -- Assuming 'value' is the column containing the financial year value
-    //                     ELSE NULL
-    //                 END) AS business_or_shop__financial_year_start_month")
-    //     ]);
-    // }
-    $prefixes = [
-        'business_or_shop__',
-        'reward_point_settings__',
-        'send_email__',
-        'send_sms__',
-    ];
-
-    $query = GeneralSetting::query()->where('branch_id', 38)
-    ->whereNotIn('key',
-        [
-            'business_or_shop__currency_id',
-            'business_or_shop__currency_symbol',
-            'business_or_shop__date_format',
-            'business_or_shop__time_format',
-            'business_or_shop__timezone',
-            'business_or_shop__currency_symbol',
-            'business_or_shop__currency_symbol',
-        ]
-    );
-
-    $query->where(function ($query) use ($prefixes) {
-        foreach ($prefixes as $prefix) {
-            $query->orWhere('key', 'LIKE', $prefix . '%');
-        }
-    });
-
-    $parentBranchGeneralSettings = $query->get();
-    foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
-        $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
-    }
-
-    return $generalSettings;
+    $generalSettings = config('generalSettings');
+    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
+    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
+    $startDate = date($startDateFormat);
+    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
+    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
 });
 
 

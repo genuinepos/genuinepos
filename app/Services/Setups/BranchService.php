@@ -123,7 +123,7 @@ class BranchService
 
         $addBranch->save();
 
-        return $addBranch;
+        return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
     }
 
     public function updateBranch(int $id, object $request): void

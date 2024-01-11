@@ -313,37 +313,6 @@
             });
         });
 
-        // Print Packing slip
-        $(document).on('click', '#printSupplierCopy', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            $.ajax({
-                url: url,
-                type: 'get',
-                success: function(data) {
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                        removeInline: false,
-                        printDelay: 700,
-                        header: null,
-                    });
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                    }
-                }
-            });
-        });
-
         $(document).on('click', '#delete', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
@@ -396,21 +365,6 @@
             e.preventDefault();
             $('.data_preloader').show();
             purchaseOrderstable.ajax.reload();
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-            var body = $('.print_modal_details').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
-            });
         });
     </script>
 

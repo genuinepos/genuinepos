@@ -38,14 +38,19 @@
         @php
             $stockLocationName = '';
             if ($purchaseProduct?->purchase?->warehouse) {
+
                 $stockLocationName = $purchaseProduct?->purchase?->warehouse->warehouse_name . '/' . $purchaseProduct?->purchase?->warehouse->warehouse_code;
             } else {
+
                 $stockLocationName = $generalSettings['business_or_shop__business_name'];
 
                 if ($purchase->branch) {
+
                     if ($purchase?->branch?->parentBranch) {
+
                         $stockLocationName = $purchase?->branch?->parentBranch->name . '(' . $purchase?->branch?->parentBranch->area_name . ')';
                     } else {
+                        
                         $stockLocationName = $purchase?->branch?->name . '(' . $purchase?->branch->area_name . ')';
                     }
                 }

@@ -194,4 +194,17 @@ class StockAdjustmentService
 
         return $query;
     }
+
+    public function stockAdjustmentValidation(object $request): ?array
+    {
+        return $request->validate([
+            'date' => 'required',
+            'type' => 'required',
+            'expense_account_id' => 'required',
+            'account_id' => 'required',
+        ], [
+            'expense_account_id.required' => __('Expense Ledger A/c is required.'),
+            'account_id.required' => __('Debit A/c is required.'),
+        ]);
+    }
 }

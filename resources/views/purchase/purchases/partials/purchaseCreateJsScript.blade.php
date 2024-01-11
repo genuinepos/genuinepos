@@ -1064,8 +1064,7 @@
                         header: null,
                     });
                 }
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -1249,6 +1248,11 @@
 
         $('#supplier_account_id').focus().select();
     }, 1000);
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 @if (auth()->user()->can('supplier_add'))

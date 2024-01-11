@@ -8,6 +8,7 @@ Route::controller(StockAdjustmentController::class)->prefix('stock/adjustments')
 
     Route::get('/', 'index')->name('stock.adjustments.index');
     Route::get('show/{id}', 'show')->name('stock.adjustments.show');
+    Route::get('print/{id}', 'print')->name('stock.adjustments.print');
     Route::get('create', 'create')->name('stock.adjustments.create');
     Route::post('store', 'store')->name('stock.adjustments.store');
     Route::delete('delete/{id}', 'delete')->name('stock.adjustments.delete');

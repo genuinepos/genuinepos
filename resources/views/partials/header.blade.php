@@ -22,7 +22,7 @@
                                 @endif
                             @endif
                         </p>
-                        <span><strong>FY :</strong> 1 Jun 2023 - 30 May 2024</span>
+                        <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
                     <div class="head__content__sec">
                         <ul class="head__cn">

@@ -87,7 +87,6 @@ Route::prefix('setups')->group(function () {
             Route::get('edit/{id}', 'edit')->name('invoices.layouts.edit');
             Route::post('update/{id}', 'update')->name('invoices.layouts.update');
             Route::delete('delete/{id}', 'delete')->name('invoices.layouts.delete');
-            Route::get('set/default/{id}', 'setDefault')->name('invoices.layouts.set.default');
         });
     });
 

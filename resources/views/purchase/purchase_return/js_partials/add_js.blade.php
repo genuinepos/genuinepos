@@ -1118,6 +1118,11 @@
 
     setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
 
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
+
     setTimeout(function() {
 
         $('#supplier_account_id').focus().select();

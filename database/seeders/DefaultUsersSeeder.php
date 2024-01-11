@@ -16,7 +16,7 @@ class DefaultUsersSeeder extends Seeder
     public function run()
     {
         ['superAdmin' => $superAdmin, 'admin' => $admin] = $this->getDefaultUsers();
-        
+
         if (User::count() == 0) {
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE `users` AUTO_INCREMENT=1');
             $superadminRole = Role::where('name', 'superadmin')->first();
@@ -97,6 +97,7 @@ class DefaultUsersSeeder extends Seeder
             'status' => 1,
             'sales_commission_percent' => 0,
             'max_sales_discount_percent' => 0,
+
             'phone' => '0170000001',
             'date_of_birth' => null,
             'gender' => null,

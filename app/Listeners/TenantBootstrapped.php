@@ -26,7 +26,35 @@ class TenantBootstrapped
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
                 $generalSettings = Cache::get('generalSettings');
                 if (!isset($generalSettings)) {
-                    $generalSettings = GeneralSetting::where('branch_id', auth()->user()?->branch_id ?? null)->pluck('value', 'key')->toArray();
+                    // $generalSettings = GeneralSetting::where(function ($query) {
+                    //     $query->whereNotNull('branch_id')
+                    //         ->whereNotNull('parent_branch_id')
+                    //         ->orderBy('branch_id')
+                    //         ->orderBy('parent_branch_id');
+                    //     })
+                    //     ->orWhere(function ($query) {
+                    //         $query->whereNotNull('branch_id')
+                    //             ->whereNull('parent_branch_id')
+                    //             ->orderBy('branch_id');
+                    //     })
+                    //     ->orWhere(function ($query) {
+                    //         $query->whereNull('branch_id')
+                    //             ->whereNotNull('parent_branch_id')
+                    //             ->orderBy('parent_branch_id');
+                    //     })
+                    //     ->orWhere(function ($query) {
+                    //         $query->whereNull('branch_id')
+                    //             ->whereNull('parent_branch_id')
+                    //             ->orderBy('key');
+                    //     })
+                    //     ->distinct('key')
+                    //     ->pluck('value', 'key');
+                    $generalSettings = GeneralSetting::where('parent_branch_id', auth()->user()?->branch_id)
+                        ->orWhere('branch_id', auth()->user()?->branch_id)
+                        ->orWhereNull('branch_id')
+                        ->distinct('key')
+                        ->pluck('value', 'key')
+                        ->toArray();
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
                         return $generalSettings;
                     });

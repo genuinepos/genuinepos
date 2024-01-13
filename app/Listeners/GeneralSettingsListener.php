@@ -92,7 +92,7 @@ class GeneralSettingsListener
                     $generalSettings['business_or_shop__financial_year'] = $financialYear;
                     $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
                     $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
-                    
+
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
 
                         return $generalSettings;
@@ -141,8 +141,6 @@ class GeneralSettingsListener
                     // 'mail.mailers.smtp.auth_mode' => $generalSettings['email_config__MAIL_AUTH_MODE'] ?? config('mail.mailers.smtp.auth_mode'),
                     // Tenant separated email config ends
                 ]);
-
-
 
                 $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);

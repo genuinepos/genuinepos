@@ -26,7 +26,8 @@ class TenantBootstrapped
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
                 $generalSettings = Cache::get('generalSettings');
                 if (!isset($generalSettings)) {
-                    // $generalSettings = GeneralSetting::where(function ($query) {
+                    // $generalSettings
+                    ing::where(function ($query) {
                     //     $query->whereNotNull('branch_id')
                     //         ->whereNotNull('parent_branch_id')
                     //         ->orderBy('branch_id')

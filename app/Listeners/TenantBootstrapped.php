@@ -23,6 +23,5 @@ class TenantBootstrapped
      */
     public function handle(object $event): void
     {
-
     }
 }

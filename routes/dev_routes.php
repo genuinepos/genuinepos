@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
-
+    $gs = config('generalSettings');
+    dd($gs);
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
     //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
     //     ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])

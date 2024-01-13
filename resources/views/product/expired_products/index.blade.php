@@ -10,7 +10,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
                                 <h6>{{ __("Expired Products") }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -30,7 +29,7 @@
                                                         <select name="branch_id"
                                                             class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __("Business") }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -187,7 +186,7 @@
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                 }else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

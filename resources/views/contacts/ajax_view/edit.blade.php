@@ -1,13 +1,12 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit'). ' ' . App\Enums\ContactType::tryFrom($type)->name }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit') . ' ' . App\Enums\ContactType::tryFrom($type)->name }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
         <div class="modal-body">
-            <form id="edit_contact_form" action="{{ route('contacts.update', [$contact->id, $contact->type]) }}" method="POST"
-                enctype="multipart/form-data">
+            <form id="edit_contact_form" action="{{ route('contacts.update', [$contact->id, $contact->type]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row mt-1">
                     <div class="row">
@@ -90,17 +89,17 @@
                             <div class="row mt-1">
                                 <div class="col-md-4">
                                     <label><strong>@lang('menu.city') </strong> </label>
-                                    <input type="text" name="city" class="form-control" id="contact_city" value="{{ $contact->city }}" data-next="contact_state" placeholder="@lang('menu.city')"/>
+                                    <input type="text" name="city" class="form-control" id="contact_city" value="{{ $contact->city }}" data-next="contact_state" placeholder="@lang('menu.city')" />
                                 </div>
 
                                 <div class="col-md-4">
                                     <label><strong>@lang('menu.state') </strong> </label>
-                                    <input type="text" name="state" class="form-control" id="contact_state" value="{{ $contact->state }}" data-next="contact_country" placeholder="@lang('menu.state')"/>
+                                    <input type="text" name="state" class="form-control" id="contact_state" value="{{ $contact->state }}" data-next="contact_country" placeholder="@lang('menu.state')" />
                                 </div>
 
                                 <div class="col-md-4">
                                     <label><strong>@lang('menu.country') </strong> </label>
-                                    <input type="text" name="country" class="form-control" id="contact_country" value="{{ $contact->country }}" data-next="contact_zip_code" placeholder="@lang('menu.country')"/>
+                                    <input type="text" name="country" class="form-control" id="contact_country" value="{{ $contact->country }}" data-next="contact_zip_code" placeholder="@lang('menu.country')" />
                                 </div>
 
                                 <div class="col-md-4 mt-1">
@@ -122,7 +121,7 @@
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-12">
                                         <label><strong>@lang('menu.credit_limit') </strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-                                        <input type="number" step="any" name="credit_limit" class="form-control fw-bold text-end" id="contact_credit_limit" value="{{ $contact->credit_limit }}" data-next="contact_pay_term_number" placeholder="@lang('menu.credit_limit')"/>
+                                        <input type="number" step="any" name="credit_limit" class="form-control fw-bold text-end" id="contact_credit_limit" value="{{ $contact->credit_limit }}" data-next="contact_pay_term_number" placeholder="@lang('menu.credit_limit')" />
                                     </div>
                                 @endif
                             </div>
@@ -131,7 +130,7 @@
                                 <div class="col-md-12">
                                     <label><strong>@lang('menu.pay_term') </strong> </label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control fw-bold text-end" id="contact_pay_term_number" value="{{ $contact->pay_term_number }}" data-next="contact_pay_term" placeholder="Number"/>
+                                        <input type="text" name="pay_term_number" class="form-control fw-bold text-end" id="contact_pay_term_number" value="{{ $contact->pay_term_number }}" data-next="contact_pay_term" placeholder="Number" />
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
                                             <option value="">@lang('menu.select_term')</option>
                                             <option value="1">@lang('menu.days') </option>
@@ -149,7 +148,7 @@
                                             $openingBalanceAmount = $contact?->openingBalance ? $contact?->openingBalance?->amount : $contact?->opening_balance;
                                             $openingBalanceType = $contact?->openingBalance ? $contact?->openingBalance?->amount_type : $contact?->opening_balance_type;
                                         @endphp
-                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold text-end" id="contact_opening_balance" value="{{ $openingBalanceAmount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')"/>
+                                        <input type="number" step="any" name="opening_balance" class="form-control fw-bold text-end" id="contact_opening_balance" value="{{ $openingBalanceAmount }}" data-next="contact_opening_balance_type" placeholder="@lang('menu.opening_balance')" />
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_changes_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
@@ -172,7 +171,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
-                            <button type="submit" id="contact_save_changes_btn" class="btn btn-sm btn-success contact_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="submit" id="contact_save_changes_btn" class="btn btn-sm btn-success contact_submit_button">{{ __('Save Changes') }}</button>
                         </div>
                     </div>
                 </div>
@@ -188,18 +187,18 @@
     });
 
     var isAllowSubmit = true;
-    $(document).on('click', '.contact_submit_button',function () {
+    $(document).on('click', '.contact_submit_button', function() {
 
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
-        }else {
+        } else {
 
             $(this).prop('type', 'button');
         }
     });
 
-    $('#edit_contact_form').on('submit',function(e) {
+    $('#edit_contact_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.contact_loading_button').show();
@@ -220,18 +219,19 @@
                 $('#addOrEditContactModal').modal('hide');
 
                 contactTable.ajax.reload();
-            },error : function(err) {
+            },
+            error: function(err) {
 
                 $('.contact_loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -245,17 +245,17 @@
         });
     });
 
-    $(document).on('change keypress click', 'select', function(e){
+    $(document).on('change keypress click', 'select', function(e) {
 
         var nextId = $(this).data('next');
 
         if (e.which == 0) {
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 
-    $(document).on('change keypress', 'input', function(e){
+    $(document).on('change keypress', 'input', function(e) {
 
         var nextId = $(this).data('next');
 
@@ -273,7 +273,7 @@
                 return;
             }
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 

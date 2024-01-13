@@ -18,7 +18,6 @@ use App\Services\Purchases\PurchaseOrderProductService;
 use App\Services\Purchases\PurchaseOrderService;
 use App\Services\Purchases\PurchaseService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
@@ -33,7 +32,6 @@ class PurchaseOrderController extends Controller
         private AccountService $accountService,
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
         private AccountingVoucherService $accountingVoucherService,
@@ -46,10 +44,7 @@ class PurchaseOrderController extends Controller
 
     public function index(Request $request, $supplierAccountId = null)
     {
-        if (! auth()->user()->can('purchase_order_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_order_index'), 403);
 
         if ($request->ajax()) {
 
@@ -91,7 +86,7 @@ class PurchaseOrderController extends Controller
         return view('purchase.orders.ajax_view.show', compact('order'));
     }
 
-    public function printSupplierCopy($id)
+    public function print($id, Request $request)
     {
         $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
             'supplier:id,name,phone,address',
@@ -104,15 +99,32 @@ class PurchaseOrderController extends Controller
             'purchaseOrderProducts.unit.baseUnit:id,base_unit_id,code_name',
         ]);
 
-        return view('purchase.orders.ajax_view.print_supplier_copy', compact('order'));
+        $printPageSize = $request->print_page_size;
+
+        return view('purchase.print_templates.print_purchase_order', compact('order', 'printPageSize'));
+    }
+
+    public function printSupplierCopy($id, Request $request)
+    {
+        $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
+            'supplier:id,name,phone,address',
+            'admin:id,prefix,name,last_name',
+            'purchaseAccount:id,name',
+            'purchaseOrderProducts',
+            'purchaseOrderProducts.product',
+            'purchaseOrderProducts.variant',
+            'purchaseOrderProducts.unit:id,code_name,base_unit_id,base_unit_multiplier',
+            'purchaseOrderProducts.unit.baseUnit:id,base_unit_id,code_name',
+        ]);
+
+        $printPageSize = $request->print_page_size;
+
+        return view('purchase.print_templates.print_order_supplier_copy', compact('order', 'printPageSize'));
     }
 
     public function create()
     {
-        if (! auth()->user()->can('purchase_order_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_order_add'), 403);
 
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
@@ -150,24 +162,9 @@ class PurchaseOrderController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_order_add')) {
+        abort_if(!auth()->user()->can('purchase_order_add'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'delivery_date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => 'Purchase A/c is required.',
-            'account_id.required' => 'Credit A/c is required.',
-            'payment_method_id.required' => 'Payment method field is required.',
-            'supplier_id.required' => 'Supplier is required.',
-        ]);
+        $this->purchaseOrderService->purchaseOrderValidation($request);
 
         $restrictions = $this->purchaseOrderService->restrictions($request);
         if ($restrictions['pass'] == false) {
@@ -176,13 +173,11 @@ class PurchaseOrderController extends Controller
         }
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $invoicePrefix = isset($branchSetting) && $branchSetting?->purchase_order_prefix ? $branchSetting?->purchase_order_prefix : 'PO';
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $invoicePrefix = $generalSettings['prefix__purchase_order_prefix'] ? $generalSettings['prefix__purchase_order_prefix'] : 'PO';
+            $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             $addPurchaseOrder = $this->purchaseOrderService->addPurchaseOrder(request: $request, codeGenerator: $codeGenerator, invoicePrefix: $invoicePrefix);
@@ -240,18 +235,16 @@ class PurchaseOrderController extends Controller
                 id: $addPurchaseOrder->id
             );
 
+            $printPageSize = $request->print_page_size;
             $payingAmount = $request->paying_amount;
 
-            return view('purchase.save_and_print_template.print_purchase_order', compact('order', 'payingAmount'));
+            return view('purchase.print_templates.print_purchase_order', compact('order', 'payingAmount', 'printPageSize'));
         }
     }
 
     public function edit($id)
     {
-        if (! auth()->user()->can('purchase_order_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_order_edit'), 403);
 
         $order = $this->purchaseOrderService->singlePurchaseOrder(id: $id, with: [
             'branch',
@@ -302,24 +295,9 @@ class PurchaseOrderController extends Controller
 
     public function update($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('purchase_order_edit')) {
+        abort_if(!auth()->user()->can('purchase_order_edit'), 403);
 
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate($request, [
-            'supplier_account_id' => 'required',
-            'date' => 'required|date',
-            'delivery_date' => 'required|date',
-            'payment_method_id' => 'required',
-            'purchase_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'purchase_account_id.required' => 'Purchase A/c is required.',
-            'account_id.required' => 'Credit A/c is required.',
-            'payment_method_id.required' => 'Payment method field is required.',
-            'supplier_id.required' => 'Supplier is required.',
-        ]);
+        $this->purchaseOrderService->purchaseOrderValidation($request);
 
         $restrictions = $this->purchaseOrderService->restrictions(request: $request, checkSupplierChangeRestriction: true, purchaseOrderId: $id);
         if ($restrictions['pass'] == false) {
@@ -332,8 +310,7 @@ class PurchaseOrderController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+            $paymentVoucherPrefix = $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 
             // get updatable purchase row
@@ -402,10 +379,7 @@ class PurchaseOrderController extends Controller
     // delete purchase method
     public function delete($id)
     {
-        if (! auth()->user()->can('purchase_order_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('purchase_order_delete'), 403);
 
         try {
             DB::beginTransaction();

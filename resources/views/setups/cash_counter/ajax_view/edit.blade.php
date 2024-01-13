@@ -8,16 +8,16 @@
             <form id="edit_cash_counter_form" action="{{ route('cash.counters.update', $cashCounter->id) }}" method="POST">
                 <div class="form-group row">
                     <div class="col-md-12">
-                        <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="counter_name" class="form-control" id="cash_counter_name" value="{{ $cashCounter->counter_name }}" data-next="short_name" placeholder="{{ __("Counter Name") }}"/>
+                        <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="counter_name" class="form-control" id="cash_counter_name" value="{{ $cashCounter->counter_name }}" data-next="short_name" placeholder="{{ __('Counter Name') }}" />
                         <span class="error error_cash_counter_counter_name"></span>
                     </div>
                 </div>
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12">
-                        <label for=""><b>{{ __("Short Name") }}</b> <span class="text-danger">*</span></label>
-                        <input required type="text" name="short_name" class="form-control" id="short_name" value="{{ $cashCounter->short_name }}" data-next="cash_counter_save_changes" placeholder="{{ __("Cash Counter Short Name") }}">
+                        <label for=""><b>{{ __('Short Name') }}</b> <span class="text-danger">*</span></label>
+                        <input required type="text" name="short_name" class="form-control" id="short_name" value="{{ $cashCounter->short_name }}" data-next="cash_counter_save_changes" placeholder="{{ __('Cash Counter Short Name') }}">
                         <span class="error error_cash_counter_short_name"></span>
                     </div>
                 </div>
@@ -25,9 +25,9 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button cash_counter_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="cash_counter_save_changes" class="btn btn-sm btn-success cash_counter_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="button" class="btn loading_button cash_counter_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="cash_counter_save_changes" class="btn btn-sm btn-success cash_counter_submit_button">{{ __('Save Changes') }}</button>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,6 @@
 </div>
 
 <script type="text/javascript">
-
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.cash_counter_submit_button').prop('type', 'button');
@@ -81,7 +80,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -113,4 +112,3 @@
         }
     });
 </script>
-

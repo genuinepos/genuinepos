@@ -21,8 +21,8 @@
     <div class="col-12 text-center">
 
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }} </h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
 
 
 
@@ -31,8 +31,8 @@
 
         @elseif ($branch_id == 'NULL')
 
-            <h5>{{ $generalSettings['business__business_name'] }} </h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
 
             @php
@@ -46,7 +46,7 @@
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') </b> {{date($generalSettings['business_or_shop__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'] ,strtotime($toDate)) }} </p>
         @endif
 
         <p class="mt-2"><b>@lang('menu.customer_payments') </b></p>
@@ -88,7 +88,7 @@
                     <tr>
                         <td class="text-start">
                             @php
-                                $dateFormat = $generalSettings['business__date_format'];
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
 

@@ -437,7 +437,7 @@
         e.preventDefault();
 
         $(this).closest('tr').remove();
-        
+
         calculateTotalAmount();
 
         setTimeout(function () {
@@ -581,7 +581,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if(err.status == 500) {
 

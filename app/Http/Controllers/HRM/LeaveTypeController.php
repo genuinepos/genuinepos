@@ -3,117 +3,85 @@
 namespace App\Http\Controllers\HRM;
 
 use App\Http\Controllers\Controller;
-use App\Models\Hrm\LeaveType;
+use App\Services\Hrm\LeaveTypeService;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 
 class LeaveTypeController extends Controller
 {
-    public function __construct()
+    public function __construct(private LeaveTypeService $leaveTypeService)
     {
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_index')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
-        
+
         if ($request->ajax()) {
 
-            $leaveTypes = LeaveType::orderBy('id', 'DESC')->get();
+            return $this->leaveTypeService->leaveTypesTable();
+        }
+    }
 
-            return DataTables::of($leaveTypes)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
+    public function create()
+    {
+        if (!auth()->user()->can('leave_types_create')) {
 
-                    $html = '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="'.route('hrm.leave.type.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                    $html .= '<a href="'.route('hrm.leave.type.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
-                    $html .= '</div>';
-
-                    return $html;
-                })
-                ->editColumn('leave_count_interval', function ($row) {
-
-                    if ($row->leave_count_interval == 1) {
-                        return '<span class="badge bg-primary">'.__('Current Month').'</span>';
-                    } elseif ($row->leave_count_interval == 2) {
-                        return '<span class="badge bg-warning">'.__('Current Financial Year').'</span>';
-                    } else {
-                        return '<span class="badge bg-info">'.__('none').'</span>';
-                    }
-                })->rawColumns(['leave_count_interval', 'action'])->smart(true)->make(true);
+            abort(403, __('Access Forbidden.'));
         }
 
-        return view('hrm.leave_types.index');
+        return view('hrm.leaves.ajax_view.types.create');
     }
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_create')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $this->validate($request, [
-            'leave_type' => 'required',
-        ]);
+        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
+        $this->leaveTypeService->addLeaveType(request: $request);
 
-        LeaveType::insert([
-            'branch_id' => auth()->user()->branch_id,
-            'leave_type' => $request->leave_type,
-            'max_leave_count' => $request->max_leave_count,
-            'leave_count_interval' => $request->leave_count_interval,
-        ]);
-
-        return response()->json('Leave type created successfully');
+        return response()->json(__('Leave type created successfully'));
     }
 
     public function edit($id)
     {
-        if (! auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_edit')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $leaveType = LeaveType::where('id', $id)->first();
+        $leaveType = $this->leaveTypeService->singleLeaveType(id: $id);
 
-        return view('hrm.leave_types.ajax_view.edit', compact('leaveType'));
+        return view('hrm.leaves.ajax_view.types.edit', compact('leaveType'));
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        if (! auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_edit')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $this->validate($request, [
-            'leave_type' => 'required',
-        ]);
+        $this->leaveTypeService->storeAndUpdateValidation(request: $request);
+        $this->leaveTypeService->updateLeaveType(request: $request, id: $id);
 
-        $updateLeaveType = LeaveType::where('id', $request->id)
-            ->update([
-                'leave_type' => $request->leave_type,
-                'max_leave_count' => $request->max_leave_count,
-                'leave_count_interval' => $request->leave_count_interval,
-            ]);
-
-        return response()->json('Leave type updated successfully');
+        return response()->json(__('Leave type updated successfully'));
     }
 
     public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('leave_type')) {
+        if (!auth()->user()->can('leave_types_delete')) {
 
-            abort(403, 'Access Forbidden.');
+            abort(403, __('Access Forbidden.'));
         }
 
-        $deleteCategory = LeaveType::find($id);
-        $deleteCategory->delete();
+        $this->leaveTypeService->deleteLeaveType(id: $id);
 
-        return response()->json('Leave type deleted successfully');
+        return response()->json(__('Leave type deleted successfully'));
     }
 }

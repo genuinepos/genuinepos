@@ -178,24 +178,28 @@
                 @endif
 
                 @if ($generalSettings['addons__hrm'])
-                    @if (auth()->user()->can('hrm_dashboard') ||
-                            auth()->user()->can('leave_type') ||
-                            auth()->user()->can('leave_assign') ||
-                            auth()->user()->can('shift') ||
-                            auth()->user()->can('attendance') ||
-                            auth()->user()->can('view_allowance_and_deduction') ||
-                            auth()->user()->can('payroll') ||
-                            auth()->user()->can('department') ||
-                            auth()->user()->can('designation') ||
+                    @if (
+                            auth()->user()->can('hrm_dashboard') ||
+                            auth()->user()->can('leaves_index') ||
+                            auth()->user()->can('leave_types_index') ||
+                            auth()->user()->can('shifts_index') ||
+                            auth()->user()->can('attendances_index') ||
+                            auth()->user()->can('allowances_index') ||
+                            auth()->user()->can('deductions_index') ||
+                            auth()->user()->can('holidays_index') ||
+                            auth()->user()->can('payrolls_index') ||
+                            auth()->user()->can('departments_index') ||
+                            auth()->user()->can('designations_index') ||
                             auth()->user()->can('payroll_report') ||
                             auth()->user()->can('payroll_payment_report') ||
-                            auth()->user()->can('attendance_report'))
-                        <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
-                                <p class="title">{{ __('HRM') }}</p>
-                            </a>
-                        </li>
+                            auth()->user()->can('attendance_report')
+                        )
+                            <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
+                                    <p class="title">{{ __('HRM') }}</p>
+                                </a>
+                            </li>
                     @endif
                 @endif
 
@@ -795,6 +799,17 @@
                                                     </a>
                                                 </div>
                                             @endif
+
+                                            <div class="sub-menu-col">
+                                                <a href="" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('P/o To Receive Stock') }}</p>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -1208,7 +1223,7 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('product_sale_report'))
+                                    @if (auth()->user()->can('sold_product_report'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('reports.sold.products.report.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1411,8 +1426,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('stock_adjustment_add') ||
-                                        auth()->user()->can('stock_adjustment_list'))
+                                @if (auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_list'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Stock Adjustment') }}</p>
                                         <div class="sub-menu-row">
@@ -1429,7 +1443,7 @@
                                                 </div>
                                             @endif
 
-                                            @if (auth()->user()->can('stock_adjustment_list'))
+                                            @if (auth()->user()->can('stock_adjustment_all'))
                                                 <div class="sub-menu-col">
                                                     <a href="{{ route('stock.adjustments.index') }}" class="switch-bar-wrap">
                                                         <div class="switch_bar">
@@ -1824,219 +1838,212 @@
             @endif
 
             @if ($generalSettings['addons__hrm'] == 1)
-                <div class="sub-menu_t" id="hrm">
-                    <div class="sub-menu-width">
-                        <div class="model__close bg-secondary-2 mb-3">
-                            <div class="row align-items-center justify-content-end">
-                                <div class="col-md-4">
-                                    <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="container-fluid">
-                            <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('hrm_dashboard'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.dashboard.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-tachometer-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.hrm_dashboard')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('leave_type'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.leave.type.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-th-large"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.leave_type')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('leave_assign'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.leaves.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-level-down-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.leave')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('shift'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.attendance.shift') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-network-wired"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.shift')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('attendance'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.attendance') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-paste"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.attendance')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('view_allowance_and_deduction'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.allowance') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.allowance_deduction')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('payroll'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.payroll.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-money-bill-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.payroll')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('holiday'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.holidays') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-toggle-off"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.holiday')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('department'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.departments') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="far fa-building"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.department')</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('designation'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('hrm.designations') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-map-marker-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">@lang('menu.designation')</p>
-                                            </a>
-                                        </div>
-                                    @endif
+                @if (
+                    auth()->user()->can('hrm_dashboard') ||
+                    auth()->user()->can('leaves_index') ||
+                    auth()->user()->can('leave_types_index') ||
+                    auth()->user()->can('shifts_index') ||
+                    auth()->user()->can('attendances_index') ||
+                    auth()->user()->can('allowances_index') ||
+                    auth()->user()->can('deductions_index') ||
+                    auth()->user()->can('holidays_index') ||
+                    auth()->user()->can('payrolls_index') ||
+                    auth()->user()->can('departments_index') ||
+                    auth()->user()->can('designations_index') ||
+                    auth()->user()->can('payroll_report') ||
+                    auth()->user()->can('payroll_payment_report') ||
+                    auth()->user()->can('attendance_report')
+                )
+                    <div class="sub-menu_t" id="hrm">
+                        <div class="sub-menu-width">
+                            <div class="model__close bg-secondary-2 mb-3">
+                                <div class="row align-items-center justify-content-end">
+                                    <div class="col-md-4">
+                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                                    </div>
                                 </div>
                             </div>
 
-                            @if (
-                                (auth()->user()->can('payroll_report') &&
-                                    auth()->user()->can('payroll_report')) ||
-                                    (auth()->user()->can('payroll_payment_report') &&
-                                        auth()->user()->can('payroll_payment_report')) ||
-                                    (auth()->user()->can('attendance_report') &&
-                                        auth()->user()->can('attendance_report')))
-                                {{-- <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <p class="text-muted mt-1 ms-3"><strong>HRM Reports</strong></p>
-                                        <hr class="p-0 m-0 mb-3">
+                            <div class="container-fluid">
+                                @if (
+                                    auth()->user()->can('hrm_dashboard') ||
+                                    auth()->user()->can('leaves_index') ||
+                                    auth()->user()->can('leave_types_index') ||
+                                    auth()->user()->can('shifts_index') ||
+                                    auth()->user()->can('attendances_index') ||
+                                    auth()->user()->can('allowances_index') ||
+                                    auth()->user()->can('deductions_index') ||
+                                    auth()->user()->can('holidays_index') ||
+                                    auth()->user()->can('payrolls_index') ||
+                                    auth()->user()->can('departments_index') ||
+                                    auth()->user()->can('designations_index')
+                                )
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.leaves.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-level-down-alt"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Leaves") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('shifts_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.shifts.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-network-wired"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Shifts") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('attendances_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.attendances.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-paste"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Attendances") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        <div class="sub-menu-row">
+                                            @if (auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.allowances.deductions.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-plus"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Allowances & Deductions") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('holidays_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.holidays.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-toggle-off"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Holidays") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('departments_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.departments.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="far fa-building"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Departments") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('designations_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.designations.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-map-marker-alt"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Designations") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+
+                                            @if (auth()->user()->can('payrolls_index'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('hrm.payrolls.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="far fa-money-bill-alt"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <p class="switch_text">{{ __("Payrolls") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div> --}}
+                                @endif
 
-                                <div class="sub-menu-group">
-                                    <p class="sub-menu-group-title">HRM @lang('menu.report')</p>
-                                    <div class="sub-menu-row">
+                                @if (
+                                    auth()->user()->can('payroll_report') ||
+                                    auth()->user()->can('payroll_payment_report') ||
+                                    auth()->user()->can('attendance_report')
+                                )
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __("HRM Reports") }}</p>
+                                        <div class="sub-menu-row">
 
-                                        @if (auth()->user()->can('payroll_report') &&
-                                                auth()->user()->can('payroll_report'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('reports.payroll') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-money-bill-alt"></i></span>
+                                            @if (auth()->user()->can('payroll_report'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('payroll.reports.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-money-bill-alt"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.payroll_report')</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __("Payroll Report") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('payroll_payment_report') &&
-                                                auth()->user()->can('payroll_payment_report'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('reports.payroll.payment') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-money-bill-alt"></i></span>
+                                            @if (auth()->user()->can('payroll_payment_report'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('reports.payroll.payments.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-money-bill-alt"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.payroll_payment_report')</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __("Payroll Payment Report") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
 
-                                        @if (auth()->user()->can('attendance_report') &&
-                                                auth()->user()->can('attendance_report'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('reports.attendance') }}" class="switch-bar-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-paste"></i></span>
+                                            @if (auth()->user()->can('attendance_report'))
+                                                <div class="sub-menu-col">
+                                                    <a href="{{ route('reports.attendances.index') }}" class="switch-bar-wrap">
+                                                        <div class="switch_bar">
+                                                            <div class="bar-link">
+                                                                <span><i class="fas fa-paste"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <p class="switch_text">@lang('menu.attendance_report')</p>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                        <p class="switch_text">{{ __("Attendances Report") }}</p>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
 
             <div class="sub-menu_t" id="settings">
@@ -2055,17 +2062,16 @@
                             <div class="sub-menu-row">
                                 @if (auth()->user()->can('general_settings'))
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
+                                        <a href="{{ auth()->user()->branch_id ? route('branches.settings.index', auth()->user()->branch_id) : route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-cogs"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.general_settings')</p>
+                                            <p class="switch_text">{{ __("General Settings") }}</p>
                                         </a>
                                     </div>
                                 @endif
-
 
                                 @if (auth()->user()->can('branch'))
                                     <div class="sub-menu-col">
@@ -2080,7 +2086,6 @@
                                     </div>
                                 @endif
 
-
                                 @if (auth()->user()->can('warehouse'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">
@@ -2089,7 +2094,7 @@
                                                     <span><i class="fas fa-warehouse"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.warehouses') </p>
+                                            <p class="switch_text">{{ __("Warehouses") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2102,20 +2107,7 @@
                                                     <span><i class="fas fa-credit-card"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.payment_methods')</p>
-                                        </a>
-                                    </div>
-                                @endif
-
-                                @if (auth()->user()->can('invoice_schema'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('invoices.schemas.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-file-invoice-dollar"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.invoice_schema')</p>
+                                            <p class="switch_text">{{ __("Payment Methods") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2128,7 +2120,7 @@
                                                     <span><i class="fas fa-file-invoice"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.invoice_layout')</p>
+                                            <p class="switch_text">{{ __("Invoice Layout") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2141,7 +2133,7 @@
                                                     <span><i class="fas fa-barcode"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.barcode_settings')</p>
+                                            <p class="switch_text">{{ __("Barcode Settings") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2154,7 +2146,7 @@
                                                     <span><i class="fas fa-store"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.cash_counter')</p>
+                                            <p class="switch_text">{{ __("Cash Counters") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2177,7 +2169,7 @@
                                                 <span><i class="far fa-arrow-alt-circle-up"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.version_release_notes')</p>
+                                        <p class="switch_text">{{ __("Version Release Notes") }}</p>
                                     </a>
                                 </div>
 
@@ -2238,19 +2230,6 @@
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __('Productions') }}</p>
-                                                </a>
-                                            </div>
-                                        @endif
-
-                                        @if (auth()->user()->can('manufacturing_settings'))
-                                            <div class="sub-menu-col">
-                                                <a href="{{ route('manufacturing.settings.index') }}" class="switch-bar-wrap settings-wrap">
-                                                    <div class="switch_bar">
-                                                        <div class="bar-link">
-                                                            <span><i class="fas fa-sliders-h"></i></span>
-                                                        </div>
-                                                    </div>
-                                                    <p class="switch_text">{{ __('Manufacturing Setting') }}</p>
                                                 </a>
                                             </div>
                                         @endif

@@ -8,15 +8,14 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-warehouse"></span>
-                    <h5>{{ __("Warehouses") }}</h5>
+                    <h5>{{ __('Warehouses') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
             </div>
         </div>
 
         <div class="p-1">
-            @if (auth()->user()->is_delonging_an_area == 0)
+            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">
@@ -25,19 +24,18 @@
                                     <div class="form-group row">
                                         @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
                                             <div class="col-md-4">
-                                                <label><strong>{{ __("Created From") }}</strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control select2" id="branch_id" autofocus>
+                                                <label><strong>{{ __('Created From') }}</strong></label>
+                                                <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             @php
                                                                 $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                                $areaName = $branch->area_name ? '('.$branch->area_name.')' : '';
+                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
                                                                 $branchCode = '-' . $branch->branch_code;
                                                             @endphp
-                                                            {{  $branchName.$areaName.$branchCode }}
+                                                            {{ $branchName . $areaName . $branchCode }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -47,7 +45,7 @@
                                         <div class="col-md-2">
                                             <label><strong></strong></label>
                                             <div class="input-group">
-                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -63,31 +61,31 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __("List Of Warehouses") }}</h6>
+                                <h6>{{ __('List of Warehouses') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
                                 @if (auth()->user()->can('warehouse'))
-                                    <a href="{{ route('warehouses.create') }}" class="btn btn-sm btn-primary" id="addWarehouse"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                                    <a href="{{ route('warehouses.create') }}" class="btn btn-sm btn-primary" id="addWarehouse"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                 @endif
                             </div>
                         </div>
 
                         <div class="widget_content">
                             <div class="data_preloader">
-                                <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                             </div>
                             <div class="table-responsive">
                                 <table class="display data_tbl data__table">
                                     <thead>
                                         <tr>
-                                            <th class="text-start">{{ __("S/L") }}</th>
-                                            <th class="text-start">{{ __("Name") }}</th>
-                                            <th class="text-start">{{ __("Shop/Business") }}</th>
-                                            <th class="text-start">{{ __("Code") }}</th>
-                                            <th class="text-start">{{ __("Phone") }}</th>
-                                            <th class="text-start">{{ __("Address") }}</th>
-                                            <th class="text-start">{{ __("Action") }}</th>
+                                            <th class="text-start">{{ __('S/L') }}</th>
+                                            <th class="text-start">{{ __('Name') }}</th>
+                                            <th class="text-start">{{ __('Shop/Business') }}</th>
+                                            <th class="text-start">{{ __('Code') }}</th>
+                                            <th class="text-start">{{ __('Phone') }}</th>
+                                            <th class="text-start">{{ __('Address') }}</th>
+                                            <th class="text-start">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -118,25 +116,13 @@
             dom: "lBfrtip",
             buttons: [
                 //{extend: 'excel',text: 'Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:last-child)'}},
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {  columns: 'th:not(:last-child)' }
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary',
-                    exportOptions: { columns: 'th:not(:last-child)' }
-                },
+                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' } },
+                { extend: 'print', text: 'Print', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:last-child)' } },
             ],
-            "lengthMenu": [[50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"]],
+            "lengthMenu": [ [50, 100, 500, 1000, -1], [50, 100, 500, 1000, "All"] ],
             "ajax": {
                 "url": "{{ route('warehouses.index') }}",
-                "data": function(d) {
-                    d.branch_id = $('#branch_id').val();
-                }
+                "data": function(d) { d.branch_id = $('#branch_id').val(); }
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
@@ -156,7 +142,11 @@
         });
 
         // Setup CSRF Token for ajax request
-        $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         // call jquery method
         $(document).ready(function() {
@@ -182,16 +172,15 @@
 
                         $('.data_preloader').hide();
 
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
                     }
                 });
@@ -223,10 +212,10 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         }
                     }
                 });
@@ -239,8 +228,8 @@
                 $('#deleted_form').attr('action', url);
                 $('#deleteId').val(id);
                 $.confirm({
-                    'title': 'Confirmation',
-                    'content': 'Are you sure?',
+                    'title': "{{ __('Confirmation') }}",
+                    'content': "{{ __('Are you sure?') }}",
                     'buttons': {
                         'Yes': {
                             'class': 'yes btn-danger',

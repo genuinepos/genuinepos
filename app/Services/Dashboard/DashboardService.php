@@ -198,7 +198,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('alert_quantity', function ($row) {
@@ -269,7 +269,7 @@ class DashboardService
         return DataTables::of($orders)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -290,7 +290,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name)
@@ -361,7 +361,7 @@ class DashboardService
         return DataTables::of($sales)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('invoice_id', function ($row) {
@@ -381,7 +381,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name)
@@ -453,7 +453,7 @@ class DashboardService
         return DataTables::of($purchases)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('invoice_id', function ($row) {
@@ -473,7 +473,7 @@ class DashboardService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('supplier', fn ($row) => $row->supplier_name)

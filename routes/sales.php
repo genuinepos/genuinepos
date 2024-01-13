@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\Sales\AddSalesController;
-use App\Http\Controllers\Sales\AddSaleSettingController;
 use App\Http\Controllers\Sales\CashRegisterController;
 use App\Http\Controllers\Sales\DiscountController;
 use App\Http\Controllers\Sales\DraftController;
 use App\Http\Controllers\Sales\PosSaleController;
 use App\Http\Controllers\Sales\PosSaleExchangeController;
-use App\Http\Controllers\Sales\PosSaleSettingController;
 use App\Http\Controllers\Sales\QuotationController;
 use App\Http\Controllers\Sales\Reports\ReceivedAgainstSalesReportController;
 use App\Http\Controllers\Sales\Reports\SalesOrderedProductReportController;
@@ -28,13 +26,12 @@ Route::prefix('sales')->group(function () {
     Route::controller(AddSalesController::class)->prefix('add-sale')->group(function () {
 
         Route::get('index/{customerAccountId?}/{saleScreen?}', 'index')->name('sales.index');
-        Route::get('show/{id}', 'show')->name('sales.show');
+        Route::get('show/{id}/{pageSize?}', 'show')->name('sales.show');
         Route::get('create', 'create')->name('sales.create');
         Route::post('store', 'store')->name('sales.store');
         Route::get('edit/{id}', 'edit')->name('sales.edit');
         Route::post('update/{id}', 'update')->name('sales.update');
         Route::delete('delete/{id}', 'delete')->name('sales.delete');
-        Route::get('print/challan/{id}', 'printChallan')->name('sales.print.challan');
         Route::get('search/by/{id}', 'searchByInvoiceId')->name('sales.search.by.invoice.id');
 
         Route::controller(SoldProductController::class)->prefix('products')->group(function () {
@@ -49,7 +46,9 @@ Route::prefix('sales')->group(function () {
         Route::get('pos/selectable/products', 'posSelectableProducts')->name('sales.helper.pos.selectable.products');
         Route::get('recent/transaction/modal/{initialStatus}/{saleScreenType}/{limit?}', 'recentTransactionModal')->name('sales.helper.recent.transaction.modal');
         Route::get('recent/transaction/sales/{status}/{saleScreenType}/{limit?}', 'recentSales')->name('sales.helper.recent.transaction.sales');
-        Route::get('sales/print/{id}', 'salesPrint')->name('sales.print');
+        Route::get('sales/related/voucher/print/{id}', 'salesRelatedVoucherPrint')->name('sales.helper.related.voucher.print');
+        Route::get('print/packing/slip/{id}', 'printPackingSlip')->name('sales.helper.print.packing.slip');
+        Route::get('print/challan/{id}', 'printChallan')->name('sales.helper.print.challan');
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
         Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');
@@ -112,13 +111,13 @@ Route::prefix('sales')->group(function () {
         Route::get('show/{id}', 'show')->name('sale.shipments.show');
         Route::get('edit/{id}', 'edit')->name('sale.shipments.edit');
         Route::post('update/{id}', 'update')->name('sale.shipments.update');
-        Route::get('print/packing/slip/{id}', 'printPackingSlip')->name('sale.shipments.print.packing.slip');
     });
 
     Route::controller(SalesReturnController::class)->prefix('returns')->group(function () {
 
         Route::get('/', 'index')->name('sales.returns.index');
         Route::get('show/{id}', 'show')->name('sales.returns.show');
+        Route::get('print/{id}', 'print')->name('sales.returns.print');
         Route::get('create', 'create')->name('sales.returns.create');
         Route::post('store', 'store')->name('sales.returns.store');
         Route::get('edit/{id}', 'edit')->name('sales.returns.edit');
@@ -135,18 +134,6 @@ Route::prefix('sales')->group(function () {
         Route::post('update/{id}', 'update')->name('sales.discounts.update');
         Route::get('change/status/{id}', 'changeStatus')->name('sales.discounts.change.status');
         Route::delete('delete/{id}', 'delete')->name('sales.discounts.delete');
-    });
-
-    Route::controller(AddSaleSettingController::class)->prefix('add-sales-settings')->group(function () {
-
-        Route::get('edit', 'edit')->name('add.sales.settings.edit');
-        Route::post('update', 'update')->name('add.sales.settings.update');
-    });
-
-    Route::controller(PosSaleSettingController::class)->prefix('pos-sales-settings')->group(function () {
-
-        Route::get('edit', 'edit')->name('pos.sales.settings.edit');
-        Route::post('update', 'update')->name('pos.sales.settings.update');
     });
 
     Route::group(['prefix' => 'reports'], function () {

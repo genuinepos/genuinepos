@@ -2,275 +2,150 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
-use App\Models\Hrm\Attendance;
-use App\Models\User;
+use App\Enums\BooleanType;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Hrm\Attendance;
+use App\Services\Hrm\ShiftService;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\Hrm\AttendanceService;
 use Yajra\DataTables\Facades\DataTables;
 
 class AttendanceController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private AttendanceService $attendanceService,
+        private ShiftService $shiftService,
+        private BranchService $branchService,
+    ) {
     }
 
-    //attendance index page
     public function index(Request $request)
     {
-        // $origin = date_create('2009-10-11');
-        // $target = date_create('2009-10-13');
-        // $interval = date_diff($origin, $target);
-        // return  $interval->format('%R%a days');
+        if (!auth()->user()->can('attendances_index')) {
+
+            abort(403, 'Access Forbidden.');
+        }
 
         if ($request->ajax()) {
 
-            $generalSettings = config('generalSettings');
-            $attendances = '';
-            $query = DB::table('hrm_attendances')
-                ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
-                ->leftJoin('hrm_shifts', 'users.shift_id', 'hrm_shifts.id');
-
-            if ($request->branch_id) {
-
-                if ($request->branch_id == 'NULL') {
-
-                    $query->where('users.branch_id', null);
-                } else {
-
-                    $query->where('users.branch_id', $request->branch_id);
-                }
-            }
-
-            if ($request->user_id) {
-
-                $query->where('hrm_attendances.user_id', $request->user_id);
-            }
-
-            if ($request->from_date) {
-
-                $from_date = date('Y-m-d', strtotime($request->from_date));
-                $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-                $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-                $query->whereBetween('hrm_attendances.at_date_ts', $date_range); // Final
-            }
-
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            } else {
-
-                $query->where('branch_id', auth()->user()->branch_id);
-            }
-
-            $attendances = $query->select(
-                'hrm_attendances.*',
-                'hrm_shifts.shift_name',
-                'users.prefix',
-                'users.name',
-                'users.last_name',
-            )->orderBy('hrm_attendances.at_date_ts', 'DESC');
-
-            return DataTables::of($attendances)
-                ->addColumn('action', function ($row) {
-
-                    $html = '';
-                    $html .= '<div class="dropdown table-dropdown">';
-                    $html .= '<a href="' . route('hrm.attendance.edit', [$row->id]) . '" class="btn btn-sm btn-primary me-1" id="edit_attendance" title="Edit">';
-                    $html .= '<i class="la la-edit"></i> Edit';
-                    $html .= '</a>';
-
-                    $html .= '<a href="' . route('hrm.attendance.delete', [$row->id]) . '" class="btn btn-sm btn-danger" id="delete">';
-                    $html .= '<i class="la la-trash"></i> Delete';
-                    $html .= '</a>';
-                    $html .= '</div>';
-
-                    return $html;
-                })
-                ->editColumn('name', function ($row) {
-
-                    return $row->prefix . ' ' . $row->name . ' ' . $row->last_name;
-                })
-                ->editColumn('date', function ($row) use ($generalSettings) {
-
-                    return date($generalSettings['business__date_format'], strtotime($row->at_date));
-                })
-                ->editColumn('clock_in_out', function ($row) {
-
-                    $clockOut = $row->clock_out_ts ? ' - ' . date('h:i a', strtotime($row->clock_out)) : '';
-
-                    return ' <b>' . date('h:i a', strtotime($row->clock_in)) . $clockOut . ' </b>';
-                })
-                ->editColumn('work_duration', function ($row) {
-
-                    if ($row->clock_out_ts) {
-
-                        $startTime = Carbon::parse($row->clock_in);
-                        $endTime = Carbon::parse($row->clock_out);
-                        // $totalDuration = $startTime->diffForHumans($endTime);
-                        $totalDuration = $endTime->diff($startTime)->format('%H:%I:%S');
-
-                        return $totalDuration;
-                    } else {
-
-                        return 'Clock-Out-does-not-exists';
-                    }
-                })
-                ->rawColumns(['action', 'date', 'clock_in_out', 'work_duration'])
-                ->make(true);
+            return $this->attendanceService->attendancesTable(request: $request);
         }
 
-        $departments = DB::table('hrm_department')->get(['id', 'department_name']);
-        $employee = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('hrm.attendance.index', compact('employee', 'departments', 'branches'));
+        return view('hrm.attendances.index', compact('users', 'branches'));
     }
 
-    //attendance store method
-    public function storeAttendance(Request $request)
+    public function create()
     {
-        //date('Y-m-d h:i:s');
-        //return date('h:i:s', strtotime('10:12 PM'));
-        //return $request->all();
+        if (!auth()->user()->can('attendances_create')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
+        $departments = DB::table('hrm_departments')->get(['id', 'name']);
+        $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
+
+        return view('hrm.attendances.ajax_view.create', compact('users', 'departments'));
+    }
+
+    public function store(Request $request)
+    {
+        if (!auth()->user()->can('attendances_create')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         if ($request->user_ids == null) {
-            return response()->json(['errorMsg' => 'Select employee first for attendance.']);
+
+            return response()->json(['errorMsg' => __('Select employee first for attendance.')]);
         }
 
-        foreach ($request->user_ids as $key => $user_id) {
+        try {
+            DB::beginTransaction();
 
-            $updateAttendance = Attendance::whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
-                ->where('user_id', $user_id)
-                ->where('is_completed', 0)
-                ->orderBy('id', 'desc')
-                ->first();
-            if ($updateAttendance) {
+            $this->attendanceService->addAttendances(request: $request);
 
-                // $updateAttendance->user_id = $user_id;
-                // $updateAttendance->at_date_ts = date('Y-m-d');
-                // $updateAttendance->clock_in = $request->clock_ins[$key];
-                // $updateAttendance->clock_in_ts = date('Y-m-d ') . $request->clock_ins[$key];
-                $updateAttendance->clock_out = $request->clock_outs[$key];
+            DB::commit();
+        } catch (Exception $e) {
 
-                if ($request->clock_outs[$key]) {
-
-                    $updateAttendance->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
-                    $updateAttendance->is_completed = 1;
-                }
-
-                $updateAttendance->shift_id = $request->shift_ids[$key];
-                $updateAttendance->clock_in_note = $request->clock_in_notes[$key];
-                $updateAttendance->clock_out_note = $request->clock_out_notes[$key];
-                $updateAttendance->save();
-            } else {
-
-                $data = new Attendance();
-                $data->user_id = $user_id;
-                $data->at_date = date('d-m-Y');
-                $data->at_date_ts = date('Y-m-d H:i:s');
-                $data->clock_in = $request->clock_ins[$key];
-                $data->clock_in_ts = date('Y-m-d ') . $request->clock_ins[$key];
-                $data->clock_out = $request->clock_outs[$key];
-
-                if ($request->clock_outs[$key]) {
-
-                    $data->clock_out_ts = date('Y-m-d ') . $request->clock_outs[$key];
-                    $data->is_completed = 1;
-                }
-                $data->clock_in_note = $request->clock_in_notes[$key];
-                $data->clock_out_note = $request->clock_out_notes[$key];
-                $data->month = date('F');
-                $data->year = date('Y');
-                $data->save();
-            }
+            DB::rollBack();
         }
 
-        return response()->json('Attendance Added Successfully!');
+        return response()->json(__('Attendance Added Successfully!'));
     }
 
-    // Edit modal with data
-    public function edit($attendanceId)
+    public function edit($id)
     {
+        if (!auth()->user()->can('attendances_edit')) {
+
+            abort(403, 'Access Forbidden.');
+        }
+
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
-            ->where('hrm_attendances.id', $attendanceId)
+            ->where('hrm_attendances.id', $id)
             ->select(
                 'hrm_attendances.*',
                 'users.id as user_id',
                 'users.prefix',
                 'users.name',
                 'users.last_name'
-            )
-            ->first();
+            )->first();
 
-        return view('hrm.attendance.ajax_view.edit_attendance_modal', compact('attendance'));
+        $shifts = $this->shiftService->shifts()->get();
+
+        return view('hrm.attendances.ajax_view.edit', compact('attendance', 'shifts'));
     }
 
-    // Update attendance
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        $updateAttendance = Attendance::where('id', $request->id)->first();
+        if (!auth()->user()->can('attendances_edit')) {
 
-        if ($updateAttendance) {
-
-            $updateAttendance->at_date_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)) . $request->clock_in;
-            $updateAttendance->clock_in = $request->clock_in;
-            $updateAttendance->clock_in_ts = date('Y-m-d ', strtotime($updateAttendance->at_date)) . $request->clock_in;
-
-            if ($request->clock_out) {
-
-                if ($updateAttendance->clock_out) {
-
-                    $updateAttendance->clock_out = $request->clock_out;
-                    $filteredDate = explode(' ', $updateAttendance->clock_out_ts);
-                    $updateAttendance->clock_out_ts = $filteredDate[0] . ' ' . $request->clock_out;
-                } else {
-
-                    $updateAttendance->clock_out = $request->clock_out;
-                    $updateAttendance->clock_out_ts = date('Y-m-d ') . $request->clock_out;
-                    $updateAttendance->is_completed = 1;
-                }
-            }
-
-            $updateAttendance->clock_in_note = $request->clock_in_note;
-            $updateAttendance->clock_out_note = $request->clock_out_note;
-            $updateAttendance->save();
+            abort(403, 'Access Forbidden.');
         }
 
-        return response()->json('Attendances updated successfully!');
+        $this->attendanceService->validation(request: $request);
+        $this->attendanceService->updateAttendance(request: $request, id: $id);
+        return response()->json(__('Attendances updated successfully!'));
     }
 
-    // Delete attendance
-    public function delete(Request $request, $attendanceId)
+    public function delete($id, Request $request)
     {
-        $deleteAttendance = Attendance::find($attendanceId);
+        if (!auth()->user()->can('attendances_delete')) {
 
-        if (!is_null($deleteAttendance)) {
-
-            $deleteAttendance->delete();
+            abort(403, 'Access Forbidden.');
         }
 
-        return response()->json('Attendance deleted successfully');
+        $this->attendanceService->deleteAttendance(id: $id);
+        return response()->json(__('Attendance deleted successfully'));
     }
 
-    // Get Employee/User attendance row **requested by ajax**
-    public function getUserAttendanceRow($userId)
+    public function userAttendanceRow($userId)
     {
-        $shifts = DB::table('hrm_shifts')->get();
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
             ->whereDate('hrm_attendances.at_date_ts', date('Y-m-d'))
             ->where('hrm_attendances.user_id', $userId)
-            ->where('is_completed', 0)
+            ->where('is_completed', BooleanType::False->value)
             ->select(
                 'hrm_attendances.*',
                 'users.id as user_id',
                 'users.prefix',
                 'users.name',
                 'users.last_name',
+                'users.emp_id',
             )->orderBy('hrm_attendances.id', 'desc')->first();
 
-        $employee = DB::table('users')->where('id', $userId)->first();
+        $shifts = $this->shiftService->shifts()->get();
+        $user = DB::table('users')->where('id', $userId)->first();
 
-        return view('hrm.attendance.ajax_view.attendance_row', compact('attendance', 'shifts', 'employee'));
+        return view('hrm.attendances.ajax_view.attendance_row', compact('attendance', 'user', 'shifts'));
     }
 }

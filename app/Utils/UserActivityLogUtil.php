@@ -115,8 +115,8 @@ class UserActivityLogUtil
                 'texts' => ['Date : ', 'Invoice ID : ', 'Total Amt : '],
             ],
             10 => [ // Transfer Stock
-                'fields' => ['date', 'invoice_id', 'total_send_qty', 'total_received_qty'],
-                'texts' => ['Date : ', 'Reference ID : ', 'Total Send Quantity : ', 'Total Received Quantity : '],
+                'fields' => ['date', 'voucher_no', 'total_send_qty', 'total_received_qty'],
+                'texts' => ['Date : ', 'Voucher No : ', 'Total Send Quantity : ', 'Total Received Quantity : '],
             ],
             13 => [ // Stock Adjustment
                 'fields' => ['date', 'voucher_no', 'net_total_amount', 'recovered_amount'],
@@ -188,7 +188,7 @@ class UserActivityLogUtil
     public function addLog($action, $subject_type, $data_obj, $branch_id = null, $user_id = null)
     {
         $generalSettings = config('generalSettings');
-        $dateFormat = $generalSettings['business__date_format'];
+        $dateFormat = $generalSettings['business_or_shop__date_format'];
         $__dateFormat = str_replace('y', 'Y', $dateFormat);
 
         $descriptionModel = $this->descriptionModel();
@@ -206,7 +206,7 @@ class UserActivityLogUtil
         $index = 0;
         foreach ($descriptionModel[$subject_type]['fields'] as $field) {
 
-            $description .= $descriptionModel[$subject_type]['texts'][$index].(isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A').', ';
+            $description .= $descriptionModel[$subject_type]['texts'][$index] . (isset($data_obj->{$field}) ? $data_obj->{$field} : 'N/A') . ', ';
             $index++;
         }
 

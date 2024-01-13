@@ -1,27 +1,60 @@
 <script>
     var subcategoriesTable = $('.data_tbl2').DataTable({
         dom: "lBfrtip",
-        buttons: [
-            {extend: 'pdf', 'title' : 'List of Subcategories', text: 'Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
-            {extend: 'print', 'title' : 'List of Subcategories', text: 'Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
+        buttons: [{
+                extend: 'pdf',
+                'title': 'List of Subcategories',
+                text: 'Pdf',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
+                extend: 'print',
+                'title': 'List of Subcategories',
+                text: 'Print',
+                className: 'btn btn-primary',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
         ],
         "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-        "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, 100, 500, 1000, -1],
+            [10, 25, 50, 100, 500, 1000, "All"]
+        ],
         processing: true,
         serverSide: true,
         searchable: true,
         ajax: "{{ route('subcategories.index') }}",
-        columns: [
-            {data: 'DT_RowIndex'},
-            {data: 'photo', name: 'categories.name'},
-            {data: 'name', name: 'categories.name'},
-            {data: 'parent_category_name', name: 'parentCategory.name'},
-            {data: 'description', name: 'categories.description'},
-            {data: 'action'},
+        columns: [{
+                data: 'DT_RowIndex'
+            },
+            {
+                data: 'photo',
+                name: 'categories.name'
+            },
+            {
+                data: 'name',
+                name: 'categories.name'
+            },
+            {
+                data: 'parent_category_name',
+                name: 'parentCategory.name'
+            },
+            {
+                data: 'description',
+                name: 'categories.description'
+            },
+            {
+                data: 'action'
+            },
         ]
     });
 
-    $(document).ready(function () {
+    $(document).ready(function() {
 
         $(document).on('click', '#addSubcategory', function(e) {
             e.preventDefault();
@@ -45,11 +78,11 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
@@ -83,18 +116,18 @@
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
             });
         });
 
-        $(document).on('click', '#deleteSubcategory',function(e){
+        $(document).on('click', '#deleteSubcategory', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
 
@@ -103,8 +136,18 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_sub_category_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary ','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-danger',
+                        'action': function() {
+                            $('#deleted_sub_category_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary ',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
@@ -125,12 +168,13 @@
                     subcategoriesTable.ajax.reload();
                     toastr.error(data);
                     $('#deleted_sub_category_form')[0].reset();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else{
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }

@@ -7,7 +7,7 @@
                 {{ auth()->user()?->branch?->name.'('.auth()->user()?->branch?->area_name.')-'.auth()->user()?->branch?->branch_code }}
             @endif
         @else
-            {{ $generalSettings['business__business_name'].'('.__('Business').')' }}
+            {{ $generalSettings['business_or_shop__business_name'].'('.__('Business').')' }}
         @endif
     </p>
 

@@ -33,6 +33,17 @@ class AccountingVoucherDescriptionReferenceService
             return;
         }
 
+        if ($refIdColName == 'payroll_id' && count($refIds) > 0) {
+
+            $addPaymentDescriptionRef = new AccountingVoucherDescriptionReference();
+            $addPaymentDescriptionRef->voucher_description_id = $accountingVoucherDescriptionId;
+            $addPaymentDescriptionRef->{$refIdColName} = $refIds[0];
+            $addPaymentDescriptionRef->amount = $amount;
+            $addPaymentDescriptionRef->save();
+
+            return;
+        }
+
         if (isset($refIds)) {
 
             $this->specificAccountingVoucherDescriptionReferences(accountingVoucherDescriptionId: $accountingVoucherDescriptionId, accountId: $accountId, amount: $amount, refIdColName: $refIdColName, refIds: $refIds, branchId: $branchId);

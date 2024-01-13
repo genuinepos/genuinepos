@@ -3,9 +3,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         table.table.modal-table.table-sm.table-bordered.financial_report_table td {
-    font-size: 13px;
-    font-weight: 400;
-}
+            font-size: 13px;
+            font-weight: 400;
+        }
     </style>
 @endpush
 @section('title', 'Profit Loss A/C - ')
@@ -15,7 +15,6 @@
 
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="far fa-money-bill-alt"></span>
                     <h5>@lang('menu.financial_report')</h5>
                 </div>
 
@@ -31,33 +30,29 @@
                             <form id="filter_financial_report">
                                 <div class="form-group row">
 
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') : </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control" id="branch_id" autofocus>
-                                                    <option value="">@lang('menu.all')</option>
-                                                    <option SELECTED value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.business_location') : </strong></label>
+                                            <select name="branch_id" class="form-control" id="branch_id" autofocus>
+                                                <option value="">@lang('menu.all')</option>
+                                                <option SELECTED value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -121,7 +116,7 @@
                                                         <td class="text-start">
                                                             <em>@lang('menu.fixed_asset') : </em>
                                                         </td>
-                                                        <td class="text-start"><b><em>0.00</em></b>  </td>
+                                                        <td class="text-start"><b><em>0.00</em></b> </td>
                                                     </tr>
 
                                                     <tr>
@@ -405,100 +400,112 @@
     </div>
 @endsection
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-
-    function getFinancialReport() {
-
-       $('.data_preloader').show();
-       var branch_id = $('#branch_id').val();
-       var from_date = $('.from_date').val();
-       var to_date = $('.to_date').val();
-        console.log(branch_id);
-        $.ajax({
-            url:"{{ route('reports.financial.amounts') }}",
-            type: 'GET',
-            data : {branch_id, from_date, to_date},
-            success:function(data){
-
-                $('#data-list').html(data);
-                $('.data_preloader').hide();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // Setup ajax for csrf token.
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    }
-    getFinancialReport();
 
-    // //Print purchase Payment report
-    $(document).on('submit', '#filter_financial_report', function (e) {
-        e.preventDefault();
+        function getFinancialReport() {
+
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            console.log(branch_id);
+            $.ajax({
+                url: "{{ route('reports.financial.amounts') }}",
+                type: 'GET',
+                data: {
+                    branch_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
+
+                    $('#data-list').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
         getFinancialReport();
-    });
 
-    //Print financial report
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-        var url = "{{ route('reports.financial.report.print') }}";
-        var branch_id = $('#branch_id').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: {branch_id, from_date, to_date},
-            success:function(data) {
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            }
+        // //Print purchase Payment report
+        $(document).on('submit', '#filter_financial_report', function(e) {
+            e.preventDefault();
+            getFinancialReport();
         });
-    });
-</script>
 
-<script type="text/javascript">
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY'
-    });
+        //Print financial report
+        $(document).on('click', '#print_report', function(e) {
+            e.preventDefault();
+            var url = "{{ route('reports.financial.report.print') }}";
+            var branch_id = $('#branch_id').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
+                    });
+                }
+            });
+        });
+    </script>
 
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker2'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY',
-    });
-</script>
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+    </script>
 @endpush

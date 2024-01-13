@@ -81,7 +81,6 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
     public function storeMethodContainer(
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -98,8 +97,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         }
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment'];
+        $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
 
         // Add Accounting Voucher
         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
@@ -206,7 +204,6 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         int $id,
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

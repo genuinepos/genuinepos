@@ -26,7 +26,7 @@ class PurchaseOrderReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('purchase_order_report')) {
+        if (!auth()->user()->can('purchase_order_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -76,7 +76,7 @@ class PurchaseOrderReportController extends Controller
 
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    return date($generalSettings['business__date_format'], strtotime($row->date));
+                    return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
                 })
 
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -85,14 +85,14 @@ class PurchaseOrderReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->branch_area_name.')';
+                            return $row->parent_branch_name . '(' . $row->branch_area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->branch_area_name.')';
+                            return $row->branch_name . '(' . $row->branch_area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
 
@@ -103,26 +103,26 @@ class PurchaseOrderReportController extends Controller
 
                 ->editColumn('invoice_id', function ($row) {
 
-                    return '<a href="'.route('purchase.orders.show', $row->id).'" id="details_btn">'.$row->invoice_id.'</a>';
+                    return '<a href="' . route('purchase.orders.show', $row->id) . '" id="details_btn">' . $row->invoice_id . '</a>';
                 })
 
-                ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="'.$row->po_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_qty).'</span>')
+                ->editColumn('po_qty', fn ($row) => '<span class="po_qty" data-value="' . $row->po_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_qty) . '</span>')
 
-                ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="'.$row->po_received_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_received_qty).'</span>')
+                ->editColumn('po_received_qty', fn ($row) => '<span class="po_received_qty text-success" data-value="' . $row->po_received_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_received_qty) . '</span>')
 
-                ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="'.$row->po_pending_qty.'">'.\App\Utils\Converter::format_in_bdt($row->po_pending_qty).'</span>')
+                ->editColumn('po_pending_qty', fn ($row) => '<span class="po_pending_qty text-danger" data-value="' . $row->po_pending_qty . '">' . \App\Utils\Converter::format_in_bdt($row->po_pending_qty) . '</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
 
-                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="'.$row->order_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->order_discount_amount).'</span>')
+                ->editColumn('order_discount_amount', fn ($row) => '<span class="order_discount_amount" data-value="' . $row->order_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->order_discount_amount) . '</span>')
 
-                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="purchase_tax_amount" data-value="'.$row->purchase_tax_amount.'">'.'('.$row->purchase_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->purchase_tax_amount).'</span>')
+                ->editColumn('purchase_tax_amount', fn ($row) => '<span class="purchase_tax_amount" data-value="' . $row->purchase_tax_amount . '">' . '(' . $row->purchase_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->purchase_tax_amount) . '</span>')
 
-                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_purchase_amount).'</span>')
+                ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_purchase_amount) . '</span>')
 
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span></span>')
+                ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span></span>')
 
                 ->rawColumns(['date', 'branch', 'invoice_id', 'po_qty', 'po_received_qty', 'po_pending_qty', 'net_total_amount', 'order_discount_amount', 'purchase_tax_amount', 'total_purchase_amount', 'paid', 'due'])
                 ->make(true);
@@ -203,7 +203,7 @@ class PurchaseOrderReportController extends Controller
 
     public function filter(object $request, object $query): object
     {
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 

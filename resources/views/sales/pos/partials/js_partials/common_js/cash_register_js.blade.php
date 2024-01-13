@@ -11,11 +11,12 @@
                 $('#cashRegisterDetailsAndCloseModal').empty();
                 $('#cashRegisterDetailsAndCloseModal').html(data);
                 $('#cashRegisterDetailsAndCloseModal').modal('show');
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -44,11 +45,12 @@
 
                     $('#closing_note').focus().select();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

@@ -25,7 +25,7 @@
                             {{ auth()->user()?->branch?->name }}
                         @endif
                     @else
-                        {{ $generalSettings['business__business_name'] }} ({{ __('Business') }})
+                        {{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Business') }})
                     @endif
                 </b>
             </h6>

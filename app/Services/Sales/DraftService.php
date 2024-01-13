@@ -58,15 +58,15 @@ class DraftService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a href="'.route('sale.drafts.show', [$row->id]).'" class="dropdown-item" id="details_btn">'.__('View').'</a>';
+                $html .= '<a href="' . route('sale.drafts.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if (auth()->user()->can('sale_draft')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sale.drafts.edit', [$row->id]).'">'.__('Edit').'</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sale.drafts.edit', [$row->id]) . '">' . __('Edit') . '</a>';
                     }
                 }
 
@@ -74,7 +74,7 @@ class DraftService
 
                     if (auth()->user()->can('sale_draft')) {
 
-                        $html .= '<a href="'.route('sales.delete', [$row->id]).'" class="dropdown-item" id="delete">'.__('Delete').'</a>';
+                        $html .= '<a href="' . route('sales.delete', [$row->id]) . '" class="dropdown-item" id="delete">' . __('Delete') . '</a>';
                     }
                 }
 
@@ -85,13 +85,13 @@ class DraftService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
             ->editColumn('draft_id', function ($row) {
 
-                return '<a href="'.route('sale.drafts.show', [$row->id]).'" id="details_btn">'.$row->draft_id.'</a>';
+                return '<a href="' . route('sale.drafts.show', [$row->id]) . '" id="details_btn">' . $row->draft_id . '</a>';
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
@@ -99,27 +99,27 @@ class DraftService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="'.$row->total_item.'">'.\App\Utils\Converter::format_in_bdt($row->total_item).'</span>')
+            ->editColumn('total_item', fn ($row) => '<span class="total_item" data-value="' . $row->total_item . '">' . \App\Utils\Converter::format_in_bdt($row->total_item) . '</span>')
 
-            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+            ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="'.$row->total_invoice_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_invoice_amount).'</span>')
+            ->editColumn('total_invoice_amount', fn ($row) => '<span class="total_invoice_amount" data-value="' . $row->total_invoice_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_invoice_amount) . '</span>')
 
             ->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
 
             ->rawColumns(['action', 'date', 'total_item', 'total_qty', 'total_invoice_amount', 'draft_id', 'branch', 'customer', 'created_by'])
@@ -142,20 +142,20 @@ class DraftService
             $updateDraft->order_id = $orderId;
             $updateDraft->order_status = BooleanType::True->value;
             $updateDraft->total_ordered_qty = $updateDraft->total_qty;
-            $updateDraft->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+            $updateDraft->order_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         } elseif ($request->status == SaleStatus::Quotation->value) {
 
             $quotationId = $codeGenerator->generateMonthWise(table: 'sales', column: 'quotation_id', prefix: $quotationPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
             $updateDraft->quotation_id = $quotationId;
             $updateDraft->quotation_status = BooleanType::True->value;
             $updateDraft->total_quotation_qty = $updateDraft->total_qty;
-            $updateDraft->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+            $updateDraft->quotation_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         } elseif ($request->status == SaleStatus::Final->value) {
 
             $invoiceId = $codeGenerator->generateMonthWise(table: 'sales', column: 'invoice_id', prefix: $invoicePrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
             $updateDraft->invoice_id = $invoiceId;
             $updateDraft->total_sold_qty = $updateDraft->total_qty;
-            $updateDraft->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+            $updateDraft->sale_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         }
 
         $updateDraft->status = $request->status;
@@ -164,8 +164,8 @@ class DraftService
         $updateDraft->pay_term = $request->pay_term;
         $updateDraft->pay_term_number = $request->pay_term_number;
         $updateDraft->date = $request->date;
-        $updateDraft->date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
-        $updateDraft->draft_date_ts = date('Y-m-d H:i:s', strtotime($request->date.$time));
+        $updateDraft->date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
+        $updateDraft->draft_date_ts = date('Y-m-d H:i:s', strtotime($request->date . $time));
         $updateDraft->total_item = $request->total_item;
         $updateDraft->total_qty = $request->total_qty;
         $updateDraft->net_total_amount = $request->net_total_amount;

@@ -8,7 +8,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-people-arrows"></span>
                     <h5>{{ __('Customers') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -27,7 +26,7 @@
                                             <label><strong>{{ __('Shop') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -97,7 +96,7 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr class="bg-secondary">
-                                    <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business__currency'] }})</th>
+                                    <th colspan="5" class="text-white text-end">{{ __('Total') }} : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                     <th id="opening_balance" class="text-white text-end"></th>
                                     <th id="total_sale" class="text-white text-end"></th>
                                     <th id="total_purchase" class="text-white text-end"></th>
@@ -322,11 +321,11 @@
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                             return;
                         }
                     }
@@ -357,11 +356,11 @@
 
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                             return;
                         }
                     }
@@ -434,11 +433,11 @@
                         $('.data_preloader').hide();
                         if (err.status == 0) {
 
-                            toastr.error('Net Connetion Error. Reload This Page.');
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
-                            toastr.error('Server Error. Please contact to the support team.');
+                            toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                             return;
                         }
                     }
@@ -476,7 +475,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 

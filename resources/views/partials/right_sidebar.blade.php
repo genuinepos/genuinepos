@@ -30,7 +30,7 @@
                         @csrf
                         <div class="select-dropdown">
                             <select name="branch_id" id="switch_branch_id">
-                                <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                 @foreach ($branches as $branch)
                                     <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
                                         @php
@@ -336,7 +336,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

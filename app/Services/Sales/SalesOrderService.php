@@ -84,7 +84,7 @@ class SalesOrderService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -105,7 +105,7 @@ class SalesOrderService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')

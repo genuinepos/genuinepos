@@ -8,35 +8,34 @@
             <form id="add_warehouse_form" action="{{ route('warehouses.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label><b>{{ __("Warehouse Name") }}</b> <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" id="warehouse_name" data-next="warehouse_code" placeholder="{{ __("Warehouse Name") }}"/>
+                    <label><b>{{ __('Warehouse Name') }}</b> <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" id="warehouse_name" data-next="warehouse_code" placeholder="{{ __('Warehouse Name') }}" />
                     <span class="error error_warehouse_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Warehouse Code") }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
-                    <input type="text" name="code" class="form-control" id="warehouse_code" data-next="warehouse_phone" placeholder="{{ __("Warehouse Code") }}"/>
+                    <label><b>{{ __('Warehouse Code') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="Warehouse code must be unique." class="fas fa-info-circle tp"></i></label>
+                    <input type="text" name="code" class="form-control" id="warehouse_code" data-next="warehouse_phone" placeholder="{{ __('Warehouse Code') }}" />
                     <span class="error error_warehouse_code"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
-                    <input type="text" name="phone" class="form-control" id="warehouse_phone" data-next="warehouse_address" placeholder="{{ __("Phone No") }}"/>
+                    <label><b>{{ __('Phone') }}</b> <span class="text-danger">*</span></label>
+                    <input type="text" name="phone" class="form-control" id="warehouse_phone" data-next="warehouse_address" placeholder="{{ __('Phone No') }}" />
                     <span class="error error_warehouse_phone"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Address") }}</b> </label>
+                    <label><b>{{ __('Address') }}</b> </label>
                     <input name="address" class="form-control" id="warehouse_address" data-next="is_global" placeholder="Warehouse address">
                 </div>
 
                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-
                     <div class="form-group mt-1">
-                        <label><b>{{ __("Is Global Warehouse") }}</b> </label>
+                        <label><b>{{ __('Is Global Warehouse') }}</b> </label>
                         <select name="is_global" class="form-control" id="is_global" data-next="warehouse_save">
-                            <option value="0">{{ __("No") }}</option>
-                            <option value="1">{{ __("Yes") }}</option>
+                            <option value="0">{{ __('No') }}</option>
+                            <option value="1">{{ __('Yes') }}</option>
                         </select>
                     </div>
                 @endif
@@ -44,9 +43,9 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button warehouse_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="warehouse_save" class="btn btn-sm btn-success warehouse_submit_button">{{ __("Save") }}</button>
+                            <button type="button" class="btn loading_button warehouse_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="warehouse_save" class="btn btn-sm btn-success warehouse_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -56,7 +55,6 @@
 </div>
 
 <script type="text/javascript">
-
     $(document).on('click keypress focus blur change', '.form-control', function(event) {
 
         $('.warehouse_submit_button').prop('type', 'button');
@@ -97,7 +95,7 @@
                 isAllowSubmit = true;
                 $('.warehouse_loading_btn').hide();
 
-                if(!$.isEmptyObject(data.errorMsg)) {
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg);
                     return;
@@ -117,7 +115,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

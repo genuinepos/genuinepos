@@ -19,7 +19,7 @@ class ProductionReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('manufacturing_report')) {
+        if (!auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }
@@ -54,81 +54,81 @@ class ProductionReportController extends Controller
             )->orderBy('productions.date_ts', 'desc');
 
             return DataTables::of($productions)
-                ->editColumn('date', fn ($row) => date($generalSettings['business__date_format'], strtotime($row->date)))
+                ->editColumn('date', fn ($row) => date($generalSettings['business_or_shop__date_format'], strtotime($row->date)))
                 ->editColumn('branch', function ($row) use ($generalSettings) {
 
                     if ($row->branch_id) {
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->area_name.')';
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->area_name.')';
+                            return $row->branch_name . '(' . $row->area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('store_location', function ($row) use ($generalSettings) {
 
                     if ($row->warehouse_name) {
 
-                        return $row->warehouse_name.'-('.$row->warehouse_code.')';
+                        return $row->warehouse_name . '-(' . $row->warehouse_code . ')';
                     } else {
 
                         if ($row->branch_id) {
 
                             if ($row->parent_branch_name) {
 
-                                return $row->parent_branch_name.'('.$row->area_name.')';
+                                return $row->parent_branch_name . '(' . $row->area_name . ')';
                             } else {
 
-                                return $row->branch_name.'('.$row->area_name.')';
+                                return $row->branch_name . '(' . $row->area_name . ')';
                             }
                         } else {
 
-                            return $generalSettings['business__business_name'];
+                            return $generalSettings['business_or_shop__business_name'];
                         }
                     }
                 })
-                ->editColumn('voucher_no', fn ($row) => '<a href="'.route('manufacturing.productions.show', [$row->id]).'" class="text-hover" id="details_btn" title="View">'.$row->voucher_no.'</a>')
+                ->editColumn('voucher_no', fn ($row) => '<a href="' . route('manufacturing.productions.show', [$row->id]) . '" class="text-hover" id="details_btn" title="View">' . $row->voucher_no . '</a>')
                 ->editColumn('product', function ($row) {
 
-                    $variantName = $row->variant_name ? ' _ '.$row->variant_name : '';
-                    $productCode = $row->variant_code ? ' ('.$row->variant_code.')' : ' ('.$row->product_code.')';
+                    $variantName = $row->variant_name ? ' _ ' . $row->variant_name : '';
+                    $productCode = $row->variant_code ? ' (' . $row->variant_code . ')' : ' (' . $row->product_code . ')';
 
-                    return Str::limit($row->product_name, 35, '').$variantName.$productCode;
+                    return Str::limit($row->product_name, 35, '') . $variantName . $productCode;
                 })
 
                 ->editColumn('per_unit_cost_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->per_unit_cost_exc_tax))
 
-                ->editColumn('unit_tax_amount', fn ($row) => '('.$row->unit_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
+                ->editColumn('unit_tax_amount', fn ($row) => '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount))
 
                 ->editColumn('per_unit_cost_inc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->per_unit_cost_inc_tax))
 
                 ->editColumn('per_unit_price_exc_tax', fn ($row) => \App\Utils\Converter::format_in_bdt($row->per_unit_price_exc_tax))
 
-                ->editColumn('total_output_quantity', fn ($row) => '<span class="total_output_quantity" data-value="'.$row->total_output_quantity.'">'.\App\Utils\Converter::format_in_bdt($row->total_output_quantity).'/'.$row->unit_name.'</span>')
+                ->editColumn('total_output_quantity', fn ($row) => '<span class="total_output_quantity" data-value="' . $row->total_output_quantity . '">' . \App\Utils\Converter::format_in_bdt($row->total_output_quantity) . '/' . $row->unit_name . '</span>')
 
-                ->editColumn('total_wasted_quantity', fn ($row) => '<span class="total_wasted_quantity" data-value="'.$row->total_wasted_quantity.'">'.\App\Utils\Converter::format_in_bdt($row->total_wasted_quantity).'/'.$row->unit_name.'</span>')
+                ->editColumn('total_wasted_quantity', fn ($row) => '<span class="total_wasted_quantity" data-value="' . $row->total_wasted_quantity . '">' . \App\Utils\Converter::format_in_bdt($row->total_wasted_quantity) . '/' . $row->unit_name . '</span>')
 
-                ->editColumn('total_final_output_quantity', fn ($row) => '<span class="total_final_output_quantity" data-value="'.$row->total_final_output_quantity.'">'.\App\Utils\Converter::format_in_bdt($row->total_final_output_quantity).'/'.$row->unit_name.'</span>')
+                ->editColumn('total_final_output_quantity', fn ($row) => '<span class="total_final_output_quantity" data-value="' . $row->total_final_output_quantity . '">' . \App\Utils\Converter::format_in_bdt($row->total_final_output_quantity) . '/' . $row->unit_name . '</span>')
 
-                ->editColumn('total_ingredient_cost', fn ($row) => '<span class="total_ingredient_cost" data-value="'.$row->total_ingredient_cost.'">'.\App\Utils\Converter::format_in_bdt($row->total_ingredient_cost).'/'.$row->unit_name.'</span>')
+                ->editColumn('total_ingredient_cost', fn ($row) => '<span class="total_ingredient_cost" data-value="' . $row->total_ingredient_cost . '">' . \App\Utils\Converter::format_in_bdt($row->total_ingredient_cost) . '/' . $row->unit_name . '</span>')
 
-                ->editColumn('additional_production_cost', fn ($row) => '<span class="additional_production_cost" data-value="'.$row->additional_production_cost.'">'.\App\Utils\Converter::format_in_bdt($row->additional_production_cost).'</span>')
+                ->editColumn('additional_production_cost', fn ($row) => '<span class="additional_production_cost" data-value="' . $row->additional_production_cost . '">' . \App\Utils\Converter::format_in_bdt($row->additional_production_cost) . '</span>')
 
-                ->editColumn('net_cost', fn ($row) => '<span class="net_cost" data-value="'.$row->net_cost.'">'.\App\Utils\Converter::format_in_bdt($row->net_cost).'</span>')
+                ->editColumn('net_cost', fn ($row) => '<span class="net_cost" data-value="' . $row->net_cost . '">' . \App\Utils\Converter::format_in_bdt($row->net_cost) . '</span>')
 
                 ->editColumn('status', function ($row) {
                     if ($row->status == ProductionStatus::Final->value) {
 
-                        return '<span class="text-success">'.__('Final').'</span>';
+                        return '<span class="text-success">' . __('Final') . '</span>';
                     } else {
 
-                        return '<span class="text-danger">'.__('Hold').'</span>';
+                        return '<span class="text-danger">' . __('Hold') . '</span>';
                     }
                 })
                 ->rawColumns(['action', 'date', 'voucher_no', 'branch', 'product', 'per_unit_cost_inc_tax', 'per_unit_cost_exc_tax', 'unit_tax_amount', 'per_unit_price_exc_tax', 'total_output_quantity', 'total_wasted_quantity', 'total_final_output_quantity', 'total_ingredient_cost', 'additional_production_cost', 'net_cost', 'status'])
@@ -145,7 +145,7 @@ class ProductionReportController extends Controller
 
     public function print(Request $request)
     {
-        if (! auth()->user()->can('manufacturing_report')) {
+        if (!auth()->user()->can('manufacturing_report')) {
 
             return response()->json('Access Denied');
         }

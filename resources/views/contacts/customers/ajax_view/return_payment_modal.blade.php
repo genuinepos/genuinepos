@@ -1,10 +1,29 @@
 <style>
-    .payment_top_card {background: #d7dfe8;}
-    .payment_top_card span {font-size: 12px;font-weight: 400;}
-    .payment_top_card li {font-size: 12px;}
-    .payment_top_card ul {padding: 6px;border: 1px solid #dcd1d1;}
-    .payment_list_table {position: relative;}
-    .payment_details_contant{background: azure!important;}
+    .payment_top_card {
+        background: #d7dfe8;
+    }
+
+    .payment_top_card span {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .payment_top_card li {
+        font-size: 12px;
+    }
+
+    .payment_top_card ul {
+        padding: 6px;
+        border: 1px solid #dcd1d1;
+    }
+
+    .payment_list_table {
+        position: relative;
+    }
+
+    .payment_details_contant {
+        background: azure !important;
+    }
 </style>
 
 <div class="modal-dialog col-60-modal" role="document">
@@ -21,8 +40,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>@lang('menu.customer') </strong><span class="card_text customer_name">{{ $customer->name }}</span>
                                 </li>
-                                <li><strong>@lang('menu.business') </strong><span
-                                        class="card_text customer_business">{{ $customer->business_name }}</span>
+                                <li><strong>@lang('menu.business') </strong><span class="card_text customer_business">{{ $customer->business_name }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -33,7 +51,7 @@
                             <ul class="list-unstyled">
                                 <li><strong>{{ __('Total Sale Return Due') }} </strong>
                                     <span class="card_text branch">
-                                        {{ $generalSettings['business__currency'] }}
+                                        {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                         {{ $returnDue }}
                                     </span>
                                 </li>
@@ -54,7 +72,7 @@
                                 <span class="input-group-text" id="basic-addon1"><i class="far fa-money-bill-alt text-dark input_i"></i></span>
                             </div>
                             <input type="hidden" id="p_available_amount" value="{{ $returnDue }}">
-                            <input required type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value=""/>
+                            <input required type="number" name="paying_amount" class="form-control p_input" step="any" data-name="Amount" id="p_paying_amount" value="" />
                         </div>
                         <span class="error error_p_paying_amount"></span>
                     </div>
@@ -63,11 +81,9 @@
                         <label for="p_date"><strong>@lang('menu.date') </strong> <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-calendar-week text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week text-dark input_i"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control p_input"
-                                autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business__date_format']) }}"/>
+                            <input type="text" name="date" class="form-control p_input" autocomplete="off" id="p_date" data-name="Date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" />
                         </div>
                         <span class="error error_p_date"></span>
                     </div>
@@ -80,9 +96,7 @@
                             </div>
                             <select name="payment_method_id" class="form-control" id="p_payment_method_id">
                                 @foreach ($methods as $method)
-                                    <option
-                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                        value="{{ $method->id }}">
+                                    <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
                                         {{ $method->name }}
                                     </option>
                                 @endforeach
@@ -97,17 +111,16 @@
                         <label><strong>@lang('menu.debit_account') </strong> </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="fas fa-money-check-alt text-dark input_i"></i></span>
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-money-check-alt text-dark input_i"></i></span>
                             </div>
                             <select name="account_id" class="form-control" id="p_account_id">
                                 @foreach ($accounts as $account)
                                     <option value="{{ $account->id }}">
                                         @php
                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                            $balance = ' BL : '.$account->balance;
+                                            $balance = ' BL : ' . $account->balance;
                                         @endphp
-                                        {{ $account->name.$accountType.$balance}}
+                                        {{ $account->name . $accountType . $balance }}
                                     </option>
                                 @endforeach
                             </select>
@@ -123,8 +136,7 @@
 
                 <div class="form-group mt-2">
                     <label><strong> @lang('menu.payment_note') </strong></label>
-                    <textarea name="note" class="form-control" id="note" cols="30" rows="3"
-                        placeholder="Note"></textarea>
+                    <textarea name="note" class="form-control" id="note" cols="30" rows="3" placeholder="Note"></textarea>
                 </div>
 
                 <div class="form-group row mt-3">
@@ -142,7 +154,7 @@
 </div>
 <script>
     //Add Customer payment request by ajax
-    $('#payment_form').on('submit',  function(e) {
+    $('#payment_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.loading_button').show();
@@ -189,9 +201,9 @@
 
                     toastr.error('Net Connetion Error. Please check the connection.');
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -203,8 +215,8 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-    var _expectedDateFormat = '' ;
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
+    var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
     _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
@@ -227,9 +239,9 @@
         format: _expectedDateFormat,
     });
 
-    $('#p_payment_method_id').on('change', function () {
+    $('#p_payment_method_id').on('change', function() {
 
-    var account_id = $(this).find('option:selected').data('account_id');
+        var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
     });
 
@@ -238,7 +250,7 @@
         if (account_id) {
 
             $('#p_account_id').val(account_id);
-        }else if(account_id === ''){
+        } else if (account_id === '') {
 
             $('#p_account_id option:first-child').prop("selected", true);
         }

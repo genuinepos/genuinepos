@@ -1,22 +1,23 @@
 <script>
-    $(document).on('click', '#recentTransactionsBtn', function (e) {
+    $(document).on('click', '#recentTransactionsBtn', function(e) {
         e.preventDefault();
 
         var url = $(this).attr('href');
 
         $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-                
+            url: url,
+            type: 'get',
+            success: function(data) {
+
                 $('#recentTransModal').empty();
                 $('#recentTransModal').html(data);
                 $('#recentTransModal').modal('show');
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

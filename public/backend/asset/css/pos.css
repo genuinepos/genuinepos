@@ -1172,3 +1172,7 @@ tbody#product_list td {
     background: #a5abff !important;
     color: black;
 }
+
+.print_page_size{
+    width: 63px!important;
+}

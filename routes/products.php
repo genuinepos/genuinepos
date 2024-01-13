@@ -1,27 +1,27 @@
 <?php
 
-use App\Http\Controllers\Products\BrandController;
-use App\Http\Controllers\Products\BulkVariantController;
-use App\Http\Controllers\Products\CategoryController;
-use App\Http\Controllers\Products\ExpiredProductController;
-use App\Http\Controllers\Products\OpeningStockController;
-use App\Http\Controllers\Products\PriceGroupController;
-use App\Http\Controllers\Products\PriceGroupManageController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Products\ProductSettingsController;
-use App\Http\Controllers\Products\QuickProductAddController;
-use App\Http\Controllers\Products\Reports\StockReportController;
-use App\Http\Controllers\Products\SubCategoryController;
-use App\Http\Controllers\Products\UnitController;
-use App\Http\Controllers\Products\WarrantyController;
-use App\Http\Controllers\Report\StockInOutReportController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Products\UnitController;
+use App\Http\Controllers\Products\BrandController;
+use App\Http\Controllers\Products\BarcodeController;
+use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Products\CategoryController;
+use App\Http\Controllers\Products\WarrantyController;
+use App\Http\Controllers\Products\PriceGroupController;
+use App\Http\Controllers\Products\BulkVariantController;
+use App\Http\Controllers\Products\SubCategoryController;
+use App\Http\Controllers\Products\OpeningStockController;
+use App\Http\Controllers\Products\ExpiredProductController;
+use App\Http\Controllers\Products\QuickProductAddController;
+use App\Http\Controllers\Products\PriceGroupManageController;
+use App\Http\Controllers\Products\Reports\StockReportController;
+use App\Http\Controllers\Products\Reports\StockInOutReportController;
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
 
     Route::get('index/{isForCreatePage?}', 'index')->name('products.index');
     Route::get('show/{id}', 'show')->name('products.show');
-    Route::get('create', 'create')->name('products.create');
+    Route::get('create/{id?}', 'create')->name('products.create');
     Route::post('store', 'store')->name('products.store');
     Route::get('edit/{id}', 'edit')->name('products.edit');
     Route::post('update/{id}', 'update')->name('products.update');
@@ -115,11 +115,6 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
         Route::get('/', 'index')->name('expired.products.index');
     });
 
-    Route::controller(ProductSettingsController::class)->prefix('settings')->group(function () {
-        Route::get('index', 'index')->name('product.settings.index');
-        Route::post('update', 'update')->name('product.settings.update');
-    });
-
     Route::group(['prefix' => 'reports'], function () {
 
         Route::controller(StockReportController::class)->prefix('product-stock')->group(function () {
@@ -131,9 +126,17 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
             Route::get('warehouse/stock/print', 'warehouseStockPrint')->name('reports.product.stock.warehouse.stock.print');
         });
 
-        Route::group(['prefix' => 'stock/in/out'], function () {
-            Route::get('/', [StockInOutReportController::class, 'index'])->name('reports.stock.in.out.index');
-            Route::get('print', [StockInOutReportController::class, 'print'])->name('reports.stock.in.out.print');
+        Route::controller(StockInOutReportController::class)->prefix('stock-in-out')->group(function () {
+
+            Route::get('/', 'index')->name('reports.stock.in.out.index');
+            Route::get('print', 'print')->name('reports.stock.in.out.print');
         });
+    });
+
+    Route::controller(BarcodeController::class)->prefix('generate-barcode')->group(function () {
+
+        Route::get('/', 'index')->name('barcode.index');
+        Route::get('preview', 'preview')->name('barcode.preview');
+        Route::post('empty/label/qty/{supplierAccountId}/{productId}/{variantId?}', 'emptyLabelQty')->name('barcode.empty.label.qty');
     });
 });

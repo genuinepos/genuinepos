@@ -9,7 +9,6 @@
 
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="far fa-money-bill-alt"></span>
                     <h5>@lang('menu.total_cash_statement')</h5>
                 </div>
 
@@ -25,32 +24,28 @@
                             <form id="filter_cash_flow">
                                 <div class="form-group row">
 
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control" id="branch_id" autofocus>
-                                                    <option SELECTED value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
-                                 
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                            <select name="branch_id" class="form-control" id="branch_id" autofocus>
+                                                <option SELECTED value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
+
 
                                     <div class="col-md-2">
                                         <label><strong>@lang('menu.from_date') </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -112,17 +107,17 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>@lang('menu.net_profit_before_tax') </em>
+                                                        <em>@lang('menu.net_profit_before_tax') </em>
                                                     </td>
 
                                                     <td class="text-start">
-                                                    <em>0.00</em>
+                                                        <em>0.00</em>
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>@lang('menu.customer_balance') </em>
+                                                        <em>@lang('menu.customer_balance') </em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -132,7 +127,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>@lang('menu.current_stock_value') </em>
+                                                        <em>@lang('menu.current_stock_value') </em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -152,7 +147,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>@lang('menu.current_liability') </em>
+                                                        <em>@lang('menu.current_liability') </em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -162,7 +157,7 @@
 
                                                 <tr>
                                                     <td class="text-start">
-                                                    <em>@lang('menu.tax_payable') </em>
+                                                        <em>@lang('menu.tax_payable') </em>
                                                     </td>
 
                                                     <td class="text-start">
@@ -196,7 +191,7 @@
 
                                                 <tr class="bg-info">
                                                     <td class="text-start text-white">
-                                                        <b><em>@lang('menu.total_investing') </em>  </b>
+                                                        <b><em>@lang('menu.total_investing') </em> </b>
                                                     </td>
 
                                                     <td class="text-start text-white">
@@ -227,7 +222,7 @@
 
                                                 <tr class="bg-info">
                                                     <td class="text-start text-white">
-                                                        <b><em>@lang('menu.total_financing') </em>  </b>
+                                                        <b><em>@lang('menu.total_financing') </em> </b>
                                                     </td>
 
                                                     <td class="text-start text-white">
@@ -237,7 +232,7 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th class="text-start text-white"><strong>@lang('menu.total_cash_flow') : ({{ $generalSettings['business__currency'] }} )</strong> </th>
+                                                    <th class="text-start text-white"><strong>@lang('menu.total_cash_flow') : ({{ $generalSettings['business_or_shop__currency_symbol'] }} )</strong> </th>
                                                     <th class="text-start text-white">
                                                         <span class="total_cash_flow">0.00</span>
                                                     </th>
@@ -255,98 +250,110 @@
     </div>
 @endsection
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    // Setup ajax for csrf token.
-    $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-
-    function getCashFlow() {
-       $('.data_preloader').show();
-       var branch_id = $('#branch_id').val();
-       var from_date = $('.from_date').val();
-       var to_date = $('.to_date').val();
-       $.ajax({
-           url:"{{ route('accounting.cash.flow.amounts') }}",
-           type: 'GET',
-           data : {branch_id, from_date, to_date},
-           success:function(data){
-               $('#data-list').html(data);
-               $('.data_preloader').hide();
-           }
-       });
-    }
-    getCashFlow();
-
-    //Print purchase Payment report
-    $(document).on('submit', '#filter_cash_flow', function (e) {
-        e.preventDefault();
-        getCashFlow();
-    });
-
-    //Print purchase Payment report
-    $(document).on('click', '#print_report', function (e) {
-        e.preventDefault();
-
-        var url = "{{ route('accounting.print.cash.flow') }}";
-        var branch_id = $('#branch_id').val();
-        var from_date = $('.from_date').val();
-        var to_date = $('.to_date').val();
-        $.ajax({
-            url:url,
-            type:'get',
-            data: {branch_id, from_date, to_date},
-            success:function(data) {
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // Setup ajax for csrf token.
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    });
-</script>
 
-<script type="text/javascript">
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY'
-    });
+        function getCashFlow() {
+            $('.data_preloader').show();
+            var branch_id = $('#branch_id').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            $.ajax({
+                url: "{{ route('accounting.cash.flow.amounts') }}",
+                type: 'GET',
+                data: {
+                    branch_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
+                    $('#data-list').html(data);
+                    $('.data_preloader').hide();
+                }
+            });
+        }
+        getCashFlow();
 
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('datepicker2'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY',
-    });
-</script>
+        //Print purchase Payment report
+        $(document).on('submit', '#filter_cash_flow', function(e) {
+            e.preventDefault();
+            getCashFlow();
+        });
+
+        //Print purchase Payment report
+        $(document).on('click', '#print_report', function(e) {
+            e.preventDefault();
+
+            var url = "{{ route('accounting.print.cash.flow') }}";
+            var branch_id = $('#branch_id').val();
+            var from_date = $('.from_date').val();
+            var to_date = $('.to_date').val();
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY'
+        });
+
+        new Litepicker({
+            singleMode: true,
+            element: document.getElementById('datepicker2'),
+            dropdowns: {
+                minYear: new Date().getFullYear() - 50,
+                maxYear: new Date().getFullYear() + 100,
+                months: true,
+                years: true
+            },
+            tooltipText: {
+                one: 'night',
+                other: 'nights'
+            },
+            tooltipNumber: (totalDays) => {
+                return totalDays - 1;
+            },
+            format: 'DD-MM-YYYY',
+        });
+    </script>
 @endpush

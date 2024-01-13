@@ -1,6 +1,6 @@
 <script>
     var removableDom = '';
-    $(document).on('click', '#delete', function (e) {
+    $(document).on('click', '#delete', function(e) {
 
         e.preventDefault();
         // var parentTableRow = $(this).closest('tr');
@@ -11,7 +11,7 @@
         if (parentTr.length > 0) {
 
             removableDom = parentTr;
-        }else if (parentSection.length > 0) {
+        } else if (parentSection.length > 0) {
 
             removableDom = parentSection;
         }
@@ -24,15 +24,22 @@
             'buttons': {
                 'Yes': {
                     'class': 'yes btn-modal-primary',
-                    'action': function () { $('#deleted_form').submit(); }
+                    'action': function() {
+                        $('#deleted_form').submit();
+                    }
                 },
-                'No': { 'class': 'no btn-danger', 'action': function () { console.log('Deleted canceled.') } }
+                'No': {
+                    'class': 'no btn-danger',
+                    'action': function() {
+                        console.log('Deleted canceled.')
+                    }
+                }
             }
         });
     });
 
     //data delete by ajax
-    $(document).on('submit', '#deleted_form', function (e) {
+    $(document).on('submit', '#deleted_form', function(e) {
         e.preventDefault();
         var url = $(this).attr('action');
         var request = $(this).serialize();
@@ -40,7 +47,7 @@
             url: url,
             type: 'post',
             data: request,
-            success: function (data) {
+            success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
 
@@ -50,11 +57,12 @@
 
                 toastr.error("{{ __('Data deleted successfully') }}");
                 $(removableDom).remove();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

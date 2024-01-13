@@ -48,69 +48,77 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
         </footer>
     </div>
 
-    <div class="modal fade" id="todaySummeryModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="exampleModalLabel">{{ __('Today Summery') }}</h6>
-                    <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span
-                            class="fas fa-times"></span></a>
-                </div>
-                <div class="modal-body" id="today_summery_modal_body">
-                    <div class="today_summery_modal_contant">
-
-                    </div>
-                    <div class="print-button-area">
-                        <a href="#" class="btn btn-sm btn-primary float-end" id="today_summery_print_btn">@lang('menu.print')</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="todaySummeryModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 
     @include('layout._script')
     @stack('scripts')
     <script>
-        $(document).on('click', '#today_summery',function (e) {
+        $(document).on('click', '#todaySummeryBtn',function (e) {
             e.preventDefault();
             todaySummery();
         });
 
         function todaySummery() {
-            var branch_id = $('#today_branch_id').val();
+            var branch_id = $('#today_summary_branch_id').val();
+
             $('.loader').show();
             $.ajax({
-                url: "{{ route('dashboard.today.summery') }}",
+                url: "{{ route('today.summary.index') }}",
                 type: 'get',
-                data: {branch_id},
+                data: { branch_id },
                 success: function(data) {
-                    $('.today_summery_modal_contant').html(data);
-                    $('#todaySummeryModal').modal('show');
+
                     $('.loader').hide();
+                    $('#todaySummeryModal').empty();
+                    $('#todaySummeryModal').html(data);
+                    $('#todaySummeryModal').modal('show');
+                }, error: function(err) {
+
+                    $('.loader').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error') }}");
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    }
                 }
             });
         }
 
-        $(document).on('change', '#today_branch_id',function () {
+        $(document).on('change', '#today_summary_branch_id',function () {
             todaySummery();
         });
 
-        $(document).on('click', '#today_summery_print_btn', function (e) {
-            e.preventDefault();
-            var body = $('.print_body').html();
-            var header = $('.print_today_summery_header').html();
-            var footer = $('.print_today_summery_footer').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
-                removeInline: true,
-                printDelay: 500,
-                header: header,
-                footer: footer
+        function printTodaySummary(e) {
+
+            var url = $(e).attr('href');
+
+            var branch_id = $('#today_summary_branch_id').val();
+            var branch_name = $('#today_summary_branch_id').find('option:selected').data('branch_name');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    branch_name,
+                }, success: function(data) {
+
+                    $(data).printThis({
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 500,
+                        header: "",
+                        pageTitle: "",
+                        // footer: 'Footer Text',
+                    });
+                }
             });
-        });
+        };
 
         $('.calculator-bg__main button').prop('type', 'button');
 
@@ -125,6 +133,11 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
 
         $(document).on('click', '#show_cost_button', function () {
             $('#show_cost_section').toggle(500);
+        });
+
+        $('#todaySummeryModal').on('hide.bs.modal', function(e)
+        {
+            $('#todaySummeryModal').empty();
         });
     </script>
     <!-- Logout form for global -->

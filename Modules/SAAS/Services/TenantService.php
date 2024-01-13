@@ -65,12 +65,12 @@ class TenantService implements TenantServiceInterface
     public function saveBusinessSettings(array $tenantRequest) : void
     {
         $settings = [
-            'business__business_name' => $tenantRequest['name'],
-            'business__phone' => $tenantRequest['phone'],
-            'business__email' => $tenantRequest['email'],
+            'business_or_shop__business_name' => $tenantRequest['name'],
+            'business_or_shop__phone' => $tenantRequest['phone'],
+            'business_or_shop__email' => $tenantRequest['email'],
 
             'addons__branch_limit' => $tenantRequest['shop_count'],
-            // 'business__address' => $business__address,
+            // 'business_or_shop__address' => $business_or_shop__address,
             // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
 

@@ -76,8 +76,8 @@
         }
 
         /*.select2-selection:focus {
-                     box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
-                } */
+                         box-shadow: 0 0 5px 0rem rgb(90 90 90 / 38%);
+                    } */
         label.col-2,
         label.col-3,
         label.col-4,
@@ -137,7 +137,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-cart-plus"></span>
                     <h6>{{ __('Edit Add Sale') }}</h6>
                 </div>
 
@@ -201,7 +200,7 @@
                                                 <div class="input-group mt-1">
                                                     <label class=" col-4"><b>{{ __('Date') }} <span class="text-danger">*</span></b></label>
                                                     <div class="col-8">
-                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
+                                                        <input required type="text" name="date" class="form-control" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($sale->date)) }}" data-next="sale_account_id" autocomplete="off" id="date">
                                                         <span class="error error_date"></span>
                                                     </div>
                                                 </div>
@@ -444,7 +443,7 @@
                                                                                             $stockLocationName = $sale?->branch?->name . '(' . $sale?->branch?->area_name;
                                                                                         }
                                                                                     } else {
-                                                                                        $stockLocationName = $generalSettings['business__business_name'];
+                                                                                        $stockLocationName = $generalSettings['business_or_shop__business_name'];
                                                                                     }
                                                                                 }
                                                                             @endphp

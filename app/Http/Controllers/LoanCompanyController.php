@@ -15,7 +15,6 @@ class LoanCompanyController extends Controller
     public function __construct(AccountUtil $accountUtil)
     {
         $this->accountUtil = $accountUtil;
-
     }
 
     public function index(Request $request)
@@ -32,30 +31,30 @@ class LoanCompanyController extends Controller
                     $html .= '<div class="btn-group" role="group">';
                     $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                     $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item" href="'.route('accounting.loan.companies.edit', [$row->id]).'" id="edit_company"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" href="'.route('accounting.loan.payment.list', [$row->id]).'" id="view_payments"><i class="far fa-edit text-primary"></i> View Payments</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.companies.edit', [$row->id]) . '" id="edit_company"><i class="far fa-edit text-primary"></i> Edit</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('accounting.loan.payment.list', [$row->id]) . '" id="view_payments"><i class="far fa-edit text-primary"></i> View Payments</a>';
 
                     if ($row->pay_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="'.route('accounting.loan.advance.receive.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Loan & Advance Due Receive</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.advance.receive.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan & Advance Due Receive</a>';
                     }
 
                     if ($row->get_loan_due > 0) {
-                        $html .= '<a class="dropdown-item" id="loan_payment" href="'.route('accounting.loan.liability.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Loan Liability Due Payment</a>';
+                        $html .= '<a class="dropdown-item" id="loan_payment" href="' . route('accounting.loan.liability.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Loan Liability Due Payment</a>';
                     }
 
-                    $html .= '<a class="dropdown-item" id="delete_company" href="'.route('accounting.loan.companies.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete_company" href="' . route('accounting.loan.companies.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                     $html .= '</div>';
                     $html .= '</div>';
 
                     return $html;
                 })->editColumn('pay_loan_amount', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].' '.$row->pay_loan_amount.'<br/>Due : '.$generalSettings['business__currency'].' <span class="text-danger">'.$row->pay_loan_due.'</span>';
+                    return $generalSettings['business_or_shop__currency'] . ' ' . $row->pay_loan_amount . '<br/>Due : ' . $generalSettings['business_or_shop__currency'] . ' <span class="text-danger">' . $row->pay_loan_due . '</span>';
                 })->editColumn('get_loan_amount', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].' '.$row->get_loan_amount.'<br/>Due : '.$generalSettings['business__currency'].' <span class="text-danger">'.$row->get_loan_due.'</span>';
+                    return $generalSettings['business_or_shop__currency'] . ' ' . $row->get_loan_amount . '<br/>Due : ' . $generalSettings['business_or_shop__currency'] . ' <span class="text-danger">' . $row->get_loan_due . '</span>';
                 })->editColumn('total_pay', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].' '.$row->total_pay;
+                    return $generalSettings['business_or_shop__currency'] . ' ' . $row->total_pay;
                 })->editColumn('total_receive', function ($row) use ($generalSettings) {
-                    return $generalSettings['business__currency'].' '.$row->total_receive;
+                    return $generalSettings['business_or_shop__currency'] . ' ' . $row->total_receive;
                 })
                 ->rawColumns(['pay_loan_amount', 'get_loan_amount', 'action'])->smart(true)->make(true);
         }
@@ -106,7 +105,7 @@ class LoanCompanyController extends Controller
         $deleteCompany = LoanCompany::with(['loans', 'loanPayments'])->where('id', $companyId)->first();
         $storedCompanyLoans = $deleteCompany->loans;
         $storedCompanyLoanPayments = $deleteCompany->loanPayments;
-        if (! is_null($deleteCompany)) {
+        if (!is_null($deleteCompany)) {
             $deleteCompany->delete();
 
             foreach ($storedCompanyLoanPayments as $companyLoanPayment) {

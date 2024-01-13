@@ -15,7 +15,6 @@ use App\Services\Accounts\ContraService;
 use App\Services\Accounts\DayBookService;
 use App\Services\CodeGenerationService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +29,6 @@ class ContraController extends Controller
         private AccountLedgerService $accountLedgerService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
     ) {
@@ -121,8 +119,8 @@ class ContraController extends Controller
             }
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $contraVoucherPrefix = 'CO'.auth()->user()?->branch?->branch_code;
+
+            $contraVoucherPrefix = $generalSettings['prefix__contra_voucher_prefix'] ? $generalSettings['prefix__contra_voucher_prefix'] : 'CO';
 
             // Add Accounting Voucher
             $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Contra->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $contraVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount);

@@ -14,18 +14,24 @@ Artisan::command('dev:m', function () {
     //     $table->ipAddress()->nullable();
     // });
 
-    Schema::create('branch_settings', function (Blueprint $table) {
-        $table->id();
+    Schema::table('accounting_vouchers', function (Blueprint $table) {
 
-        $table->string('key')->nullable();
-        $table->string('value')->nullable();
-        $table->unsignedBigInteger('branch_id')->nullable();
-        $table->unsignedBigInteger('add_sale_invoice_layout_id')->nullable();
-        $table->unsignedBigInteger('pos_sale_invoice_layout_id')->nullable();
+        $table->unsignedBigInteger('payroll_ref_id')->after('stock_adjustment_ref_id')->nullable();
 
-        $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-        $table->foreign('add_sale_invoice_layout_id')->references('id')->on('invoice_layouts')->onDelete('set null');
-        $table->foreign('pos_sale_invoice_layout_id')->references('id')->on('invoice_layouts')->onDelete('set null');
+        $table->foreign('payroll_ref_id')->references('id')->on('hrm_payrolls')->onDelete('set null');
+        $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
+    });
+
+    Schema::table('voucher_description_references', function (Blueprint $table) {
+
+        $table->unsignedBigInteger('payroll_id')->after('stock_adjustment_id')->nullable();
+        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
+    });
+
+    Schema::table('day_books', function (Blueprint $table) {
+
+        $table->unsignedBigInteger('payroll_id')->after('transfer_stock_id')->nullable();
+        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
     });
 });
 
@@ -54,7 +60,7 @@ Artisan::command('t:2', function () {
             ->whereNotNull('parent_branch_id')
             ->orderBy('branch_id')
             ->orderBy('parent_branch_id');
-        })
+    })
         ->orWhere(function ($query) {
             $query->whereNotNull('branch_id')
                 ->whereNull('parent_branch_id')

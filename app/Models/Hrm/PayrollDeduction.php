@@ -11,4 +11,9 @@ class PayrollDeduction extends BaseModel
     protected $guarded = [];
 
     protected $hidden = ['updated_at'];
+
+    public function deduction()
+    {
+        return $this->belongsTo(Allowance::class, 'deduction_id');
+    }
 }

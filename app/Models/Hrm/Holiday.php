@@ -3,16 +3,14 @@
 namespace App\Models\Hrm;
 
 use App\Models\BaseModel;
-use App\Models\Branch;
+use App\Models\HRM\HolidayBranch;
 
 class Holiday extends BaseModel
 {
     protected $table = 'hrm_holidays';
 
-    protected $fillable = ['holiday_name', 'start_date', 'end_date', 'shop_name', 'notes'];
-
-    public function branch()
+    public function allowedBranches()
     {
-        return $this->belongsTo(Branch::class, 'branch_id');
+        return $this->hasMany(HolidayBranch::class, 'holiday_id');
     }
 }

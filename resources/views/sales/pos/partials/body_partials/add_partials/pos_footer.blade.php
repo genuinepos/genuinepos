@@ -6,6 +6,18 @@
             </div>
 
             @if ($generalSettings['pos__is_show_recent_transactions'] == '1')
+                <div class="pos-foot-con d-inline-block position-absolute" style="right: 15%; top: 60%; transform: translateY(-41%)">
+                    <div class="input-group">
+                        <label class="pe-1 fw-bold">{{ __("Print") }}</label>
+                        <select name="print_page_size" id="print_page_size" class="form-control print_page_size">
+                            @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
+                                <option {{ $generalSettings['pos_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value, false) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+
                 <div class="pos-foot-con d-inline-block position-absolute" style="right: -10px; top: 50%; transform: translateY(-41%)">
                     <a href="{{ route('sales.helper.recent.transaction.modal', ['initialStatus' => App\Enums\SaleStatus::Final->value, 'saleScreenType' => App\Enums\SaleScreenType::PosSale->value, 'limit' => 20]) }}" class="btn btn-sm btn-primary resent-tn h-auto py-1" id="recentTransactionsBtn" tabindex="-1">{{ __('Recent Transactions') }}</a>
                 </div>

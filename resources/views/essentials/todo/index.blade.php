@@ -14,7 +14,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-th-list"></span>
                     <h6>@lang('menu.todo')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -36,7 +35,7 @@
                                             <select name="branch_id"
                                                 class="form-control submit_able select2" id="branch_id" autofocus>
                                                 <option value="">@lang('menu.all')</option>
-                                                <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         {{ $branch->name . '/' .$branch->branch_code }}
@@ -501,7 +500,7 @@
 
 <script type="text/javascript">
     $('.select2').select2();
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');

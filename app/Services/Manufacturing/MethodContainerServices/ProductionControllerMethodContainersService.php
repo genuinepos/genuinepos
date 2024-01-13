@@ -57,7 +57,6 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         object $request,
         object $productionService,
         object $productionIngredientService,
-        object $manufacturingSettingService,
         object $productService,
         object $productLedgerService,
         object $productStockService,
@@ -72,9 +71,9 @@ class ProductionControllerMethodContainersService implements ProductionControlle
             return ['pass' => false, 'msg' => $restrictions['msg']];
         }
 
-        $manufacturingSetting = $manufacturingSettingService->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
-        $voucherPrefix = $manufacturingSetting?->production_voucher_prefix ? $manufacturingSetting?->production_voucher_prefix : 'MF';
-        $isUpdateProductCostAndPrice = $manufacturingSetting ? $manufacturingSetting?->is_update_product_cost_and_price_in_production : BooleanType::True->value;
+        $generalSettings = config('generalSettings');
+        $voucherPrefix = $generalSettings['manufacturing__production_voucher_prefix'] ? $generalSettings['manufacturing__production_voucher_prefix'] : 'MF';
+        $isUpdateProductCostAndPrice = $generalSettings['manufacturing__is_update_product_cost_and_price_in_production'];
 
         $addProduction = $productionService->addProduction(request: $request, codeGenerator: $codeGenerator, voucherPrefix: $voucherPrefix);
 
@@ -193,7 +192,6 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         object $request,
         object $productionService,
         object $productionIngredientService,
-        object $manufacturingSettingService,
         object $productService,
         object $productLedgerService,
         object $productStockService,
@@ -201,8 +199,7 @@ class ProductionControllerMethodContainersService implements ProductionControlle
         object $dayBookService,
     ): ?array {
 
-        $manufacturingSetting = $manufacturingSettingService->manufacturingSetting()->where('branch_id', auth()->user()->branch_id)->first();
-        $isUpdateProductCostAndPrice = $manufacturingSetting ? $manufacturingSetting?->is_update_product_cost_and_price_in_production : BooleanType::True->value;
+        $isUpdateProductCostAndPrice = $generalSettings['manufacturing__is_update_product_cost_and_price_in_production'];
 
         $restrictions = $productionService->restrictions($request);
         if ($restrictions['pass'] = false) {

@@ -56,11 +56,6 @@ class Branch extends BaseModel
         return $this->hasMany(Warehouse::class);
     }
 
-    public function branchSettings()
-    {
-        return $this->hasMany(BranchSetting::class, 'branch_id');
-    }
-
     public function addSaleInvoiceLayout()
     {
         return $this->hasOne(BranchSetting::class, 'branch_id')->where('add_sale_invoice_layout_id', '!=', null);

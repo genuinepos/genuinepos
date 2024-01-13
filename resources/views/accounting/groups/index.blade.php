@@ -56,7 +56,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
                                 <h6>{{ __('Account Groups') }}</h6>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -164,10 +163,10 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });
@@ -181,7 +180,9 @@
                 url: "{{ route('account.groups.list') }}",
                 async: true,
                 type: 'get',
-                data: { branch_id },
+                data: {
+                    branch_id
+                },
                 success: function(data) {
 
                     var div = $('#list_of_groups').html(data);
@@ -204,10 +205,10 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });

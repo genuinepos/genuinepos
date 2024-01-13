@@ -52,9 +52,9 @@ class UserService
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="' . route('users.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="edit" href="' . route('users.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit </a>';
-                $html .= '<a class="dropdown-item" id="delete" href="' . route('users.delete', [$row->id]) . '"><i class="fas fa-trash-alt text-primary"></i> Delete </a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('users.show', [$row->id]) . '">' . __("View") . '</a>';
+                $html .= '<a class="dropdown-item" id="edit" href="' . route('users.edit', [$row->id]) . '">' . __("Edit") . '</a>';
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('users.delete', [$row->id]) . '">' . __("Delete") . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -72,7 +72,7 @@ class UserService
                         return $row->branch_name . ' (' . $row->area_name . ')';
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 }
             })
@@ -198,8 +198,7 @@ class UserService
         $updateUser->prefix = $request->prefix;
         $updateUser->name = $request->first_name;
         $updateUser->last_name = $request->last_name;
-        $updateUser->status = isset($request->is_active) ? 1 : 0;
-        $updateUser->allow_login = $request->allow_login;
+        $updateUser->status = isset($request->is_active) ? BooleanType::True->value : BooleanType::False->value;
         $updateUser->email = $request->email;
 
         $branchId = '';
@@ -211,34 +210,43 @@ class UserService
             $branchId = auth()->user()->branch_id;
         }
 
-        if ($request->allow_login == BooleanType::True->value) {
+        $currentRole = $updateUser?->roles?->first();
+        if ($currentRole->name != 'superadmin') {
 
-            $updateUser->allow_login = 1;
-            $updateUser->username = $request->username;
-            $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
-            $roleName = $role->name;
+            if ($request->allow_login == BooleanType::True->value) {
 
-            switch ($roleName) {
+                $updateUser->allow_login = BooleanType::True->value;
+                $updateUser->username = $request->username;
+                $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
+                $roleName = $role->name;
 
-                case 'superadmin':
-                    $updateUser->role_type = RoleType::SuperAdmin->value;
-                    $addUser->is_belonging_an_area = BooleanType::False->value;
-                    break;
-                case 'admin':
-                    $updateUser->role_type = RoleType::Admin->value;
-                    $addUser->is_belonging_an_area = BooleanType::False->value;
-                    break;
-                default:
-                    $updateUser->role_type = RoleType::Other->value;
-                    $updateUser->branch_id = $branchId;
-                    break;
+                switch ($roleName) {
+
+                    case 'superadmin':
+                        $updateUser->role_type = RoleType::SuperAdmin->value;
+                        $updateUser->is_belonging_an_area = BooleanType::False->value;
+                        break;
+                    case 'admin':
+                        $updateUser->role_type = RoleType::Admin->value;
+                        $updateUser->is_belonging_an_area = BooleanType::False->value;
+                        break;
+                    default:
+                        $updateUser->role_type = RoleType::Other->value;
+                        $updateUser->branch_id = $branchId;
+                        break;
+                }
+
+                $updateUser->syncRoles([$roleName]);
+            } else {
+
+                $updateUser->allow_login = BooleanType::False->value;
+                $updateUser->branch_id = $branchId;
             }
-
-            $updateUser->syncRoles([$roleName]);
         } else {
 
-            $updateUser->allow_login = BooleanType::False->value;
-            $updateUser->branch_id = $branchId;
+            $updateUser->allow_login = BooleanType::True->value;
+            $updateUser->username = $request->username;
+            $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
         }
 
         $updateUser->sales_commission_percent = $request->sales_commission_percent ? $request->sales_commission_percent : 0;
@@ -326,6 +334,18 @@ class UserService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function users(array $with = null)
+    {
+        $query = User::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 
     public function addUserValidation(object $request, ?object $role)

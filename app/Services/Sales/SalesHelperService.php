@@ -24,7 +24,7 @@ class SalesHelperService
             ->leftJoin('units', 'products.unit_id', 'units.id');
         // ->leftJoin('purchase_products as updateProductCost', function ($join) use ($generalSettings) {
 
-        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         //     if ($stockAccountingMethod == 1) {
 
@@ -43,7 +43,7 @@ class SalesHelperService
         //     // ->whereRaw('orders.id = (SELECT MAX(id) FROM orders WHERE user_id = users.id)');
         // })->leftJoin('purchase_products as updateVariantCost', function ($join) use ($generalSettings) {
 
-        //     $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        //     $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         //     if ($stockAccountingMethod == 1) {
 
@@ -103,7 +103,7 @@ class SalesHelperService
             ]
         )->distinct('product_access_branches.branch_id');
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 
@@ -114,11 +114,11 @@ class SalesHelperService
         }
 
         $products = $query->addSelect([
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_product_cost'),
-            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id '.(auth()->user()->branch_id ? '='.auth()->user()->branch_id : ' IS NULL').' ORDER BY created_at '.$ordering.' LIMIT 1) as update_variant_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE product_id = products.id AND left_qty > 0 AND variant_id IS NULL AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_product_cost'),
+            DB::raw('(SELECT net_unit_cost FROM purchase_products WHERE variant_id = product_variants.id AND left_qty > 0 AND branch_id ' . (auth()->user()->branch_id ? '=' . auth()->user()->branch_id : ' IS NULL') . ' ORDER BY created_at ' . $ordering . ' LIMIT 1) as update_variant_cost'),
         ]);
 
-        if (! $request->category_id && ! $request->brand_id) {
+        if (!$request->category_id && !$request->brand_id) {
 
             $query->orderBy('products.id', 'desc')->limit(90);
         } else {
@@ -134,6 +134,8 @@ class SalesHelperService
         $sales = '';
         $query = DB::table('sales')
             ->leftJoin('accounts as customer', 'sales.customer_account_id', 'customer.id')
+            ->leftJoin('branches', 'sales.branch_id', 'branches.id')
+            ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->where('sales.branch_id', auth()->user()->branch_id)
             ->where('sales.created_by_id', auth()->user()->id)
             ->where('sales.status', $status)
@@ -146,6 +148,7 @@ class SalesHelperService
 
         $sales = $query->select(
             'sales.id',
+            'sales.branch_id',
             'sales.total_item',
             'sales.total_qty',
             'sales.invoice_id',
@@ -157,7 +160,11 @@ class SalesHelperService
             'sales.sale_screen',
             'sales.total_invoice_amount',
             'sales.date',
-            'customer.name as customer_name'
+            'customer.name as customer_name',
+            'branches.name as branch_name',
+            'branches.area_name as branch_area_name',
+            'branches.branch_code',
+            'parentBranch.name as parent_branch_name',
         )->orderBy('sales.date_ts', 'desc')->get();
 
         return $sales;
@@ -168,8 +175,6 @@ class SalesHelperService
         return Sale::where('id', $saleId)->with([
             'branch',
             'branch.parentBranch',
-            'branch.branchSetting:id,add_sale_invoice_layout_id',
-            'branch.branchSetting.addSaleInvoiceLayout',
             'customer',
             'saleProducts',
             'saleProducts.product',

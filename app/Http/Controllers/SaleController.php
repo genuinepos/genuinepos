@@ -315,7 +315,7 @@ class SaleController extends Controller
                 return response()->json(['errorMsg' => 'Listed customer is required when sale is due or partial.']);
             }
 
-            $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+            $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
             $receiptVoucherPrefix = $generalSettings['prefix__sale_payment'];
 
             $branchInvoiceSchema = DB::table('branches')
@@ -780,9 +780,9 @@ class SaleController extends Controller
 
         $generalSettings = config('generalSettings');
 
-        $receiptVoucherPrefix = $generalSettings['prefix__sale_invoice'];
+        $receiptVoucherPrefix = $generalSettings['prefix__sales_invoice_prefix'];
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($request->product_ids == null) {
 

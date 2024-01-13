@@ -3,42 +3,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Search Product area style */
-        .selectProduct {
-            background-color: #5f555a;
-            color: #fff !important;
-        }
+        .selectProduct { background-color: #5f555a; color: #fff !important; }
 
-        .search_area {
-            position: relative;
-        }
+        .search_area { position: relative; }
 
-        .search_result {
-            position: absolute;
-            width: 100%;
-            border: 1px solid #E4E6EF;
-            background: white;
-            z-index: 1;
-            padding: 8px;
-            margin-top: 1px;
-        }
+        .search_result { position: absolute; width: 100%; border: 1px solid #E4E6EF; background: white; z-index: 1; padding: 8px; margin-top: 1px; }
 
-        .search_result ul li {
-            width: 100%;
-            border: 1px solid lightgray;
-            margin-top: 3px;
-        }
+        .search_result ul li { width: 100%; border: 1px solid lightgray; margin-top: 3px; }
 
-        .search_result ul li a {
-            color: #7b7676;
-            font-size: 12px;
-            display: block;
-            padding: 3px;
-        }
+        .search_result ul li a { color: #7b7676; font-size: 12px; display: block; padding: 3px; }
 
-        .search_result ul li a:hover {
-            color: white;
-            background-color: #ccc1c6;
-        }
+        .search_result ul li a:hover { color: white; background-color: #ccc1c6; }
 
         /* Search Product area style end */
     </style>
@@ -52,7 +27,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-basket"></span>
                                 <h5>{{ __('Purchased Products') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -80,10 +54,10 @@
 
                                                 @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
                                                     <div class="col-md-2">
-                                                        <label><strong>{{ __('Shop/Business') }} : </strong></label>
+                                                        <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }} ({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} ({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -99,7 +73,7 @@
                                                 @endif
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('Supplier') }} : </strong></label>
+                                                    <label><strong>{{ __('Supplier') }}</strong></label>
                                                     <select name="supplier_id" class="form-control select2" id="supplier_id">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach ($supplierAccounts as $supplierAccount)
@@ -109,7 +83,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('Category') }} : </strong></label>
+                                                    <label><strong>{{ __('Category') }}</strong></label>
                                                     <select name="category_id" class="form-control select2" id="category_id">
                                                         <option value="">{{ __('All') }}</option>
                                                         @foreach ($categories as $category)
@@ -119,7 +93,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('Subcategory') }} : </strong></label>
+                                                    <label><strong>{{ __('Subcategory') }}</strong></label>
                                                     <select name="sub_category_id" class="form-control select2" id="sub_category_id">
                                                         <option value="">{{ __('Select Category First') }}</option>
                                                     </select>
@@ -128,7 +102,7 @@
 
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('From Date') }} : </strong></label>
+                                                    <label><strong>{{ __('From Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -138,7 +112,7 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __('To Date') }} : </strong></label>
+                                                    <label><strong>{{ __('To Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_i"></i></span>
@@ -163,7 +137,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-9">
-                                    <h6>{{ __('List Of Purchased Products') }}</h6>
+                                    <h6>{{ __('List of Purchased Products') }}</h6>
                                 </div>
                                 @if (auth()->user()->can('purchase_add'))
                                     <div class="col-3 d-flex justify-content-end">
@@ -174,7 +148,7 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
                                     <table class="display data_tbl data__table">
@@ -193,7 +167,7 @@
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</th>
+                                                <th colspan="5" class="text-end text-white fw-bold">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
                                                 <th class="text-start text-white fw-bold">(<span id="total_qty"></span>)</th>
                                                 <th class="text-start text-white">---</th>
                                                 <th class="text-start text-white fw-bold"><span id="total_subtotal"></span></th>
@@ -224,21 +198,10 @@
     <script>
         var table = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary'
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary'
-                },
-                {
-                    extend: 'print',
-                    text: 'Print',
-                    className: 'btn btn-primary'
-                },
+            buttons: [
+                { extend: 'excel', text: 'Excel', className: 'btn btn-primary' },
+                { extend: 'pdf', text: 'Pdf', className: 'btn btn-primary' },
+                { extend: 'print', text: 'Print', className: 'btn btn-primary' },
             ],
             "processing": true,
             "serverSide": true,
@@ -260,41 +223,15 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [{
-                    data: 'date',
-                    name: 'purchases.date'
-                },
-                {
-                    data: 'branch',
-                    name: 'branch.name'
-                },
-                {
-                    data: 'product',
-                    name: 'products.name'
-                },
-                {
-                    data: 'supplier_name',
-                    name: 'suppliers.name as supplier_name'
-                },
-                {
-                    data: 'invoice_id',
-                    name: 'purchases.invoice_id'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'net_unit_cost',
-                    name: 'net_unit_cost',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'subtotal',
-                    name: 'subtotal',
-                    className: 'text-end fw-bold'
-                },
+            columns: [
+                { data: 'date', name: 'purchases.date' },
+                { data: 'branch', name: 'branch.name' },
+                { data: 'product', name: 'products.name' },
+                { data: 'supplier_name', name: 'suppliers.name as supplier_name' },
+                { data: 'invoice_id', name: 'purchases.invoice_id' },
+                { data: 'quantity', name: 'quantity', className: 'text-end fw-bold' },
+                { data: 'net_unit_cost', name: 'net_unit_cost', className: 'text-end fw-bold' },
+                { data: 'subtotal', name: 'subtotal', className: 'text-end fw-bold' },
             ],
             fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'qty');
@@ -332,35 +269,17 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
 

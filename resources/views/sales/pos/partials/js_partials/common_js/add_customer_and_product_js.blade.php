@@ -17,9 +17,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -40,7 +40,8 @@
 
                 $('#previous_due').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
@@ -54,7 +55,7 @@
         });
     });
 
-    @if(auth()->user()->can('customer_add'))
+    @if (auth()->user()->can('customer_add'))
         $('#addContact').on('click', function(e) {
 
             e.preventDefault();
@@ -69,18 +70,19 @@
                     $('#addOrEditContactModal').html(data);
                     $('#addOrEditContactModal').modal('show');
 
-                    setTimeout(function(){
+                    setTimeout(function() {
 
                         $('#contact_name').focus();
                     }, 500);
 
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
@@ -90,13 +92,13 @@
         });
     @endif
 
-    @if(auth()->user()->can('product_add'))
-        $('#addProduct').on('click', function () {
+    @if (auth()->user()->can('product_add'))
+        $('#addProduct').on('click', function() {
 
             $.ajax({
-                url:"{{ route('quick.product.create') }}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('quick.product.create') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').html(data);
@@ -106,7 +108,8 @@
 
                         $('#quick_product_name').focus();
                     }, 1000);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -139,7 +142,7 @@
         });
 
         // Add product by ajax
-        $(document).on('submit', '#add_quick_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form', function(e) {
             e.preventDefault();
             $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
@@ -239,7 +242,8 @@
 
                     $('#product_list').prepend(tr);
                     calculateTotalAmount();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     isQuickProductAjaxIn = true;
                     isAllowQuickProductSubmit = true;
@@ -250,11 +254,11 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    } else if(err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
-                    } else if(err.status == 403) {
+                    } else if (err.status == 403) {
 
                         toastr.error("{{ __('Access Denied') }}");
                         return;

@@ -1,15 +1,21 @@
 <style>
-    @page {size:a4;margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%;margin-right: 4%;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 35px;
+        margin-left: 4%;
+        margin-right: 4%;
+    }
 </style>
 <div class="row">
     <div class="col-md-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
             <p><b>@lang('menu.all_business_location')</b></p>
         @elseif ($branch_id == 'NULL')
-            <h5>{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
             @php
                 $branch = DB::table('branches')
@@ -18,19 +24,19 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name . ' ' . $branch->branch_code }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
             <p><b>@lang('menu.date') : </b>
-                {{ date($generalSettings['business__date_format'], strtotime($fromDate)) }}
-                <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'], strtotime($toDate)) }}
+                {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }}
+                <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }}
             </p>
         @endif
         <h6 style="margin-top: 10px;"><b>@lang('menu.financial_report') : </b></h6>
     </div>
 </div>
-<br/>
+<br />
 <div class="row">
     <div class="col-12">
         <table class="table modal-table table-sm table-bordered">
@@ -50,7 +56,7 @@
                                     <td class="text-start">
                                         <em>@lang('menu.fixed_asset') : </em>
                                     </td>
-                                    <td class="text-end"><b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['fixed_asset_balance']) }}</em></b>  </td>
+                                    <td class="text-end"><b><em>{{ App\Utils\Converter::format_in_bdt($allFinancialAmounts['fixed_asset_balance']) }}</em></b> </td>
                                 </tr>
 
                                 <tr>
@@ -61,7 +67,7 @@
 
                                 <tr>
                                     <td class="text-start">
-                                       <em>@lang('menu.total_purchase') : </em>
+                                        <em>@lang('menu.total_purchase') : </em>
                                     </td>
 
                                     <td class="text-end">

@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.opening_balance') : {{ $generalSettings['business__currency'] }}</strong>
+                        <strong>@lang('menu.opening_balance') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                     </td>
 
                     <td class="text-end opening_balance" id="sales_opening_balance">0.00</td>
@@ -16,36 +16,36 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_sale') : {{ $generalSettings['business__currency'] }}</strong>
+                        <strong>@lang('menu.total_sale') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                     </td>
 
                     <td class="text-end total_sale" id="sales_total_sale">0.00</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_return') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_return') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                     <td class="text-end total_return" id="sales_total_return">0.00</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_less') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_less') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                     <td class="text-end total_less" id="sales_total_less">0.00</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                     <td class="text-end total_paid text-success" id="sales_total_paid">
                         0.00
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>@lang('menu.balance_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                     <td class="text-end total_sale_due text-danger" id="sales_total_sale_due">0.00</td>
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>{{ __('Returnable Due') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                    <td class="text-end"><strong>{{ __('Returnable Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                     <td class="text-end total_sale_return_due" id="sales_total_sale_return_due">0.00</td>
                 </tr>
             </tbody>

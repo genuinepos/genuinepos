@@ -11,10 +11,9 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
-                                <h5>{{ __("Receive From Shop/Business") }}</h5>
+                                <h5>{{ __('Receive From Shop/Business') }}</h5>
                             </div>
-                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                         </div>
                     </div>
 
@@ -26,9 +25,9 @@
                                         <form id="filter_form">
                                             <div class="form-group row">
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("Reciving Status") }}</strong></label>
+                                                    <label><strong>{{ __('Reciving Status') }}</strong></label>
                                                     <select name="receive_status" id="receive_status" class="form-control">
-                                                        <option value="">{{ __("All") }}</option>
+                                                        <option value="">{{ __('All') }}</option>
                                                         @foreach (\App\Enums\TransferStockReceiveStatus::cases() as $receiveStatus)
                                                             <option value="{{ $receiveStatus->value }}">{{ $receiveStatus->name }}</option>
                                                         @endforeach
@@ -36,17 +35,17 @@
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("From Date") }}</strong></label>
+                                                    <label><strong>{{ __('From Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                                         </div>
-                                                        <input type="text" name="from_date" id="from_date" class="form-control"  autocomplete="off">
+                                                        <input type="text" name="from_date" id="from_date" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-2">
-                                                    <label><strong>{{ __("To Date") }}</strong></label>
+                                                    <label><strong>{{ __('To Date') }}</strong></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
@@ -58,7 +57,7 @@
                                                 <div class="col-md-2">
                                                     <label><strong></strong></label>
                                                     <div class="input-group">
-                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                                        <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,32 +76,32 @@
 
                             <div class="widget_content">
                                 <div class="data_preloader">
-                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
+                                    <h6><i class="fas fa-spinner text-primary"></i> {{ __('Processing') }}...</h6>
                                 </div>
                                 <div class="table-responsive" id="data-list">
-                                        <table class="display data_tbl data__table">
+                                    <table class="display data_tbl data__table">
                                         <thead>
                                             <tr>
-                                                <th>{{ __("Action") }}</th>
-                                                <th>{{ __("Date") }}</th>
-                                                <th>{{ __("Voucher No") }}</th>
-                                                <th>{{ __("Created From") }}</th>
-                                                <th>{{ __("Send From") }}</th>
-                                                <th>{{ __("Send To") }}</th>
-                                                <th>{{ __("Receiving Status") }}</th>
-                                                <th>{{ __("Total Item") }}</th>
-                                                <th>{{ __("Total Qty") }}</th>
-                                                <th>{{ __("Total Stock Value") }}</th>
-                                                <th>{{ __("Total Send Qty") }}</th>
+                                                <th>{{ __('Action') }}</th>
+                                                <th>{{ __('Date') }}</th>
+                                                <th>{{ __('Voucher No') }}</th>
+                                                <th>{{ __('Created From') }}</th>
+                                                <th>{{ __('Send From') }}</th>
+                                                <th>{{ __('Send To') }}</th>
+                                                <th>{{ __('Receiving Status') }}</th>
+                                                <th>{{ __('Total Item') }}</th>
+                                                <th>{{ __('Total Qty') }}</th>
+                                                <th>{{ __('Total Stock Value') }}</th>
+                                                <th>{{ __('Total Send Qty') }}</th>
                                                 <th>{{ __('Total Received Qty') }}</th>
-                                                <th>{{ __("Total Pending Qty") }}</th>
-                                                <th>{{ __("Created By") }}</th>
+                                                <th>{{ __('Total Pending Qty') }}</th>
+                                                <th>{{ __('Created By') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
                                         <tfoot>
                                             <tr class="bg-secondary">
-                                                <th colspan="8" class="text-white text-end">{{ __("Total") }} : </th>
+                                                <th colspan="8" class="text-white text-end">{{ __('Total') }} : </th>
                                                 <th id="total_qty" class="text-white text-end"></th>
                                                 <th id="total_stock_value" class="text-white text-end"></th>
                                                 <th id="total_send_qty" class="text-white text-end"></th>
@@ -136,13 +135,36 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary',exportOptions: {columns: 'th:not(:first-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:first-child)'
+                    }
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('receive.stock.from.branch.index') }}",
                 "data": function(d) {
@@ -152,22 +174,73 @@
                     d.to_date = $('#to_date').val();
                 }
             },
-            columns: [
-                {data: 'action'},
-                {data: 'date', name: 'transfer_stocks.date'},
-                {data: 'voucher_no', name: 'transfer_stocks.voucher_no', className: 'fw-bold'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'send_from', name: 'sender_warehouse.warehouse_name'},
-                {data: 'send_to', name: 'receiver_branch.name', className: 'text-start'},
-                {data: 'receive_status', name: 'send_by.last_name', className: 'text-start fw-bold'},
-                {data: 'total_item', name: 'receiver_branch_parent.name', className: 'text-end fw-bold'},
-                {data: 'total_qty', name: 'total_qty', className: 'text-end fw-bold'},
-                {data: 'total_stock_value', name: 'total_stock_value', className: 'text-end fw-bold'},
-                {data: 'total_send_qty', name: 'total_send_qty', className: 'text-end fw-bold'},
-                {data: 'total_received_qty', name: 'total_received_qty', className: 'text-end fw-bold'},
-                {data: 'total_pending_qty', name: 'total_pending_qty', className: 'text-end fw-bold'},
-                {data: 'send_by', name: 'send_by.name', className: 'text-start'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'transfer_stocks.date'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'transfer_stocks.voucher_no',
+                    className: 'fw-bold'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'send_from',
+                    name: 'sender_warehouse.warehouse_name'
+                },
+                {
+                    data: 'send_to',
+                    name: 'receiver_branch.name',
+                    className: 'text-start'
+                },
+                {
+                    data: 'receive_status',
+                    name: 'send_by.last_name',
+                    className: 'text-start fw-bold'
+                },
+                {
+                    data: 'total_item',
+                    name: 'receiver_branch_parent.name',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_qty',
+                    name: 'total_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_stock_value',
+                    name: 'total_stock_value',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_send_qty',
+                    name: 'total_send_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_received_qty',
+                    name: 'total_received_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'total_pending_qty',
+                    name: 'total_pending_qty',
+                    className: 'text-end fw-bold'
+                },
+                {
+                    data: 'send_by',
+                    name: 'send_by.name',
+                    className: 'text-start'
+                },
+            ],
+            fnDrawCallback: function() {
                 var total_qty = sum_table_col($('.data_tbl'), 'total_qty');
                 $('#total_qty').text(bdFormat(total_qty));
 
@@ -202,7 +275,7 @@
         }
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             table.ajax.reload();
@@ -222,13 +295,14 @@
                     $('#details').html(data);
                     $('#detailsModal').modal('show');
                     $('.data_preloader').hide();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else if (err.status == 500) {
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }

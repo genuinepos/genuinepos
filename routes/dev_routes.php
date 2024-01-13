@@ -1,9 +1,12 @@
 <?php
 
 use App\Models\Setups\Branch;
+use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
+use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
@@ -121,14 +124,86 @@ Route::get('my-test', function () {
     //     )
     //     ->get();
 
-    // $date = date('Y-11-01');
-    // return $afterDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($date)));
-
-    $branch = Branch::with('branchSettings')->where('id', 28)->first();
-
     // $settings['Rp_poins_sett']; // Bata parent branch -> 10% <--- Fallback and get 10% set Bata Uttara branch (Special) -> 11%
-    // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent 
+    // parent_branch_id === null  -> get it, parent_branch_id == 28 -> Get setting from parent
+
+    //MONTH WISE DATES
+    // $month = 11;
+    // $year = 2023;
+    // // start with empty results
+    // // $resultDate = "";
+    // // $resultDays = "";
+    // $dates = [];
+    // $datesAndDay = [];
+    // // determine the number of days in the month
+    // $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    // for ($i = 1; $i <= $daysInMonth; $i++) {
+    //     // create a cell for the day and for the date
+    //     // $resultDate .= "<td>" . sprintf('%02d', $i) . "</td>";
+    //     // $resultDays .= "<td>" . date("l", mktime(0, 0, 0, $month, $i, $year)) . "</td>";
+    //     array_push($datesAndDay, date("d D", mktime(0, 0, 0, $month, $i, $year)));
+    //     array_push($dates, date('Y-m-d', strtotime($i . '-' . $month . '-' . $year)));
+    //     // $fullDays[] = $i.'-'.$month.'-'.$year;
+    // }
+
+    // return $datesAndDay;
+
+    // return the result wrapped in a table
+    // return "<table>" . PHP_EOL .
+    //     "<tr>" . $resultDate . "</tr>" . PHP_EOL .
+    //     "<tr>" . $resultDays . "</tr>" . PHP_EOL .
+    //     "</table>";
+
+    // return DB::table('users')->where('users.id', 1)
+    //     ->leftJoin('hrm_attendances', 'users.id', 'hrm_attendances.user_id')
+    //     ->whereIn(DB::raw('DATE(hrm_attendances.clock_in_ts)'), $dates)
+    //     ->get();
+    //MONTH WISE DATES END
+
+
+    //TEST
+    // $currentMonth = Carbon\Carbon::now()->month;
+    // return $results = App\Models\HRM\Holiday::whereYear('start_date', Carbon\Carbon::now()->year)
+    //     ->whereMonth('start_date', '<=', $currentMonth) // Start date month should be less than or equal to current month
+    //     ->whereYear('end_date', Carbon\Carbon::now()->year)
+    //     ->whereMonth('end_date', '>=', $currentMonth)   // End date month should be greater than or equal to current month
+    //     ->get();
+    //TEST END
+
+    //DATE RANGE WISE DATES
+
+
+    // $first = '2023-12-16';
+    // $last = '2023-12-16';
+    // $step = '+1 day';
+    // $output_format = 'Y-m-d';
+    // $dates = array();
+    // $current = strtotime($first);
+    // $last = strtotime($last);
+
+    // while($current <= $last) {
+
+    //     $dates[] = date($output_format, $current);
+    //     $current = strtotime($step, $current);
+    // }
+
+    // return $dates;
+
+    // $str = 'C-000050';
+    // return intval($str);
+
+    // return request()->generalSettings['business_or_shop__business_name'];
+
+    $generalSettings = config('generalSettings');
+    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
+    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
+    $startDate = date($startDateFormat);
+    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
+    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
 });
+
+
 
 Route::get('t-id', function () {
 });

@@ -11,7 +11,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-cart"></span>
                                 <h5>{{ __('Transfer Stocks') }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
@@ -30,7 +29,7 @@
                                                         <label><strong>{{ __('Created From') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
                                                                     @php
@@ -165,30 +164,10 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    text: '<i class="fas fa-print"></i> Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
+            buttons: [
+                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
+                { extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
+                { extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
             "lengthMenu": [
@@ -331,7 +310,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

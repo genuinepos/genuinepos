@@ -26,4 +26,16 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
         return false;
     }
+
+    public function generalSettings(?int $branchId = null, array $keys = null): ?array
+    {
+        $query = GeneralSetting::where('branch_id', $branchId);
+
+        if (isset($key)) {
+
+            $query->whereIn('key', $keys);
+        }
+
+        return $query->pluck('value', 'key')->toArray();
+    }
 }

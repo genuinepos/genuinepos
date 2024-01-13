@@ -23,7 +23,7 @@ class SalesReturnReportController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sales_return_report')) {
+        if (!auth()->user()->can('sales_return_report')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -67,19 +67,19 @@ class SalesReturnReportController extends Controller
             return DataTables::of($returns)
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
-                    $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                    $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                     return date($__date_format, strtotime($row->date));
                 })
                 ->editColumn('voucher_no', function ($row) {
 
-                    return '<a href="'.route('sales.returns.show', [$row->id]).'" id="details_btn">'.$row->voucher_no.'</a>';
+                    return '<a href="' . route('sales.returns.show', [$row->id]) . '" id="details_btn">' . $row->voucher_no . '</a>';
                 })
                 ->editColumn('invoice_id', function ($row) {
 
                     if ($row->sale_id) {
 
-                        return '<a href="'.route('sales.show', [$row->sale_id]).'" id="details_btn">'.$row->invoice_id.'</a>';
+                        return '<a href="' . route('sales.show', [$row->sale_id]) . '" id="details_btn">' . $row->invoice_id . '</a>';
                     }
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -88,31 +88,31 @@ class SalesReturnReportController extends Controller
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->area_name.')';
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->area_name.')';
+                            return $row->branch_name . '(' . $row->area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 })
                 ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="'.$row->total_qty.'">'.\App\Utils\Converter::format_in_bdt($row->total_qty).'</span>')
+                ->editColumn('total_qty', fn ($row) => '<span class="total_qty" data-value="' . $row->total_qty . '">' . \App\Utils\Converter::format_in_bdt($row->total_qty) . '</span>')
 
-                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="'.$row->net_total_amount.'">'.\App\Utils\Converter::format_in_bdt($row->net_total_amount).'</span>')
+                ->editColumn('net_total_amount', fn ($row) => '<span class="net_total_amount" data-value="' . $row->net_total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->net_total_amount) . '</span>')
 
-                ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="'.$row->return_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->return_discount_amount).'</span>')
+                ->editColumn('return_discount_amount', fn ($row) => '<span class="return_discount_amount" data-value="' . $row->return_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->return_discount_amount) . '</span>')
 
-                ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="'.$row->return_tax_amount.'">'.'('.$row->return_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->return_tax_amount).'</span>')
+                ->editColumn('return_tax_amount', fn ($row) => '<span class="return_tax_amount" data-value="' . $row->return_tax_amount . '">' . '(' . $row->return_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->return_tax_amount) . '</span>')
 
-                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="'.$row->total_return_amount.'">'.\App\Utils\Converter::format_in_bdt($row->total_return_amount).'</span>')
+                ->editColumn('total_return_amount', fn ($row) => '<span class="total_return_amount" data-value="' . $row->total_return_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_return_amount) . '</span>')
 
-                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.\App\Utils\Converter::format_in_bdt($row->paid).'</span>')
+                ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . \App\Utils\Converter::format_in_bdt($row->paid) . '</span>')
 
-                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.\App\Utils\Converter::format_in_bdt($row->due).'</span>')
+                ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . \App\Utils\Converter::format_in_bdt($row->due) . '</span>')
 
                 ->editColumn('payment_status', function ($row) {
 
@@ -120,13 +120,13 @@ class SalesReturnReportController extends Controller
 
                     if ($row->due <= 0) {
 
-                        return '<span class="text-success"><b>'.__('Paid').'</span>';
+                        return '<span class="text-success"><b>' . __('Paid') . '</span>';
                     } elseif ($row->due > 0 && $row->due < $payable) {
 
-                        return '<span class="text-primary"><b>'.__('Partial').'</b></span>';
+                        return '<span class="text-primary"><b>' . __('Partial') . '</b></span>';
                     } elseif ($payable == $row->due) {
 
-                        return '<span class="text-danger"><b>'.__('Due').'</b></span>';
+                        return '<span class="text-danger"><b>' . __('Due') . '</b></span>';
                     }
                 })
 

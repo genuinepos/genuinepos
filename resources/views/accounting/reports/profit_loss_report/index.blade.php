@@ -36,7 +36,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-money-bill-wave"></span>
                     <h5>{{ __('Profit/Loss') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -58,7 +57,7 @@
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" id="branch_id" class="form-control select2" autofocus>
                                                             <option value="">{{ __('All') }}</option>
-                                                            <option data-branch_name="{{ $generalSettings['business__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business__business_name'] }}({{ __('Business') }})</option>
+                                                            <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>
                                                             @endforeach
@@ -135,7 +134,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-end">
-                                                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                                                            <strong>{{ __('Total Sale') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                                         </td>
 
                                                         <td class="text-end text-success">
@@ -144,14 +143,14 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Individual Sold Product Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Sale Tax') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
@@ -159,7 +158,7 @@
 
                                                     <tr>
                                                         <td class="text-end">
-                                                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business__currency'] }}</strong>
+                                                            <strong>{{ __('Sold Product Total Unit Cost') }} <small>({{ __('Inc. Tax') }})</small> : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                                         </td>
 
                                                         <td class="text-end text-danger">
@@ -168,7 +167,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end fw-bold"><strong>{{ __('Gross Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
 
                                                         <td class="text-end text-success fw-bold">
                                                             0.00
@@ -178,42 +177,42 @@
 
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Stock Adjustment Recovered') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-success">
                                                             0.00
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Expense') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Sales Return') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end"><strong>{{ __('Total Payroll') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-danger">
                                                             (0.00)
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business__currency'] }}</strong></td>
+                                                        <td class="text-end fw-bold"><strong>{{ __('Net Profit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong></td>
                                                         <td class="text-end text-success fw-bold">
                                                             0.00
                                                         </td>

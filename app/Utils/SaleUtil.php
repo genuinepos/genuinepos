@@ -228,7 +228,7 @@ class SaleUtil
                             $__report_date = '';
                             if (isset($request->date)) {
 
-                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                                $__report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                             } else {
 
                                 $__report_date = date('Y-m-d H:i:s');
@@ -238,7 +238,7 @@ class SaleUtil
                             $voucher_no = str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, '0', STR_PAD_LEFT);
                             $customerPayment = new CustomerPayment();
 
-                            $customerPayment->voucher_no = 'CPV'.str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, '0', STR_PAD_LEFT);
+                            $customerPayment->voucher_no = 'CPV' . str_pad($this->invoiceVoucherRefIdUtil->getLastId('customer_payments'), 5, '0', STR_PAD_LEFT);
 
                             $customerPayment->branch_id = auth()->user()->branch_id;
                             $customerPayment->customer_id = $addSale->customer_id;
@@ -367,13 +367,13 @@ class SaleUtil
         $__report_date = '';
         if (isset($date)) {
 
-            $__report_date = date('Y-m-d H:i:s', strtotime($date.date(' H:i:s')));
+            $__report_date = date('Y-m-d H:i:s', strtotime($date . date(' H:i:s')));
         } else {
 
             $__report_date = date('Y-m-d H:i:s');
         }
 
-        $voucherNo = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV').str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 4, '0', STR_PAD_LEFT);
+        $voucherNo = ($receiptVoucherPrefix != null ? $receiptVoucherPrefix : 'SRV') . str_pad($invoiceVoucherRefIdUtil->getLastId('sale_payments'), 4, '0', STR_PAD_LEFT);
 
         $sale = DB::table('sales')->where('id', $saleId)->select('customer_id')->first();
 
@@ -397,7 +397,7 @@ class SaleUtil
         if ($attachment) {
 
             $salePaymentAttachment = $attachment;
-            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $addSalePayment->attachment = $salePaymentAttachmentName;
         }
@@ -423,14 +423,14 @@ class SaleUtil
 
             if ($payment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
 
             $salePaymentAttachment = $attachment;
-            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
@@ -444,7 +444,7 @@ class SaleUtil
     {
         // Add sale return payment
         $addSalePayment = new SalePayment();
-        $addSalePayment->invoice_id = 'SRPV'.$this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
+        $addSalePayment->invoice_id = 'SRPV' . $this->invoiceVoucherRefIdUtil->getLastId('sale_payments');
         $addSalePayment->sale_id = $sale ? $sale->id : null;
         $addSalePayment->branch_id = auth()->user()->branch_id;
         $addSalePayment->sale_return_id = $sale_return_id;
@@ -465,7 +465,7 @@ class SaleUtil
         if ($request->hasFile('attachment')) {
 
             $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $addSalePayment->attachment = $salePaymentAttachmentName;
         }
@@ -491,14 +491,14 @@ class SaleUtil
 
             if ($payment->attachment != null) {
 
-                if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
 
-                    unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
 
             $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
@@ -569,9 +569,9 @@ class SaleUtil
 
                 if ($payment->attachment) {
 
-                    if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
+                    if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
 
-                        unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                        unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                     }
                 }
 
@@ -671,30 +671,30 @@ class SaleUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="'.route('sales.packing.slip', [$row->id]).'"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
+                    $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
                 }
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="edit_shipment" href="'.route('sales.shipment.edit', [$row->id]).'"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
+                    $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
                 if (auth()->user()->can('sale_payment')) {
 
                     if ($row->due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="add_payment" href="'.route('sales.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
                     }
                 }
 
                 if (auth()->user()->can('sale_payment')) {
 
                     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                    data-target="#paymentListModal" href="'.route('sales.payment.view', [$row->id]).'"><i
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
                         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 }
 
@@ -702,7 +702,7 @@ class SaleUtil
 
                     if (auth()->user()->can('sale_payment')) {
 
-                        $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('sales.return.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                        $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                     }
                 }
 
@@ -710,13 +710,13 @@ class SaleUtil
 
                     if (auth()->user()->can('edit_add_sale')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
                 if (auth()->user()->can('delete_add_sale')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -727,7 +727,7 @@ class SaleUtil
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -743,23 +743,23 @@ class SaleUtil
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'.$this->converter->format_in_bdt($row->total_payable_amount).'</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
 
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="'.$row->sale_return_amount.'">'.$this->converter->format_in_bdt($row->sale_return_amount).'</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount" data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
 
-            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="'.$row->sale_return_due.'">'.$this->converter->format_in_bdt($row->sale_return_due).'</span>')
+            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
 
             ->editColumn('paid_status', function ($row) {
 
@@ -822,33 +822,33 @@ class SaleUtil
 
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
 
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.pos.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.pos.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
-                $html .= '<a class="dropdown-item" id="print_packing_slip" href="'.route('sales.packing.slip', [$row->id]).'"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
+                $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt text-primary"></i> Packing Slip</a>';
 
                 if (auth()->user()->can('shipment_access')) {
 
-                    $html .= '<a class="dropdown-item" id="edit_shipment" href="'.route('sales.shipment.edit', [$row->id]).'"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
+                    $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck text-primary"></i> Edit Shipping</a>';
                 }
 
                 if (auth()->user()->can('sale_payment')) {
 
                     if ($row->due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="add_payment" href="'.route('sales.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
                     }
                 }
 
                 if (auth()->user()->can('sale_payment')) {
 
-                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="'.route('sales.payment.view', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+                    $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal" data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 }
 
                 if ($row->sale_return_due > 0) {
 
                     if (auth()->user()->can('sale_payment')) {
 
-                        $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('sales.return.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
+                        $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('sales.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Pay Return Amount</a>';
                     }
                 }
 
@@ -856,13 +856,13 @@ class SaleUtil
 
                     if (auth()->user()->can('pos_edit')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.pos.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
                 if (auth()->user()->can('pos_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="items_notification" href=""><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -871,7 +871,7 @@ class SaleUtil
 
                 return $html;
             })
-            ->editColumn('date', fn ($row) => date($generalSettings['business__date_format'], strtotime($row->date)))
+            ->editColumn('date', fn ($row) => date($generalSettings['business_or_shop__date_format'], strtotime($row->date)))
             ->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -884,23 +884,23 @@ class SaleUtil
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'.$this->converter->format_in_bdt($row->total_payable_amount).'</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger"  data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger"  data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
 
-            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount text-danger"  data-value="'.$row->sale_return_amount.'">'.$this->converter->format_in_bdt($row->sale_return_amount).'</span>')
+            ->editColumn('sale_return_amount', fn ($row) => '<span class="sale_return_amount text-danger"  data-value="' . $row->sale_return_amount . '">' . $this->converter->format_in_bdt($row->sale_return_amount) . '</span>')
 
-            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="'.$row->sale_return_due.'">'.$this->converter->format_in_bdt($row->sale_return_due).'</span>')
+            ->editColumn('sale_return_due', fn ($row) => '<span class="sale_return_due text-danger" data-value="' . $row->sale_return_due . '">' . $this->converter->format_in_bdt($row->sale_return_due) . '</span>')
 
             ->editColumn('paid_status', function ($row) {
 
@@ -967,20 +967,20 @@ class SaleUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                 if (auth()->user()->can('sale_payment')) {
 
                     if ($row->due > 0) {
 
-                        $html .= '<a class="dropdown-item" id="add_payment" href="'.route('sales.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
+                        $html .= '<a class="dropdown-item" id="add_payment" href="' . route('sales.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Payment</a>';
                     }
                 }
 
                 if (auth()->user()->can('sale_payment')) {
 
                     $html .= '<a class="dropdown-item" id="view_payment" data-toggle="modal"
-                    data-target="#paymentListModal" href="'.route('sales.payment.view', [$row->id]).'"><i
+                    data-target="#paymentListModal" href="' . route('sales.payment.view', [$row->id]) . '"><i
                         class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
                 }
 
@@ -988,13 +988,13 @@ class SaleUtil
 
                     if (auth()->user()->can('edit_add_sale')) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'"><i class="far fa-edit text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
                     }
                 }
 
                 if (auth()->user()->can('delete_add_sale')) {
 
-                    $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+                    $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
                 }
 
                 // $html .= '<a class="dropdown-item" id="send_notification" href="' . route('sales.notification.form', [$row->id]) . '"><i class="fas fa-envelope text-primary"></i> New Sale Notification</a>';
@@ -1005,7 +1005,7 @@ class SaleUtil
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -1014,20 +1014,20 @@ class SaleUtil
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
 
             ->editColumn('customer', fn ($row) => $row->customer_name ? $row->customer_name : 'Walk-In-Customer')
 
-            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="'.$row->total_payable_amount.'">'.$this->converter->format_in_bdt($row->total_payable_amount).'</span>')
+            ->editColumn('total_payable_amount', fn ($row) => '<span class="total_payable_amount" data-value="' . $row->total_payable_amount . '">' . $this->converter->format_in_bdt($row->total_payable_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
 
             ->editColumn('paid_status', function ($row) {
 
@@ -1153,27 +1153,27 @@ class SaleUtil
         return DataTables::of($saleProducts)
             ->editColumn('product', function ($row) {
 
-                $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                return Str::limit($row->name, 25, '').$variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('sold_by', fn ($row) => $row->created_by == 1 ? '<span class="text-info">ADD SALE</span>' : '<span class="text-success">POS</span>')
             ->editColumn('sku', function ($row) {
 
                 return $row->variant_code ? $row->variant_code : $row->product_code;
             })->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('customer', function ($row) {
 
                 return $row->customer_name ? $row->customer_name : 'Walk-In-Customer';
-            })->editColumn('invoice_id', fn ($row) => '<a href="'.route('sales.show', [$row->sale_id]).'" class="details_button text-danger text-hover" title="view" >'.$row->invoice_id.'</a>')
+            })->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="details_button text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
             ->editColumn('quantity', function ($row) {
 
-                return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
+                return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })
-            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="'.$row->unit_price_inc_tax.'">'.$this->converter->format_in_bdt($row->unit_price_inc_tax).'</span>')
+            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . $this->converter->format_in_bdt($row->unit_price_inc_tax) . '</span>')
 
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.$this->converter->format_in_bdt($row->subtotal).'</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . $this->converter->format_in_bdt($row->subtotal) . '</span>')
 
             ->rawColumns(['product', 'customer', 'invoice_id', 'sku', 'date', 'sold_by', 'quantity', 'branch', 'unit_price_inc_tax', 'subtotal'])
 
@@ -1219,20 +1219,20 @@ class SaleUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.drafts.details', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.drafts.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i>View</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if ($row->created_by == 1) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                     } else {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.pos.edit', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                     }
                 }
 
-                $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i>Delete</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -1247,10 +1247,10 @@ class SaleUtil
 
                 if ($row->branch_name) {
 
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
 
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', function ($row) {
@@ -1259,11 +1259,11 @@ class SaleUtil
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
 
-                return '<b>'.$generalSettings['business__currency'].' '.$row->total_payable_amount.'</b>';
+                return '<b>' . $generalSettings['business_or_shop__currency'] . ' ' . $row->total_payable_amount . '</b>';
             })
             ->editColumn('user', function ($row) {
 
-                return $row->u_prefix.' '.$row->u_name.' '.$row->u_last_name;
+                return $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name;
             })
             ->setRowAttr([
                 'data-href' => function ($row) {
@@ -1308,20 +1308,20 @@ class SaleUtil
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.quotations.details', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.quotations.details', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
 
                 if (auth()->user()->branch_id == $row->branch_id) {
 
                     if ($row->created_by == 1) {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.edit', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                     } else {
 
-                        $html .= '<a class="dropdown-item" href="'.route('sales.pos.edit', [$row->id]).'"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
+                        $html .= '<a class="dropdown-item" href="' . route('sales.pos.edit', [$row->id]) . '"><i class="far fa-edit mr-1 text-primary"></i> Edit</a>';
                     }
                 }
 
-                $html .= '<a class="dropdown-item" id="delete" href="'.route('sales.delete', [$row->id]).'"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
+                $html .= '<a class="dropdown-item" id="delete" href="' . route('sales.delete', [$row->id]) . '"><i class="far fa-trash-alt mr-1 text-primary"></i> Delete</a>';
 
                 $html .= '</div>';
                 $html .= '</div>';
@@ -1333,19 +1333,19 @@ class SaleUtil
             })
             ->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', function ($row) {
                 return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('total_payable_amount', function ($row) use ($generalSettings) {
-                return '<b>'.$generalSettings['business__currency'].' '.$row->total_payable_amount.'</b>';
+                return '<b>' . $generalSettings['business_or_shop__currency'] . ' ' . $row->total_payable_amount . '</b>';
             })
             ->editColumn('user', function ($row) {
-                return $row->u_prefix.' '.$row->u_name.' '.$row->u_last_name;
+                return $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name;
             })
             ->setRowAttr([
                 'data-href' => function ($row) {
@@ -1395,9 +1395,9 @@ class SaleUtil
                 $html = '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                $html .= '<a class="dropdown-item details_button" href="'.route('sales.show', [$row->id]).'"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                $html .= '<a class="dropdown-item" id="edit_shipment" href="'.route('sales.shipment.edit', [$row->id]).'"><i class="fas fa-truck mr-1 text-primary"></i> Edit shipment</a>';
-                $html .= '<a class="dropdown-item" id="print_packing_slip" href="'.route('sales.packing.slip', [$row->id]).'"><i class="fas fa-file-alt mr-1 text-primary"></i> Packing Slip </a>';
+                $html .= '<a class="dropdown-item details_button" href="' . route('sales.show', [$row->id]) . '"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
+                $html .= '<a class="dropdown-item" id="edit_shipment" href="' . route('sales.shipment.edit', [$row->id]) . '"><i class="fas fa-truck mr-1 text-primary"></i> Edit shipment</a>';
+                $html .= '<a class="dropdown-item" id="print_packing_slip" href="' . route('sales.packing.slip', [$row->id]) . '"><i class="fas fa-file-alt mr-1 text-primary"></i> Packing Slip </a>';
                 $html .= '</div>';
                 $html .= '</div>';
 
@@ -1408,16 +1408,16 @@ class SaleUtil
             })
             ->editColumn('from', function ($row) use ($generalSettings) {
                 if ($row->branch_name) {
-                    return $row->branch_name.'/'.$row->branch_code.'(<b>BL</b>)';
+                    return $row->branch_name . '/' . $row->branch_code . '(<b>BL</b>)';
                 } else {
-                    return $generalSettings['business__business_name'].'(<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>HO</b>)';
                 }
             })
             ->editColumn('customer', function ($row) {
                 return $row->customer ? $row->customer : 'Walk-In-Customer';
             })
             ->editColumn('created_by', function ($row) {
-                return $row->cr_prefix.' '.$row->cr_name.' '.$row->cr_last_name;
+                return $row->cr_prefix . ' ' . $row->cr_name . ' ' . $row->cr_last_name;
             })
             ->editColumn('shipment_status', function ($row) {
                 $html = '';

@@ -84,7 +84,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-edit"></span>
                     <h6>{{ __('Edit Purchase') }}</h6>
                 </div>
 
@@ -154,7 +153,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Business') }} </b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] }}">
+                                                <input readonly type="text" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] }}">
                                             </div>
                                         </div>
                                     @endif
@@ -164,7 +163,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Date') }}</b></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}" data-next="pay_term_number">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}" data-next="pay_term_number">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -398,9 +397,9 @@
                                                                 @endphp
                                                                 <span id="span_unit_cost_exc_tax" class="fw-bold">{{ $purchaseProduct->unit_cost_exc_tax }}</span>
                                                                 <input type="hidden" name="unit_costs_exc_tax[]" id="unit_cost_exc_tax" value="{{ $purchaseProduct->unit_cost_exc_tax }}">
-                                                                <p class="p-0 m-0 fw-bold">{{ __('Batch No/Exprie Date') }}: <span id="span_batch_expire_date"> {{ $has_batch_no_expire_date == 1 ? $purchaseProduct->batch_number . '|' . ($purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '') : 'N/a' }}</span>
+                                                                <p class="p-0 m-0 fw-bold">{{ __('Batch No/Exprie Date') }}: <span id="span_batch_expire_date"> {{ $has_batch_no_expire_date == 1 ? $purchaseProduct->batch_number . '|' . ($purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '') : 'N/a' }}</span>
                                                                     <input type="hidden" name="batch_numbers[]" id="batch_number" value="{{ $purchaseProduct->batch_number }}">
-                                                                    <input type="hidden" name="expire_dates[]" id="expire_date" value="{{ $purchaseProduct->expire_date ? date($generalSettings['business__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}">
+                                                                    <input type="hidden" name="expire_dates[]" id="expire_date" value="{{ $purchaseProduct->expire_date ? date($generalSettings['business_or_shop__date_format'], strtotime($purchaseProduct->expire_date)) : '' }}">
                                                                     <input type="hidden" id="has_batch_no_expire_date" value="{{ $has_batch_no_expire_date }}">
                                                             </td>
 

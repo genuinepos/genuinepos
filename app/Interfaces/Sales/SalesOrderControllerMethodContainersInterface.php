@@ -26,7 +26,6 @@ interface SalesOrderControllerMethodContainersInterface
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $salesOrderService,
         object $salesOrderProductService,

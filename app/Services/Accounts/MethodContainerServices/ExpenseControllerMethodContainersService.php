@@ -64,7 +64,6 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
     public function storeMethodContainer(
         object $request,
         object $expenseService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -73,9 +72,7 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
     ): ?array {
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $expenseVoucherPrefix = 'EV'.auth()->user()?->branch?->branch_code;
-
+        $expenseVoucherPrefix = $generalSettings['prefix__expense_voucher_prefix'] ? $generalSettings['prefix__expense_voucher_prefix'] : 'EV';
         $restrictions = $expenseService->restrictions(request: $request);
 
         if ($restrictions['pass'] == false) {
@@ -166,7 +163,6 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         int $id,
         object $request,
         object $expenseService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

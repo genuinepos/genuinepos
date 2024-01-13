@@ -14,20 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('hrm_payroll_allowances', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('payroll_id')->nullable()->index('hrm_payroll_allowances_payroll_id_foreign');
-            $table->string('allowance_name')->nullable();
+            $table->unsignedBigInteger('allowance_id')->nullable()->index('hrm_payroll_allowances_allowance_id_foreign');
+            $table->string('allowance_name', 255)->nullable();
             $table->string('amount_type')->default('1');
-            $table->decimal('allowance_percent', 22)->default(0);
-            $table->decimal('allowance_amount', 22)->default(0);
-            $table->string('date')->nullable();
-            $table->string('month')->nullable();
-            $table->string('year')->nullable();
-            $table->timestamp('report_date_ts')->nullable();
+            $table->decimal('allowance_percent', 22, 2)->default(0);
+            $table->decimal('allowance_amount', 22, 2)->default(0);
             $table->boolean('is_delete_in_update')->default(false);
             $table->timestamps();
 
             $table->foreign(['payroll_id'])->references(['id'])->on('hrm_payrolls')->onDelete('CASCADE');
+            $table->foreign(['allowance_id'])->references(['id'])->on('hrm_allowances')->onDelete('CASCADE');
         });
     }
 

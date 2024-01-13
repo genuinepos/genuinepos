@@ -28,7 +28,7 @@ class PurchaseUtil
     public function addPurchase($request, $invoiceVoucherRefIdUtil, $invoicePrefix)
     {
         $addPurchase = new Purchase();
-        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix.str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, '0', STR_PAD_LEFT);
+        $addPurchase->invoice_id = $request->invoice_id ? $request->invoice_id : $invoicePrefix . str_pad($invoiceVoucherRefIdUtil->getLastId('purchases'), 5, '0', STR_PAD_LEFT);
         $addPurchase->warehouse_id = $request->warehouse_id ? $request->warehouse_id : null;
         $addPurchase->branch_id = auth()->user()->branch_id;
         $addPurchase->supplier_id = $request->supplier_id;
@@ -52,13 +52,13 @@ class PurchaseUtil
         $addPurchase->purchase_status = 1;
         $addPurchase->is_purchased = 1;
         $addPurchase->date = $request->date;
-        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addPurchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchase->is_last_created = 1;
 
         if ($request->hasFile('attachment')) {
 
             $purchaseAttachment = $request->file('attachment');
-            $purchaseAttachmentName = uniqid().'-'.'.'.$purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
             $addPurchase->attachment = $purchaseAttachmentName;
         }
@@ -89,20 +89,20 @@ class PurchaseUtil
         $purchase->purchase_note = $request->purchase_note;
         $purchase->purchase_status = 1;
         $purchase->date = $request->date;
-        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $purchase->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         if ($request->hasFile('attachment')) {
 
             if ($purchase->attachment != null) {
 
-                if (file_exists(public_path('uploads/purchase_attachment/'.$purchase->attachment))) {
+                if (file_exists(public_path('uploads/purchase_attachment/' . $purchase->attachment))) {
 
-                    unlink(public_path('uploads/purchase_attachment/'.$purchase->attachment));
+                    unlink(public_path('uploads/purchase_attachment/' . $purchase->attachment));
                 }
             }
 
             $purchaseAttachment = $request->file('attachment');
-            $purchaseAttachmentName = uniqid().'-'.'.'.$purchaseAttachment->getClientOriginalExtension();
+            $purchaseAttachmentName = uniqid() . '-' . '.' . $purchaseAttachment->getClientOriginalExtension();
             $purchaseAttachment->move(public_path('uploads/purchase_attachment/'), $purchaseAttachmentName);
             $purchase->attachment = $purchaseAttachmentName;
         }
@@ -122,7 +122,7 @@ class PurchaseUtil
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -133,7 +133,7 @@ class PurchaseUtil
             }
         }
 
-        if (! empty($request->warehouse_id)) {
+        if (!empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }
@@ -193,7 +193,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -205,24 +205,24 @@ class PurchaseUtil
 
                 if ($row->warehouse_name) {
 
-                    return $row->warehouse_name.'<b>(WH)</b>';
+                    return $row->warehouse_name . '<b>(WH)</b>';
                 } elseif ($row->branch_name) {
 
-                    return $row->branch_name.'<b>(BL)</b>';
+                    return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.$this->converter->format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="text-danger">'.'<span class="due" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span></span>')
+            ->editColumn('due', fn ($row) => '<span class="text-danger">' . '<span class="due" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span></span>')
 
-            ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="'.$row->purchase_return_amount.'">'.$this->converter->format_in_bdt($row->purchase_return_amount).'</span>')
+            ->editColumn('purchase_return_amount', fn ($row) => '<span class="purchase_return_amount" data-value="' . $row->purchase_return_amount . '">' . $this->converter->format_in_bdt($row->purchase_return_amount) . '</span>')
 
-            ->editColumn('purchase_return_due', fn ($row) => '<span class="purchase_return_due text-danger" data-value="'.$row->purchase_return_due.'">'.$this->converter->format_in_bdt($row->purchase_return_due).'</span>')
+            ->editColumn('purchase_return_due', fn ($row) => '<span class="purchase_return_due text-danger" data-value="' . $row->purchase_return_due . '">' . $this->converter->format_in_bdt($row->purchase_return_due) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -251,7 +251,7 @@ class PurchaseUtil
                 }
             })->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
             ->make(true);
@@ -267,7 +267,7 @@ class PurchaseUtil
             ->leftJoin('suppliers', 'purchases.supplier_id', 'suppliers.id')
             ->leftJoin('users as created_by', 'purchases.admin_id', 'created_by.id');
 
-        if (! empty($request->branch_id)) {
+        if (!empty($request->branch_id)) {
 
             if ($request->branch_id == 'NULL') {
 
@@ -278,7 +278,7 @@ class PurchaseUtil
             }
         }
 
-        if (! empty($request->warehouse_id)) {
+        if (!empty($request->warehouse_id)) {
 
             $query->where('purchases.warehouse_id', $request->warehouse_id);
         }
@@ -342,7 +342,7 @@ class PurchaseUtil
 
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                return date($generalSettings['business__date_format'], strtotime($row->date));
+                return date($generalSettings['business_or_shop__date_format'], strtotime($row->date));
             })->editColumn('invoice_id', function ($row) {
 
                 $html = '';
@@ -354,20 +354,20 @@ class PurchaseUtil
 
                 if ($row->warehouse_name) {
 
-                    return $row->warehouse_name.'<b>(WH)</b>';
+                    return $row->warehouse_name . '<b>(WH)</b>';
                 } elseif ($row->branch_name) {
 
-                    return $row->branch_name.'<b>(BL)</b>';
+                    return $row->branch_name . '<b>(BL)</b>';
                 } else {
 
-                    return $generalSettings['business__business_name'].' (<b>HO</b>)';
+                    return $generalSettings['business_or_shop__business_name'] . ' (<b>HO</b>)';
                 }
             })
-            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="'.$row->total_purchase_amount.'">'.$this->converter->format_in_bdt($row->total_purchase_amount).'</span>')
+            ->editColumn('total_purchase_amount', fn ($row) => '<span class="total_purchase_amount" data-value="' . $row->total_purchase_amount . '">' . $this->converter->format_in_bdt($row->total_purchase_amount) . '</span>')
 
-            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="'.$row->paid.'">'.$this->converter->format_in_bdt($row->paid).'</span>')
+            ->editColumn('paid', fn ($row) => '<span class="paid text-success" data-value="' . $row->paid . '">' . $this->converter->format_in_bdt($row->paid) . '</span>')
 
-            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="'.$row->due.'">'.$this->converter->format_in_bdt($row->due).'</span>')
+            ->editColumn('due', fn ($row) => '<span class="due text-danger" data-value="' . $row->due . '">' . $this->converter->format_in_bdt($row->due) . '</span>')
 
             ->editColumn('status', function ($row) {
 
@@ -396,7 +396,7 @@ class PurchaseUtil
                 }
             })->editColumn('created_by', function ($row) {
 
-                return $row->created_prefix.' '.$row->created_name.' '.$row->created_last_name;
+                return $row->created_prefix . ' ' . $row->created_name . ' ' . $row->created_last_name;
             })
             ->rawColumns(['action', 'date', 'invoice_id', 'from', 'total_purchase_amount', 'paid', 'due', 'purchase_return_amount', 'purchase_return_due', 'payment_status', 'status', 'created_by'])
             ->make(true);
@@ -498,9 +498,9 @@ class PurchaseUtil
         return DataTables::of($purchaseProducts)
             ->editColumn('product', function ($row) {
 
-                $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                return Str::limit($row->name, 25, '').$variant;
+                return Str::limit($row->name, 25, '') . $variant;
             })->editColumn('product_code', function ($row) {
 
                 return $row->variant_code ? $row->variant_code : $row->product_code;
@@ -509,9 +509,9 @@ class PurchaseUtil
                 return date('d/m/Y', strtotime($row->date));
             })->editColumn('quantity', function ($row) {
 
-                return $row->quantity.' (<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>)';
+                return $row->quantity . ' (<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>)';
             })
-            ->editColumn('invoice_id', fn ($row) => '<a href="'.route('purchases.show', [$row->purchase_id]).'" class="details_button text-danger text-hover" title="view" >'.$row->invoice_id.'</a>')
+            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="details_button text-danger text-hover" title="view" >' . $row->invoice_id . '</a>')
 
             ->editColumn('net_unit_cost', fn ($row) => $this->converter->format_in_bdt($row->net_unit_cost))
             ->editColumn('price', function ($row) use ($converter) {
@@ -530,7 +530,7 @@ class PurchaseUtil
                 }
 
                 return $converter->format_in_bdt($row->net_unit_cost);
-            })->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->line_total.'">'.$this->converter->format_in_bdt($row->line_total).'</span>')
+            })->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . $this->converter->format_in_bdt($row->line_total) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'quantity', 'invoice_id', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);
@@ -572,7 +572,7 @@ class PurchaseUtil
                 $addPurchaseProduct->lot_no = $request->lot_number[$index];
             }
 
-            $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+            $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
             $addPurchaseProduct->save();
 
@@ -689,7 +689,7 @@ class PurchaseUtil
                     $updatePurchaseProduct->lot_no = $request->lot_number[$index];
                 }
                 $updatePurchaseProduct->delete_in_update = 0;
-                $updatePurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                $updatePurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                 $updatePurchaseProduct->save();
 
                 $this->adjustPurchaseLeftQty($updatePurchaseProduct);
@@ -723,7 +723,7 @@ class PurchaseUtil
                     $addPurchaseProduct->lot_no = $request->lot_number[$index];
                 }
 
-                $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+                $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
                 $addPurchaseProduct->save();
             }
 
@@ -859,15 +859,15 @@ class PurchaseUtil
 
         if ($row->purchase_status == 1) {
 
-            $html .= '<a class="dropdown-item details_button" href="'.route('purchases.show', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+            $html .= '<a class="dropdown-item details_button" href="' . route('purchases.show', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
         } else {
 
-            $html .= '<a class="dropdown-item details_button" href="'.route('purchases.show.order', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+            $html .= '<a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
         }
 
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
-        $html .= '<a class="dropdown-item" id="view_payment" href="'.route('purchase.payment.list', $row->id).'"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
+        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payment</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -875,24 +875,24 @@ class PurchaseUtil
 
                 if ($row->due > 0) {
 
-                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="'.route('purchases.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                 }
 
                 if ($row->purchase_return_due > 0) {
 
-                    $html .= '<a class="dropdown-item" id="add_return_payment" href="'.route('purchases.return.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
+                    $html .= '<a class="dropdown-item" id="add_return_payment" href="' . route('purchases.return.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Receive Return Amount</a>';
                 }
             }
 
             if (auth()->user()->can('purchase_edit')) {
 
-                $html .= '<a class="dropdown-item" href="'.route('purchases.edit', [$row->id, 'purchased']).' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'purchased']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
         }
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.delete', $row->id).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
         }
 
         // if (auth()->user()->can('purchase_return')) {
@@ -913,16 +913,16 @@ class PurchaseUtil
         $html = '<div class="btn-group" role="group">';
         $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
         $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item details_button" href="'.route('purchases.show.order', [$row->id]).'"><i class="far fa-eye text-primary"></i> View</a>';
+                <a class="dropdown-item details_button" href="' . route('purchases.show.order', [$row->id]) . '"><i class="far fa-eye text-primary"></i> View</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
-            $html .= '<a class="dropdown-item" href="'.route('purchases.po.receive.process', [$row->id]).'"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
+            $html .= '<a class="dropdown-item" href="' . route('purchases.po.receive.process', [$row->id]) . '"><i class="fas fa-check-double text-primary"></i> PO To Receive</a>';
         }
 
         // $html .= '<a class="dropdown-item" href="' . route('barcode.on.purchase.barcode', $row->id) . '"><i class="fas fa-barcode text-primary"></i> Barcode</a>';
 
-        $html .= '<a class="dropdown-item" id="view_payment" href="'.route('purchase.payment.list', $row->id).'"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
+        $html .= '<a class="dropdown-item" id="view_payment" href="' . route('purchase.payment.list', $row->id) . '"><i class="far fa-money-bill-alt text-primary"></i> View Payments</a>';
 
         if (auth()->user()->branch_id == $row->branch_id) {
 
@@ -930,19 +930,19 @@ class PurchaseUtil
 
                 if ($row->due > 0) {
 
-                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="'.route('purchases.payment.modal', [$row->id]).'"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
+                    $html .= '<a class="dropdown-item" data-type="1" id="add_payment" href="' . route('purchases.payment.modal', [$row->id]) . '"><i class="far fa-money-bill-alt text-primary"></i> Add Payment</a>';
                 }
             }
 
             if (auth()->user()->can('purchase_edit')) {
 
-                $html .= '<a class="dropdown-item" href="'.route('purchases.edit', [$row->id, 'ordered']).' "><i class="far fa-edit text-primary"></i> Edit</a>';
+                $html .= '<a class="dropdown-item" href="' . route('purchases.edit', [$row->id, 'ordered']) . ' "><i class="far fa-edit text-primary"></i> Edit</a>';
             }
         }
 
         if (auth()->user()->can('purchase_delete')) {
 
-            $html .= '<a class="dropdown-item" id="delete" href="'.route('purchase.delete', $row->id).'"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
+            $html .= '<a class="dropdown-item" id="delete" href="' . route('purchase.delete', $row->id) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
         }
 
         $html .= '</div>';
@@ -1057,7 +1057,7 @@ class PurchaseUtil
         $__date = $fixed_payment_date ? $fixed_payment_date : $request->date;
         // Add purchase payment
         $addPurchasePayment = new PurchasePayment();
-        $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV').$invoiceId;
+        $addPurchasePayment->invoice_id = ($invoicePrefix != null ? $invoicePrefix : 'PPV') . $invoiceId;
         $addPurchasePayment->purchase_id = $purchase->id;
         $addPurchasePayment->is_advanced = $purchase->is_purchased == 0 ? 1 : 0;
         $addPurchasePayment->account_id = $request->account_id;
@@ -1067,7 +1067,7 @@ class PurchaseUtil
         $addPurchasePayment->paid_amount = $payingAmount;
         $addPurchasePayment->date = $__date;
         $addPurchasePayment->time = date('h:i:s a');
-        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($__date.date(' H:i:s')));
+        $addPurchasePayment->report_date = date('Y-m-d H:i:s', strtotime($__date . date(' H:i:s')));
         $addPurchasePayment->month = date('F');
         $addPurchasePayment->year = date('Y');
         $addPurchasePayment->note = $request->payment_note;
@@ -1076,7 +1076,7 @@ class PurchaseUtil
         if ($request->hasFile('attachment')) {
 
             $purchasePaymentAttachment = $request->file('attachment');
-            $purchasePaymentAttachmentName = uniqid().'-'.'.'.$purchasePaymentAttachment->getClientOriginalExtension();
+            $purchasePaymentAttachmentName = uniqid() . '-' . '.' . $purchasePaymentAttachment->getClientOriginalExtension();
             $purchasePaymentAttachment->move(public_path('uploads/payment_attachment/'), $purchasePaymentAttachmentName);
             $addPurchasePayment->attachment = $purchasePaymentAttachmentName;
         }
@@ -1093,19 +1093,19 @@ class PurchaseUtil
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
-        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $payment->month = date('F');
         $payment->year = date('Y');
         $payment->note = $request->note;
 
         if ($request->hasFile('attachment')) {
             if ($payment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
             $salePaymentAttachment = $request->file('attachment');
-            $salePaymentAttachmentName = uniqid().'-'.'.'.$salePaymentAttachment->getClientOriginalExtension();
+            $salePaymentAttachmentName = uniqid() . '-' . '.' . $salePaymentAttachment->getClientOriginalExtension();
             $salePaymentAttachment->move(public_path('uploads/payment_attachment/'), $salePaymentAttachmentName);
             $payment->attachment = $salePaymentAttachmentName;
         }
@@ -1117,7 +1117,7 @@ class PurchaseUtil
     {
         // Add sale return payment
         $addPurchaseReturnPayment = new PurchasePayment();
-        $addPurchaseReturnPayment->invoice_id = 'PRPV'.$this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
+        $addPurchaseReturnPayment->invoice_id = 'PRPV' . $this->invoiceVoucherRefIdUtil->getLastId('purchase_payments');
         $addPurchaseReturnPayment->purchase_id = $purchase->id;
         $addPurchaseReturnPayment->supplier_id = $purchase->supplier_id;
         $addPurchaseReturnPayment->account_id = $request->account_id;
@@ -1127,7 +1127,7 @@ class PurchaseUtil
         $addPurchaseReturnPayment->paid_amount = $request->paying_amount;
         $addPurchaseReturnPayment->date = $request->date;
         $addPurchaseReturnPayment->time = date('h:i:s a');
-        $addPurchaseReturnPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addPurchaseReturnPayment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $addPurchaseReturnPayment->month = date('F');
         $addPurchaseReturnPayment->year = date('Y');
         $addPurchaseReturnPayment->note = $request->note;
@@ -1135,7 +1135,7 @@ class PurchaseUtil
 
         if ($request->hasFile('attachment')) {
             $attachment = $request->file('attachment');
-            $attachmentName = uniqid().'-'.'.'.$attachment->getClientOriginalExtension();
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
             $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
             $addPurchaseReturnPayment->attachment = $attachmentName;
         }
@@ -1151,19 +1151,19 @@ class PurchaseUtil
         $payment->payment_method_id = $request->payment_method_id;
         $payment->paid_amount = $request->paying_amount;
         $payment->date = $request->date;
-        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $payment->report_date = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $payment->month = date('F');
         $payment->year = date('Y');
         $payment->note = $request->note;
 
         if ($request->hasFile('attachment')) {
             if ($payment->attachment != null) {
-                if (file_exists(public_path('uploads/payment_attachment/'.$payment->attachment))) {
-                    unlink(public_path('uploads/payment_attachment/'.$payment->attachment));
+                if (file_exists(public_path('uploads/payment_attachment/' . $payment->attachment))) {
+                    unlink(public_path('uploads/payment_attachment/' . $payment->attachment));
                 }
             }
             $attachment = $request->file('attachment');
-            $attachmentName = uniqid().'-'.'.'.$attachment->getClientOriginalExtension();
+            $attachmentName = uniqid() . '-' . '.' . $attachment->getClientOriginalExtension();
             $attachment->move(public_path('uploads/payment_attachment/'), $attachmentName);
             $payment->attachment = $attachmentName;
         }

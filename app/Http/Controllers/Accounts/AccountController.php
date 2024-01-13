@@ -34,7 +34,7 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('accounts_index')) {
+        if (!auth()->user()->can('accounts_index')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -53,7 +53,7 @@ class AccountController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('accounts_create')) {
+        if (!auth()->user()->can('accounts_create')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -69,7 +69,7 @@ class AccountController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounts_create')) {
+        if (!auth()->user()->can('accounts_create')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -82,7 +82,7 @@ class AccountController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
             $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
             $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
@@ -153,7 +153,7 @@ class AccountController extends Controller
 
     public function edit($accountId)
     {
-        if (! auth()->user()->can('accounts_edit')) {
+        if (!auth()->user()->can('accounts_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -168,7 +168,7 @@ class AccountController extends Controller
 
     public function update(Request $request, $accountId, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('accounts_edit')) {
+        if (!auth()->user()->can('accounts_edit')) {
             abort(403, 'Access Forbidden.');
         }
 
@@ -181,7 +181,7 @@ class AccountController extends Controller
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
             $cusIdPrefix = $generalSettings['prefix__customer_id'] ? $generalSettings['prefix__customer_id'] : 'C';
             $supIdPrefix = $generalSettings['prefix__supplier_id'] ? $generalSettings['prefix__supplier_id'] : 'S';
 
@@ -283,7 +283,7 @@ class AccountController extends Controller
 
     public function delete(Request $request, $accountId)
     {
-        if (! auth()->user()->can('accounts_delete')) {
+        if (!auth()->user()->can('accounts_delete')) {
             abort(403, 'Access Forbidden.');
         }
 

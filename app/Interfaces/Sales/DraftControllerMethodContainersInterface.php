@@ -31,7 +31,6 @@ interface DraftControllerMethodContainersInterface
         object $saleService,
         object $draftService,
         object $draftProductService,
-        object $branchSettingService,
         object $dayBookService,
         object $accountLedgerService,
         object $productStockService,

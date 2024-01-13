@@ -13,17 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hrm_allowance', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('description');
-            $table->string('type');
-            $table->unsignedBigInteger('employee_id')->nullable()->index('hrm_allowance_employee_id_foreign');
+        Schema::create('hrm_allowances', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 255);
+            $table->tinyInteger('type')->default(1)->comment('1=Allowance;2=Deduction');
             $table->tinyInteger('amount_type')->default(1)->comment('1=fixed;2=percentage');
-            $table->decimal('amount', 22)->default(0);
-            $table->string('applicable_date')->nullable();
+            $table->decimal('amount', 22, 2)->default(0);
             $table->timestamps();
-
-            $table->foreign(['employee_id'])->references(['id'])->on('users')->onDelete('CASCADE');
         });
     }
 
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hrm_allowance');
+        Schema::dropIfExists('hrm_allowances');
     }
 };

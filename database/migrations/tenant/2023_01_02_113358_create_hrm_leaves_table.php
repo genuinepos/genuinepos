@@ -18,15 +18,18 @@ return new class extends Migration
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('leave_no', 191)->nullable();
             $table->unsignedBigInteger('leave_type_id')->nullable();
-            $table->unsignedBigInteger('employee_id')->index('hrm_leaves_employee_id_foreign');
+            $table->unsignedBigInteger('user_id')->index('hrm_leaves_employee_id_foreign');
             $table->string('start_date')->nullable();
             $table->string('end_date')->nullable();
             $table->text('reason')->nullable();
-            $table->integer('status');
+            $table->tinyInteger('status');
+            $table->unsignedBigInteger('created_by_id')->index('hrm_leaves_created_by_id_foreign')->nullable();
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
-            $table->foreign('leave_type_id')->references('id')->on('hrm_leave_types')->onDelete('SET NULL');
+            $table->foreign('leave_type_id')->references('id')->on('hrm_leave_types')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

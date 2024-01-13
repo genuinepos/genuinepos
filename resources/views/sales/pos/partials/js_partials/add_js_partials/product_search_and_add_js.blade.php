@@ -129,7 +129,7 @@
                                 tr += '<td class="text-start">';
                                 // tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/><input type="' + (product.is_show_emi_on_pos == 1 ? 'text' : 'hidden') + '" name="descriptions[]" class="form-control description_input scanable" placeholder="' + "{{ __('IMEI, Serial number or other info.') }}" + '">';
 
-                                tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                                tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + name + '</a><br/>';
                                 tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
                                 tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + product.is_show_emi_on_pos + '">';
                                 tr += '<input type="hidden" name="descriptions[]" id="description">';
@@ -280,7 +280,7 @@
                             tr += '<tr class="product_row">';
                             tr += '<td id="serial">1</td>';
                             tr += '<td class="text-start">';
-                            tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                            tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + name + '</a><br/>';
                             tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
                             tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + product.is_show_emi_on_pos + '">';
                             tr += '<input type="hidden" name="descriptions[]" id="description">';
@@ -424,8 +424,6 @@
         route = route.replace(':variant_id', variant_id);
         route = route.replace(':price_group_id', price_group_id);
 
-        console.log(route);
-
         $.ajax({
             url: route,
             type: 'get',
@@ -501,7 +499,7 @@
                         tr += '<tr class="product_row">';
                         tr += '<td class="fw-bold" id="serial">1</td>';
                         tr += '<td class="text-start">';
-                        tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link" tabindex="-1">' + name + '</a><br/>';
+                        tr += '<a href="#" onclick="editProduct(this); return false;" id="edit_product_link">' + __name + '</a><br/>';
                         tr += '<span><small id="span_description" style="font-size:9px;"></small></span>';
                         tr += '<input type="hidden" id="is_show_emi_on_pos" value="' + is_show_emi_on_pos + '">';
                         tr += '<input type="hidden" name="descriptions[]" id="description">';

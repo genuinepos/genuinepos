@@ -1,13 +1,13 @@
 <!--begin::Form-->
 @php
-    $currency = $generalSettings['business__currency'];
+    $currency = $generalSettings['business_or_shop__currency'];
 @endphp
 <div class="form-group row">
     @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
         <div class="col-md-6">
             <select name="branch_id" id="today_branch_id" class="form-control">
                 <option value="">@lang('menu.all_business_locations')</option>
-                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business__business_name'] }}(@lang('menu.head_office'))</option>
+                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business_or_shop__business_name'] }}(@lang('menu.head_office'))</option>
                 @foreach ($branches as $br)
                     <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name . '/' . $br->branch_code }}</option>
                 @endforeach
@@ -24,70 +24,46 @@
 
 <style>
     @media print {
-        table {
-            page-break-after: auto
+        table { page-break-after: auto; }
+
+        tr { page-break-inside: avoid; page-break-after: auto; }
+
+        td { page-break-inside: avoid; page-break-after: auto; }
+
+        thead { display: table-header-group;
         }
 
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
-
-        td {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
-
-        thead {
-            display: table-header-group
-        }
-
-        tfoot {
-            display: table-footer-group
-        }
+        tfoot { display: table-footer-group; }
     }
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 4%;
-        margin-right: 4%;
-    }
+    @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 4%; margin-right: 4%; }
 
     .header,
     .header-space,
     .footer,
-    .footer-space {
-        height: 20px;
-    }
+    .footer-space { height: 20px; }
 
-    .header {
-        position: fixed;
-        top: 0;
-    }
+    .header { position: fixed; top: 0; }
 
-    .footer {
-        position: fixed;
-        bottom: 0;
-    }
+    .footer { position: fixed; bottom: 0; }
 </style>
 
 <div class="print_body">
     <div class="today_summery_area mt-2">
         <div class="print_today_summery_header d-hide">
             <div class="row text-center">
+                <h4>
+                    @if ($branch_id == 'HF')
 
-                    <h4>
-                        @if ($branch_id == 'HF')
-                            {{ $generalSettings['business__business_name'] }} <strong>(@lang('menu.head_office'))</strong>
-                        @elseif($branch_id == '')
-                            @lang('menu.all_business_locations').
-                        @else
-                            {{ $branch->name . '/' . $branch->branch_code }}
-                        @endif
-                    </h4>
+                        {{ $generalSettings['business_or_shop__business_name'] }} <strong>(@lang('menu.head_office'))</strong>
+                    @elseif($branch_id == '')
 
+                        @lang('menu.all_business_locations').
+                    @else
+
+                        {{ $branch->name . '/' . $branch->branch_code }}
+                    @endif
+                </h4>
             </div>
 
             <div class="row text-center">

@@ -910,7 +910,7 @@
         }
     });
 
-    $(document).on('input', '#paying_amount', function(){
+    $(document).on('input', '#paying_amount', function() {
         calculateTotalAmount();
     });
 
@@ -1004,7 +1004,8 @@
 
                 toastr.success(data);
                 window.location = "{{ url()->previous() }}";
-            }, error: function(err) {
+            },
+            error: function(err) {
                 $('.loading_button').hide();
                 $('.error').html('');
 
@@ -1062,9 +1063,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -1078,12 +1079,13 @@
 
                 $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -1092,7 +1094,7 @@
         });
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -1161,7 +1163,7 @@
     }, 1000);
 </script>
 
-@if(auth()->user()->can('supplier_add'))
+@if (auth()->user()->can('supplier_add'))
     <script>
         $('#addContact').on('click', function(e) {
 
@@ -1177,18 +1179,19 @@
                     $('#addOrEditContactModal').html(data);
                     $('#addOrEditContactModal').modal('show');
 
-                    setTimeout(function(){
+                    setTimeout(function() {
 
                         $('#contact_name').focus();
                     }, 500);
 
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
@@ -1199,14 +1202,14 @@
     </script>
 @endif
 
-@if(auth()->user()->can('product_add'))
+@if (auth()->user()->can('product_add'))
     <script>
-        $('#addProduct').on('click', function () {
+        $('#addProduct').on('click', function() {
 
             $.ajax({
-                url:"{{ route('quick.product.create') }}",
-                type:'get',
-                success:function(data){
+                url: "{{ route('quick.product.create') }}",
+                type: 'get',
+                success: function(data) {
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').html(data);
@@ -1216,7 +1219,8 @@
 
                         $('#quick_product_name').focus();
                     }, 1000);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
@@ -1249,7 +1253,7 @@
         });
 
         // Add product by ajax
-        $(document).on('submit', '#add_quick_product_form',function(e) {
+        $(document).on('submit', '#add_quick_product_form', function(e) {
             e.preventDefault();
             $('.quick_product_loading_btn').show();
             var url = $(this).attr('action');
@@ -1293,25 +1297,23 @@
                     $('#e_has_batch_no_expire_date').val(data.has_batch_no_expire_date);
 
                     $('#e_unit_id').empty();
-                    $('#e_unit_id').append('<option value="'+data.unit.id+'" data-is_base_unit="1" data-unit_name="'+data.unit.name+'" data-base_unit_multiplier="1">'+data.unit.name+'</option>');
+                    $('#e_unit_id').append('<option value="' + data.unit.id + '" data-is_base_unit="1" data-unit_name="' + data.unit.name + '" data-base_unit_multiplier="1">' + data.unit.name + '</option>');
 
-                    itemUnitsArray[data.id] = [
-                        {
-                            'unit_id' : data.unit.id,
-                            'unit_name' : data.unit.name,
-                            'unit_code_name' : data.unit.code_name,
-                            'base_unit_multiplier' : 1,
-                            'multiplier_details' : '',
-                            'is_base_unit' : 1,
-                        }
-                    ];
+                    itemUnitsArray[data.id] = [{
+                        'unit_id': data.unit.id,
+                        'unit_name': data.unit.name,
+                        'unit_code_name': data.unit.code_name,
+                        'base_unit_multiplier': 1,
+                        'multiplier_details': '',
+                        'is_base_unit': 1,
+                    }];
 
                     if (data.has_batch_no_expire_date == 1) {
 
                         $('#e_batch_number').prop('readonly', false);
                         $('#e_expire_date').prop('readonly', false);
                         $('.batch_no_expire_date_fields').removeClass('d-none');
-                    }else {
+                    } else {
 
                         $('#e_batch_number').prop('readonly', true);
                         $('#e_expire_date').prop('readonly', true);
@@ -1323,7 +1325,8 @@
 
                     $('#addQuickProductModal').empty();
                     $('#addQuickProductModal').modal('hide');
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     isQuickProductAjaxIn = true;
                     isAllowQuickProductSubmit = true;
@@ -1334,11 +1337,11 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    } else if(err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
-                    } else if(err.status == 403) {
+                    } else if (err.status == 403) {
 
                         toastr.error("{{ __('Access Denied') }}");
                         return;

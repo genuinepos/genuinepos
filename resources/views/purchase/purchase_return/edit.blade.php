@@ -112,7 +112,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-shopping-cart"></span>
                     <h6>{{ __('Edit Purchase Return') }}</h6>
                 </div>
 
@@ -206,7 +205,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Return Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format'], strtotime($return->date)) }}" data-next="search_product" autocomplete="off">
+                                            <input type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($return->date)) }}" data-next="search_product" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -391,7 +390,7 @@
                                                                                         $stockLocationName = $returnProduct?->branch?->name . '(' . $returnProduct?->branch?->area_name;
                                                                                     }
                                                                                 } else {
-                                                                                    $stockLocationName = $generalSettings['business__business_name'];
+                                                                                    $stockLocationName = $generalSettings['business_or_shop__business_name'];
                                                                                 }
                                                                             }
                                                                         @endphp
@@ -539,7 +538,7 @@
                                                 <div class="col-8">
                                                     <div class="input-group">
                                                         <input type="number" step="any" name="received_amount" class="form-control fw-bold w-75" id="received_amount" value="0.00" data-next="receipt_date" autocomplete="off">
-                                                        <input type="text" name="receipt_date" class="form-control w-25" id="receipt_date" value="{{ date($generalSettings['business__date_format']) }}" data-next="payment_method_id" autocomplete="off">
+                                                        <input type="text" name="receipt_date" class="form-control w-25" id="receipt_date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="payment_method_id" autocomplete="off">
                                                     </div>
 
                                                 </div>

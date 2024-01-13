@@ -1,65 +1,63 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add'). ' ' . App\Enums\ContactType::tryFrom($type)->name }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add') . ' ' . App\Enums\ContactType::tryFrom($type)->name }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
 
         <div class="modal-body">
-            <form id="add_contact_form" action="{{ route('contacts.store', $type) }}" method="POST"
-                enctype="multipart/form-data">
+            <form id="add_contact_form" action="{{ route('contacts.store', $type) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row mt-1">
                     <div class="row">
                         <div class="col-md-9">
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Name") }} </strong> <span class="text-danger">*</span></label>
-                                    <input required type="text" name="name" class="form-control" id="contact_name" data-next="contact_phone" placeholder="{{ __("Name") }}" />
+                                    <label><strong>{{ __('Name') }} </strong> <span class="text-danger">*</span></label>
+                                    <input required type="text" name="name" class="form-control" id="contact_name" data-next="contact_phone" placeholder="{{ __('Name') }}" />
                                     <span class="error error_contact_name"></span>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Phone") }}</strong> <span class="text-danger">*</span></label>
-                                    <input required type="text" name="phone" class="form-control"
-                                        id="contact_phone" data-next="contact_business_name" placeholder="@lang('menu.phone_number')" />
+                                    <label><strong>{{ __('Phone') }}</strong> <span class="text-danger">*</span></label>
+                                    <input required type="text" name="phone" class="form-control" id="contact_phone" data-next="contact_business_name" placeholder="@lang('menu.phone_number')" />
                                     <span class="error error_contact_phone"></span>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Business") }}</strong></label>
+                                    <label><strong>{{ __('Business') }}</strong></label>
                                     <input type="text" name="business_name" class="form-control" id="contact_business_name" data-next="contact_alternative_phone" placeholder="@lang('menu.business_name')" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Alternative Number") }}</strong></label>
-                                    <input type="text" name="alternative_phone" class="form-control" id="contact_alternative_phone" data-next="contact_landline" placeholder="{{ __("Alternative phone number") }}" />
+                                    <label><strong>{{ __('Alternative Number') }}</strong></label>
+                                    <input type="text" name="alternative_phone" class="form-control" id="contact_alternative_phone" data-next="contact_landline" placeholder="{{ __('Alternative phone number') }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Landline") }}</strong></label>
-                                    <input type="text" name="landline" class="form-control" id="contact_landline" data-next="contact_email" placeholder="{{ __("landline number") }}" />
+                                    <label><strong>{{ __('Landline') }}</strong></label>
+                                    <input type="text" name="landline" class="form-control" id="contact_landline" data-next="contact_email" placeholder="{{ __('landline number') }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Email") }}</strong></label>
-                                    <input type="text" name="email" class="form-control" id="contact_email" data-next="contact_tax_number" placeholder="{{ __("Email address") }}" />
+                                    <label><strong>{{ __('Email') }}</strong></label>
+                                    <input type="text" name="email" class="form-control" id="contact_email" data-next="contact_tax_number" placeholder="{{ __('Email address') }}" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Tax Number") }}</strong></label>
-                                    <input type="text" name="tax_number" class="form-control" id="contact_tax_number" data-next="contact_customer_group_id" placeholder="{{ __("Tax Number") }}" />
+                                    <label><strong>{{ __('Tax Number') }}</strong></label>
+                                    <input type="text" name="tax_number" class="form-control" id="contact_tax_number" data-next="contact_customer_group_id" placeholder="{{ __('Tax Number') }}" />
                                 </div>
 
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-4">
-                                        <label><strong>{{ __("Customer Group") }}</strong> </label>
+                                        <label><strong>{{ __('Customer Group') }}</strong> </label>
                                         <select name="customer_group_id" class="form-control" id="contact_customer_group_id" data-next="contact_date_of_birth">
-                                            <option value="">{{ __("None") }}</option>
+                                            <option value="">{{ __('None') }}</option>
                                             @foreach ($customerGroups as $group)
                                                 <option value="{{ $group->id }}">{{ $group->name }}</option>
                                             @endforeach
@@ -68,7 +66,7 @@
                                 @endif
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Date Of Birth") }}</strong></label>
+                                    <label><strong>{{ __('Date Of Birth') }}</strong></label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -76,44 +74,44 @@
                                             </span>
                                         </div>
 
-                                        <input type="text" name="date_of_birth" class="form-control" id="contact_date_of_birth" data-next="contact_address" autocomplete="off" placeholder="{{ __("YYYY-MM-DD") }}">
+                                        <input type="text" name="date_of_birth" class="form-control" id="contact_date_of_birth" data-next="contact_address" autocomplete="off" placeholder="{{ __('YYYY-MM-DD') }}">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>{{ __("Address") }}</strong> </label>
-                                    <input type="text" name="address" class="form-control" id="contact_address" data-next="contact_city" placeholder="{{ __("Address") }}">
+                                    <label><strong>{{ __('Address') }}</strong> </label>
+                                    <input type="text" name="address" class="form-control" id="contact_address" data-next="contact_city" placeholder="{{ __('Address') }}">
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("City") }}</strong></label>
-                                    <input type="text" name="city" class="form-control" id="contact_city" data-next="contact_state" placeholder="{{ __("City") }}"/>
+                                    <label><strong>{{ __('City') }}</strong></label>
+                                    <input type="text" name="city" class="form-control" id="contact_city" data-next="contact_state" placeholder="{{ __('City') }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("State") }}</strong></label>
-                                    <input type="text" name="state" class="form-control" id="contact_state" data-next="contact_country" placeholder="{{ __("State") }}"/>
+                                    <label><strong>{{ __('State') }}</strong></label>
+                                    <input type="text" name="state" class="form-control" id="contact_state" data-next="contact_country" placeholder="{{ __('State') }}" />
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label><strong>{{ __("Country") }}</strong></label>
-                                    <input type="text" name="country" class="form-control" id="contact_country" data-next="contact_zip_code" placeholder="@lang('menu.country')"/>
+                                    <label><strong>{{ __('Country') }}</strong></label>
+                                    <input type="text" name="country" class="form-control" id="contact_country" data-next="contact_zip_code" placeholder="@lang('menu.country')" />
                                 </div>
 
                                 <div class="col-md-4 mt-1">
-                                    <label><strong>{{ __("Zip-Code") }}</strong> </label>
-                                    <input type="text" name="zip_code" class="form-control" id="contact_zip_code" data-next="contact_shipping_address" placeholder="{{ __("Zip-Code") }}" />
+                                    <label><strong>{{ __('Zip-Code') }}</strong> </label>
+                                    <input type="text" name="zip_code" class="form-control" id="contact_zip_code" data-next="contact_shipping_address" placeholder="{{ __('Zip-Code') }}" />
                                 </div>
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>{{ __("Shipping Address") }}</strong></label>
-                                    <input type="text" name="shipping_address" class="form-control" id="contact_shipping_address" data-next="contact_credit_limit" placeholder="{{ __("Shipping Address") }}" />
+                                    <label><strong>{{ __('Shipping Address') }}</strong></label>
+                                    <input type="text" name="shipping_address" class="form-control" id="contact_shipping_address" data-next="contact_credit_limit" placeholder="{{ __('Shipping Address') }}" />
                                 </div>
                             </div>
                         </div>
@@ -122,21 +120,21 @@
                             <div class="row">
                                 @if ($type == \App\Enums\ContactType::Customer->value)
                                     <div class="col-md-12">
-                                        <label><strong>{{ __("Credit Limit") }}</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
-                                        <input type="number" step="any" name="credit_limit" class="form-control" id="contact_credit_limit" data-next="contact_pay_term_number" placeholder="{{ __("Credit Limit") }}"/>
+                                        <label><strong>{{ __('Credit Limit') }}</strong> <i data-bs-toggle="tooltip" data-bs-placement="right" title="If there is no credit limit of this customer, so leave this field empty." class="fas fa-info-circle tp"></i></label>
+                                        <input type="number" step="any" name="credit_limit" class="form-control" id="contact_credit_limit" data-next="contact_pay_term_number" placeholder="{{ __('Credit Limit') }}" />
                                     </div>
                                 @endif
                             </div>
 
                             <div class="row mt-1">
                                 <div class="col-md-12">
-                                    <label><strong>{{ __("Pay Term") }}</strong></label>
+                                    <label><strong>{{ __('Pay Term') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="{{ __("Number") }}"/>
+                                        <input type="text" name="pay_term_number" class="form-control" id="contact_pay_term_number" data-next="contact_pay_term" placeholder="{{ __('Number') }}" />
                                         <select name="pay_term" class="form-control" id="contact_pay_term" data-next="contact_opening_balance">
-                                            <option value="1">{{ __("Select Term") }}</option>
-                                            <option value="2">{{ __("Days") }}</option>
-                                            <option value="3">{{ __("Months") }}</option>
+                                            <option value="1">{{ __('Select Term') }}</option>
+                                            <option value="2">{{ __('Days') }}</option>
+                                            <option value="3">{{ __('Months') }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -144,9 +142,9 @@
 
                             <div class="row mt-1">
                                 <div class="col-md-12 mt-1">
-                                    <label><strong>{{ __("Opening Balance") }}</strong></label>
+                                    <label><strong>{{ __('Opening Balance') }}</strong></label>
                                     <div class="input-group">
-                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="{{ __("Opening Balance") }}"/>
+                                        <input type="number" step="any" name="opening_balance" class="form-control" id="contact_opening_balance" value="0.00" data-next="contact_opening_balance_type" placeholder="{{ __('Opening Balance') }}" />
                                         <select name="opening_balance_type" class="form-control" id="contact_opening_balance_type" data-next="contact_save_btn">
                                             @if ($type == \App\Enums\ContactType::Customer->value)
                                                 <option value="dr">{{ __('(+) Debit') }}
@@ -169,7 +167,7 @@
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button contact_loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">@lang('menu.close')</button>
-                            <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">{{ __("Save") }}</button>
+                            <button type="submit" id="contact_save_btn" class="btn btn-sm btn-success contact_submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </div>
@@ -185,18 +183,18 @@
     });
 
     var isAllowSubmit = true;
-    $(document).on('click', '.contact_submit_button',function () {
+    $(document).on('click', '.contact_submit_button', function() {
 
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
-        }else {
+        } else {
 
             $(this).prop('type', 'button');
         }
     });
 
-    $('#add_contact_form').on('submit',function(e) {
+    $('#add_contact_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.contact_loading_button').show();
@@ -206,7 +204,7 @@
         isAllowSubmit = false;
 
         $.ajax({
-            beforeSend: function(){
+            beforeSend: function() {
                 isAjaxIn = true;
             },
             url: url,
@@ -229,7 +227,7 @@
 
                 if (customer_account_id != undefined) {
 
-                    $('#customer_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone +'</option>');
+                    $('#customer_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#customer_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'cr' ? '-' : '') + data.balance;
@@ -237,22 +235,23 @@
                     $('#previous_due').val(closingBalance);
 
                     var nextId = $('#customer_account_id').data('next');
-                    $('#'+nextId).focus().select();
-                }else if (supplier_account_id != undefined) {
+                    $('#' + nextId).focus().select();
+                } else if (supplier_account_id != undefined) {
 
-                    $('#supplier_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone +'</option>');
+                    $('#supplier_account_id').append('<option value="' + data.id + '">' + data.name + '/' + data.phone + '</option>');
                     $('#supplier_account_id').val(data.id);
 
                     var closingBalance = (data.balanceType == 'dr' ? '-' : '') + data.balance;
                     $('#closing_balance').val(closingBalance);
 
                     var nextId = $('#supplier_account_id').data('next');
-                    $('#'+nextId).focus().select();
+                    $('#' + nextId).focus().select();
                 } else {
 
                     contactTable.ajax.reload();
                 }
-            },error : function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -261,11 +260,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
-                    toastr.error('Server Error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -284,17 +283,17 @@
         }
     });
 
-    $(document).on('change keypress click', 'select', function(e){
+    $(document).on('change keypress click', 'select', function(e) {
 
         var nextId = $(this).data('next');
 
         if (e.which == 0) {
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 
-    $(document).on('change keypress', 'input', function(e){
+    $(document).on('change keypress', 'input', function(e) {
 
         var nextId = $(this).data('next');
 
@@ -312,7 +311,7 @@
                 return;
             }
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 

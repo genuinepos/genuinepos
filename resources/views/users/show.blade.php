@@ -8,7 +8,6 @@
     <div class="main__content">
         <div class="sec-name">
             <div class="name-head">
-                <span class="fas fa-user"></span>
                 <h6>{{ __("View User") }}</h6>
             </div>
 

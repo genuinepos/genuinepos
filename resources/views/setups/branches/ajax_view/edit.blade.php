@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Shop") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Shop') }}</h6>
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -11,20 +11,20 @@
                     <div class="col-md-9" style="border-right: 1px solid #000;">
                         <div class="row">
                             <div class="col-lg-3 col-md-6">
-                                <label> <b>{{ __("Shop Type") }}</b></label>
+                                <label> <b>{{ __('Shop Type') }}</b></label>
                                 <select name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
                                     @foreach (\App\Enums\BranchType::cases() as $branchType)
-                                        <option {{ $branchType->value == $branch->branch_type ? 'SELECTED' : '' }} value="{{ $branchType->value }}">{{ preg_replace("/[A-Z]/", ' ' . "$0", $branchType->name) }}</option>
+                                        <option {{ $branchType->value == $branch->branch_type ? 'SELECTED' : '' }} value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="col-lg-3 col-md-6 parent_branches_field {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'd-hide' }}">
-                                <label> <b>{{ __("Parent Shop") }}</b> <span class="text-danger">*</span></label>
+                                <label> <b>{{ __('Parent Shop') }}</b> <span class="text-danger">*</span></label>
                                 <select name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="branch_code">
                                     <option value="">{{ __('Select Parent Shop') }}</option>
                                     @foreach ($branches as $br)
-                                        <option {{ $br->id == $branch->parent_branch_id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name .' / '. $br->branch_code }}</option>
+                                        <option {{ $br->id == $branch->parent_branch_id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name . ' / ' . $br->branch_code }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -32,56 +32,56 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6 branch_name_field {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}">
-                                <label><b>{{ __("Shop Name") }}</b> <span class="text-danger">*</span></label>
-                                <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __("Shop Name") }}" />
+                                <label><b>{{ __('Shop Name') }}</b> <span class="text-danger">*</span></label>
+                                <input {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? '' : 'required' }} type="text" name="name" class="form-control" id="branch_name" data-next="area_name" value="{{ $branch->name }}" placeholder="{{ __('Shop Name') }}" />
                                 <span class="error error_branch_name"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Area Name") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __("Area Name") }}"/>
+                                <label><b>{{ __('Area Name') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="area_name" class="form-control" id="area_name" data-next="branch_code" value="{{ $branch->area_name }}" placeholder="{{ __('Area Name') }}" />
                                 <span class="error error_branch_code"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Shop ID") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="branch_code" class="form-control" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __("Shop ID") }}"/>
+                                <label><b>{{ __('Shop ID') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="branch_code" class="form-control" id="branch_code" data-next="branch_phone" value="{{ $branch->branch_code }}" placeholder="{{ __('Shop ID') }}" />
                                 <span class="error error_branch_code"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Phone") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __("Phone No") }}" />
+                                <label><b>{{ __('Phone') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __('Phone No') }}" />
                                 <span class="error error_branch_phone"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Alternative Phone") }}</b> </label>
-                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __("Alternative Phone") }}"/>
+                                <label><b>{{ __('Alternative Phone') }}</b> </label>
+                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __('Alternative Phone') }}" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Country") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="country" class="form-control" id="branch_country" data-next="branch_state" value="{{ $branch->country }}" placeholder="{{ __("Country") }}"/>
+                                <label><b>{{ __('Country') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="country" class="form-control" id="branch_country" data-next="branch_state" value="{{ $branch->country }}" placeholder="{{ __('Country') }}" />
                                 <span class="error error_branch_country"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("State") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="state" class="form-control" id="branch_state" data-next="branch_city" value="{{ $branch->state }}" placeholder="{{ __("State") }}" />
+                                <label><b>{{ __('State') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="state" class="form-control" id="branch_state" data-next="branch_city" value="{{ $branch->state }}" placeholder="{{ __('State') }}" />
                                 <span class="error error_branch_state"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label> <b>{{ __("City") }}</b> <span class="text-danger">*</span></label>
-                                <input required type="text" name="city" class="form-control" id="branch_city" data-next="branch_zip_code" value="{{ $branch->city }}" placeholder="{{ __("City") }}" />
+                                <label> <b>{{ __('City') }}</b> <span class="text-danger">*</span></label>
+                                <input required type="text" name="city" class="form-control" id="branch_city" data-next="branch_zip_code" value="{{ $branch->city }}" placeholder="{{ __('City') }}" />
                                 <span class="error error_branch_city"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Zip-Code") }}</b> <span class="text-danger">*</span></label>
+                                <label><b>{{ __('Zip-Code') }}</b> <span class="text-danger">*</span></label>
                                 <input required type="text" name="zip_code" class="form-control" id="branch_zip_code" data-next="branch_address" value="{{ $branch->zip_code }}" placeholder="Zip code" />
                                 <span class="error error_branch_zip_code"></span>
                             </div>
@@ -89,25 +89,25 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-6 col-md-6">
-                                <label><b>{{ __("Address") }}</b></label>
-                                <input required type="text" name="address" class="form-control" id="branch_address" data-next="branch_email" value="{{ $branch->address }}" placeholder="{{ __("Address") }}"/>
+                                <label><b>{{ __('Address') }}</b></label>
+                                <input required type="text" name="address" class="form-control" id="branch_address" data-next="branch_email" value="{{ $branch->address }}" placeholder="{{ __('Address') }}" />
                             </div>
                         </div>
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Email") }}</b></label>
-                                <input type="text" name="email" class="form-control" id="branch_email" data-next="branch_website" value="{{ $branch->email }}" placeholder="{{ __("Email address") }}" />
+                                <label><b>{{ __('Email') }}</b></label>
+                                <input type="text" name="email" class="form-control" id="branch_email" data-next="branch_website" value="{{ $branch->email }}" placeholder="{{ __('Email address') }}" />
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Website") }}</b></label>
-                                <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_date_format" value="{{ $branch->website }}" placeholder="{{ __("Website Url") }}" />
+                                <label><b>{{ __('Website') }}</b></label>
+                                <input type="text" name="website" class="form-control" id="branch_website" data-next="branch_date_format" value="{{ $branch->website }}" placeholder="{{ __('Website Url') }}" />
                             </div>
 
                             <div class="col-lg-3 col-md-6">
-                                <label><b>{{ __("Logo") }}</b> <small class="text-danger">{{ __("Logo size 200px * 70px") }}</small></label>
-                                <input type="file" name="logo" class="form-control " id="logo"/>
+                                <label><b>{{ __('Logo') }}</b> <small class="text-danger">{{ __('Logo size 200px * 70px') }}</small></label>
+                                <input type="file" name="logo" class="form-control " id="logo" />
                             </div>
                         </div>
                     </div>
@@ -117,9 +117,9 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Date Format') }}</label>
                                 <select name="date_format" class="form-control" id="branch_date_format" data-next="branch_time_format">
-                                    <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
-                                    <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
-                                    <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                    <option value="d-m-Y" {{ $branchSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
+                                    <option value="m-d-Y" {{ $branchSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
+                                    <option value="Y-m-d" {{ $branchSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
                                 </select>
                                 <span class="error error_date_format"></span>
                             </div>
@@ -129,8 +129,8 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Format') }}</label>
                                 <select name="time_format" class="form-control" id="branch_time_format" data-next="branch_timezone">
-                                    <option {{ $branch->time_format == '12' ? 'SELECTED' : '' }} value="12">{{ __("12 Hour") }}</option>
-                                    <option {{ $branch->time_format == '24' ? 'SELECTED' : '' }} value="24">{{ __("24 Hour") }}</option>
+                                    <option {{ $branchSettings['business_or_shop__time_format'] == '12' ? 'SELECTED' : '' }} value="12">{{ __('12 Hour') }}</option>
+                                    <option {{ $branchSettings['business_or_shop__time_format'] == '24' ? 'SELECTED' : '' }} value="24">{{ __('24 Hour') }}</option>
                                 </select>
                                 <span class="error error_time_format"></span>
                             </div>
@@ -142,7 +142,7 @@
                                 <select required name="timezone" class="form-control" id="branch_timezone" data-next="branch_stock_accounting_method">
                                     <option value="">{{ __('Time Zone') }}</option>
                                     @foreach ($timezones as $key => $timezone)
-                                        <option {{ ($branch->timezone ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
+                                        <option {{ ($branchSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_time_format"></span>
@@ -154,10 +154,10 @@
                                 <label class="fw-bold">{{ __('Stock Accounting Method') }}</label>
                                 <select name="stock_accounting_method" class="form-control" id="branch_stock_accounting_method" data-next="branch_account_start_date">
                                     @php
-                                        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'] ?? null;
+                                        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                                     @endphp
                                     @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                        <option {{ $branch->stock_accounting_method == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                        <option {{ $branchSettings['business_or_shop__stock_accounting_method'] == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_financial_year_start"></span>
@@ -167,7 +167,7 @@
                         <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="account_start_date_field">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $branch->account_start_date }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $branchSettings['business_or_shop__account_start_date'] }}" data-next="branch_financial_year_start_month" autocomplete="off">
                                 <span class="error error_account_start_date"></span>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                             $months = \App\Enums\Months::cases();
                                         @endphp
                                         @foreach ($months as $month)
-                                            <option {{ $branch->financial_year_start_month == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                            <option {{ $branchSettings['business_or_shop__financial_year_start_month'] == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -193,9 +193,9 @@
 
                 <div class="form-group d-flex justify-content-end mt-1">
                     <div class="btn-loading">
-                        <button type="button" class="btn loading_button branch_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                        <button type="button" id="branch_save_changes" class="btn btn-sm btn-success branch_submit_button">{{ __("Save Changes") }}</button>
+                        <button type="button" class="btn loading_button branch_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                        <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                        <button type="button" id="branch_save_changes" class="btn btn-sm btn-success branch_submit_button">{{ __('Save Changes') }}</button>
                     </div>
                 </div>
             </form>
@@ -257,11 +257,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 

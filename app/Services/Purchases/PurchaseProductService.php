@@ -2,13 +2,15 @@
 
 namespace App\Services\Purchases;
 
+use Carbon\Carbon;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Enums\StockAccountingMethod;
+use Yajra\DataTables\Facades\DataTables;
 use App\Models\Purchases\PurchaseProduct;
 use App\Models\Purchases\PurchaseSaleProductChain;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Yajra\DataTables\Facades\DataTables;
 
 class PurchaseProductService
 {
@@ -25,7 +27,8 @@ class PurchaseProductService
             ->leftJoin('accounts as suppliers', 'purchases.supplier_account_id', 'suppliers.id')
             ->leftJoin('units', 'purchase_products.unit_id', 'units.id')
             ->leftJoin('categories', 'products.category_id', 'categories.id')
-            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id');
+            ->leftJoin('categories as sub_cate', 'products.sub_category_id', 'sub_cate.id')
+            ->whereNotNull('purchase_products.purchase_id');
 
         if ($request->product_id) {
 
@@ -72,9 +75,9 @@ class PurchaseProductService
             $query->whereBetween('purchases.report_date', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('purchases.is_purchased', 1)->where('purchases.branch_id', auth()->user()->branch_id);
+            $query->where('purchases.is_purchased', BooleanType::True->value)->where('purchases.branch_id', auth()->user()->branch_id);
         }
 
         $purchaseProducts = $query->select(
@@ -107,9 +110,9 @@ class PurchaseProductService
         return DataTables::of($purchaseProducts)
             ->editColumn('product', function ($row) {
 
-                $variant = $row->variant_name ? ' - '.$row->variant_name : '';
+                $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
 
-                return Str::limit($row->name, 35, '').$variant;
+                return Str::limit($row->name, 35, '') . $variant;
             })
             ->editColumn('date', function ($row) {
 
@@ -121,21 +124,21 @@ class PurchaseProductService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('quantity', function ($row) {
 
-                return \App\Utils\Converter::format_in_bdt($row->quantity).'/<span class="qty" data-value="'.$row->quantity.'">'.$row->unit_code.'</span>';
+                return \App\Utils\Converter::format_in_bdt($row->quantity) . '/<span class="qty" data-value="' . $row->quantity . '">' . $row->unit_code . '</span>';
             })
-            ->editColumn('invoice_id', fn ($row) => '<a href="'.route('purchases.show', [$row->purchase_id]).'" class="text-hover" id="details_btn" title="View">'.$row->invoice_id.'</a>')
+            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('purchases.show', [$row->purchase_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
             ->editColumn('net_unit_cost', fn ($row) => \App\Utils\Converter::format_in_bdt($row->net_unit_cost))
             ->editColumn('price', function ($row) {
@@ -155,7 +158,7 @@ class PurchaseProductService
 
                 return \App\Utils\Converter::format_in_bdt($row->net_unit_cost);
             })
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->line_total.'">'.\App\Utils\Converter::format_in_bdt($row->line_total).'</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->line_total . '">' . \App\Utils\Converter::format_in_bdt($row->line_total) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'quantity', 'invoice_id', 'branch', 'net_unit_cost', 'price', 'subtotal'])
             ->make(true);
@@ -198,7 +201,7 @@ class PurchaseProductService
 
         $addPurchaseProduct->batch_number = $request->batch_numbers[$index];
         $addPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
-        $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $addPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
 
         $addPurchaseProduct->save();
 
@@ -231,7 +234,7 @@ class PurchaseProductService
             $purchaseProduct->line_total = $subTotal;
             $purchaseProduct->profit_margin = $xMargin;
             $purchaseProduct->selling_price = $sellingPrice;
-            $purchaseProduct->created_at = $createdAt;
+            $purchaseProduct->created_at = $purchaseProduct->created_at == null ? $createdAt : $purchaseProduct->created_at;
             $purchaseProduct->save();
             $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
         } else {
@@ -303,7 +306,7 @@ class PurchaseProductService
         $updateOrAddPurchaseProduct->expire_date = isset($request->expire_dates[$index]) ? date('Y-m-d', strtotime($request->expire_dates[$index])) : null;
 
         $updateOrAddPurchaseProduct->delete_in_update = 0;
-        $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date.date(' H:i:s')));
+        $updateOrAddPurchaseProduct->created_at = date('Y-m-d H:i:s', strtotime($request->date . date(' H:i:s')));
         $updateOrAddPurchaseProduct->save();
 
         $this->adjustPurchaseProductSaleLeftQty($updateOrAddPurchaseProduct);
@@ -321,27 +324,17 @@ class PurchaseProductService
 
                 $variantId = $saleProduct->variant_id ? $saleProduct->variant_id : null;
 
-                $purchaseProducts = '';
+                $soldQty = $saleProduct->quantity;
 
-                if ($stockAccountingMethod == StockAccountingMethod::FIFO->value) {
+                $sortedBy = $stockAccountingMethod == StockAccountingMethod::FIFO->value ? 'asc' : 'desc';
 
-                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                        ->where('product_id', $saleProduct->product_id)
-                        ->where('variant_id', $variantId)
-                        ->where('branch_id', auth()->user()->branch_id)
-                        ->orderBy('created_at', 'asc')->get();
-                } elseif ($stockAccountingMethod == StockAccountingMethod::LIFO->value) {
-
-                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                        ->where('product_id', $saleProduct->product_id)
-                        ->where('variant_id', $variantId)
-                        ->where('branch_id', auth()->user()->branch_id)
-                        ->orderBy('created_at', 'desc')->get();
-                }
+                $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                    ->where('product_id', $saleProduct->product_id)
+                    ->where('variant_id', $variantId)
+                    ->where('branch_id', auth()->user()->branch_id)
+                    ->orderBy('created_at', $sortedBy)->get();
 
                 if (count($purchaseProducts) > 0) {
-
-                    $soldQty = $saleProduct->quantity;
 
                     foreach ($purchaseProducts as $purchaseProduct) {
 
@@ -354,7 +347,7 @@ class PurchaseProductService
                                 $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
                                 $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
                                 $addPurchaseSaleChain->save();
-                                $soldQty -= $purchaseProduct->left_qty;
+                                $soldQty = $soldQty - $purchaseProduct->left_qty;
                                 $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                             } else {
 
@@ -367,9 +360,9 @@ class PurchaseProductService
                                 $addPurchaseSaleChain = new PurchaseSaleProductChain();
                                 $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
                                 $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
-                                $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                $addPurchaseSaleChain->sold_qty = $soldQty;
                                 $addPurchaseSaleChain->save();
-                                $soldQty -= $purchaseProduct->left_qty;
+                                $soldQty = $soldQty - $soldQty;
                                 $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                             } else {
 
@@ -384,11 +377,75 @@ class PurchaseProductService
                                 $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
                                 $addPurchaseSaleChain->sold_qty = $soldQty;
                                 $addPurchaseSaleChain->save();
-                                $soldQty -= $soldQty;
+                                $soldQty = $soldQty - $soldQty;
                                 $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                             } else {
 
                                 break;
+                            }
+                        }
+                    }
+                }
+
+                if ($soldQty > 0) {
+
+                    $purchaseProductsInGlobalWarehouse = DB::table('purchase_products')->where('purchase_products.left_qty', '>', '0')
+                        ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+                        ->leftJoin('warehouses', 'purchase_products.warehouse_id', 'warehouses.id')
+                        ->where('purchase_products.product_id', $saleProduct->product_id)
+                        ->where('purchase_products.variant_id', $variantId)
+                        ->where('warehouses.is_global', BooleanType::True->value)
+                        ->orderBy('created_at', $sortedBy)->get();
+
+                    if (count($purchaseProductsInGlobalWarehouse) > 0) {
+
+                        foreach ($purchaseProductsInGlobalWarehouse as $purchaseProduct) {
+
+                            if ($soldQty > $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $purchaseProduct->left_qty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } elseif ($soldQty == $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $soldQty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $soldQty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } elseif ($soldQty < $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $soldQty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $soldQty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
                             }
                         }
                     }
@@ -413,8 +470,7 @@ class PurchaseProductService
 
                 $soldQty = $saleProduct->quantity;
 
-                $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')
-                    ->where('sale_product_id', $saleProduct->id)->get();
+                $salePurchaseProductChains = PurchaseSaleProductChain::with('purchaseProduct')->where('sale_product_id', $saleProduct->id)->get();
 
                 foreach ($salePurchaseProductChains as $salePurchaseProductChain) {
 
@@ -423,21 +479,18 @@ class PurchaseProductService
 
                     if ($soldQty > $salePurchaseProductChain->purchaseProduct->left_qty) {
 
-                        //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
                         $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
                         $salePurchaseProductChain->save();
-                        $sold_qty = $soldQty - $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $soldQty = $soldQty - $salePurchaseProductChain->purchaseProduct->left_qty;
                         $this->adjustPurchaseProductSaleLeftQty($salePurchaseProductChain->purchaseProduct);
                     } elseif ($soldQty == $salePurchaseProductChain->purchaseProduct->left_qty) {
 
-                        //$dist_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
-                        $salePurchaseProductChain->sold_qty = $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $salePurchaseProductChain->sold_qty = $soldQty;
                         $salePurchaseProductChain->save();
-                        $sold_qty = $soldQty - $salePurchaseProductChain->purchaseProduct->left_qty;
+                        $soldQty = $soldQty - $soldQty;
                         $this->adjustPurchaseProductSaleLeftQty($salePurchaseProductChain->purchaseProduct);
                     } elseif ($soldQty < $salePurchaseProductChain->purchaseProduct->left_qty) {
 
-                        //$dist_qty = $sold_qty;
                         $salePurchaseProductChain->sold_qty = $soldQty;
                         $salePurchaseProductChain->save();
                         $soldQty = $soldQty - $soldQty;
@@ -447,22 +500,12 @@ class PurchaseProductService
 
                 if ($soldQty > 0) {
 
-                    $purchaseProducts = '';
-                    if ($stockAccountingMethod == StockAccountingMethod::FIFO->value) {
-
-                        $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                            ->where('product_id', $saleProduct->product_id)
-                            ->where('variant_id', $variantId)
-                            ->where('branch_id', auth()->user()->branch_id)
-                            ->orderBy('created_at', 'asc')->get();
-                    } elseif ($stockAccountingMethod == StockAccountingMethod::LIFO->value) {
-
-                        $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
-                            ->where('product_id', $saleProduct->product_id)
-                            ->where('variant_id', $variantId)
-                            ->where('branch_id', auth()->user()->branch_id)
-                            ->orderBy('created_at', 'desc')->get();
-                    }
+                    $sortedBy = $stockAccountingMethod == StockAccountingMethod::FIFO->value ? 'asc' : 'desc';
+                    $purchaseProducts = PurchaseProduct::where('left_qty', '>', '0')
+                        ->where('product_id', $saleProduct->product_id)
+                        ->where('variant_id', $variantId)
+                        ->where('branch_id', auth()->user()->branch_id)
+                        ->orderBy('created_at',  $sortedBy)->get();
 
                     if (count($purchaseProducts) > 0) {
 
@@ -477,7 +520,7 @@ class PurchaseProductService
                                     $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
                                     $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
                                     $addPurchaseSaleChain->save();
-                                    $soldQty -= $purchaseProduct->left_qty;
+                                    $soldQty = $soldQty - $purchaseProduct->left_qty;
                                     $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                                 } else {
 
@@ -490,9 +533,9 @@ class PurchaseProductService
                                     $addPurchaseSaleChain = new PurchaseSaleProductChain();
                                     $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
                                     $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
-                                    $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                    $addPurchaseSaleChain->sold_qty = $soldQty;
                                     $addPurchaseSaleChain->save();
-                                    $soldQty -= $purchaseProduct->left_qty;
+                                    $soldQty = $soldQty - $soldQty;
                                     $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                                 } else {
 
@@ -507,7 +550,71 @@ class PurchaseProductService
                                     $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
                                     $addPurchaseSaleChain->sold_qty = $soldQty;
                                     $addPurchaseSaleChain->save();
-                                    $soldQty -= $soldQty;
+                                    $soldQty = $soldQty - $soldQty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($soldQty > 0) {
+
+                    $purchaseProductsInGlobalWarehouse = DB::table('purchase_products')->where('purchase_products.left_qty', '>', '0')
+                        ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
+                        ->leftJoin('warehouses', 'purchase_products.warehouse_id', 'warehouses.id')
+                        ->where('purchase_products.product_id', $saleProduct->product_id)
+                        ->where('purchase_products.variant_id', $variantId)
+                        ->where('warehouses.is_global', BooleanType::True->value)
+                        ->orderBy('created_at', $sortedBy)->get();
+
+                    if (count($purchaseProductsInGlobalWarehouse) > 0) {
+
+                        foreach ($purchaseProductsInGlobalWarehouse as $purchaseProduct) {
+
+                            if ($soldQty > $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $purchaseProduct->left_qty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $purchaseProduct->left_qty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } elseif ($soldQty == $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $soldQty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $soldQty;
+                                    $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
+                                } else {
+
+                                    break;
+                                }
+                            } elseif ($soldQty < $purchaseProduct->left_qty) {
+
+                                if ($soldQty > 0) {
+
+                                    $addPurchaseSaleChain = new PurchaseSaleProductChain();
+                                    $addPurchaseSaleChain->purchase_product_id = $purchaseProduct->id;
+                                    $addPurchaseSaleChain->sale_product_id = $saleProduct->id;
+                                    $addPurchaseSaleChain->sold_qty = $soldQty;
+                                    $addPurchaseSaleChain->save();
+                                    $soldQty = $soldQty - $soldQty;
                                     $this->adjustPurchaseProductSaleLeftQty($purchaseProduct);
                                 } else {
 
@@ -564,7 +671,7 @@ class PurchaseProductService
             ->where('variant_id', $variantId)
             ->first();
 
-        if (! is_null($deletePurchaseProduct)) {
+        if (!is_null($deletePurchaseProduct)) {
 
             $deletePurchaseProduct->delete();
         }

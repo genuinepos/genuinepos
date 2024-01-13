@@ -9,7 +9,5 @@ class LeaveType extends BaseModel
 {
     use HasFactory;
 
-    protected $table = 'hrm_leavetypes';
-
-    protected $fillable = ['leave_type', 'max_leave_count', 'leave_count_interval'];
+    protected $table = 'hrm_leave_types';
 }

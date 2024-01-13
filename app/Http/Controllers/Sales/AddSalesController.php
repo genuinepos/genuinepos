@@ -21,7 +21,6 @@ use App\Services\Purchases\PurchaseProductService;
 use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
 use App\Utils\UserActivityLogUtil;
@@ -41,7 +40,6 @@ class AddSalesController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
@@ -55,10 +53,7 @@ class AddSalesController extends Controller
 
     public function index(Request $request, $customerAccountId = null, $saleScreen = null)
     {
-        if (! auth()->user()->can('view_add_sale')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('view_add_sale'), 403);
 
         if ($request->ajax()) {
 
@@ -89,24 +84,9 @@ class AddSalesController extends Controller
         return view('sales.add_sale.ajax_views.show', compact('sale', 'customerCopySaleProducts'));
     }
 
-    public function printChallan($id)
-    {
-        $sale = $this->saleService->singleSale(id: $id, with: [
-            'customer:id,name,phone,address',
-            'createdBy:id,prefix,name,last_name',
-        ]);
-
-        $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
-
-        return view('sales.add_sale.ajax_views.print_challan', compact('sale', 'customerCopySaleProducts'));
-    }
-
     public function create(AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('create_add_sale')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('create_add_sale'), 403);
 
         $createMethodContainer = $addSaleControllerMethodContainersInterface->createMethodContainer(
             branchService: $this->branchService,
@@ -120,22 +100,14 @@ class AddSalesController extends Controller
 
         extract($createMethodContainer);
 
-        // return $priceGroupProducts;
-
         return view('sales.add_sale.create', compact('customerAccounts', 'methods', 'accounts', 'saleAccounts', 'taxAccounts', 'priceGroups', 'priceGroupProducts', 'warehouses', 'branchName'));
     }
 
     public function store(Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        $this->validate($request, [
-            'status' => 'required',
-            'date' => 'required|date',
-            'sale_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'sale_account_id.required' => 'Sales A/c is required',
-            'account_id.required' => 'Debit A/c is required',
-        ]);
+        abort_if(!auth()->user()->can('create_add_sale'), 403);
+
+        $this->saleService->addSaleValidation(request: $request);
 
         try {
 
@@ -143,7 +115,6 @@ class AddSalesController extends Controller
 
             $storeMethodContainer = $addSaleControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
-                branchSettingService: $this->branchSettingService,
                 saleService: $this->saleService,
                 saleProductService: $this->saleProductService,
                 dayBookService: $this->dayBookService,
@@ -174,28 +145,29 @@ class AddSalesController extends Controller
 
         if ($request->action == 'save_and_print') {
 
+            $printPageSize = $request->print_page_size;
             if ($request->status == SaleStatus::Final->value) {
 
                 $changeAmount = 0;
                 $receivedAmount = $request->received_amount;
 
-                return view('sales.save_and_print_template.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts'));
+                return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
             } elseif ($request->status == SaleStatus::Draft->value) {
 
                 $draft = $sale;
 
-                return view('sales.save_and_print_template.draft_print', compact('draft', 'customerCopySaleProducts'));
+                return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
             } elseif ($request->status == SaleStatus::Quotation->value) {
 
                 $quotation = $sale;
 
-                return view('sales.save_and_print_template.quotation_print', compact('quotation', 'customerCopySaleProducts'));
+                return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
             } elseif ($request->status == SaleStatus::Order->value) {
 
                 $order = $sale;
                 $receivedAmount = $request->received_amount;
 
-                return view('sales.save_and_print_template.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts'));
+                return view('sales.print_templates.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts', 'printPageSize'));
             }
         } else {
 
@@ -205,10 +177,7 @@ class AddSalesController extends Controller
 
     public function edit($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('edit_add_sale')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('edit_add_sale'), 403);
 
         $editMethodContainer = $addSaleControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -229,15 +198,9 @@ class AddSalesController extends Controller
 
     public function update($id, Request $request, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        $this->validate($request, [
-            'status' => 'required',
-            'date' => 'required|date',
-            'sale_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'sale_account_id.required' => 'Sales A/c is required',
-            'account_id.required' => 'Debit A/c is required',
-        ]);
+        abort_if(!auth()->user()->can('edit_add_sale'), 403);
+
+        $this->saleService->addSaleValidation(request: $request);
 
         try {
 
@@ -246,7 +209,6 @@ class AddSalesController extends Controller
             $updateMethodContainer = $addSaleControllerMethodContainersInterface->updateMethodContainer(
                 id: $id,
                 request: $request,
-                branchSettingService: $this->branchSettingService,
                 saleService: $this->saleService,
                 saleProductService: $this->saleProductService,
                 dayBookService: $this->dayBookService,
@@ -278,6 +240,8 @@ class AddSalesController extends Controller
 
     public function delete($id, AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('delete_add_sale'), 403);
+
         try {
 
             DB::beginTransaction();

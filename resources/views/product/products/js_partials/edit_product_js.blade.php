@@ -1,7 +1,6 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-<script src="{{asset('backend/asset/js/select2.min.js')}}"></script>
+<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
 <script>
-
     $('.select2').select2();
 
     // Set parent category in parent category form field
@@ -40,7 +39,7 @@
         $('#combo_price').val(parseFloat(calcTotalComboPrice).toFixed(2));
     }
 
-    $(document).on('input', '#product_cost',function() {
+    $(document).on('input', '#product_cost', function() {
 
         costCalculate();
     });
@@ -142,7 +141,7 @@
     }
 
     // Get default profit
-    var defaultProfit = {{ $generalSettings['business__default_profit'] > 0 ? $generalSettings['business__default_profit'] : 0 }};
+    var defaultProfit = {{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }};
 
     $(document).on('click', '#add_more_variant_btn', function(e) {
         e.preventDefault();
@@ -155,7 +154,7 @@
         html += '<tr id="more_new_variant">';
         html += '<td>';
         html += '<select class="form-control" name="" id="variants">';
-        html += '<option value="">'+"{{ __('Create Combination') }}"+'</option>';
+        html += '<option value="">' + "{{ __('Create Combination') }}" + '</option>';
 
         $.each(variantsWithChild, function(key, val) {
 
@@ -163,22 +162,22 @@
         });
 
         html += '</select>';
-        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control fw-bold" placeholder="'+"{{ __('Variant Combination') }}"+'" required>';
+        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control fw-bold" placeholder="' + "{{ __('Variant Combination') }}" + '" required>';
         html += '<input type="hidden" name="product_variant_ids[]">';
         html += '</td>';
-        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control new_variant_code fw-bold" placeholder="'+"{{ __('Variant Code') }}"+'">';
+        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control new_variant_code fw-bold" placeholder="' + "{{ __('Variant Code') }}" + '">';
         html += '</td>';
         html += '<td>';
-        html += '<input required type="number" step="any" name="variant_costings[]" class="form-control fw-bold" placeholder="'+"{{ __('Variant Cost Exc. Tax') }}"+'" id="variant_costing" value="' + parseFloat(product_cost).toFixed(2) + '">';
+        html += '<input required type="number" step="any" name="variant_costings[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Cost Exc. Tax') }}" + '" id="variant_costing" value="' + parseFloat(product_cost).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html += '<input required type="number" step="any" name="variant_costings_with_tax[]" class="form-control fw-bold" placeholder="'+"{{ __('Variant Cost Inc. Tax') }}"+'" id="variant_costing_with_tax" value="' + parseFloat(product_cost_with_tax).toFixed(2) + '">';
+        html += '<input required type="number" step="any" name="variant_costings_with_tax[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Cost Inc. Tax') }}" + '" id="variant_costing_with_tax" value="' + parseFloat(product_cost_with_tax).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
-        html += '<input required type="number" step="any" name="variant_profits[]" class="form-control fw-bold" placeholder="'+"{{ __('Variant Profit Margin') }}"+'" value="' + parseFloat(profit).toFixed(2) + '" id="variant_profit">';
+        html += '<input required type="number" step="any" name="variant_profits[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Profit Margin') }}" + '" value="' + parseFloat(profit).toFixed(2) + '" id="variant_profit">';
         html += '</td>';
         html += '<td>';
-        html += '<input required type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="'+"{{ __('Variant Price Exc. Tax') }}"+'" id="variant_price_exc_tax" value="' + parseFloat(product_price).toFixed(2) + '">';
+        html += '<input required type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Price Exc. Tax') }}" + '" id="variant_price_exc_tax" value="' + parseFloat(product_price).toFixed(2) + '">';
         html += '</td>';
         html += '<td>';
         html += '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
@@ -248,7 +247,11 @@
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(document).on('change', '#category_id', function(e) {
             e.preventDefault();
@@ -259,22 +262,23 @@
             var route = url.replace(':category_id', categoryId);
 
             $.ajax({
-                url: route
-                , type: 'get'
-                , success: function(subCategories) {
+                url: route,
+                type: 'get',
+                success: function(subCategories) {
 
                     $('#sub_category_id').empty();
-                    $('#sub_category_id').append('<option value="">'+"{{ __('Select Subcategory') }}"+'</option>');
+                    $('#sub_category_id').append('<option value="">' + "{{ __('Select Subcategory') }}" + '</option>');
 
                     $.each(subCategories, function(key, val) {
 
                         $('#sub_category_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                     });
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -302,10 +306,10 @@
             }
         });
 
-        document.onkeyup = function () {
+        document.onkeyup = function() {
             var e = e || window.event; // for IE to cover IEs window event-object
 
-            if(e.ctrlKey && e.which == 13) {
+            if (e.ctrlKey && e.which == 13) {
 
                 $('#save_changes').click();
                 return false;
@@ -343,7 +347,8 @@
 
                         toastr.error(data.errorMsg);
                     }
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').addClass('d-hide');
                     $('.error').html('');
@@ -355,7 +360,7 @@
 
                         toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
-                    }else if (err.status == 500) {
+                    } else if (err.status == 500) {
 
                         toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                         return;
@@ -449,7 +454,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -482,11 +487,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
             }
@@ -510,11 +515,12 @@
 
                     $('#brand_name').focus();
                 }, 500);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -548,7 +554,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

@@ -79,7 +79,7 @@ class PurchaseOrderReceiveController extends Controller
             // database queries here. Access any $var_N directly
 
             $generalSettings = config('generalSettings');
-            $invoicePrefix = $generalSettings['prefix__purchase_invoice'];
+            $invoicePrefix = $generalSettings['prefix__purchase_invoice_prefix'];
             $paymentInvoicePrefix = $generalSettings['prefix__purchase_payment'];
             $isEditProductPrice = $generalSettings['purchase__is_edit_pro_price'];
 

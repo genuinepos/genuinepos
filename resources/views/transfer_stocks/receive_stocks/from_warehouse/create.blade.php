@@ -34,7 +34,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-exchange-alt"></span>
                     <h6>{{ __('Receive Stock From Shop/Business') }}</h6>
                 </div>
 
@@ -57,17 +56,13 @@
                                             @php
                                                 $sendFrom = '';
                                                 if ($transferStock?->senderBranch) {
-
                                                     if ($transferStock?->senderBranch?->parentBranch) {
-
                                                         $sendFrom = $transferStock?->senderBranch?->parentBranch?->name . '(' . $transferStock?->senderBranch?->area_name . ')';
                                                     } else {
-
                                                         $sendFrom = $transferStock?->senderBranch?->area_name . '(' . $transferStock?->senderBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-
-                                                    $sendFrom = $generalSettings['business__business_name'];
+                                                    $sendFrom = $generalSettings['business_or_shop__business_name'];
                                                 }
                                             @endphp
 
@@ -96,17 +91,13 @@
                                             @php
                                                 $sendTo = '';
                                                 if ($transferStock?->receiverBranch) {
-
                                                     if ($transferStock?->receiverBranch?->parentBranch) {
-
                                                         $sendTo = $transferStock?->receiverBranch?->parentBranch?->name . '(' . $transferStock?->receiverBranch?->area_name . ')';
                                                     } else {
-
                                                         $sendTo = $transferStock?->receiverBranch?->area_name . '(' . $transferStock?->receiverBranch?->area_name->area_name . ')';
                                                     }
                                                 } else {
-
-                                                    $sendTo = $generalSettings['business__business_name'];
+                                                    $sendTo = $generalSettings['business_or_shop__business_name'];
                                                 }
                                             @endphp
 
@@ -132,7 +123,7 @@
                                     <div class="input-group">
                                         <label class="col-5"><b>{{ __('Received Date') }}</b></label>
                                         <div class="col-7">
-                                            <input readonly type="text" name="receive_date" class="form-control fw-bold" id="receive_date" value="{{ $transferStock?->receive_date ? date($generalSettings['business__date_format'], strtotime($transferStock->receive_date)) : date($generalSettings['business__date_format']) }}" data-next="search_product" autocomplete="off">
+                                            <input readonly type="text" name="receive_date" class="form-control fw-bold" id="receive_date" value="{{ $transferStock?->receive_date ? date($generalSettings['business_or_shop__date_format'], strtotime($transferStock->receive_date)) : date($generalSettings['business_or_shop__date_format']) }}" data-next="search_product" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -218,7 +209,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label  class="col-4"><b>{{ __("Received Stock Value") }}</b></label>
+                                        <label class="col-4"><b>{{ __('Received Stock Value') }}</b></label>
                                         <div class="col-8">
                                             <input readonly type="text" step="any" name="received_stock_value" class="form-control fw-bold" id="received_stock_value" value="{{ $transferStock->received_stock_value }}" tabindex="-1">
                                         </div>
@@ -227,9 +218,9 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <label class="col-4"><b>{{ __("Receiver Note") }}</b></label>
+                                        <label class="col-4"><b>{{ __('Receiver Note') }}</b></label>
                                         <div class="col-8">
-                                            <input name="receiver_note" type="text" class="form-control" id="receiver_note" data-next="save_changes" value="{{ $transferStock->receiver_note }}" placeholder="{{ __("Receiver Note") }}">
+                                            <input name="receiver_note" type="text" class="form-control" id="receiver_note" data-next="save_changes" value="{{ $transferStock->receiver_note }}" placeholder="{{ __('Receiver Note') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -275,14 +266,14 @@
             calculateTotalAmount();
         });
 
-        function calculateTotalAmount(){
+        function calculateTotalAmount() {
 
             var unitCostsIncTax = document.querySelectorAll('#unit_cost_inc_tax');
             var recevedQuantities = document.querySelectorAll('#received_qty');
             // Update Total Item
             var receivedStockValue = 0;
             var i = 0;
-            recevedQuantities.forEach(function(qty){
+            recevedQuantities.forEach(function(qty) {
 
                 var receivedQty = qty.value ? qty.value : 0;
                 var unitCostIncTax = unitCostsIncTax[i].value ? unitCostsIncTax[i].value : 0;
@@ -353,7 +344,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 

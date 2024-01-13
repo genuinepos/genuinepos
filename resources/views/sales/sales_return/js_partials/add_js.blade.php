@@ -564,7 +564,7 @@
             tr.find('#span_unit_price_inc_tax').html(parseFloat(e_unit_price_inc_tax).toFixed(2));
             tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
             tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-            tr.find('.unique_id').val(e_product_id + e_variant_id );
+            tr.find('.unique_id').val(e_product_id + e_variant_id);
             tr.find('.unique_id').attr('id', e_product_id + e_variant_id);
 
             clearEditItemFileds();
@@ -653,7 +653,7 @@
 
             var inclusiveTax = 100 + parseFloat(e_tax_percent);
             var calcTax = parseFloat(unitPriceWithDiscount) / parseFloat(inclusiveTax) * 100;
-            taxAmount =  parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
+            taxAmount = parseFloat(unitPriceWithDiscount) - parseFloat(calcTax);
             unitPriceIncTax = parseFloat(unitPriceWithDiscount) + parseFloat(taxAmount);
         }
 
@@ -792,9 +792,9 @@
 
         $('#total_return_amount').val(parseFloat(calcTotalAmount).toFixed(2));
 
-        var salesLedgerAmount = parseFloat(netTotalAmount)
-            - parseFloat(returnDiscountAmount)
-            - parseFloat(itemTotalTaxAmount);
+        var salesLedgerAmount = parseFloat(netTotalAmount) -
+            parseFloat(returnDiscountAmount) -
+            parseFloat(itemTotalTaxAmount);
 
         $('#sale_ledger_amount').val(salesLedgerAmount);
 
@@ -921,7 +921,7 @@
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 1000,
                         header: null,
@@ -939,11 +939,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 }
 
@@ -1027,9 +1027,9 @@
         var subSubGroupNumber = $(this).find('option:selected').data('sub_sub_group_number');
         var __branchId = subSubGroupNumber != 6 ? branchId : null;
         var filterObj = {
-            branch_id : __branchId,
-            from_date : null,
-            to_date : null,
+            branch_id: __branchId,
+            from_date: null,
+            to_date: null,
         };
 
         var url = "{{ route('accounts.balance', ':accountId') }}";
@@ -1043,12 +1043,13 @@
 
                 $('#closing_balance').val(parseFloat(data.closing_balance_in_flat_amount).toFixed(2));
                 calculateTotalAmount();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                 } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
@@ -1095,7 +1096,7 @@
         }
     });
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '';
     _expectedDateFormat = dateFormat.replace('d', 'DD');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
@@ -1120,7 +1121,7 @@
         format: _expectedDateFormat,
     });
 
-    $('#payment_method_id').on('change', function () {
+    $('#payment_method_id').on('change', function() {
 
         var account_id = $(this).find('option:selected').data('account_id');
         setMethodAccount(account_id);
@@ -1131,7 +1132,7 @@
         if (account_id) {
 
             $('#account_id').val(account_id);
-        }else if(account_id === ''){
+        } else if (account_id === '') {
             return;
             // $('#account_id option:first-child').prop("selected", true);
         }
@@ -1143,6 +1144,11 @@
 
         $('#customer_account_id').focus().select();
     }, 1000);
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>

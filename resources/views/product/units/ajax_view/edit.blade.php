@@ -1,7 +1,7 @@
 <div class="modal-dialog col-40-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Unit") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Unit') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -9,19 +9,19 @@
             <form id="edit_unit_form" action="{{ route('units.update', $unit->id) }}">
                 @csrf
                 <div class="form-group">
-                    <label><b>{{ __("Name") }}</b> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="unit_name" value="{{ $unit->name }}" data-next="unit_short_name" placeholder="{{ __("Unit Name") }}" />
+                    <label><b>{{ __('Name') }}</b> <span class="text-danger">*</span></label>
+                    <input required type="text" name="name" class="form-control" id="unit_name" value="{{ $unit->name }}" data-next="unit_short_name" placeholder="{{ __('Unit Name') }}" />
                     <span class="error error_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("Short Name") }} </b><span class="text-danger">*</span></label>
+                    <label><b>{{ __('Short Name') }} </b><span class="text-danger">*</span></label>
                     <input required type="text" name="short_name" class="form-control" id="unit_short_name" value="{{ $unit->code_name }}" data-next="unit_as_a_multiplier_of_other_unit" placeholder="@lang('menu.short_name')" />
                     <span class="error error_unit_short_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><b>{{ __("As A Multiplier Of Other Unit") }}</b></label>
+                    <label><b>{{ __('As A Multiplier Of Other Unit') }}</b></label>
                     <select name="as_a_multiplier_of_other_unit" class="form-control form-select" id="unit_as_a_multiplier_of_other_unit" data-next="unit_base_unit_multiplier">
                         <option value="0">@lang('menu.no')</option>
                         <option {{ $unit->base_unit_id ? 'selected' : '' }} value="1">@lang('menu.yes')</option>
@@ -31,7 +31,7 @@
                 <div class="{{ $unit->base_unit_id ? '' : 'd-hide' }}" id="multiple_unit_fields">
                     <div class="form-group mt-2 row g-2">
                         <div class="col-md-3">
-                            <p class="fw-bold">{{ __("1") }} <span id="base_unit_name">{{ $unit->name }}</span>
+                            <p class="fw-bold">{{ __('1') }} <span id="base_unit_name">{{ $unit->name }}</span>
                             </p>
                         </div>
 
@@ -40,13 +40,13 @@
                         </div>
 
                         <div class="col-md-4">
-                            <input type="text" name="base_unit_multiplier" class="form-control fw-bold" id="unit_base_unit_multiplier" value="{{ $unit->base_unit_multiplier }}" data-next="unit_base_unit_id" placeholder="{{ __("Amount Of Base Unit") }}" />
+                            <input type="text" name="base_unit_multiplier" class="form-control fw-bold" id="unit_base_unit_multiplier" value="{{ $unit->base_unit_multiplier }}" data-next="unit_base_unit_id" placeholder="{{ __('Amount Of Base Unit') }}" />
                             <span class="error error_unit_base_unit_multiplier"></span>
                         </div>
 
                         <div class="col-md-4">
                             <select name="base_unit_id" class="form-control select2 form-select" id="unit_base_unit_id" data-next="unit_save_changes">
-                                <option value="">{{ __("Select Base Unit") }}</option>
+                                <option value="">{{ __('Select Base Unit') }}</option>
                                 @foreach ($baseUnits as $baseUnit)
                                     <option {{ $baseUnit->id == $unit->base_unit_id ? 'SELECTED' : '' }} value="{{ $baseUnit->id }}">{{ $baseUnit->name }} ({{ $baseUnit->code_name }})
                                     </option>
@@ -60,9 +60,9 @@
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button unit_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="button" id="unit_save_changes" class="btn btn-sm btn-success unit_submit_button">{{ __("Save Changes") }}</button>
+                            <button type="button" class="btn loading_button unit_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="button" id="unit_save_changes" class="btn btn-sm btn-success unit_submit_button">{{ __('Save Changes') }}</button>
                         </div>
                     </div>
                 </div>
@@ -185,11 +185,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 } else if (err.status == 403) {
 

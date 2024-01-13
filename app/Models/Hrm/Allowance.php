@@ -9,12 +9,5 @@ class Allowance extends BaseModel
 {
     use HasFactory;
 
-    protected $table = 'hrm_allowance';
-
-    protected $fillable = ['description', 'type', 'employee_id', 'amount_type', 'amount', 'applicable_date', 'is_delete_in_update'];
-
-    public function allowance_employees()
-    {
-        return $this->hasMany(AllowanceEmployee::class, 'allowance_id');
-    }
+    protected $table = 'hrm_allowances';
 }

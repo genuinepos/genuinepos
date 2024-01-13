@@ -1,19 +1,28 @@
 @extends('layout.master')
 @section('content')
     @push('stylesheets')
-        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <style>
-            .contract_info_area ul li strong{color:#495677}
-            .account_summary_area .heading h5{background:#0F3057;color:white}
-            .contract_info_area ul li strong i {color: #495b77; font-size: 13px;}
+            .contract_info_area ul li strong {
+                color: #495677
+            }
+
+            .account_summary_area .heading h5 {
+                background: #0F3057;
+                color: white
+            }
+
+            .contract_info_area ul li strong i {
+                color: #495b77;
+                font-size: 13px;
+            }
         </style>
     @endpush
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-people-arrows"></span>
                     <h6><strong>{{ $customer->name }}</strong></h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
@@ -65,23 +74,22 @@
                                         <form id="filter_customer_ledgers" method="get" class="px-2">
                                             <div class="form-group row align-items-end justify-content-end g-3">
 
-                                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                                        <div class="col-lg-3 col-md-6">
-                                                            <label><strong>@lang('menu.business_location') </strong></label>
-                                                            <select name="branch_id" class="form-control submit_able select2"
-                                                                id="ledger_branch_id" autofocus>
-                                                                <option value="">@lang('menu.all')</option>
-                                                                <option value="NULL">
-                                                                    {{ $generalSettings['business__business_name'] }}
+                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <label><strong>@lang('menu.business_location') </strong></label>
+                                                        <select name="branch_id" class="form-control submit_able select2" id="ledger_branch_id" autofocus>
+                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="NULL">
+                                                                {{ $generalSettings['business_or_shop__business_name'] }}
+                                                            </option>
+                                                            @foreach ($branches as $branch)
+                                                                <option value="{{ $branch->id }}">
+                                                                    {{ $branch->name . '/' . $branch->branch_code }}
                                                                 </option>
-                                                                @foreach ($branches as $branch)
-                                                                    <option value="{{ $branch->id }}">
-                                                                        {{ $branch->name . '/' . $branch->branch_code }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
 
 
                                                 <div class="col-lg-3 col-md-6">
@@ -142,21 +150,21 @@
                                         <table class="display data_tbl data__table ledger_table">
                                             <thead>
                                                 <tr>
-                                                    <tr>
-                                                        <th>@lang('menu.date')</th>
-                                                        <th>{{ __('Particulars') }}</th>
-                                                        <th>@lang('menu.business_location')</th>
-                                                        <th>{{ __('Voucher/Invoice') }}</th>
-                                                        <th>@lang('menu.debit')</th>
-                                                        <th>@lang('menu.credit')</th>
-                                                        <th>@lang('menu.running_balance')</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>@lang('menu.date')</th>
+                                                    <th>{{ __('Particulars') }}</th>
+                                                    <th>@lang('menu.business_location')</th>
+                                                    <th>{{ __('Voucher/Invoice') }}</th>
+                                                    <th>@lang('menu.debit')</th>
+                                                    <th>@lang('menu.credit')</th>
+                                                    <th>@lang('menu.running_balance')</th>
+                                                </tr>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
                                             <tfoot>
                                                 <tr class="bg-secondary">
-                                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business__currency'] }})</th>
+                                                    <th colspan="4" class="text-white text-end">@lang('menu.total') : ({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                                                     <th id="debit" class="text-white text-end"></th>
                                                     <th id="credit" class="text-white text-end"></th>
                                                     <th class="text-white text-end">---</th>
@@ -199,37 +207,37 @@
                             <div class="col-md-3">
                                 <ul class="list-unstyled">
                                     <li>
-                                        <strong> @lang('menu.opening_balance') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.opening_balance') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="opening_balance">{{ App\Utils\Converter::format_in_bdt($customer->opening_balance) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_sale') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.total_sale') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_sale">{{ App\Utils\Converter::format_in_bdt($customer->total_sale) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_return') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.total_return') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_return">{{ App\Utils\Converter::format_in_bdt($customer->total_return) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_less') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.total_less') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_less">{{ App\Utils\Converter::format_in_bdt($customer->total_less) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_paid">{{ App\Utils\Converter::format_in_bdt($customer->total_paid) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> @lang('menu.total_due') : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> @lang('menu.total_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_sale_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_due) }}</span>
                                     </li>
 
                                     <li>
-                                        <strong> {{ __('Total Returnable Due') }} : {{ $generalSettings['business__currency'] }}</strong>
+                                        <strong> {{ __('Total Returnable Due') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</strong>
                                         <span class="total_sale_return_due">{{ App\Utils\Converter::format_in_bdt($customer->total_sale_return_due) }}</span>
                                     </li>
                                 </ul>
@@ -259,7 +267,7 @@
                                                         <select name="branch_id" class="form-control submit_able select2" id="sale_branch_id" autofocus>
                                                             <option value="">@lang('menu.all')</option>
                                                             <option value="NULL">
-                                                                {{ $generalSettings['business__business_name'] }}
+                                                                {{ $generalSettings['business_or_shop__business_name'] }}
                                                             </option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">
@@ -350,7 +358,7 @@
                         </div>
                     </div>
 
-                    @if(auth()->user()->can('sale_payment'))
+                    @if (auth()->user()->can('sale_payment'))
                         <div class="tab_contant payments d-hide">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-3">
@@ -375,7 +383,7 @@
                                                                         <select name="branch_id" class="form-control submit_able select2" id="payment_branch_id" autofocus>
                                                                             <option value="">@lang('menu.all')</option>
                                                                             <option value="NULL">
-                                                                                {{ $generalSettings['business__business_name'] }}
+                                                                                {{ $generalSettings['business_or_shop__business_name'] }}
                                                                             </option>
                                                                             @foreach ($branches as $branch)
                                                                                 <option value="{{ $branch->id }}">
@@ -502,14 +510,14 @@
     <!-- Details Modal -->
     <div id="sale_details"></div>
 
-   <!-- Edit Shipping modal -->
-   <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <!-- Edit Shipping modal -->
+    <div class="modal fade" id="editShipmentModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog double-col-modal" role="document">
             <div class="modal-content" id="edit_shipment_modal_content"></div>
         </div>
     </div>
 
-    @if(auth()->user()->can('sale_payment'))
+    @if (auth()->user()->can('sale_payment'))
         <!--Payment View modal-->
         <div class="modal fade" id="paymentViewModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog four-col-modal" role="document">
@@ -562,15 +570,25 @@
         var ledger_table = $('.ledger_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "searching" : false,
+            "searching": false,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary'
+                },
             ],
 
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
 
             "ajax": {
                 "url": "{{ route('contacts.customer.ledger.list', $customer->id) }}",
@@ -582,15 +600,39 @@
                 }
             },
 
-            columns: [
-                {data: 'date', name: 'customer_ledgers.report_date'},
-                {data: 'particulars', name: 'particulars'},
-                {data: 'b_name', name: 'branches.name'},
-                {data: 'voucher_no', name: 'voucher_no'},
-                {data: 'debit', name: 'debit', className: 'text-end'},
-                {data: 'credit', name: 'credit', className: 'text-end'},
-                {data: 'running_balance', name: 'running_balance', className: 'text-end'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'date',
+                    name: 'customer_ledgers.report_date'
+                },
+                {
+                    data: 'particulars',
+                    name: 'particulars'
+                },
+                {
+                    data: 'b_name',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'voucher_no',
+                    name: 'voucher_no'
+                },
+                {
+                    data: 'debit',
+                    name: 'debit',
+                    className: 'text-end'
+                },
+                {
+                    data: 'credit',
+                    name: 'credit',
+                    className: 'text-end'
+                },
+                {
+                    data: 'running_balance',
+                    name: 'running_balance',
+                    className: 'text-end'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var debit = sum_table_col($('.data_tbl'), 'debit');
                 $('#debit').text(bdFormat(debit));
@@ -608,7 +650,10 @@
             // aaSorting: [[3, 'asc']],
 
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
 
             "ajax": {
                 "url": "{{ route('contacts.customer.view', $customerId) }}",
@@ -625,19 +670,56 @@
                 "searchable": false
             }],
 
-            columns: [
-                {data: 'action'},
-                { data: 'date', name: 'date'},
-                { data: 'invoice_id', name: 'invoice_id'},
-                {data: 'from', name: 'branches.name'},
-                {data: 'customer', name: 'customers.name'},
-                {data: 'total_payable_amount', name: 'total_payable_amount', className: 'text-end'},
-                {data: 'paid', name: 'paid', className: 'text-end'},
-                {data: 'due', name: 'due', className: 'text-end'},
-                {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end'},
-                {data: 'sale_return_due', name: 'sale_return_due', className: 'text-end'},
-                {data: 'paid_status', name: 'paid_status'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'action'
+                },
+                {
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'invoice_id',
+                    name: 'invoice_id'
+                },
+                {
+                    data: 'from',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'customer',
+                    name: 'customers.name'
+                },
+                {
+                    data: 'total_payable_amount',
+                    name: 'total_payable_amount',
+                    className: 'text-end'
+                },
+                {
+                    data: 'paid',
+                    name: 'paid',
+                    className: 'text-end'
+                },
+                {
+                    data: 'due',
+                    name: 'due',
+                    className: 'text-end'
+                },
+                {
+                    data: 'sale_return_amount',
+                    name: 'sale_return_amount',
+                    className: 'text-end'
+                },
+                {
+                    data: 'sale_return_due',
+                    name: 'sale_return_due',
+                    className: 'text-end'
+                },
+                {
+                    data: 'paid_status',
+                    name: 'paid_status'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 var total_payable_amount = sum_table_col($('.data_tbl'), 'total_payable_amount');
                 $('#total_payable_amount').text(bdFormat(total_payable_amount));
@@ -658,20 +740,30 @@
             }
         });
 
-        @if(auth()->user()->can('sale_payment'))
+        @if (auth()->user()->can('sale_payment'))
 
             var payments_table = $('.payments_table').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "searching" : true,
+                "searching": true,
                 dom: "lBfrtip",
-                buttons: [
-                    {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary'},
-                    {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary'},
+                buttons: [{
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-primary'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> Pdf',
+                        className: 'btn btn-primary'
+                    },
                 ],
 
                 "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-                "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+                "lengthMenu": [
+                    [10, 25, 50, 100, 500, 1000, -1],
+                    [10, 25, 50, 100, 500, 1000, "All"]
+                ],
 
                 "ajax": {
                     "url": "{{ route('customers.all.payment.list', $customer->id) }}",
@@ -688,18 +780,49 @@
                     "searchable": false
                 }],
 
-                columns: [
-                    {data: 'date', name: 'customer_ledgers.date'},
-                    {data: 'voucher_no', name: 'customer_payments.voucher_no'},
-                    {data: 'reference', name: 'customer_payments.reference'},
-                    {data: 'against_invoice', name: 'sales.invoice_id'},
-                    {data: 'type', name: 'type'},
-                    {data: 'method', name: 'method'},
-                    {data: 'account', name: 'account'},
-                    {data: 'less_amount', name: 'customer_payments.less_amount', className: 'text-end'},
-                    {data: 'amount', name: 'customer_ledgers.amount', className: 'text-end'},
-                    {data: 'action'},
-                ],fnDrawCallback: function() {
+                columns: [{
+                        data: 'date',
+                        name: 'customer_ledgers.date'
+                    },
+                    {
+                        data: 'voucher_no',
+                        name: 'customer_payments.voucher_no'
+                    },
+                    {
+                        data: 'reference',
+                        name: 'customer_payments.reference'
+                    },
+                    {
+                        data: 'against_invoice',
+                        name: 'sales.invoice_id'
+                    },
+                    {
+                        data: 'type',
+                        name: 'type'
+                    },
+                    {
+                        data: 'method',
+                        name: 'method'
+                    },
+                    {
+                        data: 'account',
+                        name: 'account'
+                    },
+                    {
+                        data: 'less_amount',
+                        name: 'customer_payments.less_amount',
+                        className: 'text-end'
+                    },
+                    {
+                        data: 'amount',
+                        name: 'customer_ledgers.amount',
+                        className: 'text-end'
+                    },
+                    {
+                        data: 'action'
+                    },
+                ],
+                fnDrawCallback: function() {
 
                     var amount = sum_table_col($('.data_tbl'), 'amount');
                     $('#amount').text(bdFormat(amount));
@@ -726,53 +849,53 @@
         }
 
         var filterObj = {
-            branch_id : null,
-            from_date : null,
-            to_date : null,
+            branch_id: null,
+            from_date: null,
+            to_date: null,
         };
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_customer_ledgers', function (e) {
+        $(document).on('submit', '#filter_customer_ledgers', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             ledger_table.ajax.reload();
 
             filterObj = {
-                branch_id : $('#ledger_branch_id').val(),
-                from_date : $('.from_date').val(),
-                to_date : $('.to_date').val(),
+                branch_id: $('#ledger_branch_id').val(),
+                from_date: $('.from_date').val(),
+                to_date: $('.to_date').val(),
             };
 
             var data = getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
         });
 
-         //Submit filter form by select input changing
-         $(document).on('submit', '#filter_customer_sales', function (e) {
+        //Submit filter form by select input changing
+        $(document).on('submit', '#filter_customer_sales', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
             sales_table.ajax.reload();
 
             filterObj = {
-                branch_id : $('#sale_branch_id').val(),
-                from_date : $('#from_sale_date').val(),
-                to_date : $('#to_sale_date').val(),
+                branch_id: $('#sale_branch_id').val(),
+                from_date: $('#from_sale_date').val(),
+                to_date: $('#to_sale_date').val(),
             };
 
             var data = getCustomerAmountsBranchWise(filterObj, 'sales_', false);
         });
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_customer_payments', function (e) {
+        $(document).on('submit', '#filter_customer_payments', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
             payments_table.ajax.reload();
 
             filterObj = {
-                branch_id : $('#payment_branch_id').val(),
-                from_date : $('#payment_from_date').val(),
-                to_date : $('#payment_to_date').val(),
+                branch_id: $('#payment_branch_id').val(),
+                from_date: $('#payment_from_date').val(),
+                to_date: $('#payment_to_date').val(),
             };
 
             var data = getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
@@ -789,15 +912,15 @@
         });
 
         // Show details modal with data
-        $(document).on('click', '.details_button', function (e) {
+        $(document).on('click', '.details_button', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
             $('.data_preloader').show();
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#sale_details').html(data);
                     $('.data_preloader').hide();
@@ -807,21 +930,21 @@
         });
 
         // Print Packing slip
-        $(document).on('click', '#print_packing_slip', function (e) {
+        $(document).on('click', '#print_packing_slip', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
                     $('.data_preloader').hide();
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 700,
                         header: null,
@@ -831,15 +954,15 @@
         });
 
         // Show change status modal and pass actual link in the change status form
-        $(document).on('click', '#edit_shipment', function (e) {
+        $(document).on('click', '#edit_shipment', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
             var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('.data_preloader').hide();
                     $('#edit_shipment_modal_content').html(data);
@@ -848,7 +971,7 @@
             });
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -858,47 +981,57 @@
                 'title': 'Confirmation',
                 'message': 'Are you sure?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-danger','action': function() {$('#deleted_form').submit();}},
-                    'No': {'class': 'no btn-modal-primary','action': function() { console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-danger',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-modal-primary',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
 
         //data delete by ajax
-        $(document).on('submit', '#deleted_form',function(e){
+        $(document).on('submit', '#deleted_form', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
 
-                     $('.data_tbl').DataTable().ajax.reload();
+                    $('.data_tbl').DataTable().ajax.reload();
                     toastr.error(data);
 
                     var filterObj = {
-                        branch_id : $('#sale_branch_id').val(),
-                        from_date : $('#from_sale_date').val(),
-                        to_date : $('#to_sale_date').val(),
+                        branch_id: $('#sale_branch_id').val(),
+                        from_date: $('#from_sale_date').val(),
+                        to_date: $('#to_sale_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'sales_', false);
 
                     filterObj = {
-                        branch_id : $('#payment_branch_id').val(),
-                        from_date : $('#payment_from_date').val(),
-                        to_date : $('#payment_to_date').val(),
+                        branch_id: $('#payment_branch_id').val(),
+                        from_date: $('#payment_from_date').val(),
+                        to_date: $('#payment_to_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
 
                     filterObj = {
-                        branch_id : $('#ledger_branch_id').val(),
-                        from_date : $('.from_date').val(),
-                        to_date : $('.to_date').val(),
+                        branch_id: $('#ledger_branch_id').val(),
+                        from_date: $('.from_date').val(),
+                        to_date: $('.to_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
@@ -907,8 +1040,8 @@
         });
 
         // Make print
-        $(document).on('click', '.print_btn',function (e) {
-           e.preventDefault();
+        $(document).on('click', '.print_btn', function(e) {
+            e.preventDefault();
 
             var body = $('.sale_print_template').html();
             var header = $('.heading_area').html();
@@ -917,22 +1050,22 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                 removeInline: false,
                 printDelay: 500,
-                header : null,
+                header: null,
             });
         });
 
-        $(document).on('click', '#add_payment', function (e) {
+        $(document).on('click', '#add_payment', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#paymentModal').html(data);
                     $('#paymentModal').modal('show');
@@ -941,7 +1074,7 @@
             });
         });
 
-        $(document).on('click', '#add_return_payment', function (e) {
+        $(document).on('click', '#add_return_payment', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -949,9 +1082,9 @@
             $('#payment_heading').html('Pay Return Amount');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#paymentModal').html(data);
                     $('#paymentModal').modal('show');
@@ -961,15 +1094,15 @@
         });
 
         // //Show payment view modal with data
-        $(document).on('click', '#view_payment', function (e) {
-           e.preventDefault();
+        $(document).on('click', '#view_payment', function(e) {
+            e.preventDefault();
 
-           var url = $(this).attr('href');
+            var url = $(this).attr('href');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(date){
+                url: url,
+                type: 'get',
+                success: function(date) {
 
                     $('#payment_view_modal_body').html(date);
                     $('#paymentViewModal').modal('show');
@@ -978,7 +1111,7 @@
         });
 
         // // show payment edit modal with data
-        $(document).on('click', '#edit_payment', function (e) {
+        $(document).on('click', '#edit_payment', function(e) {
             e.preventDefault();
 
             $('.data_preloader').show();
@@ -986,9 +1119,9 @@
             $('#payment_heading').html('Edit Payment');
 
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#paymentModal').html(data);
                     $('#paymentModal').modal('show');
@@ -998,14 +1131,14 @@
         });
 
         // show payment edit modal with data
-        $(document).on('click', '#edit_return_payment', function (e) {
+        $(document).on('click', '#edit_return_payment', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $('#payment_heading').html('Edit Return Payment');
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(data){
+                url: url,
+                type: 'get',
+                success: function(data) {
 
                     $('#paymentModal').html(data);
                     $('#paymentModal').modal('show');
@@ -1015,13 +1148,13 @@
         });
 
         //Show payment view modal with data
-        $(document).on('click', '#payment_details', function (e) {
+        $(document).on('click', '#payment_details', function(e) {
             e.preventDefault();
             var url = $(this).attr('href');
             $.ajax({
-                url:url,
-                type:'get',
-                success:function(date){
+                url: url,
+                type: 'get',
+                success: function(date) {
 
                     $('.payment_details_area').html(date);
                     $('#paymentDetailsModal').modal('show');
@@ -1030,9 +1163,9 @@
         });
 
         // Print single payment details
-        $('#print_payment').on('click', function (e) {
-           e.preventDefault();
-           var body = $('.sale_payment_print_area').html();
+        $('#print_payment').on('click', function(e) {
+            e.preventDefault();
+            var body = $('.sale_payment_print_area').html();
             var header = $('.header_area').html();
             var footer = $('.footer_area').html();
 
@@ -1040,7 +1173,7 @@
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('assets/css/print/purchase.print.css')}}",
+                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
                 removeInline: false,
                 printDelay: 500,
                 header: header,
@@ -1049,7 +1182,7 @@
         });
 
         // Show sweet alert for delete
-        $(document).on('click', '#delete_payment',function(e){
+        $(document).on('click', '#delete_payment', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -1060,48 +1193,58 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure, you want to delete?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() {$('#payment_deleted_form').submit();}},
-                    'No': {'class': 'no btn-danger','action': function() {console.log('Deleted canceled.');}}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#payment_deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             })
         });
 
         //data delete by ajax
-        $(document).on('submit', '#payment_deleted_form',function(e){
+        $(document).on('submit', '#payment_deleted_form', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
-                data:request,
-                success:function(data){
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
 
                     $('.data_tbl').DataTable().ajax.reload();
                     $('#paymentViewModal').modal('hide');
                     toastr.error(data);
 
                     var filterObj = {
-                        branch_id : $('#payment_branch_id').val(),
-                        from_date : $('#payment_from_date').val(),
-                        to_date : $('#payment_to_date').val(),
+                        branch_id: $('#payment_branch_id').val(),
+                        from_date: $('#payment_from_date').val(),
+                        to_date: $('#payment_to_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'cus_payments_', false);
 
                     filterObj = {
-                        branch_id : $('#ledger_branch_id').val(),
-                        from_date : $('.from_date').val(),
-                        to_date : $('.to_date').val(),
+                        branch_id: $('#ledger_branch_id').val(),
+                        from_date: $('.from_date').val(),
+                        to_date: $('.to_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'ledger_', false);
 
                     filterObj = {
-                        branch_id : $('#sale_branch_id').val(),
-                        from_date : $('#from_sale_date').val(),
-                        to_date : $('#to_sale_date').val(),
+                        branch_id: $('#sale_branch_id').val(),
+                        from_date: $('#from_sale_date').val(),
+                        to_date: $('#to_sale_date').val(),
                     };
 
                     getCustomerAmountsBranchWise(filterObj, 'sales_', false);
@@ -1109,15 +1252,15 @@
             });
         });
 
-        $(document).on('click', '.print_challan_btn',function (e) {
-           e.preventDefault();
+        $(document).on('click', '.print_challan_btn', function(e) {
+            e.preventDefault();
             var body = $('.challan_print_template').html();
             var header = $('.heading_area').html();
             $(body).printThis({
                 debug: false,
                 importCSS: true,
                 importStyle: true,
-                loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                 removeInline: false,
                 printDelay: 800,
                 header: null,
@@ -1126,7 +1269,7 @@
         });
 
         //Print Customer ledger
-        $(document).on('click', '#print_report', function (e) {
+        $(document).on('click', '#print_report', function(e) {
             e.preventDefault();
 
             var url = "{{ route('contacts.customer.ledger.print', $customerId) }}";
@@ -1139,24 +1282,29 @@
             $.ajax({
                 url: url,
                 type: 'get',
-                data: { branch_id, voucher_type, from_date, to_date },
-                success:function(data){
+                data: {
+                    branch_id,
+                    voucher_type,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
 
                     $(data).printThis({
-                        debug : false,
-                        importCSS : true,
-                        importStyle : true,
-                        loadCSS : "{{asset('assets/css/print/sale.print.css')}}",
-                        removeInline : false,
-                        printDelay : 700,
-                        header : null,
+                        debug: false,
+                        importCSS: true,
+                        importStyle: true,
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                        removeInline: false,
+                        printDelay: 700,
+                        header: null,
                     });
                 }
             });
         });
 
         //Print purchase Payment report
-        $(document).on('click', '#print_sale_statement', function (e) {
+        $(document).on('click', '#print_sale_statement', function(e) {
             e.preventDefault();
 
             var url = "{{ route('reports.sale.statement.print') }}";
@@ -1167,16 +1315,21 @@
             var to_date = $('.to_sale_date').val();
 
             $.ajax({
-                url:url,
-                type:'get',
-                data: {branch_id, customer_id, from_date, to_date},
-                success:function(data){
+                url: url,
+                type: 'get',
+                data: {
+                    branch_id,
+                    customer_id,
+                    from_date,
+                    to_date
+                },
+                success: function(data) {
 
                     $(data).printThis({
                         debug: false,
                         importCSS: true,
                         importStyle: true,
-                        loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
+                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
                         removeInline: false,
                         printDelay: 500,
                         header: "",
@@ -1187,7 +1340,7 @@
         });
 
         //Print Ledger
-        $(document).on('click', '#print_payments', function (e) {
+        $(document).on('click', '#print_payments', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -1197,7 +1350,11 @@
             $.ajax({
                 url: url,
                 type: 'get',
-                data: { type, p_from_date, p_to_date },
+                data: {
+                    type,
+                    p_from_date,
+                    p_to_date
+                },
                 success: function(data) {
 
                     $(data).printThis({
@@ -1328,28 +1485,26 @@
             },
             format: 'DD-MM-YYYY',
         });
-
     </script>
 
     <script>
-
-       function getCustomerAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
+        function getCustomerAmountsBranchWise(filterObj, showPrefix = 'ledger', is_show_all = true) {
 
             $.ajax({
-               url :"{{ route('contacts.customer.amounts.branch.wise', $customer->id) }}",
-                type :'get',
-                data : filterObj,
-                success:function(data){
+                url: "{{ route('contacts.customer.amounts.branch.wise', $customer->id) }}",
+                type: 'get',
+                data: filterObj,
+                success: function(data) {
                     var keys = Object.keys(data);
 
-                    keys.forEach(function (val) {
+                    keys.forEach(function(val) {
 
                         if (is_show_all) {
 
-                            $('.'+val).html(bdFormat(data[val]));
-                        }else {
+                            $('.' + val).html(bdFormat(data[val]));
+                        } else {
 
-                            $('#'+showPrefix+val).html(bdFormat(data[val]));
+                            $('#' + showPrefix + val).html(bdFormat(data[val]));
                         }
                     });
 

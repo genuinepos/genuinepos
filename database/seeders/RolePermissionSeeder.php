@@ -42,7 +42,7 @@ class RolePermissionSeeder extends Seeder
         foreach ($roles as $role) {
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
             if (!$roleAlreadyExists) {
-                Role::create(['name' => $role['name']]);
+                Role::insert(['name' => $role['name']]);
             }
         }
 
@@ -50,7 +50,7 @@ class RolePermissionSeeder extends Seeder
         foreach ($permissions as $permission) {
             $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
             if (!$permissionExists) {
-                Permission::create([
+                Permission::insert([
                     'id' => $permission['id'],
                     'name' => $permission['name'],
                     'guard_name' => 'web',
@@ -187,19 +187,19 @@ class RolePermissionSeeder extends Seeder
             ['id' => '101', 'name' => 'cash_counters'],
             ['id' => '102', 'name' => 'view_dashboard_data'],
             // ['id' => '103', 'name' => 'accounting_access'],
-            ['id' => '104', 'name' => 'hrm_dashboard'],
-            ['id' => '105', 'name' => 'leave_type'],
-            ['id' => '106', 'name' => 'leave_assign'],
-            ['id' => '107', 'name' => 'shift'],
-            ['id' => '108', 'name' => 'attendance'],
-            ['id' => '109', 'name' => 'view_allowance_and_deduction'],
-            ['id' => '110', 'name' => 'payroll'],
-            ['id' => '111', 'name' => 'holiday'],
-            ['id' => '112', 'name' => 'department'],
-            ['id' => '113', 'name' => 'designation'],
-            ['id' => '114', 'name' => 'payroll_report'],
-            ['id' => '115', 'name' => 'payroll_payment_report'],
-            ['id' => '116', 'name' => 'attendance_report'],
+            // ['id' => '104', 'name' => 'hrm_dashboard'],
+            // ['id' => '105', 'name' => 'leave_type'],
+            // ['id' => '106', 'name' => 'leave_assign'],
+            // ['id' => '107', 'name' => 'shift'],
+            // ['id' => '108', 'name' => 'attendance'],
+            // ['id' => '109', 'name' => 'view_allowance_and_deduction'],
+            // ['id' => '110', 'name' => 'payroll'],
+            // ['id' => '111', 'name' => 'holiday'],
+            // ['id' => '112', 'name' => 'department'],
+            // ['id' => '113', 'name' => 'designation'],
+            // ['id' => '114', 'name' => 'payroll_report'],
+            // ['id' => '115', 'name' => 'payroll_payment_report'],
+            // ['id' => '116', 'name' => 'attendance_report'],
             ['id' => '117', 'name' => 'assign_todo'],
             ['id' => '118', 'name' => 'work_space'],
             ['id' => '119', 'name' => 'memo'],
@@ -393,6 +393,67 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '281', 'name' => 'transfer_stock_receive_from_warehouse'],
             ['id' => '282', 'name' => 'transfer_stock_receive_from_branch'],
+
+            ['id' => '283', 'name' => 'leaves_index'],
+            ['id' => '284', 'name' => 'leaves_create'],
+            ['id' => '285', 'name' => 'leaves_edit'],
+            ['id' => '286', 'name' => 'leaves_delete'],
+
+            ['id' => '287', 'name' => 'leave_types_index'],
+            ['id' => '288', 'name' => 'leave_types_create'],
+            ['id' => '289', 'name' => 'leave_types_edit'],
+            ['id' => '290', 'name' => 'leave_types_delete'],
+
+            ['id' => '291', 'name' => 'shifts_index'],
+            ['id' => '293', 'name' => 'shifts_create'],
+            ['id' => '294', 'name' => 'shifts_edit'],
+            ['id' => '295', 'name' => 'shifts_delete'],
+
+            ['id' => '296', 'name' => 'attendances_index'],
+            ['id' => '297', 'name' => 'attendances_create'],
+            ['id' => '298', 'name' => 'attendances_edit'],
+            ['id' => '299', 'name' => 'attendances_delete'],
+
+            ['id' => '300', 'name' => 'allowances_index'],
+            ['id' => '301', 'name' => 'allowances_create'],
+            ['id' => '302', 'name' => 'allowances_edit'],
+            ['id' => '303', 'name' => 'allowances_delete'],
+
+            ['id' => '304', 'name' => 'deductions_index'],
+            ['id' => '305', 'name' => 'deductions_create'],
+            ['id' => '306', 'name' => 'deductions_edit'],
+            ['id' => '307', 'name' => 'deductions_delete'],
+
+            ['id' => '308', 'name' => 'holidays_index'],
+            ['id' => '309', 'name' => 'holidays_create'],
+            ['id' => '310', 'name' => 'holidays_edit'],
+            ['id' => '311', 'name' => 'holidays_delete'],
+
+            ['id' => '312', 'name' => 'departments_index'],
+            ['id' => '314', 'name' => 'departments_create'],
+            ['id' => '315', 'name' => 'departments_edit'],
+            ['id' => '316', 'name' => 'departments_delete'],
+
+            ['id' => '317', 'name' => 'designations_index'],
+            ['id' => '318', 'name' => 'designations_create'],
+            ['id' => '319', 'name' => 'designations_edit'],
+            ['id' => '320', 'name' => 'designations_delete'],
+
+            ['id' => '321', 'name' => 'payrolls_index'],
+            ['id' => '322', 'name' => 'payrolls_create'],
+            ['id' => '323', 'name' => 'payrolls_edit'],
+            ['id' => '324', 'name' => 'payrolls_delete'],
+
+            ['id' => '325', 'name' => 'payroll_payments_index'],
+            ['id' => '326', 'name' => 'payroll_payments_create'],
+            ['id' => '327', 'name' => 'payroll_payments_edit'],
+            ['id' => '328', 'name' => 'payroll_payments_delete'],
+
+            ['id' => '329', 'name' => 'payroll_report'],
+            ['id' => '330', 'name' => 'payroll_payment_report'],
+            ['id' => '331', 'name' => 'attendance_report'],
+
+            ['id' => '332', 'name' => 'hrm_dashboard'],
         ];
 
 

@@ -10,7 +10,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-edit"></span>
                     <h5>{{ __("Barcode Sticker Settings") }}</h5>
                 </div>
 

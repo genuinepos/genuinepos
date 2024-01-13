@@ -19,7 +19,6 @@ use App\Services\Purchases\PurchaseService;
 use App\Services\Sales\SaleService;
 use App\Services\Sales\SalesReturnService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +38,6 @@ class ReceiptController extends Controller
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
         private DayBookVoucherService $dayBookVoucherService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
@@ -118,7 +116,6 @@ class ReceiptController extends Controller
             $storeMethodContainer = $receiptControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
                 receiptService: $this->receiptService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
@@ -191,7 +188,6 @@ class ReceiptController extends Controller
                 id: $id,
                 request: $request,
                 receiptService: $this->receiptService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,

@@ -2,155 +2,120 @@
 
 namespace App\Http\Controllers\HRM;
 
-use App\Http\Controllers\Controller;
-use App\Models\Hrm\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Hrm\HolidayService;
+use App\Services\Setups\BranchService;
+use App\Services\Hrm\HolidayBranchService;
 
 class HolidayController extends Controller
 {
-    public function __construct()
-    {
-
+    public function __construct(
+        private HolidayService $holidayService,
+        private HolidayBranchService $holidayBranchService,
+        private BranchService $branchService,
+    ) {
     }
 
-    //holiday page show methods
-    public function index()
+    public function index(Request $request)
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_index')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+        if ($request->ajax()) {
 
-        return view('hrm.holiday.index', compact('branches'));
+            return $this->holidayService->holidaysTable(request: $request);
+        }
+
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+
+        return view('hrm.holidays.index', compact('branches'));
     }
 
-    //all holidays data get for holiday pages
-    public function allHolidays()
+    public function create()
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_create')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $holidays = '';
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $holidays = Holiday::with('branch')->orderBy('id', 'DESC')->get();
-        } else {
-            $holidays = Holiday::with('branch')
-                ->where('branch_id', auth()->user()->branch_id)
-                ->orWhere('is_all', 1)
-                ->orderBy('id', 'DESC')->get();
-        }
-
-        return view('hrm.holiday.ajax.list', compact('holidays'));
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        return view('hrm.holidays.ajax_view.create', compact('branches'));
     }
 
-    //store holidays methods
-    public function storeHolidays(Request $request)
+    public function store(Request $request)
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_create')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'holiday_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        $this->holidayService->storeAndUpdateValidation(request: $request);
 
-        $addHoliday = new Holiday();
-        $addHoliday->holiday_name = $request->holiday_name;
-        $addHoliday->start_date = $request->start_date;
-        $addHoliday->end_date = $request->end_date;
+        try {
+            DB::beginTransaction();
 
-        if (auth()->user()->role_type == 1) {
-            if ($request->branch_id == 'All') {
-                $addHoliday->is_all = 1;
-                $addHoliday->branch_id = null;
-            } elseif ($request->branch_id == '') {
-                $addHoliday->branch_id = null;
-            } else {
-                $addHoliday->branch_id = $request->branch_id;
-            }
-        } else {
-            $addHoliday->branch_id = auth()->user()->branch_id;
+            $addHoliday = $this->holidayService->addHoliday(request: $request);
+            $this->holidayBranchService->addHolidayBranches(request: $request, holidayId: $addHoliday->id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $addHoliday->notes = $request->notes;
-        $addHoliday->save();
-
-        return response()->json('Successfully Holiday Added!');
+        return response()->json(__('Holiday added successfully.'));
     }
 
-    //Edit holid
     public function edit($id)
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $holiday = Holiday::with('branch')->where('id', $id)->first();
-        $branches = DB::table('branches')->orderBy('name', 'ASC')->get(['id', 'name', 'branch_code']);
+        $holiday = $this->holidayService->singleHoliday(id: $id, with: ['allowedBranches']);
+        $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
 
-        return view('hrm.holiday.ajax.edit', compact('holiday', 'branches'));
+        return view('hrm.holidays.ajax_view.edit', compact('holiday', 'branches'));
     }
 
-    //update holiday
-    public function updateHoliday(Request $request)
+    public function update($id, Request $request)
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $this->validate($request, [
-            'holiday_name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        $this->holidayService->storeAndUpdateValidation(request: $request);
 
-        $updateHoliday = Holiday::where('id', $request->id)->first();
-        $updateHoliday->holiday_name = $request->holiday_name;
-        $updateHoliday->start_date = $request->start_date;
-        $updateHoliday->end_date = $request->end_date;
+        try {
+            DB::beginTransaction();
 
-        if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-            $updateHoliday->is_all = 0;
-            $updateHoliday->branch_id = null;
-            if ($request->branch_id == 'All') {
-                $updateHoliday->is_all = 1;
-                $updateHoliday->branch_id = null;
-            } elseif (! $request->branch_id) {
-                $updateHoliday->branch_id = null;
-            } elseif ($request->branch_id) {
-                $updateHoliday->branch_id = $request->branch_id;
-            }
+            $updateHoliday = $this->holidayService->updateHoliday(request: $request, id: $id);
+            $this->holidayBranchService->updateHolidayBranches(request: $request, holiday: $updateHoliday);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $updateHoliday->notes = $request->notes;
-        $updateHoliday->save();
-
-        return response()->json('Successfully Holidays Updated!');
+        return response()->json(__('Holiday updated successfully'));
     }
 
-    //destroy holidays
-    public function deleteHolidays(Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        if (! auth()->user()->can('holiday')) {
+        if (!auth()->user()->can('holidays_delete')) {
 
             abort(403, 'Access Forbidden.');
         }
 
-        $holiday = Holiday::find($id);
-        if (! is_null($holiday)) {
-            $holiday->delete();
-        }
+        $this->holidayService->deleteHoliday(id: $id);
 
-        return response()->json('Successfully Holiday Deleted');
+        return response()->json(__('Holiday deletes successfully'));
     }
 }

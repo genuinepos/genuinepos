@@ -1,18 +1,26 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .input-group-text {font-size: 12px !important;}
-        b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
-        .sale-item-sec {height: 330px!important;}
+        .input-group-text {
+            font-size: 12px !important;
+        }
+
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .sale-item-sec {
+            height: 330px !important;
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-tasks"></span>
                     <h5>{{ __('Receive Purchase Order') }}</h5>
                 </div>
 
@@ -31,7 +39,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>@lang('menu.supplier')</b><span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input readonly type="text" id="supplier_name" class="form-control" value="{{ $purchase->supplier->name.' ('.$purchase->supplier->phone.')' }}">
+                                            <input readonly type="text" id="supplier_name" class="form-control" value="{{ $purchase->supplier->name . ' (' . $purchase->supplier->phone . ')' }}">
                                         </div>
                                     </div>
 
@@ -39,11 +47,10 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>@lang('menu.warehouse') </b><span class="text-danger">*</span></label>
                                             <div class="col-8">
-                                                <select class="form-control changeable add_input"
-                                                    name="warehouse_id" data-name="Warehouse" id="warehouse_id">
+                                                <select class="form-control changeable add_input" name="warehouse_id" data-name="Warehouse" id="warehouse_id">
                                                     <option value="">@lang('menu.select_warehouse')</option>
                                                     @foreach ($warehouses as $warehouse)
-                                                        <option {{ $purchase->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name.'/'.$warehouse->warehouse_code }}</option>
+                                                        <option {{ $purchase->warehouse_id == $warehouse->id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
                                                     @endforeach
                                                 </select>
                                                 <span class="error error_warehouse_id"></span>
@@ -53,7 +60,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><span class="text-danger">*</span> <b>@lang('menu.b_location') </b> </label>
                                             <div class="col-8">
-                                                <input readonly type="text" class="form-control" value="{{auth()->user()->branch ? auth()->user()->branch->name.'/'.auth()->user()->branch->branch_code : $generalSettings['business__business_name'].' (HO)' }}">
+                                                <input readonly type="text" class="form-control" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] . ' (HO)' }}">
                                             </div>
                                         </div>
                                     @endif
@@ -72,8 +79,7 @@
                                     <div class="input-group">
                                         <label class=" col-4"><b>@lang('menu.date') </b></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control changeable"
-                                                    id="datepicker" value="{{ date($generalSettings['business__date_format'], strtotime($purchase->date)) }}">
+                                            <input required type="text" name="date" class="form-control changeable" id="datepicker" value="{{ date($generalSettings['business_or_shop__date_format'], strtotime($purchase->date)) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -120,13 +126,13 @@
                                                                 <input type="hidden" name="product_ids[]" value="{{ $row->product_id }}">
                                                                 <input type="hidden" name="variant_ids[]" value="{{ $row->product_variant_id ? $row->product_variant_id : 'noid' }}">
                                                                 {{ Str::limit($row->product->name, 25) }}
-                                                                <b>{{ $row->variant ? ' - '.$row->variant->variant_name : '' }}</b>
+                                                                <b>{{ $row->variant ? ' - ' . $row->variant->variant_name : '' }}</b>
                                                             </td>
 
                                                             <td>
                                                                 <input type="hidden" name="ordered_quantities[]" id="ordered_quantity" class="ordered_quantity-{{ $row->id }}" value="{{ $row->order_quantity }}">
-                                                                <input type="hidden" id="unit" value="{{$row->unit}}">
-                                                                <b>{{ $row->order_quantity }} ({{$row->unit}})</b>
+                                                                <input type="hidden" id="unit" value="{{ $row->unit }}">
+                                                                <b>{{ $row->order_quantity }} ({{ $row->unit }})</b>
                                                             </td>
 
                                                             <td> <b>{{ $row->net_unit_cost }}</b></td>
@@ -146,75 +152,75 @@
                                                             </td>
 
                                                             @if (count($row->receives) > 0)
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td colspan="4">
-                                                                        <table class="display data__table">
-                                                                            <tbody id="{{ $row->id }}">
-                                                                                @foreach ($row->receives as $receive)
-                                                                                    <tr class="text-end">
-                                                                                        <td>
-                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="@lang('menu.challan_no')">
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td colspan="4">
+                                                                <table class="display data__table">
+                                                                    <tbody id="{{ $row->id }}">
+                                                                        @foreach ($row->receives as $receive)
+                                                                            <tr class="text-end">
+                                                                                <td>
+                                                                                    <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" value="{{ $receive->purchase_challan }}" placeholder="@lang('menu.challan_no')">
 
-                                                                                            <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="{{ $receive->id }}">
-                                                                                        </td>
+                                                                                    <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="{{ $receive->id }}">
+                                                                                </td>
 
-                                                                                        <td>
-                                                                                            <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" value="{{ $receive->lot_number }}" placeholder="@lang('menu.lot_number')">
-                                                                                        </td>
+                                                                                <td>
+                                                                                    <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" value="{{ $receive->lot_number }}" placeholder="@lang('menu.lot_number')">
+                                                                                </td>
 
-                                                                                        <td>
-                                                                                            <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" value="{{ $receive->received_date }}" placeholder="Received Date">
-                                                                                        </td>
+                                                                                <td>
+                                                                                    <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" value="{{ $receive->received_date }}" placeholder="Received Date">
+                                                                                </td>
 
-                                                                                        <td>
-                                                                                            <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" value="{{ $receive->qty_received }}"  data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
-                                                                                        </td>
+                                                                                <td>
+                                                                                    <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" value="{{ $receive->qty_received }}" data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
+                                                                                </td>
 
-                                                                                        <td></td>
-                                                                                    </tr>
-                                                                                @endforeach
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            @else
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td colspan="4">
-                                                                        <table class="display data__table">
-                                                                            <tbody id="{{ $row->id }}">
-                                                                                <tr class="text-end">
-                                                                                    <td>
-                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" placeholder="@lang('menu.challan_no')">
-
-                                                                                        <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="">
-                                                                                    </td>
-
-                                                                                    <td>
-                                                                                        <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" placeholder="@lang('menu.lot_number')">
-                                                                                    </td>
-
-                                                                                    <td>
-                                                                                        <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" placeholder="Received Date">
-                                                                                    </td>
-
-                                                                                    <td>
-                                                                                        <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
-                                                                                    </td>
-
-                                                                                    <td>
-                                                                                        <a href="#" class="btn btn-sm btn-danger" data-id="{{ $row->id }}" id="delete_partial_receive">X</a>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
                                                         </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td colspan="4">
+                                                                <table class="display data__table">
+                                                                    <tbody id="{{ $row->id }}">
+                                                                        <tr class="text-end">
+                                                                            <td>
+                                                                                <input type="text" name="or_receive_rows[{{ $row->id }}][purchase_challan][]" placeholder="@lang('menu.challan_no')">
+
+                                                                                <input type="hidden" name="or_receive_rows[{{ $row->id }}][receive_id][]" value="">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <input type="text" name="or_receive_rows[{{ $row->id }}][lot_number][]" placeholder="@lang('menu.lot_number')">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <input required type="date" name="or_receive_rows[{{ $row->id }}][received_date][]" placeholder="Received Date">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <input required type="number" step="any" name="or_receive_rows[{{ $row->id }}][qty_received][]" id="qty_received-{{ $row->id }}" data-id="{{ $row->id }}" class="qty_received" placeholder="Received Quantity">
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <a href="#" class="btn btn-sm btn-danger" data-id="{{ $row->id }}" id="delete_partial_receive">X</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                    </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -248,7 +254,7 @@
                                                     <input type="hidden" name="total_pending" id="total_pending" value="{{ $purchase->po_pending_qty }}" tabindex="-1">
                                                     <input type="hidden" name="total_received" id="total_received" value="{{ $purchase->po_received_qty }}" tabindex="-1">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.order_discount') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.order_discount') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="order_discount_amount" type="number" step="any" class="form-control" id="order_discount_amount" value="{{ $purchase->order_discount_amount }}" tabindex="-1">
                                                         </div>
@@ -259,14 +265,14 @@
                                                     <div class="input-group mt-1">
                                                         <label class="col-4"><b>@lang('menu.order_tax') </b> </label>
                                                         <div class="col-8">
-                                                            <input readonly name="purchase_tax_amount" type="text" class="form-control" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount.'('.$purchase->purchase_tax_percent.'%)' }}" tabindex="-1">
+                                                            <input readonly name="purchase_tax_amount" type="text" class="form-control" id="purchase_tax_amount" value="{{ $purchase->purchase_tax_amount . '(' . $purchase->purchase_tax_percent . '%)' }}" tabindex="-1">
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b>@lang('menu.shipment_cost') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>@lang('menu.shipment_cost') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="shipment_charge" type="number" class="form-control" id="shipment_charge" value="{{ $purchase->shipment_charge }}" tabindex="-1">
                                                         </div>
@@ -275,7 +281,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.total_payable') </b>  {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class="col-4"><b>@lang('menu.total_payable') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_purchase_amount" type="number" step="any" class="form-control" value="{{ $purchase->total_purchase_amount }}" tabindex="-1">
                                                         </div>
@@ -284,7 +290,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class=" col-4"><b> @lang('menu.paid') </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b> @lang('menu.paid') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly name="total_item" type="number" step="any" class="form-control" id="total_item" value="{{ $purchase->paid }}" tabindex="-1">
                                                         </div>
@@ -305,7 +311,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <label class=" col-4"><b>{{ __('Current Order Due') }} </b> {{ $generalSettings['business__currency'] }}</label>
+                                                        <label class=" col-4"><b>{{ __('Current Order Due') }} </b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" name="due" id="due" class="form-control text-danger bold_input_field" value="{{ $purchase->due }}" tabindex="-1">
                                                         </div>
@@ -314,7 +320,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label class="col-4"><b>@lang('menu.paying_amount') </b> {{ $generalSettings['business__currency'] }} <strong>>></strong></label>
+                                                        <label class="col-4"><b>@lang('menu.paying_amount') </b> {{ $generalSettings['business_or_shop__currency_symbol'] }} <strong>>></strong></label>
                                                         <div class="col-8">
                                                             <div class="row">
                                                                 <div class="col-md-7">
@@ -322,7 +328,7 @@
                                                                 </div>
 
                                                                 <div class="col-md-5">
-                                                                    <input type="text" step="any" name="fixed_payment_date" class="form-control" id="fixed_payment_date" value="{{ date($generalSettings['business__date_format']) }}" placeholder="DD-MM-YYYY" autocomplete="off">
+                                                                    <input type="text" step="any" name="fixed_payment_date" class="form-control" id="fixed_payment_date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" placeholder="DD-MM-YYYY" autocomplete="off">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -335,9 +341,7 @@
                                                         <div class="col-8">
                                                             <select name="payment_method_id" class="form-control" id="payment_method_id">
                                                                 @foreach ($methods as $method)
-                                                                    <option
-                                                                        data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}"
-                                                                        value="{{ $method->id }}">
+                                                                    <option data-account_id="{{ $method->methodAccount ? $method->methodAccount->account_id : '' }}" value="{{ $method->id }}">
                                                                         {{ $method->name }}
                                                                     </option>
                                                                 @endforeach
@@ -355,9 +359,9 @@
                                                                     <option value="{{ $account->id }}">
                                                                         @php
                                                                             $accountType = $account->account_type == 1 ? ' (Cash-In-Hand)' : '(Bank A/C)';
-                                                                            $balance = ' BL : '.$account->balance;
+                                                                            $balance = ' BL : ' . $account->balance;
                                                                         @endphp
-                                                                        {{ $account->name.$accountType.$balance}}
+                                                                        {{ $account->name . $accountType . $balance }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -367,7 +371,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="input-group mt-1">
-                                                        <label  class=" col-4"><b>@lang('menu.total_due') </b></label>
+                                                        <label class=" col-4"><b>@lang('menu.total_due') </b></label>
                                                         <div class="col-8">
                                                             <input readonly type="number" step="any" class="form-control text-danger bold_input_field" name="purchase_due" id="purchase_due" value="{{ $purchase->due }}">
                                                         </div>
@@ -394,8 +398,7 @@
                 <div class="submit_button_area">
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
-                            <button type="button" class="btn loading_button d-hide"><i
-                                class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
+                            <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> @lang('menu.loading')...</span></button>
                             <button class="btn btn-sm btn-success submit_button">@lang('menu.save_changes')</button>
                         </div>
                     </div>
@@ -415,16 +418,16 @@
             var tr = '';
             tr += '<tr class="text-end">';
             tr += '<td>';
-            tr += '<input type="text" name="or_receive_rows['+purchase_order_product_id+'][purchase_challan][]" placeholder="Challan No">';
-            tr += '<input type="hidden" name="or_receive_rows['+purchase_order_product_id+'][receive_id][]">';
+            tr += '<input type="text" name="or_receive_rows[' + purchase_order_product_id + '][purchase_challan][]" placeholder="Challan No">';
+            tr += '<input type="hidden" name="or_receive_rows[' + purchase_order_product_id + '][receive_id][]">';
             tr += '</td>';
-            tr += '<td><input type="text" name="or_receive_rows['+purchase_order_product_id+'][lot_number][]" placeholder="Lot Number"></td>';
-            tr += '<td><input required type="date" name="or_receive_rows['+purchase_order_product_id+'][received_date][]" placeholder="Received Date"></td>';
-            tr += '<td><input required type="number" step="any" name="or_receive_rows['+purchase_order_product_id+'][qty_received][]" id="qty_received-'+purchase_order_product_id+'" class="qty_received" data-id="'+purchase_order_product_id+'" placeholder="Received Quantity" autofocus></td>';
-            tr += '<td><a href="#" class="btn btn-sm btn-danger" data-id="'+purchase_order_product_id+'" id="delete_partial_receive">X</a></td>';
+            tr += '<td><input type="text" name="or_receive_rows[' + purchase_order_product_id + '][lot_number][]" placeholder="Lot Number"></td>';
+            tr += '<td><input required type="date" name="or_receive_rows[' + purchase_order_product_id + '][received_date][]" placeholder="Received Date"></td>';
+            tr += '<td><input required type="number" step="any" name="or_receive_rows[' + purchase_order_product_id + '][qty_received][]" id="qty_received-' + purchase_order_product_id + '" class="qty_received" data-id="' + purchase_order_product_id + '" placeholder="Received Quantity" autofocus></td>';
+            tr += '<td><a href="#" class="btn btn-sm btn-danger" data-id="' + purchase_order_product_id + '" id="delete_partial_receive">X</a></td>';
             tr += '</tr>';
 
-            $('#'+purchase_order_product_id).append(tr);
+            $('#' + purchase_order_product_id).append(tr);
         });
 
         $(document).on('click', '#delete_partial_receive', function(e) {
@@ -444,7 +447,7 @@
 
             if (parseFloat(total_qty_received) >= 0) {
 
-                var ordered_quantity = $('.ordered_quantity-'+id).val();
+                var ordered_quantity = $('.ordered_quantity-' + id).val();
                 total_qty_received = calulateOnlyReceiveQty(id);
                 calulateTotalReceiveAndPendingQty();
 
@@ -462,9 +465,9 @@
 
         function calulateOnlyReceiveQty(id) {
 
-            var received_quantities = document.querySelectorAll('#qty_received-'+id);
+            var received_quantities = document.querySelectorAll('#qty_received-' + id);
 
-            var ordered_quantity = $('.ordered_quantity-'+id).val();
+            var ordered_quantity = $('.ordered_quantity-' + id).val();
 
             var total_received = 0;
             received_quantities.forEach(function(qty) {
@@ -475,9 +478,9 @@
             //console.log(total_received);
             var pending_qty = parseInt(ordered_quantity) - parseFloat(total_received);
 
-            $('.pending_quantity-'+id).val(parseInt(pending_qty).toFixed(2));
+            $('.pending_quantity-' + id).val(parseInt(pending_qty).toFixed(2));
 
-            $('.received_quantity-'+id).val(parseFloat(total_received).toFixed(2));
+            $('.received_quantity-' + id).val(parseFloat(total_received).toFixed(2));
             return parseFloat(total_received);
         }
 
@@ -526,29 +529,30 @@
         });
 
         //Add receive request by ajax
-        $('#receive_form').on('submit', function(e){
+        $('#receive_form').on('submit', function(e) {
             e.preventDefault();
 
             $('.loading_button').show();
             var url = $(this).attr('action');
             var request = $(this).serialize();
             $.ajax({
-                url:url,
-                type:'post',
+                url: url,
+                type: 'post',
                 data: request,
-                success:function(data){
+                success: function(data) {
 
                     $('.submit_button').prop('type', 'sumbit');
                     $('.loading_button').hide();
                     toastr.success(data);
                     window.location = "{{ url()->previous() }}";
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').hide();
                     $('.error').html('');
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     } else {
 
                         toastr.error('Server error please contact to the support.');
@@ -558,7 +562,7 @@
         });
 
         // Input paying amount and clculate due amount
-        $(document).on('input', '#paying_amount', function(){
+        $(document).on('input', '#paying_amount', function() {
 
             var payingAmount = $(this).val() ? $(this).val() : 0;
             var due = $('#due').val() ? $('#due').val() : 0;
@@ -566,8 +570,8 @@
             $('#purchase_due').val(parseFloat(calcDueAmount).toFixed(2));
         });
 
-        var dateFormat = "{{ $generalSettings['business__date_format'] }}";
-        var _expectedDateFormat = '' ;
+        var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
+        var _expectedDateFormat = '';
         _expectedDateFormat = dateFormat.replace('d', 'DD');
         _expectedDateFormat = _expectedDateFormat.replace('m', 'MM');
         _expectedDateFormat = _expectedDateFormat.replace('Y', 'YYYY');
@@ -609,7 +613,7 @@
             format: _expectedDateFormat,
         });
 
-        $('#payment_method_id').on('change', function () {
+        $('#payment_method_id').on('change', function() {
 
             var account_id = $(this).find('option:selected').data('account_id');
             setMethodAccount(account_id);
@@ -620,7 +624,7 @@
             if (account_id) {
 
                 $('#account_id').val(account_id);
-            }else if(account_id === ''){
+            } else if (account_id === '') {
 
                 $('#account_id option:first-child').prop("selected", true);
             }

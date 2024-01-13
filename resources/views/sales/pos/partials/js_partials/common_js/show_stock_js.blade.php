@@ -1,21 +1,22 @@
 <script>
-    $(document).on('click', '#showStockBtn', function (e) {
+    $(document).on('click', '#showStockBtn', function(e) {
         e.preventDefault();
 
         var url = $(this).attr('href');
         $.ajax({
-            url : url,
-            type:'get',
-            success:function(data){
+            url: url,
+            type: 'get',
+            success: function(data) {
 
                 $('#showStockModal').empty();
                 $('#showStockModal').html(data);
                 $('#showStockModal').modal('show');
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 

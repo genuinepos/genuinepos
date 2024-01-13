@@ -97,7 +97,6 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $quotationService,
         object $salesOrderService,
@@ -126,12 +125,9 @@ class QuotationControllerMethodContainersService implements QuotationControllerM
         }
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt'];
-
-        $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
-
+        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
+        $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'OR';
+        
         $updateQuotation = $quotationService->updateQuotation(request: $request, updateQuotation: $quotation);
 
         $updateQuotationProducts = $quotationProductService->updateQuotationProducts(request: $request, quotation: $updateQuotation);

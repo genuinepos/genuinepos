@@ -19,7 +19,6 @@ use App\Services\Sales\SaleService;
 use App\Services\Sales\SalesOrderProductService;
 use App\Services\Sales\SalesOrderService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
@@ -38,7 +37,6 @@ class SalesOrderController extends Controller
         private AccountFilterService $accountFilterService,
         private PaymentMethodService $paymentMethodService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private PriceGroupService $priceGroupService,
         private ManagePriceGroupService $managePriceGroupService,
         private AccountingVoucherService $accountingVoucherService,
@@ -119,7 +117,6 @@ class SalesOrderController extends Controller
             $updateMethodContainer = $salesOrderControllerMethodContainersInterface->updateMethodContainer(
                 id: $id,
                 request: $request,
-                branchSettingService: $this->branchSettingService,
                 saleService: $this->saleService,
                 salesOrderService: $this->salesOrderService,
                 salesOrderProductService: $this->salesOrderProductService,

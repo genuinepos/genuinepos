@@ -26,7 +26,6 @@ interface QuotationControllerMethodContainersInterface
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $quotationService,
         object $salesOrderService,

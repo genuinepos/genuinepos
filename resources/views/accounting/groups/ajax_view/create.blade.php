@@ -1,7 +1,7 @@
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Add Account Group") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Account Group') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -9,21 +9,17 @@
             <form id="add_account_group_form" action="{{ route('account.groups.store') }}">
                 @csrf
                 <div class="form-group">
-                    <label><strong>{{ __("Name") }} </strong> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="account_group_name"
-                        data-next="parent_group_id" placeholder="{{ __("Name") }}" autocomplete="off" autofocus />
+                    <label><strong>{{ __('Name') }} </strong> <span class="text-danger">*</span></label>
+                    <input required type="text" name="name" class="form-control" id="account_group_name" data-next="parent_group_id" placeholder="{{ __('Name') }}" autocomplete="off" autofocus />
                     <span class="error error_name"></span>
                 </div>
 
                 <div class="form-group mt-1">
-                    <label><strong>{{ __("Under Group") }} <span class="text-danger">*</span></strong></label>
-                    <select required name="parent_group_id" class="form-control select2" id="parent_group_id"
-                        data-next="is_default_tax_calculator">
-                        <option data-is_allowed_bank_details="0" data-is_default_tax_calculator="0" value="">{{ __("Select Group") }}</option>
+                    <label><strong>{{ __('Under Group') }} <span class="text-danger">*</span></strong></label>
+                    <select required name="parent_group_id" class="form-control select2" id="parent_group_id" data-next="is_default_tax_calculator">
+                        <option data-is_allowed_bank_details="0" data-is_default_tax_calculator="0" value="">{{ __('Select Group') }}</option>
                         @foreach ($formGroups as $group)
-                            <option data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}"
-                                data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}"
-                                value="{{ $group->id }}">
+                            <option data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" value="{{ $group->id }}">
                                 {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                             </option>
                         @endforeach
@@ -33,22 +29,20 @@
 
                 <div class="form-group row mt-1">
                     <div class="col-md-12">
-                        <label><strong>{{ __("Is Default Tax Calculator") }} </strong></label>
-                        <select name="is_default_tax_calculator" class="form-control" id="is_default_tax_calculator"
-                            data-next="is_allowed_bank_details">
-                            <option value="0">{{ __("No") }}</option>
-                            <option value="1">{{ __("Yes") }}</option>
+                        <label><strong>{{ __('Is Default Tax Calculator') }} </strong></label>
+                        <select name="is_default_tax_calculator" class="form-control" id="is_default_tax_calculator" data-next="is_allowed_bank_details">
+                            <option value="0">{{ __('No') }}</option>
+                            <option value="1">{{ __('Yes') }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group row mt-1">
                     <div class="col-md-12">
-                        <label><strong>{{ __("Is Allowed Bank Details") }} </strong></label>
-                        <select name="is_allowed_bank_details" class="form-control" id="is_allowed_bank_details"
-                            data-next="account_group_save">
-                            <option value="0">{{ __("No") }}</option>
-                            <option value="1">{{ __("Yes") }}</option>
+                        <label><strong>{{ __('Is Allowed Bank Details') }} </strong></label>
+                        <select name="is_allowed_bank_details" class="form-control" id="is_allowed_bank_details" data-next="account_group_save">
+                            <option value="0">{{ __('No') }}</option>
+                            <option value="1">{{ __('Yes') }}</option>
                         </select>
                     </div>
                 </div>
@@ -183,11 +177,11 @@
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
                 } else if (err.status == 403) {
 

@@ -21,7 +21,7 @@ class AccountSeeder extends Seeder
         $directIncomeGroup = AccountGroup::where('sub_group_number', 13)->first();
         $salesAccountGroup = AccountGroup::where('sub_group_number', 15)->first();
         $purchaseAccountGroup = AccountGroup::where('sub_group_number', 12)->first();
-        $accountReceivablesAccountGroup = AccountGroup::where('sub_group_number', 6)->first();
+        $accountReceivablesAccountGroup = AccountGroup::where('sub_sub_group_number', 6)->first();
         $suspenseAccountGroup = AccountGroup::where('sub_group_number', 9)->first();
         $capitalAccountGroup = AccountGroup::where('sub_group_number', 6)->first();
         // $dutiesAndTaxAccountGroup = AccountGroup::where('sub_sub_group_number', 8)->where('branch_id', $branchId)->first();

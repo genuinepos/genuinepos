@@ -49,7 +49,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td class="text-end fw-bold" style="font-size: 11px!important;">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</td>
+                                            <td class="text-end fw-bold" style="font-size: 11px!important;">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">{{ App\Utils\Converter::format_in_bdt($totalReceivedByAccount) }}</td>
                                         </tr>
                                     </tfoot>
@@ -77,7 +77,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td class="text-end fw-bold" style="font-size: 11px!important;">{{ __('Total') }} : {{ $generalSettings['business__currency'] }}</td>
+                                            <td class="text-end fw-bold" style="font-size: 11px!important;">{{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">{{ App\Utils\Converter::format_in_bdt($totalReceivedByPaymentMethod) }}</td>
                                         </tr>
                                     </tfoot>
@@ -94,7 +94,7 @@
                                     <tbody>
                                         <tr>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
-                                                {{ __('Total Sale') }} : {{ $generalSettings['business__currency'] }}
+                                                {{ __('Total Sale') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                             </td>
                                             <td class="text-end" style="font-size: 11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($cashRegisterData['totalSaleAndDue']->sum('total_sale')) }}
@@ -103,7 +103,7 @@
 
                                         <tr>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
-                                                {{ __('Total Credit') }} : {{ $generalSettings['business__currency'] }}
+                                                {{ __('Total Credit') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                             </td>
                                             <td class="text-end fw-bold" style="color: #dc3545!important; font-size: 11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($cashRegisterData['totalSaleAndDue']->sum('total_due')) }}
@@ -140,7 +140,7 @@
                                     <tfoot>
                                         <tr>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
-                                                {{ __('Total') }} : {{ $generalSettings['business__currency'] }}
+                                                {{ __('Total') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                                             </td>
                                             <td class="text-end fw-bold" style="font-size: 11px!important;">
                                                 {{ App\Utils\Converter::format_in_bdt($totalCashBalance) }}
@@ -155,7 +155,7 @@
 
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="fw-bold">{{ __("Closing Cash") }}</label>
+                        <label class="fw-bold">{{ __('Closing Cash') }}</label>
                         <input readonly type="text" step="any" name="closing_cash" class="form-control fw-bold" id="closing_cash" data-next="closing_note" value="{{ $totalCashBalance }}">
                         <span class="error error_colsing_cash_register_closing_cash"></span>
                     </div>
@@ -163,17 +163,17 @@
 
                 <div class="row mt-1">
                     <div class="col-md-12">
-                        <label class="fw-bold">{{ __("Closing Note") }}</label>
-                        <input type="text" name="closing_note" class="form-control" id="closing_note" data-next="close_btn" placeholder="{{ __("Closing Note") }}">
+                        <label class="fw-bold">{{ __('Closing Note') }}</label>
+                        <input type="text" name="closing_note" class="form-control" id="closing_note" data-next="close_btn" placeholder="{{ __('Closing Note') }}">
                     </div>
                 </div>
 
                 <div class="form-group row mt-2">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-loading">
-                            <button type="button" class="btn loading_button close_cash_register_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __("Loading") }}...</span></button>
-                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __("Close") }}</button>
-                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __("Close Cash Register") }}</button>
+                            <button type="button" class="btn loading_button close_cash_register_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                            <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
+                            <button type="submit" id="close_btn" class="btn btn-sm btn-success close_cash_register_submit_btn">{{ __('Close Cash Register') }}</button>
                         </div>
                     </div>
                 </div>
@@ -196,23 +196,23 @@
 
             e.preventDefault();
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 
     var isAllowSubmit = true;
-    $(document).on('click', '.close_cash_register_submit_btn',function () {
+    $(document).on('click', '.close_cash_register_submit_btn', function() {
 
         if (isAllowSubmit) {
 
             $(this).prop('type', 'submit');
-        }else {
+        } else {
 
             $(this).prop('type', 'button');
         }
     });
 
-    $('#close_cash_register_form').on('submit',function(e) {
+    $('#close_cash_register_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.close_cash_register_loading_btn').show();
@@ -221,22 +221,22 @@
         isAjaxIn = false;
         isAllowSubmit = false;
         $.ajax({
-            beforeSend: function(){
+            beforeSend: function() {
                 isAjaxIn = true;
             },
-            url : url,
-            type : 'post',
+            url: url,
+            type: 'post',
             data: new FormData(this),
             processData: false,
             cache: false,
             contentType: false,
-            success:function(data){
+            success: function(data) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
                 $('.error').html('');
                 $('.close_cash_register_loading_btn').hide();
-                if(!$.isEmptyObject(data.errorMsg)){
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
                     return;
@@ -244,7 +244,8 @@
 
                 $('#cashRegisterDetailsAndCloseModal').modal('hide');
                 location.reload(true);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -253,19 +254,19 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                } else if(err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server error. Please contact to the support team.') }}");
                     return;
-                } else if(err.status == 403) {
+                } else if (err.status == 403) {
 
                     toastr.error("{{ __('Access Denied') }}");
                     return;
                 }
 
-                 $.each(err.responseJSON.errors, function(key, error) {
+                $.each(err.responseJSON.errors, function(key, error) {
 
                     $('.error_colsing_cash_register_' + key + '').html(error[0]);
                 });
@@ -278,4 +279,3 @@
         }
     });
 </script>
-

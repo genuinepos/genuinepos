@@ -236,7 +236,7 @@
                         toastr.error('Net Connetion Error. Please check the connection.');
                     } else if (err.status == 500) {
 
-                        toastr.error('Server Error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
             });

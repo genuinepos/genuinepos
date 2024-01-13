@@ -12,7 +12,7 @@
                             @if (auth()?->user()?->branch)
                                 {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                             @else
-                                {{ $generalSettings['business__business_name'] }}
+                                {{ $generalSettings['business_or_shop__business_name'] }}
                             @endif
                         @endif
                     </p>
@@ -32,8 +32,8 @@
                     <div class="form-group row">
                         <div class="col-md-12 d-flex justify-content-end pb-2">
                             <div class="btn-loading">
-                                <button type="button" class="btn loading_button payment_method_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span>{{ __("Loading") }}...</span></button>
-                                <button type="submit" id="save_payment_settings_save_changes" class="btn btn-success payment_method_settings_submit_button">{{ __("Save Changes") }}</button>
+                                <button type="button" class="btn loading_button payment_method_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span>{{ __('Loading') }}...</span></button>
+                                <button type="submit" id="save_payment_settings_save_changes" class="btn btn-success payment_method_settings_submit_button">{{ __('Save Changes') }}</button>
                             </div>
                         </div>
                     </div>

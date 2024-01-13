@@ -11,7 +11,6 @@
                     <div class="main__content">
                         <div class="sec-name">
                             <div class="name-head">
-                                <span class="fas fa-shopping-basket"></span>
                                 <h5>{{ __("Customer Groups") }}</h5>
                             </div>
                             <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
@@ -31,7 +30,7 @@
                                                         <label><strong>{{ __("Shop") }}</strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="branch_id" autofocus>
                                                             <option value="">{{ __("All") }}</option>
-                                                            <option value="NULL">{{ $generalSettings['business__business_name'] }}({{ __("Business") }})</option>
+                                                            <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __("Business") }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}">{{ $branch->name.'/'.$branch->branch_code }}</option>
                                                             @endforeach
@@ -172,7 +171,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -208,7 +207,7 @@
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
@@ -258,7 +257,7 @@
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                     }else if (err.status == 500) {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

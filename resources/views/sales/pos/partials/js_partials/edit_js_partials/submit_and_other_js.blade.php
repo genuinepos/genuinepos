@@ -1,5 +1,4 @@
 <script>
-
     function saveAndPrintSuccessMsg() {
 
         var status = $('status').val();
@@ -31,7 +30,7 @@
         if (btnType == 'credit_and_final') {
 
             $('#is_full_credit_sale').val(1);
-        }else {
+        } else {
 
             $('#is_full_credit_sale').val(0);
         }
@@ -62,29 +61,29 @@
             beforeSend: function() {
                 isAjaxIn = true;
             },
-            url:url,
-            type:'post',
+            url: url,
+            type: 'post',
             data: request,
-            success:function(data){
+            success: function(data) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
                 $('.loading_button').hide();
                 $('.submit_preloader').hide();
 
-                if(!$.isEmptyObject(data.errorMsg)) {
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'Attention');
                     return;
-                }else if(data.suspendMsg){
+                } else if (data.suspendMsg) {
 
                     toastr.success(data.suspendMsg);
                     window.location = "{{ url()->previous() }}";
-                }else if(data.holdInvoiceMsg){
+                } else if (data.holdInvoiceMsg) {
 
                     toastr.success(data.holdInvoiceMsg);
                     window.location = "{{ url()->previous() }}";
-                }else {
+                } else {
 
                     var msg = saveAndPrintSuccessMsg();
 
@@ -100,11 +99,12 @@
                         header: null,
                     });
 
-                    setTimeout(function () {
-                        window.location = "{{ url()->previous(); }}";
+                    setTimeout(function() {
+                        window.location = "{{ url()->previous() }}";
                     }, 2000);
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -112,9 +112,9 @@
                 $('.submit_preloader').hide();
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                }else if (err.status == 500) {
+                } else if (err.status == 500) {
 
                     toastr.error("{{ __('Server error. Please contact the support team.') }}");
                     return;
@@ -132,18 +132,18 @@
         }
     });
 
-    document.onkeyup = function () {
+    document.onkeyup = function() {
 
         var e = e || window.event; // for IE to cover IEs window event-object
 
-        if(e.ctrlKey && e.which == 13) { // Ctrl + Enter
+        if (e.ctrlKey && e.which == 13) { // Ctrl + Enter
 
             $('#final').click();
             return false;
         }
     }
 
-    $(document).on('click enter','#final_and_quick_cash_receive', function(e) {
+    $(document).on('click enter', '#final_and_quick_cash_receive', function(e) {
 
         $('#final').click();
     });
@@ -182,7 +182,7 @@
         }
     });
 
-    $(".cat-button").on("click", function(){
+    $(".cat-button").on("click", function() {
 
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
@@ -191,12 +191,12 @@
     var width = $(".function-sec .btn-bg").width();
     $(".function-sec .btn-bg").height(width / 1.2);
 
-    if($(window).width() >= 992) {
+    if ($(window).width() >= 992) {
 
         $(".function-sec .btn-bg").height(width / 1.4);
     }
 
-    if($(window).width() >= 1200) {
+    if ($(window).width() >= 1200) {
 
         $(".function-sec .btn-bg").height(width / 1.6);
     }

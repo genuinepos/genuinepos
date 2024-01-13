@@ -57,12 +57,9 @@ class ReceiveStockFromBranchService
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
                 $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-
                 $html .= '<a href="' . route('transfer.stocks.show', [$row->id]) . '" class="dropdown-item" id="details_btn">' . __('View') . '</a>';
-
                 $html .= '<a href="' . route('receive.stock.from.branch.create', [$row->id]) . '" class="dropdown-item">' . __('Process To Receive') . '</a>';
                 $html .= '</div>';
                 $html .= '</div>';
@@ -71,7 +68,7 @@ class ReceiveStockFromBranchService
             })
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $__date_format = str_replace('-', '/', $generalSettings['business__date_format']);
+                $__date_format = str_replace('-', '/', $generalSettings['business_or_shop__date_format']);
 
                 return date($__date_format, strtotime($row->date));
             })
@@ -92,7 +89,7 @@ class ReceiveStockFromBranchService
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
             ->editColumn('send_from', function ($row) use ($generalSettings) {
@@ -108,7 +105,7 @@ class ReceiveStockFromBranchService
                     }
                 } else {
 
-                    $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $generalSettings['business__business_name'];
+                    $senderBranch = '<strong>' . __('Send From') . ':</strong> ' . $generalSettings['business_or_shop__business_name'];
                 }
 
                 if ($row->sender_warehouse_id) {
@@ -136,7 +133,7 @@ class ReceiveStockFromBranchService
                 //     }
                 // } else {
 
-                //     return $generalSettings['business__business_name'];
+                //     return $generalSettings['business_or_shop__business_name'];
                 // }
 
                 $receiverBranch = '';
@@ -152,7 +149,7 @@ class ReceiveStockFromBranchService
                     }
                 } else {
 
-                    $receiverBranch = '<strong>' . __('Send To') . ':</strong> ' . $generalSettings['business__business_name'];
+                    $receiverBranch = '<strong>' . __('Send To') . ':</strong> ' . $generalSettings['business_or_shop__business_name'];
                 }
 
                 if ($row->receiver_warehouse_id) {

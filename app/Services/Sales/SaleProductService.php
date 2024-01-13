@@ -2,12 +2,14 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\SaleScreenType;
-use App\Enums\SaleStatus;
-use App\Models\Sales\SaleProduct;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Enums\RoleType;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
+use App\Enums\SaleScreenType;
+use App\Models\Sales\SaleProduct;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleProductService
@@ -24,7 +26,8 @@ class SaleProductService
             ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('units', 'sale_products.unit_id', 'units.id')
-            ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id');
+            ->leftJoin('warehouses', 'sale_products.warehouse_id', 'warehouses.id')
+            ->where('sales.status', SaleStatus::Final->value);
 
         if ($request->product_id) {
 
@@ -65,9 +68,9 @@ class SaleProductService
             $query->whereBetween('sales.sale_date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('sales.status', SaleStatus::Final->value)->where('sales.branch_id', auth()->user()->branch_id);
+            $query->where('sales.branch_id', auth()->user()->branch_id);
         }
 
         $saleProducts = $query->select(
@@ -107,9 +110,8 @@ class SaleProductService
         return DataTables::of($saleProducts)
             ->editColumn('product', function ($row) {
 
-                $variant = $row->variant_name ? ' - '.$row->variant_name : '';
-
-                return Str::limit($row->name, 35, '').$variant;
+                $variant = $row->variant_name ? ' - ' . $row->variant_name : '';
+                return Str::limit($row->name, 35, '') . $variant;
             })
             ->editColumn('date', function ($row) {
 
@@ -121,14 +123,14 @@ class SaleProductService
 
                     if ($row->parent_branch_name) {
 
-                        return $row->parent_branch_name.'('.$row->area_name.')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $row->branch_name.'('.$row->area_name.')';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
                 } else {
 
-                    return $generalSettings['business__business_name'];
+                    return $generalSettings['business_or_shop__business_name'];
                 }
             })
 
@@ -136,40 +138,40 @@ class SaleProductService
 
                 if ($row->warehouse_name) {
 
-                    return $row->warehouse_name.'-('.$row->warehouse_code.')';
+                    return $row->warehouse_name . '-(' . $row->warehouse_code . ')';
                 } else {
 
                     if ($row->branch_id) {
 
                         if ($row->parent_branch_name) {
 
-                            return $row->parent_branch_name.'('.$row->area_name.')';
+                            return $row->parent_branch_name . '(' . $row->area_name . ')';
                         } else {
 
-                            return $row->branch_name.'('.$row->area_name.')';
+                            return $row->branch_name . '(' . $row->area_name . ')';
                         }
                     } else {
 
-                        return $generalSettings['business__business_name'];
+                        return $generalSettings['business_or_shop__business_name'];
                     }
                 }
             })
 
-            ->editColumn('invoice_id', fn ($row) => '<a href="'.route('sales.show', [$row->sale_id]).'" class="text-hover" id="details_btn" title="View">'.$row->invoice_id.'</a>')
+            ->editColumn('invoice_id', fn ($row) => '<a href="' . route('sales.show', [$row->sale_id]) . '" class="text-hover" id="details_btn" title="View">' . $row->invoice_id . '</a>')
 
-            ->editColumn('sale_screen', fn ($row) => '<span class="text-info fw-bold">'.SaleScreenType::tryFrom($row->sale_screen)->name.'</span>')
+            ->editColumn('sale_screen', fn ($row) => '<span class="text-info fw-bold">' . SaleScreenType::tryFrom($row->sale_screen)->name . '</span>')
 
-            ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="'.$row->quantity.'">'.\App\Utils\Converter::format_in_bdt($row->quantity).'/'.$row->unit_code.'</span>')
+            ->editColumn('quantity', fn ($row) => '<span class="quantity" data-value="' . $row->quantity . '">' . \App\Utils\Converter::format_in_bdt($row->quantity) . '/' . $row->unit_code . '</span>')
 
-            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="'.$row->unit_price_exc_tax.'">'.\App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax).'</span>')
+            ->editColumn('unit_price_exc_tax', fn ($row) => '<span class="unit_price_exc_tax" data-value="' . $row->unit_price_exc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_exc_tax) . '</span>')
 
-            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="'.$row->unit_discount_amount.'">'.\App\Utils\Converter::format_in_bdt($row->unit_discount_amount).'</span>')
+            ->editColumn('unit_discount_amount', fn ($row) => '<span class="unit_discount_amount" data-value="' . $row->unit_discount_amount . '">' . \App\Utils\Converter::format_in_bdt($row->unit_discount_amount) . '</span>')
 
-            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="'.$row->unit_tax_amount.'">'.'('.$row->unit_tax_percent.'%)='.\App\Utils\Converter::format_in_bdt($row->unit_tax_amount).'</span>')
+            ->editColumn('unit_tax_amount', fn ($row) => '<span class="unit_tax_amount" data-value="' . $row->unit_tax_amount . '">' . '(' . $row->unit_tax_percent . '%)=' . \App\Utils\Converter::format_in_bdt($row->unit_tax_amount) . '</span>')
 
-            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="'.$row->unit_price_inc_tax.'">'.\App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax).'</span>')
+            ->editColumn('unit_price_inc_tax', fn ($row) => '<span class="unit_price_inc_tax" data-value="' . $row->unit_price_inc_tax . '">' . \App\Utils\Converter::format_in_bdt($row->unit_price_inc_tax) . '</span>')
 
-            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="'.$row->subtotal.'">'.\App\Utils\Converter::format_in_bdt($row->subtotal).'</span>')
+            ->editColumn('subtotal', fn ($row) => '<span class="subtotal" data-value="' . $row->subtotal . '">' . \App\Utils\Converter::format_in_bdt($row->subtotal) . '</span>')
 
             ->rawColumns(['product', 'product_code', 'date', 'invoice_id', 'branch', 'stock_location', 'sale_screen', 'quantity', 'unit_price_exc_tax', 'unit_discount_amount', 'unit_tax_amount', 'unit_price_inc_tax', 'subtotal'])
             ->make(true);

@@ -17,7 +17,9 @@
                     $tax = $s_product->product->tax ? $s_product->product->tax->tax_percent : 0.00;
                     $price = $s_product->variant ? $s_product->variant->variant_price : $s_product->product->product_price;
                     $priceIncTax = $price /100 * $tax + $price;
+                    
                     if ($s_product->product->tax_type == 2) {
+
                         $inclusiveTax = 100 + $tax;
                         $calcAmount = $price / $inclusiveTax * 100;
                         $tax_amount = $price - $calcAmount;

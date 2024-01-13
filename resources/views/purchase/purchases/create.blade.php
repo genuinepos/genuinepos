@@ -3,84 +3,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/asset/css/select2.min.css') }}" />
     <style>
-        .input-group-text {
-            font-size: 12px !important;
-        }
+        .input-group-text { font-size: 12px !important; }
 
-        .select_area {
-            position: relative;
-            background: #ffffff;
-            box-sizing: border-box;
-            position: absolute;
-            width: 100%;
-            z-index: 9999999;
-            padding: 0;
-            left: 0%;
-            display: none;
-            border: 1px solid var(--main-color);
-            margin-top: 1px;
-            border-radius: 0px;
-        }
+        .select_area { position: relative; background: #ffffff; box-sizing: border-box; position: absolute; width: 100%; z-index: 9999999; padding: 0; left: 0%; display: none; border: 1px solid var(--main-color); margin-top: 1px; border-radius: 0px; }
 
-        .select_area ul {
-            list-style: none;
-            margin-bottom: 0;
-            padding: 4px 4px;
-        }
+        .select_area ul { list-style: none; margin-bottom: 0; padding: 4px 4px; }
 
-        .select_area ul li a {
-            color: #000000;
-            text-decoration: none;
-            font-size: 10px;
-            padding: 2px 2px;
-            display: block;
-            border: 1px solid gray;
-        }
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 10px; padding: 2px 2px; display: block; border: 1px solid gray; }
 
-        .select_area ul li a:hover {
-            background-color: #999396;
-            color: #fff;
-        }
+        .select_area ul li a:hover { background-color: #999396; color: #fff; }
 
-        .selectProduct {
-            background-color: #746e70;
-            color: #fff !important;
-        }
+        .selectProduct { background-color: #746e70; color: #fff !important; }
 
-        b {
-            font-weight: 500;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
 
-        h6.collapse_table:hover {
-            background: lightgray;
-            padding: 3px;
-            cursor: pointer;
-        }
+        h6.collapse_table:hover { background: lightgray; padding: 3px; cursor: pointer; }
 
-        .c-delete:focus {
-            border: 1px solid gray;
-            padding: 2px;
-        }
+        .c-delete:focus { border: 1px solid gray; padding: 2px; }
 
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 {
-            text-align: right;
-            padding-right: 10px;
-        }
+        label.col-6 { text-align: right; padding-right: 10px; }
 
-        .checkbox_input_wrap {
-            text-align: right;
-        }
+        .checkbox_input_wrap { text-align: right; }
 
-        .big_amount_field {
-            height: 36px;
-            font-size: 24px !important;
-            margin-bottom: 3px;
-        }
+        .big_amount_field { height: 36px; font-size: 24px !important; margin-bottom: 3px; }
     </style>
 @endpush
 @section('title', 'Add Purchase - ')
@@ -88,12 +37,32 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <span class="fas fa-shopping-cart"></span>
-                    <h6>{{ __('Add Purchase') }}</h6>
+                <div class="col-md-7">
+                    <div class="name-head">
+                        <h6>{{ __('Add Purchase') }}</h6>
+                    </div>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="col-4"><b>{{ __("Print") }}</b></label>
+                                <div class="col-8">
+                                    <select id="select_print_page_size" class="form-control">
+                                        @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
+                                            <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button d-inline"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -101,6 +70,7 @@
             <form id="add_purchase_form" action="{{ route('purchases.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action" value="">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="1">
                 <section>
                     <div class="form_element rounded mt-0 mb-2">
                         <div class="element-body">
@@ -163,7 +133,7 @@
                                         <div class="input-group mt-1">
                                             <label class="col-4"><b>{{ __('Store Location') }}</b></label>
                                             <div class="col-8">
-                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business__business_name'] }}" />
+                                                <input readonly type="text" name="branch_id" class="form-control fw-bold" value="{{ auth()->user()->branch ? auth()->user()->branch->name . '/' . auth()->user()->branch->branch_code : $generalSettings['business_or_shop__business_name'] }}" />
                                             </div>
                                         </div>
                                     @endif
@@ -173,7 +143,7 @@
                                     <div class="input-group">
                                         <label class="col-4"><b>{{ __('Date') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business__date_format']) }}" data-next="pay_term_number" placeholder="dd-mm-yyyy" autocomplete="off">
+                                            <input required type="text" name="date" class="form-control" id="date" value="{{ date($generalSettings['business_or_shop__date_format']) }}" data-next="pay_term_number" placeholder="dd-mm-yyyy" autocomplete="off">
                                             <span class="error error_date"></span>
                                         </div>
                                     </div>
@@ -388,7 +358,7 @@
                                                 </div>
 
                                                 <div class="input-group mt-1">
-                                                    <label class=" col-4"><b>{{ __('Net Total Amount') }}</b> {{ $generalSettings['business__currency'] }}</label>
+                                                    <label class=" col-4"><b>{{ __('Net Total Amount') }}</b> {{ $generalSettings['business_or_shop__currency_symbol'] }}</label>
                                                     <div class="col-8">
                                                         <input readonly name="net_total_amount" type="number" step="any" id="net_total_amount" class="form-control fw-bold" value="0.00" tabindex="-1">
                                                     </div>

@@ -1,10 +1,15 @@
 @php
-   $userActivityLogUtil = new App\Utils\UserActivityLogUtil();
+    $userActivityLogUtil = new App\Utils\UserActivityLogUtil();
 @endphp
 @extends('layout.master')
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>.log_table td {font-size: 9px!important;font-weight: 500!important;}</style>
+    <style>
+        .log_table td {
+            font-size: 9px !important;
+            font-weight: 500 !important;
+        }
+    </style>
 @endpush
 @section('title', 'User Activities Log - ')
 @section('content')
@@ -12,11 +17,9 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-shopping-cart"></span>
                     <h5>@lang('menu.user_activities_log')</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i
-                        class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
             </div>
         </div>
 
@@ -27,23 +30,22 @@
                         <div class="element-body">
                             <form id="filter_form">
                                 <div class="form-group row g-3">
-                          
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-2">
-                                                <label><strong>@lang('menu.business_location') : </strong></label>
-                                                <select name="branch_id"
-                                                    class="form-control" id="branch_id" autofocus>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            {{ $branch->name . '/' . $branch->branch_code }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @else
-                                            <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : NULL }}">
-                                        @endif
+
+                                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                        <div class="col-md-2">
+                                            <label><strong>@lang('menu.business_location') : </strong></label>
+                                            <select name="branch_id" class="form-control" id="branch_id" autofocus>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        {{ $branch->name . '/' . $branch->branch_code }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @else
+                                        <input type="hidden" id="branch_id" value="{{ auth()->user()->branch_id ? auth()->user()->branch_id : null }}">
+                                    @endif
 
 
                                     <div class="col-md-2">
@@ -78,12 +80,9 @@
                                         <label><strong>@lang('menu.from_date') : </strong></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1"><i
-                                                        class="fas fa-calendar-week input_f"></i></span>
+                                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar-week input_f"></i></span>
                                             </div>
-                                            <input type="text" name="from_date" id="datepicker"
-                                                class="form-control from_date date"
-                                                autocomplete="off">
+                                            <input type="text" name="from_date" id="datepicker" class="form-control from_date date" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -122,7 +121,7 @@
                     </div>
                     <div class="table-responsive" id="data-list">
                         {{-- <table class="display data_tbl data__table table-hover"> --}}
-                            <table class="log_table display data_tbl modal-table table-sm table-striped">
+                        <table class="log_table display data_tbl modal-table table-sm table-striped">
                             <thead>
                                 <tr>
                                     <th>@lang('menu.date')</th>
@@ -156,13 +155,27 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel',text: '<i class="fas fa-file-excel"></i> Excel',className: 'btn btn-primary'},
-                {extend: 'pdf',text: '<i class="fas fa-file-pdf"></i> Pdf',className: 'btn btn-primary'},
-                {extend: 'print',text: '<i class="fas fa-print"></i> Print',className: 'btn btn-primary'},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary'
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             "ajax": {
                 "url": "{{ route('reports.user.activities.log.index') }}",
                 "data": function(d) {
@@ -179,27 +192,45 @@
                 "orderable": false,
                 "searchable": false
             }],
-            columns: [
-                {data: 'date', name: 'date'},
-                {data: 'branch', name: 'branches.name'},
-                {data: 'action_by', name: 'users.name'},
-                {data: 'action', name: 'action'},
-                {data: 'subject_type', name: 'subject_type'},
-                {data: 'descriptions', name: 'descriptions'},
-            ],fnDrawCallback: function() {
+            columns: [{
+                    data: 'date',
+                    name: 'date'
+                },
+                {
+                    data: 'branch',
+                    name: 'branches.name'
+                },
+                {
+                    data: 'action_by',
+                    name: 'users.name'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
+                {
+                    data: 'subject_type',
+                    name: 'subject_type'
+                },
+                {
+                    data: 'descriptions',
+                    name: 'descriptions'
+                },
+            ],
+            fnDrawCallback: function() {
 
                 $('.data_preloader').hide();
             }
         });
 
         //Submit filter form by select input changing
-        $(document).on('submit', '#filter_form', function (e) {
+        $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
             log_table.ajax.reload();
         });
 
-        $(document).on('change', '#branch_id', function (e) {
+        $(document).on('change', '#branch_id', function(e) {
 
             var branch_id = $(this).val();
             getBrandAllowLoginUsers(branch_id)
@@ -209,17 +240,17 @@
 
             var branchId = branchId ? branchId : 'NULL';
             $.ajax({
-                url:"{{ url('common/ajax/call/branch/allow/login/users/') }}"+"/"+branchId,
-                type:'get',
-                success:function(data){
+                url: "{{ url('common/ajax/call/branch/allow/login/users/') }}" + "/" + branchId,
+                type: 'get',
+                success: function(data) {
 
                     $('#user_id').empty();
                     $('#user_id').append('<option value="">@lang('menu.all')</option>');
-                    $.each(data, function (key, val) {
+                    $.each(data, function(key, val) {
 
                         var userPrefix = val.prefix != null ? val.prefix : '';
                         var userLastName = val.last_name != null ? val.last_name : '';
-                        $('#user_id').append('<option value="'+val.id+'">'+userPrefix+' '+val.name+' '+userLastName+'</option>');
+                        $('#user_id').append('<option value="' + val.id + '">' + userPrefix + ' ' + val.name + ' ' + userLastName + '</option>');
                     });
                 }
             })

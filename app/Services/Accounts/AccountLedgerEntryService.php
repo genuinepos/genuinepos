@@ -13,7 +13,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
@@ -31,8 +31,6 @@ class AccountLedgerEntryService
 
             $this->generateOpeningBalance(accountId: $id, ledgers: $ledgers, fromDateYmd: $fromDateYmd, request: $request, generalSettings: $generalSettings);
         }
-
-        // return $ledgers;
 
         $runningDebit = 0;
         $runningCredit = 0;
@@ -55,7 +53,7 @@ class AccountLedgerEntryService
         return DataTables::of($ledgers)
             ->editColumn('date', function ($row) use ($generalSettings) {
 
-                $dateFormat = $generalSettings['business__date_format'];
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
                 $__date_format = str_replace('-', '/', $dateFormat);
 
                 return $row->date ? date($__date_format, strtotime($row->date)) : '';
@@ -100,7 +98,7 @@ class AccountLedgerEntryService
     {
         $ledgers = '';
         $generalSettings = config('generalSettings');
-        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business__account_start_date']));
+        $accountStartDate = date('Y-m-d', strtotime($generalSettings['business_or_shop__account_start_date']));
 
         $ledgers = $this->ledgerEntriesQuery(request: $request, id: $id, account: $account);
 
@@ -205,9 +203,12 @@ class AccountLedgerEntryService
                     'voucherDescription.accountingVoucher.voucherDescriptions.account:id,name,account_number,account_group_id',
                     'voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,name,sub_group_number,sub_sub_group_number',
                     'voucherDescription.accountingVoucher.voucherDescriptions.paymentMethod:id,name',
-                    'voucherDescription.accountingVoucher.voucherDescriptions.references:id,voucher_description_id,sale_id,sale_return_id,purchase_id,purchase_return_id,stock_adjustment_id,amount',
+                    'voucherDescription.accountingVoucher.voucherDescriptions.references:id,voucher_description_id,sale_id,sale_return_id,purchase_id,purchase_return_id,stock_adjustment_id,payroll_id,amount',
                     'voucherDescription.accountingVoucher.voucherDescriptions.references.sale:id,invoice_id,order_id,order_status',
+                    'voucherDescription.accountingVoucher.voucherDescriptions.references.salesReturn:id,voucher_no',
                     'voucherDescription.accountingVoucher.voucherDescriptions.references.purchase:id,invoice_id,purchase_status',
+                    'voucherDescription.accountingVoucher.voucherDescriptions.references.purchaseReturn:id,voucher_no',
+                    'voucherDescription.accountingVoucher.voucherDescriptions.references.payroll:id,voucher_no',
 
                     'sale:id,customer_account_id,total_invoice_amount,note,sale_account_id,total_sold_qty,order_discount_amount,order_tax_amount',
                     'sale.salesAccount:id,name',
@@ -386,7 +387,7 @@ class AccountLedgerEntryService
                 }
             } else {
 
-                $branchName = $generalSettings['business__business_name'] . '(' . __('Business') . ')';
+                $branchName = $generalSettings['business_or_shop__business_name'] . '(' . __('Business') . ')';
             }
         }
 

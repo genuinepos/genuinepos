@@ -1,6 +1,5 @@
 @extends('layout.master')
 @push('stylesheets')
-
 @endpush
 @section('title', 'Price Groups - ')
 @section('content')
@@ -8,10 +7,9 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-tags"></span>
-                    <h5>{{ __("Selling Price Groups") }}</h5>
+                    <h5>{{ __('Selling Price Groups') }}</h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
 
@@ -24,7 +22,7 @@
 
                     @if (auth()->user()->can('selling_price_group_index'))
                         <div class="col-6 d-flex justify-content-end">
-                            <a href="{{ route('selling.price.groups.create') }}" class="btn btn-sm btn-primary" id="addPriceGroup"><i class="fas fa-plus-square"></i>{{ __("Add Price Group") }}</a>
+                            <a href="{{ route('selling.price.groups.create') }}" class="btn btn-sm btn-primary" id="addPriceGroup"><i class="fas fa-plus-square"></i>{{ __('Add Price Group') }}</a>
                         </div>
                     @endif
                 </div>
@@ -34,11 +32,11 @@
                         <table class="display data_tbl data__table table-hover">
                             <thead>
                                 <tr>
-                                    <th>{{ __("S/L") }}</th>
-                                    <th>{{ __("Price Group Name") }}</th>
-                                    <th>{{ __("Description") }}</th>
-                                    <th>{{ __("Status") }}</th>
-                                    <th>{{ __("Action") }}</th>
+                                    <th>{{ __('S/L') }}</th>
+                                    <th>{{ __('Price Group Name') }}</th>
+                                    <th>{{ __('Description') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -61,28 +59,71 @@
     <script>
         var priceGroupsTable = $('.data_tbl').DataTable({
             dom: "lBfrtip",
-            buttons: [
-                {extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
-                {extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary', exportOptions: {columns: 'th:not(:last-child)'}},
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: '<i class="fas fa-file-pdf"></i> Pdf',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> Print',
+                    className: 'btn btn-primary',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)'
+                    }
+                },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [[10, 25, 50, 100, 500, 1000, -1], [10, 25, 50, 100, 500, 1000, "All"]],
+            "lengthMenu": [
+                [10, 25, 50, 100, 500, 1000, -1],
+                [10, 25, 50, 100, 500, 1000, "All"]
+            ],
             processing: true,
             serverSide: true,
-            aaSorting: [[0, 'desc']],
+            aaSorting: [
+                [0, 'desc']
+            ],
             ajax: "{{ route('selling.price.groups.index') }}",
-            columns: [
-                {data: 'DT_RowIndex',name: 'DT_RowIndex'},
-                {data: 'name', name: 'name'},
-                {data: 'description', name: 'description'},
-                {data: 'status', name: 'status'},
-                {data: 'action', name: 'action'},
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                },
             ]
         });
 
         // Setup ajax for csrf token.
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $(document).on('click', '#addPriceGroup', function(e) {
             e.preventDefault();
@@ -101,15 +142,16 @@
 
                         $('#price_group_name').focus();
                     }, 500);
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
@@ -136,24 +178,24 @@
 
                         $('#price_group_name').focus().select();
                     }, 500);
-                }
-                , error: function(err) {
+                },
+                error: function(err) {
 
                     $('.data_preloader').hide();
                     if (err.status == 0) {
 
-                        toastr.error('Net Connetion Error. Reload This Page.');
+                        toastr.error("{{ __('Net Connetion Error.') }}");
                         return;
                     } else if (err.status == 500) {
 
-                        toastr.error('Server error. Please contact to the support team.');
+                        toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                         return;
                     }
                 }
             });
         });
 
-        $(document).on('click', '#delete',function(e){
+        $(document).on('click', '#delete', function(e) {
             e.preventDefault();
 
             var url = $(this).attr('href');
@@ -163,8 +205,18 @@
                 'title': 'Confirmation',
                 'content': 'Are you sure?',
                 'buttons': {
-                    'Yes': {'class': 'yes btn-modal-primary','action': function() { $('#deleted_form').submit(); }},
-                    'No': {'class': 'no btn-danger','action': function() { console.log('Deleted canceled.'); }}
+                    'Yes': {
+                        'class': 'yes btn-modal-primary',
+                        'action': function() {
+                            $('#deleted_form').submit();
+                        }
+                    },
+                    'No': {
+                        'class': 'no btn-danger',
+                        'action': function() {
+                            console.log('Deleted canceled.');
+                        }
+                    }
                 }
             });
         });
@@ -186,12 +238,13 @@
                     toastr.error(data);
                     priceGroupsTable.ajax.reload(null, false);
                     $('#deleted_form')[0].reset();
-                },error: function(err) {
+                },
+                error: function(err) {
 
                     if (err.status == 0) {
 
-                        toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
-                    }else{
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                    } else {
 
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
@@ -200,7 +253,7 @@
         });
 
 
-         $(document).on('click', '#change_status', function(e) {
+        $(document).on('click', '#change_status', function(e) {
             e.preventDefault();
             var url = $(this).data('url');
 

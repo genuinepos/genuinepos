@@ -170,6 +170,11 @@ class ProductService
                         $html .= '<a href="' . route('product.opening.stocks.create', [$row->id]) . '" class="dropdown-item" id="openingStock">' . __('Add or edit opening stock') . '</a>';
                     }
 
+                    if (auth()->user()->can('product_add')) {
+
+                        $html .= '<a class="dropdown-item" href="' . route('products.create', [$row->id]) . '">' . __('Duplicate Product') . '</a>';
+                    }
+
                     $html .= ' </div>';
                     $html .= '</div>';
 
@@ -256,7 +261,7 @@ class ProductService
 
                     $branchName = $productAccessBranch?->branch?->parent_branch_id ? $productAccessBranch?->branch?->name : $productAccessBranch?->branch?->name;
 
-                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business__business_name'];
+                    $__branchName = isset($branchName) ? $branchName : $generalSettings['business_or_shop__business_name'];
 
                     $areaName = $productAccessBranch?->branch?->area_name ? '(' . $productAccessBranch?->branch?->area_name . ')' : '';
 
@@ -395,7 +400,7 @@ class ProductService
         $addProduct->unit_id = $request->unit_id;
         $addProduct->alert_quantity = $request->alert_quantity;
         $addProduct->tax_ac_id = $request->tax_ac_id;
-        $addProduct->tax_type = $request->tax_type;
+        $addProduct->tax_type = $request->tax_type ? $request->tax_type : 1;
         $addProduct->product_condition = $request->product_condition;
         $addProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $addProduct->is_for_sale = $request->is_for_sale;

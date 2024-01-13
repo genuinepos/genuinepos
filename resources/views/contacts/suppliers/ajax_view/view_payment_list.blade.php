@@ -1,10 +1,28 @@
 <style>
-    .payment_top_card {background: #d7dfe8;}
-    .payment_top_card span {font-size: 12px;font-weight: 400;}
-    .payment_top_card li {font-size: 12px;}
-    .payment_top_card ul {padding: 6px;}
-    .payment_list_table {position: relative;}
-    .payment_details_contant{background: azure!important;}
+    .payment_top_card {
+        background: #d7dfe8;
+    }
+
+    .payment_top_card span {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .payment_top_card li {
+        font-size: 12px;
+    }
+
+    .payment_top_card ul {
+        padding: 6px;
+    }
+
+    .payment_list_table {
+        position: relative;
+    }
+
+    .payment_details_contant {
+        background: azure !important;
+    }
 </style>
 <div class="info_area mb-2">
     <div class="row">
@@ -12,7 +30,7 @@
             <div class="payment_top_card">
                 <ul class="list-unstyled">
                     <li><strong>@lang('menu.supplier') </strong>
-                        {{ $supplier->name  }}
+                        {{ $supplier->name }}
                     </li>
                     <li><strong>@lang('menu.business') </strong>
                         {{ $supplier->business_name }}
@@ -26,21 +44,21 @@
                 <ul class="list-unstyled">
                     <li>
                         <h6>
-                            @lang('menu.total_paid') : {{ $generalSettings['business__currency'] }}
+                            @lang('menu.total_paid') : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                             <b class="text-success">{{ App\Utils\Converter::format_in_bdt($supplier->total_paid) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                             <b class="text-danger">{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_due) }}</b>
                         </h6>
                     </li>
 
                     <li>
                         <h6>
-                            @lang('menu.total_purchase_due') : {{ $generalSettings['business__currency'] }}
+                            @lang('menu.total_purchase_due') : {{ $generalSettings['business_or_shop__currency_symbol'] }}
                             <b>{{ App\Utils\Converter::format_in_bdt($supplier->total_purchase_return_due) }}</b>
                         </h6>
                     </li>
@@ -63,7 +81,7 @@
                     <th class="text-white text-start">@lang('menu.type')</th>
                     <th class="text-white text-start">@lang('menu.method')</th>
                     <th class="text-white text-start">@lang('menu.account')</th>
-                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business__currency'] }})</th>
+                    <th class="text-white text-end">@lang('menu.amount')({{ $generalSettings['business_or_shop__currency_symbol'] }})</th>
                     <th class="text-white text-start">@lang('menu.action')</th>
                 </tr>
             </thead>
@@ -76,12 +94,12 @@
                     @foreach ($supplier_payments as $payment)
                         <tr>
                             <td class="text-start">
-                                {{ date($generalSettings['business__date_format'], strtotime($payment->date)) }}
+                                {{ date($generalSettings['business_or_shop__date_format'], strtotime($payment->date)) }}
                             </td>
                             <td class="text-start">{{ $payment->voucher_no }}</td>
                             <td class="text-start">{{ $payment->type == 1 ? 'Purchase Due' : 'Return due' }}</td>
                             <td class="text-start">{{ $payment->payment_method ? $payment->payment_method : $payment->pay_mode }}</td>
-                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name.' (A/C '.$payment->ac_no.')' : 'N/A' }}</td>
+                            <td class="text-start">{{ $payment->ac_name ? $payment->ac_name . ' (A/C ' . $payment->ac_no . ')' : 'N/A' }}</td>
                             <td class="text-end">
                                 {{ App\Utils\Converter::format_in_bdt($payment->paid_amount) }}
                                 @php
@@ -102,7 +120,7 @@
             </tbody>
             <tfoot>
                 <tr class="bg-secondary">
-                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{$generalSettings['business__currency'] }}</b> </th>
+                    <th colspan="5" class="text-white text-end"> <b>@lang('menu.total') : {{ $generalSettings['business_or_shop__currency'] }}</b> </th>
                     <th class="text-white text-end">
                         <b>{{ App\Utils\Converter::format_in_bdt($total) }}</b>
                     </th>

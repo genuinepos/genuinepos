@@ -16,17 +16,17 @@ class BarcodeSettingService
             ->addIndexColumn()
             ->editColumn('name', function ($row) {
 
-                return $row->name.' '.($row->is_default == 1 ? '<span class="badge bg-primary">'.__('Default').'</span>' : '');
+                return $row->name . ' ' . ($row->is_default == 1 ? '<span class="badge bg-primary">' . __('Default') . '</span>' : '');
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('barcode.settings.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('barcode.settings.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
 
                 if ($row->is_default == 0) {
 
-                    $html .= '<a href="'.route('barcode.settings.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
-                    $html .= '<a href="'.route('barcode.settings.set.default', [$row->id]).'" class="bg-primary text-white rounded pe-1" id="set_default_btn"> '.__('Set As Default').'</a>';
+                    $html .= '<a href="' . route('barcode.settings.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('barcode.settings.set.default', [$row->id]) . '" class="bg-primary text-white rounded pe-1" id="set_default_btn"> ' . __('Set As Default') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -114,7 +114,7 @@ class BarcodeSettingService
     {
         $deleteBarcodeSetting = $this->singleBarcodeSetting(id: $id);
 
-        if (! is_null($deleteBarcodeSetting)) {
+        if (!is_null($deleteBarcodeSetting)) {
 
             $deleteBarcodeSetting->delete();
         }
@@ -160,5 +160,17 @@ class BarcodeSettingService
         }
 
         return $query->first();
+    }
+
+    public function barcodeSettings(array $with = null): ?object
+    {
+        $query = BarcodeSetting::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
     }
 }

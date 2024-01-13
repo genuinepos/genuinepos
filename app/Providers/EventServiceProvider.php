@@ -17,6 +17,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'Illuminate\Auth\Events\Authenticated' => [
+            'App\Listeners\GeneralSettingsListener',
+        ],
+    ];
+
+    protected $priorities = [
+        'App\Listeners\GeneralSettingsListener' => 100,
     ];
 
     /**

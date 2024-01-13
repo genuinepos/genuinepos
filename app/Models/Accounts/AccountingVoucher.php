@@ -2,6 +2,7 @@
 
 namespace App\Models\Accounts;
 
+use App\Models\Hrm\Payroll;
 use App\Models\Purchases\Purchase;
 use App\Models\Purchases\PurchaseReturn;
 use App\Models\Sales\Sale;
@@ -64,6 +65,11 @@ class AccountingVoucher extends Model
     public function stockAdjustmentRef()
     {
         return $this->belongsTo(StockAdjustment::class, 'stock_adjustment_ref_id');
+    }
+
+    public function payrollRef()
+    {
+        return $this->belongsTo(Payroll::class, 'payroll_ref_id');
     }
 
     public function createdBy()

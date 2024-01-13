@@ -33,7 +33,7 @@
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -59,11 +59,12 @@
 
                 $('#payment_method_settings_body').empty();
                 $('#payment_method_settings_body').html(data);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
-                    toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
                 } else if (err.status == 500) {
 
@@ -84,7 +85,7 @@
             if (next.length > 0) {
 
                 next.find('#account_id').focus();
-            }else {
+            } else {
 
                 $('#save_payment_settings_save_changes').focus();
             }

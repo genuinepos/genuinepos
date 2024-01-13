@@ -14,7 +14,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-th-large"></span>
                     <h6>@lang('menu.work_space')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -37,7 +36,7 @@
                                                 <select name="branch_id"
                                                     class="form-control submit_able select2" id="branch_id" autofocus>
                                                     <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business__business_name'] }} (@lang('menu.head_office'))</option>
+                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }} (@lang('menu.head_office'))</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">
                                                             {{ $branch->name . '/' . $branch->branch_code }}
@@ -190,12 +189,12 @@
                         <div class="form-group row mt-1">
                             <div class="col-md-6">
                                 <label><b>@lang('menu.start_date') </b><span class="text-danger"> *</span></label>
-                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business__date_format'])}}" autocomplete="off">
+                                <input required type="text" name="start_date" class="form-control datepicker" value="{{date($generalSettings['business_or_shop__date_format'])}}" autocomplete="off">
                             </div>
 
                             <div class="col-md-6">
                                 <label><b>@lang('menu.end_date') </b><span class="text-danger"> *</span></label>
-                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business__date_format'] }}" autocomplete="off">
+                                <input required type="text" name="end_date" class="form-control datepicker" placeholder="{{ $generalSettings['business_or_shop__date_format'] }}" autocomplete="off">
                             </div>
                         </div>
 
@@ -520,7 +519,7 @@
     $('.select2').select2();
     $('[data-magnify=gallery]').magnify();
 
-    var dateFormat = "{{ $generalSettings['business__date_format'] }}";
+    var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";
     var _expectedDateFormat = '' ;
     _expectedDateFormat = dateFormat.replace('d', 'dd');
     _expectedDateFormat = _expectedDateFormat.replace('m', 'mm');

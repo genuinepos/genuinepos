@@ -115,22 +115,6 @@ Route::group(['prefix' => 'product'], function () {
     });
 
     // Barcode route group
-    Route::group(['prefix' => 'barcode'], function () {
-
-        Route::get('/', [BarcodeController::class, 'index'])->name('barcode.index');
-        Route::post('preview', [BarcodeController::class, 'preview'])->name('barcode.preview');
-        Route::get('supplier/products', [BarcodeController::class, 'supplierProduct'])->name('barcode.supplier.get.products');
-        Route::post('multiple/generate/completed', [BarcodeController::class, 'multipleGenerateCompleted'])->name('barcode.multiple.generate.completed');
-        Route::get('search/product/{searchKeyword}', [BarcodeController::class, 'searchProduct']);
-        Route::get('get/selected/product/{productId}', [BarcodeController::class, 'getSelectedProduct']);
-        Route::get('get/selected/product/variant/{productId}/{variantId}', [BarcodeController::class, 'getSelectedProductVariant']);
-        Route::get('generate/product/barcode/{productId}', [BarcodeController::class, 'generateProductBarcode'])->name('products.generate.product.barcode');
-        Route::get('get/specific/supplier/product/{productId}', [BarcodeController::class, 'getSpecificSupplierProduct'])->name('barcode.get.specific.supplier.product');
-
-        // Generate bar-codes on purchase.
-        Route::get('purchase/products/{purchaseId}', [BarcodeController::class, 'onPurchaseBarcode'])->name('barcode.on.purchase.barcode');
-        Route::get('get/purchase/products/{purchaseId}', [BarcodeController::class, 'getPurchaseProduct'])->name('barcode.get.purchase.products');
-    });
 
     // Import product route group
     Route::group(['prefix' => 'imports'], function () {
@@ -145,26 +129,26 @@ Route::group(['prefix' => 'contacts'], function () {
     // Supplier route group
     Route::group(['prefix' => 'suppliers'], function () {
 
-        Route::get('/', [SupplierController::class, 'index'])->name('contacts.supplier.index');
-        Route::get('add', [SupplierController::class, 'create'])->name('contacts.supplier.create');
-        Route::post('store', [SupplierController::class, 'store'])->name('contacts.supplier.store');
-        Route::get('edit/{supplierId}', [SupplierController::class, 'edit'])->name('contacts.supplier.edit');
-        Route::post('update', [SupplierController::class, 'update'])->name('contacts.supplier.update');
-        Route::delete('delete/{supplierId}', [SupplierController::class, 'delete'])->name('contacts.supplier.delete');
-        Route::get('change/status/{supplierId}', [SupplierController::class, 'changeStatus'])->name('contacts.supplier.change.status');
-        Route::get('view/{supplierId}', [SupplierController::class, 'view'])->name('contacts.supplier.view');
-        Route::get('uncompleted/orders/{supplierId}', [SupplierController::class, 'uncompletedOrders'])->name('suppliers.uncompleted.orders');
-        Route::get('ledgers/{supplierId}', [SupplierController::class, 'ledgers'])->name('contacts.supplier.ledgers');
-        Route::get('print/ledger/{supplierId}', [SupplierController::class, 'ledgerPrint'])->name('contacts.supplier.ledger.print');
-        Route::get('all/payment/list/{supplierId}', [SupplierController::class, 'allPaymentList'])->name('suppliers.all.payment.list');
-        Route::get('all/payment/print/{supplierId}', [SupplierController::class, 'allPaymentPrint'])->name('suppliers.all.payment.print');
-        Route::get('payment/{supplierId}', [SupplierController::class, 'payment'])->name('suppliers.payment');
-        Route::post('payment/{supplierId}', [SupplierController::class, 'paymentAdd'])->name('suppliers.payment.add');
-        Route::get('return/payment/{supplierId}', [SupplierController::class, 'returnPayment'])->name('suppliers.return.payment');
-        Route::post('return/payment/{supplierId}', [SupplierController::class, 'returnPaymentAdd'])->name('suppliers.return.payment.add');
-        Route::get('payment/details/{paymentId}', [SupplierController::class, 'paymentDetails'])->name('suppliers.view.details');
-        Route::delete('payment/delete/{paymentId}', [SupplierController::class, 'paymentDelete'])->name('suppliers.payment.delete');
-        Route::get('amountsBranchWise/{supplierId}', [SupplierController::class, 'supplierAmountsBranchWise'])->name('contacts.supplier.amounts.branch.wise');
+        // Route::get('/', [SupplierController::class, 'index'])->name('contacts.supplier.index');
+        // Route::get('add', [SupplierController::class, 'create'])->name('contacts.supplier.create');
+        // Route::post('store', [SupplierController::class, 'store'])->name('contacts.supplier.store');
+        // Route::get('edit/{supplierId}', [SupplierController::class, 'edit'])->name('contacts.supplier.edit');
+        // Route::post('update', [SupplierController::class, 'update'])->name('contacts.supplier.update');
+        // Route::delete('delete/{supplierId}', [SupplierController::class, 'delete'])->name('contacts.supplier.delete');
+        // Route::get('change/status/{supplierId}', [SupplierController::class, 'changeStatus'])->name('contacts.supplier.change.status');
+        // Route::get('view/{supplierId}', [SupplierController::class, 'view'])->name('contacts.supplier.view');
+        // Route::get('uncompleted/orders/{supplierId}', [SupplierController::class, 'uncompletedOrders'])->name('suppliers.uncompleted.orders');
+        // Route::get('ledgers/{supplierId}', [SupplierController::class, 'ledgers'])->name('contacts.supplier.ledgers');
+        // Route::get('print/ledger/{supplierId}', [SupplierController::class, 'ledgerPrint'])->name('contacts.supplier.ledger.print');
+        // Route::get('all/payment/list/{supplierId}', [SupplierController::class, 'allPaymentList'])->name('suppliers.all.payment.list');
+        // Route::get('all/payment/print/{supplierId}', [SupplierController::class, 'allPaymentPrint'])->name('suppliers.all.payment.print');
+        // Route::get('payment/{supplierId}', [SupplierController::class, 'payment'])->name('suppliers.payment');
+        // Route::post('payment/{supplierId}', [SupplierController::class, 'paymentAdd'])->name('suppliers.payment.add');
+        // Route::get('return/payment/{supplierId}', [SupplierController::class, 'returnPayment'])->name('suppliers.return.payment');
+        // Route::post('return/payment/{supplierId}', [SupplierController::class, 'returnPaymentAdd'])->name('suppliers.return.payment.add');
+        // Route::get('payment/details/{paymentId}', [SupplierController::class, 'paymentDetails'])->name('suppliers.view.details');
+        // Route::delete('payment/delete/{paymentId}', [SupplierController::class, 'paymentDelete'])->name('suppliers.payment.delete');
+        // Route::get('amountsBranchWise/{supplierId}', [SupplierController::class, 'supplierAmountsBranchWise'])->name('contacts.supplier.amounts.branch.wise');
 
         Route::group(['prefix' => 'import'], function () {
             Route::get('/', [SupplierImportController::class, 'create'])->name('contacts.suppliers.import.create');
@@ -478,22 +462,6 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('amounts', [FinancialReportControllerReport::class, 'financialAmounts'])->name('reports.financial.amounts');
             Route::get('filter/amounts', [FinancialReportControllerReport::class, 'filterFinancialAmounts'])->name('reports.financial.filter.amounts');
             Route::get('report/print', [FinancialReportControllerReport::class, 'print'])->name('reports.financial.report.print');
-        });
-    });
-});
-
-Route::group(['prefix' => 'settings'], function () {
-
-    Route::group(['prefix' => 'invoices'], function () {
-
-        Route::group(['prefix' => 'schemas'], function () {
-
-            Route::get('/', [InvoiceSchemaController::class, 'index'])->name('invoices.schemas.index');
-            Route::post('store', [InvoiceSchemaController::class, 'store'])->name('invoices.schemas.store');
-            Route::get('edit/{schemaId}', [InvoiceSchemaController::class, 'edit'])->name('invoices.schemas.edit');
-            Route::post('update/{schemaId}', [InvoiceSchemaController::class, 'update'])->name('invoices.schemas.update');
-            Route::delete('delete/{schemaId}', [InvoiceSchemaController::class, 'delete'])->name('invoices.schemas.delete');
-            Route::get('set/default/{schemaId}', [InvoiceSchemaController::class, 'setDefault'])->name('invoices.schemas.set.default');
         });
     });
 });

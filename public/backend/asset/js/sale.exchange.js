@@ -32,11 +32,11 @@ $(document).on('submit', '#search_inv_form', function (e) {
             $('#get_inv_preloader').hide();
             if (err.status == 0) {
 
-                toastr.error('Net Connection Error. Reload This Page.');
+                toastr.error('Net Connection Error.');
                 return;
             } else if (err.status == 500) {
 
-                toastr.error('Server error. Please contact to the support team.');
+                toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                 return;
             }
         }
@@ -103,7 +103,7 @@ $(document).on('submit', '#prepare_to_exchange', function (e) {
                     tr += '</td>';
 
                     tr += '<td>';
-                    tr += '<span class="fw-bold '+(saleProduct.ex_quantity < 0 ? 'text-danger' : '')+'" id="span_quantity">' + saleProduct.ex_quantity + '</span>';
+                    tr += '<span class="fw-bold ' + (saleProduct.ex_quantity < 0 ? 'text-danger' : '') + '" id="span_quantity">' + saleProduct.ex_quantity + '</span>';
                     tr += '<input required type="hidden" step="any" name="quantities[]" id="quantity" value="' + saleProduct.ex_quantity + '">';
                     tr += '</td>';
 
@@ -122,7 +122,7 @@ $(document).on('submit', '#prepare_to_exchange', function (e) {
                     var subtotal = parseFloat(saleProduct.unit_price_inc_tax) * parseFloat(exQuantity);
 
                     tr += '<td>';
-                    tr += '<span class="fw-bold '+(subtotal < 0 ? 'text-danger' : '')+'" id="span_subtotal">' + parseFloat(subtotal).toFixed(2) + '</span>';
+                    tr += '<span class="fw-bold ' + (subtotal < 0 ? 'text-danger' : '') + '" id="span_subtotal">' + parseFloat(subtotal).toFixed(2) + '</span>';
                     tr += '<input type="hidden" name="subtotals[]" id="subtotal" value="' + parseFloat(subtotal).toFixed(2) + '">';
                     tr += '</td>';
                     tr += '<td><a href="#" class="action-btn c-delete" id="remove_product_btn" tabindex="-1"><span class="fas fa-trash"></span></a></td>';

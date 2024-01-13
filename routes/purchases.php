@@ -4,7 +4,6 @@ use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Purchases\PurchaseOrderController;
 use App\Http\Controllers\Purchases\PurchaseProductController;
 use App\Http\Controllers\Purchases\PurchaseReturnController;
-use App\Http\Controllers\Purchases\PurchaseSettingController;
 use App\Http\Controllers\Purchases\Reports\PaymentAgainstPurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderProductReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseOrderReportController;
@@ -19,6 +18,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
     Route::get('index/{supplierAccountId?}', 'index')->name('purchases.index');
     Route::get('show/{id}', 'show')->name('purchases.show');
+    Route::get('print/{id}', 'print')->name('purchases.print');
     Route::get('create', 'create')->name('purchases.create');
     Route::post('store', 'store')->name('purchases.store');
     Route::get('edit/{id}', 'edit')->name('purchases.edit');
@@ -37,6 +37,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         Route::get('create', 'create')->name('purchase.orders.create');
         Route::post('store', 'store')->name('purchase.orders.store');
         Route::get('show/{id}', 'show')->name('purchase.orders.show');
+        Route::get('print/{id}', 'print')->name('purchase.orders.print');
         Route::get('edit/{id}', 'edit')->name('purchase.orders.edit');
         Route::post('update/{id}', 'update')->name('purchase.orders.update');
         Route::delete('delete/{id}', 'delete')->name('purchase.orders.delete');
@@ -47,17 +48,12 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
 
         Route::get('/', 'index')->name('purchase.returns.index');
         Route::get('show/{id}', 'show')->name('purchase.returns.show');
+        Route::get('print/{id}', 'print')->name('purchase.returns.print');
         Route::get('create', 'create')->name('purchase.returns.create');
         Route::post('store', 'store')->name('purchase.returns.store');
         Route::get('edit/{id}', 'edit')->name('purchase.returns.edit');
         Route::post('update/{id}', 'update')->name('purchase.returns.update');
         Route::delete('delete/{id}', 'delete')->name('purchase.returns.delete');
-    });
-
-    Route::controller(PurchaseSettingController::class)->prefix('settings')->group(function () {
-
-        Route::get('/', 'index')->name('purchase.settings.index');
-        Route::post('update', 'update')->name('purchase.settings.update');
     });
 
     Route::group(['prefix' => 'reports'], function () {

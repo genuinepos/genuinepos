@@ -7,7 +7,6 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <span class="fas fa-desktop"></span>
                     <h5>{{ __('Warranties/Guaranties') }}</h5>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
@@ -160,7 +159,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -194,7 +193,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                             return;
                         } else if (err.status == 500) {
 
@@ -252,7 +251,7 @@
 
                         if (err.status == 0) {
 
-                            toastr.error("{{ __('Net Connetion Error. Reload This Page.') }}");
+                            toastr.error("{{ __('Net Connetion Error.') }}");
                         } else {
 
                             toastr.error("{{ __('Server Error. Please contact to the support team.') }}");

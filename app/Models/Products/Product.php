@@ -31,7 +31,7 @@ class Product extends Model
 
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 
     public function priceGroups()
@@ -132,7 +132,7 @@ class Product extends Model
     {
         $generalSettings = config('generalSettings');
 
-        $stockAccountingMethod = $generalSettings['business__stock_accounting_method'];
+        $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         if ($stockAccountingMethod == 1) {
 

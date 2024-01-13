@@ -1,39 +1,80 @@
 <style>
-    @media print
-    {
-        table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
-        thead { display:table-header-group }
-        tfoot { display:table-footer-group }
+    @media print {
+        table {
+            page-break-after: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        td {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
     }
 
-    @page {size:a4;margin-top: 0.8cm;margin-bottom: 33px; margin-left: 4%;margin-right: 4%;}
-    .header, .header-space,
-    .footer, .footer-space {height: 20px;}
-    .header {position: fixed;top: 0;}
-    .footer {position: fixed;bottom: 0;}
-    .noBorder {border: 0px !important;}
-    tr.noBorder td {border: 0px !important;}
-    tr.noBorder {border: 0px !important;border-left: 1px solid transparent;border-bottom: 1px solid transparent;}
+    @page {
+        size: a4;
+        margin-top: 0.8cm;
+        margin-bottom: 33px;
+        margin-left: 4%;
+        margin-right: 4%;
+    }
+
+    .header,
+    .header-space,
+    .footer,
+    .footer-space {
+        height: 20px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .noBorder {
+        border: 0px !important;
+    }
+
+    tr.noBorder td {
+        border: 0px !important;
+    }
+
+    tr.noBorder {
+        border: 0px !important;
+        border-left: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+    }
 </style>
 <div class="row">
     <div class="col-12 text-center">
         @if ($branch_id == '')
-            <h5>{{ $generalSettings['business__business_name'] }} </h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
 
 
 
-                <p><strong>@lang('menu.all_business_location')</strong></p>
-
-
+            <p><strong>@lang('menu.all_business_location')</strong></p>
         @elseif ($branch_id == 'NULL')
-
-            <h5>{{ $generalSettings['business__business_name'] }} </h5>
-            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business__address'] }}</p>
+            <h5>{{ $generalSettings['business_or_shop__business_name'] }} </h5>
+            <p style="width: 60%; margin:0 auto;">{{ $generalSettings['business_or_shop__address'] }}</p>
         @else
-
             @php
                 $branch = DB::table('branches')
                     ->where('id', $branch_id)
@@ -41,11 +82,11 @@
                     ->first();
             @endphp
             <h5>{{ $branch->name }}</h5>
-            <p style="width: 60%; margin:0 auto;">{{ $branch->city.', '.$branch->state.', '.$branch->zip_code.', '.$branch->country }}</p>
+            <p style="width: 60%; margin:0 auto;">{{ $branch->city . ', ' . $branch->state . ', ' . $branch->zip_code . ', ' . $branch->country }}</p>
         @endif
 
         @if ($fromDate && $toDate)
-            <p><b>@lang('menu.date') </b> {{date($generalSettings['business__date_format'] ,strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business__date_format'] ,strtotime($toDate)) }} </p>
+            <p><b>@lang('menu.date') </b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($fromDate)) }} <b>@lang('menu.to')</b> {{ date($generalSettings['business_or_shop__date_format'], strtotime($toDate)) }} </p>
         @endif
         <p><b>@lang('menu.supplier_ledger') </b></p>
     </div>
@@ -57,7 +98,7 @@
             <ul class="list-unstyled">
                 <li><strong>@lang('menu.supplier') </strong> {{ $supplier->name }} (ID: {{ $supplier->contact_id }})</li>
                 <li><strong>@lang('menu.phone') </strong> {{ $supplier->phone }}</li>
-                <li><strong>@lang('menu.address') </strong> {{ $supplier->address  }}</li>
+                <li><strong>@lang('menu.address') </strong> {{ $supplier->address }}</li>
             </ul>
         </div>
     </div>
@@ -93,11 +134,9 @@
                         $credit = $row->credit;
                         $less = $row->less_amount;
 
-                        if($i == 0) {
-
-                            $previousBalance =  $credit - $debit;
+                        if ($i == 0) {
+                            $previousBalance = $credit - $debit;
                         } else {
-
                             $previousBalance = $previousBalance + ($credit - ($debit + $less));
                         }
                     @endphp
@@ -105,7 +144,7 @@
                     <tr>
                         <td class="text-start">
                             @php
-                                $dateFormat = $generalSettings['business__date_format'];
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
                                 $__date_format = str_replace('-', '/', $dateFormat);
                             @endphp
 
@@ -117,7 +156,7 @@
                                 $type = $supplierUtil->voucherType($row->voucher_type);
                                 $__agp = $row->agp_purchase ? '/' . 'AGP: ' . $row->agp_purchase : '';
                                 $__less = $row->less_amount > 0 ? '/' . 'Less:(<b class="text-success">' . $row->less_amount . '</b>)' : '';
-                                $particulars = '<b>' . $type['name'] . '</b>' . $__agp. $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
+                                $particulars = '<b>' . $type['name'] . '</b>' . $__agp . $__less . ($row->{$type['par']} ? '/' . $row->{$type['par']} : '');
                             @endphp
 
                             {!! $particulars !!}
@@ -162,7 +201,7 @@
             <tbody>
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_credit') </strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_credit') </strong> {{ $generalSettings['business_or_shop__currency_symbol'] }}
                     </td>
                     <td class="text-end">
                         {{ App\Utils\Converter::format_in_bdt($totalCredit) }}
@@ -171,7 +210,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_debit') </strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_debit') </strong> {{ $generalSettings['business_or_shop__currency_symbol'] }}
                     </td>
                     <td class="text-end">
                         ({{ App\Utils\Converter::format_in_bdt($totalDebit) }})
@@ -180,7 +219,7 @@
 
                 <tr>
                     <td class="text-end">
-                        <strong>@lang('menu.total_less') </strong> {{ $generalSettings['business__currency'] }}
+                        <strong>@lang('menu.total_less') </strong> {{ $generalSettings['business_or_shop__currency_symbol'] }}
                     </td>
                     <td class="text-end">
                         ({{ App\Utils\Converter::format_in_bdt($totalLess) }})
@@ -188,7 +227,7 @@
                 </tr>
 
                 <tr>
-                    <td class="text-end"><strong>@lang('menu.closing_balance') </strong> {{ $generalSettings['business__currency'] }}</td>
+                    <td class="text-end"><strong>@lang('menu.closing_balance') </strong> {{ $generalSettings['business_or_shop__currency_symbol'] }}</td>
                     <td class="text-end">
                         @php
                             $closingBalance = $totalCredit - ($totalDebit + $totalLess);

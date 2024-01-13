@@ -23,8 +23,10 @@ Route::prefix('setups')->group(function () {
         Route::post('add/sale/settings', 'addSaleSettings')->name('settings.add.sale.settings');
         Route::post('pos/settings', 'posSettings')->name('settings.pos.settings');
         Route::post('purchase/settings', 'purchaseSettings')->name('settings.purchase.settings');
+        Route::post('manufacturing/settings', 'manufacturingSettings')->name('settings.manufacturing.settings');
         Route::post('dashboard/settings', 'dashboardSettings')->name('settings.dashboard.settings');
         Route::post('prefix/settings', 'prefixSettings')->name('settings.prefix.settings');
+        Route::post('invoice/layout/settings', 'invoiceLayoutSettings')->name('settings.invoice.layout.settings');
         Route::post('system/settings', 'systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'moduleSettings')->name('settings.module.settings');
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
@@ -44,14 +46,12 @@ Route::prefix('setups')->group(function () {
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
-            Route::get('index/{id?}', 'index')->name('branches.settings.index');
-            Route::get('edit/{id}', 'edit')->name('branches.settings.edit');
-            Route::post('update/{id}', 'update')->name('branches.settings.update');
-
+            Route::get('index/{id}', 'index')->name('branches.settings.index');
             Route::post('product/{id}', 'productSettings')->name('branches.settings.product');
             Route::post('add/sale/{id}', 'addSaleSettings')->name('branches.settings.add.sale');
             Route::post('pos/{id}', 'posSettings')->name('branches.settings.pos');
             Route::post('purchase/{id}', 'purchaseSettings')->name('branches.settings.purchase');
+            Route::post('manufacturing/{id}', 'manufacturingSettings')->name('branches.settings.manufacturing');
             Route::post('dashboard/{id}', 'dashboardSettings')->name('branches.settings.dashboard');
             Route::post('prefix/{id}', 'prefixSettings')->name('branches.settings.prefix');
             Route::post('invoice/layout/{id}', 'invoiceLayoutSettings')->name('branches.settings.invoice.layout');
@@ -84,7 +84,6 @@ Route::prefix('setups')->group(function () {
             Route::get('edit/{id}', 'edit')->name('invoices.layouts.edit');
             Route::post('update/{id}', 'update')->name('invoices.layouts.update');
             Route::delete('delete/{id}', 'delete')->name('invoices.layouts.delete');
-            Route::get('set/default/{id}', 'setDefault')->name('invoices.layouts.set.default');
         });
     });
 

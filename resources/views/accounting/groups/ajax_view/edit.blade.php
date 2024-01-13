@@ -1,7 +1,7 @@
 <div class="modal-dialog double-col-modal" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __("Edit Account Group") }}</h6>
+            <h6 class="modal-title" id="exampleModalLabel">{{ __('Edit Account Group') }}</h6>
             <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
@@ -9,27 +9,24 @@
             <form id="edit_account_group_form" action="{{ route('account.groups.update', $group->id) }}">
                 @csrf
                 <div class="form-group">
-                    <label><strong>{{ __("Name") }} </strong> <span class="text-danger">*</span></label>
-                    <input required type="text" name="name" class="form-control" id="account_group_name" value="{{ $group->name }}" data-next="{{ $group->is_parent_sub_group == 1 || $group->is_parent_sub_sub_group ? 'is_default_tax_calculator' : 'parent_group_id' }}" placeholder="@lang('menu.name')" autocomplete="off" autofocus/>
+                    <label><strong>{{ __('Name') }} </strong> <span class="text-danger">*</span></label>
+                    <input required type="text" name="name" class="form-control" id="account_group_name" value="{{ $group->name }}" data-next="{{ $group->is_parent_sub_group == 1 || $group->is_parent_sub_sub_group ? 'is_default_tax_calculator' : 'parent_group_id' }}" placeholder="@lang('menu.name')" autocomplete="off" autofocus />
                     <span class="error error_name"></span>
                 </div>
 
                 @if ($group->is_parent_sub_group == 1 || $group->is_parent_sub_sub_group)
                     <div class="form-group mt-1">
-                        <label><b>{{ __("Under The Primary Group Of") }} </b> <strong>{{ $group->parentGroup ? $group->parentGroup->name : '' }}</strong>  </label>
+                        <label><b>{{ __('Under The Primary Group Of') }} </b> <strong>{{ $group->parentGroup ? $group->parentGroup->name : '' }}</strong> </label>
                         <input type="hidden" name="parent_group_id" id="parent_group_id" value="{{ $group->parent_group_id }}">
                     </div>
                 @else
                     <div class="form-group mt-1">
-                        <label><strong>{{ __("Under Group") }} <span class="text-danger">*</span></strong></label>
+                        <label><strong>{{ __('Under Group') }} <span class="text-danger">*</span></strong></label>
                         <select required name="parent_group_id" class="form-control select2" id="parent_group_id" data-next="is_default_tax_calculator">
-                            <option value="">{{ __("Select Group") }}</option>
+                            <option value="">{{ __('Select Group') }}</option>
                             @foreach ($formGroups as $formGroup)
-                                <option
-                                    data-is_allowed_bank_details="{{ $formGroup->is_allowed_bank_details }}"
-                                    data-is_default_tax_calculator="{{ $formGroup->is_default_tax_calculator }}"
-                                {{ $formGroup->id == $group->parent_group_id ? 'SELECTED' : '' }} value="{{ $formGroup->id }}">
-                                    {{ $formGroup->name }}{{ $formGroup->parentGroup ? ' - ('.$formGroup->parentGroup->name.')' : '' }}
+                                <option data-is_allowed_bank_details="{{ $formGroup->is_allowed_bank_details }}" data-is_default_tax_calculator="{{ $formGroup->is_default_tax_calculator }}" {{ $formGroup->id == $group->parent_group_id ? 'SELECTED' : '' }} value="{{ $formGroup->id }}">
+                                    {{ $formGroup->name }}{{ $formGroup->parentGroup ? ' - (' . $formGroup->parentGroup->name . ')' : '' }}
                                 </option>
                             @endforeach
                         </select>
@@ -39,20 +36,20 @@
 
                 <div class="form-group row mt-1">
                     <div class="col-md-12">
-                        <label><strong> {{ __("Is Default Tax Calculator") }} </strong></label>
+                        <label><strong> {{ __('Is Default Tax Calculator') }} </strong></label>
                         <select name="is_default_tax_calculator" class="form-control" id="is_default_tax_calculator" data-next="is_allowed_bank_details">
-                            <option value="0">{{ __("No") }}</option>
-                            <option {{ $group->is_default_tax_calculator == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
+                            <option value="0">{{ __('No') }}</option>
+                            <option {{ $group->is_default_tax_calculator == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group row mt-1">
                     <div class="col-md-12">
-                        <label><strong>{{ __("Is Allowed Bank Details") }}</strong></label>
+                        <label><strong>{{ __('Is Allowed Bank Details') }}</strong></label>
                         <select name="is_allowed_bank_details" class="form-control" id="is_allowed_bank_details" data-next="account_group_save_changes">
-                            <option value="0">{{ __("No") }}</option>
-                            <option {{ $group->is_allowed_bank_details == 1 ? 'SELECTED' : '' }} value="1">{{ __("Yes") }}</option>
+                            <option value="0">{{ __('No') }}</option>
+                            <option {{ $group->is_allowed_bank_details == 1 ? 'SELECTED' : '' }} value="1">{{ __('Yes') }}</option>
                         </select>
                     </div>
                 </div>
@@ -88,7 +85,7 @@
     });
 
     var isAllowSubmit = true;
-    $(document).on('click', '.account_group_submit_button',function () {
+    $(document).on('click', '.account_group_submit_button', function() {
 
         if (isAllowSubmit) {
 
@@ -96,7 +93,7 @@
         }
     });
 
-    $('#edit_account_group_form').on('submit', function(e){
+    $('#edit_account_group_form').on('submit', function(e) {
         e.preventDefault();
 
         $('.group_loading_button').show();
@@ -104,37 +101,38 @@
         var request = $(this).serialize();
 
         $.ajax({
-            url : url,
-            type : 'post',
-            data : request,
-            success:function(data){
+            url: url,
+            type: 'post',
+            data: request,
+            success: function(data) {
 
                 $('.group_loading_button').hide();
-                if(!$.isEmptyObject(data.errorMsg)){
+                if (!$.isEmptyObject(data.errorMsg)) {
 
                     toastr.error(data.errorMsg, 'ERROR');
                     return;
-                }else{
+                } else {
 
                     toastr.success(data);
                     getAjaxList();
                     $('#accountGroupAddOrEditModal').modal('hide');
                     $('#accountGroupAddOrEditModal').empty();
                 }
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('.group_loading_button').hide();
                 $('.error').html('');
 
                 if (err.status == 0) {
 
-                    toastr.error('Net Connetion Error. Reload This Page.');
+                    toastr.error("{{ __('Net Connetion Error.') }}");
                     return;
-                } else if(err.status == 500) {
+                } else if (err.status == 500) {
 
-                    toastr.error('Server error. Please contact to the support team.');
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     return;
-                } else if(err.status == 403) {
+                } else if (err.status == 403) {
 
                     toastr.error('Access Denied');
                     return;
@@ -148,7 +146,7 @@
         });
     });
 
-    $(document).on('change keypress', 'input', function(e){
+    $(document).on('change keypress', 'input', function(e) {
 
         var nextId = $(this).data('next');
 
@@ -156,19 +154,19 @@
 
             e.preventDefault();
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 
-    $('select').on('select2:close', function (e) {
+    $('select').on('select2:close', function(e) {
 
         var nextId = $(this).data('next');
 
-        $('#'+nextId).focus();
+        $('#' + nextId).focus();
 
-        setTimeout(function () {
+        setTimeout(function() {
 
-            $('#'+nextId).focus();
+            $('#' + nextId).focus();
         }, 100);
     });
 
@@ -178,7 +176,7 @@
 
         if (e.which == 0) {
 
-            $('#'+nextId).focus().select();
+            $('#' + nextId).focus().select();
         }
     });
 </script>

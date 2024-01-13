@@ -28,7 +28,7 @@ class AccountBalanceService
         if ($fromDate && $toDate) {
 
             $generalSettings = config('generalSettings');
-            $accountStartDate = $generalSettings['business__start_date'];
+            $accountStartDate = $generalSettings['business_or_shop__account_start_date'];
 
             $fromDateYmd = Carbon::parse($fromDate)->startOfDay();
             $toDateYmd = Carbon::parse($toDate)->endOfDay();
@@ -166,7 +166,6 @@ class AccountBalanceService
         if ($account->default_balance_type == 'dr') {
 
             $closingBalanceInFlatAmount = $currTotalDebit - $currTotalCredit;
-
         } elseif ($account->default_balance_type == 'cr') {
 
             $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
@@ -223,7 +222,7 @@ class AccountBalanceService
             'all_total_credit_string' => $allTotalCredit ? $converter::format_in_bdt($allTotalCredit) : $converter::format_in_bdt(0),
             'closing_balance' => $closingBalance,
             'closing_balance_side' => $closingBalanceSide,
-            'closing_balance_string' => $converter::format_in_bdt($closingBalance).($closingBalanceSide == 'dr' ? ' Dr.' : ' Cr.'),
+            'closing_balance_string' => $converter::format_in_bdt($closingBalance) . ($closingBalanceSide == 'dr' ? ' Dr.' : ' Cr.'),
         ];
     }
 }

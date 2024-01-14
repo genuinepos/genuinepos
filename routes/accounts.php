@@ -84,6 +84,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('index/{debitAccountId?}', 'index')->name('payments.index');
         Route::get('show/{id}', 'show')->name('payments.show');
+        Route::get('print/{id}', 'print')->name('payments.print');
         Route::get('create/{debitAccountId?}', 'create')->name('payments.create');
         Route::post('store', 'store')->name('payments.store');
         Route::get('edit/{id}/{debitAccountId?}', 'edit')->name('payments.edit');

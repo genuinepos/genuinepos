@@ -47,8 +47,8 @@
                                                 <label class="col-4 text-end pe-1"><b>{{ __('Invoice Page Size') }}</b></label>
                                                 <div class="col-8">
                                                     <select name="page_size" id="page_size" class="form-control" data-next="show_business_shop_logo">
-                                                        @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
-                                                            <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                                        @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                                            <option value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -86,7 +86,7 @@
 
                             <div class="form_element rounded mt-0 mb-1">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>{{ __("Header Option") }}</b></p>
+                                    <p class="p-1 text-primary"><b>{{ __('Header Option') }}</b></p>
                                 </div>
 
                                 <div class="element-body">
@@ -342,7 +342,7 @@
 
                             <div class="form_element rounded mt-0 mb-1">
                                 <div class="heading_area">
-                                    <p class="p-1 text-primary"><b>{{ __("Field For Product") }}</b></p>
+                                    <p class="p-1 text-primary"><b>{{ __('Field For Product') }}</b></p>
                                 </div>
 
                                 <div class="element-body">

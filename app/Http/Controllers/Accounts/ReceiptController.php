@@ -19,7 +19,6 @@ use App\Services\Purchases\PurchaseService;
 use App\Services\Sales\SaleService;
 use App\Services\Sales\SalesReturnService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +38,6 @@ class ReceiptController extends Controller
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
         private DayBookVoucherService $dayBookVoucherService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
@@ -48,9 +46,7 @@ class ReceiptController extends Controller
 
     public function index(Request $request, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_index'), 403);
 
         if ($request->ajax()) {
 
@@ -81,9 +77,7 @@ class ReceiptController extends Controller
 
     public function create(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_create'), 403);
 
         $createMethodContainer = $receiptControllerMethodContainersInterface->createMethodContainer(
             creditAccountId: $creditAccountId,
@@ -100,9 +94,7 @@ class ReceiptController extends Controller
 
     public function store(Request $request, ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('receipts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_create'), 403);
 
         $this->validate($request, [
             'date' => 'required|date',
@@ -118,7 +110,6 @@ class ReceiptController extends Controller
             $storeMethodContainer = $receiptControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
                 receiptService: $this->receiptService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
@@ -142,7 +133,7 @@ class ReceiptController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_receipt', compact('receipt'));
+            return view('accounting.accounting_vouchers.print_templates.print_receipt', compact('receipt'));
         } else {
 
             return response()->json(['successMsg' => __('Receipt added successfully.')]);
@@ -151,9 +142,7 @@ class ReceiptController extends Controller
 
     public function edit(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_edit'), 403);
 
         $editMethodContainer = $receiptControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -172,9 +161,7 @@ class ReceiptController extends Controller
 
     public function update(Request $request, ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('receipts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_edit'), 403);
 
         $this->validate($request, [
             'date' => 'required|date',
@@ -191,7 +178,6 @@ class ReceiptController extends Controller
                 id: $id,
                 request: $request,
                 receiptService: $this->receiptService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
@@ -217,9 +203,7 @@ class ReceiptController extends Controller
 
     public function delete(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('receipts_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_delete'), 403);
 
         try {
             DB::beginTransaction();

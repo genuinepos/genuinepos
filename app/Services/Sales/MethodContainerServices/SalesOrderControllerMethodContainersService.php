@@ -108,7 +108,6 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $branchSettingService,
         object $saleService,
         object $salesOrderService,
         object $salesOrderProductService,
@@ -130,8 +129,7 @@ class SalesOrderControllerMethodContainersService implements SalesOrderControlle
         }
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $receiptVoucherPrefix = isset($branchSetting) && $branchSetting?->receipt_voucher_prefix ? $branchSetting?->receipt_voucher_prefix : $generalSettings['prefix__receipt_voucher_prefix'];
+        $receiptVoucherPrefix = $generalSettings['prefix__receipt_voucher_prefix'] ? $generalSettings['prefix__receipt_voucher_prefix'] : 'RV';
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
         $order = $salesOrderService->singleSalesOrder(id: $id, with: ['saleProducts']);

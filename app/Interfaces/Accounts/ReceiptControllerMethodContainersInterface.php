@@ -23,7 +23,6 @@ interface ReceiptControllerMethodContainersInterface
     public function storeMethodContainer(
         object $request,
         object $receiptService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -46,7 +45,6 @@ interface ReceiptControllerMethodContainersInterface
         int $id,
         object $request,
         object $receiptService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

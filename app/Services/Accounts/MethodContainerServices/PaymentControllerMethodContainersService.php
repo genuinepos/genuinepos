@@ -33,6 +33,33 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array {
+        $data = [];
+        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'voucherDescriptions',
+                'voucherDescriptions.references',
+                'voucherDescriptions.references.sale',
+                'voucherDescriptions.references.purchaseReturn',
+                'voucherDescriptions.references.stockAdjustment',
+                'purchaseRef',
+                'salesReturnRef',
+                'stockAdjustmentRef',
+            ],
+        );
+
+        $data['printPageSize'] = $request->print_page_size;
+        
+        return $data;
+    }
+
     public function createMethodContainer(
         int $debitAccountId = null,
         object $accountService,
@@ -68,7 +95,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
         $data['payableAccounts'] = '';
-        if (! isset($creditAccountId)) {
+        if (!isset($creditAccountId)) {
 
             $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -81,7 +108,6 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
     public function storeMethodContainer(
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -98,8 +124,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         }
 
         $generalSettings = config('generalSettings');
-        $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
+        $paymentVoucherPrefix = $generalSettings['prefix__payment_voucher_prefix'] ? $generalSettings['prefix__payment_voucher_prefix'] : 'PV';
 
         // Add Accounting Voucher
         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Payment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount);
@@ -192,7 +217,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $data['payableAccounts'] = '';
-        if (! isset($debitAccountId)) {
+        if (!isset($debitAccountId)) {
 
             $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -206,7 +231,6 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         int $id,
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

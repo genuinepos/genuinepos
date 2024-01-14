@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum SalesInvoicePageSize: int
+enum PrintPageSize: int
 {
     case AFourPage = 1;
     case AFivePage = 2;

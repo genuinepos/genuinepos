@@ -13,7 +13,6 @@ use App\Services\Accounts\DayBookService;
 use App\Services\Accounts\ExpenseService;
 use App\Services\CodeGenerationService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +27,6 @@ class ExpenseController extends Controller
         private AccountLedgerService $accountLedgerService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
     ) {
@@ -99,7 +97,6 @@ class ExpenseController extends Controller
             $storeMethodContainer = $expenseControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
                 expenseService: $this->expenseService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,
@@ -122,7 +119,7 @@ class ExpenseController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_expense', compact('expense'));
+            return view('accounting.accounting_vouchers.print_templates.print_expense', compact('expense'));
         } else {
 
             return response()->json(['successMsg' => __('Expense added successfully.')]);
@@ -168,7 +165,6 @@ class ExpenseController extends Controller
                 id: $id,
                 request: $request,
                 expenseService: $this->expenseService,
-                branchSettingService: $this->branchSettingService,
                 accountLedgerService: $this->accountLedgerService,
                 accountingVoucherService: $this->accountingVoucherService,
                 accountingVoucherDescriptionService: $this->accountingVoucherDescriptionService,

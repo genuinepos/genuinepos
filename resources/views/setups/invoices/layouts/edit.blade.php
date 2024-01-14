@@ -1,9 +1,14 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element { border: 1px solid #7e0d3d; }
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
     </style>
 @endpush
 @section('title', 'Edit Invoice Layout')
@@ -15,7 +20,7 @@
                     <h5>{{ __('Edit Invoice Layout') }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-1">
@@ -41,8 +46,8 @@
 
                                         <div class="col-8">
                                             <select name="page_size" id="page_size" class="form-control" data-next="show_business_shop_logo">
-                                                @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
-                                                    <option {{ $item->value == $invoiceLayout->page_size ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                                @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                                    <option {{ $item->value == $invoiceLayout->page_size ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -80,7 +85,7 @@
 
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>{{ __("Header Option") }}</b></p>
+                            <p class="p-1 text-primary"><b>{{ __('Header Option') }}</b></p>
                         </div>
 
                         <div class="element-body">
@@ -336,7 +341,7 @@
 
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>{{ __("Field For Product") }}</b></p>
+                            <p class="p-1 text-primary"><b>{{ __('Field For Product') }}</b></p>
                         </div>
 
                         <div class="element-body">

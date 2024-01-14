@@ -175,8 +175,6 @@ class SalesHelperService
         return Sale::where('id', $saleId)->with([
             'branch',
             'branch.parentBranch',
-            'branch.branchSetting:id,add_sale_invoice_layout_id',
-            'branch.branchSetting.addSaleInvoiceLayout',
             'customer',
             'saleProducts',
             'saleProducts.product',

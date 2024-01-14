@@ -145,9 +145,9 @@ class PayrollService
             ->make(true);
     }
 
-    public function addPayroll(object $request, object $codeGenerator): object
+    public function addPayroll(object $request, ?string $payrollVoucherPrefix, object $codeGenerator): object
     {
-        $voucherNo = $codeGenerator->generateMonthWise(table: 'hrm_payrolls', column: 'voucher_no', prefix: 'PR', splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
+        $voucherNo = $codeGenerator->generateMonthWise(table: 'hrm_payrolls', column: 'voucher_no', prefix: $payrollVoucherPrefix, splitter: '-', suffixSeparator: '-', branchId: auth()->user()->branch_id);
         $addPayroll = new Payroll();
         $addPayroll->voucher_no = $voucherNo;
         $addPayroll->branch_id = auth()->user()->branch_id;

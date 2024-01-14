@@ -7,7 +7,6 @@ use App\Interfaces\Manufacturing\ProductionControllerMethodContainersInterface;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
 use App\Services\CodeGenerationService;
-use App\Services\Manufacturing\ManufacturingSettingService;
 use App\Services\Manufacturing\ProcessService;
 use App\Services\Manufacturing\ProductionIngredientService;
 use App\Services\Manufacturing\ProductionService;
@@ -25,7 +24,6 @@ class ProductionController extends Controller
     public function __construct(
         private ProductionService $productionService,
         private ProductionIngredientService $productionIngredientService,
-        private ManufacturingSettingService $manufacturingSettingService,
         private ProductService $productService,
         private ProductStockService $productStockService,
         private ProductLedgerService $productLedgerService,
@@ -121,7 +119,6 @@ class ProductionController extends Controller
                 request: $request,
                 productionService: $this->productionService,
                 productionIngredientService: $this->productionIngredientService,
-                manufacturingSettingService: $this->manufacturingSettingService,
                 productService: $this->productService,
                 productLedgerService: $this->productLedgerService,
                 productStockService: $this->productStockService,
@@ -200,7 +197,6 @@ class ProductionController extends Controller
                 request: $request,
                 productionService: $this->productionService,
                 productionIngredientService: $this->productionIngredientService,
-                manufacturingSettingService: $this->manufacturingSettingService,
                 productService: $this->productService,
                 productLedgerService: $this->productLedgerService,
                 productStockService: $this->productStockService,

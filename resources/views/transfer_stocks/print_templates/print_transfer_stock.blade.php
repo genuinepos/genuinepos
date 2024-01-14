@@ -3,7 +3,7 @@
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
             table { page-break-after: auto; }
@@ -14,6 +14,7 @@
         }
 
         @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+
         div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
     <!-- Transfer Stock print templete-->
@@ -278,6 +279,7 @@
         }
 
         @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+
         div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
     <!-- Transfer Stock print templete-->

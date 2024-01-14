@@ -15,7 +15,6 @@ use App\Services\CodeGenerationService;
 use App\Services\Products\ProductLedgerService;
 use App\Services\Products\ProductStockService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
 use App\Services\StockAdjustments\StockAdjustmentProductService;
@@ -34,7 +33,6 @@ class StockAdjustmentController extends Controller
         private AccountFilterService $accountFilterService,
         private WarehouseService $warehouseService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private ProductStockService $productStockService,
         private DayBookService $dayBookService,
         private AccountLedgerService $accountLedgerService,
@@ -117,7 +115,6 @@ class StockAdjustmentController extends Controller
 
             $storeMethodContainer = $stockAdjustmentControllerMethodContainersInterface->storeMethodContainer(
                 request: $request,
-                branchSettingService: $this->branchSettingService,
                 stockAdjustmentService: $this->stockAdjustmentService,
                 stockAdjustmentProductService: $this->stockAdjustmentProductService,
                 dayBookService: $this->dayBookService,

@@ -21,7 +21,6 @@ interface ExpenseControllerMethodContainersInterface
     public function storeMethodContainer(
         object $request,
         object $expenseService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -41,7 +40,6 @@ interface ExpenseControllerMethodContainersInterface
         int $id,
         object $request,
         object $expenseService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

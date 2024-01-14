@@ -28,7 +28,6 @@ interface StockAdjustmentControllerMethodContainersInterface
 
     public function storeMethodContainer(
         object $request,
-        object $branchSettingService,
         object $stockAdjustmentService,
         object $stockAdjustmentProductService,
         object $dayBookService,

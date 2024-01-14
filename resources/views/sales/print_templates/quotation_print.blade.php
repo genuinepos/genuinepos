@@ -5,18 +5,51 @@
 @endphp
 
 <!-- Quotation print templete-->
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="sale_print_template">
@@ -233,7 +266,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:11px!important;">
-                                        ({{ $quotationProduct->unit_tax_percent }}%)={{ $quotationProduct->unit_tax_amount }}
+                                        ({{ $quotationProduct->unit_tax_percent }}%)
+                                        ={{ $quotationProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
@@ -363,15 +397,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size:5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="sale_print_template">
@@ -588,7 +655,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:9px!important;">
-                                        ({{ $quotationProduct->unit_tax_percent }}%)={{ $quotationProduct->unit_tax_amount }}
+                                        ({{ $quotationProduct->unit_tax_percent }}%)
+                                        ={{ $quotationProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 

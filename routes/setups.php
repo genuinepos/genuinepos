@@ -27,6 +27,7 @@ Route::prefix('setups')->group(function () {
         Route::post('dashboard/settings', 'dashboardSettings')->name('settings.dashboard.settings');
         Route::post('prefix/settings', 'prefixSettings')->name('settings.prefix.settings');
         Route::post('invoice/layout/settings', 'invoiceLayoutSettings')->name('settings.invoice.layout.settings');
+        Route::post('print/page/size/settings', 'printPageSizeSettings')->name('settings.print.page.size.settings');
         Route::post('system/settings', 'systemSettings')->name('settings.system.settings');
         Route::post('module/settings', 'moduleSettings')->name('settings.module.settings');
         Route::post('send/email/settings', 'sendEmailSettings')->name('settings.send.email.settings');
@@ -47,9 +48,6 @@ Route::prefix('setups')->group(function () {
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
             Route::get('index/{id}', 'index')->name('branches.settings.index');
-            Route::get('edit/{id}', 'edit')->name('branches.settings.edit');
-            Route::post('update/{id}', 'update')->name('branches.settings.update');
-
             Route::post('product/{id}', 'productSettings')->name('branches.settings.product');
             Route::post('add/sale/{id}', 'addSaleSettings')->name('branches.settings.add.sale');
             Route::post('pos/{id}', 'posSettings')->name('branches.settings.pos');
@@ -58,6 +56,7 @@ Route::prefix('setups')->group(function () {
             Route::post('dashboard/{id}', 'dashboardSettings')->name('branches.settings.dashboard');
             Route::post('prefix/{id}', 'prefixSettings')->name('branches.settings.prefix');
             Route::post('invoice/layout/{id}', 'invoiceLayoutSettings')->name('branches.settings.invoice.layout');
+            Route::post('print/page/size/{id}', 'printPageSizeSettings')->name('branches.settings.print.page.size');
             Route::post('system/{id}', 'systemSettings')->name('branches.settings.system');
             Route::post('module/{id}', 'moduleSettings')->name('branches.settings.module');
             Route::post('send/email/{id}', 'sendEmailSettings')->name('branches.settings.send.email');

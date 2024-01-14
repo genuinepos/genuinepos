@@ -12,7 +12,6 @@ use App\Http\Controllers\Products\BulkVariantController;
 use App\Http\Controllers\Products\SubCategoryController;
 use App\Http\Controllers\Products\OpeningStockController;
 use App\Http\Controllers\Products\ExpiredProductController;
-use App\Http\Controllers\Products\ProductSettingsController;
 use App\Http\Controllers\Products\QuickProductAddController;
 use App\Http\Controllers\Products\PriceGroupManageController;
 use App\Http\Controllers\Products\Reports\StockReportController;
@@ -114,11 +113,6 @@ Route::controller(ProductController::class)->prefix('products')->group(function 
 
     Route::controller(ExpiredProductController::class)->prefix('expired')->group(function () {
         Route::get('/', 'index')->name('expired.products.index');
-    });
-
-    Route::controller(ProductSettingsController::class)->prefix('settings')->group(function () {
-        Route::get('index', 'index')->name('product.settings.index');
-        Route::post('update', 'update')->name('product.settings.update');
     });
 
     Route::group(['prefix' => 'reports'], function () {

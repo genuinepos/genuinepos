@@ -15,7 +15,6 @@ use App\Services\Accounts\ContraService;
 use App\Services\Accounts\DayBookService;
 use App\Services\CodeGenerationService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +29,6 @@ class ContraController extends Controller
         private AccountLedgerService $accountLedgerService,
         private PaymentMethodService $paymentMethodService,
         private DayBookService $dayBookService,
-        private BranchSettingService $branchSettingService,
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
     ) {
@@ -121,8 +119,8 @@ class ContraController extends Controller
             }
 
             $generalSettings = config('generalSettings');
-            $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-            $contraVoucherPrefix = 'CO'.auth()->user()?->branch?->branch_code;
+
+            $contraVoucherPrefix = $generalSettings['prefix__contra_voucher_prefix'] ? $generalSettings['prefix__contra_voucher_prefix'] : 'CO';
 
             // Add Accounting Voucher
             $addAccountingVoucher = $this->accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::Contra->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $contraVoucherPrefix, debitTotal: $request->received_amount, creditTotal: $request->received_amount, totalAmount: $request->received_amount);
@@ -164,7 +162,7 @@ class ContraController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_contra', compact('contra'));
+            return view('accounting.accounting_vouchers.print_templates.print_contra', compact('contra'));
         } else {
 
             return response()->json(['successMsg' => __('Contra added successfully.')]);
@@ -194,7 +192,6 @@ class ContraController extends Controller
             ->get();
 
         $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
         $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         return view('accounting.accounting_vouchers.contras.ajax_view.edit', compact('accounts', 'methods', 'contra'));

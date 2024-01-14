@@ -108,7 +108,7 @@ class BranchSettingService
             ['key' => 'purchase__is_enable_status', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'purchase__is_enable_lot_no', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'dashboard__view_stock_expiry_alert_for', 'value' => '31', 'branch_id' => $branchId],
-            ['key' => 'prefix__sales_invoice_prefix', 'value' => $branchPrefix . $numberOfChildBranch.'SI', 'branch_id' => $branchId, 'branch_id' => $branchId],
+            ['key' => 'prefix__sales_invoice_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'SI', 'branch_id' => $branchId, 'branch_id' => $branchId],
             ['key' => 'prefix__quotation_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'Q', 'branch_id' => $branchId],
             ['key' => 'prefix__sales_order_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'SO', 'branch_id' => $branchId],
             ['key' => 'prefix__sales_return_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'SR', 'branch_id' => $branchId],
@@ -120,8 +120,8 @@ class BranchSettingService
             ['key' => 'prefix__purchase_order_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PO', 'branch_id' => $branchId],
             ['key' => 'prefix__purchase_return_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PR', 'branch_id' => $branchId],
             ['key' => 'prefix__stock_adjustment_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'SA', 'branch_id' => $branchId],
-            ['key' => 'prefix__payroll_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRL', 'branch_id' => null],
-            ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRLP', 'branch_id' => null],
+            ['key' => 'prefix__payroll_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRL', 'branch_id' => $branchId],
+            ['key' => 'prefix__payroll_payment_voucher_prefix', 'value' => $branchPrefix . $numberOfChildBranch . 'PRLP', 'branch_id' => $branchId],
             ['key' => 'prefix__supplier_id', 'value' => 'S-', 'branch_id' => $branchId],
             ['key' => 'prefix__customer_id', 'value' => 'C-', 'branch_id' => $branchId],
             // ['id' => '103', 'key' => 'email_setting__MAIL_MAILER', 'value' => 'smtp', 'branch_id' => null],
@@ -163,12 +163,30 @@ class BranchSettingService
             ['key' => 'send_sms__send_notification_via_sms', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
             ['key' => 'send_sms__customer_due_reminder_via_sms', 'value' => 0, 'branch_id' => !isset($parentBranchId) ? $branchId : null],
 
-            ['key' => 'manufacturing__production_voucher_prefix', 'value' => 'MF', 'branch_id' => $branchId],
+            ['key' => 'manufacturing__production_voucher_prefix', 'value' =>  $branchPrefix . $numberOfChildBranch . 'MF', 'branch_id' => $branchId],
             ['key' => 'manufacturing__is_edit_ingredients_qty_in_production', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'manufacturing__is_update_product_cost_and_price_in_production', 'value' => 1, 'branch_id' => $branchId],
 
             ['key' => 'invoice_layout__add_sale_invoice_layout_id', 'value' => $defaultInvoiceLayoutId, 'branch_id' => $branchId],
             ['key' => 'invoice_layout__pos_sale_invoice_layout_id', 'value' => $defaultInvoiceLayoutId, 'branch_id' => $branchId],
+
+            ['key' => 'print_page_size__add_sale_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__pos_sale_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__quotation_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__sales_order_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__draft_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__sales_return_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__purchase_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__purchase_order_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__purchase_return_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__transfer_stock_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__stock_adjustment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__receipt_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__payment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__payroll_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__payroll_payment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__bom_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__production_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
         ];
 
         foreach ($generalSettings as $setting) {
@@ -197,29 +215,12 @@ class BranchSettingService
 
                         $branchSetting->key = $key;
                         $branchSetting->value = $value;
-                        // if ($key == 'invoice_layout__add_sale_invoice_layout_id') {
-
-                        //     $branchSetting->add_sale_invoice_layout_id = $value;
-                        // } else if ($key == 'invoice_layout__pos_sale_invoice_layout_id') {
-
-                        //     $branchSetting->pos_sale_invoice_layout_id = $value;
-                        // }
-
                         $branchSetting->save();
                     } else {
 
                         $addBranchSetting = new GeneralSetting();
                         $addBranchSetting->key = $key;
                         $addBranchSetting->value = $value;
-
-                        // if ($key == 'invoice_layout__add_sale_invoice_layout_id') {
-
-                        //     $addBranchSetting->add_sale_invoice_layout_id = $value;
-                        // } else if ($key == 'invoice_layout__pos_sale_invoice_layout_id') {
-
-                        //     $addBranchSetting->pos_sale_invoice_layout_id = $value;
-                        // }
-
                         $addBranchSetting->branch_id = $branchId;
                         $addBranchSetting->save();
                     }

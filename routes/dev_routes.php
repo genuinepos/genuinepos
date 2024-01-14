@@ -1,16 +1,10 @@
 <?php
 
-use App\Models\Setups\Branch;
-use App\Models\GeneralSetting;
-use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Schema;
-use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
-
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
     //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
     //     ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])
@@ -192,9 +186,6 @@ Route::get('my-test', function () {
     // return intval($str);
 
     // return request()->generalSettings['business_or_shop__business_name'];
-
-
-    return auth()->user();
 });
 
 

@@ -12,6 +12,12 @@ interface PaymentControllerMethodContainersInterface
         object $accountingVoucherService,
     ): ?array;
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array;
+
     public function createMethodContainer(
         int $debitAccountId = null,
         object $accountService,
@@ -23,7 +29,6 @@ interface PaymentControllerMethodContainersInterface
     public function storeMethodContainer(
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -46,7 +51,6 @@ interface PaymentControllerMethodContainersInterface
         int $id,
         object $request,
         object $paymentService,
-        object $branchSettingService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

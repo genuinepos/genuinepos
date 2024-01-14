@@ -4,6 +4,7 @@ use App\Jobs\SaleMailJob;
 use App\Mail\CustomerRegistered;
 use App\Mail\NewProductArrived;
 use App\Mail\PurchaseCreated;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
 use Modules\Communication\Interface\EmailServiceInterface;

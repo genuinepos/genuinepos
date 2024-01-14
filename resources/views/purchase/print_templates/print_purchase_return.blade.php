@@ -9,18 +9,51 @@
     $__branchId = $account?->group?->sub_sub_group_number == 6 ? $branchId : '';
     $amounts = $accountBalanceService->accountBalance(accountId: $account->id, fromDate: null, toDate: null, branchId: $__branchId);
 @endphp
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 33px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 33px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Purchase Return print templete-->
     <div class="purchase_return_print_template">
@@ -187,7 +220,8 @@
                                     @if ($return->return_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}
                                     @else
-                                        ({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%)={{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
+                                        ({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%)
+                                        ={{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
                                     @endif
                                 </td>
                             </tr>
@@ -269,7 +303,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('company.print_on_company'))
-                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __("SpeedDigit Software Solution.") }}</span></small>
+                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __('SpeedDigit Software Solution.') }}</span></small>
                         @endif
                     </div>
 
@@ -283,15 +317,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 33px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 33px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Purchase Return print templete-->
     <div class="purchase_return_print_template">
@@ -456,7 +523,8 @@
                                     @if ($return->return_discount_type == 1)
                                         ({{ __('Fixed') }})={{ App\Utils\Converter::format_in_bdt($return->return_discount) }}
                                     @else
-                                        ({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%)={{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
+                                        ({{ App\Utils\Converter::format_in_bdt($return->return_discount) }}%)
+                                        ={{ App\Utils\Converter::format_in_bdt($return->return_discount_amount) }}
                                     @endif
                                 </td>
                             </tr>
@@ -538,7 +606,7 @@
 
                     <div class="col-4 text-center">
                         @if (config('company.print_on_company'))
-                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __("SpeedDigit Software Solution.") }}</span></small>
+                            <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <span class="fw-bold">{{ __('SpeedDigit Software Solution.') }}</span></small>
                         @endif
                     </div>
 

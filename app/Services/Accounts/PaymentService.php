@@ -215,4 +215,15 @@ class PaymentService
 
         return ['pass' => true];
     }
+
+    public function paymentValidation(object $request): ?array
+    {
+        return $request->validate([
+            'date' => 'required|date',
+            'paying_amount' => 'required',
+            'payment_method_id' => 'required',
+            'debit_account_id' => 'required',
+            'credit_account_id' => 'required',
+        ]);
+    }
 }

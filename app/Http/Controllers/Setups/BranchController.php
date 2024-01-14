@@ -105,8 +105,6 @@ class BranchController extends Controller
 
             $addBranch = $this->branchService->addBranch($request);
 
-            // $this->branchService->addBranchDefaultAccountGroups($addBranch->id);
-
             $this->branchService->addBranchDefaultAccounts($addBranch->id);
 
             $this->cashCounterService->addCashCounter(branchId: $addBranch->id, cashCounterName: 'Cash Counter 1', shortName: 'CN1');

@@ -87,9 +87,7 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         }
 
         $generalSettings = config('generalSettings');
-        // $branchSetting = $branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        // $paymentVoucherPrefix = isset($branchSetting) && $branchSetting?->payment_voucher_prefix ? $branchSetting?->payment_voucher_prefix : $generalSettings['prefix__payment_voucher_prefix'];
-        $paymentVoucherPrefix = 'PRP';
+        $paymentVoucherPrefix = $generalSettings['prefix__payroll_payment_voucher_prefix'] ? $generalSettings['prefix__payroll_payment_voucher_prefix'] : 'PRLP';
 
         // Add Accounting Voucher
         $addAccountingVoucher = $accountingVoucherService->addAccountingVoucher(date: $request->date, voucherType: AccountingVoucherType::PayrollPayment->value, remarks: $request->remarks, reference: $request->reference, codeGenerator: $codeGenerator, voucherPrefix: $paymentVoucherPrefix, debitTotal: $request->paying_amount, creditTotal: $request->paying_amount, totalAmount: $request->paying_amount, payrollRefId: $request->payroll_id);

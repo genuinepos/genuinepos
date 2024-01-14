@@ -60,7 +60,6 @@ class GeneralSettingController extends Controller
         ));
     }
 
-    // Add business settings
     public function businessSettings(Request $request)
     {
         $generalSettings = config('generalSettings');
@@ -133,7 +132,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('Product settings updated Successfully'));
+        return response()->json(__('Product settings updated successfully'));
     }
 
     public function purchaseSettings(Request $request)
@@ -217,7 +216,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('Prefix settings updated Successfully'));
+        return response()->json(__('Prefix settings updated successfully'));
     }
 
     public function invoiceLayoutSettings(Request $request)
@@ -229,7 +228,34 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('Invoice Layout settings updated Successfully'));
+        return response()->json(__('Invoice Layout settings updated successfully'));
+    }
+
+    public function printPageSizeSettings(Request $request)
+    {
+        $settings = [
+            'print_page_size__add_sale_page_size' => $request->add_sale_page_size,
+            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size,
+            'print_page_size__quotation_page_size' => $request->quotation_page_size,
+            'print_page_size__sales_order_page_size' => $request->sales_order_page_size,
+            'print_page_size__draft_page_size' => $request->draft_page_size,
+            'print_page_size__sales_return_page_size' => $request->sales_return_page_size,
+            'print_page_size__purchase_page_size' => $request->purchase_page_size,
+            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size,
+            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size,
+            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size,
+            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
+            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
+            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size,
+        ];
+
+        $this->generalSettingService->updateAndSync($settings);
+
+        return response()->json(__('Print page size settings updated successfully'));
     }
 
     public function systemSettings(Request $request)
@@ -241,7 +267,7 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('System settings updated Successfully.'));
+        return response()->json(__('System settings updated successfully.'));
     }
 
     public function moduleSettings(Request $request)
@@ -309,6 +335,6 @@ class GeneralSettingController extends Controller
 
         $this->generalSettingService->updateAndSync($settings);
 
-        return response()->json(__('Reward point settings updated Successfully'));
+        return response()->json(__('Reward point settings updated successfully'));
     }
 }

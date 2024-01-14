@@ -10,7 +10,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\SaleScreenType;
 use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
-use App\Enums\SalesInvoicePageSize;
+use App\Enums\PrintPageSize;
 use Yajra\DataTables\Facades\DataTables;
 
 class SaleService
@@ -366,7 +366,7 @@ class SaleService
 
         if (
             isset($request->print_page_size) &&
-            $request->print_page_size == SalesInvoicePageSize::PosPrinterPageThreeIncs->value &&
+            $request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value &&
             $request->status != SaleStatus::Final->value
         ) {
 

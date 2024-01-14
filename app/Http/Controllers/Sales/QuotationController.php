@@ -19,7 +19,6 @@ use App\Services\Sales\SaleProductService;
 use App\Services\Sales\SaleService;
 use App\Services\Sales\SalesOrderService;
 use App\Services\Setups\BranchService;
-use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\PaymentMethodService;
 use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
@@ -41,7 +40,6 @@ class QuotationController extends Controller
         private AccountFilterService $accountFilterService,
         private PaymentMethodService $paymentMethodService,
         private BranchService $branchService,
-        private BranchSettingService $branchSettingService,
         private PriceGroupService $priceGroupService,
         private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
@@ -119,7 +117,6 @@ class QuotationController extends Controller
             $updateMethodContainer = $quotationControllerMethodContainersInterface->updateMethodContainer(
                 id: $id,
                 request: $request,
-                branchSettingService: $this->branchSettingService,
                 saleService: $this->saleService,
                 quotationService: $this->quotationService,
                 salesOrderService: $this->salesOrderService,
@@ -150,22 +147,21 @@ class QuotationController extends Controller
     public function editStatus($id)
     {
         $quotation = $this->quotationService->singleQuotation(id: $id);
-
         return view('sales.add_sale.quotations.ajax_views.change_quotation_status', compact('quotation'));
     }
 
     public function updateStatus($id, Request $request, CodeGenerationService $codeGenerator)
     {
-        $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: auth()->user()->branch_id);
-        $salesOrderPrefix = isset($branchSetting) && $branchSetting?->sales_order_prefix ? $branchSetting?->sales_order_prefix : 'OR';
+        $generalSettings = config('generalSettings');
+        $salesOrderPrefix = $generalSettings['prefix__sales_order_prefix'] ? $generalSettings['prefix__sales_order_prefix'] : 'SO';
 
         $updateQuotationStatus = $this->quotationService->updateQuotationStatus(request: $request, id: $id, codeGenerator: $codeGenerator, salesOrderPrefix: $salesOrderPrefix);
 
-        if ($updateQuotationStatus['pass'] == false) {
+        if (isset($updateQuotationStatus['pass']) && $updateQuotationStatus['pass'] == false) {
 
             return response()->json(['errorMsg' => $updateQuotationStatus['msg']]);
         }
 
-        return response()->json('Quotation status is updated successfully');
+        return response()->json(__('Quotation status is updated successfully'));
     }
 }

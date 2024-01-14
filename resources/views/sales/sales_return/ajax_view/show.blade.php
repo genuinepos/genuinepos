@@ -214,11 +214,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3 text-end pe-1"><b>{{ __("Print") }}</b></label>
+                            <label class="col-3 text-end pe-1"><b>{{ __('Print') }}</b></label>
                             <div class="col-9">
                                 <select id="print_page_size" class="form-control">
-                                    @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
-                                        <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -250,7 +250,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -275,7 +277,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

@@ -82,6 +82,33 @@ class BranchSettingController extends Controller
         return response()->json(__('Product settings updated Successfully'));
     }
 
+    public function printPageSizeSettings($id, Request $request)
+    {
+        $settings = [
+            'print_page_size__add_sale_page_size' => $request->add_sale_page_size,
+            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size,
+            'print_page_size__quotation_page_size' => $request->quotation_page_size,
+            'print_page_size__sales_order_page_size' => $request->sales_order_page_size,
+            'print_page_size__draft_page_size' => $request->draft_page_size,
+            'print_page_size__sales_return_page_size' => $request->sales_return_page_size,
+            'print_page_size__purchase_page_size' => $request->purchase_page_size,
+            'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size,
+            'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size,
+            'print_page_size__transfer_stock_voucher_page_size' => $request->transfer_stock_voucher_page_size,
+            'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
+            'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
+            'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Print page size settings updated Successfully'));
+    }
+
     public function purchaseSettings($id, Request $request)
     {
         $settings = [
@@ -92,6 +119,19 @@ class BranchSettingController extends Controller
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('Purchase settings updated successfully.'));
+    }
+
+    public function manufacturingSettings($id, Request $request)
+    {
+        $settings = [
+            'manufacturing__production_voucher_prefix' => $request->production_voucher_prefix,
+            'manufacturing__is_edit_ingredients_qty_in_production' => $request->is_edit_ingredients_qty_in_production,
+            'manufacturing__is_update_product_cost_and_price_in_production' => $request->is_update_product_cost_and_price_in_production,
+        ];
+
+        $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
+
+        return response()->json(__('Manufacturing settings updated successfully.'));
     }
 
     public function addSaleSettings($id, Request $request)
@@ -240,46 +280,5 @@ class BranchSettingController extends Controller
         $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);
 
         return response()->json(__('System settings updated Successfully.'));
-    }
-
-    public function edit($branchId)
-    {
-        if (!auth()->user()->can('branch')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $branchSetting = $this->branchSettingService->singleBranchSetting(branchId: $branchId, with: ['branch', 'branch.parentBranch']);
-        $invoiceLayouts = $this->invoiceLayoutService->invoiceLayouts(branchId: $branchId);
-
-        $taxAccounts = DB::table('accounts')->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
-            ->where('accounts.branch_id', $branchId)
-            ->where('account_groups.is_default_tax_calculator', 1)
-            ->select('accounts.id', 'accounts.name')
-            ->get();
-
-        return view('setups.branches.settings.edit', compact('branchSetting', 'invoiceLayouts', 'taxAccounts'));
-    }
-
-    public function update(Request $request, $branchId)
-    {
-        if (!auth()->user()->can('branch')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        try {
-
-            DB::beginTransaction();
-
-            $this->branchSettingService->updateBranchSettings(branchId: $branchId, request: $request);
-
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollBack();
-        }
-
-        return response()->json(__('Shop settings updated successfully'));
     }
 }

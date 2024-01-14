@@ -46,16 +46,12 @@
                                 @php
                                     $branchName = '';
                                     if ($draft->branch_id) {
-
                                         if ($draft?->branch?->parentBranch) {
-
                                             $branchName = $draft?->branch?->parentBranch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $draft?->branch?->name . '(' . $draft?->branch?->area_name . ')' . '-(' . $draft?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -188,11 +184,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3"><b>{{ __("Print Layout Page Size") }}</b></label>
-                            <div class="col-9">
+                            <label class="col-md-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
                                 <select id="print_page_size" class="form-control">
-                                    @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
-                                        <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__draft_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -206,7 +202,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             @php
-                                $filename = $draft->draft_id.'__'.$draft->date.'__'.$branchName;
+                                $filename = $draft->draft_id . '__' . $draft->date . '__' . $branchName;
                             @endphp
                             <a href="{{ route('sale.drafts.edit', [$draft->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                             <a href="{{ route('sales.helper.related.voucher.print', $draft->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Draft') }}</a>
@@ -230,7 +226,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: {print_page_size},
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -255,7 +253,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

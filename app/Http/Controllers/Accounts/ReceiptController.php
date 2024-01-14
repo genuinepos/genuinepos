@@ -46,9 +46,7 @@ class ReceiptController extends Controller
 
     public function index(Request $request, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_index'), 403);
 
         if ($request->ajax()) {
 
@@ -79,9 +77,7 @@ class ReceiptController extends Controller
 
     public function create(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_create'), 403);
 
         $createMethodContainer = $receiptControllerMethodContainersInterface->createMethodContainer(
             creditAccountId: $creditAccountId,
@@ -98,9 +94,7 @@ class ReceiptController extends Controller
 
     public function store(Request $request, ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('receipts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_create'), 403);
 
         $this->validate($request, [
             'date' => 'required|date',
@@ -148,9 +142,7 @@ class ReceiptController extends Controller
 
     public function edit(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id, $creditAccountId = null)
     {
-        if (! auth()->user()->can('receipts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_edit'), 403);
 
         $editMethodContainer = $receiptControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -169,9 +161,7 @@ class ReceiptController extends Controller
 
     public function update(Request $request, ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('receipts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_edit'), 403);
 
         $this->validate($request, [
             'date' => 'required|date',
@@ -213,9 +203,7 @@ class ReceiptController extends Controller
 
     public function delete(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('receipts_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('receipts_delete'), 403);
 
         try {
             DB::beginTransaction();

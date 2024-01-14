@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
-    $gs = config('generalSettings');
-    dd($gs);
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
     //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
     //     ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])
@@ -194,13 +192,56 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $generalSettings = config('generalSettings');
-    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
-    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
-    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
-    $startDate = date($startDateFormat);
-    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
-    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
+    $settings = [
+        'print_page_size__add_sale_page_size' => 1,
+        'print_page_size__pos_sale_page_size' => 1,
+        'print_page_size__quotation_page_size' => 1,
+        'print_page_size__sales_order_page_size' => 1,
+        'print_page_size__draft_page_size' => 1,
+        'print_page_size__sales_return_page_size' => 1,
+        'print_page_size__purchase_page_size' => 1,
+        'print_page_size__purchase_order_page_size' => 1,
+        'print_page_size__purchase_return_page_size' => 1,
+        'print_page_size__transfer_stock_voucher_page_size' => 1,
+        'print_page_size__stock_adjustment_voucher_page_size' => 1,
+        'print_page_size__receipt_voucher_page_size' => 1,
+        'print_page_size__payment_voucher_page_size' => 1,
+        'print_page_size__payroll_voucher_page_size' => 1,
+        'print_page_size__payroll_payment_voucher_page_size' => 1,
+        'print_page_size__bom_voucher_page_size' => 1,
+        'print_page_size__production_voucher_page_size' => 1,
+    ];
+
+    foreach ($settings as $key => $value) {
+
+        $generalSetting = DB::table('general_settings')->where('key', $key)->where('branch_id', null)->first();
+        if (!isset($generalSetting)) {
+
+            $addGeneralSetting = new GeneralSetting();
+            $addGeneralSetting->key = $key;
+            $addGeneralSetting->value = $value;
+            $addGeneralSetting->save();
+            echo 'Created : ' . $key . '=>' . $value.'<br>';
+        }
+    }
+
+    $branches = Branch::all();
+    foreach ($branches as $branch) {
+
+        foreach ($settings as $key => $value) {
+
+            $generalSetting = DB::table('general_settings')->where('key', $key)->where('branch_id', $branch->id)->first();
+            if (!isset($generalSetting)) {
+
+                $addGeneralSetting = new GeneralSetting();
+                $addGeneralSetting->key = $key;
+                $addGeneralSetting->value = $value;
+                $addGeneralSetting->branch_id = $branch->id;
+                $addGeneralSetting->save();
+                echo $branch->branch_code.' Created : ' . $key . '=>' . $value.'<br>';;
+            }
+        }
+    }
 });
 
 

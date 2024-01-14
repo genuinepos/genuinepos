@@ -9,7 +9,7 @@
 
         .select_area ul { list-style: none; margin-bottom: 0; padding: 0px 2px; }
 
-        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray;  margin: 2px 0px; }
+        .select_area ul li a { color: #000000; text-decoration: none; font-size: 11px; padding: 2px 2px; display: block; border: 1px solid lightgray; margin: 2px 0px; }
 
         .select_area ul li a:hover { background-color: #999396; color: #fff; }
 
@@ -42,11 +42,11 @@
                     <div class="row g-0">
                         <div class="col-md-10">
                             <div class="input-group">
-                                <label class="col-4"><b>{{ __("Print") }}</b></label>
-                                <div class="col-8">
+                                <label class="col-4 offset-md-6"><b>{{ __('Print') }}</b></label>
+                                <div class="col-2">
                                     <select id="select_print_page_size" class="form-control">
-                                        @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
-                                            <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                            <option {{ $generalSettings['print_page_size__transfer_stock_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                         @endforeach
                                     </select>
                                 </div>

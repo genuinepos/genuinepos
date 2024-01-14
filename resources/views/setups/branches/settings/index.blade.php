@@ -1,51 +1,21 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {
-            border: 1px solid #7e0d3d;
-        }
+        .form_element { border: 1px solid #7e0d3d; }
 
-        label {
-            font-size: 12px !important;
-        }
+        label { font-size: 12px !important; }
 
-        ul.menus_unorder_list {
-            list-style: none;
-            float: left;
-            width: 100%;
-        }
+        ul.menus_unorder_list { list-style: none; float: left; width: 100%; }
 
-        ul.menus_unorder_list .menu_list {
-            display: block;
-            text-align: center;
-            margin-bottom: 5px;
-        }
+        ul.menus_unorder_list .menu_list { display: block; text-align: center; margin-bottom: 5px; }
 
-        ul.menus_unorder_list .menu_list:last-child {
-            margin-bottom: 0;
-        }
+        ul.menus_unorder_list .menu_list:last-child { margin-bottom: 0; }
 
-        ul.menus_unorder_list .menu_list .menu_btn {
-            color: black;
-            padding: 5px 1px;
-            display: block;
-            font-size: 11px;
-            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid transparent;
-            border-radius: 5px;
-            background: white;
-            transition: .2s;
-        }
+        ul.menus_unorder_list .menu_list .menu_btn { color: black; padding: 5px 1px; display: block; font-size: 11px; box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1); border-bottom: 1px solid transparent; border-radius: 5px; background: white; transition: .2s; }
 
-        ul.menus_unorder_list .menu_list .menu_btn.menu_active {
-            border-color: var(--dark-color-1);
-            color: #504d4d !important;
-            font-weight: 600;
-        }
+        ul.menus_unorder_list .menu_list .menu_btn.menu_active { border-color: var(--dark-color-1); color: #504d4d !important; font-weight: 600; }
 
-        .hide-all {
-            display: none;
-        }
+        .hide-all { display: none; }
     </style>
 @endpush
 @section('title', 'Shop Settings - ')
@@ -103,6 +73,10 @@
 
                                         <li class="menu_list">
                                             <a class="menu_btn" data-form="invoice_layout_settings_form" href="#">{{ __('Invoice Layout Settings') }}</a>
+                                        </li>
+
+                                        <li class="menu_list">
+                                            <a class="menu_btn" data-form="print_page_size_settings_form" href="#">{{ __('Print Page Size') }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -518,7 +492,7 @@
                                     <div class="row mt-2">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <div class="btn-loading">
-                                                <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                                <button type="button" class="btn loading_button manufacturing_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
                                                 <button type="submit" id="save_changes_btn" class="btn btn-sm btn-success submit_button float-end">{{ __('Save Changes') }}</button>
                                             </div>
                                         </div>
@@ -814,6 +788,253 @@
                                             <div class="btn-loading">
                                                 <button type="button" class="btn loading_button invoice_layout_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
                                                 <button type="submit" id="save_changes" class="btn btn-sm btn-success submit_button float-end">{{ __('Save Changes') }}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="print_page_size_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.print.page.size', $branch->id) }}" method="post">
+                                    <div class="form-group">
+                                        <div class="setting_form_heading">
+                                            <h6 class="text-primary">{{ __('Print Settings') }}</h6>
+                                        </div>
+                                    </div>
+                                    @csrf
+                                    <div class="form-group row mt-3">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Add Sale') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="add_sale_page_size" class="form-control" id="add_sale_page_size">
+                                                                @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                                                    <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('pos Sale') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="pos_sale_page_size" class="form-control" id="pos_sale_page_size">
+                                                                @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                                                    <option {{ $generalSettings['print_page_size__pos_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Quotation') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="quotation_page_size" class="form-control" id="quotation_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__quotation_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Order') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="sales_order_page_size" class="form-control" id="sales_order_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__sales_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Draft') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="draft_page_size" class="form-control" id="draft_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__draft_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Sales Return') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="sales_return_page_size" class="form-control" id="sales_return_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__sales_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="purchase_page_size" class="form-control" id="purchase_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__purchase_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Order') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="purchase_order_page_size" class="form-control" id="purchase_order_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__purchase_order_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Purchase Return') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="purchase_return_page_size" class="form-control" id="purchase_return_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__purchase_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Transfer Stock') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="transfer_stock_voucher_page_size" class="form-control" id="transfer_stock_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__transfer_stock_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('S. Adjustment') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="stock_adjustment_voucher_page_size" class="form-control" id="stock_adjustment_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__stock_adjustment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Receipt Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="receipt_voucher_page_size" class="form-control" id="receipt_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__receipt_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payment Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="payment_voucher_page_size" class="form-control" id="payment_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="payroll_voucher_page_size" class="form-control" id="payroll_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__payroll_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Payment') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="payroll_payment_voucher_page_size" class="form-control" id="payroll_payment_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('BOM Voucher') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="bom_voucher_page_size" class="form-control" id="bom_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__bom_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Production Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="production_voucher_page_size" class="form-control" id="production_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__production_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <div class="btn-loading">
+                                                <button type="button" class="btn loading_button print_page_size_settings_loading_btn d-hide"><i class="fas fa-spinner"></i><span> {{ __('Loading') }}...</span></button>
+                                                <button class="btn btn-sm btn-success submit_button float-end">{{ __('Save Changes') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1248,8 +1469,7 @@
                     toastr.success(data);
                     $('.error').html('');
                     $('.loading_button').hide();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.dashboard_setting_loading_btn').hide();
                     $('.error').html('');
@@ -1289,8 +1509,7 @@
                 success: function(data) {
                     toastr.success(data);
                     $('.product_settings_loading_btn').hide();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.product_settings_loading_btn').hide();
 
@@ -1324,11 +1543,43 @@
                 success: function(data) {
                     toastr.success(data);
                     $('.purchase_settings_loading_btn').hide();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.purchase_settings_loading_btn').hide();
-                    $('.error').html('');
+
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $('#manufacturing_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.manufacturing_settings_loading_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.manufacturing_settings_loading_btn').hide();
+                }, error: function(err) {
+
+                    $('.manufacturing_settings_loading_btn').hide();
 
                     if (err.status == 0) {
 
@@ -1476,6 +1727,40 @@
                 error: function(err) {
 
                     $('.invoice_layout_settings_loading_btn').hide();
+                    if (err.status == 0) {
+
+                        toastr.error("{{ __('Net Connetion Error.') }}");
+                        return;
+                    } else if (err.status == 500) {
+
+                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                        return;
+                    } else if (err.status == 403) {
+
+                        toastr.error("{{ __('Access Denied') }}");
+                        return;
+                    }
+                }
+            });
+        });
+
+        $('#print_page_size_settings_form').on('submit', function(e) {
+            e.preventDefault();
+            $('.print_page_size_settings_loading_btn').show();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: request,
+                success: function(data) {
+                    toastr.success(data);
+                    $('.print_page_size_settings_loading_btn').hide();
+                },error: function(err) {
+
+                    $('.print_page_size_settings_loading_btn').hide();
+
                     if (err.status == 0) {
 
                         toastr.error("{{ __('Net Connetion Error.') }}");

@@ -270,6 +270,11 @@
             isAllowSubmit = true;
         }
     });
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 <script>

@@ -7,7 +7,7 @@
 @endphp
 
 <!-- Sales Order print templete-->
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
             table { page-break-after: auto; }
@@ -18,6 +18,7 @@
         }
 
         @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+
         div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
 
@@ -237,7 +238,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:11px!important;">
-                                        ({{ $orderProduct->unit_tax_percent }}%)={{ $orderProduct->unit_tax_amount }}
+                                        ({{ $orderProduct->unit_tax_percent }}%)
+                                        ={{ $orderProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
@@ -256,7 +258,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
-                        <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                        <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                     </div>
                 </div>
 
@@ -387,15 +389,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="sale_print_template">
@@ -612,7 +647,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:9px!important;">
-                                        ({{ $orderProduct->unit_tax_percent }}%)={{ $orderProduct->unit_tax_amount }}
+                                        ({{ $orderProduct->unit_tax_percent }}%)
+                                        ={{ $orderProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
@@ -631,7 +667,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
-                        <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                        <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                     </div>
                 </div>
 

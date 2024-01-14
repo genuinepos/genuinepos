@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Sales;
 use App\Enums\SaleStatus;
 use Illuminate\Http\Request;
 use App\Enums\SaleScreenType;
-use App\Enums\SalesInvoicePageSize;
+use App\Enums\PrintPageSize;
 use App\Services\Sales\SaleService;
 use App\Http\Controllers\Controller;
 use App\Services\Sales\SaleProductService;
@@ -88,7 +88,7 @@ class SalesHelperController extends Controller
             'saleProducts.product',
         ]);
 
-        if ($sale->status != SaleStatus::Final->value && $request->print_page_size == SalesInvoicePageSize::PosPrinterPageThreeIncs->value) {
+        if ($sale->status != SaleStatus::Final->value && $request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
             return response()->json(['errorMsg' => __('Pos printer page size only for Final Sale.')]);
         }
@@ -120,7 +120,7 @@ class SalesHelperController extends Controller
 
     public function printChallan($id, Request $request)
     {
-        if ($request->print_page_size == SalesInvoicePageSize::PosPrinterPageThreeIncs->value) {
+        if ($request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
             return response()->json(['errorMsg' => __('Pos printer page size does not support for challan.')]);
         }
@@ -144,7 +144,7 @@ class SalesHelperController extends Controller
             'createdBy:id,prefix,name,last_name',
         ]);
 
-        if ($request->print_page_size == SalesInvoicePageSize::PosPrinterPageThreeIncs->value) {
+        if ($request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
             return response()->json(['errorMsg' => __('Pos printer page size does not support for packing slip.')]);
         }

@@ -52,11 +52,11 @@
                     <div class="row g-0">
                         <div class="col-md-10">
                             <div class="input-group">
-                                <label class="col-4"><b>{{ __("Print") }}</b></label>
-                                <div class="col-8">
+                                <label class="col-4 offset-6"><b>{{ __('Print') }}</b></label>
+                                <div class="col-2">
                                     <select id="select_print_page_size" class="form-control">
-                                        @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
-                                            <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                            <option {{ $generalSettings['print_page_size__purchase_return_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                         @endforeach
                                     </select>
                                 </div>

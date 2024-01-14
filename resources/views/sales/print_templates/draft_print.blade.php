@@ -6,17 +6,22 @@
 @endphp
 
 <!-- Draft print templete-->
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
             table { page-break-after: auto; }
+
             tr { page-break-inside: avoid; page-break-after: auto; }
+
             td { page-break-inside: avoid; page-break-after: auto; }
+
             thead { display: table-header-group; }
+
             tfoot { display: table-footer-group; }
         }
 
         @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
+
         div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
 
@@ -211,7 +216,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:11px!important;">
-                                        ({{ $draftProduct->unit_tax_percent }}%)={{ $draftProduct->unit_tax_amount }}
+                                        ({{ $draftProduct->unit_tax_percent }}%)
+                                        ={{ $draftProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
@@ -230,7 +236,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
-                        <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                        <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                     </div>
                 </div>
 
@@ -329,15 +335,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size:5.8 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="sale_print_template">
@@ -529,7 +568,8 @@
 
                                 @if ($invoiceLayout->product_tax)
                                     <td class="text-end" style="font-size:9px!important;">
-                                        ({{ $draftProduct->unit_tax_percent }}%)={{ $draftProduct->unit_tax_amount }}
+                                        ({{ $draftProduct->unit_tax_percent }}%)
+                                        ={{ $draftProduct->unit_tax_amount }}
                                     </td>
                                 @endif
 
@@ -548,7 +588,7 @@
                 <br>
                 <div class="row page_break">
                     <div class="col-12 text-end">
-                        <h6><em>{{ __("Continued To This Next Page") }}....</em></h6>
+                        <h6><em>{{ __('Continued To This Next Page') }}....</em></h6>
                     </div>
                 </div>
 
@@ -614,13 +654,13 @@
             <div class="row">
                 <div class="col-6">
                     <div class="details_area text-center">
-                        <p class="text-uppercase borderTop fw-bold" style="font-size:10px!important;" >{{ __('Prepared By') }}</p>
+                        <p class="text-uppercase borderTop fw-bold" style="font-size:10px!important;">{{ __('Prepared By') }}</p>
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="details_area text-center">
-                        <p class="text-uppercase borderTop fw-bold" style="font-size:10px!important;" >{{ __('Authorized By') }}</p>
+                        <p class="text-uppercase borderTop fw-bold" style="font-size:10px!important;">{{ __('Authorized By') }}</p>
                     </div>
                 </div>
             </div>

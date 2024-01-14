@@ -33,6 +33,33 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array {
+        $data = [];
+        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'voucherDescriptions',
+                'voucherDescriptions.references',
+                'voucherDescriptions.references.sale',
+                'voucherDescriptions.references.purchaseReturn',
+                'voucherDescriptions.references.stockAdjustment',
+                'purchaseRef',
+                'salesReturnRef',
+                'stockAdjustmentRef',
+            ],
+        );
+
+        $data['printPageSize'] = $request->print_page_size;
+        
+        return $data;
+    }
+
     public function createMethodContainer(
         int $debitAccountId = null,
         object $accountService,
@@ -68,7 +95,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
         $data['payableAccounts'] = '';
-        if (! isset($creditAccountId)) {
+        if (!isset($creditAccountId)) {
 
             $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -190,7 +217,7 @@ class PaymentControllerMethodContainersService implements PaymentControllerMetho
         $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $data['payableAccounts'] = '';
-        if (! isset($debitAccountId)) {
+        if (!isset($debitAccountId)) {
 
             $data['payableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }

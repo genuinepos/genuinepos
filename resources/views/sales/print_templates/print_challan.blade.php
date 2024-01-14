@@ -5,18 +5,51 @@
     $invoiceLayout = $sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value ? $generalSettings['add_sale_invoice_layout'] : $generalSettings['pos_sale_invoice_layout'];
 @endphp
 
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 15px; margin-right: 15px; }
-        div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="print_challan">
@@ -249,15 +282,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 0px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <div class="print_challan">
@@ -470,7 +536,7 @@
 
                     <div class="col-4 text-center">
                         @if (env('PRINT_SD_SALE') == true)
-                            <small style="font-size: 9px!important;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">{{ __("SpeedDigit Software Solution.") }}</span></small>
+                            <small style="font-size: 9px!important;" class="d-block">{{ __('Powered By') }} <span class="fw-bold">{{ __('SpeedDigit Software Solution.') }}</span></small>
                         @endif
                     </div>
 

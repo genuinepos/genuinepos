@@ -119,7 +119,7 @@ class ExpenseController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_expense', compact('expense'));
+            return view('accounting.accounting_vouchers.print_templates.print_expense', compact('expense'));
         } else {
 
             return response()->json(['successMsg' => __('Expense added successfully.')]);

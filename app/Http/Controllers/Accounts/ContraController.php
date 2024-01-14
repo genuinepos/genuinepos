@@ -162,7 +162,7 @@ class ContraController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_contra', compact('contra'));
+            return view('accounting.accounting_vouchers.print_templates.print_contra', compact('contra'));
         } else {
 
             return response()->json(['successMsg' => __('Contra added successfully.')]);
@@ -192,7 +192,6 @@ class ContraController extends Controller
             ->get();
 
         $accounts = $this->accountFilterService->filterCashBankAccounts($accounts);
-
         $methods = $this->paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         return view('accounting.accounting_vouchers.contras.ajax_view.edit', compact('accounts', 'methods', 'contra'));

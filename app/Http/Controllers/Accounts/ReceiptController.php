@@ -133,7 +133,7 @@ class ReceiptController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('accounting.accounting_vouchers.save_and_print_template.print_receipt', compact('receipt'));
+            return view('accounting.accounting_vouchers.print_templates.print_receipt', compact('receipt'));
         } else {
 
             return response()->json(['successMsg' => __('Receipt added successfully.')]);

@@ -1651,7 +1651,7 @@
 
         $(document).on('change', '#currency_id', function(e) {
             var currencySymbol = $(this).find('option:selected').data('currency_symbol');
-            $('#currency_symbol').valcurrencySymbol
+            $('#currency_symbol').val(currencySymbol)
         });
     </script>
 @endpush

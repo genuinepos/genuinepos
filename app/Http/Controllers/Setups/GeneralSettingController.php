@@ -87,7 +87,7 @@ class GeneralSettingController extends Controller
         }
 
         $settings = [
-            'business_or_shop__business_name' => $request->shop_name,
+            'business_or_shop__business_name' => $request->business_name,
             'business_or_shop__address' => $request->address,
             'business_or_shop__phone' => $request->phone,
             'business_or_shop__email' => $request->email,

@@ -19,7 +19,7 @@
         div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
     <!-- Receipt print templete-->
-    <div class="purchase_print_template">
+    <div class="receipt_voucher_print_template">
         <div class="details_area">
             <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
                 <div class="col-4">
@@ -50,14 +50,26 @@
 
                 <div class="col-8 text-end">
                     <p style="text-transform: uppercase;" class="p-0 m-0 fw-bold">
+                        @php
+                            $branchName = '';
+                        @endphp
                         @if ($receipt?->branch)
                             @if ($receipt?->branch?->parent_branch_id)
                                 {{ $receipt?->branch?->parentBranch?->name }}
+                                @php
+                                    $branchName = $receipt?->branch?->parentBranch?->name . '('.$receipt?->branch?->area_name.')';
+                                @endphp
                             @else
                                 {{ $receipt?->branch?->name }}
+                                @php
+                                    $branchName = $receipt?->branch?->name . '('.$receipt?->branch?->area_name.')';
+                                @endphp
                             @endif
                         @else
                             {{ $generalSettings['business_or_shop__business_name'] }}
+                            @php
+                                $branchName = $generalSettings['business_or_shop__business_name'];
+                            @endphp
                         @endif
                     </p>
 
@@ -451,6 +463,11 @@
         </div>
     </div>
     <!-- Receipt print templete end-->
+    @php
+        $filename = __('Receipt Voucher') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
+    @endphp
+    <span id="title" class="d-none">{{ $filename }}</span>
+    <!-- Payment print templete end-->
 @else
     <style>
         @media print {
@@ -467,7 +484,7 @@
         div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
     </style>
     <!-- Receipt print templete-->
-    <div class="purchase_print_template">
+    <div class="receipt_voucher_print_template">
         <div class="details_area">
             <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
                 <div class="col-4">
@@ -498,14 +515,26 @@
 
                 <div class="col-8 text-end">
                     <p style="text-transform: uppercase; font-size:9px;" class="p-0 m-0 fw-bold">
+                        @php
+                            $branchName = '';
+                        @endphp
                         @if ($receipt?->branch)
                             @if ($receipt?->branch?->parent_branch_id)
                                 {{ $receipt?->branch?->parentBranch?->name }}
+                                @php
+                                    $branchName = $receipt?->branch?->parentBranch?->name . '('.$receipt?->branch?->area_name.')';
+                                @endphp
                             @else
                                 {{ $receipt?->branch?->name }}
+                                @php
+                                    $branchName = $receipt?->branch?->name . '('.$receipt?->branch?->area_name.')';
+                                @endphp
                             @endif
                         @else
                             {{ $generalSettings['business_or_shop__business_name'] }}
+                            @php
+                                $branchName = $generalSettings['business_or_shop__business_name'];
+                            @endphp
                         @endif
                     </p>
 
@@ -899,4 +928,9 @@
         </div>
     </div>
     <!-- Receipt print templete end-->
+    @php
+        $filename = __('Receipt Voucher') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
+    @endphp
+    <span id="title" class="d-none">{{ $filename }}</span>
+    <!-- Payment print templete end-->
 @endif

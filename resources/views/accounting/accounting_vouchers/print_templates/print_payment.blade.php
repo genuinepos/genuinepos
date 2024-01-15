@@ -58,12 +58,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @endif
                         @else
@@ -495,12 +495,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @endif
                         @else

@@ -167,6 +167,11 @@
 
         calcTotalAmount();
     });
+
+    $('#select_print_page_size').on('change', function() {
+        var value = $(this).val();
+        $('#print_page_size').val(value);
+    });
 </script>
 
 <script>
@@ -195,6 +200,8 @@
 
         $('.expense_loading_btn').show();
         var url = $(this).attr('action');
+
+        var currentTitle = document.title;
 
         isAjaxIn = false;
         isAllowSubmit = false;
@@ -242,6 +249,16 @@
                         removeInline: false,
                         printDelay: 1000
                     });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+                    console.log(filename.innerHTML);
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
 
                     expenseTable.ajax.reload();
                     return;

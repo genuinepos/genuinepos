@@ -30,6 +30,30 @@ class ExpenseControllerMethodContainersService implements ExpenseControllerMetho
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array {
+
+        $data = [];
+        $data['expense'] = $accountingVoucherService->singleAccountingVoucher(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'voucherDescriptions',
+                'voucherDescriptions.account:id,name,account_number',
+                'voucherDescriptions.paymentMethod:id,name',
+                'createdBy:id,prefix,name,last_name',
+            ],
+        );
+
+        $data['printPageSize'] = $request->print_page_size;
+
+        return $data;
+    }
+
     public function createMethodContainer(
         object $accountService,
         object $accountFilterService,

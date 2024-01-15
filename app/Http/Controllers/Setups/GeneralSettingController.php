@@ -87,7 +87,7 @@ class GeneralSettingController extends Controller
         }
 
         $settings = [
-            'business_or_shop__business_name' => $request->shop_name,
+            'business_or_shop__business_name' => $request->business_name,
             'business_or_shop__address' => $request->address,
             'business_or_shop__phone' => $request->phone,
             'business_or_shop__email' => $request->email,
@@ -247,6 +247,8 @@ class GeneralSettingController extends Controller
             'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
             'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
             'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
             'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
             'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,

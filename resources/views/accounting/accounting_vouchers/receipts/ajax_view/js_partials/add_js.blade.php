@@ -179,6 +179,8 @@
         $('.receipt_loading_btn').show();
         var url = $(this).attr('action');
 
+        var currentTitle = document.title;
+
         isAjaxIn = false;
         isAllowSubmit = false;
         $.ajax({
@@ -223,6 +225,16 @@
                         removeInline: false,
                         printDelay: 1000
                     });
+
+                    var tempElement = document.createElement('div');
+                    tempElement.innerHTML = data;
+                    var filename = tempElement.querySelector('#title');
+                    console.log(filename.innerHTML);
+                    document.title = filename.innerHTML;
+
+                    setTimeout(function() {
+                        document.title = currentTitle;
+                    }, 2000);
                 }
 
                 var commonReloaderClass = $('.common-reloader').html();

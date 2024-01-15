@@ -54,16 +54,19 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
-                                @if ($receipt->branch_id)
-
-                                    @if ($receipt?->branch?->parentBranch)
-                                        {{ $receipt?->branch?->parentBranch?->name . '(' . $receipt?->branch?->area_name . ')' . '-(' . $receipt?->branch?->branch_code . ')' }}
-                                    @else
-                                        {{ $receipt?->branch?->name . '(' . $receipt?->branch?->area_name . ')' . '-(' . $receipt?->branch?->branch_code . ')' }}
-                                    @endif
-                                @else
-                                    {{ $generalSettings['business_or_shop__business_name'] }}
-                                @endif
+                                @php
+                                    $branchName = '';
+                                    if ($receipt->branch_id) {
+                                        if ($receipt?->branch?->parentBranch) {
+                                            $branchName = $receipt?->branch?->parentBranch?->name . '(' . $receipt?->branch?->area_name . ')' . '-(' . $receipt?->branch?->branch_code . ')';
+                                        } else {
+                                            $branchName = $receipt?->branch?->name . '(' . $receipt?->branch?->area_name . ')' . '-(' . $receipt?->branch?->branch_code . ')';
+                                        }
+                                    } else {
+                                        $branchName = $generalSettings['business_or_shop__business_name'];
+                                    }
+                                @endphp
+                                {{ $branchName }}
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
@@ -373,13 +376,33 @@
                         </div>
                     </div>
                 </div>
+
+                <hr class="m-0 mt-3">
+
+                <div class="row g-0 mt-1">
+                    <div class="col-md-6 offset-6">
+                        <div class="input-group p-0">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
+                                <select id="print_page_size" class="form-control">
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__receipt_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</button>
+                            @php
+                                $filename = __('Receipt Voucher') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
+                            @endphp
+                            <a href="{{ route('receipts.print', $receipt->id) }}" onclick="printReceiptVoucher(this); return false;" class="btn btn-sm btn-success" id="printReceiptsVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -389,496 +412,45 @@
     </div>
 </div>
 
-<style>
-    @media print {
-        table {
-            page-break-after: auto
-        }
+<script>
+    function printReceiptVoucher(event) {
 
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
 
-        td {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { print_page_size },
+            success: function(data) {
 
-        thead {
-            display: table-header-group
-        }
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
 
-        tfoot {
-            display: table-footer-group
-        }
-    }
+                document.title = filename;
 
-    .print_table th {
-        font-size: 11px !important;
-        font-weight: 550 !important;
-        line-height: 12px !important
-    }
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            }, error: function(err) {
 
-    .print_table tr td {
-        color: black;
-        font-size: 10px !important;
-        line-height: 12px !important
-    }
+                if (err.status == 0) {
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
 
-    div#footer {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        width: 100%;
-        height: 0%;
-        color: #CCC;
-        background: #333;
-        padding: 0;
-        margin: 0;
-    }
-</style>
-
-<!-- Purchase print templete-->
-<div class="print_modal_details d-none">
-    <div class="details_area">
-        <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
-            <div class="col-4">
-                @if ($receipt->branch)
-
-                    @if ($receipt?->branch?->parent_branch_id)
-
-                        @if ($receipt->branch?->parentBranch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->parentBranch?->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->parentBranch?->name }}</span>
-                        @endif
-                    @else
-                        @if ($receipt->branch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $receipt->branch?->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $receipt->branch?->name }}</span>
-                        @endif
-                    @endif
-                @else
-                    @if ($generalSettings['business_or_shop__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
-                    @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
-                    @endif
-                @endif
-            </div>
-
-            <div class="col-8 text-end">
-                <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>
-                        @if ($receipt?->branch)
-                            @if ($receipt?->branch?->parent_branch_id)
-                                {{ $receipt?->branch?->parentBranch?->name }}
-                            @else
-                                {{ $receipt?->branch?->name }}
-                            @endif
-                        @else
-                            {{ $generalSettings['business_or_shop__business_name'] }}
-                        @endif
-                    </strong>
-                </p>
-
-                <p>
-                    @if ($receipt?->branch)
-                        {{ $receipt->branch->city . ', ' . $receipt->branch->state . ', ' . $receipt->branch->zip_code . ', ' . $receipt->branch->country }}
-                    @else
-                        {{ $generalSettings['business_or_shop__address'] }}
-                    @endif
-                </p>
-
-                <p>
-                    @if ($receipt?->branch)
-                        <strong>@lang('menu.email') : </strong> {{ $receipt?->branch?->email }},
-                        <strong>@lang('menu.phone') : </strong> {{ $receipt?->branch?->phone }}
-                    @else
-                        <strong>@lang('menu.email') : </strong> {{ $generalSettings['business_or_shop__email'] }},
-                        <strong>@lang('menu.phone') : </strong> {{ $generalSettings['business_or_shop__phone'] }}
-                    @endif
-                </p>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-12 text-center">
-                <h4 class="fw-bold" style="text-transform: uppercase;">{{ __('Receipt Voucher') }}</h4>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-6">
-                <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        {{ date($generalSettings['business_or_shop__date_format'], strtotime($receipt->date)) }}
-                    </li>
-                    <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $receipt->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __('Received Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($receipt->total_amount) }}</li>
-                </ul>
-            </div>
-
-            <div class="col-6">
-                <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Reference') }} : </strong>
-                        @if ($receipt?->saleRef)
-
-                            @if ($receipt?->saleRef->status == \App\Enums\SaleStatus::Final->value)
-                                {{ __('Sales') }} : {{ $receipt?->saleRef->invoice_id }}
-                            @elseif ($receipt?->saleRef->status == \App\Enums\SaleStatus::Order->value)
-                                {{ __('Sales-Order') }} : {{ $receipt?->saleRef->order_id }}
-                            @endif
-                        @endif
-
-                        @if ($receipt?->purchaseReturnRef)
-                            {{ __('Purchase Return') }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
-                        @endif
-
-                        @if ($receipt?->stockAdjustmentRef)
-                            {{ __('Stock Adjustment') }} : {{ $receipt?->purchaseReturnRef->voucher_no }}
-                        @endif
-                    </li>
-
-                    <li style="font-size:11px!important;"><strong>{{ __('Created By') }} : </strong>
-                        {{ $receipt?->createdBy?->prefix . ' ' . $receipt?->createdBy?->name . ' ' . $receipt?->createdBy?->last_name }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-6">
-                <p class="fw-bold">{{ __('Received From') }} :</p>
-                @foreach ($receipt->voucherDescriptions()->where('amount_type', 'cr')->get() as $description)
-                    <table class="table print-table table-sm">
-                        <thead>
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Credit A/c') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->account?->name }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Address') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->account?->address }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Phone') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->account?->name }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                                <td class="text-end fw-bold" style="font-size:11px!important;">
-                                    {{ App\Utils\Converter::format_in_bdt($description?->amount) }}
-                                </td>
-                            </tr>
-                        </thead>
-                    </table>
-                @endforeach
-            </div>
-
-            <div class="col-6">
-                <p class="fw-bold">{{ __('Received To') }} : </p>
-                @foreach ($receipt->voucherDescriptions()->where('amount_type', 'dr')->get() as $description)
-                    <table class="table print-table table-sm">
-                        <thead>
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Debit A/c') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->account?->name }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Method/Type') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->paymentMethod?->name }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->transaction_no }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->cheque_no }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="text-end fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }} : </th>
-                                <td class="text-end" style="font-size:11px!important;">
-                                    {{ $description?->cheque_serial_no }}
-                                </td>
-                            </tr>
-                        </thead>
-                    </table>
-                @endforeach
-            </div>
-        </div>
-
-        @php
-            $creditDescription = $receipt
-                ->voucherDescriptions()
-                ->where('amount_type', 'cr')
-                ->first();
-        @endphp
-
-        <div class="purchase_product_table mt-2">
-            <div class="row">
-                <div class="col-6">
-                    <p class="fw-bold">{{ __('Receipt Against Vouchers') }}</p>
-                    <table class="table report-table table-sm table-bordered print_table">
-                        <thead>
-                            <tr>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher No') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher Type') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="purchase_print_product_list">
-                            @php
-                                $totalAmount = 0;
-                            @endphp
-                            @foreach ($creditDescription->references as $reference)
-                                @php
-                                    $isOrder = 0;
-                                    if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
-                                        $isOrder = 1;
-                                    }
-                                @endphp
-                                @if ($isOrder == 0)
-                                    <tr>
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                {{ $reference?->sale->date }}
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ $reference?->purchaseReturn->date }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ $reference?->stockAdjustment->date }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
-                                                    {{ $reference?->sale->invoice_id }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-                                                    {{ $reference?->sale->order_id }}
-                                                @endif
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ $reference?->purchaseReturn->voucher_no }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ $reference?->stockAdjustment->voucher_no }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
-                                                    {{ __('Sales') }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-                                                    {{ __('Sales-Order') }}
-                                                @endif
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ __('Purchase Return') }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ __('Stock Adjustment') }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
-                                        @php
-                                            $totalAmount += $reference->amount;
-                                        @endphp
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="3" class="text-end">{{ __('Total') }} : </th>
-                                <th class="text-start">{{ App\Utils\Converter::format_in_bdt($totalAmount) }}</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="col-6">
-                    <p class="fw-bold">{{ __('Receipt Against Order Vouchers') }}</p>
-                    <table class="table report-table table-sm table-bordered print_table">
-                        <thead>
-                            <tr>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Date') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher No') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Voucher Type') }}</th>
-                                <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Amount') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="purchase_print_product_list">
-                            @php
-                                $totalAmount = 0;
-                            @endphp
-                            @foreach ($creditDescription->references as $reference)
-                                @php
-                                    $isOrder = 0;
-                                    if ($reference?->sale?->status == App\Enums\SaleStatus::Order->value) {
-                                        $isOrder = 1;
-                                    }
-                                @endphp
-                                @if ($isOrder == 1)
-                                    <tr>
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                {{ $reference?->sale->date }}
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ $reference?->purchaseReturn->date }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ $reference?->stockAdjustment->date }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
-                                                    {{ $reference?->sale->invoice_id }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-                                                    {{ $reference?->sale->order_id }}
-                                                @endif
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ $reference?->purchaseReturn->voucher_no }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ $reference?->stockAdjustment->voucher_no }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">
-                                            @if ($reference?->sale)
-                                                @if ($reference?->sale->status == \App\Enums\SaleStatus::Final->value)
-                                                    {{ __('Sales') }}
-                                                @elseif ($reference?->sale->status == \App\Enums\SaleStatus::Order->value)
-                                                    {{ __('Sales-Order') }}
-                                                @endif
-                                            @endif
-
-                                            @if ($reference?->purchaseReturn)
-                                                {{ __('Purchase Return') }}
-                                            @endif
-
-                                            @if ($reference?->stockAdjustment)
-                                                {{ __('Stock Adjustment') }}
-                                            @endif
-                                        </td>
-
-                                        <td class="text-start" style="font-size:11px!important;">{{ App\Utils\Converter::format_in_bdt($reference->amount) }}</td>
-                                        @php
-                                            $totalAmount += $reference->amount;
-                                        @endphp
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="3" class="text-end">{{ __('Total') }} : </th>
-                                <th class="text-start">{{ App\Utils\Converter::format_in_bdt($totalAmount) }}</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <br /><br />
-        <div class="row">
-            <div class="col-4 text-start">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Prepared By') }}
-                </p>
-            </div>
-
-            <div class="col-4 text-center">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Checked By') }}
-                </p>
-            </div>
-
-            <div class="col-4 text-end">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Authorized By') }}
-                </p>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($receipt->voucher_no, $generator::TYPE_CODE_128)) }}">
-                <p>{{ $receipt->voucher_no }}</p>
-            </div>
-        </div>
-
-        <div id="footer">
-            <div class="row mt-1">
-                <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
-                </div>
-
-                <div class="col-4 text-center">
-                    @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>SpeedDigit Software Solution.</strong></small>
-                    @endif
-                </div>
-
-                <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Purchase print templete end-->
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    };
+</script>

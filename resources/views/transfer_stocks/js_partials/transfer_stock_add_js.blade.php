@@ -184,7 +184,7 @@
                 } else {
 
                     $('#search_product').addClass('is-invalid');
-                    toastr.error('Product not found.', 'Failed');
+                    toastr.error("{{ __('Product not found.') }}", "{{ __('Failed') }}");
                     $('#search_product').select();
                 }
             }

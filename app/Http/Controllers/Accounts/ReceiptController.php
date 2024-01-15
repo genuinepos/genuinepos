@@ -75,6 +75,19 @@ class ReceiptController extends Controller
         return view('accounting.accounting_vouchers.receipts.ajax_view.show', compact('receipt'));
     }
 
+    public function print($id, Request $request, ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface)
+    {
+        $printMethodContainer = $receiptControllerMethodContainersInterface->printMethodContainer(
+            id: $id,
+            request: $request,
+            accountingVoucherService: $this->accountingVoucherService,
+        );
+
+        extract($printMethodContainer);
+
+        return view('accounting.accounting_vouchers.print_templates.print_receipt', compact('receipt', 'printPageSize'));
+    }
+
     public function create(ReceiptControllerMethodContainersInterface $receiptControllerMethodContainersInterface, $creditAccountId = null)
     {
         abort_if(!auth()->user()->can('receipts_create'), 403);
@@ -96,13 +109,7 @@ class ReceiptController extends Controller
     {
         abort_if(!auth()->user()->can('receipts_create'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'received_amount' => 'required',
-            'payment_method_id' => 'required',
-            'debit_account_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
+        $this->receiptService->receiptValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -132,8 +139,8 @@ class ReceiptController extends Controller
         }
 
         if ($request->action == 'save_and_print') {
-
-            return view('accounting.accounting_vouchers.print_templates.print_receipt', compact('receipt'));
+            $printPageSize = $request->print_page_size;
+            return view('accounting.accounting_vouchers.print_templates.print_receipt', compact('receipt', 'printPageSize'));
         } else {
 
             return response()->json(['successMsg' => __('Receipt added successfully.')]);
@@ -163,13 +170,7 @@ class ReceiptController extends Controller
     {
         abort_if(!auth()->user()->can('receipts_edit'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'received_amount' => 'required',
-            'payment_method_id' => 'required',
-            'debit_account_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
+        $this->receiptService->receiptValidation(request: $request);
 
         try {
             DB::beginTransaction();

@@ -264,13 +264,13 @@
 
         if (e_quantity == '') {
 
-            toastr.error('Quantity field must not be empty.');
+            toastr.error("{{ __('Quantity field must not be empty.') }}");
             return;
         }
 
         if (e_product_id == '') {
 
-            toastr.error('Please select a product.');
+            toastr.error("{{ __('Please select a product.') }}");
             return;
         }
 
@@ -646,7 +646,7 @@
             success: function(warehouses) {
 
                 $('#receiver_warehouse_id').empty();
-                $('#receiver_warehouse_id').append('<option value="">Select Warehouse</option>');
+                $('#receiver_warehouse_id').append('<option value="">'+"{{ __('Select Warehouse') }}"+'</option>');
 
                 $.each(warehouses, function(key, warehouse) {
 

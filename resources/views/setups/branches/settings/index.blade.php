@@ -919,11 +919,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-12">
+
+                                                <div class="col-md-12 mt-1">
                                                     <div class="input-group">
                                                         <label class="col-md-3 text-end fw-bold pe-1">{{ __('Transfer Stock') }}</label>
                                                         <div class="col-md-9">
@@ -935,8 +932,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-12 mt-1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <div class="input-group">
                                                         <label class="col-md-3 text-end fw-bold pe-1">{{ __('S. Adjustment') }}</label>
                                                         <div class="col-md-9">
@@ -969,6 +969,32 @@
                                                             <select name="payment_voucher_page_size" class="form-control" id="payment_voucher_page_size">
                                                                 @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
                                                                     <option {{ $generalSettings['print_page_size__payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Expense Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="expense_voucher_page_size" class="form-control" id="expense_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__expense_voucher_page_size'] == $item->value ? 'SELECTED' : '' }}  value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 mt-1">
+                                                    <div class="input-group">
+                                                        <label class="col-md-3 text-end fw-bold pe-1">{{ __('Contra Vch.') }}</label>
+                                                        <div class="col-md-9">
+                                                            <select name="contra_voucher_page_size" class="form-control" id="contra_voucher_page_size">
+                                                                @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                    <option {{ $generalSettings['print_page_size__contra_voucher_page_size'] == $item->value ? 'SELECTED' : '' }}  value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -1950,6 +1976,11 @@
                     }
                 }
             });
+        });
+
+        $(document).on('change', '#currency_id', function(e) {
+            var currencySymbol = $(this).find('option:selected').data('currency_symbol');
+            $('#currency_symbol').val(currencySymbol);
         });
     </script>
 @endpush

@@ -58,12 +58,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @endif
                         @else
@@ -436,7 +436,7 @@
         </div>
     </div>
     @php
-        $filename = __('Payment Voucher') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
+        $filename = __('Payment') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
     <!-- Payment print templete end-->
@@ -495,12 +495,12 @@
                             @if ($payment?->branch?->parent_branch_id)
                                 {{ $payment?->branch?->parentBranch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->parentBranch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->parentBranch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @else
                                 {{ $payment?->branch?->name }}
                                 @php
-                                    $branchName = $payment?->branch?->name.''.$payment?->branch?->area_name;
+                                    $branchName = $payment?->branch?->name.'('.$payment?->branch?->area_name.')';
                                 @endphp
                             @endif
                         @else
@@ -873,7 +873,7 @@
         </div>
     </div>
     @php
-        $filename = __('Payment Voucher') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
+        $filename = __('Payment') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
     <!-- Payment print templete end-->

@@ -34,9 +34,7 @@ class ExpenseController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('expenses_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_index'), 403);
 
         if ($request->ajax()) {
 
@@ -61,11 +59,22 @@ class ExpenseController extends Controller
         return view('accounting.accounting_vouchers.expenses.ajax_view.show', compact('expense'));
     }
 
+    public function print($id, Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface)
+    {
+        $printMethodContainer = $expenseControllerMethodContainersInterface->printMethodContainer(
+            id: $id,
+            request: $request,
+            accountingVoucherService: $this->accountingVoucherService,
+        );
+
+        extract($printMethodContainer);
+
+        return view('accounting.accounting_vouchers.print_templates.print_expense', compact('expense', 'printPageSize'));
+    }
+
     public function create(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('expenses_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_create'), 403);
 
         $createMethodContainer = $expenseControllerMethodContainersInterface->createMethodContainer(
             accountService: $this->accountService,
@@ -80,16 +89,9 @@ class ExpenseController extends Controller
 
     public function store(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, CodeGenerationService $codeGenerator)
     {
-        if (! auth()->user()->can('expenses_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_create'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'total_amount' => 'required',
-            'payment_method_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
+        $this->expenseService->expenseValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -118,8 +120,8 @@ class ExpenseController extends Controller
         }
 
         if ($request->action == 'save_and_print') {
-
-            return view('accounting.accounting_vouchers.print_templates.print_expense', compact('expense'));
+            $printPageSize = $request->print_page_size;
+            return view('accounting.accounting_vouchers.print_templates.print_expense', compact('expense', 'printPageSize'));
         } else {
 
             return response()->json(['successMsg' => __('Expense added successfully.')]);
@@ -128,9 +130,7 @@ class ExpenseController extends Controller
 
     public function edit(ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('expenses_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_edit'), 403);
 
         $editMethodContainer = $expenseControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -147,16 +147,9 @@ class ExpenseController extends Controller
 
     public function update(Request $request, ExpenseControllerMethodContainersInterface $expenseControllerMethodContainersInterface, $id)
     {
-        if (! auth()->user()->can('expenses_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_edit'), 403);
 
-        $this->validate($request, [
-            'date' => 'required|date',
-            'total_amount' => 'required',
-            'payment_method_id' => 'required',
-            'credit_account_id' => 'required',
-        ]);
+        $this->expenseService->expenseValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -187,9 +180,7 @@ class ExpenseController extends Controller
 
     public function delete($id)
     {
-        if (! auth()->user()->can('expenses_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('expenses_delete'), 403);
 
         try {
             DB::beginTransaction();

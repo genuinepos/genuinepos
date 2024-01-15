@@ -96,7 +96,7 @@
                                     <h6>{{ __('List Of Expenses') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('add_expense'))
+                                @if (auth()->user()->can('expenses_create'))
                                     <div class="col-2 d-flex justify-content-end">
                                         <a href="{{ route('expenses.create') }}" class="btn btn-sm btn-primary" id="addExpense"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
@@ -450,23 +450,6 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
     </script>

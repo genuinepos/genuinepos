@@ -98,6 +98,8 @@ class BranchSettingController extends Controller
             'print_page_size__stock_adjustment_voucher_page_size' => $request->stock_adjustment_voucher_page_size,
             'print_page_size__receipt_voucher_page_size' => $request->receipt_voucher_page_size,
             'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
+            'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
             'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
             'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,

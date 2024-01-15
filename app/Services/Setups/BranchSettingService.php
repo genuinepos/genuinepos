@@ -183,6 +183,8 @@ class BranchSettingService
             ['key' => 'print_page_size__stock_adjustment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__receipt_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__payment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__expense_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'print_page_size__contra_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__payroll_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__payroll_payment_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],
             ['key' => 'print_page_size__bom_voucher_page_size', 'value' => 1, 'branch_id' => $branchId],

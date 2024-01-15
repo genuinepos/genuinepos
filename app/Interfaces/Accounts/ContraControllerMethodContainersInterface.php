@@ -2,11 +2,12 @@
 
 namespace App\Interfaces\Accounts;
 
-interface ExpenseControllerMethodContainersInterface
+interface ContraControllerMethodContainersInterface
 {
     /**
-     * @return \App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService
+     * @return \App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService
      */
+
     public function showMethodContainer(
         int $id,
         object $accountingVoucherService,
@@ -26,7 +27,7 @@ interface ExpenseControllerMethodContainersInterface
 
     public function storeMethodContainer(
         object $request,
-        object $expenseService,
+        object $contraService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,
@@ -45,7 +46,7 @@ interface ExpenseControllerMethodContainersInterface
     public function updateMethodContainer(
         int $id,
         object $request,
-        object $expenseService,
+        object $contraService,
         object $accountLedgerService,
         object $accountingVoucherService,
         object $accountingVoucherDescriptionService,

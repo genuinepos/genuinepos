@@ -73,6 +73,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('index/{creditAccountId?}', 'index')->name('receipts.index');
         Route::get('show/{id}', 'show')->name('receipts.show');
+        Route::get('print/{id}', 'print')->name('receipts.print');
         Route::get('create/{creditAccountId?}', 'create')->name('receipts.create');
         Route::post('store', 'store')->name('receipts.store');
         Route::get('edit/{id}/{creditAccountId?}', 'edit')->name('receipts.edit');
@@ -96,6 +97,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('expenses.index');
         Route::get('show/{id}', 'show')->name('expenses.show');
+        Route::get('print/{id}', 'print')->name('expenses.print');
         Route::get('create', 'create')->name('expenses.create');
         Route::post('store', 'store')->name('expenses.store');
         Route::get('edit/{id}', 'edit')->name('expenses.edit');
@@ -107,6 +109,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('contras.index');
         Route::get('show/{id}', 'show')->name('contras.show');
+        Route::get('print/{id}', 'print')->name('contras.print');
         Route::get('create', 'create')->name('contras.create');
         Route::post('store', 'store')->name('contras.store');
         Route::get('edit/{id}', 'edit')->name('contras.edit');

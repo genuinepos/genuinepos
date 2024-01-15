@@ -237,7 +237,7 @@
                                         <div class="col-md-4">
                                             <label class="fw-bold">{{ __('Current Financial Year') }} <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input readonly type="text" class="form-control" id="current_financial_year" autocomplete="off" value="{{ '01-Jan-2023' . ' To ' . '31-Dec-2023' }}">
+                                                <input readonly type="text" class="form-control fw-bold" id="current_financial_year" autocomplete="off" value="{{ $generalSettings['business_or_shop__financial_year'] }}">
                                             </div>
                                         </div>
                                     </div>

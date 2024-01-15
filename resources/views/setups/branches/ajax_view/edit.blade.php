@@ -54,10 +54,22 @@
                                 <input required type="text" name="phone" class="form-control" data-name="Phone number" id="branch_phone" data-next="branch_alternate_phone_number" value="{{ $branch->phone }}" placeholder="{{ __('Phone No') }}" />
                                 <span class="error error_branch_phone"></span>
                             </div>
+                        </div>
 
+                        <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
                                 <label><b>{{ __('Alternative Phone') }}</b> </label>
-                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_country" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __('Alternative Phone') }}" />
+                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_bin" value="{{ $branch->alternate_phone_number }}" placeholder="{{ __('Alternative Phone') }}" />
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label class="fw-bold">{{ __('Business Indentification No.') }} </label>
+                                <input type="text" name="bin" class="form-control" id="branch_bin" data-next="branch_tin" value="{{ $branch->bin }}" placeholder="{{ __('Business Indentification Number') }}" autocomplete="off"/>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label class="fw-bold">{{ __('Vat/Tax No.') }} </label>
+                                <input type="text" name="tin" class="form-control" id="branch_tin" data-next="branch_country" value="{{ $branch->tin }}" placeholder="{{ __('Vat/Tax Number.') }}" autocomplete="off"/>
                             </div>
                         </div>
 

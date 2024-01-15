@@ -59,7 +59,17 @@
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Alternative Phone') }} </label>
-                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_country" placeholder="{{ __('Alternative Phone') }}" />
+                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_bin_no" placeholder="{{ __('Alternative Phone') }}" />
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label class="fw-bold">{{ __('Business Indentification No.') }} </label>
+                                <input type="text" name="bin" class="form-control" id="branch_bin" data-next="branch_tin" placeholder="{{ __('Business Indentification Number') }}" autocomplete="off"/>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <label class="fw-bold">{{ __('Vat/Tax No.') }} </label>
+                                <input type="text" name="tin" class="form-control" id="branch_tin" data-next="branch_country" placeholder="{{ __('Vat/Tax Number') }}" autocomplete="off"/>
                             </div>
                         </div>
 

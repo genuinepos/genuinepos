@@ -29,10 +29,7 @@ class BranchController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('branch')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('branch'), 403);
 
         $generalSettings = config('generalSettings');
 
@@ -46,9 +43,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('branch')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('branch'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -61,9 +56,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('branch')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('branch'), 403);
 
         $this->validate($request, [
             'area_name' => 'required',
@@ -131,9 +124,7 @@ class BranchController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('branch')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('branch'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -157,9 +148,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('branch')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('branch'), 403);
 
         $this->validate($request, [
             'area_name' => 'required',

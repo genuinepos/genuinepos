@@ -76,7 +76,7 @@
                                         </li>
 
                                         <li class="menu_list">
-                                            <a class="menu_btn" data-form="print_page_size_settings_form" href="#">{{ __('Print Page Size') }}</a>
+                                            <a class="menu_btn" data-form="print_page_size_settings_form" href="#">{{ __('Print Settings') }}</a>
                                         </li>
 
                                         <li class="menu_list">
@@ -154,6 +154,18 @@
 
                                             <div class="row mt-1">
                                                 <div class="col-lg-4 col-md-6">
+                                                    <label class="fw-bold">{{ __('Business Indentification No.') }}</label>
+                                                    <input type="text" name="bin" class="form-control" id="bin" value="{{ $branch->bin }}" placeholder="{{ __('Business Indentification No.') }}" />
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label class="fw-bold">{{ __('Vat/Tax No.') }}</label>
+                                                    <input type="text" name="tin" class="form-control" id="tin" value="{{ $branch->tin }}" placeholder="{{ __('Alternative Phone') }}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-1">
+                                                <div class="col-lg-4 col-md-6">
                                                     <label class="fw-bold">{{ __('Country') }} <span class="text-danger">*</span></label>
                                                     <input required type="text" name="country" class="form-control" id="country" value="{{ $branch->country }}" placeholder="{{ __('Country') }}" />
                                                     <span class="error error_country"></span>
@@ -210,9 +222,9 @@
                                                 <div class="col-md-12">
                                                     <label class="fw-bold">{{ __('Date Format') }}</label>
                                                     <select name="date_format" class="form-control" id="date_format">
-                                                        <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }}</option>
-                                                        <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }}</option>
-                                                        <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }}</option>
+                                                        <option value="d-m-Y" {{ $branch->date_format == 'd-m-Y' ? 'SELECTED' : '' }}>{{ __('DD-MM-YYYY') }} | {{ date('d-m-Y') }}</option>
+                                                        <option value="m-d-Y" {{ $branch->date_format == 'm-d-Y' ? 'SELECTED' : '' }}>{{ __('MM-DD-YYYY') }} | {{ date('m-d-Y') }}</option>
+                                                        <option value="Y-m-d" {{ $branch->date_format == 'Y-m-d' ? 'SELECTED' : '' }}>{{ __('YYYY-MM-DD') }} | {{ date('Y-m-d') }}</option>
                                                     </select>
                                                     <span class="error error_date_format"></span>
                                                 </div>

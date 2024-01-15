@@ -204,7 +204,7 @@ class BranchSettingService
         }
     }
 
-    public function updateAndSync(array $settings, int $branchId): bool
+    public function updateAndSync(array $settings, int $branchId): void
     {
         if (is_array($settings)) {
 
@@ -228,11 +228,7 @@ class BranchSettingService
                     }
                 }
             }
-
-            return true;
         }
-
-        return false;
     }
 
     public function singleBranchSetting(?int $branchId, array $with = null)

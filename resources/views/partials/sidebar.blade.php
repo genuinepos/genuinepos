@@ -2120,12 +2120,12 @@
                                                     <span><i class="fas fa-file-invoice"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("Invoice Layout") }}</p>
+                                            <p class="switch_text">{{ __("Invoice Layouts") }}</p>
                                         </a>
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('barcode_settings'))
+                                {{-- @if (auth()->user()->can('barcode_settings'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('barcode.settings.index') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -2136,7 +2136,7 @@
                                             <p class="switch_text">{{ __("Barcode Settings") }}</p>
                                         </a>
                                     </div>
-                                @endif
+                                @endif --}}
 
                                 @if (auth()->user()->can('cash_counters'))
                                     <div class="sub-menu-col">

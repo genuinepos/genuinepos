@@ -86,7 +86,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>{{ __('List Of Contras') }}</h6>
+                                    <h6>{{ __('List of Contras') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('purchase_add'))

@@ -269,7 +269,7 @@
         </div>
     </div>
     @php
-        $filename = __('Expense Voucher') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
+        $filename = __('Expense') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
     <!-- Expense print templete end-->
@@ -369,21 +369,21 @@
             <div class="row mt-2">
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:9px!important;"><span class="fw-bold">{{ __('Date') }} : </span>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Date') }} : </span>
                             {{ date($dateFormat, strtotime($expense->date)) }}
                         </li>
-                        <li style="font-size:9px!important;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $expense->voucher_no }}</li>
-                        <li style="font-size:9px!important;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Voucher No') }} : </span>{{ $expense->voucher_no }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Total Expense Amount') }} : </span>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
                     </ul>
                 </div>
 
                 <div class="col-6">
                     <ul class="list-unstyled">
-                        <li style="font-size:9px!important;"><span class="fw-bold">{{ __('Reference') }} : </span>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Reference') }} : </span>
                             {{ $expense->reference }}
                         </li>
 
-                        <li style="font-size:9px!important;"><span class="fw-bold">{{ __('Created By') }} : </span>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Created By') }} : </span>
                             {{ $expense?->createdBy?->prefix . ' ' . $expense?->createdBy?->name . ' ' . $expense?->createdBy?->last_name }}
                         </li>
                     </ul>
@@ -540,7 +540,7 @@
     </div>
     <!-- Expense print templete end-->
     @php
-        $filename = __('Expense Voucher') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
+        $filename = __('Expense') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
 @endif

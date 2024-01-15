@@ -1,5 +1,4 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
@@ -373,7 +372,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             @php
-                                $filename = __('Payment Voucher') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
+                                $filename = __('Payment') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
                             @endphp
                             <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</button>
                             <a href="{{ route('payments.print', $payment->id) }}" onclick="printPaymentVoucher(this); return false;" class="btn btn-sm btn-success" id="printPaymentVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>

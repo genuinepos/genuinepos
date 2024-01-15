@@ -1,5 +1,5 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <!-- Details Modal -->
@@ -7,7 +7,7 @@
     <div class="modal-dialog four-col-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title" id="exampleModalLabel">
+                <h6 class="modal-title">
                     {{ __('Contra Details') }} ({{ __('Voucher No') }} : <strong>{{ $contra->voucher_no }}</strong>)
                 </h6>
                 <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
@@ -17,7 +17,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                                {{ date($generalSettings['business_or_shop__date_format'], strtotime($contra->date)) }}
+                                {{ date($dateFormat, strtotime($contra->date)) }}
                             </li>
                             <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $contra->voucher_no }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Total Expense Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($contra->total_amount) }}</li>
@@ -39,16 +39,23 @@
                     <div class="col-md-4 text-left">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Shop/Business') }} : </strong>
-                                @if ($contra->branch_id)
+                                @php
+                                    $branchName = '';
+                                    if ($contra->branch_id) {
 
-                                    @if ($contra?->branch?->parentBranch)
-                                        {{ $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')' }}
-                                    @else
-                                        {{ $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')' }}
-                                    @endif
-                                @else
-                                    {{ $generalSettings['business_or_shop__business_name'] }}
-                                @endif
+                                        if ($contra?->branch?->parentBranch) {
+
+                                            $branchName = $contra?->branch?->parentBranch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
+                                        } else {
+
+                                            $branchName = $contra?->branch?->name . '(' . $contra?->branch?->area_name . ')' . '-(' . $contra?->branch?->branch_code . ')';
+                                        }
+                                    } else {
+
+                                        $branchName = $generalSettings['business_or_shop__business_name'];
+                                    }
+                                @endphp
+                                {{ $branchName }}
                             </li>
 
                             <li style="font-size:11px!important;"><strong>{{ __('Phone') }} : </strong>
@@ -183,7 +190,10 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
-                            <button type="submit" class="footer_btn btn btn-sm btn-success" id="modalDetailsPrintBtn">{{ __('Print') }}</button>
+                            @php
+                                $filename = __('Contra') . '__' . $contra->voucher_no . '__' . $contra->date . '__' . $branchName;
+                            @endphp
+                            <a href="{{ route('contras.print', $contra->id) }}" onclick="printContraVoucher(this); return false;" class="btn btn-sm btn-success" id="printContraVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>
                     </div>
@@ -193,305 +203,47 @@
     </div>
 </div>
 
-<style>
-    @media print {
-        table {
-            page-break-after: auto
-        }
+<script>
+    function printContraVoucher(event) {
 
-        tr {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
+        var url = event.getAttribute('href');
+        var filename = event.getAttribute('data-filename');
+        var print_page_size = $('#print_page_size').val();
+        var currentTitle = document.title;
 
-        td {
-            page-break-inside: avoid;
-            page-break-after: auto
-        }
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: { print_page_size },
+            success: function(data) {
 
-        thead {
-            display: table-header-group
-        }
+                $(data).printThis({
+                    debug: false,
+                    importCSS: true,
+                    importStyle: true,
+                    loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                    removeInline: false,
+                    printDelay: 700,
+                    header: null,
+                });
 
-        tfoot {
-            display: table-footer-group
-        }
-    }
+                document.title = filename;
 
-    .print_table th {
-        font-size: 11px !important;
-        font-weight: 550 !important;
-        line-height: 12px !important
-    }
+                setTimeout(function() {
+                    document.title = currentTitle;
+                }, 2000);
+            },
+            error: function(err) {
 
-    .print_table tr td {
-        color: black;
-        font-size: 10px !important;
-        line-height: 12px !important
-    }
+                if (err.status == 0) {
 
-    @page {
-        size: a4;
-        margin-top: 0.8cm;
-        margin-bottom: 35px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
+                    toastr.error("{{ __('Net Connetion Error.') }}");
+                } else if (err.status == 500) {
 
-    div#footer {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        width: 100%;
-        height: 0%;
-        color: #CCC;
-        background: #333;
-        padding: 0;
-        margin: 0;
-    }
-</style>
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                }
+            }
+        });
+    };
+</script>
 
-<!-- Purchase print templete-->
-<div class="print_modal_details d-none">
-    <div class="details_area">
-        <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
-            <div class="col-4">
-                @if ($contra->branch)
-
-                    @if ($contra?->branch?->parent_branch_id)
-
-                        @if ($contra->branch?->parentBranch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->parentBranch?->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->parentBranch?->name }}</span>
-                        @endif
-                    @else
-                        @if ($contra->branch?->logo != 'default.png')
-                            <img style="height: 60px; width:200px;" src="{{ asset('uploads/branch_logo/' . $contra->branch?->logo) }}">
-                        @else
-                            <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $contra->branch?->name }}</span>
-                        @endif
-                    @endif
-                @else
-                    @if ($generalSettings['business_or_shop__business_logo'] != null)
-                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
-                    @else
-                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
-                    @endif
-                @endif
-            </div>
-
-            <div class="col-8 text-end">
-                <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>
-                        @if ($contra?->branch)
-                            @if ($contra?->branch?->parent_branch_id)
-                                {{ $contra?->branch?->parentBranch?->name }}
-                            @else
-                                {{ $contra?->branch?->name }}
-                            @endif
-                        @else
-                            {{ $generalSettings['business_or_shop__business_name'] }}
-                        @endif
-                    </strong>
-                </p>
-
-                <p>
-                    @if ($contra?->branch)
-                        {{ $contra->branch->city . ', ' . $contra->branch->state . ', ' . $contra->branch->zip_code . ', ' . $contra->branch->country }}
-                    @else
-                        {{ $generalSettings['business_or_shop__address'] }}
-                    @endif
-                </p>
-
-                <p>
-                    @if ($contra?->branch)
-                        <strong>{{ __('Email') }} : </strong> {{ $contra?->branch?->email }},
-                        <strong>{{ __('Phone') }} : </strong> {{ $contra?->branch?->phone }}
-                    @else
-                        <strong>{{ __('Email') }} : </strong> {{ $generalSettings['business_or_shop__email'] }},
-                        <strong>{{ __('Phone') }} : </strong> {{ $generalSettings['business_or_shop__phone'] }}
-                    @endif
-                </p>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-12 text-center">
-                <h4 class="fw-bold" style="text-transform: uppercase;">{{ __('Contra Voucher') }}</h4>
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col-6">
-                <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                        {{ date($generalSettings['business_or_shop__date_format'], strtotime($contra->date)) }}
-                    </li>
-                    <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $contra->voucher_no }}</li>
-                    <li style="font-size:11px!important;"><strong>{{ __('Total Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($contra->total_amount) }}</li>
-                </ul>
-            </div>
-
-            <div class="col-6">
-                <ul class="list-unstyled">
-                    <li style="font-size:11px!important;"><strong>{{ __('Reference') }} : </strong>
-                        {{ $contra->reference }}
-                    </li>
-
-                    <li style="font-size:11px!important;"><strong>{{ __('Created By') }} : </strong>
-                        {{ $contra?->createdBy?->prefix . ' ' . $contra?->createdBy?->name . ' ' . $contra?->createdBy?->last_name }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        @php
-            $debitDescription = $contra->voucherDebitDescription;
-            $creditDescription = $contra->voucherCreditDescription;
-        @endphp
-
-        <div class="row mt-4">
-            <div class="col-6">
-                <p class="fw-bold" style="border-bottom: 1px solid black!important;font-size:11px!important;">{{ __('Credit A/c Details') }} : </p>
-                <table class="table print-table table-sm">
-                    <thead>
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Sender A/c') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                @php
-                                    $accountNumber = $creditDescription?->account?->account_number ? ' / ' . $creditDescription?->account?->account_number : '';
-                                @endphp
-                                : {{ $creditDescription?->account?->name . $accountNumber }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Method/Type') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                : {{ $creditDescription?->paymentMethod?->name }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Transaction No') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                : {{ $creditDescription?->transaction_no }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque No') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                : {{ $creditDescription?->cheque_no }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Cheque Serial No') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                : {{ $creditDescription?->cheque_serial_no }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Send Amount') }}</th>
-                            <td class="text-start fw-bold" style="font-size:11px!important;">
-                                : {{ App\Utils\Converter::format_in_bdt($creditDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-
-            <div class="col-6">
-                <p class="fw-bold" style="border-bottom: 1px solid black!important;font-size:11px!important;">{{ __('Debit A/c Details') }} :</p>
-                <table class="table print-table table-sm">
-                    <thead>
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Receiver A/c') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                : {{ $debitDescription?->account?->name }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('A/c Number') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                @php
-                                    $accountNumber = $debitDescription?->account?->account_number ? ' / ' . $debitDescription?->account?->account_number : '';
-                                @endphp
-                                : {{ $accountNumber }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Bank') }}</th>
-                            <td class="text-start" style="font-size:11px!important;">
-                                @php
-                                    $bank = $debitDescription?->account?->bank ? $debitDescription?->account?->bank?->name : '';
-                                @endphp
-                                : {{ $bank }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th class="text-start fw-bold" style="font-size:11px!important;">{{ __('Received Amount') }} {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>
-                            <td class="text-start fw-bold" style="font-size:11px!important;">
-                                : {{ App\Utils\Converter::format_in_bdt($debitDescription?->amount) }} {{ $generalSettings['business_or_shop__currency_symbol'] }}
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-
-        <br /><br />
-        <div class="row">
-            <div class="col-4 text-start">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Prepared By') }}
-                </p>
-            </div>
-
-            <div class="col-4 text-center">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Checked By') }}
-                </p>
-            </div>
-
-            <div class="col-4 text-end">
-                <p class="text-uppercase" style="display: inline; border-top: 1px solid black; padding:0px 10px; font-weight: 600;">
-                    {{ __('Authorized By') }}
-                </p>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <img style="width: 170px; height:20px;" src="data:image/png;base64,{{ base64_encode($generator->getBarcode($contra->voucher_no, $generator::TYPE_CODE_128)) }}">
-                <p>{{ $contra->voucher_no }}</p>
-            </div>
-        </div>
-
-        <div id="footer">
-            <div class="row mt-1">
-                <div class="col-4 text-start">
-                    <small style="font-size: 9px!important;">{{ __('Print Date') }} : {{ date($generalSettings['business_or_shop__date_format']) }}</small>
-                </div>
-
-                <div class="col-4 text-center">
-                    @if (config('company.print_on_company'))
-                        <small class="d-block" style="font-size: 9px!important;">{{ __('Powered By') }} <strong>{{ __('SpeedDigit Software Solution.') }}</strong></small>
-                    @endif
-                </div>
-
-                <div class="col-4 text-end">
-                    <small style="font-size: 9px!important;">{{ __('Print Time') }} : {{ date($timeFormat) }}</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Purchase print templete end-->

@@ -436,7 +436,7 @@
         </div>
     </div>
     @php
-        $filename = __('Payment Voucher') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
+        $filename = __('Payment') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
     <!-- Payment print templete end-->
@@ -873,7 +873,7 @@
         </div>
     </div>
     @php
-        $filename = __('Payment Voucher') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
+        $filename = __('Payment') . '__' . $payment->voucher_no . '__' . $payment->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
     <!-- Payment print templete end-->

@@ -16,7 +16,7 @@ class ContraService
         $contras = '';
         $query = AccountingVoucher::query()
             ->with([
-                'branch:id,name,branch_code,parent_branch_id',
+                'branch:id,name,branch_code,parent_branch_id,area_name',
                 'branch.parentBranch:id,name',
                 'voucherCreditDescription:id,accounting_voucher_id,account_id,amount_type,amount,payment_method_id,cheque_no,transaction_no,cheque_serial_no',
                 'voucherCreditDescription.account:id,name,account_number',
@@ -116,7 +116,6 @@ class ContraService
             })
 
             ->editColumn('remarks', fn ($row) => '<span title="' . $row?->remarks . '">' . Str::limit($row?->remarks, 10, '') . '</span>')
-
             ->editColumn('credit_account', fn ($row) => $row?->voucherCreditDescription?->account?->name . ($row?->voucherCreditDescription?->account?->account_number ? ' / ' . $row?->voucherCreditDescription?->account?->account_number : ''))
             ->editColumn('payment_method', fn ($row) => $row?->voucherCreditDescription?->paymentMethod?->name)
             ->editColumn('transaction_no', fn ($row) => $row?->voucherCreditDescription?->transaction_no)
@@ -124,7 +123,6 @@ class ContraService
             ->editColumn('cheque_serial_no', fn ($row) => $row?->voucherCreditDescription?->cheque_serial_no)
             ->editColumn('debit_account', fn ($row) => $row?->voucherDebitDescription?->account?->name . ($row?->voucherDebitDescription?->account?->account_number ? ' / ' . $row?->voucherDebitDescription?->account?->account_number : ''))
             ->editColumn('total_amount', fn ($row) => '<span class="total_amount" data-value="' . $row?->total_amount . '">' . \App\Utils\Converter::format_in_bdt($row->total_amount) . '</span>')
-
             ->editColumn('created_by', function ($row) {
 
                 return $row?->createdBy?->prefix . ' ' . $row?->createdBy?->name . ' ' . $row?->createdBy?->last_name;
@@ -166,5 +164,16 @@ class ContraService
         }
 
         return ['pass' => true];
+    }
+
+    public function contraValidation(object $request): ?array
+    {
+        return $request->validate([
+            'date' => 'required|date',
+            'received_amount' => 'required',
+            'payment_method_id' => 'required',
+            'debit_account_id' => 'required',
+            'credit_account_id' => 'required',
+        ]);
     }
 }

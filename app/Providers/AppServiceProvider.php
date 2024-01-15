@@ -15,6 +15,7 @@ use App\Interfaces\CodeGenerationServiceInterface;
 use App\Interfaces\Hrm\PayrollControllerMethodContainersInterface;
 use App\Interfaces\Sales\DraftControllerMethodContainersInterface;
 use App\Interfaces\Sales\AddSaleControllerMethodContainersInterface;
+use App\Interfaces\Accounts\ContraControllerMethodContainersInterface;
 use App\Interfaces\Sales\QuotationControllerMethodContainersInterface;
 use App\Interfaces\Accounts\ExpenseControllerMethodContainersInterface;
 use App\Interfaces\Accounts\PaymentControllerMethodContainersInterface;
@@ -26,6 +27,7 @@ use App\Services\Hrm\MethodContainerServices\PayrollControllerMethodContainersSe
 use App\Services\Sales\MethodContainerServices\DraftControllerMethodContainersService;
 use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 use App\Services\Sales\MethodContainerServices\AddSaleControllerMethodContainersService;
+use App\Services\Accounts\MethodContainerServices\ContraControllerMethodContainersService;
 use App\Services\Sales\MethodContainerServices\QuotationControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\ExpenseControllerMethodContainersService;
 use App\Services\Accounts\MethodContainerServices\PaymentControllerMethodContainersService;
@@ -57,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ReceiptControllerMethodContainersInterface::class, ReceiptControllerMethodContainersService::class);
         $this->app->bind(PaymentControllerMethodContainersInterface::class, PaymentControllerMethodContainersService::class);
         $this->app->bind(ExpenseControllerMethodContainersInterface::class, ExpenseControllerMethodContainersService::class);
+        $this->app->bind(ContraControllerMethodContainersInterface::class, ContraControllerMethodContainersService::class);
         $this->app->bind(PayrollControllerMethodContainersInterface::class, PayrollControllerMethodContainersService::class);
         $this->app->bind(PayrollPaymentControllerMethodContainersInterface::class, PayrollPaymentControllerMethodContainersService::class);
         $this->app->bind(CodeGenerationServiceInterface::class, CodeGenerationService::class);

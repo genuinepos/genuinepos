@@ -400,7 +400,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             @php
-                                $filename = __('Receipt Voucher') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
+                                $filename = __('Receipt') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
                             @endphp
                             <a href="{{ route('receipts.print', $receipt->id) }}" onclick="printReceiptVoucher(this); return false;" class="btn btn-sm btn-success" id="printReceiptsVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>

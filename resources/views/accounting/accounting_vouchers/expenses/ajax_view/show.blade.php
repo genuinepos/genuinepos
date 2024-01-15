@@ -1,5 +1,5 @@
 @php
-    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 <!-- Details Modal -->
@@ -17,7 +17,7 @@
                     <div class="col-md-4">
                         <ul class="list-unstyled">
                             <li style="font-size:11px!important;"><strong>{{ __('Date') }} : </strong>
-                                {{ date($generalSettings['business_or_shop__date_format'], strtotime($expense->date)) }}
+                                {{ date($dateFormat, strtotime($expense->date)) }}
                             </li>
                             <li style="font-size:11px!important;"><strong>{{ __('Voucher No') }} : </strong>{{ $expense->voucher_no }}</li>
                             <li style="font-size:11px!important;"><strong>{{ __('Total Expense Amount') }} : </strong>{{ App\Utils\Converter::format_in_bdt($expense->total_amount) }}</li>
@@ -212,7 +212,7 @@
                     <div class="col-md-12 d-flex justify-content-end">
                         <div class="btn-box">
                             @php
-                                $filename = __('Expense Voucher') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
+                                $filename = __('Expense') . '__' . $expense->voucher_no . '__' . $expense->date . '__' . $branchName;
                             @endphp
                             <a href="{{ route('expenses.print', $expense->id) }}" onclick="printExpenseVoucher(this); return false;" class="btn btn-sm btn-success" id="printExpenseVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>

@@ -109,6 +109,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('contras.index');
         Route::get('show/{id}', 'show')->name('contras.show');
+        Route::get('print/{id}', 'print')->name('contras.print');
         Route::get('create', 'create')->name('contras.create');
         Route::post('store', 'store')->name('contras.store');
         Route::get('edit/{id}', 'edit')->name('contras.edit');

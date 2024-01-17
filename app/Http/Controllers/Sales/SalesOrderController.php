@@ -48,7 +48,7 @@ class SalesOrderController extends Controller
 
     public function index(Request $request, $customerAccountId = null)
     {
-        if (! auth()->user()->can('view_add_sale')) {
+        if (! auth()->user()->can('sales_order_list')) {
 
             abort(403, 'Access Forbidden.');
         }

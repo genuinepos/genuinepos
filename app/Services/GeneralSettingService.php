@@ -38,4 +38,29 @@ class GeneralSettingService implements GeneralSettingServiceInterface
 
         return $query->pluck('value', 'key')->toArray();
     }
+
+    public function generalSettingsPermission(): ?bool
+    {
+        if (
+            !auth()->user()->can('business_or_shop_settings') &&
+            !auth()->user()->can('dashboard_settings') &&
+            !auth()->user()->can('product_settings') &&
+            !auth()->user()->can('purchase_settings') &&
+            !auth()->user()->can('manufacturing_settings') &&
+            !auth()->user()->can('add_sale_settings') &&
+            !auth()->user()->can('pos_sale_settings') &&
+            !auth()->user()->can('prefix_settings') &&
+            !auth()->user()->can('invoice_layout_settings') &&
+            !auth()->user()->can('print_settings') &&
+            !auth()->user()->can('system_settings') &&
+            !auth()->user()->can('reward_point_settings') &&
+            !auth()->user()->can('module_settings') &&
+            !auth()->user()->can('send_email_settings') &&
+            !auth()->user()->can('send_sms_settings')
+        ) {
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

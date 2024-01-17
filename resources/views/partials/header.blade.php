@@ -24,9 +24,37 @@
                         </p>
                         <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
+
                     <div class="head__content__sec">
                         <ul class="head__cn">
-                            <li class="top-icon d-hide d-md-block" id="hard_reload"><a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>Reload</span></a></li>
+                            <li class="top-icon d-hide d-md-block">
+                                <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
+                                    <span>
+                                        <i class="fa fa-plus"></i>
+                                        <br>{{ __("Quick Add") }}</span>
+                                    </span>
+                                </a>
+
+                                <ul class="dropdown-menu short_create_btn_list">
+                                    <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __("Quick Add") }}</span></li>
+                                    <hr class="m-0">
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Product") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Product Pricing/Costing") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sale") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sales Return") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase Return") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Transfer Stock") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Stock Adjustment") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Production") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add User") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Role") }}</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="top-icon d-hide d-md-block" id="hard_reload">
+                                <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __("Reload") }}</span></a>
+                            </li>
                             {{-- @if ($generalSettings['addons__e_commerce'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
@@ -48,20 +76,20 @@
 
                             <li class="top-icon dropdown notification-dropdown">
                                 <a href="" class="nav-btn" id="dropdownMenuButton0" data-bs-toggle="dropdown">
-                                    <span><i class="far fa-bell"></i><br>Notification</span>
+                                    <span><i class="far fa-bell"></i><br>{{ __("Notification") }}</span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>3 Days ago</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
                                     </li>
 
                                     <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
@@ -70,8 +98,8 @@
                             </li>
 
                             @if ($generalSettings['modules__pos'] == '1')
-                                @if (auth()->user()->can('pos_add'))
-                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>POS</span></a></li>
+                                @if (auth()->user()->can('pos_add') && auth()->user()->branch_id)
+                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __("POS") }}</span></a></li>
                                 @endif
                             @endif
 
@@ -80,7 +108,7 @@
                                     <span>
                                         <i class="fas fa-calculator"></i>
                                         <br>
-                                        Calculator
+                                        {{ __("Calculator") }}
                                     </span>
                                 </a>
                                 <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -123,7 +151,7 @@
                                     <span>
                                         <i class="fas fa-language"></i>
                                         <br>
-                                        Language
+                                        {{ __("Language") }}
                                     </span>
                                 </a>
 
@@ -143,7 +171,7 @@
                                 </ul>
                             </li>
                             <li class="top-icon d-hide d-md-block">
-                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>Help</span></a>
+                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __("Help") }}</span></a>
                             </li>
                             <li class="dp__top top-icon">
                                 <a role="button" class="nav-btn" id="openRightSidebar" title="User">

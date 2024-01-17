@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\RoleType;
 use App\Enums\BranchType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,7 @@ class BranchController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('branch'), 403);
+        abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
         $generalSettings = config('generalSettings');
 
@@ -43,7 +44,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('branch'), 403);
+        abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -56,35 +57,9 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('branch'), 403);
+        abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
-        $this->validate($request, [
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'logo' => 'sometimes|image|max:2048',
-        ]);
-
-        if (BranchType::DifferentShop->value == $request->branch_type) {
-
-            $this->validate($request, [
-                'name' => 'required',
-            ]);
-        }
-
-        if ($request->add_initial_user) {
-
-            $this->validate($request, [
-                'first_name' => 'required',
-                'user_phone' => 'required',
-                'username' => 'required|unique:users,username',
-                'password' => 'required|confirmed',
-            ]);
-        }
+        $this->branchService->branchStoreValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -102,7 +77,7 @@ class BranchController extends Controller
 
             $this->cashCounterService->addCashCounter(branchId: $addBranch->id, cashCounterName: 'Cash Counter 1', shortName: 'CN1');
 
-            $defaultBranchName = $addBranch?->parentBranch ? $addBranch?->parentBranch . '(' . $addBranch?->area_name . ') Default Invoice Layout' :  $addBranch?->name . '(' . $addBranch?->area_name . ') Default Invoice Layout';
+            $defaultBranchName = $addBranch?->parentBranch ? strtoupper($addBranch?->parentBranch->name . '(' . $addBranch?->area_name . ')') . ' - Default Invoice Layout' :  strtoupper($addBranch?->name . '(' . $addBranch?->area_name . ')') . ' - Default Invoice Layout';
 
             $addInvoiceLayout = $this->invoiceLayoutService->addInvoiceLayout(request: $request, branchId: $addBranch->id, defaultName: $defaultBranchName);
 
@@ -124,7 +99,7 @@ class BranchController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('branch'), 403);
+        abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -148,25 +123,9 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('branch'), 403);
+        abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && !auth()->user()->can('business_or_shop_settings'), 403);
 
-        $this->validate($request, [
-            'area_name' => 'required',
-            'branch_code' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'country' => 'required',
-            'zip_code' => 'required',
-            'logo' => 'sometimes|image|max:2048',
-        ]);
-
-        if (BranchType::DifferentShop->value == $request->branch_type) {
-
-            $this->validate($request, [
-                'name' => 'required',
-            ]);
-        }
+        $this->branchService->branchUpdateValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -182,9 +141,17 @@ class BranchController extends Controller
             ];
 
             if ($request->branch_type == BranchType::DifferentShop->value) {
+                
                 $settings['business_or_shop__account_start_date'] = $request->account_start_date;
                 $settings['business_or_shop__financial_year_start_month'] = $request->financial_year_start_month;
                 $settings['business_or_shop__stock_accounting_method'] = $request->stock_accounting_method;
+            }else{
+
+                $this->branchSettingService->deleteUnusedBranchSettings(branchId: $id, keys: [
+                    'business_or_shop__account_start_date',
+                    'business_or_shop__financial_year_start_month',
+                    'business_or_shop__stock_accounting_method',
+                ]);
             }
 
             $this->branchSettingService->updateAndSync(settings: $settings, branchId: $id);

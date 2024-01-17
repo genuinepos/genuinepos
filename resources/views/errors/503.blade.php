@@ -21,7 +21,7 @@
     <div class="wraper">
         <div class="content">
             {{-- <h1>Software Is Under Maintenance</h1> --}}
-            <p class="des">Our website is under construction.</p>
+            <p class="des">{{ __("Our website is under construction.") }}</p>
         </div>
     </div>
 </body>

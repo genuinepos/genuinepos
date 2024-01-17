@@ -231,15 +231,27 @@ class BranchSettingService
         }
     }
 
-    public function singleBranchSetting(?int $branchId, array $with = null)
+    public function deleteUnusedBranchSettings(?int $branchId, array $keys = []): void
     {
-        $query = BranchSetting::query();
+        if (count($keys) > 0) {
 
-        if (isset($with)) {
+            foreach ($keys as $key) {
+                $deleteBranchSetting = GeneralSetting::where('key', $key)->where('branch_id', $branchId)->first();
+                if (isset($deleteBranchSetting)) {
+                    $deleteBranchSetting->delete();
+                }
+            }
+        }
+    }
 
-            $query->with($with);
+    public function singleBranchSetting(?int $branchId, string $key): ?object
+    {
+        $branchSetting = null;
+        if (isset($key)) {
+
+            $query = DB::table('general_settings')->where('key', $key)->where('branch_id', $branchId)->first();
         }
 
-        return $query->where('branch_id', $branchId)->first();
+        return $branchSetting;
     }
 }

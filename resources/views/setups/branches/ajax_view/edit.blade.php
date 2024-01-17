@@ -169,7 +169,7 @@
                                         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'] ?? null;
                                     @endphp
                                     @foreach (App\Utils\Util::stockAccountingMethods() as $key => $item)
-                                        <option {{ $branchSettings['business_or_shop__stock_accounting_method'] == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
+                                        <option {{ $stockAccountingMethod == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                     @endforeach
                                 </select>
                                 <span class="error error_financial_year_start"></span>
@@ -179,7 +179,10 @@
                         <div class="form-group row mt-1 {{ $branch->branch_type == \App\Enums\BranchType::ChainShop->value ? 'd-hide' : '' }}" id="account_start_date_field">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $branchSettings['business_or_shop__account_start_date'] }}" data-next="branch_financial_year_start_month" autocomplete="off">
+                                @php
+                                    $accountStartDate = $generalSettings['business_or_shop__account_start_date'] ?? null;
+                                @endphp
+                                <input type="text" name="account_start_date" class="form-control" id="branch_account_start_date" value="{{ $accountStartDate }}" data-next="branch_financial_year_start_month" autocomplete="off">
                                 <span class="error error_account_start_date"></span>
                             </div>
                         </div>
@@ -191,9 +194,10 @@
                                     <select name="financial_year_start_month" id="branch_financial_year_start_month" class="form-control select2" data-next="branch_save_changes">
                                         @php
                                             $months = \App\Enums\Months::cases();
+                                            $financialYearStartMonth = $branchSettings['business_or_shop__financial_year_start_month'] ?? null;
                                         @endphp
                                         @foreach ($months as $month)
-                                            <option {{ $branchSettings['business_or_shop__financial_year_start_month'] == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                            <option {{ $financialYearStartMonth == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

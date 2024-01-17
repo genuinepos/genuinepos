@@ -268,9 +268,11 @@
                         @php
                             $filename = __('Purchase Order') . '__' . $order->invoice_id . '__' . $order->date . '__' . $branchName;
                         @endphp
+                        @if (auth()->user()->can('purchase_order_edit') && $order->branch_id == auth()->user()->branch_id)
 
-                        <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
-
+                            <a href="{{ route('purchase.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                        @endif
+                        
                         <a href="#" class="btn btn-sm btn-secondary"> <i class="fas fa-check-double"></i> {{ __('Add Receive Stock') }}</a>
 
                         <a href="{{ route('purchases.order.print.supplier.copy', $order->id) }}" onclick="printSupplierCopy(this); return false;" class="btn btn-sm btn-info text-white" id="printSupplierCopy" data-filename="{{ $filename }}"> <i class="fas fa-print"></i> {{ __('Print Supplier Copy') }}</a>

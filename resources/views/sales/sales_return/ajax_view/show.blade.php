@@ -231,7 +231,11 @@
                 @php
                     $filename = __('Sales Return') . '__' . $return->voucher_no . '__' . $return->date . '__' . $branchName;
                 @endphp
-                <a href="{{ route('sales.returns.edit', $return->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+
+                @if (auth()->user()->can('edit_sales_return') && $return->branch_id == auth()->user()->branch_id)
+                    <a href="{{ route('sales.returns.edit', $return->id) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                @endif
+                
                 <a href="{{ route('sales.returns.print', $return->id) }}" onclick="printSalesReturn(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                 <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
             </div>

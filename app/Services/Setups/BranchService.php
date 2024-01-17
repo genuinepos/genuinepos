@@ -392,4 +392,56 @@ class BranchService
 
         return ['pass' => true];
     }
+
+    public function branchStoreValidation(object $request)
+    {
+        $request->validate([
+            'area_name' => 'required',
+            'branch_code' => 'required',
+            'phone' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
+            'zip_code' => 'required',
+            'logo' => 'sometimes|image|max:2048',
+        ]);
+
+        if (BranchType::DifferentShop->value == $request->branch_type) {
+
+            $request->validate([
+                'name' => 'required',
+            ]);
+        }
+
+        if ($request->add_initial_user) {
+
+            $request->validate([
+                'first_name' => 'required',
+                'user_phone' => 'required',
+                'username' => 'required|unique:users,username',
+                'password' => 'required|confirmed',
+            ]);
+        }
+    }
+
+    public function branchUpdateValidation(object $request)
+    {
+        $request->validate([
+            'area_name' => 'required',
+            'branch_code' => 'required',
+            'phone' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
+            'zip_code' => 'required',
+            'logo' => 'sometimes|image|max:2048',
+        ]);
+
+        if (BranchType::DifferentShop->value == $request->branch_type) {
+
+            $request->validate([
+                'name' => 'required',
+            ]);
+        }
+    }
 }

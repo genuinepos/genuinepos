@@ -93,7 +93,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>{{ __('List Of Expenses') }}</h6>
+                                    <h6>{{ __('List of Expenses') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('expenses_create'))

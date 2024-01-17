@@ -193,10 +193,10 @@ class GeneralSettingController extends Controller
     public function prefixSettings(Request $request)
     {
         $settings = [
-            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix ? $request->sales_invoice_prefix : 'SI',
-            'prefix__quotation_prefix' => $request->quotation_prefix ? $request->quotation_prefix : 'Q',
-            'prefix__sales_order_prefix' => $request->sales_order_prefix ? $request->sales_order_prefix : 'SO',
-            'prefix__sales_return_prefix' => $request->sales_return_prefix ?  $request->sales_return_prefix : 'SR',
+            'prefix__sales_invoice_prefix' => $request->sales_invoice_prefix,
+            'prefix__quotation_prefix' => $request->quotation_prefix,
+            'prefix__sales_order_prefix' => $request->sales_order_prefix,
+            'prefix__sales_return_prefix' => $request->sales_return_prefix,
             'prefix__payment_voucher_prefix' => $request->payment_voucher_prefix,
             'prefix__receipt_voucher_prefix' => $request->receipt_voucher_prefix,
             'prefix__expense_voucher_prefix' => $request->expense_voucher_prefix,
@@ -205,8 +205,8 @@ class GeneralSettingController extends Controller
             'prefix__purchase_order_prefix' => $request->purchase_order_prefix,
             'prefix__purchase_return_prefix' => $request->purchase_return_prefix,
             'prefix__stock_adjustment_prefix' => $request->stock_adjustment_prefix,
-            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix ? $request->payroll_voucher_prefix : 'PRL',
-            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix ? $request->payroll_payment_voucher_prefix : 'RRLP',
+            'prefix__payroll_voucher_prefix' => $request->payroll_voucher_prefix,
+            'prefix__payroll_payment_voucher_prefix' => $request->payroll_payment_voucher_prefix,
             'prefix__supplier_id' => $request->supplier_id,
             'prefix__customer_id' => $request->customer_id,
         ];
@@ -231,12 +231,12 @@ class GeneralSettingController extends Controller
     public function printPageSizeSettings(Request $request)
     {
         $settings = [
-            'print_page_size__add_sale_page_size' => $request->add_sale_page_size ? $request->add_sale_page_size : 1,
-            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size ? $request->pos_sale_page_size : 1,
-            'print_page_size__quotation_page_size' => $request->quotation_page_size ? $request->quotation_page_size : 1,
-            'print_page_size__sales_order_page_size' => $request->sales_order_page_size ? $request->sales_order_page_size : 1,
-            'print_page_size__draft_page_size' => $request->draft_page_size ? $request->draft_page_size : 1,
-            'print_page_size__sales_return_page_size' => $request->sales_return_page_size ? $request->sales_return_page_size : 1,
+            'print_page_size__add_sale_page_size' => $request->add_sale_page_size,
+            'print_page_size__pos_sale_page_size' => $request->pos_sale_page_size,
+            'print_page_size__quotation_page_size' => $request->quotation_page_size,
+            'print_page_size__sales_order_page_size' => $request->sales_order_page_size,
+            'print_page_size__draft_page_size' => $request->draft_page_size,
+            'print_page_size__sales_return_page_size' => $request->sales_return_page_size,
             'print_page_size__purchase_page_size' => $request->purchase_page_size,
             'print_page_size__purchase_order_page_size' => $request->purchase_order_page_size,
             'print_page_size__purchase_return_page_size' => $request->purchase_return_page_size,
@@ -246,10 +246,10 @@ class GeneralSettingController extends Controller
             'print_page_size__payment_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__expense_voucher_page_size' => $request->payment_voucher_page_size,
             'print_page_size__contra_voucher_page_size' => $request->payment_voucher_page_size,
-            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size ? $request->payroll_voucher_page_size : 1,
-            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size ? $request->payroll_payment_voucher_page_size : 1,
-            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size ? $request->bom_voucher_page_size : 1,
-            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size ? $request->production_voucher_page_size : 1,
+            'print_page_size__payroll_voucher_page_size' => $request->payroll_voucher_page_size,
+            'print_page_size__payroll_payment_voucher_page_size' => $request->payroll_payment_voucher_page_size,
+            'print_page_size__bom_voucher_page_size' => $request->bom_voucher_page_size,
+            'print_page_size__production_voucher_page_size' => $request->production_voucher_page_size,
         ];
 
         $this->generalSettingService->updateAndSync($settings);
@@ -271,12 +271,10 @@ class GeneralSettingController extends Controller
 
     public function moduleSettings(Request $request)
     {
-        $addSaleModule = isset($request->add_sale) ? 1 : 0;
-        $posSaleModule = isset($request->add_sale) ? 1 : 0;
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
-            'modules__add_sale' => auth()?->user()?->branch_id ? $addSaleModule: 1,
-            'modules__pos' => auth()?->user()?->branch_id ? $posSaleModule: 1,
+            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->add_sale) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,

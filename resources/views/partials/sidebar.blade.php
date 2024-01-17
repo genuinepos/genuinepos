@@ -1008,7 +1008,7 @@
                             <div class="sub-menu-row">
                                 @if ($generalSettings['modules__add_sale'] == '1')
 
-                                    @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
+                                    @if (auth()->user()->can('create_add_sale'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('sales.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1039,7 +1039,7 @@
                             <div class="sub-menu-row">
                                 @if ($generalSettings['modules__pos'] == '1')
 
-                                    @if (auth()->user()->can('pos_add') && auth()->user()->branch_id)
+                                    @if (auth()->user()->can('pos_add'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('sales.pos.create') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -1135,7 +1135,7 @@
                             </div>
 
                             <div class="sub-menu-row">
-                                @if (auth()->user()->can('create_sales_return') && auth()->user()->branch_id)
+                                @if (auth()->user()->can('create_sales_return'))
                                     <div class="sub-menu-col">
                                         <a href="{{ route('sales.returns.create') }}" class="switch-bar-wrap">
                                             <div class="switch_bar">
@@ -1176,7 +1176,7 @@
                             </div>
 
                             <div class="sub-menu-row">
-                                @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
+                                @if (auth()->user()->can('create_add_sale'))
                                     <div class="sub-menu-col">
                                         <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">

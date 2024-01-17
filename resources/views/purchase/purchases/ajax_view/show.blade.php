@@ -265,7 +265,10 @@
                             @php
                                 $filename = __('Purchase') . '__' . $purchase->invoice_id . '__' . $purchase->date . '__' . $branchName;
                             @endphp
-                            <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @if (auth()->user()->can('purchase_edit') && $purchase->branch_id == auth()->user()->branch_id)
+
+                                <a href="{{ route('purchases.edit', [$purchase->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @endif
                             <a href="{{ route('purchases.print', $purchase->id) }}" onclick="printPurchase(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPurchaseBtn" data-filename="{{ $filename }}">{{ __('Print') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>

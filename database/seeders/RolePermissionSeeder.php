@@ -117,7 +117,7 @@ class RolePermissionSeeder extends Seeder
             // ['id' => '31', 'name' => 'warranties'],
             // ['id' => '32', 'name' => 'selling_price_group_index'],
             ['id' => '33', 'name' => 'generate_barcode'],
-            ['id' => '34', 'name' => 'product_settings'],
+            // ['id' => '34', 'name' => 'product_settings'],
             ['id' => '35', 'name' => 'stock_report'],
             ['id' => '36', 'name' => 'stock_in_out_report'],
             ['id' => '37', 'name' => 'purchase_all'],
@@ -127,7 +127,7 @@ class RolePermissionSeeder extends Seeder
             // ['id' => '41', 'name' => 'purchase_payment'],
             // ['id' => '42', 'name' => 'purchase_return'],
             // ['id' => '43', 'name' => 'status_update'],
-            ['id' => '44', 'name' => 'purchase_settings'],
+            // ['id' => '44', 'name' => 'purchase_settings'],
             ['id' => '45', 'name' => 'purchase_statements'],
             ['id' => '46', 'name' => 'purchase_sale_report'],
             ['id' => '47', 'name' => 'product_purchase_report'],
@@ -148,12 +148,12 @@ class RolePermissionSeeder extends Seeder
             ['id' => '62', 'name' => 'pos_add'],
             ['id' => '63', 'name' => 'pos_edit'],
             ['id' => '64', 'name' => 'pos_delete'],
-            ['id' => '65', 'name' => 'pos_sale_settings'],
+            // ['id' => '65', 'name' => 'pos_sale_settings'],
             ['id' => '66', 'name' => 'create_add_sale'],
             ['id' => '67', 'name' => 'view_add_sale'],
             ['id' => '68', 'name' => 'edit_add_sale'],
             ['id' => '69', 'name' => 'delete_add_sale'],
-            ['id' => '70', 'name' => 'add_sale_settings'],
+            // ['id' => '70', 'name' => 'add_sale_settings'],
             ['id' => '71', 'name' => 'sale_draft'],
             ['id' => '72', 'name' => 'sale_quotation'],
             ['id' => '73', 'name' => 'sale_payment'],
@@ -212,7 +212,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '126', 'name' => 'production_add'],
             ['id' => '127', 'name' => 'production_edit'],
             ['id' => '128', 'name' => 'production_delete'],
-            ['id' => '129', 'name' => 'manufacturing_settings'],
+            // ['id' => '129', 'name' => 'manufacturing_settings'],
             ['id' => '130', 'name' => 'manufacturing_report'],
             ['id' => '131', 'name' => 'project_view'],
             ['id' => '132', 'name' => 'project_create'],
@@ -454,8 +454,50 @@ class RolePermissionSeeder extends Seeder
             ['id' => '331', 'name' => 'attendance_report'],
 
             ['id' => '332', 'name' => 'hrm_dashboard'],
-        ];
 
+            ['id' => '333', 'name' => 'business_or_shop_settings'],
+            ['id' => '334', 'name' => 'dashboard_settings'],
+            ['id' => '335', 'name' => 'product_settings'],
+            ['id' => '336', 'name' => 'purchase_settings'],
+            ['id' => '337', 'name' => 'manufacturing_settings'],
+            ['id' => '338', 'name' => 'add_sale_settings'],
+            ['id' => '339', 'name' => 'pos_sale_settings'],
+            ['id' => '340', 'name' => 'prefix_settings'],
+            ['id' => '341', 'name' => 'invoice_layout_settings'],
+            ['id' => '342', 'name' => 'print_settings'],
+            ['id' => '343', 'name' => 'system_settings'],
+            ['id' => '344', 'name' => 'reward_point_settings'],
+            ['id' => '345', 'name' => 'send_email_settings'],
+            ['id' => '346', 'name' => 'send_sms_settings'],
+
+            ['id' => '347', 'name' => 'warehouses_index'],
+            ['id' => '348', 'name' => 'warehouses_add'],
+            ['id' => '349', 'name' => 'warehouses_edit'],
+            ['id' => '350', 'name' => 'warehouses_delete'],
+
+            ['id' => '351', 'name' => 'payment_methods_index'],
+            ['id' => '352', 'name' => 'payment_methods_add'],
+            ['id' => '353', 'name' => 'payment_methods_edit'],
+            ['id' => '354', 'name' => 'payment_methods_delete'],
+            ['id' => '355', 'name' => 'payment_methods_settings'],
+
+            ['id' => '356', 'name' => 'invoice_layouts_index'],
+            ['id' => '357', 'name' => 'invoice_layouts_add'],
+            ['id' => '358', 'name' => 'invoice_layouts_edit'],
+            ['id' => '359', 'name' => 'invoice_layouts_delete'],
+
+            ['id' => '360', 'name' => 'cash_counters_index'],
+            ['id' => '361', 'name' => 'cash_counters_add'],
+            ['id' => '362', 'name' => 'cash_counters_edit'],
+            ['id' => '363', 'name' => 'cash_counters_delete'],
+
+            ['id' => '364', 'name' => 'billing_index'],
+            ['id' => '365', 'name' => 'billing_upgrade_plan'],
+            ['id' => '366', 'name' => 'billing_shop_add'],
+            ['id' => '367', 'name' => 'billing_renew_shop'],
+
+            ['id' => '368', 'name' => 'module_settings'],
+        ];
 
         return $permissions;
     }

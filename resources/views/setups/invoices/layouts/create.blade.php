@@ -44,19 +44,6 @@
 
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4 text-end pe-1"><b>{{ __('Invoice Page Size') }}</b></label>
-                                                <div class="col-8">
-                                                    <select name="page_size" id="page_size" class="form-control" data-next="show_business_shop_logo">
-                                                        @foreach (\App\Enums\PrintPageSize::cases() as $item)
-                                                            <option value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="input-group">
                                                 <label class="col-4 text-end pe-1"><b>{{ __('Show Shop Logo') }}</b></label>
                                                 <div class="col-8">
                                                     <select name="show_business_shop_logo" id="show_business_shop_logo" class="form-control" data-next="show_total_in_word">
@@ -66,9 +53,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row mt-1">
                                         <div class="col-md-4">
                                             <div class="input-group">
                                                 <label class="col-4 text-end pe-1"><b>{{ __('Show Total Inword') }}</b></label>

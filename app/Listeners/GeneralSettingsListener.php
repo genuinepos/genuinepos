@@ -83,8 +83,10 @@ class GeneralSettingsListener
                     }
 
                     $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+
                     $dateFormat = $generalSettings['business_or_shop__date_format'];
-                    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
+                    $__financialYearStartMonth = date("m", mktime(0, 0, 0, $financialYearStartMonth, 1, date("Y")));
+
                     $startDateFormat = 'Y' . '-' . $__financialYearStartMonth . '-' . '1';
                     $startDate = date($startDateFormat);
                     $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));

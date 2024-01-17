@@ -26,9 +26,9 @@
             <img src="{{asset('backend/asset/img/errors/')}}/404-pos.png" alt="" class="error-img">
 
             <div class="content-text">
-                <h1 class="error-hedding">Page Not Found</h1>
+                <h1 class="error-hedding">{{ __("Page Not Found") }}</h1>
                 <br>
-                <a href="/" class="go-home-btn">Go Home</a>
+                <a href="/" class="go-home-btn">{{ __("Go Home") }}</a>
             </div>
         </div>
     </div>

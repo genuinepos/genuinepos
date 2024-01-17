@@ -13,6 +13,7 @@ use App\Services\Accounts\AccountService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
+use App\Services\GeneralSettingServiceInterface;
 
 class BranchSettingController extends Controller
 {
@@ -20,17 +21,18 @@ class BranchSettingController extends Controller
         private BranchService $branchService,
         private BranchSettingService $branchSettingService,
         private InvoiceLayoutService $invoiceLayoutService,
-
         private AccountService $accountService,
         private UnitService $unitService,
         private CurrencyService $currencyService,
         private TimezoneService $timezoneService,
         private PriceGroupService $priceGroupService,
+        private GeneralSettingServiceInterface $generalSettingService
     ) {
     }
 
     public function index($id)
     {
+        abort_if(!$this->generalSettingService->generalSettingsPermission(), 403);
         $generalSettings = config('generalSettings');
         $currencies = $this->currencyService->currencies();
         $units = $this->unitService->units()->where('base_unit_id', null)->get();

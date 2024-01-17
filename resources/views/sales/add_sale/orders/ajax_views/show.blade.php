@@ -276,7 +276,9 @@
                             $filename = $order->order_id . '__' . $order->date . '__' . $branchName;
                         @endphp
                         <div class="btn-box">
-                            <a href="{{ route('sale.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @if (auth()->user()->can('edit_add_sale') && $draft->branch_id == auth()->user()->branch_id)
+                                <a href="{{ route('sale.orders.edit', [$order->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                            @endif
                             <a href="{{ route('sales.helper.related.voucher.print', $order->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Sales Order') }}</a>
                             <button type="reset" data-bs-dismiss="modal" class="btn btn-sm btn-danger">{{ __('Close') }}</button>
                         </div>

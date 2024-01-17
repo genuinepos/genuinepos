@@ -17,7 +17,7 @@ class InvoiceLayoutController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('invoice_layout'), 403);
+        abort_if(!auth()->user()->can('invoice_layouts_index'), 403);
 
         if ($request->ajax()) {
             return $this->invoiceLayoutService->invoiceLayoutListTable($request);
@@ -31,25 +31,15 @@ class InvoiceLayoutController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('invoice_layouts_add'), 403);
         return view('setups.invoices.layouts.create');
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:invoice_layouts,name',
-            'invoice_heading' => 'required',
-            'quotation_heading' => 'required',
-            'sales_order_heading' => 'required',
-            'challan_heading' => 'required',
-        ]);
+        abort_if(!auth()->user()->can('invoice_layouts_add'), 403);
 
-        if ($request->is_header_less == 1) {
-
-            $this->validate($request, [
-                'gap_from_top' => 'required',
-            ]);
-        }
+        $this->invoiceLayoutService->invoiceLayoutValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -66,32 +56,20 @@ class InvoiceLayoutController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('invoice_layouts_edit'), 403);
+        
         $invoiceLayout = $this->invoiceLayoutService->singleInvoiceLayout(id: $id);
 
         return view('setups.invoices.layouts.edit', compact('invoiceLayout'));
     }
 
-    public function update(Request $request, $layoutId)
+    public function update($layoutId, Request $request)
     {
-        $this->validate($request, [
+        abort_if(!auth()->user()->can('invoice_layouts_edit'), 403);
 
-            'name' => 'required|unique:invoice_layouts,name,' . $layoutId,
-            'invoice_heading' => 'required',
-            'quotation_heading' => 'required',
-            'sales_order_heading' => 'required',
-            'challan_heading' => 'required',
-        ]);
-
-        if ($request->is_header_less == 1) {
-
-            $this->validate($request, [
-
-                'gap_from_top' => 'required',
-            ]);
-        }
+        $this->invoiceLayoutService->invoiceLayoutUpdateValidation(request: $request, id: $layoutId);
 
         try {
-
             DB::beginTransaction();
 
             $this->invoiceLayoutService->updateInvoiceLayout(id: $layoutId, request: $request);
@@ -107,6 +85,8 @@ class InvoiceLayoutController extends Controller
 
     public function delete(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('invoice_layouts_delete'), 403);
+
         try {
             DB::beginTransaction();
 
@@ -123,6 +103,6 @@ class InvoiceLayoutController extends Controller
             DB::rollBack();
         }
 
-        // return response()->json(__('Invoice layout is deleted successfully'));
+        return response()->json(__('Invoice layout is deleted successfully'));
     }
 }

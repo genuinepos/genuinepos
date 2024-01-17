@@ -56,8 +56,6 @@ class GeneralSettingsSeeder extends Seeder
             // ['key' => 'email_config__MAIL_FROM_ADDRESS', 'value' => null, 'branch_id' => null],
             // ['key' => 'email_config__MAIL_FROM_NAME', 'value' => null, 'branch_id' => null],
             // ['key' => 'email_config__MAIL_ACTIVE', 'value' => null, 'branch_id' => null],
-            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => null],
-            ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__SMS_URL', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__API_KEY', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__SENDER_ID', 'value' => null, 'branch_id' => null],
@@ -118,7 +116,9 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'modules__accounting', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__contacts', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => null],
-            ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null], //
+            ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null],
+            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => null],
+            ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
 
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => 0, 'branch_id' => null],
             ['key' => 'reward_point_settings__point_display_name', 'value' => 'Reward Point', 'branch_id' => null],

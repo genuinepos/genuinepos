@@ -2,6 +2,8 @@
 
 namespace App\Services\Setups;
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use App\Models\Setups\Warehouse;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -25,9 +27,9 @@ class WarehouseService
             }
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $warehouses = $query->where('warehouses.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', 1);
+            $warehouses = $query->where('warehouses.branch_id', auth()->user()->branch_id)->orWhere('warehouses.is_global', BooleanType::True->value);
         }
 
         $warehouses = $query->select(
@@ -45,14 +47,21 @@ class WarehouseService
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
-                if ($row->is_global == 1 && auth()->user()->role_type == 3) {
+                if ($row->is_global == BooleanType::True->value && auth()->user()->role_type == RoleType::Other->value) {
 
                     return;
                 }
 
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="' . route('warehouses.edit', [$row->id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                if (auth()->user()->can('warehouses_edit')) {
+
+                    $html .= '<a href="' . route('warehouses.edit', [$row->id]) . '" class="action-btn c-edit edit" id="edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('warehouses_delete')) {
+
+                    $html .= '<a href="' . route('warehouses.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
                 $html .= '</div>';
 
                 return $html;
@@ -85,7 +94,7 @@ class WarehouseService
         $addWarehouse->warehouse_code = $request->code;
         $addWarehouse->phone = $request->phone;
         $addWarehouse->address = $request->address;
-        $addWarehouse->is_global = isset($request->is_global) ? $request->is_global : 0;
+        $addWarehouse->is_global = isset($request->is_global) ? $request->is_global : BooleanType::False->value;
         $addWarehouse->save();
 
         return $addWarehouse;
@@ -98,7 +107,7 @@ class WarehouseService
         $updateWarehouse->warehouse_code = $request->code;
         $updateWarehouse->phone = $request->phone;
         $updateWarehouse->address = $request->address;
-        $updateWarehouse->is_global = isset($request->is_global) ? $request->is_global : 0;
+        $updateWarehouse->is_global = isset($request->is_global) ? $request->is_global : BooleanType::False->value;
         $updateWarehouse->save();
     }
 
@@ -143,5 +152,14 @@ class WarehouseService
         }
 
         return $query->where('id', $id)->first();
+    }
+
+    public function warehouseValidation(object $request): ?array
+    {
+        return $request->validate([
+            'name' => 'required',
+            'code' => 'required',
+            'phone' => 'required',
+        ]);
     }
 }

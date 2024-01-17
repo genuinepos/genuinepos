@@ -88,7 +88,7 @@ class BranchService
         $addBranch->branch_type = $request->branch_type;
         $addBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $addBranch->area_name = $request->area_name;
-        $addBranch->parent_branch_id = $request->branch_type == 2 ? $request->parent_branch_id : null;
+        $addBranch->parent_branch_id = $request->branch_type == BranchType::ChainShop->value ? $request->parent_branch_id : null;
         $addBranch->branch_code = $request->branch_code;
         $addBranch->phone = $request->phone;
         $addBranch->city = $request->city;
@@ -97,18 +97,10 @@ class BranchService
         $addBranch->country = $request->country;
         $addBranch->address = $request->address;
         $addBranch->alternate_phone_number = $request->alternate_phone_number;
+        $addBranch->bin = $request->bin;
+        $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        // $addBranch->date_format = $request->date_format;
-        // $addBranch->time_format = $request->time_format;
-        // $addBranch->timezone = $request->timezone;
-
-        // if ($request->branch_type == BranchType::DifferentShop->value) {
-
-        //     $addBranch->stock_accounting_method = $request->stock_accounting_method;
-        //     $addBranch->account_start_date = $request->account_start_date;
-        //     $addBranch->financial_year_start_month = $request->financial_year_start_month;
-        // }
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -129,9 +121,9 @@ class BranchService
     {
         $updateBranch = $this->singleBranch($id);
         $updateBranch->name = $request->branch_type;
-        $updateBranch->name = $request->branch_type == 1 ? $request->name : null;
+        $updateBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $updateBranch->area_name = $request->area_name;
-        $updateBranch->parent_branch_id = $request->branch_type == 2 ? $request->parent_branch_id : null;
+        $updateBranch->parent_branch_id = $request->branch_type == BranchType::ChainShop->value ? $request->parent_branch_id : null;
         $updateBranch->branch_code = $request->branch_code;
         $updateBranch->phone = $request->phone;
         $updateBranch->city = $request->city;
@@ -140,24 +132,10 @@ class BranchService
         $updateBranch->country = $request->country;
         $updateBranch->address = $request->address;
         $updateBranch->alternate_phone_number = $request->alternate_phone_number;
+        $updateBranch->bin = $request->bin;
+        $updateBranch->tin = $request->tin;
         $updateBranch->email = $request->email;
         $updateBranch->website = $request->website;
-
-        // $updateBranch->date_format = $request->date_format;
-        // $updateBranch->time_format = $request->time_format;
-        // $updateBranch->timezone = $request->timezone;
-
-        // if ($request->branch_type == BranchType::DifferentShop->value) {
-
-        //     $updateBranch->stock_accounting_method = $request->stock_accounting_method;
-        //     $updateBranch->account_start_date = $request->account_start_date;
-        //     $updateBranch->financial_year_start_month = $request->financial_year_start_month;
-        // } else {
-
-        //     $updateBranch->stock_accounting_method = null;
-        //     $updateBranch->account_start_date = null;
-        //     $updateBranch->financial_year_start_month = null;
-        // }
 
         if ($request->hasFile('logo')) {
 
@@ -413,5 +391,57 @@ class BranchService
         }
 
         return ['pass' => true];
+    }
+
+    public function branchStoreValidation(object $request)
+    {
+        $request->validate([
+            'area_name' => 'required',
+            'branch_code' => 'required',
+            'phone' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
+            'zip_code' => 'required',
+            'logo' => 'sometimes|image|max:2048',
+        ]);
+
+        if (BranchType::DifferentShop->value == $request->branch_type) {
+
+            $request->validate([
+                'name' => 'required',
+            ]);
+        }
+
+        if ($request->add_initial_user) {
+
+            $request->validate([
+                'first_name' => 'required',
+                'user_phone' => 'required',
+                'username' => 'required|unique:users,username',
+                'password' => 'required|confirmed',
+            ]);
+        }
+    }
+
+    public function branchUpdateValidation(object $request)
+    {
+        $request->validate([
+            'area_name' => 'required',
+            'branch_code' => 'required',
+            'phone' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
+            'zip_code' => 'required',
+            'logo' => 'sometimes|image|max:2048',
+        ]);
+
+        if (BranchType::DifferentShop->value == $request->branch_type) {
+
+            $request->validate([
+                'name' => 'required',
+            ]);
+        }
     }
 }

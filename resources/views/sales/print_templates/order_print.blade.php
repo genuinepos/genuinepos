@@ -89,8 +89,8 @@
 
                         <p>
                             @php
-                                $email = $order?->branch?->email ? $order?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $order?->branch?->phone ? $order?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $order?->branch ? $order?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $order?->branch ? $order?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)

@@ -31,6 +31,30 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService
+    ): ?array {
+
+        $data = [];
+        $data['payment'] = $accountingVoucherService->singleAccountingVoucher(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'voucherDescriptions',
+                'voucherDescriptions.references',
+                'payrollRef',
+                'payrollRef.user',
+                'payrollRef.expenseAccount',
+            ],
+        );
+
+        $data['printPageSize'] = $request->print_page_size;
+        return $data;
+    }
+
     public function createMethodContainer(
         int $payrollId,
         object $payrollService,
@@ -125,7 +149,9 @@ class PayrollPaymentControllerMethodContainersService implements PayrollPaymentC
 
         $payrollService->adjustPayrollAmounts(payroll: $payment?->payrollRef);
 
-        return ['payment' => $payment];
+        $printPageSize = $request->print_page_size;
+
+        return ['payment' => $payment, 'printPageSize' => $printPageSize];
     }
 
     public function editMethodContainer(

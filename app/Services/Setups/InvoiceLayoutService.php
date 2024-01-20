@@ -106,7 +106,7 @@ class InvoiceLayoutService
         $addLayout->invoice_heading = isset($request->invoice_heading) ? $request->invoice_heading : 'Invoice';
         $addLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $addLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
-        $addLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
+        $addLayout->delivery_note_heading = isset($request->delivery_note_heading) ? $request->delivery_note_heading : 'Delivery Note';
         $addLayout->branch_city = $request->branch_city ? $request->branch_city : BooleanType::True->value;
         $addLayout->branch_state = $request->branch_state ? $request->branch_state : BooleanType::True->value;
         $addLayout->branch_zipcode = $request->branch_zipcode ? $request->branch_zipcode : BooleanType::True->value;
@@ -147,7 +147,7 @@ class InvoiceLayoutService
         $updateInvoiceLayout->invoice_heading = isset($request->invoice_heading) ? $request->invoice_heading : 'Invoice';
         $updateInvoiceLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $updateInvoiceLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
-        $updateInvoiceLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
+        $updateInvoiceLayout->delivery_note_heading = isset($request->delivery_note_heading) ? $request->delivery_note_heading : 'Delivery Note';
         $updateInvoiceLayout->branch_city = $request->branch_city;
         $updateInvoiceLayout->branch_state = $request->branch_state;
         $updateInvoiceLayout->branch_zipcode = $request->branch_zipcode;
@@ -247,7 +247,7 @@ class InvoiceLayoutService
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',
             'sales_order_heading' => 'required',
-            'challan_heading' => 'required',
+            'delivery_note_heading' => 'required',
         ]);
 
         if ($request->is_header_less == BooleanType::True->value) {
@@ -265,7 +265,7 @@ class InvoiceLayoutService
             'invoice_heading' => 'required',
             'quotation_heading' => 'required',
             'sales_order_heading' => 'required',
-            'challan_heading' => 'required',
+            'delivery_note_heading' => 'required',
         ]);
 
         if ($request->is_header_less == 1) {

@@ -180,29 +180,11 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    text: '<i class="fas fa-print"></i> Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+            buttons: [
+                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
+                { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' }},
+                { extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),

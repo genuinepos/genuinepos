@@ -282,13 +282,13 @@
 @endif
 <!-- Sale print templete end-->
 
-<!-- Challan print templete-->
+<!-- Delivery Note print templete-->
 @if ($sale->branch && $sale->branch->pos_sale_invoice_layout)
     @include('sales.pos.ajax_view.partials.pos_sale_branch_challan_layout')
 @else
     @include('sales.pos.ajax_view.partials.pos_sale_default_challan_layout')
 @endif
-<!-- Challan print templete end-->
+<!-- Delivery Note print templete end-->
 <script>
     var a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ', 'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
     var b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];

@@ -13,6 +13,12 @@ interface PayrollPaymentControllerMethodContainersInterface
         object $accountingVoucherService
     ): ?array;
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService
+    ): ?array;
+
     public function createMethodContainer(
         int $payrollId,
         object $payrollService,

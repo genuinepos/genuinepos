@@ -932,5 +932,4 @@
         $filename = __('Receipt') . '__' . $receipt->voucher_no . '__' . $receipt->date . '__' . $branchName;
     @endphp
     <span id="title" class="d-none">{{ $filename }}</span>
-    <!-- Payment print templete end-->
 @endif

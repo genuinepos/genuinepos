@@ -103,6 +103,7 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::get('/', 'index')->name('hrm.payrolls.index');
         Route::get('create', 'create')->name('hrm.payrolls.create');
         Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
+        Route::get('print/{id}', 'print')->name('hrm.payrolls.print');
         Route::post('store',  'store')->name('hrm.payrolls.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payrolls.edit');
         Route::post('update/{id}', 'update')->name('hrm.payrolls.update');
@@ -114,6 +115,7 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::get('/', 'index')->name('hrm.payroll.payments.index');
         Route::get('create/{payrollId}', 'create')->name('hrm.payroll.payments.create');
         Route::get('show/{id}', 'show')->name('hrm.payroll.payments.show');
+        Route::get('print/{id}', 'print')->name('hrm.payroll.payments.print');
         Route::post('store',  'store')->name('hrm.payroll.payments.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payroll.payments.edit');
         Route::post('update/{id}', 'update')->name('hrm.payroll.payments.update');

@@ -59,6 +59,15 @@ class PayrollController extends Controller
         return view('hrm.payrolls.ajax_view.show', compact('payroll'));
     }
 
+    public function print($id, Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
+    {
+        $printMethodContainer = $payrollControllerMethodContainersInterface->printMethodContainer(id: $id, request: $request, payrollService: $this->payrollService);
+
+        extract($printMethodContainer);
+
+        return view('hrm.print_templates.print_payroll', compact('payroll', 'printPageSize'));
+    }
+
     public function create(Request $request, PayrollControllerMethodContainersInterface $payrollControllerMethodContainersInterface)
     {
         if (!auth()->user()->can('payrolls_create')) {

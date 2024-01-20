@@ -118,11 +118,11 @@ class SalesHelperController extends Controller
         }
     }
 
-    public function printChallan($id, Request $request)
+    public function printDeliveryNote($id, Request $request)
     {
         if ($request->print_page_size == PrintPageSize::PosPrinterPageThreeIncs->value) {
 
-            return response()->json(['errorMsg' => __('Pos printer page size does not support for challan.')]);
+            return response()->json(['errorMsg' => __('Pos printer page size does not support for delivery note.')]);
         }
 
         $printPageSize = $request->print_page_size;
@@ -133,7 +133,7 @@ class SalesHelperController extends Controller
 
         $customerCopySaleProducts = $this->saleProductService->customerCopySaleProducts(saleId: $sale->id);
 
-        return view('sales.print_templates.print_challan', compact('sale', 'customerCopySaleProducts', 'printPageSize'));
+        return view('sales.print_templates.print_delivery_note', compact('sale', 'customerCopySaleProducts', 'printPageSize'));
     }
 
     public function printPackingSlip($id, Request $request)

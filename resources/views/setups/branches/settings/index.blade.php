@@ -333,7 +333,7 @@
                                                                         $months = \App\Enums\Months::cases();
                                                                     @endphp
                                                                     @foreach ($months as $month)
-                                                                        <option {{ $generalSettings['business_or_shop__financial_year_start_month'] == $month ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
+                                                                        <option {{ $generalSettings['business_or_shop__financial_year_start_month'] == $month->value ? 'SELECTED' : '' }} value="{{ $month->value }}">{{ $month->name }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>

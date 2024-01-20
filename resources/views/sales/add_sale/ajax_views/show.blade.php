@@ -292,7 +292,7 @@
                     @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
 
                         @if (auth()->user()->can('pos_edit') && $sale->branch_id == auth()->user()->branch_id)
-                        
+
                             <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @endif
@@ -303,7 +303,7 @@
 
                     <a href="{{ route('sales.helper.print.packing.slip', [$sale->id]) }}" onclick="printPackingSlip(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn" data-filename="{{ __('Packing Slip') . '_' . $filename }}">{{ __('Print Packing Slip') }}</a>
 
-                    <a href="{{ route('sales.helper.print.challan', [$sale->id]) }}" onclick="printChallan(this); return false;" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn" data-filename="{{ __('Challan') . '_' . $filename }}">{{ __('Print Challan') }}</a>
+                    <a href="{{ route('sales.helper.print.delivery.note', [$sale->id]) }}" onclick="printDeliveryNote(this); return false;" class="footer_btn btn btn-sm btn-success" id="printDeliveryNoteBtn" data-filename="{{ __('Delivery Note') . '_' . $filename }}">{{ __('Print Delivery Note') }}</a>
 
                     <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Invoice') }}</a>
 
@@ -368,7 +368,7 @@
         });
     }
 
-    function printChallan(event) {
+    function printDeliveryNote(event) {
 
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');

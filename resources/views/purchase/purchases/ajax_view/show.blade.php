@@ -52,7 +52,7 @@
                                 @php
                                     $branchName = '';
                                     if ($purchase->branch_id) {
-                                        if ($return?->branch?->parentBranch) {
+                                        if ($purchase?->branch?->parentBranch) {
                                             $branchName = $purchase?->branch?->parentBranch?->name . '(' . $purchase?->branch?->area_name . ')' . '-(' . $purchase?->branch?->branch_code . ')';
                                         } else {
                                             $branchName = $purchase?->branch?->name . '(' . $purchase?->branch?->area_name . ')' . '-(' . $purchase?->branch?->branch_code . ')';

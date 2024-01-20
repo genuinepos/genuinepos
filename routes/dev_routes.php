@@ -1,12 +1,16 @@
 <?php
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\AccountLedgerVoucherType;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
@@ -192,56 +196,68 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $settings = [
-        'print_page_size__add_sale_page_size' => 1,
-        'print_page_size__pos_sale_page_size' => 1,
-        'print_page_size__quotation_page_size' => 1,
-        'print_page_size__sales_order_page_size' => 1,
-        'print_page_size__draft_page_size' => 1,
-        'print_page_size__sales_return_page_size' => 1,
-        'print_page_size__purchase_page_size' => 1,
-        'print_page_size__purchase_order_page_size' => 1,
-        'print_page_size__purchase_return_page_size' => 1,
-        'print_page_size__transfer_stock_voucher_page_size' => 1,
-        'print_page_size__stock_adjustment_voucher_page_size' => 1,
-        'print_page_size__receipt_voucher_page_size' => 1,
-        'print_page_size__payment_voucher_page_size' => 1,
-        'print_page_size__payroll_voucher_page_size' => 1,
-        'print_page_size__payroll_payment_voucher_page_size' => 1,
-        'print_page_size__bom_voucher_page_size' => 1,
-        'print_page_size__production_voucher_page_size' => 1,
-    ];
+    $query = AccountLedger::query()
+            ->where('account_groups.sub_sub_group_number', 8)
+            ->where('account_ledgers.amount_type', 'debit')
+            ->whereIn(
+                'account_ledgers.voucher_type',
+                [
+                    AccountLedgerVoucherType::Purchase->value,
+                    AccountLedgerVoucherType::PurchaseProductTax->value,
+                    AccountLedgerVoucherType::SalesReturn->value,
+                    AccountLedgerVoucherType::SalesReturnProductTax->value,
+                ]
+            );
 
-    foreach ($settings as $key => $value) {
+        // if ($request->tax_account_id) {
 
-        $generalSetting = DB::table('general_settings')->where('key', $key)->where('branch_id', null)->first();
-        if (!isset($generalSetting)) {
+        //     $query->where('account_ledgers.account_id', $request->tax_account_id);
+        // }
 
-            $addGeneralSetting = new GeneralSetting();
-            $addGeneralSetting->key = $key;
-            $addGeneralSetting->value = $value;
-            $addGeneralSetting->save();
-            echo 'Created : ' . $key . '=>' . $value.'<br>';
-        }
-    }
+        // if ($request->branch_id) {
 
-    $branches = Branch::all();
-    foreach ($branches as $branch) {
+        //     if ($request->branch_id == 'NULL') {
 
-        foreach ($settings as $key => $value) {
+        //         $query->where('account_ledgers.branch_id', null);
+        //     } else {
 
-            $generalSetting = DB::table('general_settings')->where('key', $key)->where('branch_id', $branch->id)->first();
-            if (!isset($generalSetting)) {
+        //         $query->where('account_ledgers.branch_id', $request->branch_id);
+        //     }
+        // }
 
-                $addGeneralSetting = new GeneralSetting();
-                $addGeneralSetting->key = $key;
-                $addGeneralSetting->value = $value;
-                $addGeneralSetting->branch_id = $branch->id;
-                $addGeneralSetting->save();
-                echo $branch->branch_code.' Created : ' . $key . '=>' . $value.'<br>';;
-            }
-        }
-    }
+        // if ($request->from_date) {
+
+        //     $from_date = date('Y-m-d', strtotime($request->from_date));
+        //     $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
+        //     $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
+        //     $query->whereBetween('account_ledgers.date', $date_range);
+        // }
+
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+
+        //     $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
+        // }
+
+        $query = DB::table('account_ledgers')
+        ->where('account_groups.sub_sub_group_number', 8)
+        ->where('account_ledgers.amount_type', 'debit')
+        ->whereIn(
+            'account_ledgers.voucher_type',
+            [
+                AccountLedgerVoucherType::Purchase->value,
+                AccountLedgerVoucherType::PurchaseProductTax->value,
+                AccountLedgerVoucherType::SalesReturn->value,
+                AccountLedgerVoucherType::SalesReturnProductTax->value,
+            ]
+        )->leftJoin('accounts', 'account_ledgers.account_id', 'accounts.id')
+        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id');
+
+    $res = $query->select(
+        'accounts.id',
+        'accounts.name',
+        DB::raw('SUM(account_ledgers.debit) as total_input_tax')
+    )->groupBy('accounts.id', 'accounts.name')->get();
+    return $res;
 });
 
 

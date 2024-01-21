@@ -52,7 +52,7 @@
         }
     </style>
 
-    <div class="print_challan">
+    <div class="print_delivery_note">
         <div class="details_area">
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
@@ -108,8 +108,8 @@
 
                         <p>
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)
@@ -127,7 +127,7 @@
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row mt-2">
                     <div class="col-12 text-center">
-                        <h5 style="text-transform: uppercase;"><strong>{{ $invoiceLayout->challan_heading }}</strong></h5>
+                        <h5 style="text-transform: uppercase;"><strong>{{ $invoiceLayout->delivery_note_heading }}</strong></h5>
                     </div>
                 </div>
             @endif
@@ -168,7 +168,7 @@
                 <div class="col-4 text-center">
                     @if ($invoiceLayout->is_header_less == 1)
                         <div class="middle_header_text text-center">
-                            <h5 style="text-transform: uppercase;">{{ $invoiceLayout->challan_heading }}</h5>
+                            <h5 style="text-transform: uppercase;">{{ $invoiceLayout->delivery_note_heading }}</h5>
                         </div>
                     @endif
 
@@ -178,7 +178,7 @@
                 <div class="col-4">
                     <ul class="list-unstyled">
                         <li style="font-size:11px!important;">
-                            <span class="fw-bold">{{ __('Challan No') }} : </span> {{ $sale->invoice_id }}
+                            <span class="fw-bold">{{ __('Invoice No') }} : </span> {{ $sale->invoice_id }}
                         </li>
 
                         <li style="font-size:11px!important;">
@@ -326,7 +326,7 @@
         }
     </style>
 
-    <div class="print_challan">
+    <div class="print_delivery_note">
         <div class="details_area">
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
@@ -382,8 +382,8 @@
 
                         <p style="font-size:9px;">
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)
@@ -401,7 +401,7 @@
             @if ($invoiceLayout->is_header_less == 0)
                 <div class="row mt-2">
                     <div class="col-12 text-center">
-                        <h6 style="text-transform: uppercase;">{{ $invoiceLayout->challan_heading }}</h6>
+                        <h6 style="text-transform: uppercase;">{{ $invoiceLayout->delivery_note_heading }}</h6>
                     </div>
                 </div>
             @endif
@@ -438,7 +438,7 @@
                 <div class="col-4 text-center">
                     @if ($invoiceLayout->is_header_less == 1)
                         <div class="middle_header_text text-center">
-                            <h6 style="text-transform: uppercase;">{{ $invoiceLayout->challan_heading }}</h6>
+                            <h6 style="text-transform: uppercase;">{{ $invoiceLayout->delivery_note_heading }}</h6>
                         </div>
                     @endif
 
@@ -447,7 +447,7 @@
 
                 <div class="col-4">
                     <ul class="list-unstyled">
-                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Challan No') }} : </span> {{ $sale->invoice_id }}</li>
+                        <li style="font-size:9px!important; line-height:1.5;"><span class="fw-bold">{{ __('Invoice No') }} : </span> {{ $sale->invoice_id }}</li>
 
                         <li style="font-size:9px!important; line-height:1.5;">
                             <span class="fw-bold">{{ __('Date') }} : </span> {{ date($dateFormat, strtotime($sale->date)) . ' ' . $sale->time }}

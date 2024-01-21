@@ -117,8 +117,8 @@
 
                         <p>
                             @php
-                                $email = $quotation?->branch?->email ? $quotation?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $quotation?->branch?->phone ? $quotation?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $quotation?->branch ? $quotation?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $quotation?->branch ? $quotation?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)

@@ -43,6 +43,30 @@ class PayrollControllerMethodContainersService implements PayrollControllerMetho
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $payrollService,
+    ): ?array {
+
+        $data = [];
+        $data['payroll'] = $payrollService->singlePayroll(
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'user',
+                'allowances',
+                'allowances.allowance',
+                'deductions',
+                'deductions.deduction',
+            ]
+        )->where('id', $id)->first();
+
+        $data['printPageSize'] = $request->print_page_size;
+
+        return $data;
+    }
+
     public function createMethodContainer(object $request, object $payrollService, object $accountService, object $userService): ?array
     {
         $data = [];

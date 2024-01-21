@@ -161,7 +161,7 @@
                                             <div class="input-group">
                                                 <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Sales Order Heading') }}</b></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="sales_order_heading" id="sales_order_heading" class="form-control" data-next="challan_heading" placeholder="{{ __('Sales Order Heading') }}">
+                                                    <input required type="text" name="sales_order_heading" id="sales_order_heading" class="form-control" data-next="delivery_note_heading" placeholder="{{ __('Sales Order Heading') }}">
                                                     <span class="error error_sales_order_heading"></span>
                                                 </div>
                                             </div>
@@ -171,10 +171,10 @@
                                     <div class="row gx-2 mt-1">
                                         <div class="col-md-4">
                                             <div class="input-group">
-                                                <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Challan Heading') }}</b></label>
+                                                <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Delivery Note Heading') }}</b></label>
                                                 <div class="col-8">
-                                                    <input required type="text" name="challan_heading" id="challan_heading" class="form-control" data-next="branch_city" placeholder="{{ __('Challan Heading') }}">
-                                                    <span class="error error_challan_heading"></span>
+                                                    <input required type="text" name="delivery_note_heading" id="delivery_note_heading" class="form-control" data-next="branch_city" placeholder="{{ __('Delivery Note Heading') }}">
+                                                    <span class="error error_delivery_heading"></span>
                                                 </div>
                                             </div>
                                         </div>

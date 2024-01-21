@@ -1252,21 +1252,6 @@
             });
         });
 
-        $(document).on('click', '.print_challan_btn', function(e) {
-            e.preventDefault();
-            var body = $('.challan_print_template').html();
-            var header = $('.heading_area').html();
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                removeInline: false,
-                printDelay: 800,
-                header: null,
-                footer: null,
-            });
-        });
 
         //Print Customer ledger
         $(document).on('click', '#print_report', function(e) {

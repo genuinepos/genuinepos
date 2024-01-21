@@ -19,6 +19,7 @@
                 @csrf
                 <input type="hidden" name="action" id="action">
                 <input type="hidden" name="payroll_id" value="{{ $payroll->id }}">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] }}">
                 <div class="form-group row">
                     <div class="col-md-4">
                         <div class="row" style="border-right:1px solid rgb(226, 223, 223);">
@@ -199,8 +200,19 @@
                     </div>
                 </div>
 
-                <div class="form-group row mt-2">
-                    <div class="col-md-12 d-flex justify-content-end">
+                <hr class="m-0 p-0 my-1">
+
+                <div class="form-group d-flex mt-2 justify-content-end" style="gap: 20px;">
+                    <div class="input-group" style="width: max-content; align-items: center; gap: 10px;">
+                        <label><b>{{ __('Print') }}</b></label>
+                        <select id="select_print_page_size" class="form-control">
+                            @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button payment_loading_btn d-hide"><i class="fas fa-spinner text-primary"></i><b> {{ __("Loading") }}...</b></button>
                             <button type="submit" id="save_and_print" value="save_and_print" class="btn btn-sm btn-success payment_submit_button me-2" value="save_and_print">{{ __("Save & Print") }}</button>

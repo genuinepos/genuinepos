@@ -124,8 +124,8 @@
 
                         <p>
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)
@@ -573,8 +573,8 @@
 
                         <p style="font-size:9px;">
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)

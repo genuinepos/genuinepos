@@ -1700,7 +1700,7 @@
                                                                 <span><i class="fas fa-chart-line"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">@lang('menu.profit_loss_account')</p>
+                                                        <p class="switch_text">{{ __("Profit Loss Account") }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1730,6 +1730,17 @@
                                                     </a>
                                                 </div>
                                             @endif
+
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('reports.vat.tax.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-money-bill-wave"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Vat/Tax Report') }}</p>
+                                                </a>
+                                            </div>
 
                                             @if (auth()->user()->can('cash_flow'))
                                                 <div class="sub-menu-col">
@@ -2329,7 +2340,7 @@
                                                     <span><i class="fas fa-th-list"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.todo')</p>
+                                            <p class="switch_text">{{ __("Todo") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2342,7 +2353,7 @@
                                                     <span><i class="fas fa-th-large"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.work_space')</p>
+                                            <p class="switch_text">{{ __("Work Space") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2355,7 +2366,7 @@
                                                     <span><i class="fas fa-file-alt"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.memo')</p>
+                                            <p class="switch_text">{{ __("Memo") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2368,7 +2379,7 @@
                                                     <span><i class="fas fa-envelope"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">@lang('menu.message')</p>
+                                            <p class="switch_text">{{ __("Message") }}</p>
                                         </a>
                                     </div>
                                 @endif
@@ -2390,7 +2401,7 @@
 
                     <div class="container-fluid">
                         <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">@lang('menu.communication')</p>
+                            <p class="sub-menu-group-title">{{ __("Communication") }}</p>
                             <div class="sub-menu-row">
                                 <div class="sub-menu-col">
                                     <a href="" class="switch-bar-wrap">
@@ -2399,7 +2410,7 @@
                                                 <span><i class="fas fa-exclamation"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.notice_board')</p>
+                                        <p class="switch_text">{{ __("Notice Board") }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -2412,7 +2423,7 @@
                                                 <span><i class="far fa-envelope"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.email')</p>
+                                        <p class="switch_text">{{ __("Email") }}</p>
                                     </a>
                                 </div>
 
@@ -2423,7 +2434,7 @@
                                                 <span><i class="fas fa-sliders-h"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.email_settings')</p>
+                                        <p class="switch_text">{{ __("Email Settings") }}</p>
                                     </a>
                                 </div>
 
@@ -2447,7 +2458,7 @@
                                                 <span><i class="fas fa-sms"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.sms')</p>
+                                        <p class="switch_text">{{ __("SMS") }}</p>
                                     </a>
                                 </div>
 

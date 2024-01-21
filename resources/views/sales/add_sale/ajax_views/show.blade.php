@@ -268,11 +268,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3 text-end pe-1"><b>{{ __('Print') }}</b></label>
-                            <div class="col-9">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
                                 <select id="print_page_size" class="form-control">
                                     @foreach (\App\Enums\PrintPageSize::cases() as $item)
-                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -292,7 +292,7 @@
                     @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
 
                         @if (auth()->user()->can('pos_edit') && $sale->branch_id == auth()->user()->branch_id)
-                        
+
                             <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
                         @endif
                     @endif
@@ -303,7 +303,7 @@
 
                     <a href="{{ route('sales.helper.print.packing.slip', [$sale->id]) }}" onclick="printPackingSlip(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn" data-filename="{{ __('Packing Slip') . '_' . $filename }}">{{ __('Print Packing Slip') }}</a>
 
-                    <a href="{{ route('sales.helper.print.challan', [$sale->id]) }}" onclick="printChallan(this); return false;" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn" data-filename="{{ __('Challan') . '_' . $filename }}">{{ __('Print Challan') }}</a>
+                    <a href="{{ route('sales.helper.print.delivery.note', [$sale->id]) }}" onclick="printDeliveryNote(this); return false;" class="footer_btn btn btn-sm btn-success" id="printDeliveryNoteBtn" data-filename="{{ __('Delivery Note') . '_' . $filename }}">{{ __('Print Delivery Note') }}</a>
 
                     <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Invoice') }}</a>
 
@@ -368,7 +368,7 @@
         });
     }
 
-    function printChallan(event) {
+    function printDeliveryNote(event) {
 
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');

@@ -757,7 +757,6 @@
                                         <div class="form-group row mt-3">
                                             <div class="col-md-6">
                                                 <div class="row">
-
                                                     <div class="col-md-12">
                                                         <div class="input-group">
                                                             <label class="col-md-3 text-end fw-bold pe-1">{{ __('Add Sale') }}</label>

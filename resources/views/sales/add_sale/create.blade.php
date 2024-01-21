@@ -159,7 +159,7 @@
             <form id="add_sale_form" action="{{ route('sales.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <input type="hidden" name="action" id="action">
-                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['add_sale_invoice_layout']->page_size }}">
+                <input type="hidden" name="print_page_size" id="print_page_size" value="{{ $generalSettings['print_page_size__add_sale_page_size'] }}">
                 <section>
                     <div class="sale-content">
                         <div class="row g-1">

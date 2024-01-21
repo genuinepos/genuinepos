@@ -71,7 +71,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'add_sale__default_price_group_id', 'value' => null, 'branch_id' => null],
             ['key' => 'pos__is_disable_draft', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_quotation', 'value' => '0', 'branch_id' => null],
-            ['key' => 'pos__is_disable_challan', 'value' => '0', 'branch_id' => null],
+            ['key' => 'pos__is_disable_delivery_note', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_hold_invoice', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_multiple_pay', 'value' => '1', 'branch_id' => null],
             ['key' => 'pos__is_show_recent_transactions', 'value' => '0', 'branch_id' => null],

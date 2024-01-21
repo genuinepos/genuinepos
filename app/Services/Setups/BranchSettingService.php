@@ -95,7 +95,7 @@ class BranchSettingService
             ['key' => 'add_sale__default_tax_ac_id', 'value' => null, 'branch_id' => $branchId],
             ['key' => 'pos__is_disable_draft', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'pos__is_disable_quotation', 'value' => '1', 'branch_id' => $branchId],
-            ['key' => 'pos__is_disable_challan', 'value' => '1', 'branch_id' => $branchId],
+            ['key' => 'pos__is_disable_delivery_note', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'pos__is_disable_hold_invoice', 'value' => '0', 'branch_id' => $branchId],
             ['key' => 'pos__is_disable_multiple_pay', 'value' => '1', 'branch_id' => $branchId],
             ['key' => 'pos__is_show_recent_transactions', 'value' => '1', 'branch_id' => $branchId],

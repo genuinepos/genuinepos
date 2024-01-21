@@ -17,10 +17,7 @@ class CashCounterController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('cash_counters')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('cash_counters_index'), 403);
 
         if ($request->ajax()) {
 
@@ -35,24 +32,16 @@ class CashCounterController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('cash_counters')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('cash_counters_add'), 403);
 
         return view('setups.cash_counter.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
-                return $query->where('branch_id', auth()->user()->branch_id);
-            })],
-            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
-                return $query->where('branch_id', auth()->user()->branch_id);
-            })],
-        ]);
+        abort_if(!auth()->user()->can('cash_counters_add'), 403);
+
+        $this->cashCounterService->cashCounterStoreValidation(request: $request);
 
         try {
 
@@ -80,6 +69,8 @@ class CashCounterController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('cash_counters_edit'), 403);
+
         $cashCounter = $this->cashCounterService->singleCashCounter(id: $id);
 
         return view('setups.cash_counter.ajax_view.edit', compact('cashCounter'));
@@ -87,14 +78,9 @@ class CashCounterController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
-                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
-            })],
-            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
-                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
-            })],
-        ]);
+        abort_if(!auth()->user()->can('cash_counters_edit'), 403);
+
+        
 
         try {
 
@@ -113,8 +99,9 @@ class CashCounterController extends Controller
 
     public function delete(Request $request, $id)
     {
-        try {
+        abort_if(!auth()->user()->can('cash_counters_delete'), 403);
 
+        try {
             DB::beginTransaction();
 
             $this->cashCounterService->deleteCashCounter($id);

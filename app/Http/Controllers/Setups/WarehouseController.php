@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\BooleanType;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
 use App\Services\Setups\WarehouseService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class WarehouseController extends Controller
 {
@@ -16,10 +17,7 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('warehouse')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('warehouses_index'), 403);
 
         if ($request->ajax()) {
 
@@ -34,24 +32,17 @@ class WarehouseController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('warehouse')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
+        abort_if(!auth()->user()->can('warehouses_add'), 403);
         return view('setups.warehouses.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
-            'phone' => 'required',
-        ]);
+        abort_if(!auth()->user()->can('warehouses_add'), 403);
+
+        $this->warehouseService->warehouseValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $addWarehouse = $this->warehouseService->addWarehouse($request);
@@ -66,21 +57,19 @@ class WarehouseController extends Controller
 
     public function edit($id)
     {
-        $warehouse = $this->warehouseService->singleWarehouse(id: $id);
+        abort_if(!auth()->user()->can('warehouses_edit'), 403);
 
+        $warehouse = $this->warehouseService->singleWarehouse(id: $id);
         return view('setups.warehouses.ajax_view.edit', compact('warehouse'));
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
-            'phone' => 'required',
-        ]);
+        abort_if(!auth()->user()->can('warehouses_edit'), 403);
+
+        $this->warehouseService->warehouseValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $this->warehouseService->updateWarehouse(id: $id, request: $request);
@@ -95,8 +84,9 @@ class WarehouseController extends Controller
 
     public function delete(Request $request, $id)
     {
-        try {
+        abort_if(!auth()->user()->can('warehouses_delete'), 403);
 
+        try {
             DB::beginTransaction();
 
             $deleteWarehouse = $this->warehouseService->deleteWarehouse($id);
@@ -118,11 +108,11 @@ class WarehouseController extends Controller
     {
         $__branchId = $branchId == 'NULL' ? null : $branchId;
 
-        $query = $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->where('is_global', 0);
+        $query = $this->warehouseService->Warehouses()->where('branch_id', $__branchId)->where('is_global', BooleanType::False->value);
 
-        if ($isAllowGlobalWarehouse == 1) {
+        if ($isAllowGlobalWarehouse == BooleanType::True->value) {
 
-            $query->orWhere('is_global', 1);
+            $query->orWhere('is_global', BooleanType::True->value);
         }
 
         $warehouses = $query->get();

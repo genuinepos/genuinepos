@@ -15,6 +15,8 @@ class PaymentMethodController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('payment_methods_index'), 403);
+
         if ($request->ajax()) {
 
             return $this->paymentMethodService->paymentMethodListTable();
@@ -25,20 +27,18 @@ class PaymentMethodController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('payment_methods_add'), 403);
+
         return view('setups.payment_methods.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|unique:payment_methods,name',
-            ],
-        );
+        abort_if(!auth()->user()->can('payment_methods_add'), 403);
+
+        $this->paymentMethodService->paymentMethodStoreValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $this->paymentMethodService->addPaymentMethod($request);
@@ -54,6 +54,7 @@ class PaymentMethodController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('payment_methods_edit'), 403);
         $method = $this->paymentMethodService->singlePaymentMethod(id: $id);
 
         return view('setups.payment_methods.ajax_view.edit', compact('method'));
@@ -61,15 +62,11 @@ class PaymentMethodController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|unique:payment_methods,name,'.$id,
-            ]
-        );
+        abort_if(!auth()->user()->can('payment_methods_edit'), 403);
+
+        $this->paymentMethodService->paymentMethodUpdateValidation(request: $request, id: $id);
 
         try {
-
             DB::beginTransaction();
 
             $this->paymentMethodService->updatePaymentMethod($request, $id);
@@ -85,8 +82,9 @@ class PaymentMethodController extends Controller
 
     public function delete(Request $request, $id)
     {
-        try {
+        abort_if(!auth()->user()->can('payment_methods_delete'), 403);
 
+        try {
             DB::beginTransaction();
 
             $deletePaymentMethod = $this->paymentMethodService->deletePaymentMethod($id);

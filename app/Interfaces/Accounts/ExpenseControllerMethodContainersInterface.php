@@ -12,6 +12,12 @@ interface ExpenseControllerMethodContainersInterface
         object $accountingVoucherService,
     ): ?array;
 
+    public function printMethodContainer(
+        int $id,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array;
+
     public function createMethodContainer(
         object $accountService,
         object $accountFilterService,

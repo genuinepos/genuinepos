@@ -12,6 +12,12 @@ interface ReceiptControllerMethodContainersInterface
         object $accountingVoucherService,
     ): ?array;
 
+    public function printMethodContainer(
+        int $id = null,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array;
+
     public function createMethodContainer(
         int $creditAccountId = null,
         object $accountService,

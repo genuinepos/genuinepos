@@ -3,7 +3,7 @@
     $dateFormat = $generalSettings['business_or_shop__date_format'];
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
-<!-- Details Modal -->
+
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -39,16 +39,12 @@
                                 @php
                                     $branchName = '';
                                     if ($adjustment->branch_id) {
-
                                         if ($adjustment?->branch?->parentBranch) {
-
                                             $branchName = $adjustment?->branch?->parentBranch?->name . '(' . $adjustment?->branch?->area_name . ')' . '-(' . $adjustment?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $adjustment?->branch?->name . '(' . $adjustment?->branch?->area_name . ')' . '-(' . $adjustment?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -179,11 +175,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3 text-end pe-1"><b>{{ __("Print") }}</b></label>
-                            <div class="col-9">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
                                 <select id="print_page_size" class="form-control">
-                                    @foreach (array_slice(\App\Enums\SalesInvoicePageSize::cases(), 0, 2) as $item)
-                                        <option value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                        <option {{ $generalSettings['print_page_size__stock_adjustment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -220,7 +216,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: { print_page_size },
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {

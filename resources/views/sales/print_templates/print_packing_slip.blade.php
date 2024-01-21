@@ -5,18 +5,51 @@
 
     $invoiceLayout = $sale->sale_screen == \App\Enums\SaleScreenType::AddSale->value ? $generalSettings['add_sale_invoice_layout'] : $generalSettings['pos_sale_invoice_layout'];
 @endphp
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <!-- Packing Slip print template -->
@@ -76,8 +109,8 @@
 
                         <p>
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)
@@ -252,15 +285,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: 5.8in 8.3in; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 22px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: 5.8in 8.3in;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 22px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 
     <!-- Packing Slip print template -->
@@ -320,8 +386,8 @@
 
                         <p style="font-size:9px;">
                             @php
-                                $email = $sale?->branch?->email ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
-                                $phone = $sale?->branch?->phone ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                                $email = $sale?->branch ? $sale?->branch?->email : $generalSettings['business_or_shop__email'];
+                                $phone = $sale?->branch ? $sale?->branch?->phone : $generalSettings['business_or_shop__phone'];
                             @endphp
 
                             @if ($invoiceLayout->branch_email)

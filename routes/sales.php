@@ -48,7 +48,7 @@ Route::prefix('sales')->group(function () {
         Route::get('recent/transaction/sales/{status}/{saleScreenType}/{limit?}', 'recentSales')->name('sales.helper.recent.transaction.sales');
         Route::get('sales/related/voucher/print/{id}', 'salesRelatedVoucherPrint')->name('sales.helper.related.voucher.print');
         Route::get('print/packing/slip/{id}', 'printPackingSlip')->name('sales.helper.print.packing.slip');
-        Route::get('print/challan/{id}', 'printChallan')->name('sales.helper.print.challan');
+        Route::get('print/delivery/note/{id}', 'printDeliveryNote')->name('sales.helper.print.delivery.note');
         Route::get('hold/invoices/modal/{limit?}', 'holdInvoicesModal')->name('sales.helper.hold.invoices.modal');
         Route::get('suspended/modal/{limit?}', 'suspendedModal')->name('sales.helper.suspended.modal');
         Route::get('product/stock/modal', 'productStockModal')->name('sales.helper.product.stock.modal');

@@ -391,11 +391,11 @@ class PurchaseProductService
 
                     $purchaseProductsInGlobalWarehouse = DB::table('purchase_products')->where('purchase_products.left_qty', '>', '0')
                         ->leftJoin('purchases', 'purchase_products.purchase_id', 'purchases.id')
-                        ->leftJoin('warehouses', 'purchase_products.warehouse_id', 'warehouses.id')
+                        ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
                         ->where('purchase_products.product_id', $saleProduct->product_id)
                         ->where('purchase_products.variant_id', $variantId)
                         ->where('warehouses.is_global', BooleanType::True->value)
-                        ->orderBy('created_at', $sortedBy)->get();
+                        ->orderBy('purchase_products.created_at', $sortedBy)->get();
 
                     if (count($purchaseProductsInGlobalWarehouse) > 0) {
 

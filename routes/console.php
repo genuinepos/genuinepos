@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

@@ -13,6 +13,7 @@ use App\Http\Controllers\Accounts\AccountLedgerController;
 use App\Http\Controllers\Accounts\AccountBalanceController;
 use App\Http\Controllers\Accounts\CapitalAccountController;
 use App\Http\Controllers\Accounts\DutyAndTaxAccountController;
+use App\Http\Controllers\Accounts\Reports\VatTaxReportController;
 use App\Http\Controllers\Accounts\Reports\ProfitLossReportController;
 
 Route::group(['prefix' => 'accounting'], function () {
@@ -73,6 +74,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('index/{creditAccountId?}', 'index')->name('receipts.index');
         Route::get('show/{id}', 'show')->name('receipts.show');
+        Route::get('print/{id}', 'print')->name('receipts.print');
         Route::get('create/{creditAccountId?}', 'create')->name('receipts.create');
         Route::post('store', 'store')->name('receipts.store');
         Route::get('edit/{id}/{creditAccountId?}', 'edit')->name('receipts.edit');
@@ -84,6 +86,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('index/{debitAccountId?}', 'index')->name('payments.index');
         Route::get('show/{id}', 'show')->name('payments.show');
+        Route::get('print/{id}', 'print')->name('payments.print');
         Route::get('create/{debitAccountId?}', 'create')->name('payments.create');
         Route::post('store', 'store')->name('payments.store');
         Route::get('edit/{id}/{debitAccountId?}', 'edit')->name('payments.edit');
@@ -95,6 +98,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('expenses.index');
         Route::get('show/{id}', 'show')->name('expenses.show');
+        Route::get('print/{id}', 'print')->name('expenses.print');
         Route::get('create', 'create')->name('expenses.create');
         Route::post('store', 'store')->name('expenses.store');
         Route::get('edit/{id}', 'edit')->name('expenses.edit');
@@ -106,6 +110,7 @@ Route::group(['prefix' => 'accounting'], function () {
 
         Route::get('/', 'index')->name('contras.index');
         Route::get('show/{id}', 'show')->name('contras.show');
+        Route::get('print/{id}', 'print')->name('contras.print');
         Route::get('create', 'create')->name('contras.create');
         Route::post('store', 'store')->name('contras.store');
         Route::get('edit/{id}', 'edit')->name('contras.edit');
@@ -125,6 +130,15 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('/', 'index')->name('reports.profit.loss.index');
             Route::get('amounts', 'profitLossAmounts')->name('reports.profit.loss.amounts');
             Route::get('print', 'printProfitLoss')->name('reports.profit.loss.print');
+        });
+
+        Route::controller(VatTaxReportController::class)->prefix('vat-tax')->group(function () {
+
+            Route::get('/', 'index')->name('reports.vat.tax.index');
+            Route::get('input/table', 'vatTaxInputTable')->name('reports.vat.tax.input.table');
+            Route::get('output/table', 'vatTaxOutputTable')->name('reports.vat.tax.output.table');
+            Route::get('vat/tax/amounts', 'vatTaxAmounts')->name('reports.vat.tax.amounts');
+            Route::get('print', 'printVatTax')->name('reports.vat.tax.print');
         });
     });
 });

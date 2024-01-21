@@ -79,16 +79,12 @@
                                 @php
                                     $branchName = '';
                                     if ($sale->branch_id) {
-
                                         if ($sale?->branch?->parentBranch) {
-
                                             $branchName = $sale?->branch?->parentBranch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')';
                                         } else {
-
                                             $branchName = $sale?->branch?->name . '(' . $sale?->branch?->area_name . ')' . '-(' . $sale?->branch?->branch_code . ')';
                                         }
                                     } else {
-
                                         $branchName = $generalSettings['business_or_shop__business_name'];
                                     }
                                 @endphp
@@ -272,11 +268,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3 text-end pe-1"><b>{{ __("Print") }}</b></label>
-                            <div class="col-9">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
                                 <select id="print_page_size" class="form-control">
-                                    @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
-                                        <option {{ $generalSettings['add_sale_invoice_layout']->page_size == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
+                                    @foreach (\App\Enums\PrintPageSize::cases() as $item)
+                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -288,18 +284,26 @@
             <div class="modal-footer">
                 <div class="btn-box">
                     @if ($sale->sale_screen == App\Enums\SaleScreenType::AddSale->value)
-                        <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+
+                        @if (auth()->user()->can('edit_add_sale') && $sale->branch_id == auth()->user()->branch_id)
+
+                            <a href="{{ route('sales.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                        @endif
                     @elseif($sale->sale_screen == App\Enums\SaleScreenType::PosSale->value)
-                        <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+
+                        @if (auth()->user()->can('pos_edit') && $sale->branch_id == auth()->user()->branch_id)
+
+                            <a href="{{ route('sales.pos.edit', [$sale->id]) }}" class="btn btn-sm btn-secondary">{{ __('Edit') }}</a>
+                        @endif
                     @endif
 
                     @php
-                        $filename = $sale->invoice_id.'__'.$sale->date.'__'.$branchName;
+                        $filename = $sale->invoice_id . '__' . $sale->date . '__' . $branchName;
                     @endphp
 
-                    <a href="{{ route('sales.helper.print.packing.slip', [$sale->id]) }}" onclick="printPackingSlip(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn" data-filename="{{ __('Packing Slip').'_'.$filename }}">{{ __('Print Packing Slip') }}</a>
+                    <a href="{{ route('sales.helper.print.packing.slip', [$sale->id]) }}" onclick="printPackingSlip(this); return false;" class="footer_btn btn btn-sm btn-success" id="printPackingSlipBtn" data-filename="{{ __('Packing Slip') . '_' . $filename }}">{{ __('Print Packing Slip') }}</a>
 
-                    <a href="{{ route('sales.helper.print.challan', [$sale->id]) }}" onclick="printChallan(this); return false;" class="footer_btn btn btn-sm btn-success" id="PrintChallanBtn" data-filename="{{ __('Challan').'_'.$filename }}">{{ __('Print Challan') }}</a>
+                    <a href="{{ route('sales.helper.print.delivery.note', [$sale->id]) }}" onclick="printDeliveryNote(this); return false;" class="footer_btn btn btn-sm btn-success" id="printDeliveryNoteBtn" data-filename="{{ __('Delivery Note') . '_' . $filename }}">{{ __('Print Delivery Note') }}</a>
 
                     <a href="{{ route('sales.helper.related.voucher.print', $sale->id) }}" onclick="printSalesRelatedVoucher(this); return false;" class="footer_btn btn btn-sm btn-success" id="printSalesVoucherBtn" data-filename="{{ $filename }}">{{ __('Print Invoice') }}</a>
 
@@ -321,7 +325,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: {print_page_size},
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -346,7 +352,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -361,7 +368,7 @@
         });
     }
 
-    function printChallan(event) {
+    function printDeliveryNote(event) {
 
         var url = event.getAttribute('href');
         var filename = event.getAttribute('data-filename');
@@ -371,7 +378,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: {print_page_size},
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 if (!$.isEmptyObject(data.errorMsg)) {
@@ -395,7 +404,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -419,7 +429,9 @@
         $.ajax({
             url: url,
             type: 'get',
-            data: {print_page_size},
+            data: {
+                print_page_size
+            },
             success: function(data) {
 
                 $(data).printThis({
@@ -437,7 +449,8 @@
                 setTimeout(function() {
                     document.title = currentTitle;
                 }, 2000);
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 

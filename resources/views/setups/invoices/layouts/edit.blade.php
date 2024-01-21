@@ -1,9 +1,14 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element { border: 1px solid #7e0d3d; }
+        .form_element {
+            border: 1px solid #7e0d3d;
+        }
 
-        b { font-weight: 500; font-family: Arial, Helvetica, sans-serif; }
+        b {
+            font-weight: 500;
+            font-family: Arial, Helvetica, sans-serif;
+        }
     </style>
 @endpush
 @section('title', 'Edit Invoice Layout')
@@ -15,7 +20,7 @@
                     <h5>{{ __('Edit Invoice Layout') }}</h5>
                 </div>
 
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
         </div>
         <div class="p-1">
@@ -37,20 +42,6 @@
 
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4 text-end pe-1"><b>{{ __('Page Size') }}</b></label>
-
-                                        <div class="col-8">
-                                            <select name="page_size" id="page_size" class="form-control" data-next="show_business_shop_logo">
-                                                @foreach (\App\Enums\SalesInvoicePageSize::cases() as $item)
-                                                    <option {{ $item->value == $invoiceLayout->page_size ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\Setups\InvoiceLayoutService::invoicePageSizeNames($item->value) }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="input-group">
                                         <label class="col-4 text-end pe-1"><b>{{ __('Show Shop Logo') }}</b></label>
                                         <div class="col-8">
                                             <select name="show_shop_logo" id="show_shop_logo" class="form-control" data-next="show_total_in_word">
@@ -60,9 +51,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row mt-1">
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <label class="col-4 text-end pe-1"><b>{{ __('Show Total Inword') }}</b></label>
@@ -80,7 +69,7 @@
 
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>{{ __("Header Option") }}</b></p>
+                            <p class="p-1 text-primary"><b>{{ __('Header Option') }}</b></p>
                         </div>
 
                         <div class="element-body">
@@ -170,7 +159,7 @@
                                     <div class="input-group">
                                         <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Sales Order Heading') }}</b></label>
                                         <div class="col-8">
-                                            <input required type="text" name="sales_order_heading" id="sales_order_heading" class="form-control" data-next="challan_heading" value="{{ $invoiceLayout->sales_order_heading }}" placeholder="{{ __('Sales Order Heading') }}">
+                                            <input required type="text" name="sales_order_heading" id="sales_order_heading" class="form-control" data-next="delivery_note_heading" value="{{ $invoiceLayout->sales_order_heading }}" placeholder="{{ __('Sales Order Heading') }}">
                                             <span class="error error_sales_order_heading"></span>
                                         </div>
                                     </div>
@@ -180,10 +169,10 @@
                             <div class="row gx-2 mt-1">
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Challan Heading') }}</b></label>
+                                        <label class="col-4 text-end pe-1"><span class="text-danger">*</span> <b>{{ __('Delivery Note Heading') }}</b></label>
                                         <div class="col-8">
-                                            <input required type="text" name="challan_heading" id="challan_heading" class="form-control" data-next="branch_city" value="{{ $invoiceLayout->challan_heading }}" placeholder="{{ __('Challan Heading') }}">
-                                            <span class="error error_challan_heading"></span>
+                                            <input required type="text" name="delivery_note_heading" id="delivery_note_heading" class="form-control" data-next="branch_city" value="{{ $invoiceLayout->delivery_note_heading }}" placeholder="{{ __('Delivery Note Heading') }}">
+                                            <span class="error error_delivery_note_heading"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -336,7 +325,7 @@
 
                     <div class="form_element rounded mt-0 mb-1">
                         <div class="heading_area">
-                            <p class="p-1 text-primary"><b>{{ __("Field For Product") }}</b></p>
+                            <p class="p-1 text-primary"><b>{{ __('Field For Product') }}</b></p>
                         </div>
 
                         <div class="element-body">

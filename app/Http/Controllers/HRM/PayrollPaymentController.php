@@ -46,8 +46,23 @@ class PayrollPaymentController extends Controller
         return view('hrm.payroll_payments.show', compact('payment'));
     }
 
+    public function print($id, Request $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
+    {
+        $printMethodContainer = $payrollPaymentControllerMethodContainersInterface->printMethodContainer(
+            id: $id,
+            request: $request,
+            accountingVoucherService: $this->accountingVoucherService
+        );
+
+        extract($printMethodContainer);
+
+        return view('hrm.print_templates.print_payroll_payment', compact('payment', 'printPageSize'));
+    }
+
     public function create($payrollId, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('payroll_payments_create'),403);
+
         $createMethodContainer = $payrollPaymentControllerMethodContainersInterface->createMethodContainer(
             payrollId: $payrollId,
             payrollService: $this->payrollService,
@@ -66,6 +81,9 @@ class PayrollPaymentController extends Controller
         CodeGenerationServiceInterface $codeGenerator,
         PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface
     ) {
+
+        abort_if(!auth()->user()->can('payroll_payments_create'),403);
+
         $this->payrollPaymentService->storeValidation(request: $request);
 
         try {
@@ -98,7 +116,7 @@ class PayrollPaymentController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            return view('hrm.save_and_print_templates.print_payroll_payment', compact('payment'));
+            return view('hrm.print_templates.print_payroll_payment', compact('payment', 'printPageSize'));
         } else {
 
             return response()->json(['successMsg' => __('Payroll payment added successfully.')]);
@@ -107,6 +125,8 @@ class PayrollPaymentController extends Controller
 
     public function edit($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('payroll_payments_edit'),403);
+
         $editMethodContainer = $payrollPaymentControllerMethodContainersInterface->editMethodContainer(
             id: $id,
             accountingVoucherService: $this->accountingVoucherService,
@@ -122,6 +142,8 @@ class PayrollPaymentController extends Controller
 
     public function update($id, Request $request, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('payroll_payments_edit'),403);
+
         $this->payrollPaymentService->updateValidation(request: $request);
 
         try {
@@ -155,6 +177,8 @@ class PayrollPaymentController extends Controller
 
     public function delete($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)
     {
+        abort_if(!auth()->user()->can('payroll_payments_delete'),403);
+
         try {
             DB::beginTransaction();
 

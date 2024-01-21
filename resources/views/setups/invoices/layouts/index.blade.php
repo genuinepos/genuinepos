@@ -62,7 +62,10 @@
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
-                        <a href="{{ route('invoices.layouts.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                        @if (auth()->user()->can('invoice_layouts_add'))
+
+                            <a href="{{ route('invoices.layouts.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> {{ __("Add") }}</a>
+                        @endif
                     </div>
                 </div>
 

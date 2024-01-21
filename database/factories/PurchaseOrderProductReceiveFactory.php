@@ -26,7 +26,7 @@ final class PurchaseOrderProductReceiveFactory extends Factory
     {
         return [
             'order_product_id' => $this->faker->randomNumber(),
-            'purchase_challan' => $this->faker->word,
+            'delivery_note_heading' => $this->faker->word,
             'lot_number' => $this->faker->randomNumber(),
             'received_date' => $this->faker->word,
             'qty_received' => $this->faker->randomFloat(),

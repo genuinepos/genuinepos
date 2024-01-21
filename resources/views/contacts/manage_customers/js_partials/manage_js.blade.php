@@ -76,7 +76,6 @@
             {data: 'sale_return_amount', name: 'sale_return_amount', className: 'text-end fw-bold'},
             {data: 'due', name: 'due', className: 'text-end fw-bold'},
             {data: 'created_by', name: 'created_by.name', className: 'text-end fw-bold'},
-
         ],fnDrawCallback: function() {
             var total_item = sum_table_col($('.data_tbl'), 'total_item');
             $('#total_item').text(bdFormat(total_item));
@@ -505,7 +504,6 @@
 </script>
 
 <script>
-
     function getAccountClosingBalance(filterObj, parentDiv, changeLedgerTableCurrentTotal = false) {
 
         var url = "{{ route('accounts.balance', $contact?->account?->id) }}";
@@ -604,95 +602,6 @@
                 $('#detailsModal').modal('show');
                 $('.data_preloader').hide();
             }, error: function(err) {
-
-                $('.data_preloader').hide();
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                }else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                }
-            }
-        });
-    });
-
-    // Make print
-    $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-        e.preventDefault();
-
-        var body = $('.print_modal_details').html();
-
-        $(body).printThis({
-            debug: false,
-            importCSS: true,
-            importStyle: true,
-            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-            removeInline: false,
-            printDelay: 500,
-            header: null,
-        });
-    });
-
-    // Print Packing slip
-    $(document).on('click', '#PrintChallanBtn', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-
-        var url = $(this).attr('href');
-
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-
-                $('.data_preloader').hide();
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            },error: function(err) {
-
-                $('.data_preloader').hide();
-                if (err.status == 0) {
-
-                    toastr.error("{{ __('Net Connetion Error.') }}");
-                }else if (err.status == 500) {
-
-                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
-                }
-            }
-        });
-    });
-
-    // Print Packing slip
-    $(document).on('click', '#printPackingSlipBtn', function (e) {
-        e.preventDefault();
-        $('.data_preloader').show();
-
-        var url = $(this).attr('href');
-
-        $.ajax({
-            url:url,
-            type:'get',
-            success:function(data){
-
-                $('.data_preloader').hide();
-                $(data).printThis({
-                    debug: false,
-                    importCSS: true,
-                    importStyle: true,
-                    loadCSS: "{{asset('assets/css/print/sale.print.css')}}",
-                    removeInline: false,
-                    printDelay: 700,
-                    header: null,
-                });
-            },error: function(err) {
 
                 $('.data_preloader').hide();
                 if (err.status == 0) {

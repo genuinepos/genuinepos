@@ -94,7 +94,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __("List Of Attendances") }}</h6>
+                        <h6>{{ __("List of Attendances") }}</h6>
                     </div>
 
                     <div class="col-6 d-flex justify-content-end">

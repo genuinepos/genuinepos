@@ -56,7 +56,7 @@
                                                     <div class="col-md-3">
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" id="branch_id" class="form-control select2" autofocus>
-                                                            <option value="">{{ __('All') }}</option>
+                                                            <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
                                                             <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                             @foreach ($branches as $branch)
                                                                 <option data-branch_name="{{ $branch->name }}" value="{{ $branch->id }}">{{ $branch->name }}</option>

@@ -268,11 +268,11 @@
                 <div class="row g-0 mt-1">
                     <div class="col-md-6 offset-6">
                         <div class="input-group p-0">
-                            <label class="col-3 text-end pe-1"><b>{{ __('Print') }}</b></label>
-                            <div class="col-9">
+                            <label class="col-4 text-end pe-1 offset-md-6"><b>{{ __('Print') }}</b></label>
+                            <div class="col-2">
                                 <select id="print_page_size" class="form-control">
                                     @foreach (\App\Enums\PrintPageSize::cases() as $item)
-                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                        <option {{ $generalSettings['print_page_size__add_sale_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value, false) }}</option>
                                     @endforeach
                                 </select>
                             </div>

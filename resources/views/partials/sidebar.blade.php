@@ -1700,7 +1700,7 @@
                                                                 <span><i class="fas fa-chart-line"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">@lang('menu.profit_loss_account')</p>
+                                                        <p class="switch_text">{{ __("Profit Loss Account") }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1735,7 +1735,7 @@
                                                 <a href="{{ route('reports.vat.tax.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
                                                         <div class="bar-link">
-                                                            <span><i class="fas fa-balance-scale-right"></i></span>
+                                                            <span><i class="fas fa-money-bill-wave"></i></span>
                                                         </div>
                                                     </div>
                                                     <p class="switch_text">{{ __('Vat/Tax Report') }}</p>

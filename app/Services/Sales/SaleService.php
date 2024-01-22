@@ -540,6 +540,34 @@ class SaleService
         return $query;
     }
 
+    public function printTemplateBySaleStatus(object $request, object $sale, object $customerCopySaleProducts): array|object
+    {
+        $printPageSize = $request->print_page_size;
+        if ($request->status == SaleStatus::Final->value) {
+
+            $changeAmount = 0;
+            $receivedAmount = $request->received_amount;
+
+            return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Draft->value) {
+
+            $draft = $sale;
+
+            return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Quotation->value) {
+
+            $quotation = $sale;
+
+            return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
+        } elseif ($request->status == SaleStatus::Order->value) {
+
+            $order = $sale;
+            $receivedAmount = $request->received_amount;
+
+            return view('sales.print_templates.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts', 'printPageSize'));
+        }
+    }
+
     public function addSaleValidation(object $request): ?array
     {
         return $request->validate([

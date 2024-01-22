@@ -81,16 +81,6 @@
             </div>
         </div>
     </div>
-
-    <div class="col-md-6">
-        <div class="input-group">
-            <label class="col-4"><b>{{ __('Thumbnail Photo') }}</b> </label>
-            <div class="col-8">
-                <input type="file" name="photo" class="form-control" id="photo">
-                <span class="error error_photo"></span>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="row mt-1">

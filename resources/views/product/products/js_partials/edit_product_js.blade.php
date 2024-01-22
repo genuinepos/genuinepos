@@ -1,7 +1,16 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-<script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
 <script>
     $('.select2').select2();
+
+    $('#photo').dropify({
+        messages: {
+            'default': 'Drag and drop a file here or click',
+            'replace': 'Drag and drop or click to replace',
+            'remove':  'Remove',
+            'error':   'Ooops, something wrong happended.'
+        }
+    });
 
     // Set parent category in parent category form field
     $('.combo_price').hide();

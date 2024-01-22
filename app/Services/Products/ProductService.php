@@ -398,7 +398,7 @@ class ProductService
         $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
-        $addProduct->alert_quantity = $request->alert_quantity;
+        $addProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity : 0;
         $addProduct->tax_ac_id = $request->tax_ac_id;
         $addProduct->tax_type = $request->tax_type ? $request->tax_type : 1;
         $addProduct->product_condition = $request->product_condition;

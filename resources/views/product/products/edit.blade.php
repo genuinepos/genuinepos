@@ -1,7 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         .dataTables_filter {width: 50%!important;}
         .dataTables_filter input {width: 50%;}
@@ -13,16 +12,14 @@
             text-align: right;
             padding-right: 10px;
         }
-        .checkbox_input_wrap {
-            text-align: right;
-        }
+        .checkbox_input_wrap { text-align: right;}
 
-        table.table.modal-table.table-sm th {
-            font-size: 9px;
-        }
+        table.table.modal-table.table-sm th { font-size: 9px; }
+        .dropify-wrapper { height: 100px!important;}
+        .form_element {margin: 0px!important;}
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @section('title', 'Edit Product - ')
@@ -41,7 +38,7 @@
             @csrf
             <section class="p-lg-1 p-1">
                 <div class="row g-1">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 gy-1">
@@ -211,8 +208,7 @@
                                                                     @foreach ($product->productAccessBranches as $productAccessBranche)
                                                                         {{ $branch->id == $productAccessBranche->branch_id ? 'SELECTED' : '' }}
                                                                     @endforeach
-                                                                    value="{{ $branch->id }}"
-                                                                    >
+                                                                    value="{{ $branch->id }}">
                                                                     {{ $branch->name }}
                                                                 </option>
                                                             @endforeach
@@ -254,7 +250,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                             <div class="element-body">
                                 <div id="form_part">
@@ -345,7 +341,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Thumbnail Photo") }}</b> </label>
                                                 <div class="col-8">
@@ -353,7 +349,7 @@
                                                     <span class="error error_photo"></span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     @if ($product->is_variant == App\Enums\BooleanType::True->value)
@@ -439,7 +435,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                             <div class="element-body">
                                 <div class="row gx-2 gy-1">
@@ -523,10 +519,22 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
-                        <div class="form_element rounded mt-0 mb-2">
+                    <div class="col-md-8">
+                        <div class="form_element rounded mt-0">
                             <div class="element-body">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <label class="col-2"><b>{{ __("Thumbnail Photo") }}</b> </label>
+                                            <div class="col-10">
+                                                <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif" data-default-file="{{ asset('uploads/product/thumbnail/' . $product->thumbnail_photo) }}">
+                                                <span class="error error_photo"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1">
                                     <div class="col-md-12">
                                         <div class="input-group">
                                             <label class="col-2"><b>{{ __("Description") }}</b></label>
@@ -540,7 +548,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 d-flex justify-content-end">
+                    <div class="col-md-8 d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button product_loading_btn d-hide"><i class="fas fa-spinner"></i> <span>{{ __("Loading") }}...</span> </button>
                             <button type="button" class="btn btn-success product_submit_button p-1" id="save_changes">{{ __("Save Changes") }}</button>

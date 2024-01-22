@@ -1,38 +1,34 @@
 @extends('layout.master')
 @push('stylesheets')
     <style>
-        .form_element {border: 1px solid #7e0d3d;}
         b{font-weight: 500;font-family: Arial, Helvetica, sans-serif;}
         .dataTables_filter {width: 50%!important;}
         .dataTables_filter input {width: 50%;}
+
         label.col-2,
         label.col-3,
         label.col-4,
         label.col-5,
-        label.col-6 {
-            text-align: right;
-            padding-right: 10px;
-        }
-        .checkbox_input_wrap {
-            text-align: right;
-        }
+        label.col-6 { text-align: right; padding-right: 10px; }
 
-        table.table.modal-table.table-sm th {
-            font-size: 9px;
-        }
+        .checkbox_input_wrap {  text-align: right; }
+
+        table.table.modal-table.table-sm th { font-size: 9px; }
+
+        .dropify-wrapper { height: 100px!important;}
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('backend/asset/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
-@section('title', isset($product) ? 'Duplicate Product - ' : 'Add Product - ')
+@section('title', isset($product) ? __('Duplicate Product - ') : __('Add Product - '))
 
 @section('content')
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name g-1">
                 <div class="col-md-4">
-                    <h6>{{ isset($product) ? __('Duplicate Product')  :  __("Add Product") }}</h6>
+                    <h6>{{ isset($product) ? __('Duplicate Product') : __("Add Product") }}</h6>
                 </div>
 
                 <div class="col-md-4">
@@ -54,7 +50,7 @@
             <input type="hidden" id="code_prefix" value="{{ $generalSettings['product__product_code_prefix'] }}">
             <section class="p-lg-1 p-1">
                 <div class="row g-1">
-                    <div class="col-lg-8">
+                    <div class="col-lg-9">
                         <div class="col-md-12">
                             <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                                 <div class="element-body">
@@ -202,7 +198,7 @@
                                             <div class="input-group">
                                                 <label class="col-4"><b>{{ __("Alert Quantity") }}</b></label>
                                                 <div class="col-8">
-                                                    <input type="number" step="any" name="alert_quantity" class="form-control" id="alert_quantity" value="{{ isset($product) ? $product->alert_quantity : 0 }}" data-next="warranty_id" autocomplete="off">
+                                                    <input type="number" step="any" name="alert_quantity" class="form-control" id="alert_quantity" value="{{ isset($product) ? $product->alert_quantity : '' }}" data-next="warranty_id" placeholder="0" autocomplete="off">
                                                     <span class="error error_alert_quantity"></span>
                                                 </div>
                                             </div>
@@ -280,7 +276,7 @@
 
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <label class="col-4"><b>{{ __("Stock Type") }} <i data-bs-toggle="tooltip" data-bs-placement="top" title="@lang('menu.stock_type_msg')" class="fas fa-info-circle tp"></i></b> </label>
+                                                <label class="col-4"><b>{{ __("Stock Type") }}</b></label>
                                                 <div class="col-8">
                                                     <select class="form-control" name="is_manage_stock" id="is_manage_stock" data-next="product_cost">
                                                         @php
@@ -386,6 +382,18 @@
                                         <div class="row gx-2 mt-1">
                                             <div class="col-md-6">
                                                 <div class="input-group">
+                                                    <label class="col-4"><b>{{ __("Has Multiple Unit?") }}</b> </label>
+                                                    <div class="col-8">
+                                                        <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="type">
+                                                            <option value="0">{{ __("No") }}</option>
+                                                            <option value="1">{{ __("Yes") }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Has Variant?") }}</b> </label>
                                                     <div class="col-8">
                                                         <select name="is_variant" class="form-control" id="is_variant" data-next="type">
@@ -398,13 +406,182 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <label class="col-4"><b>{{ __("Thumbnail Photo") }}</b> </label>
-                                                    <div class="col-8">
-                                                        <input type="file" name="photo" class="form-control" id="photo">
-                                                        <span class="error error_photo"></span>
+                                        <div class="row mt-1">
+                                            <div class="multi_unit_create_area">
+                                                <hr class="p-0 m-0 my-1 mx-1">
+                                                <div class="row align-items-end">
+
+                                                    <div class="col-md-6">
+                                                        <p class="fw-bold">{{ __("Set Multiple Unit") }}</p>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="add_more_btn">
+                                                            <a href="#" id="add_more_unit_btn" class="btn btn-sm btn-primary float-end">{{ __("Add More") }}</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive mt-1">
+                                                            <table class="table modal-table table-sm">
+                                                                <thead>
+                                                                    <tr class="text-center bg-primary variant_header">
+                                                                        <th class="text-white text-start">{{ __("By") }}</th>
+                                                                        <th class="text-white text-start"></th>
+                                                                        <th class="text-white text-start">{{ __("Quantity") }}</th>
+                                                                        <th class="text-white text-start">{{ __("To") }}</th>
+                                                                        <th class="text-white text-start">{{ __("Unit Cost (Exc. Tax)") }}</th>
+                                                                        <th class="text-white text-start">{{ __("Unit Cost Int. Tax") }}</th>
+                                                                        <th class="text-white text-start">{{ __('Price (Exc. Tax)') }}</th>
+                                                                        <th><i class="fas fa-trash-alt text-white"></i></th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody class="multiple_unit_body">
+                                                                    <tr>
+                                                                        <td class="text-start" style="min-width: 127px;">
+                                                                            <div class="row align-items-end">
+                                                                                <div class="col-md-2">
+                                                                                    <p class="fw-bold p-1">1</p>
+                                                                                </div>
+                                                                                <div class="col-md-10">
+                                                                                    <select required class="form-control select2" style="min-width: 110px !important;">
+                                                                                        <option value="">{{ __("Unit") }}</option>
+                                                                                        @foreach ($units as $unit)
+                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">=</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">Pieces(Pc)</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    {{-- <tr>
+                                                                        <td class="text-start">
+                                                                            <div class="row align-items-end">
+                                                                                <div class="col-md-2">
+                                                                                    <p class="fw-bold p-1">1</p>
+                                                                                </div>
+
+                                                                                <div class="col-md-10">
+                                                                                    <select required class="form-control select2">
+                                                                                        <option value="">{{ __("Select Unit") }}</option>
+                                                                                        @foreach ($units as $unit)
+                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">=</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">Leap(Lp)</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="text-start">
+                                                                            <div class="row align-items-end">
+                                                                                <div class="col-md-2">
+                                                                                    <p class="fw-bold p-1">1</p>
+                                                                                </div>
+
+                                                                                <div class="col-md-10">
+                                                                                    <select required class="form-control select2">
+                                                                                        <option value="">{{ __("Select Unit") }}</option>
+                                                                                        @foreach ($units as $unit)
+                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">=</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <p class="fw-bold">Packet(Pkt)</p>
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
+                                                                        </td>
+
+                                                                        <td class="text-start">
+                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
+                                                                        </td>
+                                                                    </tr> --}}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,10 +589,16 @@
 
                                         <div class="row mt-1">
                                             <div class="dynamic_variant_create_area {{ $productIsVariant == 0 ? 'd-hide' : '' }}">
-                                                <div class="row">
-                                                    <div class="col-md-12">
+                                                <hr class="p-0 m-0 my-1 mx-1">
+                                                <div class="row align-items-end">
+
+                                                    <div class="col-md-6">
+                                                        <p class="fw-bold">{{ __("Create Variant") }}</p>
+                                                    </div>
+
+                                                    <div class="col-md-6">
                                                         <div class="add_more_btn">
-                                                            <a id="add_more_variant_btn" class="btn btn-sm btn-primary float-end" href="#">{{ __("Add More") }}</a>
+                                                            <a href="#" id="add_more_variant_btn" class="btn btn-sm btn-primary float-end">{{ __("Add More") }}</a>
                                                         </div>
                                                     </div>
 
@@ -524,9 +707,21 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form_element rounded mt-0 mb-2">
+                            <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                                 <div class="element-body">
                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <label class="col-2"><b>{{ __("Thumbnail Photo") }}</b> </label>
+                                                <div class="col-10">
+                                                    <input type="file" name="photo" class="form-control" id="photo" data-allowed-file-extensions="png jpeg jpg gif">
+                                                    <span class="error error_photo"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="input-group">
                                                 <label class="col-2"><b>{{ __("Description") }}</b></label>
@@ -555,7 +750,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">

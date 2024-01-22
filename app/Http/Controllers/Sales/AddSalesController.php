@@ -110,7 +110,6 @@ class AddSalesController extends Controller
         $this->saleService->addSaleValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $storeMethodContainer = $addSaleControllerMethodContainersInterface->storeMethodContainer(
@@ -145,30 +144,7 @@ class AddSalesController extends Controller
 
         if ($request->action == 'save_and_print') {
 
-            $printPageSize = $request->print_page_size;
-            if ($request->status == SaleStatus::Final->value) {
-
-                $changeAmount = 0;
-                $receivedAmount = $request->received_amount;
-
-                return view('sales.print_templates.sale_print', compact('sale', 'receivedAmount', 'changeAmount', 'customerCopySaleProducts', 'printPageSize'));
-            } elseif ($request->status == SaleStatus::Draft->value) {
-
-                $draft = $sale;
-
-                return view('sales.print_templates.draft_print', compact('draft', 'customerCopySaleProducts', 'printPageSize'));
-            } elseif ($request->status == SaleStatus::Quotation->value) {
-
-                $quotation = $sale;
-
-                return view('sales.print_templates.quotation_print', compact('quotation', 'customerCopySaleProducts', 'printPageSize'));
-            } elseif ($request->status == SaleStatus::Order->value) {
-
-                $order = $sale;
-                $receivedAmount = $request->received_amount;
-
-                return view('sales.print_templates.order_print', compact('order', 'receivedAmount', 'customerCopySaleProducts', 'printPageSize'));
-            }
+            return $this->saleService->printTemplateBySaleStatus(request: $request, sale: $sale, customerCopySaleProducts: $customerCopySaleProducts);
         } else {
 
             return response()->json(['saleFinalMsg' => __('Sale created successfully')]);
@@ -203,7 +179,6 @@ class AddSalesController extends Controller
         $this->saleService->addSaleValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $updateMethodContainer = $addSaleControllerMethodContainersInterface->updateMethodContainer(
@@ -243,7 +218,6 @@ class AddSalesController extends Controller
         abort_if(!auth()->user()->can('delete_add_sale'), 403);
 
         try {
-
             DB::beginTransaction();
 
             $deleteMethodContainer = $addSaleControllerMethodContainersInterface->deleteMethodContainer(

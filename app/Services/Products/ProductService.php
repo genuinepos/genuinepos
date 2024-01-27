@@ -412,6 +412,7 @@ class ProductService
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = isset($request->weight) ? $request->weight : null;
+        $addProduct->has_multiple_unit = $request->has_multiple_unit;
 
         if ($request->type == 1) {
 
@@ -689,6 +690,53 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
+    }
+
+    public function productStoreValidation(object $request)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code',
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == BooleanType::True->value) {
+
+            $request->validate(
+                [
+                    'variant_image.*' => 'sometimes|image|max:2048',
+                ],
+            );
+        }
+    }
+
+    public function productUpdateValidation(object $request, int $id)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code,' . $id,
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == BooleanType::True->value) {
+
+            $request->validate(
+
+                ['variant_image.*' => 'sometimes|image|max:2048'],
+            );
+        }
     }
 
     public function getLastProductSerialCode()

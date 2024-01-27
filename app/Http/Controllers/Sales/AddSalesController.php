@@ -240,7 +240,7 @@ class AddSalesController extends Controller
         }
 
         $voucherName = SaleStatus::tryFrom($deleteMethodContainer->status)->name;
-        $__voucherName = $voucherName == 'Final' ? 'Sale' : $voucherName;
+        $__voucherName = $voucherName == 'Final' ? __('Sale') : $voucherName;
 
         return response()->json(__("${__voucherName} deleted Successfully."));
     }

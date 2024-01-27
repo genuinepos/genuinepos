@@ -1,9 +1,9 @@
-<x-saas::admin-layout title="Create Business">
+<x-saas::admin-layout title="Add Customer">
     <div class="row">
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
-                    <h5>{{ __('Create Business') }}</h5>
+                    <h5>{{ __('Add Customer') }}</h5>
                 </div>
                 <div class="panel-body">
                     <form method="POST" action="{{ route('saas.tenants.store') }}" id="tenantStoreForm">

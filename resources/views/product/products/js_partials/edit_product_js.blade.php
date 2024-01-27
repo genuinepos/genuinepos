@@ -3,6 +3,8 @@
 <script>
     $('.select2').select2();
 
+    var units = @json($units);
+
     $('#photo').dropify({
         messages: {
             'default': 'Drag and drop a file here or click',
@@ -18,33 +20,32 @@
 
     function costCalculate() {
 
-        var tax_percent = $('#tax_ac_id').find('option:selected').data('tax_percent');
-        var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
-        var tax_type = $('#tax_type').val();
-        var calc_product_cost_tax = parseFloat(product_cost) / 100 * parseFloat(tax_percent);
+        var taxPercent = $('#tax_ac_id').find('option:selected').data('tax_percent');
+        var productCostExcTax = $('#product_cost').val() ? $('#product_cost').val() : 0;
+        var taxType = $('#tax_type').val();
+        var taxAmount = parseFloat(productCostExcTax) / 100 * parseFloat(taxPercent);
 
         if (tax_type == 2) {
 
-            var __tax_percent = 100 + parseFloat(tax_percent);
-            var calc_tax = parseFloat(product_cost) / parseFloat(__tax_percent) * 100;
-            calc_product_cost_tax = parseFloat(product_cost) - parseFloat(calc_tax);
+            var inclusiveTaxPercent = 100 + parseFloat(taxPercent);
+            var inclusiveTax = parseFloat(productCostExcTax) / parseFloat(inclusiveTaxPercent) * 100;
+            taxAmount = parseFloat(productCostExcTax) - parseFloat(inclusiveTax);
         }
 
-        var product_cost_with_tax = parseFloat(product_cost) + calc_product_cost_tax;
-        $('#product_cost_with_tax').val(parseFloat(product_cost_with_tax).toFixed(2));
+        var productCostIncTax = parseFloat(productCostExcTax) + parseFloat(taxAmount);
+        $('#product_cost_with_tax').val(parseFloat(productCostIncTax).toFixed(2));
         var profit = $('#profit').val() ? $('#profit').val() : 0;
 
         if (parseFloat(profit) > 0) {
 
-            var calculate_profit = parseFloat(product_cost) / 100 * parseFloat(profit);
-            var product_price = parseFloat(product_cost) + parseFloat(calculate_profit);
-            $('#product_price').val(parseFloat(product_price).toFixed(2));
+            var profitAmount = parseFloat(product_cost) / 100 * parseFloat(profit);
+            var productPriceExcTax = parseFloat(productCostExcTax) + parseFloat(profitAmount);
+            $('#product_price').val(parseFloat(productPriceExcTax).toFixed(2));
         }
 
         // calc package product profit
         var netTotalComboPrice = $('#total_combo_price').val() ? $('#total_combo_price').val() : 0;
-        var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(
-            netTotalComboPrice);
+        var calcTotalComboPrice = parseFloat(netTotalComboPrice) / 100 * parseFloat(profit) + parseFloat(netTotalComboPrice);
         $('#combo_price').val(parseFloat(calcTotalComboPrice).toFixed(2));
     }
 
@@ -55,13 +56,13 @@
 
     $(document).on('input', '#product_price', function() {
 
-        var selling_price = $(this).val() ? $(this).val() : 0;
-        var product_cost = $('#product_cost').val() ? $('#product_cost').val() : 0;
-        var profitAmount = parseFloat(selling_price) - parseFloat(product_cost);
-        var __cost = parseFloat(product_cost) > 0 ? parseFloat(product_cost) : parseFloat(profitAmount);
-        var calcProfit = parseFloat(profitAmount) / parseFloat(__cost) * 100;
-        var __calcProfit = calcProfit ? calcProfit : 0;
-        $('#profit').val(parseFloat(__calcProfit).toFixed(2));
+        var productPriceExcTax = $(this).val() ? $(this).val() : 0;
+        var productCostExcTax = $('#product_cost').val() ? $('#product_cost').val() : 0;
+        var profitAmount = parseFloat(productPriceExcTax) - parseFloat(productCostExcTax);
+        var __cost = parseFloat(productCostExcTax) > 0 ? parseFloat(productCostExcTax) : parseFloat(profitAmount);
+        var profitPercent = parseFloat(profitAmount) / parseFloat(__cost) * 100;
+        var __profitPercent = profitPercent ? profitPercent : 0;
+        $('#profit').val(parseFloat(__profitPercent).toFixed(2));
     });
 
     $(document).on('change', '#tax_ac_id', function() {
@@ -77,172 +78,6 @@
     $(document).on('input', '#profit', function() {
 
         costCalculate();
-    });
-
-    // Variant all functionality
-    var variantsWithChild = @json($bulkVariants);
-
-    var variant_row_index = 0;
-    $(document).on('change', '#variants', function() {
-        var id = $(this).val();
-        var parentTableRow = $(this).closest('tr');
-        variant_row_index = parentTableRow.index();
-
-        $('.modal_variant_child').empty();
-
-        var html = '';
-
-        var variant = variantsWithChild.filter(function(variant) {
-            return variant.id == id;
-        });
-
-        $.each(variant[0].bulk_variant_child, function(key, child) {
-            html += '<li class="modal_variant_child_list">';
-            html += '<a class="select_variant_child" data-child="' + child.name + '" href="#">' + child.name + '</a>';
-            html += '</li>';
-        });
-
-        $('.modal_variant_child').html(html);
-        $('#VairantChildModal').modal('show');
-        $(this).val('');
-    });
-
-    $(document).on('click', '.select_variant_child', function(e) {
-
-        e.preventDefault();
-        var child = $(this).data('child');
-        var parent_tr = $('.dynamic_variant_body tr:nth-child(' + (variant_row_index + 1) + ')');
-        var child_value = parent_tr.find('#variant_combination').val();
-        var filter = child_value == '' ? '' : ',';
-        var variant_combination = parent_tr.find('#variant_combination').val(child_value + filter + child);
-        $('#VairantChildModal').modal('hide');
-    });
-
-    $(document).on('input', '#variant_costing', function() {
-
-        var parentTableRow = $(this).closest('tr');
-        variant_row_index = parentTableRow.index();
-        calculateVariantAmount(variant_row_index);
-    });
-
-    $(document).on('input', '#variant_profit', function() {
-
-        var parentTableRow = $(this).closest('tr');
-        variant_row_index = parentTableRow.index();
-        calculateVariantAmount(variant_row_index);
-    });
-
-    function calculateVariantAmount(variant_row_index) {
-
-        var parent_tr = $('.dynamic_variant_body tr:nth-child(' + (variant_row_index + 1) + ')');
-        var tax = $('#tax_ac_id').find('option:selected').data('tax_percent');
-        var variant_costing = parent_tr.find('#variant_costing');
-        var variant_costing_with_tax = parent_tr.find('#variant_costing_with_tax');
-        var variant_profit = parent_tr.find('#variant_profit').val() ? parent_tr.find('#variant_profit').val() : 0.00;
-        var variant_price_exc_tax = parent_tr.find('#variant_price_exc_tax');
-
-        var tax_rate = parseFloat(variant_costing.val()) / 100 * tax;
-        var cost_with_tax = parseFloat(variant_costing.val()) + tax_rate;
-        variant_costing_with_tax.val(parseFloat(cost_with_tax).toFixed(2));
-
-        var profit = parseFloat(variant_costing.val()) / 100 * parseFloat(variant_profit) + parseFloat(variant_costing.val());
-        variant_price_exc_tax.val(parseFloat(profit).toFixed(2));
-    }
-
-    // Get default profit
-    var defaultProfit = {{ $generalSettings['business_or_shop__default_profit'] > 0 ? $generalSettings['business_or_shop__default_profit'] : 0 }};
-
-    $(document).on('click', '#add_more_variant_btn', function(e) {
-        e.preventDefault();
-
-        var product_cost = $('#product_cost').val();
-        var product_cost_with_tax = $('#product_cost_with_tax').val();
-        var profit = $('#profit').val();
-        var product_price = $('#product_price').val();
-        var html = '';
-        html += '<tr id="more_new_variant">';
-        html += '<td>';
-        html += '<select class="form-control" name="" id="variants">';
-        html += '<option value="">' + "{{ __('Create Combination') }}" + '</option>';
-
-        $.each(variantsWithChild, function(key, val) {
-
-            html += '<option value="' + val.id + '">' + val.name + '</option>';
-        });
-
-        html += '</select>';
-        html += '<input type="text" name="variant_combinations[]" id="variant_combination" class="form-control fw-bold" placeholder="' + "{{ __('Variant Combination') }}" + '" required>';
-        html += '<input type="hidden" name="product_variant_ids[]">';
-        html += '</td>';
-        html += '<td><input type="text" name="variant_codes[]" id="variant_code" class="form-control new_variant_code fw-bold" placeholder="' + "{{ __('Variant Code') }}" + '">';
-        html += '</td>';
-        html += '<td>';
-        html += '<input required type="number" step="any" name="variant_costings[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Cost Exc. Tax') }}" + '" id="variant_costing" value="' + parseFloat(product_cost).toFixed(2) + '">';
-        html += '</td>';
-        html += '<td>';
-        html += '<input required type="number" step="any" name="variant_costings_with_tax[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Cost Inc. Tax') }}" + '" id="variant_costing_with_tax" value="' + parseFloat(product_cost_with_tax).toFixed(2) + '">';
-        html += '</td>';
-        html += '<td>';
-        html += '<input required type="number" step="any" name="variant_profits[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Profit Margin') }}" + '" value="' + parseFloat(profit).toFixed(2) + '" id="variant_profit">';
-        html += '</td>';
-        html += '<td>';
-        html += '<input required type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="' + "{{ __('Variant Price Exc. Tax') }}" + '" id="variant_price_exc_tax" value="' + parseFloat(product_price).toFixed(2) + '">';
-        html += '</td>';
-        html += '<td>';
-        html += '<input type="file" name="variant_image[]" class="form-control" id="variant_image">';
-        html += '</td>';
-        html += '<td><a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a></td>';
-        html += '</tr>';
-        $('.dynamic_variant_body').prepend(html);
-
-        regenerateVariantCode();
-    });
-    // Variant all functionality end
-
-    function regenerateVariantCode() {
-
-        var old_variant_code = document.querySelectorAll('.old_variant_code');
-        var oldVariantCode = Array.from(old_variant_code);
-        var oldVariantCodeLength = oldVariantCode.length;
-
-        var allVariantSerial = [];
-        old_variant_code.forEach(function(sl) {
-
-            var val = sl.value;
-            var splitVal = val.split("-");
-
-            if (splitVal[1] != undefined) {
-
-                allVariantSerial.push(splitVal[1]);
-            }
-        });
-
-        var maxSerial = Math.max(0, ...allVariantSerial);
-
-        var code = $('#code').val();
-        var current_product_code = $('#current_product_code').val();
-
-        var newVariantCodes = document.querySelectorAll('.new_variant_code');
-        var newVariantCodesArray = Array.from(newVariantCodes);
-        var reversed = newVariantCodesArray.reverse();
-
-        // var length = variantCodesArray.length;
-        var length = newVariantCodesArray.length;
-        var i = length;
-        for (var index = length - 1; index >= 0; index--) {
-
-            var variant_code = code ? code + '-' + (i + maxSerial) : current_product_code + '-' + (i + maxSerial);
-            reversed[index].value = variant_code;
-            i--;
-        }
-    }
-
-    // Romove variant table row
-    $(document).on('click', '#variant_remove_btn', function(e) {
-
-        e.preventDefault();
-        $(this).closest('tr').remove();
-        regenerateVariantCode();
     });
 
     // call jquery method
@@ -356,8 +191,7 @@
 
                         toastr.error(data.errorMsg);
                     }
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.loading_button').addClass('d-hide');
                     $('.error').html('');
@@ -572,5 +406,270 @@
                 }
             }
         });
+    });
+</script>
+
+<script>
+    $(document).on('change', '#unit_id', function(e) {
+
+        var baseUnitId = $(this).val();
+        var baseUnitName = $(this).find('option:selected').data('main_unit_name');
+        if (baseUnitId == '') {
+
+            $('.multi_unit_create_area').hide();
+            $('#has_multiple_unit').val(0);
+            $('#multiple_unit_body').empty();
+            $('.set_variant_multiple_units').empty();
+            return;
+        }
+
+        $('#multiple_unit_body').empty();
+        $('.set_variant_multiple_units').empty();
+
+        var html = '';
+        html += '<tr>';
+        html += '<td class="text-start" style="min-width: 100px;">';
+        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 '+baseUnitName+'</span>';
+        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="'+baseUnitId+'">';
+        html += '<input type="hidden" name="product_unit_id[]">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<p class="fw-bold">X</p>';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
+        html += '</td>';
+
+        html += '<td class="text-start" style="min-width: 127px;">';
+        html += '<div class="row align-items-end">';
+        html += '<div class="col-md-2">';
+        html += '<p class="fw-bold p-1">1</p>';
+        html += '</div>';
+        html += '<div class="col-md-10">';
+        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id" id="assigned_unit_id" style="min-width: 110px !important;">';
+        html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
+        units.forEach(function(unit) {
+
+            html += '<option data-assigned_unit_name="'+unit.name+'" value="' + unit.id + '">' + unit.name + '</option>';
+        });
+        html += '</select>';
+        html += '</div>';
+        html += '</div>';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+
+        html += '</td>';
+        html += '<td class="text-start">';
+        html += '<a href="#" id="unit_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>';
+        html += '</td>';
+        html += '</tr>';
+
+        $('#multiple_unit_body').append(html);
+        $('.assigned_unit_id').select2();
+    });
+
+    $(document).on('change', '#has_multiple_unit', function(e) {
+
+        var baseUnitId = $('#unit_id').val();
+        $('.multi_unit_create_area').hide();
+        if (baseUnitId == '') {
+
+            toastr.error("{{ __('Please select an unit first.') }}");
+            $(this).val(0);
+            return;
+        }
+
+        if ($(this).val() == 1) {
+
+            $('.multi_unit_create_area').show();
+        }
+    });
+
+    var count = 0;
+    $(document).on('click', '#add_more_unit_btn', function(e) {
+        e.preventDefault();
+
+        var baseUnitId = $('#unit_id').val();
+        var baseUnitName = $('#unit_id').find('option:selected').data('main_unit_name');
+
+        var assignedUnitIds = document.querySelectorAll('.assigned_unit_id');
+        var length = assignedUnitIds.length;
+        var lastIndex = length - 1;
+
+        if (length > 0) {
+
+            baseUnitId = $(assignedUnitIds[lastIndex]).val();
+            baseUnitName = $(assignedUnitIds[lastIndex]).find('option:selected').data('assigned_unit_name');
+        }
+
+        lastBaseUnitId = $(assignedUnitIds[lastIndex]).val();
+        lastAssignedUnitQuantity = $(assignedUnitIds[lastIndex]).val();
+        if (length > 0 && lastBaseUnitId == '') {
+
+            toastr.error("{{ __('To unit is not assigned in the last conversion.') }}", "{{ __('Set Multiple Unit') }}");
+            return;
+        }
+
+        var baseUnitQuantities = document.querySelectorAll('#assigned_unit_quantity');
+        lastAssignedUnitQuantity = $(baseUnitQuantities[lastIndex]).val();
+
+        if (length > 0 && (lastAssignedUnitQuantity == '' || lastAssignedUnitQuantity == 0)) {
+
+            var msg = lastAssignedUnitQuantity == '' ? "{{ __('Quantity is empty in the last conversion.') }}" : "{{ __('Quantity is 0.00 in the last conversion.') }}";
+            toastr.error(msg, "{{ __('Set Multiple Unit') }}");
+            return;
+        }
+
+        var html = '';
+        html += '<tr>';
+        html += '<td class="text-start" style="min-width: 100px;">';
+        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 '+baseUnitName+'</span>';
+        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="'+baseUnitId+'">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<p class="fw-bold">X</p>';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
+        html += '</td>';
+
+        html += '<td class="text-start" style="min-width: 127px;">';
+        html += '<div class="row align-items-end">';
+        html += '<div class="col-md-2">';
+        html += '<p class="fw-bold p-1">1</p>';
+        html += '</div>';
+        html += '<div class="col-md-10">';
+        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id" id="assigned_unit_id' + count + '" style="min-width: 110px !important;">';
+        html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
+        units.forEach(function(unit) {
+
+            html += '<option data-assigned_unit_name="'+unit.name+'" value="' + unit.id + '">' + unit.name + '</option>';
+        });
+        html += '</select>';
+        html += '</div>';
+        html += '</div>';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '</td>';
+
+        html += '<td class="text-start">';
+        html += '<input required type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="hidden" name="assigned_unit_profit_margins[]" id="assigned_unit_profit_margin">';
+
+        html += '</td>';
+        html += '<td class="text-start">';
+        html += '<a href="#" id="unit_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>';
+        html += '</td>';
+        html += '</tr>';
+
+        $('#multiple_unit_body').append(html);
+        $('#assigned_unit_id' + count, '#multiple_unit_body').select2();
+        count++;
+    });
+
+    $(document).on('input', '#assigned_unit_quantity', function(e) {
+
+        var tr = $(this).closest('tr');
+        calculateMultipleUnitCostAndPrice(tr);
+    });
+
+    $(document).on('input', '#assigned_unit_cost_exc_tax', function(e) {
+
+        var tr = $(this).closest('tr');
+        calculateMultipleUnitCostAndPrice(tr, false);
+    });
+
+    function calculateMultipleUnitCostAndPrice(tr, isAutoCalculateUnitCostAndPrice = true) {
+
+        var currentTr = tr;
+        var defaulUnitCostExcTax = $('#product_cost').val() ? $('#product_cost').val() : 0;
+        var taxPercent = $('#tax_ac_id').find('option:selected').data('tax_percent') ? $('#tax_ac_id').find('option:selected').data('tax_percent') : 0;
+        var taxType = $('#tax_type').val() ? $('#tax_type').val() : 1;
+        var defaulUnitPriceExcTax = $('#product_price').val() ? $('#product_price').val() : 0;
+
+        var previousTr = currentTr.prev();
+        var previousBaseUnitMeltiplier = previousTr.find('#base_unit_multiplier').val() ? previousTr.find('#base_unit_multiplier').val() : 1;
+        var currentAssignedUnitQuantity = currentTr.find('#assigned_unit_quantity').val() ? currentTr.find('#assigned_unit_quantity').val() : 0;
+        var currentBaseUnitMultiplier = parseFloat(currentAssignedUnitQuantity) * parseFloat(previousBaseUnitMeltiplier);
+        currentTr.find('#base_unit_multiplier').val(parseFloat(currentBaseUnitMultiplier));
+
+        var assignedUnitCostExcTax = 0;
+        if (parseFloat(defaulUnitCostExcTax) > 0) {
+
+            assignedUnitCostExcTax = parseFloat(defaulUnitCostExcTax) * parseFloat(currentBaseUnitMultiplier);
+            var taxAmount = (parseFloat(assignedUnitCostExcTax) / 100) * parseFloat(taxPercent);
+
+            if (taxType == 2) {
+
+                __taxPercent = 100 + parseFloat(taxPercent);
+                var inclusiveTaxAmount = parseFloat(assignedUnitCostExcTax) / parseFloat(__taxPercent) * 100;
+                taxAmount = parseFloat(assignedUnitCostExcTax) - parseFloat(inclusiveTaxAmount);
+            }
+
+            var assignedUnitCostIncTax = parseFloat(assignedUnitCostExcTax) + parseFloat(taxAmount);
+
+            if (isAutoCalculateUnitCostAndPrice == true) {
+
+                __assignedUnitCostExcTax = assignedUnitCostExcTax > 0 ? parseFloat(assignedUnitCostExcTax).toFixed(2) : '';
+                currentTr.find('#assigned_unit_cost_exc_tax').val(__assignedUnitCostExcTax);
+                __assignedUnitCostIncTax = assignedUnitCostIncTax > 0 ? parseFloat(assignedUnitCostIncTax).toFixed(2) : '';
+                currentTr.find('#assigned_unit_cost_inc_tax').val(parseFloat(__assignedUnitCostIncTax).toFixed(2));
+            }
+        }
+
+        if (defaulUnitPriceExcTax > 0) {
+
+            var assignedUnitPriceExcTax = parseFloat(defaulUnitPriceExcTax) * parseFloat(currentBaseUnitMultiplier);
+            if (isAutoCalculateUnitCostAndPrice == true) {
+
+                currentTr.find('#assigned_unit_price_exc_tax').val(parseFloat(assignedUnitPriceExcTax).toFixed(2));
+            }
+        }
+
+        if (isAutoCalculateUnitCostAndPrice == false) {
+
+            var manuallyAssignedUnitCostExcTax = currentTr.find('#assigned_unit_cost_exc_tax').val() ? currentTr.find('#assigned_unit_cost_exc_tax').val() : 0;
+            taxAmount = (parseFloat(manuallyAssignedUnitCostExcTax) / 100) * parseFloat(taxPercent);
+
+            if (taxType == 2) {
+
+                __taxPercent = 100 + parseFloat(taxPercent);
+                var inclusiveTaxAmount = parseFloat(manuallyAssignedUnitCostExcTax) / parseFloat(__taxPercent) * 100;
+                taxAmount = parseFloat(manuallyAssignedUnitCostExcTax) - parseFloat(inclusiveTaxAmount);
+            }
+
+            var manuallyAssignedUnitCostIncTax = parseFloat(manuallyAssignedUnitCostExcTax) + parseFloat(taxAmount);
+            __manuallyAssignedUnitCostIncTax = manuallyAssignedUnitCostIncTax > 0 ? parseFloat(manuallyAssignedUnitCostIncTax).toFixed(2) : '';
+            currentTr.find('#assigned_unit_cost_inc_tax').val(__manuallyAssignedUnitCostIncTax);
+        }
+    }
+
+
+    $(document).on('click', '#unit_remove_btn', function(e) {
+
+        e.preventDefault();
+        var tr = $(this).closest('tr').remove();
     });
 </script>

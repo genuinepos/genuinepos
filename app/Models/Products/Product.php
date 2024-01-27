@@ -2,19 +2,19 @@
 
 namespace App\Models\Products;
 
-use App\Enums\ProductLedgerVoucherType;
-use App\Models\Accounts\Account;
 use App\Models\ComboProduct;
-use App\Models\Manufacturing\Process;
-use App\Models\Manufacturing\ProcessIngredient;
-use App\Models\Manufacturing\Production;
-use App\Models\ProductImage;
-use App\Models\Purchases\PurchaseOrderProduct;
-use App\Models\Purchases\PurchaseProduct;
+use App\Models\Accounts\Account;
 use App\Models\Sales\SaleProduct;
+use App\Models\Products\ProductUnit;
+use App\Models\Manufacturing\Process;
+use App\Enums\ProductLedgerVoucherType;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Manufacturing\Production;
+use App\Models\Purchases\PurchaseProduct;
+use App\Models\Purchases\PurchaseOrderProduct;
+use App\Models\Manufacturing\ProcessIngredient;
 use App\Models\TransferStocks\TransferStockProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
@@ -113,6 +113,11 @@ class Product extends Model
         return $this->belongsTo(Unit::class, 'unit_id')->select('id', 'name', 'code_name');
     }
 
+    public function productUnits()
+    {
+        return $this->hasMany(ProductUnit::class, 'product_id')->whereNull('variant_id');
+    }
+
     public function warranty()
     {
         return $this->belongsTo(Warranty::class, 'warranty_id');
@@ -121,11 +126,6 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class)->select(['id', 'name']);
-    }
-
-    public function productImages()
-    {
-        return $this->hasMany(ProductImage::class);
     }
 
     public function updateProductCost()

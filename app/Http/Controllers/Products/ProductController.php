@@ -3,26 +3,28 @@
 namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountService;
-use App\Services\Products\BrandService;
-use App\Services\Products\BulkVariantService;
-use App\Services\Products\CategoryService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ProductAccessBranchService;
-use App\Services\Products\ProductService;
-use App\Services\Products\ProductVariantService;
-use App\Services\Products\UnitService;
-use App\Services\Products\WarrantyService;
-use App\Services\Setups\BranchService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
+use App\Services\Setups\BranchService;
+use App\Services\Products\BrandService;
+use App\Services\Accounts\AccountService;
+use App\Services\Products\ProductService;
+use App\Services\Products\CategoryService;
+use App\Services\Products\WarrantyService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\BulkVariantService;
+use App\Services\Products\ProductUnitService;
+use App\Services\Products\ProductVariantService;
+use App\Services\Products\ProductAccessBranchService;
 
 class ProductController extends Controller
 {
     public function __construct(
         private ProductService $productService,
+        private ProductUnitService $productUnitService,
         private UnitService $unitService,
         private CategoryService $categoryService,
         private BrandService $brandService,
@@ -39,10 +41,7 @@ class ProductController extends Controller
 
     public function index(Request $request, $isForCreatePage = 0)
     {
-        if (!auth()->user()->can('product_all')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('product_all'), 403);
 
         if ($request->ajax()) {
 
@@ -65,7 +64,6 @@ class ProductController extends Controller
 
     public function show($id)
     {
-
         $productShowQueries = $this->productService->productShowQueries(id: $id);
         extract($productShowQueries);
 
@@ -78,10 +76,7 @@ class ProductController extends Controller
 
     public function create(Request $request, $id = null)
     {
-        if (!auth()->user()->can('product_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('product_add'), 403);
 
         if ($request->ajax()) {
 
@@ -111,14 +106,61 @@ class ProductController extends Controller
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function edit(Request $request, $id)
+    public function store(Request $request)
     {
-        if (!auth()->user()->can('product_edit')) {
+        abort_if(!auth()->user()->can('product_add'), 403);
+        // return $request->all();
+        // return $request->assigned_unit_ids;
+        $this->productService->productStoreValidation(request: $request);
 
-            abort(403, 'Access Forbidden.');
+        try {
+            DB::beginTransaction();
+
+            $restrictions = $this->productService->restrictions($request);
+
+            if ($restrictions['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restrictions['msg']]);
+            }
+
+            $addProduct = $this->productService->addProduct($request);
+
+            if ($request->has_multiple_unit == BooleanType::True->value && isset($request->base_unit_ids)) {
+
+                $this->productUnitService->addProductUnits(request: $request, productId: $addProduct->id);
+            }
+
+            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
+
+                foreach ($request->variant_combinations as $index => $variantCombination) {
+
+                    $addVariant = $this->productVariantService->addProductVariant(request: $request, productId: $addProduct->id, index: $index);
+
+                    if ($request->has_multiple_unit == BooleanType::True->value && isset($request->variant_base_unit_ids)) {
+
+                        $this->productUnitService->addProductVariantUnits(request: $request, productId: $addProduct->id, variantId: $addVariant->id, variantIndexNumber: $request->index_numbers[$index]);
+                    }
+                }
+            }
+
+            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
+
+            $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $product = $this->productService->singleProduct(id: $id, with: ['variants', 'variants.productLedgers', 'productAccessBranches']);
+        return $addProduct;
+    }
+
+    public function edit(Request $request, $id)
+    {
+        abort_if(!auth()->user()->can('product_edit'), 403);
+
+        $product = $this->productService->singleProduct(id: $id, with: ['productUnits', 'productUnits.baseUnit', 'variants', 'variants.variantUnits', 'variants.variantUnits.assignedUnit', 'variants.productLedgers', 'productAccessBranches']);
 
         $categories = $this->categoryService->categories()->where('parent_category_id', null)->get(['id', 'name']);
         $subCategories = $this->categoryService->categories()->where('parent_category_id', ($product->category_id ? $product->category_id : 0))->get(['id', 'name']);
@@ -138,88 +180,11 @@ class ProductController extends Controller
         return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function store(Request $request)
-    {
-        if (!auth()->user()->can('product_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $this->validate(
-            $request,
-            [
-                'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code',
-                'unit_id' => 'required',
-                'photo' => 'sometimes|image|max:2048',
-            ],
-            [
-                'unit_id.required' => __('Product unit field is required.'),
-            ]
-        );
-
-        if ($request->is_variant == 1) {
-
-            $this->validate(
-                $request,
-                [
-                    'variant_image.*' => 'sometimes|image|max:2048',
-                ],
-            );
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $restrictions = $this->productService->restrictions($request);
-
-            if ($restrictions['pass'] == false) {
-
-                return response()->json(['errorMsg' => $restrictions['msg']]);
-            }
-
-            $addProduct = $this->productService->addProduct($request);
-
-            if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
-
-                $this->productVariantService->addProductVariants(request: $request, productId: $addProduct->id);
-            }
-
-            $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
-
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
-
-            DB::commit();
-        } catch (Exception $e) {
-
-            DB::rollBack();
-        }
-
-        return $addProduct;
-    }
-
     public function update(Request $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code,' . $id,
-                'unit_id' => 'required',
-                'photo' => 'sometimes|image|max:2048',
-            ],
-            [
-                'unit_id.required' => __('Product unit field is required.'),
-            ]
-        );
+        abort_if(!auth()->user()->can('product_add'), 403);
 
-        if ($request->is_variant == 1) {
-
-            $this->validate(
-                $request,
-                ['variant_image.*' => 'sometimes|image|max:2048'],
-            );
-        }
+        $this->productService->productUpdateValidation(request: $request, id: $id);
 
         try {
             DB::beginTransaction();

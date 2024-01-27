@@ -16,6 +16,7 @@
         table.table.modal-table.table-sm th { font-size: 9px; }
 
         .dropify-wrapper { height: 100px!important;}
+        .base_unit_name {font-size: 10px;}
     </style>
     <link href="{{ asset('backend/asset/css/jquery.cleditor.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
@@ -33,7 +34,6 @@
 
                 <div class="col-md-4">
                     @if(isset($product))
-
                         <p class="text-danger"><b>{{ __("Product duplicate from : ") }}</b> <span class="fw-bold">{{ $product->name }}</span></h6>
                     @endif
                 </div>
@@ -41,7 +41,6 @@
                 <div class="col-md-4">
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
                 </div>
-
             </div>
         </div>
         <form id="add_product_form" action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST">
@@ -89,11 +88,14 @@
                                                             @php
                                                                 $productUnitId = isset($product) ? $product?->unit_id : '';
                                                                 $defaultUnitId = $generalSettings['product__default_unit_id'];
+                                                                $defaultUnitNeme = '';
                                                                 $unitId = $productUnitId ? $productUnitId : $defaultUnitId;
                                                             @endphp
                                                             @foreach ($units as $unit)
-
-                                                                <option {{ $unitId ==  $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
+                                                                @php
+                                                                    $defaultUnitNeme = $unitId == $unit->id ? $unit->name : $defaultUnitNeme;
+                                                                @endphp
+                                                                <option data-main_unit_name="{{ $unit->name }}" {{ $unitId == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name . ' (' . $unit->code_name . ')' }}</option>
                                                             @endforeach
                                                         </select>
 
@@ -384,7 +386,7 @@
                                                 <div class="input-group">
                                                     <label class="col-4"><b>{{ __("Has Multiple Unit?") }}</b> </label>
                                                     <div class="col-8">
-                                                        <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="type">
+                                                        <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="is_variant">
                                                             <option value="0">{{ __("No") }}</option>
                                                             <option value="1">{{ __("Yes") }}</option>
                                                         </select>
@@ -409,203 +411,14 @@
                                         </div>
 
                                         <div class="row mt-1">
-                                            <div class="multi_unit_create_area">
-                                                <hr class="p-0 m-0 my-1 mx-1">
-                                                <div class="row align-items-end">
-
-                                                    <div class="col-md-6">
-                                                        <p class="fw-bold">{{ __("Set Multiple Unit") }}</p>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="add_more_btn">
-                                                            <a href="#" id="add_more_unit_btn" class="btn btn-sm btn-primary float-end">{{ __("Add More") }}</a>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12">
-                                                        <div class="table-responsive mt-1">
-                                                            <table class="table modal-table table-sm">
-                                                                <thead>
-                                                                    <tr class="text-center bg-primary variant_header">
-                                                                        <th class="text-white text-start">{{ __("By") }}</th>
-                                                                        <th class="text-white text-start"></th>
-                                                                        <th class="text-white text-start">{{ __("Quantity") }}</th>
-                                                                        <th class="text-white text-start">{{ __("To") }}</th>
-                                                                        <th class="text-white text-start">{{ __("Unit Cost (Exc. Tax)") }}</th>
-                                                                        <th class="text-white text-start">{{ __("Unit Cost Int. Tax") }}</th>
-                                                                        <th class="text-white text-start">{{ __('Price (Exc. Tax)') }}</th>
-                                                                        <th><i class="fas fa-trash-alt text-white"></i></th>
-                                                                    </tr>
-                                                                </thead>
-
-                                                                <tbody class="multiple_unit_body">
-                                                                    <tr>
-                                                                        <td class="text-start" style="min-width: 127px;">
-                                                                            <div class="row align-items-end">
-                                                                                <div class="col-md-2">
-                                                                                    <p class="fw-bold p-1">1</p>
-                                                                                </div>
-                                                                                <div class="col-md-10">
-                                                                                    <select required class="form-control select2" style="min-width: 110px !important;">
-                                                                                        <option value="">{{ __("Unit") }}</option>
-                                                                                        @foreach ($units as $unit)
-                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">=</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">Pieces(Pc)</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    {{-- <tr>
-                                                                        <td class="text-start">
-                                                                            <div class="row align-items-end">
-                                                                                <div class="col-md-2">
-                                                                                    <p class="fw-bold p-1">1</p>
-                                                                                </div>
-
-                                                                                <div class="col-md-10">
-                                                                                    <select required class="form-control select2">
-                                                                                        <option value="">{{ __("Select Unit") }}</option>
-                                                                                        @foreach ($units as $unit)
-                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">=</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">Leap(Lp)</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                    <tr>
-                                                                        <td class="text-start">
-                                                                            <div class="row align-items-end">
-                                                                                <div class="col-md-2">
-                                                                                    <p class="fw-bold p-1">1</p>
-                                                                                </div>
-
-                                                                                <div class="col-md-10">
-                                                                                    <select required class="form-control select2">
-                                                                                        <option value="">{{ __("Select Unit") }}</option>
-                                                                                        @foreach ($units as $unit)
-                                                                                            <option value="{{ $unit->id }}">{{ $unit->name.' ('.$unit->code_name.')' }}</option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">=</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Quantity") }}">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <p class="fw-bold">Packet(Pkt)</p>
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" class="form-control fw-bold" placeholder="{{ __("Profit") }}" value="0.00">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control fw-bold" placeholder="{{ __("Price Inc. Tax") }}" id="variant_price_exc_tax">
-                                                                        </td>
-
-                                                                        <td class="text-start">
-                                                                            <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
-                                                                        </td>
-                                                                    </tr> --}}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="multi_unit_create_area d-hide">
+                                                @include('product.products.partials.add_product_set_multiple_unit_partial')
                                             </div>
                                         </div>
 
                                         <div class="row mt-1">
                                             <div class="dynamic_variant_create_area {{ $productIsVariant == 0 ? 'd-hide' : '' }}">
-                                                <hr class="p-0 m-0 my-1 mx-1">
-                                                <div class="row align-items-end">
-
-                                                    <div class="col-md-6">
-                                                        <p class="fw-bold">{{ __("Create Variant") }}</p>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="add_more_btn">
-                                                            <a href="#" id="add_more_variant_btn" class="btn btn-sm btn-primary float-end">{{ __("Add More") }}</a>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-12">
-                                                        @include('product.products.partials.add_product_variant_add_partial')
-                                                    </div>
-                                                </div>
+                                                @include('product.products.partials.add_product_variant_add_partial')
                                             </div>
                                         </div>
                                     </div>
@@ -754,7 +567,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-md-6">
-                                    <h6>{{ __('List Of Products') }}</h6>
+                                    <h6>{{ __('List of Products') }}</h6>
                                 </div>
                             </div>
 
@@ -783,4 +596,5 @@
 @endsection
 @push('scripts')
     @include('product.products.js_partials.add_product_js')
+    @include('product.products.js_partials.add_variant_js')
 @endpush

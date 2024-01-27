@@ -8,36 +8,35 @@ use Intervention\Image\Facades\Image;
 
 class ProductVariantService
 {
-    public function addProductVariants(object $request, int $productId): void
+    public function addProductVariant(object $request, int $productId, int $index): object
     {
-        foreach ($request->variant_combinations as $index => $variantCombination) {
+        $addVariant = new ProductVariant();
+        $addVariant->product_id = $productId;
+        $addVariant->variant_name = $request->variant_combinations[$index];
+        $addVariant->variant_code = $request->variant_codes[$index];
+        $addVariant->variant_cost = $request->variant_costs_exc_tax[$index];
+        $addVariant->variant_cost_with_tax = $request->variant_costs_inc_tax[$index];
+        $addVariant->variant_profit = $request->variant_profits[$index];
+        $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
 
-            $addVariant = new ProductVariant();
-            $addVariant->product_id = $productId;
-            $addVariant->variant_name = $variantCombination;
-            $addVariant->variant_code = $request->variant_codes[$index];
-            $addVariant->variant_cost = $request->variant_costings[$index];
-            $addVariant->variant_cost_with_tax = $request->variant_costings_with_tax[$index];
-            $addVariant->variant_profit = $request->variant_profits[$index];
-            $addVariant->variant_price = $request->variant_prices_exc_tax[$index];
+        if (isset($request->variant_image[$index])) {
 
-            if (isset($request->variant_image[$index])) {
+            $variantImage = $request->variant_image[$index];
+            $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
+            $path = public_path('uploads/product/variant_image');
 
-                $variantImage = $request->variant_image[$index];
-                $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
-                $path = public_path('uploads/product/variant_image');
+            if (!file_exists($path)) {
 
-                if (! file_exists($path)) {
-
-                    mkdir($path);
-                }
-
-                Image::make($variantImage)->resize(250, 250)->save($path.'/'.$variantImageName);
-                $addVariant->variant_image = $variantImageName;
+                mkdir($path);
             }
 
-            $addVariant->save();
+            Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
+            $addVariant->variant_image = $variantImageName;
         }
+
+        $addVariant->save();
+
+        return $addVariant;
     }
 
     public function updateProductVariants(object $request, int $productId): void
@@ -69,22 +68,22 @@ class ProductVariantService
 
                 if (isset($addOrUpdateVariant->variant_image)) {
 
-                    if (file_exists(public_path('uploads/product/variant_image/'.$addOrUpdateVariant->variant_image))) {
+                    if (file_exists(public_path('uploads/product/variant_image/' . $addOrUpdateVariant->variant_image))) {
 
-                        unlink(public_path('uploads/product/variant_image/'.$addOrUpdateVariant->variant_image));
+                        unlink(public_path('uploads/product/variant_image/' . $addOrUpdateVariant->variant_image));
                     }
                 }
 
                 $variantImage = $request->variant_image[$index];
-                $variantImageName = uniqid().'.'.$variantImage->getClientOriginalExtension();
+                $variantImageName = uniqid() . '.' . $variantImage->getClientOriginalExtension();
                 $path = public_path('uploads/product/variant_image');
 
-                if (! file_exists($path)) {
+                if (!file_exists($path)) {
 
                     mkdir($path);
                 }
 
-                Image::make($variantImage)->resize(250, 250)->save($path.'/'.$variantImageName);
+                Image::make($variantImage)->resize(250, 250)->save($path . '/' . $variantImageName);
                 $addOrUpdateVariant->variant_image = $variantImageName;
             }
 
@@ -101,11 +100,12 @@ class ProductVariantService
 
             if (isset($deleteAbleVariant->variant_image)) {
 
-                if (file_exists(public_path('uploads/product/variant_image/'.$deleteAbleVariant->variant_image))) {
+                if (file_exists(public_path('uploads/product/variant_image/' . $deleteAbleVariant->variant_image))) {
 
-                    unlink(public_path('uploads/product/variant_image/'.$deleteAbleVariant->variant_image));
+                    unlink(public_path('uploads/product/variant_image/' . $deleteAbleVariant->variant_image));
                 }
             }
+
             $deleteAbleVariant->delete();
         }
     }

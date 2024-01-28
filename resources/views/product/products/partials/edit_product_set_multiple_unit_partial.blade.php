@@ -1,6 +1,5 @@
 <hr class="p-0 m-0 my-1 mx-1">
 <div class="row align-items-end">
-
     <div class="col-md-6">
         <p class="fw-bold" style=" background: #6ce0cf; display: inline; padding: 2px 7px;">{{ __('Set Multiple Unit') }}</p>
     </div>
@@ -92,7 +91,7 @@
                             </td>
 
                             <td class="text-start">
-                                <input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
+                                <input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
                                 <input type="hidden" name="base_unit_multiplier" id="base_unit_multiplier">
                             </td>
 
@@ -102,7 +101,7 @@
                                         <p class="fw-bold p-1">{{ __("1") }}</p>
                                     </div>
                                     <div class="col-md-10">
-                                        <select required name="assigned_unit_ids[]" class="form-control assigned_unit_id select2" id="assigned_unit_id" style="min-width: 110px !important;">
+                                        <select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes select2" id="assigned_unit_id" style="min-width: 110px !important;">
                                             <option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>
                                             @foreach ($units as $unit)
                                                 <option data-assigned_unit_name="{{ $unit->name }}" value="{{ $unit->id }}">{{ $unit->name }}</option>
@@ -113,15 +112,15 @@
                             </td>
 
                             <td class="text-start">
-                                <input required type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __('0.00') }}">
+                                <input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __('0.00') }}">
                             </td>
 
                             <td class="text-start">
-                                <input required readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __('0.00') }}">
+                                <input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __('0.00') }}">
                             </td>
 
                             <td class="text-start">
-                                <input required type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __('0.00') }}">
+                                <input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __('0.00') }}">
                             </td>
 
                             <td class="text-start">

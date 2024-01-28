@@ -40,6 +40,7 @@
                                             @endforeach
                                         </select>
                                         <input required type="text" name="variant_combinations[]" id="variant_combination" class="form-control fw-bold" value="{{ $variant->variant_name }}" placeholder="{{ __('Variant Combination') }}">
+                                        <input type="hidden" name="index_numbers[]" id="index_number" value="{{ $indexNumber }}">
                                         <input type="hidden" name="product_variant_ids[]" value="{{ $variant->id }}">
                                     </td>
 
@@ -76,7 +77,7 @@
 
                                 @if ($product->has_multiple_unit == \App\Enums\BooleanType::True->value)
                                     <tr id="set_variant_multiple_units" class="set_variant_multiple_units">
-                                        <td colspan="8">
+                                        <td colspan="8" class="set_variant_multiple_units_td">
                                             <table class="table modal-table table-sm" id="set_variant_multiple_unit_table">
                                                 <tr>
                                                     <th>{{ __('Unit') }}</th>
@@ -89,7 +90,7 @@
                                                     <tr id="unit_table_row">
                                                         <td><span class="fw-bold base_unit_name">{{ $variantUnit?->assignedUnit?->name }}</span>
                                                             <input type="hidden" name="variant_base_unit_ids[{{ $indexNumber }}][]" id="variant_base_unit_id" value="{{ $variantUnit->base_unit_id }}">
-                                                            <input type="hidden" name="variant_assigned_unit_quantities[{{ $indexNumber }}][]" id="variant_assigned_unit_qunatity" value="{{ $variantUnit->assigned_unit_qunatity }}">
+                                                            <input type="hidden" name="variant_assigned_unit_quantities[{{ $indexNumber }}][]" id="variant_assigned_unit_quantity" value="{{ $variantUnit->assigned_unit_quantity }}">
                                                             <input type="hidden" name="variant_base_unit_multipliers[{{ $indexNumber }}][]" id="variant_base_unit_multiplier" value="{{ $variantUnit->base_unit_multiplier }}">
                                                             <input type="hidden" name="variant_assigned_unit_ids[{{ $indexNumber }}][]" id="variant_assigned_unit_id" value="{{ $variantUnit->assigned_unit_id }}">
                                                             <input type="hidden" name="product_variant_unit_ids[{{ $indexNumber }}][]" id="variant_assigned_unit_id" value="{{ $variantUnit->id }}">

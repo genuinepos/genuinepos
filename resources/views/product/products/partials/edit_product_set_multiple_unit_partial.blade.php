@@ -34,7 +34,7 @@
                                 <td class="text-start" style="min-width: 100px;">
                                     <span id="span_base_unit_name" class="fw-bold base_unit_name">{{ __("1") }} {{ $productUnit?->baseUnit?->name }}</span>
                                     <input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="{{  $productUnit->base_unit_id }}">
-                                    <input type="hidden" name="product_unit_ids[]" id="base_unit_id" value="{{  $productUnit->id }}">
+                                    <input type="hidden" name="product_unit_ids[]" value="{{  $productUnit->id }}">
                                 </td>
 
                                 <td class="text-start">
@@ -42,8 +42,8 @@
                                 </td>
 
                                 <td class="text-start">
-                                    <input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" value="{{ $productUnit->assigned_unit_quantity }}" placeholder="{{ __('Quantity') }}">
-                                    <input type="hidden" name="base_unit_multiplier" id="base_unit_multiplier" value="{{ $productUnit->base_unit_multiplier }}">
+                                    <input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" value="{{ $productUnit->assigned_unit_quantity }}" placeholder="{{ __('Quantity') }}">
+                                    <input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier" value="{{ $productUnit->base_unit_multiplier }}">
                                 </td>
 
                                 <td class="text-start" style="min-width: 127px;">
@@ -52,7 +52,7 @@
                                             <p class="fw-bold p-1">{{ __("1") }}</p>
                                         </div>
                                         <div class="col-md-10">
-                                            <select required name="assigned_unit_ids[]" class="form-control assigned_unit_id select2" id="assigned_unit_id" style="min-width: 110px !important;">
+                                            <select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes select2" id="assigned_unit_id" style="min-width: 110px !important;">
                                                 <option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>
                                                 @foreach ($units as $unit)
                                                     <option data-assigned_unit_name="{{ $unit->name }}" {{ $productUnit->assigned_unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
@@ -84,6 +84,7 @@
                             <td class="text-start" style="min-width: 100px;">
                                 <span id="span_base_unit_name" class="fw-bold base_unit_name">{{ __("1") }} {{ $product?->unit?->name }}</span>
                                 <input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="{{ $product->unit_id }}">
+                                <input type="hidden" name="product_unit_ids[]">
                             </td>
 
                             <td class="text-start">

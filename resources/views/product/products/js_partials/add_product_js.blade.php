@@ -567,7 +567,7 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
         html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
         html += '</td>';
 
@@ -577,7 +577,7 @@
         html += '<p class="fw-bold p-1">1</p>';
         html += '</div>';
         html += '<div class="col-md-10">';
-        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id" id="assigned_unit_id" style="min-width: 110px !important;">';
+        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id" style="min-width: 110px !important;">';
         html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
         units.forEach(function(unit) {
 
@@ -589,15 +589,15 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
 
         html += '</td>';
         html += '<td class="text-start">';
@@ -613,6 +613,8 @@
 
         var baseUnitId = $('#unit_id').val();
         $('.multi_unit_create_area').hide();
+        $('.set_variant_multiple_units_td').hide();
+        $('.multiple_unit_required_sometimes').prop('required', false);
         if (baseUnitId == '') {
 
             toastr.error("{{ __('Please select an unit first.') }}");
@@ -623,6 +625,8 @@
         if ($(this).val() == 1) {
 
             $('.multi_unit_create_area').show();
+            $('.set_variant_multiple_units_td').show();
+            $('.multiple_unit_required_sometimes').prop('required', true);
         }
     });
 
@@ -673,7 +677,7 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
         html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
         html += '</td>';
 
@@ -683,7 +687,7 @@
         html += '<p class="fw-bold p-1">1</p>';
         html += '</div>';
         html += '<div class="col-md-10">';
-        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id" id="assigned_unit_id' + count + '" style="min-width: 110px !important;">';
+        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id' + count + '" style="min-width: 110px !important;">';
         html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
         units.forEach(function(unit) {
 
@@ -695,15 +699,15 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_costs_exc_tax[]" class="form-control fw-bold" id="assigned_unit_cost_exc_tax" placeholder="{{ __("0.00") }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input readonly type="number" step="any" name="assigned_unit_costs_inc_tax[]"  class="form-control fw-bold" id="assigned_unit_cost_inc_tax" placeholder="{{ __("0.00") }}">';
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_prices_exc_tax[]" class="form-control fw-bold" id="assigned_unit_price_exc_tax" placeholder="{{ __("0.00") }}">';
         html += '<input type="hidden" name="assigned_unit_profit_margins[]" id="assigned_unit_profit_margin">';
 
         html += '</td>';

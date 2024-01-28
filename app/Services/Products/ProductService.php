@@ -446,7 +446,13 @@ class ProductService
 
     public function updateProduct(object $request, int $productId): object
     {
-        $updateProduct = $this->singleProduct(id: $productId, with: ['variants', 'productAccessBranches']);
+        $updateProduct = $this->singleProduct(id: $productId, with: ['productUnits', 'variants', 'variants.variantUnits', 'productAccessBranches']);
+
+        foreach($updateProduct->productUnits as $productUnit){
+
+            $productUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+            $productUnit->save();
+        }
 
         if (count($updateProduct->variants) > 0) {
 
@@ -454,6 +460,12 @@ class ProductService
 
                 $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                 $variant->save();
+
+                foreach($variant->variantUnits as $variantUnit){
+
+                    $variantUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+                    $variantUnit->save();
+                }
             }
         }
 
@@ -478,6 +490,7 @@ class ProductService
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = isset($request->weight) ? $request->weight : null;
+        $updateProduct->has_multiple_unit = $request->has_multiple_unit;
 
         if ($request->type == 1) {
 

@@ -92,9 +92,9 @@
                                             <div class="col-8">
                                                 <div class="input-group flex-nowrap">
                                                     <select required class="form-control select2" name="unit_id" id="unit_id" data-next="barcode_type">
-                                                        <option value="">{{ __('Select Unit') }}</option>
+                                                        <option data-main_unit_name="" value="">{{ __('Select Unit') }}</option>
                                                         @foreach ($units as $unit)
-                                                            <option {{ $product->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name . ' (' . $unit->code_name . ')' }}</option>
+                                                            <option data-main_unit_name="{{ $unit->name }}" {{ $product->unit_id == $unit->id ? 'SELECTED' : '' }} value="{{ $unit->id }}">{{ $unit->name . ' (' . $unit->code_name . ')' }}</option>
                                                         @endforeach
                                                     </select>
 

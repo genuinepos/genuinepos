@@ -198,12 +198,26 @@ class ProductController extends Controller
 
             $updateProduct = $this->productService->updateProduct(request: $request, productId: $id);
 
+            if ($updateProduct->has_multiple_unit == BooleanType::True->value) {
+
+                $this->productUnitService->updateProductUnits(request: $request, product: $updateProduct);
+            }
+
             if ($request->type == 1 && $request->is_variant == BooleanType::True->value) {
 
-                $this->productVariantService->updateProductVariants(request: $request, productId: $updateProduct->id);
+                foreach ($request->variant_combinations as $index => $variantCombination) {
 
-                $this->productVariantService->deleteUnusedProductVariants(productId: $updateProduct->id);
+                    $updateProductVariant = $this->productVariantService->updateProductVariant(request: $request, productId: $updateProduct->id, index: $index);
+
+                    if ($request->has_multiple_unit == BooleanType::True->value && isset($request->variant_base_unit_ids)) {
+                        
+                        $this->productUnitService->updateProductVariantUnits(request: $request, productId: $updateProduct->id, variantId: $updateProductVariant->id, variantIndexNumber: $request->index_numbers[$index]);
+                    }
+                }
             }
+
+            $this->productVariantService->deleteUnusedProductVariants(productId: $updateProduct->id);
+            $this->productUnitService->deleteUnusedProductAndVariantUnits(productId: $updateProduct->id);
 
             $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
 

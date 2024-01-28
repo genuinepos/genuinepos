@@ -223,7 +223,7 @@
             if (has_multiple_unit == 1 && variantRowLength == 1) {
 
                 var html = '';
-                html += '<td colspan="8">';
+                html += '<td colspan="8" class="set_variant_multiple_units_td">';
                 html += '<table class="table modal-table table-sm" id="set_variant_multiple_unit_table">';
                 html += '<tr>';
                 html += '<th>{{ __("Unit") }}</th>';
@@ -247,7 +247,7 @@
                     html += '<tr id="unit_table_row">';
                     html += '<td><span class="fw-bold base_unit_name">' + assignedUnitName + '</span>';
                     html += '<input type="hidden" name="variant_base_unit_ids[' + firstTrIndexNumber + '][]" id="variant_base_unit_id" value="' + baseUnitId + '">';
-                    html += '<input type="hidden" name="variant_assigned_unit_quantities[' + firstTrIndexNumber + '][]" id="variant_assigned_unit_qunatity" value="' + parseFloat(assignedUnitQuantity) + '">';
+                    html += '<input type="hidden" name="variant_assigned_unit_quantities[' + firstTrIndexNumber + '][]" id="variant_assigned_unit_quantity" value="' + parseFloat(assignedUnitQuantity) + '">';
                     html += '<input type="hidden" name="variant_base_unit_multipliers[' + firstTrIndexNumber + '][]" id="variant_base_unit_multiplier" value="' + parseFloat(baseUnitMultiplier) + '">';
                     html += '<input type="hidden" name="variant_assigned_unit_ids[' + firstTrIndexNumber + '][]" id="variant_assigned_unit_id" value="' + assignedUnitId + '">';
                     html += '</td>';
@@ -329,7 +329,7 @@
         if (has_multiple_unit == 1) {
 
             html += '<tr id="set_variant_multiple_units" class="set_variant_multiple_units">';
-            html += '<td colspan="8">';
+            html += '<td colspan="8" class="set_variant_multiple_units_td">';
             html += '<table class="table modal-table table-sm" id="set_variant_multiple_unit_table">';
             html += '<tr>';
             html += '<th>{{ __("Unit") }}</th>';
@@ -355,7 +355,7 @@
                     html += '<tr id="unit_table_row">';
                     html += '<td><span class="fw-bold base_unit_name">' + assignedUnitName + '</span>';
                     html += '<input type="hidden" name="variant_base_unit_ids[' + indexNumber + '][]" id="variant_base_unit_id" value="' + baseUnitId + '">';
-                    html += '<input type="hidden" name="variant_assigned_unit_quantities[' + indexNumber + '][]" id="variant_assigned_unit_qunatity" value="' + parseFloat(assignedUnitQuantity) + '">';
+                    html += '<input type="hidden" name="variant_assigned_unit_quantities[' + indexNumber + '][]" id="variant_assigned_unit_quantity" value="' + parseFloat(assignedUnitQuantity) + '">';
                     html += '<input type="hidden" name="variant_base_unit_multipliers[' + indexNumber + '][]" id="variant_base_unit_multiplier" value="' + parseFloat(baseUnitMultiplier) + '">';
                     html += '<input type="hidden" name="variant_assigned_unit_ids[' + indexNumber + '][]" id="variant_assigned_unit_id" value="' + assignedUnitId + '">';
                     html += '</td>';

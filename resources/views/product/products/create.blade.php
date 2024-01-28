@@ -84,7 +84,7 @@
                                                 <div class="col-8">
                                                     <div class="input-group flex-nowrap">
                                                         <select required class="form-control select2" name="unit_id" id="unit_id" data-next="barcode_type">
-                                                            <option value="">{{ __("Select Unit") }}</option>
+                                                            <option data-main_unit_name="" value="">{{ __("Select Unit") }}</option>
                                                             @php
                                                                 $productUnitId = isset($product) ? $product?->unit_id : '';
                                                                 $defaultUnitId = $generalSettings['product__default_unit_id'];

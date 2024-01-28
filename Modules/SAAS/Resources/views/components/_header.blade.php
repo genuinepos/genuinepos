@@ -20,7 +20,7 @@
             </div>
             <a href="#" target="_blank" class="btn btn-sm btn-primary site-view-btn">
                 <i class="fa-light fa-globe me-1"></i>
-                <span>{{ __('Business List') }}</span>
+                <span>{{ __('Customer List') }}</span>
             </a>
         </div>
         <div class="col-4 d-lg-none">

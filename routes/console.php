@@ -7,6 +7,7 @@ use App\Mail\PurchaseCreated;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+
 use Modules\Communication\Interface\EmailServiceInterface;
 
 /*

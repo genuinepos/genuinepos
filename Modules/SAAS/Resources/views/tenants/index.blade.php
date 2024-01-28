@@ -1,4 +1,4 @@
-<x-saas::admin-layout title="Create tenant">
+<x-saas::admin-layout title="All Customer">
     @push('css')
     <style>
 
@@ -6,7 +6,7 @@
     @endpush
     <div class="panel">
         <div class="panel-header">
-            <h5>{{ __('Manage Business') }}</h5>
+            <h5>{{ __('Manage Customers') }}</h5>
         </div>
         <div class="panel-body">
             <div class="row">

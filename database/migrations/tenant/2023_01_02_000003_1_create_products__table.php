@@ -36,6 +36,7 @@ return new class extends Migration
             $table->bigInteger('alert_quantity')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_combo')->default(false);
+            $table->boolean('has_multiple_unit')->default(false);
             $table->boolean('is_variant')->default(false);
             $table->boolean('is_show_in_ecom')->default(false);
             $table->boolean('is_show_emi_on_pos')->default(false);

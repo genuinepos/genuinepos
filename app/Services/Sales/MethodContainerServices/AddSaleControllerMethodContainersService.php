@@ -148,12 +148,12 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             // Add Sale A/c Ledger Entry
             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, date: $request->date, account_id: $request->sale_account_id, trans_id: $addSale->id, amount: $request->sales_ledger_amount, amount_type: 'credit');
 
-            // Add supplier A/c ledger Entry For Purchase
+            // Add supplier A/c ledger Entry For Sales
             $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->customer_account_id, date: $request->date, trans_id: $addSale->id, amount: $request->total_invoice_amount, amount_type: 'debit');
 
             if ($request->sale_tax_ac_id) {
 
-                // Add Tax A/c ledger Entry For Purchase
+                // Add Tax A/c ledger Entry For Sales
                 $accountLedgerService->addAccountLedgerEntry(voucher_type_id: AccountLedgerVoucherType::Sales->value, account_id: $request->sale_tax_ac_id, date: $request->date, trans_id: $addSale->id, amount: $request->order_tax_amount, amount_type: 'credit');
             }
         }

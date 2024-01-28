@@ -2,10 +2,11 @@
 
 namespace App\Models\Products;
 
-use App\Models\Purchases\PurchaseProduct;
 use App\Models\Sales\SaleProduct;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Products\ProductUnit;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchases\PurchaseProduct;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductVariant extends Model
 {
@@ -57,6 +58,11 @@ class ProductVariant extends Model
     public function productLedgers()
     {
         return $this->hasMany(ProductLedger::class, 'variant_id')->where('voucher_type', '!=', 0);
+    }
+
+    public function variantUnits()
+    {
+        return $this->hasMany(ProductUnit::class, 'variant_id');
     }
 
     public function updateVariantCost()

@@ -2,9 +2,11 @@
 
 namespace App\Services\Accounts;
 
-use App\Models\Accounts\AccountLedger;
 use Carbon\Carbon;
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
+use App\Models\Accounts\AccountLedger;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountLedgerEntryService
@@ -66,7 +68,7 @@ class AccountLedgerEntryService
 
                 return $ledgerParticulars->particulars($request, $voucherType, $row);
             })
-
+            
             ->editColumn('voucher_type', function ($row) {
 
                 //return $row->voucher_type;
@@ -168,7 +170,7 @@ class AccountLedgerEntryService
             $query->whereBetween('account_ledgers.date', $date_range);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if ($account?->group?->sub_sub_group_number != 6) {
 
@@ -281,8 +283,7 @@ class AccountLedgerEntryService
                     'salesReturnProduct.salesReturn.saleReturnProducts.variant:id,variant_name',
                     'salesReturnProduct.salesReturn.saleReturnProducts.unit:id,code_name,base_unit_multiplier',
                 ]
-            )
-            ->select(
+            )->select(
                 'account_ledgers.branch_id',
                 'account_ledgers.date',
                 'account_ledgers.voucher_type',

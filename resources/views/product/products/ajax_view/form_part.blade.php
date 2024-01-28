@@ -72,11 +72,23 @@
 <div class="row gx-2 mt-1">
     <div class="col-md-6">
         <div class="input-group">
-            <label class="col-4"><b>{{ __('Has Variant?') }}</b> </label>
+            <label class="col-4"><b>{{ __("Has Multiple Unit?") }}</b> </label>
+            <div class="col-8">
+                <select name="has_multiple_unit" class="form-control" id="has_multiple_unit" data-next="type">
+                    <option value="0">{{ __("No") }}</option>
+                    <option value="1">{{ __("Yes") }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="input-group">
+            <label class="col-4"><b>{{ __("Has Variant?") }}</b> </label>
             <div class="col-8">
                 <select name="is_variant" class="form-control" id="is_variant" data-next="type">
-                    <option value="0">{{ __('No') }}</option>
-                    <option value="1">{{ __('Yes') }}</option>
+                    <option value="0">{{ __("No") }}</option>
+                    <option value="1">{{ __("Yes") }}</option>
                 </select>
             </div>
         </div>
@@ -116,27 +128,28 @@
                                             <option value="{{ $bulkVariant->id }}">{{ $bulkVariant->name }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="hidden" name="index_numbers[]" id="index_number" value="0">
                                     <input type="text" name="variant_combinations[]" id="variant_combination" class="form-control reqireable fw-bold" placeholder="{{ __("Variant Combination") }}">
                                 </td>
 
                                 <td class="text-start">
-                                    <input type="text" name="variant_codes[]" id="variant_code" class="form-control reqireable fw-bold" placeholder="{{ __("Variant Code") }}">
+                                    <input type="text" name="variant_codes[]" class="form-control reqireable fw-bold" id="variant_code" placeholder="{{ __("Variant Code") }}">
                                 </td>
 
                                 <td class="text-start">
-                                    <input type="number" name="variant_costings[]" step="any" class="form-control requireable fw-bold" placeholder="{{ __("Unit Cost Exc. Tax") }}" id="variant_costing">
+                                    <input type="number" name="variant_costs_exc_tax[]" step="any" class="form-control requireable fw-bold"  id="variant_cost_exc_tax" placeholder="{{ __("Unit Cost Exc. Tax") }}">
                                 </td>
 
                                 <td class="text-start">
-                                    <input type="number" step="any" name="variant_costings_with_tax[]" class="form-control requireable fw-bold" placeholder="{{ __("Unit Cost Inc. tax") }}" id="variant_costing_with_tax">
+                                    <input readonly type="number" step="any" name="variant_costs_inc_tax[]" class="form-control requireable fw-bold" id="variant_cost_inc_tax" placeholder="{{ __("Unit Cost Inc. tax") }}">
                                 </td>
 
                                 <td class="text-start">
-                                    <input type="number" step="any" name="variant_profits[]" class="form-control requireable fw-bold" placeholder="{{ __("Profit") }}" value="0.00" id="variant_profit">
+                                    <input type="number" step="any" name="variant_profits[]" class="form-control requireable fw-bold" id="variant_profit" value="0.00" placeholder="{{ __("Profit") }}">
                                 </td>
 
                                 <td class="text-start">
-                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable fw-bold" placeholder="{{ __("Price Exc. Tax") }}" id="variant_price_exc_tax">
+                                    <input type="number" step="any" name="variant_prices_exc_tax[]" class="form-control requireable fw-bold"  id="variant_price_exc_tax" placeholder="{{ __("Price Exc. Tax") }}">
                                 </td>
 
                                 <td class="text-start">
@@ -146,6 +159,9 @@
                                 <td class="text-start">
                                     <a href="#" id="variant_remove_btn" class="btn btn-xs btn-sm btn-danger">X</a>
                                 </td>
+                            </tr>
+
+                            <tr id="set_variant_multiple_units" class="set_variant_multiple_units">
                             </tr>
                         </tbody>
                     </table>

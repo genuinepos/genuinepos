@@ -804,4 +804,21 @@
         e.preventDefault();
         var tr = $(this).closest('tr').remove();
     });
+
+    $(document).on('change', '.assigned_unit_id', function(e) {
+
+        var assignedUnitId = $(this).val();
+        var parentTr = $(this).closest('tr');
+        var baseUnitId = parentTr.find('#base_unit_id').val();
+
+        if (assignedUnitId == baseUnitId) {
+
+            toastr.error("{{ __('Same unit does not allowed.') }}");
+            $(this).val('');
+            $(this).select2("destroy");
+            $(this).select2();
+            $(this).focus();
+            return;
+        }
+    });
 </script>

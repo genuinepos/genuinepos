@@ -30,6 +30,8 @@ class GeneralProductSearchController extends Controller
             'tax:id,tax_percent',
             'unit:id,name',
             'unit.childUnits:id,name,base_unit_id,base_unit_multiplier',
+            'productUnits:id,product_id,assigned_unit_id,base_unit_multiplier,unit_cost_exc_tax,unit_price_exc_tax',
+            'productUnits.assignedUnit:id,name',
             'updateProductCost',
             'productBranchStock',
         ]);

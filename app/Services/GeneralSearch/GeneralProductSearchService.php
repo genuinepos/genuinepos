@@ -2,10 +2,11 @@
 
 namespace App\Services\GeneralSearch;
 
-use App\Enums\BooleanType;
 use App\Models\Product;
-use App\Models\Products\ProductVariant;
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
+use App\Enums\StockAccountingMethod;
+use App\Models\Products\ProductVariant;
 
 class GeneralProductSearchService
 {
@@ -13,7 +14,7 @@ class GeneralProductSearchService
     {
         if ($product) {
 
-            if ($isShowNotForSaleItem == 0 && $product->is_for_sale == 0) {
+            if ($isShowNotForSaleItem == BooleanType::False->value && $product->is_for_sale == BooleanType::False->value) {
 
                 return response()->json(['errorMsg' => __('Product is not for sale')]);
             }
@@ -39,6 +40,8 @@ class GeneralProductSearchService
                 'product.tax:id,tax_percent',
                 'product.unit:id,name',
                 'product.unit.childUnits:id,name,base_unit_id,base_unit_multiplier',
+                'variantUnits:id,variant_id,assigned_unit_id,base_unit_multiplier,unit_cost_exc_tax,unit_price_exc_tax',
+                'variantUnits.assignedUnit:id,name',
                 'variantBranchStock',
             )->where('variant_code', $keyWord)
                 ->select([
@@ -54,7 +57,7 @@ class GeneralProductSearchService
 
             if ($variantProduct && $variantProduct?->product?->productAccessBranch($branchId)) {
 
-                if ($isShowNotForSaleItem == 0 && $variantProduct?->product?->is_for_sale == 0) {
+                if ($isShowNotForSaleItem == BooleanType::False->value && $variantProduct?->product?->is_for_sale == BooleanType::False->value) {
 
                     return response()->json(['errorMsg' => __('Product is not for sale')]);
                 }
@@ -81,7 +84,7 @@ class GeneralProductSearchService
         $discountProductWise = DB::table('discount_products')
             ->where('discount_products.product_id', $productId)
             ->leftJoin('discounts', 'discount_products.discount_id', 'discounts.id')
-            ->where('discounts.is_active', 1)
+            ->where('discounts.is_active', BooleanType::True->value)
             ->where('discounts.price_group_id', $__priceGroupId)
             ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`')
             ->orderBy('discounts.priority', 'desc')
@@ -96,7 +99,7 @@ class GeneralProductSearchService
         if (isset($__brandId) || isset($__categoryId)) {
 
             $discountBrandCategoryWiseQ = DB::table('discounts')
-                ->where('discounts.is_active', 1)
+                ->where('discounts.is_active', BooleanType::True->value)
                 //->where('discounts.price_group_id', $__priceGroupId)
                 ->whereRaw('"' . $presentDate . '" between `start_at` and `end_at`');
 
@@ -212,7 +215,7 @@ class GeneralProductSearchService
 
         return response()->json([
             'discount' => $this->productDiscount($productId, $priceGroupId, $product->brand_id, $product->category_id),
-            'stock' => $product->is_manage_stock == 1 ? $stock : PHP_INT_MAX,
+            'stock' => $product->is_manage_stock == BooleanType::True->value ? $stock : PHP_INT_MAX,
             'unit' => $product?->unit,
         ]);
     }
@@ -222,7 +225,7 @@ class GeneralProductSearchService
         $product = DB::table('products')->where('id', $productId)
             ->select('id', 'is_manage_stock', 'quantity')->first();
 
-        if ($product->is_manage_stock == 0) {
+        if ($product->is_manage_stock == BooleanType::True->value) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
@@ -246,7 +249,7 @@ class GeneralProductSearchService
             ->where('id', $productId)->select('id', 'is_manage_stock', 'quantity')
             ->first();
 
-        if ($product->is_manage_stock == 0) {
+        if ($product->is_manage_stock == BooleanType::False->value) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
@@ -269,7 +272,7 @@ class GeneralProductSearchService
             ->select('id', 'is_manage_stock', 'brand_id', 'category_id', 'quantity')
             ->first();
 
-        if ($product->is_manage_stock == 0) {
+        if ($product->is_manage_stock == BooleanType::False->value) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
@@ -293,7 +296,7 @@ class GeneralProductSearchService
             ->where('id', $productId)->select('id', 'is_manage_stock', 'quantity')
             ->first();
 
-        if ($product->is_manage_stock == 0) {
+        if ($product->is_manage_stock == BooleanType::False->value) {
 
             return response()->json(['stock' => PHP_INT_MAX]);
         }
@@ -395,7 +398,7 @@ class GeneralProductSearchService
 
         $stockAccountingMethod = $generalSettings['business_or_shop__stock_accounting_method'];
 
-        if ($stockAccountingMethod == 1) {
+        if ($stockAccountingMethod == StockAccountingMethod::FIFO->value) {
 
             $ordering = 'asc';
         } else {

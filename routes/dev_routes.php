@@ -153,7 +153,6 @@ Route::get('my-test', function () {
     //     ->get();
     //MONTH WISE DATES END
 
-
     //TEST
     // $currentMonth = Carbon\Carbon::now()->month;
     // return $results = App\Models\HRM\Holiday::whereYear('start_date', Carbon\Carbon::now()->year)
@@ -164,7 +163,6 @@ Route::get('my-test', function () {
     //TEST END
 
     //DATE RANGE WISE DATES
-
 
     // $first = '2023-12-16';
     // $last = '2023-12-16';

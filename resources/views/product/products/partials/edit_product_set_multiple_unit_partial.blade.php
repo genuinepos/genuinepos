@@ -20,7 +20,7 @@
                         <th class="text-start">{{ __('Quantity') }}</th>
                         <th class="text-start">{{ __('To') }}</th>
                         <th class="text-start">{{ __('Unit Cost (Exc. Tax)') }}</th>
-                        <th class="text-start">{{ __('Unit Cost Int. Tax') }}</th>
+                        <th class="text-start">{{ __('Unit Cost (Inc. Tax)') }}</th>
                         <th class="text-start">{{ __('Price (Exc. Tax)') }}</th>
                         <th><i class="fas fa-trash-alt text-white"></i></th>
                     </tr>

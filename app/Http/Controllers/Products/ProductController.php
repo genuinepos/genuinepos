@@ -210,7 +210,7 @@ class ProductController extends Controller
                     $updateProductVariant = $this->productVariantService->updateProductVariant(request: $request, productId: $updateProduct->id, index: $index);
 
                     if ($request->has_multiple_unit == BooleanType::True->value && isset($request->variant_base_unit_ids)) {
-                        
+
                         $this->productUnitService->updateProductVariantUnits(request: $request, productId: $updateProduct->id, variantId: $updateProductVariant->id, variantIndexNumber: $request->index_numbers[$index]);
                     }
                 }
@@ -235,13 +235,18 @@ class ProductController extends Controller
     public function formPart($type)
     {
         $type = $type;
+        $generalSettings = config('generalSettings');
         $taxAccounts = $this->accountService->accounts()
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
+        $units = $this->unitService->units()->get(['id', 'name', 'code_name']);
+        $defaultUnitId = $generalSettings['product__default_unit_id'] ? $generalSettings['product__default_unit_id'] : null;
+        $defaultUnit = $this->unitService->singleUnit(id: $defaultUnitId);
+        $defaultUnitName = isset($defaultUnit) ? $defaultUnit->name : null;
 
-        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants'));
+        return view('product.products.ajax_view.form_part', compact('type', 'taxAccounts', 'bulkVariants', 'units', 'defaultUnitId', 'defaultUnitName'));
     }
 
     public function changeStatus($id)

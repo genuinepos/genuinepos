@@ -21,7 +21,7 @@
                         <th class="text-start">{{ __('Quantity') }}</th>
                         <th class="text-start">{{ __('To') }}</th>
                         <th class="text-start">{{ __('Unit Cost (Exc. Tax)') }}</th>
-                        <th class="text-start">{{ __('Unit Cost Int. Tax') }}</th>
+                        <th class="text-start">{{ __('Unit Cost (Inc. Tax)') }}</th>
                         <th class="text-start">{{ __('Price (Exc. Tax)') }}</th>
                         <th><i class="fas fa-trash-alt text-white"></i></th>
                     </tr>
@@ -41,7 +41,7 @@
 
                             <td class="text-start">
                                 <input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
-                                <input type="hidden" name="base_unit_multiplier" id="base_unit_multiplier">
+                                <input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">
                             </td>
 
                             <td class="text-start" style="min-width: 127px;">

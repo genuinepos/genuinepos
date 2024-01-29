@@ -23,7 +23,7 @@ Artisan::command('col-migrate', function () {
 
     Schema::table('sale_products', function (Blueprint $table) {
         $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
-        $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
+        $table->foreign('product_unit_id')->references('id')->on('product_units')->onDelete('SET NULL');
     });
 });
 

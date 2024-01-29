@@ -6,7 +6,6 @@ use App\Http\Controllers\HRM\ShiftController;
 use App\Http\Controllers\HRM\HolidayController;
 use App\Http\Controllers\HRM\PayrollController;
 use App\Http\Controllers\HRM\AllowanceController;
-use App\Http\Controllers\HRM\DashboardController;
 use App\Http\Controllers\HRM\LeaveTypeController;
 use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;

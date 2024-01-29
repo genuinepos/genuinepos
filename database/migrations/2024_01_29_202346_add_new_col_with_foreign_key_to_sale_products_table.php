@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sales_products', function (Blueprint $table) {
+        Schema::table('sale_products', function (Blueprint $table) {
             $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
             $table->foreign('product_unit_id')->references('id')->on('product_units')->onDelete('SET NULL');
         });

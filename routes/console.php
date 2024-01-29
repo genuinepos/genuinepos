@@ -1,14 +1,12 @@
 <?php
 
-use App\Jobs\SaleMailJob;
-use App\Mail\CustomerRegistered;
 use App\Mail\NewProductArrived;
-use App\Mail\PurchaseCreated;
+use App\Mail\CustomerRegistered;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
 use Illuminate\Support\Facades\Artisan;
-
-use Modules\Communication\Interface\EmailServiceInterface;
+use Illuminate\Database\Schema\Blueprint;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +18,14 @@ use Modules\Communication\Interface\EmailServiceInterface;
 | simple approach to interacting with each command's IO methods.
 |
 */
+
+Artisan::command('col-migrate', function () {
+
+    Schema::table('sale_products', function (Blueprint $table) {
+        $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
+        $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
+    });
+});
 
 // Artisan::command('hello', function(EmailServiceInterface  $emailService) {
 //     $customer = new Customer();

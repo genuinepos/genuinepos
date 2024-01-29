@@ -263,6 +263,8 @@ class SaleProductService
             ->leftJoin('warranties', 'products.warranty_id', 'warranties.id')
             ->leftJoin('product_variants', 'sale_products.variant_id', 'product_variants.id')
             ->leftJoin('units', 'sale_products.unit_id', 'units.id')
+            ->leftJoin('product_units', 'sale_products.product_unit_id', 'product_units.id')
+            ->leftJoin('units as assignedUnit', 'product_units.assigned_unit_id', 'assignedUnit.id')
             ->select(
                 'sale_products.product_id',
                 'sale_products.variant_id',
@@ -284,6 +286,7 @@ class SaleProductService
                 'warranties.description as w_description',
                 'warranties.type as w_type',
                 'units.code_name as unit_code_name',
+                'assignedUnit.code_name as assigned_unit_code_name',
                 DB::raw('SUM(sale_products.quantity) as quantity'),
                 DB::raw('SUM(sale_products.subtotal) as subtotal'),
             )
@@ -307,6 +310,7 @@ class SaleProductService
             ->groupBy('product_variants.variant_name')
             ->groupBy('product_variants.variant_code')
             ->groupBy('units.code_name')
+            ->groupBy('assignedUnit.code_name')
             ->get();
     }
 

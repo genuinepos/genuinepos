@@ -81,7 +81,7 @@ class AddSalesController extends Controller
 
         extract($showMethodContainer);
 
-        return view('sales.add_sale.ajax_views.show', compact('sale', 'customerCopySaleProducts'));
+        return view('sales.add_sale.ajax_views.show', compact('sale'));
     }
 
     public function create(AddSaleControllerMethodContainersInterface $addSaleControllerMethodContainersInterface)

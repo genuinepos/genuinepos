@@ -542,6 +542,7 @@
         html += '<td class="text-start" style="min-width: 100px;">';
         html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 '+baseUnitName+'</span>';
         html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="'+baseUnitId+'">';
+        html += '<input type="hidden" name="product_unit_ids[]">';
         html += '</td>';
 
         html += '<td class="text-start">';

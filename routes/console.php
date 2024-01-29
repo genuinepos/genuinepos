@@ -14,6 +14,12 @@ Artisan::command('dev:m', function () {
     // Schema::table('users', function (Blueprint $table) {
     //     $table->ipAddress()->nullable();
     // });
+
+    Schema::table('sale_products', function (Blueprint $table) {
+
+        $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
+        $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
+    });
 });
 
 Artisan::command('dev:init', function () {

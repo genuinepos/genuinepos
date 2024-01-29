@@ -44,7 +44,6 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
             'references.voucherDescription.accountingVoucher.voucherDescriptions.account.group:id,sub_sub_group_number',
         ]);
 
-        $data['customerCopySaleProducts'] = $saleProductService->customerCopySaleProducts(saleId: $sale->id);
         $data['sale'] = $sale;
 
         return $data;

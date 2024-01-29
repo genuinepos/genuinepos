@@ -162,7 +162,6 @@ Route::get('my-test', function () {
     //     ->get();
     //MONTH WISE DATES END
 
-
     //TEST
     // $currentMonth = Carbon\Carbon::now()->month;
     // return $results = App\Models\HRM\Holiday::whereYear('start_date', Carbon\Carbon::now()->year)
@@ -173,7 +172,6 @@ Route::get('my-test', function () {
     //TEST END
 
     //DATE RANGE WISE DATES
-
 
     // $first = '2023-12-16';
     // $last = '2023-12-16';
@@ -196,68 +194,7 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $query = AccountLedger::query()
-            ->where('account_groups.sub_sub_group_number', 8)
-            ->where('account_ledgers.amount_type', 'debit')
-            ->whereIn(
-                'account_ledgers.voucher_type',
-                [
-                    AccountLedgerVoucherType::Purchase->value,
-                    AccountLedgerVoucherType::PurchaseProductTax->value,
-                    AccountLedgerVoucherType::SalesReturn->value,
-                    AccountLedgerVoucherType::SalesReturnProductTax->value,
-                ]
-            );
-
-        // if ($request->tax_account_id) {
-
-        //     $query->where('account_ledgers.account_id', $request->tax_account_id);
-        // }
-
-        // if ($request->branch_id) {
-
-        //     if ($request->branch_id == 'NULL') {
-
-        //         $query->where('account_ledgers.branch_id', null);
-        //     } else {
-
-        //         $query->where('account_ledgers.branch_id', $request->branch_id);
-        //     }
-        // }
-
-        // if ($request->from_date) {
-
-        //     $from_date = date('Y-m-d', strtotime($request->from_date));
-        //     $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
-        //     $date_range = [Carbon::parse($from_date), Carbon::parse($to_date)->endOfDay()];
-        //     $query->whereBetween('account_ledgers.date', $date_range);
-        // }
-
-        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-        //     $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
-        // }
-
-        $query = DB::table('account_ledgers')
-        ->where('account_groups.sub_sub_group_number', 8)
-        ->where('account_ledgers.amount_type', 'debit')
-        ->whereIn(
-            'account_ledgers.voucher_type',
-            [
-                AccountLedgerVoucherType::Purchase->value,
-                AccountLedgerVoucherType::PurchaseProductTax->value,
-                AccountLedgerVoucherType::SalesReturn->value,
-                AccountLedgerVoucherType::SalesReturnProductTax->value,
-            ]
-        )->leftJoin('accounts', 'account_ledgers.account_id', 'accounts.id')
-        ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id');
-
-    $res = $query->select(
-        'accounts.id',
-        'accounts.name',
-        DB::raw('SUM(account_ledgers.debit) as total_input_tax')
-    )->groupBy('accounts.id', 'accounts.name')->get();
-    return $res;
+    
 });
 
 

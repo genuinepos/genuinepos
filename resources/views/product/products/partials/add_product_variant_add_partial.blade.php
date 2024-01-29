@@ -69,36 +69,7 @@
                             </td>
                         </tr>
 
-                        <tr id="set_variant_multiple_units" class="set_variant_multiple_units">
-                            {{-- <td colspan="8" class="set_variant_multiple_units_td">
-                                <table class="table modal-table table-sm set_variant_multiple_unit_table" id="set_variant_multiple_unit_table">
-                                    <tr>
-                                        <th>{{ __("Unit") }}</th>
-                                        <th>{{ __("Unit Cost Exc. Tax") }}</th>
-                                        <th>{{ __("Unit Cost Inc. Tax") }}</th>
-                                        <th>{{ __("Unit Price Exc. Tax") }}</th>
-                                    </tr>
-                                    <tr id="unit_table_row">
-                                        <td>
-                                            Leap
-                                            <input type="hidden" name="variant_base_unit_ids[]" id="variant_base_unit_id">
-                                            <input type="hidden" name="variant_assigned_unit_qunatities[]" id="variant_assigned_unit_quantity">
-                                            <input type="hidden" name="variant_base_unit_multipliers[]" id="variant_base_unit_multiplier">
-                                            <input type="hidden" name="variant_assigned_unit_ids[]" id="variant_assigned_unit_id">
-                                        </td>
-                                        <td>
-                                            <input type="number" step="any" name="variant_assigned_unit_costs_exc_tax[]" class="form-control" id="variant_assigned_unit_cost_exc_tax" placeholder="{{ __("Unit Cost Exc. Tax") }}">
-                                        </td>
-                                        <td>
-                                            <input readonly type="number" step="any" name="variant_assigned_unit_costs_inc_tax[]" class="form-control" id="variant_assigned_unit_cost_inc_tax" placeholder="{{ __("Unit Cost Inc. Tax") }}">
-                                        </td>
-                                        <td>
-                                            <input type="number" step="any" class="form-control" placeholder="{{ __("Unit Price Exc. Tax") }}">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td> --}}
-                        </tr>
+                        <tr id="set_variant_multiple_units" class="set_variant_multiple_units"></tr>
                     @elseif(isset($product) && count($product->variants) > 0)
                         @foreach ($product->variants as $variant)
                             <tr>

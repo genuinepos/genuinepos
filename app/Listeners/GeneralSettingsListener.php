@@ -44,6 +44,7 @@ class GeneralSettingsListener
                             'addons__e_commerce',
                             'addons__branch_limit',
                             'addons__cash_counter_limit',
+                            'business_or_shop__business_logo',
                             'business_or_shop__business_name'
                         ])->pluck('value', 'key')->toArray();
 

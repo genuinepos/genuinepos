@@ -82,7 +82,7 @@ class AttendanceReportController extends Controller
 
         $found = $found = $this->attendanceFound(users: $users);
 
-        $holidayBranches = \App\Models\HRM\HolidayBranch::query()->with(['holiday'])
+        $holidayBranches = \App\Models\Hrm\HolidayBranch::query()->with(['holiday'])
             ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')
             ->whereYear('hrm_holidays.start_date', $year)
             ->whereMonth('hrm_holidays.start_date', '<=', $__month)
@@ -149,7 +149,7 @@ class AttendanceReportController extends Controller
 
         $found = $this->attendanceFound(users: $users);
 
-        $holidayBranches = \App\Models\HRM\HolidayBranch::query()->with(['holiday'])
+        $holidayBranches = \App\Models\Hrm\HolidayBranch::query()->with(['holiday'])
             ->leftJoin('hrm_holidays', 'hrm_holiday_branches.holiday_id', 'hrm_holidays.id')
             ->whereYear('hrm_holidays.start_date', $year)
             ->whereMonth('hrm_holidays.start_date', '<=', $__month)

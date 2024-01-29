@@ -6,7 +6,7 @@ use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Models\Hrm\Holiday;
 use App\Enums\IsDeleteInUpdate;
-use App\Models\HRM\HolidayBranch;
+use App\Models\Hrm\HolidayBranch;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 

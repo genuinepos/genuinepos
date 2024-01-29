@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\HRM;
+namespace App\Models\Hrm;
 
 use App\Models\Hrm\Holiday;
 use App\Models\Setups\Branch;

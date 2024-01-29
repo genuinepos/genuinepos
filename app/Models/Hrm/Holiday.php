@@ -3,7 +3,7 @@
 namespace App\Models\Hrm;
 
 use App\Models\BaseModel;
-use App\Models\HRM\HolidayBranch;
+use App\Models\Hrm\HolidayBranch;
 
 class Holiday extends BaseModel
 {

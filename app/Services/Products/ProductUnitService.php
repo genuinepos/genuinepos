@@ -108,7 +108,7 @@ class ProductUnitService
         }
     }
 
-    function singleProductUnit(int $id, ?array $with = null): object
+    function singleProductUnit(?int $id, ?array $with = null): ?object
     {
         $query = ProductUnit::query();
 

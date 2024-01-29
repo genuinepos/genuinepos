@@ -41,7 +41,15 @@ class="{{ $generalSettings['system__theme_color'] ?? 'dark-theme' }}
 
         <footer>
             <div class="logo_wrapper">
-                <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
+                @if ($generalSettings['business_or_shop__business_logo'])
+
+                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="System Logo" class="logo">
+                @else
+
+                    <h6 class="text-white fw-bold text-uppercase logo text-center">{{ $generalSettings['business_or_shop__business_name'] }}</h6>
+                @endif
+
+                {{-- <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}"> --}}
             </div>
 
             <span class="version-txt float-end text-white pe-2" style="margin-top: -20px"><small>V - 1.0.1</small></span>

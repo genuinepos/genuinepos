@@ -72,10 +72,23 @@
                                     <div class="head addr-t">
 
                                         <div class="px-2">
-                                            <p class="logo-main-sec">
+                                            {{-- Static --}}
+                                            {{-- <p class="logo-main-sec">
                                                 <img src="{{ asset(config('speeddigit.app_logo')) }}" class="logo" alt="{{ config('speeddigit.app_logo_alt') }}">
-                                            <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
+                                                <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
+                                            </p> --}}
+                                            {{-- Static End--}}
+
+                                            <p class="logo-main-sec">
+                                                @if ($businessInfo['business_or_shop__business_logo'])
+                                                    <img src="{{ asset('uploads/business_logo/' . $businessInfo['business_or_shop__business_logo']) }}" class="logo" alt="Accotix Erp Logo">
+                                                @else
+                                                    <h4 class="text-white mb-1">{{ $businessInfo['business_or_shop__business_name'] }}</h4>
+                                                @endif
+
+                                                <p class="version"><span>@lang('menu.version') :</span>{{ config('speeddigit.version') }}</p>
                                             </p>
+
                                             <table class="text-white">
                                                 <tbody>
                                                     <tr class="details">

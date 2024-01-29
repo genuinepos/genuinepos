@@ -8,6 +8,7 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
@@ -52,10 +53,15 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check('web')) {
+
             return redirect()->back();
         }
 
-        return view('auth.login');
+        $businessInfo = DB::table('general_settings')
+            ->whereIn('key', ['business_or_shop__business_name', 'business_or_shop__business_logo'])
+            ->where('branch_id', null)->get()->pluck('value', 'key');
+
+        return view('auth.login', compact('businessInfo'));
     }
 
     public function login(Request $request)
@@ -67,7 +73,7 @@ class LoginController extends Controller
 
         $user = User::where('username', $request->username)->where('allow_login', 1)->first();
         if (isset($user) && $user->allow_login == 1) {
-            
+
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
 
                 if (!Session::has($user->language)) {

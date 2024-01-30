@@ -20,7 +20,7 @@ class TenantStoreRequest extends FormRequest
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
             'fullname' => 'required|string|max:191',
-            'email' => 'required|email|max:191',
+            'email' => 'required|email|max:191|unique:users,email',
             'phone' => 'required|max:60',
             'password' => ['required', Password::default()],
         ];

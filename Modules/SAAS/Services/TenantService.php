@@ -18,7 +18,8 @@ class TenantService implements TenantServiceInterface
 {
     public function create(array $tenantRequest): ?Tenant
     {
-        // try {
+        try {
+            DB::beginTransaction();
             $plan = Plan::find($tenantRequest['plan_id']);
             $expireAt = $plan->expireAt();
 
@@ -28,7 +29,7 @@ class TenantService implements TenantServiceInterface
                 'impersonate_user' => 1,
                 'plan_id' => $tenantRequest['plan_id'],
                 'shop_count' => $tenantRequest['shop_count'],
-                'expire_at'=> $expireAt,
+                'expire_at' => $expireAt,
             ]);
 
             if (isset($tenant)) {
@@ -52,20 +53,21 @@ class TenantService implements TenantServiceInterface
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
                     $this->makeSuperAdminForTenant($tenantRequest);
-                    // Insert setings coming from tenant creation form
+                    // Insert settings coming from tenant creation form
                     $this->saveBusinessSettings($tenantRequest);
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
                     return $tenant;
                 }
             }
-        // } catch (Exception $e) {
-        //     Log::debug($e->getMessage());
-        //     return null;
-        // }
+        } catch (Exception $e) {
+            Log::debug($e->getMessage());
+            DB::rollBack();
+            return null;
+        }
     }
 
-    public function saveBusinessSettings(array $tenantRequest) : void
+    public function saveBusinessSettings(array $tenantRequest): void
     {
         $settings = [
             'business_or_shop__business_name' => $tenantRequest['name'],
@@ -77,9 +79,9 @@ class TenantService implements TenantServiceInterface
             // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
 
-        foreach($settings as $key => $setting) {
+        foreach ($settings as $key => $setting) {
 
-            GeneralSetting::where('key', $key)->update(['value'=> $setting]);
+            GeneralSetting::where('key', $key)->update(['value' => $setting]);
         }
     }
 
@@ -94,10 +96,11 @@ class TenantService implements TenantServiceInterface
 
     public function getAdmin(array $tenantRequest): array
     {
+        // strtolower(str_replace(' ', '', str_replace('.', '', $tenantRequest['fullname'])));
         $admin = [
             'name' => $tenantRequest['fullname'],
             'emp_id' => '1001',
-            'username' => strtolower(str_replace(' ', '', str_replace('.', '', $tenantRequest['fullname']))),
+            'username' => explode('@', $tenantRequest['email'])[0],
             'email' => $tenantRequest['email'],
             'password' => bcrypt($tenantRequest['password']),
             'shift_id' => null,

@@ -286,7 +286,9 @@ class SaleProductService
                 'warranties.description as w_description',
                 'warranties.type as w_type',
                 'units.code_name as unit_code_name',
+                'units.base_unit_multiplier',
                 'assignedUnit.code_name as assigned_unit_code_name',
+                'product_units.base_unit_multiplier as product_unit_base_unit_multiplier',
                 DB::raw('SUM(sale_products.quantity) as quantity'),
                 DB::raw('SUM(sale_products.subtotal) as subtotal'),
             )
@@ -310,7 +312,9 @@ class SaleProductService
             ->groupBy('product_variants.variant_name')
             ->groupBy('product_variants.variant_code')
             ->groupBy('units.code_name')
+            ->groupBy('units.base_unit_multiplier')
             ->groupBy('assignedUnit.code_name')
+            ->groupBy('product_units.base_unit_multiplier')
             ->get();
     }
 

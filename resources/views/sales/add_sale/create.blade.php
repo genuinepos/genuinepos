@@ -197,7 +197,7 @@
                                                         <input type="text" name="search_product" class="form-control fw-bold" id="search_product" placeholder="{{ __('Search Product By Name/Code') }}" autocomplete="off">
                                                         @if (auth()->user()->can('product_add'))
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('product_add')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add')? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('product_add') ? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('product_add') ? 'addProduct': '' }}"><i class="fas fa-plus-square text-dark input_f"></i></span>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -210,6 +210,7 @@
 
                                             <div class="hidden_fields d-none">
                                                 <input type="hidden" id="e_unique_id">
+                                                <input type="hidden" id="e_manage_unit_type">
                                                 <input type="hidden" id="e_unit_cost_inc_tax">
                                                 <input type="hidden" id="e_item_name">
                                                 <input type="hidden" id="e_product_id">
@@ -252,7 +253,7 @@
                                                 <label class="fw-bold">{{ __('Vat/Tax') }}</label>
                                                 <div class="input-group">
                                                     <select id="e_tax_ac_id" class="form-control w-50">
-                                                        <option data-product_tax_percent="0.00" value="">{{ __('NoTax') }}</option>
+                                                        <option data-product_tax_percent="0.00" value="">{{ __('NoVat/Tax') }}</option>
                                                         @foreach ($taxAccounts as $taxAccount)
                                                             <option data-product_tax_percent="{{ $taxAccount->tax_percent }}" value="{{ $taxAccount->id }}">
                                                                 {{ $taxAccount->name }}

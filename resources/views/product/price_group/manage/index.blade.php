@@ -115,68 +115,25 @@
                                                                 @else
                                                                     <input type="number" name="group_prices[{{ $pg->id }}][{{ $product->id }}][noid]" step="any" class="form-control fw-bold group_price" data-is_last_input="{{ $isLastIndex }}" placeholder="0.00" value="0.00">
                                                                 @endif
+
+                                                                <div class="input-group mt-1">
+                                                                    <span class="input-group-text bg-white">Pieces</span>
+                                                                    <input type="number" class="form-control">
+                                                                </div>
+
+                                                                <div class="input-group mt-1">
+                                                                    <span class="input-group-text bg-white">Packet</span>
+                                                                    <input type="number" class="form-control">
+                                                                </div>
+
+                                                                <div class="input-group mt-1">
+                                                                    <span class="input-group-text bg-white">Carton</span>
+                                                                    <input type="number" class="form-control">
+                                                                </div>
                                                             </td>
                                                         @endforeach
                                                     </tr>
                                                 @endif
-
-                                                {{-- @foreach ($products as $item)
-                                                    @if ($item->is_variant == 1)
-                                                        <tr>
-                                                            <td class="text-start">
-                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
-                                                                <input type="hidden" name="variant_ids[]" value="{{ $item->v_id }}">
-                                                                {{ $item->variant_name }}
-                                                            </td>
-                                                            <td class="text-center">
-
-                                                                <b>{{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $item->variant_price}}</b>
-                                                            </td>
-                                                            @foreach ($priceGroups as $pg)
-                                                                <td class="text-start">
-                                                                    @php
-                                                                        $existsPrice = DB::table('price_group_products')
-                                                                        ->where('price_group_id', $pg->id)
-                                                                        ->where('product_id', $item->p_id)
-                                                                        ->where('variant_id', $item->v_id)->first(['price']);
-                                                                    @endphp
-
-                                                                    @if ($existsPrice)
-
-                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="{{ ($existsPrice->price) }}">
-                                                                    @else
-
-                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][{{ $item->v_id }}]" type="number" step="any" class="form-control" value="0.00">
-                                                                    @endif
-                                                                </td>
-                                                            @endforeach
-                                                        </tr>
-                                                    @else
-                                                        <tr>
-                                                            <td class="text-center">
-                                                                <input type="hidden" name="product_ids[]" value="{{ $item->p_id }}">
-                                                                <input type="hidden" name="variant_ids[]" value="noid">
-                                                                <b>{{ $generalSettings['business_or_shop__currency_symbol'] }} {{ $item->product_price }}</b>
-                                                            </td>
-                                                            @foreach ($priceGroups as $pg)
-                                                                <td>
-                                                                    @php
-                                                                        $existsPrice = DB::table('price_group_products')
-                                                                        ->where('price_group_id', $pg->id)
-                                                                        ->where('product_id', $item->p_id)->first(['price']);
-                                                                    @endphp
-                                                                    @if ($existsPrice)
-
-                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="{{ $existsPrice->price }}">
-                                                                    @else
-
-                                                                        <input name="group_prices[{{ $pg->id }}][{{ $item->p_id }}][noid]" type="number" step="any" class="form-control" value="0.00">
-                                                                    @endif
-                                                                </td>
-                                                            @endforeach
-                                                        </tr>
-                                                    @endif
-                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </div>

@@ -3,7 +3,7 @@
 <script>
     $('.select2').select2();
 
-    var itemUnitsArray = [];
+    var unitsArray = [];
     var branch_id = "{{ auth()->user()->branch_id }}";
     var branch_name = "{{ $branchName }}";
 
@@ -121,18 +121,46 @@
                             $('#e_is_show_emi_on_pos').val(product.is_show_emi_on_pos);
 
                             $('#e_unit_id').empty();
-                            $('#e_unit_id').append('<option value="' + product.unit.id +
-                                '" data-is_base_unit="1" data-unit_name="' + product.unit.name +
-                                '" data-base_unit_multiplier="1">' + product.unit.name + '</option>');
+                            $('#e_unit_id').append('<option value="' + product.unit.id + '" data-is_base_unit="1" data-unit_name="' + product.unit.name + '" data-base_unit_multiplier="1">' + product.unit.name + '</option>');
 
-                            itemUnitsArray[product.id] = [{
+                            unitsArray[product.id] = [{
                                 'unit_id': product.unit.id,
+                                'product_unit_id': null,
                                 'unit_name': product.unit.name,
-                                'unit_code_name': product.unit.code_name,
                                 'base_unit_multiplier': 1,
-                                'multiplier_details': '',
                                 'is_base_unit': 1,
                             }];
+
+                            if (product.unit.child_units.length > 0) {
+
+                                product.unit.child_units.forEach(function(unit) {
+
+                                    defaultUnitsArray[product.id].push({
+                                        'unit_id': unit.id,
+                                        'product_unit_id': null,
+                                        'unit_name': unit.name,
+                                        'base_unit_multiplier': unit.base_unit_multiplier,
+                                        'is_base_unit': 0,
+                                    });
+                                });
+                            }
+
+                            $('#e_unit_id').append('<option value="' + unit.id + '" data-is_base_unit="0" data-unit_name="' + unit.name + '" data-base_unit_multiplier="' + unit.base_unit_multiplier + '">' + unit.name + '</option>');
+
+                            if (product.product_units.length > 0) {
+
+                                product.product_units.forEach(function(product_unit) {
+
+                                    productUnitsArray[product.id] = [{
+                                        'product_unit_id': product_unit.id,
+                                        'product_unit_id': product_unit.id,
+                                        'unit_name': product_unit.assigned_unit.name,
+                                        'base_unit_multiplier': product_unit.base_unit_multiplier,
+                                        'is_base_unit': 0,
+                                        'unit_price_exc_tax': product_unit.unit_price_exc_tax,
+                                    }];
+                                });
+                            }
 
                             $('#add_item').html('Add');
                             calculateEditOrAddAmount();
@@ -239,12 +267,7 @@
                                     'is_base_unit': 0,
                                 });
 
-                                $('#e_unit_id').append(
-                                    '<option value="' + unit.id +
-                                    '" data-is_base_unit="0" data-unit_name="' + unit.name +
-                                    '" data-base_unit_multiplier="' + unit
-                                    .base_unit_multiplier + '">' + unit.name +
-                                    multiplierDetails + '</option>'
+                                $('#e_unit_id').append('<option value="' + unit.id + '" data-is_base_unit="0" data-unit_name="' + unit.name + '" data-base_unit_multiplier="' + unit.base_unit_multiplier + '">' + unit.name + multiplierDetails + '</option>'
                                 );
                             });
                         }
@@ -884,6 +907,7 @@
             productTotalTaxAmount += (quantities[i].value ? quantities[i].value : 0) * (unitTaxAmounts[i].value ? unitTaxAmounts[i].value : 0);
             i++;
         });
+
         $('#net_total_amount').val(parseFloat(netTotalAmount).toFixed(2));
 
         var totalQty = 0;

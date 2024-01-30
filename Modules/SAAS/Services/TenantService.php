@@ -2,25 +2,26 @@
 
 namespace Modules\SAAS\Services;
 
-use App\Models\GeneralSetting;
+use Exception;
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
-use Exception;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Modules\SAAS\Database\factories\AdminFactory;
+use App\Models\GeneralSetting;
 use Modules\SAAS\Entities\Plan;
 use Modules\SAAS\Entities\Tenant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
+use Modules\SAAS\Database\factories\AdminFactory;
 
 class TenantService implements TenantServiceInterface
 {
     public function create(array $tenantRequest): ?Tenant
     {
-        try {
+        // try {
             $plan = Plan::find($tenantRequest['plan_id']);
             $expireAt = $plan->expireAt();
+
             $tenant = Tenant::create([
                 'id' => $tenantRequest['domain'],
                 'name' => $tenantRequest['name'],
@@ -31,8 +32,10 @@ class TenantService implements TenantServiceInterface
             ]);
 
             if (isset($tenant)) {
+
                 $domain = $tenant->domains()->create(['domain' => $tenantRequest['domain']]);
                 if ($domain) {
+
                     // Primary/Owner user
                     $user = User::create([
                         'name' => $tenantRequest['fullname'],
@@ -56,10 +59,10 @@ class TenantService implements TenantServiceInterface
                     return $tenant;
                 }
             }
-        } catch (Exception $e) {
-            Log::debug($e->getMessage());
-            return null;
-        }
+        // } catch (Exception $e) {
+        //     Log::debug($e->getMessage());
+        //     return null;
+        // }
     }
 
     public function saveBusinessSettings(array $tenantRequest) : void
@@ -75,6 +78,7 @@ class TenantService implements TenantServiceInterface
         ];
 
         foreach($settings as $key => $setting) {
+
             GeneralSetting::where('key', $key)->update(['value'=> $setting]);
         }
     }
@@ -90,10 +94,29 @@ class TenantService implements TenantServiceInterface
 
     public function getAdmin(array $tenantRequest): array
     {
-        $admin = (new AdminFactory)->definition();
-        $admin['username'] = $tenantRequest['email'];
-        $admin['email'] = $tenantRequest['email'];
-        $admin['password'] = bcrypt($tenantRequest['password']);
+        $admin = [
+            'name' => $tenantRequest['fullname'],
+            'emp_id' => '1001',
+            'username' => strtolower(str_replace(' ', '', str_replace('.', '', $tenantRequest['fullname']))),
+            'email' => $tenantRequest['email'],
+            'password' => bcrypt($tenantRequest['password']),
+            'shift_id' => null,
+            'role_type' => 1,
+            'allow_login' => 1,
+            'status' => 1,
+            'phone' => 'XXXXXXXXX',
+            'date_of_birth' => '0000-00-00',
+            'photo' => 'default.png',
+            'language' => 'en',
+            'is_belonging_an_area' => 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => null,
+        ];
+
+        // $admin = (new AdminFactory)->definition(request: $tenantRequest);
+        // $admin['username'] = $tenantRequest['email'];
+        // $admin['email'] = $tenantRequest['email'];
+        // $admin['password'] = bcrypt($tenantRequest['password']);
 
         return $admin;
     }

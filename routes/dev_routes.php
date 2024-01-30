@@ -194,7 +194,19 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    
+    // $name = "Mr. John Doe";
+
+    // // Remove Mr. and any spaces, then convert to lowercase
+    // $username = strtolower(str_replace(' ', '', str_replace('.', '', $name)));
+
+    // return $username; // Output: mrjohndoe
+
+    return App\Models\User::where('username', 'superadmin1')
+        ->where('allow_login', 1)
+        ->orWhere(function ($query) {
+            $query->where('email', 'superadmin@email.com');
+        })
+        ->first();
 });
 
 

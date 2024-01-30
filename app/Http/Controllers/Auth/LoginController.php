@@ -61,14 +61,17 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required',
+            'username_or_email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->where('allow_login', 1)->first();
+        $user = User::where('username', $request->username_or_email)->orWhere('email', $request->username_or_email)->first();
         if (isset($user) && $user->allow_login == 1) {
-            
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+
+            if (
+                Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
+                Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
+            ) {
 
                 if (!Session::has($user->language)) {
 
@@ -86,11 +89,11 @@ class LoginController extends Controller
 
                 return redirect()->intended(route('dashboard.index'));
             } else {
-                session()->flash('errorMsg', __('Sorry! Username or Password not matched!'));
+                session()->flash('errorMsg', __('Sorry! Username/Email or Password not matched!'));
                 return redirect()->back();
             }
         } else {
-            session()->flash('errorMsg', __('Login failed. Please try with correct username and password'));
+            session()->flash('errorMsg', __('Login failed. Please try with correct username/email and password'));
             return redirect()->back();
         }
     }

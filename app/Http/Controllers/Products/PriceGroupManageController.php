@@ -20,16 +20,17 @@ class PriceGroupManageController extends Controller
 
     public function index($productId, $type)
     {
-        if (! auth()->user()->can('manage_price_group')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
+        abort_if(!auth()->user()->can('manage_price_group'), 403);
+        return $request->all();
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $product = $this->productService->singleProduct(
             id: $productId,
             with: [
+                'productUnits:id,product_id,assigned_unit_id,unit_price_exc_tax',
+                'productUnits.assignedUnit:id,name',
                 'variants:id,product_id,variant_name,variant_price',
+                'variants.variantUnits:id,product_id,variant_id,assigned_unit_id,unit_price_exc_tax',
+                'variants.variantUnits.assignedUnit:id,name',
                 'tax:id,name,tax_percent',
             ],
             firstWithSelect: [
@@ -47,13 +48,10 @@ class PriceGroupManageController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        if (! auth()->user()->can('manage_price_group')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('manage_price_group'), 403);
+        return $request->all();
 
         try {
-
             DB::beginTransaction();
 
             $this->managePriceGroupService->addOrUpdateManagePriceGroups(request: $request);
@@ -66,10 +64,10 @@ class PriceGroupManageController extends Controller
 
         if ($request->action_type == 'save') {
 
-            return response()->json(['saveMsg' => __('Product price group updated Successfully')]);
+            return response()->json(['saveMsg' => __('Product price group updated successfully')]);
         } else {
 
-            return response()->json(['saveAndAnotherMsg' => __('Product price group updated Successfully')]);
+            return response()->json(['saveAndAnotherMsg' => __('Product price group updated successfully')]);
         }
     }
 }

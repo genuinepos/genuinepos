@@ -703,7 +703,7 @@
 
                                 <td class="text-end" style="font-size:9px!important;">{{ $saleProduct->quantity }}/{{ $saleProduct->unit_code_name }}|{{ $saleProduct->assigned_unit_code_name }}</td>
 
-                                <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }} </td>
+                                <td class="text-end" style="font-size:9px!important;">{{ App\Utils\Converter::format_in_bdt($saleProduct->unit_price_inc_tax) }}</td>
 
                                 @if ($invoiceLayout->product_discount)
                                     <td class="text-end" style="font-size:9px!important;">

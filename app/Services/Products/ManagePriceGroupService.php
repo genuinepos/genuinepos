@@ -17,23 +17,26 @@ class ManagePriceGroupService
 
                 (float) $__group_price = $group_price[$product_id][$variant_ids[$index]];
                 $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
-                $updatePriceGroup = PriceGroupProduct::where('price_group_id', $key)
+
+                $addOrUpdatePriceGroup = null;
+                $priceGroup = PriceGroupProduct::where('price_group_id', $key)
                     ->where('product_id', $product_id)
                     ->where('variant_id', $__variant_id)->first();
 
-                if ($updatePriceGroup) {
+                if ($priceGroup) {
 
-                    $updatePriceGroup->price = $__group_price != null ? $__group_price : null;
-                    $updatePriceGroup->save();
+                    $addOrUpdatePriceGroup = $priceGroup;
                 } else {
 
-                    $addPriceGroup = new PriceGroupProduct();
-                    $addPriceGroup->price_group_id = $key;
-                    $addPriceGroup->product_id = $product_id;
-                    $addPriceGroup->variant_id = $__variant_id;
-                    $addPriceGroup->price = $__group_price != null ? $__group_price : null;
-                    $addPriceGroup->save();
+                    $addOrUpdatePriceGroup = new PriceGroupProduct();
                 }
+
+                $addOrUpdatePriceGroup = new PriceGroupProduct();
+                $addOrUpdatePriceGroup->price_group_id = $key;
+                $addOrUpdatePriceGroup->product_id = $product_id;
+                $addOrUpdatePriceGroup->variant_id = $__variant_id;
+                $addOrUpdatePriceGroup->price = $__group_price != null ? $__group_price : null;
+                $addOrUpdatePriceGroup->save();
             }
             $index++;
         }

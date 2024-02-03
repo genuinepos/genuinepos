@@ -37,12 +37,13 @@ class InvoiceLayoutService
 
         $layouts = $query->select(
             'invoice_layouts.id',
+            'invoice_layouts.branch_id',
             'invoice_layouts.name',
             'invoice_layouts.is_default',
             'invoice_layouts.is_header_less',
             'branches.name as branch_name',
-            'branches.parent_branch_id',
             'branches.branch_code',
+            'branches.area_name',
             'parentBranch.name as parent_branch_name',
         )->orderBy('id', 'asc')->get();
 
@@ -54,27 +55,33 @@ class InvoiceLayoutService
             })
             ->editColumn('branch', function ($row) use ($generalSettings) {
 
-                if ($row->parent_branch_id) {
+                if ($row->branch_id) {
 
-                    return __('Chain Shop Of') . '  <span class="badge badge-sm bg-success">' . $row->parent_branch_name . '</span>-(' . $row->branch_code . ')';
-                } else {
+                    if ($row->parent_branch_name) {
 
-                    if ($row->branch_name) {
-
-                        return $row->branch_name . '-(' . $row->branch_code . ')';
+                        return $row->parent_branch_name . '(' . $row->area_name . ')';
                     } else {
 
-                        return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Business') . '</b>)';
+                        return $row->branch_name . '(' . $row->area_name . ')';
                     }
+                } else {
+
+                    return $generalSettings['business_or_shop__business_name'] . '(<b>' . __('Business') . '</b>)';
                 }
             })
             ->addColumn('action', function ($row) {
 
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('invoices.layouts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                if (auth()->user()->can('invoice_layouts_edit')) {
 
-                $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                    $html .= '<a href="' . route('invoices.layouts.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('invoice_layouts_delete') && $row->branch_id == auth()->user()->branch_id) {
+
+                    $html .= '<a href="' . route('invoices.layouts.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash"></span></a>';
+                }
                 $html .= '</div>';
 
                 return $html;
@@ -88,7 +95,6 @@ class InvoiceLayoutService
         $addLayout = new InvoiceLayout();
         $addLayout->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
         $addLayout->name = $defaultName ? $defaultName : $request->name;
-        $addLayout->page_size = $request->page_size ? $request->page_size : 1;
         $addLayout->show_shop_logo = $request->show_shop_logo ? $request->show_shop_logo : BooleanType::True->value;
         $addLayout->show_total_in_word = $request->show_total_in_word ? $request->show_total_in_word : BooleanType::True->value;
         $addLayout->is_header_less = $request->is_header_less ? $request->is_header_less : BooleanType::False->value;
@@ -100,7 +106,7 @@ class InvoiceLayoutService
         $addLayout->invoice_heading = isset($request->invoice_heading) ? $request->invoice_heading : 'Invoice';
         $addLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $addLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
-        $addLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
+        $addLayout->delivery_note_heading = isset($request->delivery_note_heading) ? $request->delivery_note_heading : 'Delivery Note';
         $addLayout->branch_city = $request->branch_city ? $request->branch_city : BooleanType::True->value;
         $addLayout->branch_state = $request->branch_state ? $request->branch_state : BooleanType::True->value;
         $addLayout->branch_zipcode = $request->branch_zipcode ? $request->branch_zipcode : BooleanType::True->value;
@@ -130,7 +136,6 @@ class InvoiceLayoutService
     {
         $updateInvoiceLayout = InvoiceLayout::where('id', $id)->first();
         $updateInvoiceLayout->name = $request->name;
-        $updateInvoiceLayout->page_size = $request->page_size;
         $updateInvoiceLayout->show_shop_logo = $request->show_shop_logo;
         $updateInvoiceLayout->show_total_in_word = $request->show_total_in_word;
         $updateInvoiceLayout->is_header_less = $request->is_header_less;
@@ -142,7 +147,7 @@ class InvoiceLayoutService
         $updateInvoiceLayout->invoice_heading = isset($request->invoice_heading) ? $request->invoice_heading : 'Invoice';
         $updateInvoiceLayout->quotation_heading = isset($request->quotation_heading) ? $request->quotation_heading : 'Quotation';
         $updateInvoiceLayout->sales_order_heading = isset($request->sales_order_heading) ? $request->sales_order_heading : 'Sales Order';
-        $updateInvoiceLayout->challan_heading = isset($request->challan_heading) ? $request->challan_heading : 'Challan';
+        $updateInvoiceLayout->delivery_note_heading = isset($request->delivery_note_heading) ? $request->delivery_note_heading : 'Delivery Note';
         $updateInvoiceLayout->branch_city = $request->branch_city;
         $updateInvoiceLayout->branch_state = $request->branch_state;
         $updateInvoiceLayout->branch_zipcode = $request->branch_zipcode;
@@ -233,5 +238,42 @@ class InvoiceLayoutService
         ];
 
         return $arr[$index];
+    }
+
+    function invoiceLayoutStoreValidation(object $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:invoice_layouts,name',
+            'invoice_heading' => 'required',
+            'quotation_heading' => 'required',
+            'sales_order_heading' => 'required',
+            'delivery_note_heading' => 'required',
+        ]);
+
+        if ($request->is_header_less == BooleanType::True->value) {
+
+            $request->validate([
+                'gap_from_top' => 'required',
+            ]);
+        }
+    }
+
+    function invoiceLayoutUpdateValidation(object $request, int $id)
+    {
+        $request->validate([
+            'name' => 'required|unique:invoice_layouts,name,' . $id,
+            'invoice_heading' => 'required',
+            'quotation_heading' => 'required',
+            'sales_order_heading' => 'required',
+            'delivery_note_heading' => 'required',
+        ]);
+
+        if ($request->is_header_less == 1) {
+
+            $request->validate([
+
+                'gap_from_top' => 'required',
+            ]);
+        }
     }
 }

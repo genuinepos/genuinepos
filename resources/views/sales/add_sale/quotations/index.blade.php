@@ -90,10 +90,10 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Quotations') }}</h6>
+                                    <h6>{{ __('List of Quotations') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale'))
+                                @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>

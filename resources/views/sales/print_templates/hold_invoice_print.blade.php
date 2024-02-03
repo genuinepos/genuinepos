@@ -143,8 +143,8 @@
 
                     <p>
                         @php
-                            $email = $holdInvoice?->branch?->email ? $holdInvoice?->branch?->email : $generalSettings['business_or_shop__email'];
-                            $phone = $holdInvoice?->branch?->phone ? $holdInvoice?->branch?->phone : $generalSettings['business_or_shop__phone'];
+                            $email = $holdInvoice?->branch ? $holdInvoice?->branch?->email : $generalSettings['business_or_shop__email'];
+                            $phone = $holdInvoice?->branch ? $holdInvoice?->branch?->phone : $generalSettings['business_or_shop__phone'];
                         @endphp
 
                         @if ($invoiceLayout->branch_email)

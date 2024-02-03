@@ -34,6 +34,33 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
         return $data;
     }
 
+    public function printMethodContainer(
+        int $id = null,
+        object $request,
+        object $accountingVoucherService,
+    ): ?array {
+
+        $data = [];
+        $data['receipt'] = $accountingVoucherService->singleAccountingVoucher(
+            id: $id,
+            with: [
+                'branch',
+                'branch.parentBranch',
+                'voucherDescriptions',
+                'voucherDescriptions.references',
+                'voucherDescriptions.references.sale',
+                'voucherDescriptions.references.purchaseReturn',
+                'voucherDescriptions.references.stockAdjustment',
+                'saleRef',
+                'purchaseReturnRef',
+                'stockAdjustmentRef',
+            ],
+        );
+        
+        $data['printPageSize'] = $request->print_page_size;
+        return $data;
+    }
+
     public function createMethodContainer(
         int $creditAccountId = null,
         object $accountService,
@@ -70,7 +97,7 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
         $data['accounts'] = $accountFilterService->filterCashBankAccounts($accounts);
 
         $data['receivableAccounts'] = '';
-        if (! isset($creditAccountId)) {
+        if (!isset($creditAccountId)) {
 
             $data['receivableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }
@@ -194,7 +221,7 @@ class ReceiptControllerMethodContainersService implements ReceiptControllerMetho
         $data['methods'] = $paymentMethodService->paymentMethods(with: ['paymentMethodSetting'])->get();
 
         $data['receivableAccounts'] = '';
-        if (! isset($creditAccountId)) {
+        if (!isset($creditAccountId)) {
 
             $data['receivableAccounts'] = $accountService->branchAccessibleAccounts(ownBranchIdOrParentBranchId: $ownBranchIdOrParentBranchId);
         }

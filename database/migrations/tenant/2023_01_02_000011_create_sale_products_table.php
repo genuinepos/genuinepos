@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('delivered_quantity', 22, 2)->default(0);
             $table->decimal('left_quantity', 22, 2)->default(0);
             $table->unsignedBigInteger('unit_id')->nullable();
+            $table->unsignedBigInteger('product_unit_id')->nullable();
             $table->tinyInteger('unit_discount_type')->default(1);
             $table->decimal('unit_discount', 22, 2)->default(0);
             $table->decimal('unit_discount_amount', 22, 2)->default(0);
@@ -45,6 +46,7 @@ return new class extends Migration
             $table->foreign(['product_id'])->references(['id'])->on('products')->onDelete('CASCADE');
             $table->foreign(['variant_id'])->references(['id'])->on('product_variants')->onDelete('CASCADE');
             $table->foreign(['unit_id'])->references(['id'])->on('units')->onDelete('SET NULL');
+            $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
             $table->foreign(['tax_ac_id'])->references(['id'])->on('accounts')->onDelete('SET NULL');
             $table->foreign(['sale_id'])->references(['id'])->on('sales')->onDelete('CASCADE');
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');

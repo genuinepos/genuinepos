@@ -1,17 +1,19 @@
 <?php
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
 use Illuminate\Support\Facades\Route;
+use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\AccountLedgerVoucherType;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
-    $gs = config('generalSettings');
-    dd($gs);
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
     //     ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
     //     ->whereIn('account_groups.sub_sub_group_number', [1, 2, 11])
@@ -160,7 +162,6 @@ Route::get('my-test', function () {
     //     ->get();
     //MONTH WISE DATES END
 
-
     //TEST
     // $currentMonth = Carbon\Carbon::now()->month;
     // return $results = App\Models\HRM\Holiday::whereYear('start_date', Carbon\Carbon::now()->year)
@@ -171,7 +172,6 @@ Route::get('my-test', function () {
     //TEST END
 
     //DATE RANGE WISE DATES
-
 
     // $first = '2023-12-16';
     // $last = '2023-12-16';
@@ -194,13 +194,19 @@ Route::get('my-test', function () {
 
     // return request()->generalSettings['business_or_shop__business_name'];
 
-    $generalSettings = config('generalSettings');
-    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
-    $__financialYearStartMonth = date('m', strtotime($financialYearStartMonth));
-    $startDateFormat = 'Y'.'-'.$__financialYearStartMonth.'-'.'1';
-    $startDate = date($startDateFormat);
-    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
-    return $financialYear = date('d M Y', strtotime($startDate)).' - '.date('d M Y', strtotime($endDate));
+    // $name = "Mr. John Doe";
+
+    // // Remove Mr. and any spaces, then convert to lowercase
+    // $username = strtolower(str_replace(' ', '', str_replace('.', '', $name)));
+
+    // return $username; // Output: mrjohndoe
+
+    return App\Models\User::where('username', 'superadmin1')
+        ->where('allow_login', 1)
+        ->orWhere(function ($query) {
+            $query->where('email', 'superadmin@email.com');
+        })
+        ->first();
 });
 
 

@@ -35,7 +35,7 @@
                                             @csrf
                                             <div class="left-inner-addon input-container">
                                                 <i class="fa fa-user"></i>
-                                                <input required type="text" name="username" class="form-control form-st" value="{{ old('username') }}" placeholder="{{ __('Username') }}" />
+                                                <input required type="text" name="username_or_email" class="form-control form-st" value="{{ old('username_or_email') }}" placeholder="{{ __('Username Or Email Address') }}" />
                                             </div>
 
                                             <div class="left-inner-addon input-container">

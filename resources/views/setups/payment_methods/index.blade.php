@@ -29,7 +29,11 @@
                                         <div class="tab_list_area">
                                             <div class="btn-group">
                                                 <a href="#" id="tab_btn" data-show="payment_methods" class="btn btn-sm btn-primary tab_btn tab_active"> <i class="fas fa-th-large"></i> {{ __("Payment Methods") }}</a>
-                                                <a href="#" id="tab_btn" data-show="payment_method_settings" class="btn btn-sm btn-primary tab_btn "> <i class="fas fa-code-branch"></i> {{ __("Payment Method Settings") }}</a>
+
+                                                @if (auth()->user()->can('payment_methods_settings'))
+
+                                                    <a href="#" id="tab_btn" data-show="payment_method_settings" class="btn btn-sm btn-primary tab_btn "> <i class="fas fa-code-branch"></i> {{ __("Payment Method Settings") }}</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +48,10 @@
 
                     <div class="col-12">
                         @include('setups.payment_methods.body_partials.payment_method_body')
-                        @include('setups.payment_methods.body_partials.payment_method_settings_body')
+
+                        @if (auth()->user()->can('payment_methods_settings'))
+                            @include('setups.payment_methods.body_partials.payment_method_settings_body')
+                        @endif
                     </div>
                 </div>
             </div>
@@ -84,5 +91,8 @@
         });
     </script>
     @include('setups.payment_methods.js_partials.payment_methods_js_partials')
-    @include('setups.payment_methods.js_partials.payment_method_settings_js_partial')
+
+    @if (auth()->user()->can('payment_methods_settings'))
+        @include('setups.payment_methods.js_partials.payment_method_settings_js_partial')
+    @endif
 @endpush

@@ -22,6 +22,8 @@ class PaymentMethodSettingsController extends Controller
 
     public function settingsView()
     {
+        abort_if(!auth()->user()->can('payment_methods_settings'), 403);
+
         $accounts = $this->accountService->accounts(with: [
             'bank:id,name',
             'group:id,sorting_number,sub_sub_group_number',
@@ -43,6 +45,8 @@ class PaymentMethodSettingsController extends Controller
 
     public function update(Request $request)
     {
+        abort_if(!auth()->user()->can('payment_methods_settings'), 403);
+
         try {
 
             DB::beginTransaction();

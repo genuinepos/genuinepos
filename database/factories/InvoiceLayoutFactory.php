@@ -42,7 +42,7 @@ final class InvoiceLayoutFactory extends Factory
             'invoice_heading' => $this->faker->word,
             'quotation_heading' => $this->faker->word,
             'draft_heading' => $this->faker->word,
-            'challan_heading' => $this->faker->word,
+            'delivery_note_heading' => $this->faker->word,
             'branch_city' => $this->faker->boolean,
             'branch_state' => $this->faker->boolean,
             'branch_country' => $this->faker->boolean,

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('name')->nullable();
-            $table->tinyInteger('page_size');
             $table->boolean('show_shop_logo')->default(false);
             $table->text('header_text')->nullable();
             $table->boolean('is_header_less')->default(false);
@@ -32,7 +31,7 @@ return new class extends Migration
             $table->string('sub_heading_3')->nullable();
             $table->string('invoice_heading')->nullable();
             $table->string('quotation_heading')->nullable();
-            $table->string('challan_heading')->nullable();
+            $table->string('delivery_note_heading')->nullable();
             $table->boolean('branch_city')->default(false);
             $table->boolean('branch_state')->default(false);
             $table->boolean('branch_country')->default(false);

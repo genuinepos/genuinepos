@@ -86,7 +86,7 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-10">
-                                    <h6>{{ __('List Of Contras') }}</h6>
+                                    <h6>{{ __('List of Contras') }}</h6>
                                 </div>
 
                                 @if (auth()->user()->can('purchase_add'))
@@ -447,23 +447,6 @@
                         toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
                     }
                 }
-            });
-        });
-
-        // Make print
-        $(document).on('click', '#modalDetailsPrintBtn', function(e) {
-            e.preventDefault();
-
-            var body = $('.print_modal_details').html();
-
-            $(body).printThis({
-                debug: false,
-                importCSS: true,
-                importStyle: true,
-                loadCSS: "{{ asset('assets/css/print/purchase.print.css') }}",
-                removeInline: false,
-                printDelay: 500,
-                header: null,
             });
         });
     </script>

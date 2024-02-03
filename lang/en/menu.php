@@ -233,7 +233,7 @@ return [
     'tax' => 'Tax',
     'payment_methods' => 'Payment Methods',
     'save_and_print' => 'Save and Print',
-    'challan' => 'Challan',
+    'delivery_note' => 'Delivery Note',
     'invoice' => 'Invoice',
     'invoice_schemas' => 'Invoice Schemas',
     'invoice_layout' => 'Invoice Layouts',

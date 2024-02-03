@@ -379,7 +379,7 @@ class AccountService
             )
             ->union($customerAccounts)
             // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
-            ->orderBy('is_walk_in_customer', 'desc')
+            ->orderByDesc('is_walk_in_customer') // Order by 'is_walk_in_customer' in descending order
             ->orderBy('name', 'asc')
             ->get();
     }

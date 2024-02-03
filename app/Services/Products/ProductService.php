@@ -398,7 +398,7 @@ class ProductService
         $addProduct->sub_category_id = $request->sub_category_id;
         $addProduct->brand_id = $request->brand_id;
         $addProduct->unit_id = $request->unit_id;
-        $addProduct->alert_quantity = $request->alert_quantity;
+        $addProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity : 0;
         $addProduct->tax_ac_id = $request->tax_ac_id;
         $addProduct->tax_type = $request->tax_type ? $request->tax_type : 1;
         $addProduct->product_condition = $request->product_condition;
@@ -412,6 +412,7 @@ class ProductService
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = isset($request->weight) ? $request->weight : null;
+        $addProduct->has_multiple_unit = $request->has_multiple_unit;
 
         if ($request->type == 1) {
 
@@ -445,7 +446,13 @@ class ProductService
 
     public function updateProduct(object $request, int $productId): object
     {
-        $updateProduct = $this->singleProduct(id: $productId, with: ['variants', 'productAccessBranches']);
+        $updateProduct = $this->singleProduct(id: $productId, with: ['productUnits', 'variants', 'variants.variantUnits', 'productAccessBranches']);
+
+        foreach($updateProduct->productUnits as $productUnit){
+
+            $productUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+            $productUnit->save();
+        }
 
         if (count($updateProduct->variants) > 0) {
 
@@ -453,6 +460,12 @@ class ProductService
 
                 $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                 $variant->save();
+
+                foreach($variant->variantUnits as $variantUnit){
+
+                    $variantUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
+                    $variantUnit->save();
+                }
             }
         }
 
@@ -477,6 +490,7 @@ class ProductService
         $updateProduct->barcode_type = $request->barcode_type;
         $updateProduct->warranty_id = $request->warranty_id;
         $updateProduct->weight = isset($request->weight) ? $request->weight : null;
+        $updateProduct->has_multiple_unit = $request->has_multiple_unit;
 
         if ($request->type == 1) {
 
@@ -689,6 +703,53 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
+    }
+
+    public function productStoreValidation(object $request)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code',
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == BooleanType::True->value) {
+
+            $request->validate(
+                [
+                    'variant_image.*' => 'sometimes|image|max:2048',
+                ],
+            );
+        }
+    }
+
+    public function productUpdateValidation(object $request, int $id)
+    {
+        $request->validate(
+            [
+                'name' => 'required',
+                'code' => 'sometimes|unique:products,product_code,' . $id,
+                'unit_id' => 'required',
+                'photo' => 'sometimes|image|max:2048',
+            ],
+            [
+                'unit_id.required' => __('Product unit field is required.'),
+            ]
+        );
+
+        if ($request->is_variant == BooleanType::True->value) {
+
+            $request->validate(
+
+                ['variant_image.*' => 'sometimes|image|max:2048'],
+            );
+        }
     }
 
     public function getLastProductSerialCode()

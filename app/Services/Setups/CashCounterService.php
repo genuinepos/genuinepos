@@ -2,6 +2,9 @@
 
 namespace App\Services\Setups;
 
+use App\Enums\RoleType;
+use App\Enums\BooleanType;
+use Illuminate\Validation\Rule;
 use App\Models\Setups\CashCounter;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,7 +34,7 @@ class CashCounterService
             }
         }
 
-        if (auth()->user()->is_belonging_an_area == 1) {
+        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('cash_counters.branch_id', auth()->user()->branch_id);
         }
@@ -52,8 +55,16 @@ class CashCounterService
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
 
-                $html .= '<a href="' . route('cash.counters.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="' . route('cash.counters.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                if (auth()->user()->can('cash_counters_edit')) {
+
+                    $html .= '<a href="' . route('cash.counters.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                }
+
+                if (auth()->user()->can('cash_counters_delete')) {
+
+                    $html .= '<a href="' . route('cash.counters.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                }
+
                 $html .= '</div>';
 
                 return $html;
@@ -143,5 +154,29 @@ class CashCounterService
         }
 
         return $query;
+    }
+
+    public function cashCounterStoreValidation(object $request)
+    {
+        $request->validate([
+            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
+                return $query->where('branch_id', auth()->user()->branch_id);
+            })],
+            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) {
+                return $query->where('branch_id', auth()->user()->branch_id);
+            })],
+        ]);
+    }
+
+    public function cashCounterUpdateValidation(object $request, int $id)
+    {
+        $this->validate($request, [
+            'counter_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
+                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
+            })],
+            'short_name' => ['required', Rule::unique('cash_counters')->where(function ($query) use ($id) {
+                return $query->where('branch_id', auth()->user()->branch_id)->where('id', '!=', $id);
+            })],
+        ]);
     }
 }

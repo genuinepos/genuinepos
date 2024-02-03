@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -14,24 +15,10 @@ Artisan::command('dev:m', function () {
     //     $table->ipAddress()->nullable();
     // });
 
-    Schema::table('accounting_vouchers', function (Blueprint $table) {
+    Schema::table('sale_products', function (Blueprint $table) {
 
-        $table->unsignedBigInteger('payroll_ref_id')->after('stock_adjustment_ref_id')->nullable();
-
-        $table->foreign('payroll_ref_id')->references('id')->on('hrm_payrolls')->onDelete('set null');
-        $table->foreign('stock_adjustment_ref_id')->references('id')->on('stock_adjustments')->onDelete('set null');
-    });
-
-    Schema::table('voucher_description_references', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('payroll_id')->after('stock_adjustment_id')->nullable();
-        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
-    });
-
-    Schema::table('day_books', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('payroll_id')->after('transfer_stock_id')->nullable();
-        $table->foreign('payroll_id')->references('id')->on('hrm_payrolls')->onDelete('cascade');
+        $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
+        $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
     });
 });
 

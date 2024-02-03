@@ -56,8 +56,6 @@ class GeneralSettingsSeeder extends Seeder
             // ['key' => 'email_config__MAIL_FROM_ADDRESS', 'value' => null, 'branch_id' => null],
             // ['key' => 'email_config__MAIL_FROM_NAME', 'value' => null, 'branch_id' => null],
             // ['key' => 'email_config__MAIL_ACTIVE', 'value' => null, 'branch_id' => null],
-            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => null],
-            ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__SMS_URL', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__API_KEY', 'value' => null, 'branch_id' => null],
             // ['key' => 'sms__SENDER_ID', 'value' => null, 'branch_id' => null],
@@ -73,7 +71,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'add_sale__default_price_group_id', 'value' => null, 'branch_id' => null],
             ['key' => 'pos__is_disable_draft', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_quotation', 'value' => '0', 'branch_id' => null],
-            ['key' => 'pos__is_disable_challan', 'value' => '0', 'branch_id' => null],
+            ['key' => 'pos__is_disable_delivery_note', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_hold_invoice', 'value' => '0', 'branch_id' => null],
             ['key' => 'pos__is_disable_multiple_pay', 'value' => '1', 'branch_id' => null],
             ['key' => 'pos__is_show_recent_transactions', 'value' => '0', 'branch_id' => null],
@@ -118,7 +116,9 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'modules__accounting', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__contacts', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => null],
-            ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null], //
+            ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null],
+            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => null],
+            ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
 
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => 0, 'branch_id' => null],
             ['key' => 'reward_point_settings__point_display_name', 'value' => 'Reward Point', 'branch_id' => null],
@@ -149,6 +149,26 @@ class GeneralSettingsSeeder extends Seeder
 
             ['key' => 'invoice_layout__add_sale_invoice_layout_id', 'value' => 1, 'branch_id' => null],
             ['key' => 'invoice_layout__pos_sale_invoice_layout_id', 'value' => 1, 'branch_id' => null],
+
+            ['key' => 'print_page_size__add_sale_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__pos_sale_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__quotation_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__sales_order_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__draft_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__sales_return_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__purchase_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__purchase_order_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__purchase_return_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__transfer_stock_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__stock_adjustment_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__receipt_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__payment_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__expense_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__contra_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__payroll_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__payroll_payment_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__bom_voucher_page_size', 'value' => 1, 'branch_id' => null],
+            ['key' => 'print_page_size__production_voucher_page_size', 'value' => 1, 'branch_id' => null],
         ];
 
         return $generalSettings;

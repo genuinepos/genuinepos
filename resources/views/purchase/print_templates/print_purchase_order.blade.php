@@ -4,18 +4,51 @@
     $timeFormat = $generalSettings['business_or_shop__time_format'] == '24' ? 'H:i:s' : 'h:i:s A';
 @endphp
 
-@if ($printPageSize == \App\Enums\SalesInvoicePageSize::AFourPage->value)
+@if ($printPageSize == \App\Enums\PrintPageSize::AFourPage->value)
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Purchase Order print templete-->
     <div class="purchase_order_print_template">
@@ -72,11 +105,11 @@
 
                     <p>
                         @if ($order?->branch)
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $order?->branch?->email }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $order?->branch?->phone }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $order?->branch?->email }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -288,15 +321,48 @@
 @else
     <style>
         @media print {
-            table { page-break-after: auto; }
-            tr { page-break-inside: avoid; page-break-after: auto; }
-            td { page-break-inside: avoid; page-break-after: auto; }
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
+            table {
+                page-break-after: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
         }
 
-        @page { size: a4; margin-top: 0.8cm; margin-bottom: 35px; margin-left: 20px; margin-right: 20px; }
-        div#footer { position: fixed; bottom: 25px; left: 0px; width: 100%; height: 0%; color: #CCC; background: #333; padding: 0; margin: 0; }
+        @page {
+            size: a4;
+            margin-top: 0.8cm;
+            margin-bottom: 35px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        div#footer {
+            position: fixed;
+            bottom: 25px;
+            left: 0px;
+            width: 100%;
+            height: 0%;
+            color: #CCC;
+            background: #333;
+            padding: 0;
+            margin: 0;
+        }
     </style>
     <!-- Purchase Order print templete-->
     <div class="purchase_order_print_template">
@@ -353,11 +419,11 @@
 
                     <p style="font-size:9px;">
                         @if ($order?->branch)
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $order?->branch?->email }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $order?->branch?->phone }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $order?->branch?->email }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $order?->branch?->phone }}
                         @else
-                            <span class="fw-bold">{{ __("Email") }} : </span> {{ $generalSettings['business_or_shop__email'] }},
-                            <span class="fw-bold">{{ __("Phone") }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
+                            <span class="fw-bold">{{ __('Email') }} : </span> {{ $generalSettings['business_or_shop__email'] }},
+                            <span class="fw-bold">{{ __('Phone') }} : </span> {{ $generalSettings['business_or_shop__phone'] }}
                         @endif
                     </p>
                 </div>
@@ -573,4 +639,3 @@
     </div>
     <!-- Purchase print templete end-->
 @endif
-

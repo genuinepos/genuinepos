@@ -100,10 +100,10 @@
                         <div class="card">
                             <div class="section-header">
                                 <div class="col-6">
-                                    <h6>{{ __('List Of Add Sales') }}</h6>
+                                    <h6>{{ __('List of Add Sales') }}</h6>
                                 </div>
 
-                                @if (auth()->user()->can('create_add_sale'))
+                                @if (auth()->user()->can('create_add_sale') && auth()->user()->branch_id)
                                     <div class="col-6 d-flex justify-content-end">
                                         <a href="{{ route('sales.create') }}" class="btn btn-sm btn-primary" id="add_btn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                     </div>
@@ -180,29 +180,11 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Excel',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    text: '<i class="fas fa-file-pdf"></i> Pdf',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    text: '<i class="fas fa-print"></i> Print',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: 'th:not(:first-child)'
-                    }
+            buttons: [
+                { extend: 'excel', text: '<i class="fas fa-file-excel"></i> Excel', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' } },
+                { extend: 'pdf', text: '<i class="fas fa-file-pdf"></i> Pdf', className: 'btn btn-primary', exportOptions: { columns: 'th:not(:first-child)' }},
+                { extend: 'print', text: '<i class="fas fa-print"></i> Print', className: 'btn btn-primary',
+                    exportOptions: { columns: 'th:not(:first-child)' }
                 },
             ],
             "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),

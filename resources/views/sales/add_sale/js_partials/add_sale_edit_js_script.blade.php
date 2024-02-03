@@ -463,13 +463,13 @@
 
         if (e_quantity == '') {
 
-            toastr.error('Quantity field must not be empty.');
+            toastr.error("{{ __('Quantity field must not be empty.') }}");
             return;
         }
 
         if (e_product_id == '') {
 
-            toastr.error('Please select an item.');
+            toastr.error("{{ __('Please select an item.') }}");
             return;
         }
 
@@ -499,16 +499,21 @@
 
                     var check_quantity = parseFloat(e_quantity);
 
-                    if (e_current_warehouse_id == e_warehouse_id) {
+                    if (e_warehouse_id != '' && e_current_warehouse_id == e_warehouse_id) {
 
                         check_quantity = parseFloat(e_quantity) - parseFloat(e_current_quantity);
                     }
 
-                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
+                    if (e_warehouse_id == '') {
+
+                        check_quantity = parseFloat(e_quantity) - parseFloat(e_current_quantity);
+                    }
+
+                    var stockLocationMessage = e_warehouse_id ? "{{ __('in selected warehouse') }}" : "{{ __('in the Shop/Business') }}";
 
                     if (parseFloat(check_quantity) > parseFloat(data.stock)) {
 
-                        toastr.error('Current stock is ' + parseFloat(data.stock) + stockLocationMessage);
+                        toastr.error("{{ __('Current stock is') }} " + parseFloat(data.stock) + stockLocationMessage);
                         return;
                     }
 
@@ -627,6 +632,7 @@
         var tr = $(this);
         var unique_id = tr.find('#unique_id').val();
         var warehouse_id = tr.find('#warehouse_id').val();
+        var current_quantity = tr.find('#current_quantity').val();
         var current_warehouse_id = tr.find('#current_warehouse_id').val();
         var stock_location_name = tr.find('#stock_location_name').html();
         var item_name = tr.find('#item_name').val();
@@ -672,6 +678,7 @@
         $('#search_product').val(item_name);
         $('#e_unique_id').val(unique_id);
         $('#e_warehouse_id').val(warehouse_id);
+        $('#e_current_quantity').val(current_quantity);
         $('#e_current_warehouse_id').val(current_warehouse_id);
         $('#e_stock_location_name').val(stock_location_name);
         $('#e_item_name').val(item_name);

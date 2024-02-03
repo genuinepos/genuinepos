@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('purchase_order_product_receives', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_product_id')->index('purchase_order_product_receives_order_product_id_foreign');
-            $table->string('purchase_challan')->nullable();
+            $table->string('delivery_note_heading')->nullable();
             $table->unsignedBigInteger('lot_number')->nullable();
             $table->string('received_date')->nullable();
             $table->decimal('qty_received', 22)->default(0);

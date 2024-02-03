@@ -6,7 +6,6 @@ use App\Http\Controllers\HRM\ShiftController;
 use App\Http\Controllers\HRM\HolidayController;
 use App\Http\Controllers\HRM\PayrollController;
 use App\Http\Controllers\HRM\AllowanceController;
-use App\Http\Controllers\HRM\DashboardController;
 use App\Http\Controllers\HRM\LeaveTypeController;
 use App\Http\Controllers\HRM\AttendanceController;
 use App\Http\Controllers\HRM\DepartmentController;
@@ -103,6 +102,7 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::get('/', 'index')->name('hrm.payrolls.index');
         Route::get('create', 'create')->name('hrm.payrolls.create');
         Route::get('show/{id}', 'show')->name('hrm.payrolls.show');
+        Route::get('print/{id}', 'print')->name('hrm.payrolls.print');
         Route::post('store',  'store')->name('hrm.payrolls.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payrolls.edit');
         Route::post('update/{id}', 'update')->name('hrm.payrolls.update');
@@ -114,19 +114,11 @@ Route::group(['prefix' => 'hrm'], function () {
         Route::get('/', 'index')->name('hrm.payroll.payments.index');
         Route::get('create/{payrollId}', 'create')->name('hrm.payroll.payments.create');
         Route::get('show/{id}', 'show')->name('hrm.payroll.payments.show');
+        Route::get('print/{id}', 'print')->name('hrm.payroll.payments.print');
         Route::post('store',  'store')->name('hrm.payroll.payments.store');
         Route::get('edit/{id}', 'edit')->name('hrm.payroll.payments.edit');
         Route::post('update/{id}', 'update')->name('hrm.payroll.payments.update');
         Route::delete('delete/{id}', 'delete')->name('hrm.payroll.payments.delete');
-    });
-
-    Route::group(['prefix' => 'dashboard'], function () {
-
-        Route::get('/', [DashboardController::class, 'index'])->name('hrm.dashboard.index');
-        Route::get('user/count/table', [DashboardController::class, 'userCountTable'])->name('hrm.dashboard.user.count.table');
-        Route::get('today/attr/table', [DashboardController::class, 'todayAttTable'])->name('hrm.dashboard.today.attr.table');
-        Route::get('leave/table', [DashboardController::class, 'leaveTable'])->name('hrm.dashboard.leave.table');
-        Route::get('upcoming/holidays', [DashboardController::class, 'upcomingHolidays'])->name('hrm.dashboard.upcoming.holidays');
     });
 
     Route::group(['prefix' => 'reports'], function () {

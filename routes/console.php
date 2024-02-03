@@ -16,8 +16,7 @@ Artisan::command('dev:m', function () {
     // });
 
     Schema::table('sales', function (Blueprint $table) {
-
-        $table->decimal('earned_point', 22, 2)->after('order_discount_amount')->default(0);
+        $table->renameColumn('redeem_point', 'redeemed_point');
     });
 });
 

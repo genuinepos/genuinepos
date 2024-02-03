@@ -39,7 +39,7 @@ return new class extends Migration
             $table->decimal('order_discount', 22, 2)->default(0);
             $table->decimal('order_discount_amount', 22, 2)->default(0);
             $table->decimal('earned_point', 22, 2)->default(0);
-            $table->decimal('redeem_point', 22, 2)->default(0);
+            $table->decimal('redeemed_point', 22, 2)->default(0);
             $table->decimal('redeem_point_rate', 22, 2)->default(0);
             $table->string('shipment_details')->nullable();
             $table->mediumText('shipment_address')->nullable();

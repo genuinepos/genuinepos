@@ -5,6 +5,11 @@
             <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
+            @if(empty($shopHistory))
+                <div class="py-5">
+                    <h1>Your shop’s creation limit is currently zero. Please consider upgrading your plan.</h1>
+                </div>
+            @else
             <form id="add_branch_form" action="{{ route('branches.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
@@ -270,6 +275,7 @@
                     </div>
                 </div>
             </form>
+            @endif
         </div>
     </div>
 </div>

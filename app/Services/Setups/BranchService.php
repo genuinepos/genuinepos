@@ -7,6 +7,7 @@ use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountGroup;
 use App\Models\Role;
 use App\Models\Setups\Branch;
+use App\Models\ShopExpireDateHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -84,6 +85,8 @@ class BranchService
 
     public function addBranch($request): object
     {
+        $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
+
         $addBranch = new Branch();
         $addBranch->branch_type = $request->branch_type;
         $addBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
@@ -101,6 +104,7 @@ class BranchService
         $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
+        $addBranch->expire_at = $shopHistory->end_at;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -112,7 +116,9 @@ class BranchService
             $addBranch->logo = $branchLogoName;
         }
 
-        $addBranch->save();
+        if($addBranch->save()) {
+            $this->shopExpireHistoryCheckUpdate($shopHistory);
+        }
 
         return $this->singleBranch(id: $addBranch->id, with: ['parentBranch']);
     }
@@ -442,6 +448,15 @@ class BranchService
             $request->validate([
                 'name' => 'required',
             ]);
+        }
+    }
+
+    protected function shopExpireHistoryCheckUpdate($shopHistory)
+    {
+        if (!empty($shopHistory)) {
+            $shopHistory->created_count += 1;
+            $shopHistory->left_count = $shopHistory->count - ($shopHistory->created_count);
+            $shopHistory->save();
         }
     }
 }

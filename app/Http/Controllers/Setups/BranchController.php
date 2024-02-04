@@ -7,6 +7,7 @@ use App\Enums\BranchType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ShopExpireDateHistory;
 use App\Services\Setups\BranchService;
 use App\Services\GeneralSettingService;
 use App\Services\Setups\CurrencyService;
@@ -33,13 +34,14 @@ class BranchController extends Controller
         abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
         $generalSettings = config('generalSettings');
+        $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
 
         if ($request->ajax()) {
 
             return $this->branchService->branchListTable();
         }
 
-        return view('setups.branches.index');
+        return view('setups.branches.index', compact('shopHistory'));
     }
 
     public function create()
@@ -51,8 +53,9 @@ class BranchController extends Controller
 
         $roles = DB::table('roles')->select('id', 'name')->get();
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
+        $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
 
-        return view('setups.branches.ajax_view.create', compact('branches', 'roles', 'currencies', 'timezones'));
+        return view('setups.branches.ajax_view.create', compact('branches', 'roles', 'currencies', 'timezones', 'shopHistory'));
     }
 
     public function store(Request $request)
@@ -141,7 +144,7 @@ class BranchController extends Controller
             ];
 
             if ($request->branch_type == BranchType::DifferentShop->value) {
-                
+
                 $settings['business_or_shop__account_start_date'] = $request->account_start_date;
                 $settings['business_or_shop__financial_year_start_month'] = $request->financial_year_start_month;
                 $settings['business_or_shop__stock_accounting_method'] = $request->stock_accounting_method;

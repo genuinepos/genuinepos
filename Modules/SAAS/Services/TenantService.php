@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\GeneralSetting;
+use App\Models\ShopExpireDateHistory;
+use App\Models\Payment;
+use App\Models\Subscription;
 use Modules\SAAS\Entities\Plan;
 use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +55,7 @@ class TenantService implements TenantServiceInterface
                     ]);
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
-                    $this->makeSuperAdminForTenant($tenantRequest);
+                    $this->makeSuperAdminForTenant($tenantRequest, $expireAt);
                     // Insert settings coming from tenant creation form
                     $this->saveBusinessSettings($tenantRequest);
                     DB::reconnect();
@@ -85,12 +88,14 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    private function makeSuperAdminForTenant(array $tenantRequest): int
+    private function makeSuperAdminForTenant(array $tenantRequest, $expireAt): int
     {
         $admin = $this->getAdmin($tenantRequest);
         $tenantAdminUser = User::create($admin);
         $adminRole = Role::first();
         $tenantAdminUser->assignRole($adminRole);
+        $this->storeSubscription($tenantAdminUser, $tenantRequest, $expireAt);
+        $this->storeShopExpireHistory($tenantRequest, $expireAt);
         return $tenantAdminUser->id;
     }
 
@@ -114,6 +119,7 @@ class TenantService implements TenantServiceInterface
             'is_belonging_an_area' => 0,
             'created_at' => Carbon::now(),
             'updated_at' => null,
+            'plan_id' => $tenantRequest['plan_id'],
         ];
 
         // $admin = (new AdminFactory)->definition(request: $tenantRequest);
@@ -122,5 +128,45 @@ class TenantService implements TenantServiceInterface
         // $admin['password'] = bcrypt($tenantRequest['password']);
 
         return $admin;
+    }
+
+    protected function storeSubscription($tenantAdminUser, $tenantRequest, $expireAt)
+    {
+        $subscribe = new Subscription();
+        $subscribe->user_id = $tenantAdminUser->id;
+        $subscribe->plan_id = $tenantRequest['plan_id'];
+        $subscribe->amount = $tenantRequest['amount'] ?? 0;
+        $subscribe->shop_count = $tenantRequest['shop_count'];
+        $subscribe->status = 0;
+        $subscribe->start_at = now();
+        $subscribe->end_at = $expireAt;
+        $subscribe->save();
+    }
+
+    protected function storeShopExpireHistory($tenantRequest, $expireAt)
+    {
+        $shopHistory = new ShopExpireDateHistory();
+        $shopHistory->count = $tenantRequest['shop_count'];
+        $shopHistory->start_at = now();
+        $shopHistory->end_at = $expireAt;
+        $shopHistory->created_count = 0;
+        $shopHistory->left_count = $tenantRequest['shop_count'];
+        $shopHistory->save();
+    }
+
+    protected function storeSubscriptionPayment($request, $subscribe, $tenantRequest, $shop)
+    {
+        $payment = new Payment();
+        $payment->subscription_id = $subscribe->id;
+        $payment->plan_id = $tenantRequest['plan_id'];
+        $payment->plan_id = $shop->shop_id;
+        $payment->payment_method_id = $request->payment_method_id;
+        $payment->transaction_id = $request->transaction_id;
+        $payment->subtotal = $request->subtotal;
+        $payment->discount = $request->discount;
+        $payment->total = $request->total;
+        $payment->status = $request->status;
+        $payment->payment_type = $request->payment_type;
+        $payment->payment_at = now();
     }
 }

@@ -558,8 +558,8 @@
         var html = '';
         html += '<tr>';
         html += '<td class="text-start" style="min-width: 100px;">';
-        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 '+baseUnitName+'</span>';
-        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="'+baseUnitId+'">';
+        html += '<span id="span_base_unit_name" class="fw-bold base_unit_name">1 ' + baseUnitName + '</span>';
+        html += '<input type="hidden" name="base_unit_ids[]" id="base_unit_id" value="' + baseUnitId + '">';
         html += '</td>';
 
         html += '<td class="text-start">';
@@ -567,7 +567,7 @@
         html += '</td>';
 
         html += '<td class="text-start">';
-        html += '<input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
+        html += '<input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __("Quantity") }}">';
         html += '<input type="hidden" name="base_unit_multipliers[]" id="base_unit_multiplier">';
         html += '</td>';
 
@@ -577,11 +577,11 @@
         html += '<p class="fw-bold p-1">1</p>';
         html += '</div>';
         html += '<div class="col-md-10">';
-        html += '<select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id" style="min-width: 110px !important;">';
+        html += '<select name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes" id="assigned_unit_id" style="min-width: 110px !important;">';
         html += '<option data-assigned_unit_name="" value="">{{ __("Unit") }}</option>';
         units.forEach(function(unit) {
 
-            html += '<option data-assigned_unit_name="'+unit.name+'" value="' + unit.id + '">' + unit.name + '</option>';
+            html += '<option data-assigned_unit_name="' + unit.name + '" value="' + unit.id + '">' + unit.name + '</option>';
         });
         html += '</select>';
         html += '</div>';
@@ -607,6 +607,15 @@
 
         $('#multiple_unit_body').append(html);
         $('.assigned_unit_id').select2();
+        
+        var hasMultipleUnit = $('#has_multiple_unit').val();
+        if (hasMultipleUnit == 1) {
+
+            $('.multiple_unit_required_sometimes').prop('required', true);
+        }else {
+
+            $('.multiple_unit_required_sometimes').prop('required', false);
+        }
     });
 
     $(document).on('change', '#has_multiple_unit', function(e) {
@@ -797,7 +806,6 @@
             currentTr.find('#assigned_unit_cost_inc_tax').val(__manuallyAssignedUnitCostIncTax);
         }
     }
-
 
     $(document).on('click', '#unit_remove_btn', function(e) {
 

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('zip_code')->nullable();
             $table->string('alternate_phone_number')->nullable();
-            $table->string('bin_no')->nullable();
-            $table->string('tin_no')->nullable();
+            $table->string('bin')->nullable();
+            $table->string('tin')->nullable();
             $table->string('country', 191)->nullable();
             $table->text('address')->nullable();
             $table->string('email')->nullable();

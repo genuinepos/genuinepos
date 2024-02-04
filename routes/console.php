@@ -15,10 +15,8 @@ Artisan::command('dev:m', function () {
     //     $table->ipAddress()->nullable();
     // });
 
-    Schema::table('sale_products', function (Blueprint $table) {
-
-        $table->unsignedBigInteger('product_unit_id')->after('unit_id')->nullable();
-        $table->foreign(['product_unit_id'])->references(['id'])->on('product_units')->onDelete('SET NULL');
+    Schema::table('sales', function (Blueprint $table) {
+        $table->renameColumn('redeem_point', 'redeemed_point');
     });
 });
 

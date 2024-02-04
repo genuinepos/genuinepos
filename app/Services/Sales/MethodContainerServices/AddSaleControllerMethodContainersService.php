@@ -95,7 +95,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts(with: ['priceGroupUnits'])
+            ->select(['id', 'price_group_id', 'product_id', 'variant_id', 'price'])->get();
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -313,7 +314,8 @@ class AddSaleControllerMethodContainersService implements AddSaleControllerMetho
 
         $data['customerAccounts'] = $accountService->customerAndSupplierAccounts($ownBranchIdOrParentBranchId);
 
-        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts();
+        $data['priceGroupProducts'] = $managePriceGroupService->priceGroupProducts(with: ['priceGroupUnits'])
+        ->select(['id', 'price_group_id', 'product_id', 'variant_id', 'price'])->get();
 
         $data['priceGroups'] = $priceGroupService->priceGroups()->get(['id', 'name']);
         $data['sale'] = $sale;

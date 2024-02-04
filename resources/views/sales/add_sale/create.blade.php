@@ -210,20 +210,26 @@
 
                                             <div class="hidden_fields d-none">
                                                 <input type="hidden" id="e_unique_id">
-                                                <input type="hidden" id="e_manage_unit_type">
+                                                <input type="hidden" id="e_product_unit_id">
+                                                <input type="hidden" id="e_base_unit_name">
+                                                <input type="hidden" id="e_base_unit_price_exc_tax">
                                                 <input type="hidden" id="e_unit_cost_inc_tax">
+                                                <input type="hidden" id="e_showing_unit_cost_inc_tax">
                                                 <input type="hidden" id="e_item_name">
                                                 <input type="hidden" id="e_product_id">
                                                 <input type="hidden" id="e_variant_id">
                                                 <input type="hidden" id="e_tax_amount">
+                                                <input type="hidden" id="e_showing_tax_amount">
                                                 <input type="hidden" id="e_is_show_emi_on_pos">
                                                 <input type="hidden" id="e_price_inc_tax">
+                                                <input type="hidden" id="e_showing_price_inc_tax">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Quantity') }}</label>
                                                 <div class="input-group">
-                                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                                    <input type="number" step="any" class="form-control fw-bold w-60" id="e_showing_quantity" placeholder="{{ __('Quantity') }}" value="0.00">
+                                                    <input type="hidden" id="e_quantity">
                                                     <select id="e_unit_id" class="form-control w-40">
                                                         <option value="">{{ __('Unit') }}</option>
                                                     </select>
@@ -232,19 +238,21 @@
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Unit Price (Exc. Tax)') }}</label>
-                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                                <input {{ auth()->user()->can('edit_price_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_showing_price_exc_tax" placeholder="{{ __('Price Exc. Tax') }}" value="0.00">
+                                                <input type="hidden" id="e_price_exc_tax">
                                             </div>
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Discount') }}</label>
                                                 <div class="input-group">
-                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_discount" placeholder="{{ __('Discount') }}" value="0.00">
-
+                                                    <input {{ auth()->user()->can('edit_discount_sale_screen')? '': 'readonly' }} type="number" step="any" class="form-control fw-bold" id="e_showing_discount" placeholder="{{ __('Discount') }}" value="0.00">
+                                                    <input type="hidden" id="e_discount" value="0.00">
                                                     <select id="e_discount_type" class="form-control">
                                                         <option value="1">{{ __('Fixed') }}(0.00)</option>
                                                         <option value="2">{{ __('Percentage') }}(%)</option>
                                                     </select>
 
+                                                    <input type="hidden" id="e_showing_discount_amount">
                                                     <input type="hidden" id="e_discount_amount">
                                                 </div>
                                             </div>

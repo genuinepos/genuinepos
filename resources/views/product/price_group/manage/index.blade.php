@@ -78,7 +78,7 @@
                                                                             ->where('price_group_id', $pg->id)
                                                                             ->where('product_id', $variant->product_id)
                                                                             ->where('variant_id', $variant->id)
-                                                                            ->first(['price']);
+                                                                            ->first(['id','price']);
 
                                                                         $isGroupLastIndex = $groupLastIndex == $loop->index ? 1 : 0;
                                                                         $isLastIndex = $variantIndex == $lastIndex && $isGroupLastIndex == 1 ? 1 : 0;
@@ -94,18 +94,16 @@
                                                                         @foreach ($variant->variantUnits as $variantUnit)
                                                                             <div class="input-group mt-1">
                                                                                 <span class="input-group-text bg-white w-25">{{ $variantUnit?->assignedUnit?->name }}</span>
-                                                                                <input type="hidden" name="multiple_unit_assigned_unit_ids[{{ $pg->id }}][]" value="{{ $variantUnit->assigned_unit_id }}">
+                                                                                <input type="hidden" name="multiple_unit_assigned_unit_ids[{{ $pg->id }}][{{ $variant->id }}][]" value="{{ $variantUnit->assigned_unit_id }}">
                                                                                 @php
                                                                                     $priceGroupProductId = isset($existsPrice) ? $existsPrice->id : null;
-                                                                                    $priceGroupUnit = DB::table('price_group_units')->where('price_group_product_id', $priceGroupProductId)->where('assigned_unit_id', $variantUnit->assegine_unit_id)->first();
+                                                                                    $priceGroupUnit = DB::table('price_group_units')->where('price_group_product_id', $priceGroupProductId)->where('assigned_unit_id', $variantUnit->assigned_unit_id)->first();
                                                                                 @endphp
 
                                                                                 @if ($priceGroupUnit)
-                                                                                    <input type="hidden" name="multiple_unit_price_group_unit_id[{{ $pg->id }}][]" value="{{ $priceGroupProductId }}">
-                                                                                    <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][]" class="form-control" value="{{ $priceGroupUnit->unit_price_exc_tax }}" placeholder="0.00">
+                                                                                    <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][{{ $variant->id }}][]" class="form-control" value="{{ $priceGroupUnit->unit_price_exc_tax }}" placeholder="0.00">
                                                                                 @else
-                                                                                    <input type="hidden" name="multiple_unit_price_group_unit_id[{{ $pg->id }}][]">
-                                                                                    <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][]" class="form-control w-75" placeholder="0.00">
+                                                                                    <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][{{ $variant->id }}][]" class="form-control w-75" placeholder="0.00">
                                                                                 @endif
                                                                             </div>
                                                                         @endforeach
@@ -130,7 +128,7 @@
                                                                     $existsPrice = DB::table('price_group_products')
                                                                         ->where('price_group_id', $pg->id)
                                                                         ->where('product_id', $product->id)
-                                                                        ->first(['price']);
+                                                                        ->first(['id','price']);
 
                                                                     $isLastIndex = $groupLastIndex == $loop->index ? 1 : 0;
                                                                 @endphp
@@ -147,14 +145,12 @@
                                                                             <input type="hidden" name="multiple_unit_assigned_unit_ids[{{ $pg->id }}][]" value="{{ $productUnit->assigned_unit_id }}">
                                                                             @php
                                                                                 $priceGroupProductId = isset($existsPrice) ? $existsPrice->id : null;
-                                                                                $priceGroupUnit = DB::table('price_group_units')->where('price_group_product_id', $priceGroupProductId)->where('assigned_unit_id', $productUnit->assegine_unit_id)->first();
+                                                                                $priceGroupUnit = DB::table('price_group_units')->where('price_group_product_id', $priceGroupProductId)->where('assigned_unit_id', $productUnit->assigned_unit_id)->first();
                                                                             @endphp
 
                                                                             @if ($priceGroupUnit)
-                                                                                <input type="hidden" name="multiple_unit_price_group_unit_id[{{ $pg->id }}][]" value="{{ $priceGroupProductId }}">
                                                                                 <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][]" class="form-control" value="{{ $priceGroupUnit->unit_price_exc_tax }}" placeholder="0.00">
                                                                             @else
-                                                                                <input type="hidden" name="multiple_unit_price_group_unit_id[{{ $pg->id }}][]">
                                                                                 <input type="number" name="multiple_unit_prices_exc_tax[{{ $pg->id }}][]" class="form-control w-75" placeholder="0.00">
                                                                             @endif
                                                                         </div>

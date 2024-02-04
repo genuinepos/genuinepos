@@ -20,7 +20,7 @@
                     @foreach ($plans as $plan)
                         <div class="col-md-3">
                             <div class="card border-dark mb-3" style="max-width: 18rem;">
-                                <div class="card-header">{{ $plan->name }}</div>
+                                <div class="card-header">{{ $plan->name }} </div>
                                 <div class="card-body text-dark">
                                     <h5 class="card-title">{{ $plan->periodType }} {{ __('Plan') }}</h5>
                                     <p class="card-text" style="height: 80px;">

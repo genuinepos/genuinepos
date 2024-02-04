@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\ManagePriceGroupService;
-use App\Services\Products\PriceGroupService;
-use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Products\ProductService;
+use App\Services\Products\PriceGroupService;
+use App\Services\Products\PriceGroupUnitService;
+use App\Services\Products\ManagePriceGroupService;
 
 class PriceGroupManageController extends Controller
 {
     public function __construct(
         private PriceGroupService $priceGroupService,
         private ManagePriceGroupService $managePriceGroupService,
+        private PriceGroupUnitService $priceGroupUnitService,
         private ProductService $productService,
     ) {
     }
@@ -21,7 +23,6 @@ class PriceGroupManageController extends Controller
     public function index($productId, $type)
     {
         abort_if(!auth()->user()->can('manage_price_group'), 403);
-        return $request->all();
         $priceGroups = $this->priceGroupService->priceGroups()->where('status', 'Active')->get();
         $product = $this->productService->singleProduct(
             id: $productId,
@@ -49,13 +50,29 @@ class PriceGroupManageController extends Controller
     public function storeOrUpdate(Request $request)
     {
         abort_if(!auth()->user()->can('manage_price_group'), 403);
-        return $request->all();
+        // return $request->all();
 
         try {
             DB::beginTransaction();
 
-            $this->managePriceGroupService->addOrUpdateManagePriceGroups(request: $request);
+            foreach ($request->product_ids as $index => $productId) {
 
+                foreach ($request->group_prices as $priceGroupId => $prices) {
+
+                    $addOrUpdatePriceGroupProduct = $this->managePriceGroupService->addOrUpdatePriceGroupProduct(request: $request, priceGroupId: $priceGroupId, productId: $productId, variantId: $request->variant_ids[$index], price: $prices[$productId][$request->variant_ids[$index]]);
+
+                    if (isset($request->multiple_unit_assigned_unit_ids[$priceGroupId])) {
+
+                        if ($addOrUpdatePriceGroupProduct->variant_id) {
+
+                            $this->priceGroupUnitService->addOrUpdatePriceGroupUnitsForVariant(request: $request, priceGroupId: $priceGroupId, priceGroupProductId: $addOrUpdatePriceGroupProduct->id, productId: $productId, variantId: $request->variant_ids[$index]);
+                        } else {
+
+                            $this->priceGroupUnitService->addOrUpdatePriceGroupUnitsForSingleProduct(request: $request, priceGroupId: $priceGroupId, priceGroupProductId: $addOrUpdatePriceGroupProduct->id, productId: $productId);
+                        }
+                    }
+                }
+            }
             DB::commit();
         } catch (Exception $e) {
 

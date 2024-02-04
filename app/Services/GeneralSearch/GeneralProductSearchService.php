@@ -2,7 +2,7 @@
 
 namespace App\Services\GeneralSearch;
 
-use App\Models\Product;
+use App\Models\Products\Product;
 use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use App\Enums\StockAccountingMethod;
@@ -178,14 +178,33 @@ class GeneralProductSearchService
 
     public function getProductDiscountByIdWithAvailableStock($productId, $variantId, $priceGroupId, $branchId)
     {
-        $product = Product::with(['unit:id,name,code_name', 'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier'])
-            ->where('id', $productId)
-            ->select('id', 'is_manage_stock', 'unit_id', 'brand_id', 'category_id', 'quantity')->first();
+        $product = Product::with(
+            [
+                'unit:id,name,code_name',
+                'unit.childUnits:id,name,code_name,base_unit_id,base_unit_multiplier',
+                'productUnits:id,product_id,assigned_unit_id,base_unit_multiplier,unit_cost_exc_tax,unit_price_exc_tax',
+                'productUnits.assignedUnit:id,name',
+            ]
+        )->where('id', $productId)->select('id', 'is_manage_stock', 'unit_id', 'brand_id', 'category_id', 'quantity')->first();
+
+        $__variantId = $variantId != 'noid' ? $variantId : null;
+        $variant = null;
+        if (isset($__variantId)) {
+
+            $variant = ProductVariant::with(
+                [
+                    'variantUnits:id,product_id,variant_id,assigned_unit_id,base_unit_multiplier,unit_cost_exc_tax,unit_price_exc_tax',
+                    'variant.assignedUnit:id,name'
+                ]
+            )->where('id', $__variantId)->first();
+        }
 
         return response()->json([
             'discount' => $this->productDiscount($productId, $priceGroupId, $product->brand_id, $product->category_id),
-            'stock' => $this->getAvailableStock($productId, $variantId, $branchId),
+            'stock' => $this->getAvailableStock($productId, $__variantId, $branchId),
             'unit' => $product?->unit,
+            'productUnits' => $product?->productUnits,
+            'variantUnits' => isset($variant) ? $variant?->variantUnits : [],
         ]);
     }
 
@@ -301,7 +320,10 @@ class GeneralProductSearchService
             return response()->json(['stock' => PHP_INT_MAX]);
         }
 
-        $productStock = DB::table('product_stocks')->where('warehouse_id', $warehouseId)->where('product_id', $productId)->first();
+        $productStock = DB::table('product_stocks')->where('warehouse_id', $warehouseId)
+            ->where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->first();
 
         if ($productStock) {
 
@@ -314,10 +336,8 @@ class GeneralProductSearchService
 
     public function getAvailableStock($productId, $variantId, $branchId)
     {
-        $variantId = $variantId != 'noid' ? $variantId : null;
-
         $stock = 0;
-        if ($variantId) {
+        if (isset($variantId)) {
 
             $variantStock = DB::table('product_stocks')->where('product_id', $productId)
                 ->where('variant_id', $variantId)

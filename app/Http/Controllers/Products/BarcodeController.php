@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\PurchaseProduct;
-use App\Models\SupplierProduct;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Setups\BarcodeSetting;
-use App\Services\Accounts\AccountService;
-use App\Services\Purchases\PurchaseProductService;
-use App\Services\Setups\BarcodeSettingService;
 
 class BarcodeController extends Controller
 {
     public function __construct(
         private BarcodeSettingService $barcodeSettingService,
-        private AccountService $accountService,
-        private PurchaseProductService $purchaseProductService
     ) {
     }
 

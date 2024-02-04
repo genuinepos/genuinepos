@@ -7,43 +7,49 @@ use Illuminate\Support\Facades\DB;
 
 class ManagePriceGroupService
 {
-    public function addOrUpdateManagePriceGroups(object $request)
-    {
-        $variant_ids = $request->variant_ids;
-        $index = 0;
-        foreach ($request->product_ids as $product_id) {
+    public function addOrUpdatePriceGroupProduct(
+        object $request,
+        int $priceGroupId,
+        int $productId,
+        int|string $variantId = null,
+        ?float $price = null
+    ): object {
+        (float) $__price = $price;
+        $__variantId = $variantId != 'noid' ? $variantId : null;
 
-            foreach ($request->group_prices as $key => $group_price) {
+        $addOrUpdatePriceGroup = null;
+        $priceGroup = PriceGroupProduct::where('price_group_id', $priceGroupId)
+            ->where('product_id', $productId)
+            ->where('variant_id', $__variantId)->first();
 
-                (float) $__group_price = $group_price[$product_id][$variant_ids[$index]];
-                $__variant_id = $variant_ids[$index] != 'noid' ? $variant_ids[$index] : null;
+        if ($priceGroup) {
 
-                $addOrUpdatePriceGroup = null;
-                $priceGroup = PriceGroupProduct::where('price_group_id', $key)
-                    ->where('product_id', $product_id)
-                    ->where('variant_id', $__variant_id)->first();
+            $addOrUpdatePriceGroup = $priceGroup;
+        } else {
 
-                if ($priceGroup) {
-
-                    $addOrUpdatePriceGroup = $priceGroup;
-                } else {
-
-                    $addOrUpdatePriceGroup = new PriceGroupProduct();
-                }
-
-                $addOrUpdatePriceGroup = new PriceGroupProduct();
-                $addOrUpdatePriceGroup->price_group_id = $key;
-                $addOrUpdatePriceGroup->product_id = $product_id;
-                $addOrUpdatePriceGroup->variant_id = $__variant_id;
-                $addOrUpdatePriceGroup->price = $__group_price != null ? $__group_price : null;
-                $addOrUpdatePriceGroup->save();
-            }
-            $index++;
+            $addOrUpdatePriceGroup = new PriceGroupProduct();
         }
+
+        $addOrUpdatePriceGroup = new PriceGroupProduct();
+        $addOrUpdatePriceGroup->price_group_id = $priceGroupId;
+        $addOrUpdatePriceGroup->product_id = $productId;
+        $addOrUpdatePriceGroup->variant_id = $__variantId;
+        $addOrUpdatePriceGroup->price = $__price != null ? $__price : null;
+        $addOrUpdatePriceGroup->save();
+
+        return $addOrUpdatePriceGroup;
     }
 
-    public function priceGroupProducts(int $productId = null, int $variantId = null, int $branchId = null)
+    public function priceGroupProducts(?array $with = null)
     {
-        return DB::table('price_group_products')->get(['id', 'price_group_id', 'product_id', 'variant_id', 'price']);
+        $query = PriceGroupProduct::query();
+
+        if (isset($with)) {
+
+            $query->with($with);
+        }
+
+        return $query;
+        return DB::table('price_group_products')->get();
     }
 }

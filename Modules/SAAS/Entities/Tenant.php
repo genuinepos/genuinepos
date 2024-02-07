@@ -37,4 +37,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return isset($this->expire_at ) && today()->gt($this->expire_at);
     }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }

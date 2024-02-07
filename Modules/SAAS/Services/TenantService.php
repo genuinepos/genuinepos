@@ -30,6 +30,7 @@ class TenantService implements TenantServiceInterface
                 'plan_id' => $tenantRequest['plan_id'],
                 'shop_count' => $tenantRequest['shop_count'],
                 'expire_at' => $expireAt,
+                'user_id' => auth()?->user()?->id ? auth()?->user()?->id : 1,
             ]);
 
             if (isset($tenant)) {
@@ -38,18 +39,18 @@ class TenantService implements TenantServiceInterface
                 if ($domain) {
 
                     // Primary/Owner user
-                    $user = User::create([
-                        'name' => $tenantRequest['fullname'],
-                        'email' => $tenantRequest['email'],
-                        'password' => bcrypt($tenantRequest['password']),
-                        'phone' => $tenantRequest['phone'],
-                        'primary_tenant_id' => $tenant->id,
-                        'ip_address' => request()->ip(),
-                    ]);
+                    // $user = User::create([
+                    //     'name' => $tenantRequest['fullname'],
+                    //     'email' => $tenantRequest['email'],
+                    //     'password' => bcrypt($tenantRequest['password']),
+                    //     'phone' => $tenantRequest['phone'],
+                    //     'primary_tenant_id' => $tenant->id,
+                    //     'ip_address' => request()->ip(),
+                    // ]);
 
-                    $tenant->update([
-                        'user_id' => $user->id,
-                    ]);
+                    // $tenant->update([
+                    //     'user_id' => $user->id,
+                    // ]);
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
                     $this->makeSuperAdminForTenant($tenantRequest);
@@ -62,6 +63,7 @@ class TenantService implements TenantServiceInterface
             }
         } catch (Exception $e) {
             Log::debug($e->getMessage());
+            Log::info($e->getMessage());
             DB::rollBack();
             return null;
         }
@@ -73,9 +75,8 @@ class TenantService implements TenantServiceInterface
             'business_or_shop__business_name' => $tenantRequest['name'],
             'business_or_shop__phone' => $tenantRequest['phone'],
             'business_or_shop__email' => $tenantRequest['email'],
-
             'addons__branch_limit' => $tenantRequest['shop_count'],
-            // 'business_or_shop__address' => $business_or_shop__address,
+            'business_or_shop__address' => $tenantRequest['address'],
             // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
 
@@ -103,7 +104,6 @@ class TenantService implements TenantServiceInterface
             'username' => explode('@', $tenantRequest['email'])[0],
             'email' => $tenantRequest['email'],
             'password' => bcrypt($tenantRequest['password']),
-            'shift_id' => null,
             'role_type' => 1,
             'allow_login' => 1,
             'status' => 1,
@@ -112,6 +112,11 @@ class TenantService implements TenantServiceInterface
             'photo' => 'default.png',
             'language' => 'en',
             'is_belonging_an_area' => 0,
+            'currency_id' => $tenantRequest['currency_id'],
+            'city' => $tenantRequest['city'],
+            'postal_code' => $tenantRequest['postal_code'],
+            'permanent_address' => $tenantRequest['address'],
+            'current_address' => $tenantRequest['address'],
             'created_at' => Carbon::now(),
             'updated_at' => null,
         ];

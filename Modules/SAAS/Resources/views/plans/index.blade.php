@@ -18,33 +18,57 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>{{ __('SL No.') }}</th>
-                                    <th>{{ __('Plan Name') }}</th>
-                                    <th>{{ __('Period Value') }}</th>
-                                    <th>{{ __('Period Unit') }}</th>
-                                    <th>{{ __('Currency Code') }}</th>
-                                    <th>{{ __('Period Price') }}</th>
-                                    <th>{{ __('Plan Status') }}</th>
-                                    <th>{{ __('Action') }}</th>
+                                    <th class="text-start">{{ __('SL No.') }}</th>
+                                    <th class="text-start">{{ __('Plan Name') }}</th>
+                                    <th class="text-start">{{ __('Price Per Month') }}</th>
+                                    <th class="text-start">{{ __('Price Per Year') }}</th>
+                                    <th class="text-start">{{ __('Lifetime Price') }}</th>
+                                    <th class="text-start">{{ __('Applicable Lifetime Years') }}</th>
+                                    <th class="text-start">{{ __('Currency Code') }}</th>
+                                    <th class="text-start">{{ __('Plan Status') }}</th>
+                                    <th class="text-start">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($plans as $key => $plan)
                                     <tr class="">
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $plan->name }}</td>
-                                        <td>{{ $plan->period_value }}</td>
-                                        <td>{{ $plan->period_unit }}</td>
-                                        <td>{{ $plan->currency_code }}</td>
-                                        <td>{{ $plan->price }}</td>
-                                        <td>{!! $plan->statusLabel !!}</td>
-                                        <td class="">
-                                            <a href="{{ route('saas.plans.edit', $plan->id) }}"
-                                                class="btn btn-primary text-white">
+                                        <td class="text-start">{{ $loop->iteration }}</td>
+                                        <td class="text-start {{ $plan->is_trial_plan == 1 ? 'text-danger' : '' }}">{!! $plan->name . ' ' . ($plan->is_trial_plan == 1 ? ' <samll style="font-size: 10px!important;">(Period : ' . $plan->trial_days . ' Days)</samll>' : '') !!}</td>
+                                        <td class="text-start fw-bold">
+                                            @if ($plan->is_trial_plan == 1)
+                                                {{ __('N/A') }}
+                                            @else
+                                                {{ \App\Utils\Converter::format_in_bdt($plan->price_per_month) }}
+                                            @endif
+                                        </td>
+                                        <td class="text-start fw-bold">
+                                            @if ($plan->is_trial_plan == 1)
+                                                {{ __('N/A') }}
+                                            @else
+                                                {{ \App\Utils\Converter::format_in_bdt($plan->price_per_year) }}
+                                            @endif
+                                        </td>
+                                        <td class="text-start fw-bold">
+                                            @if ($plan->is_trial_plan == 1)
+                                                {{ __('N/A') }}
+                                            @else
+                                                {{ \App\Utils\Converter::format_in_bdt($plan->lifetime_price) }}
+                                            @endif
+                                        </td>
+                                        <td class="text-start">
+                                            @if ($plan->is_trial_plan == 1)
+                                                {{ __('N/A') }}
+                                            @else
+                                                {{ $plan->applicable_lifetime_years }}
+                                            @endif
+                                        </td>
+                                        <td class="text-start">{{ $plan?->currency?->code }}</td>
+                                        <td class="text-start">{!! $plan->statusLabel !!}</td>
+                                        <td class="text-start">
+                                            <a href="{{ route('saas.plans.edit', $plan->id) }}" class="btn btn-primary text-white">
                                                 {{ __('Edit') }}
                                             </a>
-                                            <a href="{{ route('saas.plans.destroy', $plan->id) }}"
-                                                class="btn btn-danger text-white delete-button delete-btn1">
+                                            <a href="{{ route('saas.plans.destroy', $plan->id) }}" class="btn btn-danger text-white delete-button delete-btn1">
                                                 {{ __('Delete') }}
                                             </a>
                                         </td>

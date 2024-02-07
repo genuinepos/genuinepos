@@ -5,8 +5,7 @@
             <div class="main-logo d-lg-block d-none">
                 <div class="logo-big">
                     <a href="/">
-                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}"
-                            style="max-width: 110px;">
+                        <img src="{{ asset('modules/saas/images/logo_black.png') }}" alt="{{ config('app.name') }}" style="max-width: 110px;">
                     </a>
                 </div>
                 <div class="logo-small">
@@ -102,8 +101,7 @@
 
                             {{-- Notification --}}
                             <div class="header-btn-box">
-                                <button class="header-btn" id="notificationDropdown" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button class="header-btn" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-light fa-bell"></i>
                                     <span class="badge bg-danger">0</span>
                                 </button>
@@ -131,14 +129,12 @@
                                 </ul>
                             </div>
 
-                            <button class="header-btn fullscreen-btn" id="btnFullscreen"><i
-                                    class="fa-light fa-expand"></i></button>
+                            <button class="header-btn fullscreen-btn" id="btnFullscreen"><i class="fa-light fa-expand"></i></button>
                             <button class="header-btn theme-color-btn"><i class="fa-light fa-sun-bright"></i></button>
                         </div>
                     </div>
                 </div>
-                <button class="header-btn header-collapse-group-btn d-lg-none"><i
-                        class="fa-light fa-ellipsis-vertical"></i></button>
+                <button class="header-btn header-collapse-group-btn d-lg-none"><i class="fa-light fa-ellipsis-vertical"></i></button>
                 {{-- <button class="header-btn theme-settings-btn"><i class="fa-light fa-gear"></i></button> --}}
 
                 <div class="header-btn-box">
@@ -164,17 +160,14 @@
                         </li>
                         {{-- <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-message-lines"></i></span> Message</a></li>
                         <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-calendar-check"></i></span> Taskboard</a></li> --}}
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
-                                        class="fa-regular fa-circle-question"></i></span> {{ __('Help') }}</a></li>
-                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
-                                        class="fa-regular fa-gear"></i></span> {{ __('Settings') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-circle-question"></i></span> {{ __('Help') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i class="fa-regular fa-gear"></i></span> {{ __('Settings') }}</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
                             {{-- <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();alert('hi')"> --}}
-                            <a class="dropdown-item" href="#" role="button"
-                                onclick="event.preventDefault();document.getElementById('logoutForm').submit()">
+                            <a class="dropdown-item" href="#" role="button" onclick="event.preventDefault();document.getElementById('logoutForm').submit()">
                                 <span class="dropdown-icon">
                                     <i class="fa-regular fa-arrow-right-from-bracket"></i>
                                 </span> {{ __('Logout') }}

@@ -41,13 +41,12 @@ return new class extends Migration
             $table->string('facebook_link')->nullable();
             $table->string('twitter_link')->nullable();
             $table->string('instagram_link')->nullable();
-            $table->string('social_media_1')->nullable();
-            $table->string('social_media_2')->nullable();
-            $table->string('custom_field_1')->nullable();
-            $table->string('custom_field_2')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('id_proof_name')->nullable();
             $table->string('id_proof_number')->nullable();
+            $table->unsignedBigInteger('currency_id')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('permanent_address')->nullable();
             $table->string('current_address')->nullable();
             $table->string('bank_ac_holder_name')->nullable();
@@ -67,6 +66,7 @@ return new class extends Migration
             $table->foreign(['department_id'])->references(['id'])->on('hrm_departments')->onDelete('SET NULL');
             $table->foreign(['designation_id'])->references(['id'])->on('hrm_designations')->onDelete('SET NULL');
             $table->foreign(['shift_id'])->references(['id'])->on('hrm_shifts')->onDelete('SET NULL');
+            $table->foreign(['currency_id'])->references('id')->on('currencies')->onDelete('set null');
         });
     }
 

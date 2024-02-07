@@ -201,12 +201,12 @@ Route::get('my-test', function () {
 
     // return $username; // Output: mrjohndoe
 
-    return App\Models\User::where('username', 'superadmin1')
-        ->where('allow_login', 1)
-        ->orWhere(function ($query) {
-            $query->where('email', 'superadmin@email.com');
-        })
-        ->first();
+    // return App\Models\User::where('username', 'superadmin1')
+    //     ->where('allow_login', 1)
+    //     ->orWhere(function ($query) {
+    //         $query->where('email', 'superadmin@email.com');
+    //     })
+    //     ->first();
 });
 
 

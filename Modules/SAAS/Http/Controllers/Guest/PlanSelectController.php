@@ -3,8 +3,9 @@
 namespace Modules\SAAS\Http\Controllers\Guest;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Modules\SAAS\Entities\Plan;
+use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Currency;
 
 class PlanSelectController extends Controller
 {
@@ -29,10 +30,13 @@ class PlanSelectController extends Controller
         return view('saas::guest.subscribe', compact('plan', 'intent'));
     }
 
-    public function confirm(Plan $plan)
+    public function confirm(Plan $plan, $pricePeriod = null)
     {
+        $currencies = Currency::select('id', 'country', 'currency', 'code')->get();
         return view('saas::guest.plan-confirm-form', [
             'plan' => $plan,
+            'pricePeriod' => $pricePeriod,
+            'currencies' => $currencies,
         ]);
     }
 }

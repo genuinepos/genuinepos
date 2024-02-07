@@ -6,5 +6,5 @@ enum PlanPeriod: string
 {
     case Month = 'Month';
     case Year = 'Year';
-    case Day = 'Day';
+    case Lifetime = 'Lifetime';
 }

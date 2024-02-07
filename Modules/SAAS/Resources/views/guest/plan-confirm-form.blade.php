@@ -1,164 +1,88 @@
 <x-saas::guest title="{{ __('Confirm Plan') }}">
-    <div class="container ck-container mt-3 pb-5">
-        <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="py-1 pt-2">Plan Name: {{ $plan->name }} ({{$plan->priceLabel . ' ' . $plan->periodType}})</h5>
-                <h5>{{ __('Plan Confirmation and Registration') }}</h5>
+    @push('css')
+        <style>
+            header.cart-header {
+                border: 1px solid;
+                border-radius: 7px;
+                padding: 10px;
+            }
+
+            header.cart-header .header-link-area ul li {
+                display: inline-block;
+            }
+
+            .header-link-area ul li {
+                line-height: 43px;
+                padding: 1px 8px;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        </style>
+    @endpush
+    <header class="cart-header my-3">
+        <div class="row">
+            <div class="col-md-4">
+                <img style="height: 50px;; width:150px;" src="http://gposs.com/wp-content/uploads/2023/05/cropped-GPOSs-logo-b.png" alt="">
             </div>
-            <div class="card-body">
-                <form method="POST" action="{{ route('saas.guest.tenants.store') }}" id="tenantStoreForm">
+            <div class="col-md-8">
+                <div class="header-link-area">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="https://gposs.com">{{ __('Home') }}</a>
+                        </li>
+
+                        <li>
+                            <a href="https://gposs.com/pricing">{{ __('Pricing') }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="tab-nav">
+                <button class="single-nav active" data-tab="cartTab">
+                    <span class="txt">{{ __('Step One') }}</span>
+                    <span class="sl-no">{{ __('01') }}</span>
+                </button>
+
+                <button class="single-nav" data-tab="checkOutTab" disabled>
+                    <span class="txt">{{ __('Step Two') }}</span>
+                    <span class="sl-no">{{ __('02') }}</span>
+                </button>
+
+                <button class="single-nav" data-tab="orderCompletedTab" disabled>
+                    <span class="txt">{{ __('Step Three') }}</span>
+                    <span class="sl-no">{{ __('03') }}</span>
+                </button>
+            </div>
+
+            <div class="tab-contents mt-1">
+
+                <form id="tenantStoreForm" method="POST" action="{{ route('saas.guest.tenants.store') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="plan_id" id="plan_id" value="{{ $plan->id }}" />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-2">
-                                <label for="fullname" class="form-label text-bold">
-                                    <b>{{ __('Full Name') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="fullname" id="fullname"
-                                    class="form-control @error('fullname') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Full Name') }}" required />
-                            </div>
-                            <div class="mb-2">
-                                <label for="email" class="form-label text-bold">
-                                    <b>{{ __('Email Address') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="email" name="email" id="email"
-                                    class="form-control @error('email') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Email Address') }}" required />
-                            </div>
-                            <div class="mb-2">
-                                <label for="password" class="form-label text-bold">
-                                    <b>{{ __('Password') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="password" name="password" id="password"
-                                    class="form-control @error('password') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Password') }}" required />
-                            </div>
-                            <div class="mb-2">
-                                <label for="phone" class="form-label text-bold">
-                                    <b>{{ __('Phone Number') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" phone="phone" id="phone"
-                                    class="form-control @error('phone') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Phone Number') }}" required />
-                            </div>
-                            <hr />
-                            <div class="mb-2">
-                                <label for="name" class="form-label text-bold">
-                                    <b>{{ __('Business Name') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Business Name') }}" required />
-                            </div>
-                            <div class="mb-2">
-                                <label for="name" class="form-label text-bold">
-                                    <b>{{ __('Domain Name') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="domain" id="domain"
-                                    class="form-control @error('name') is-invalid  @enderror"
-                                    placeholder="{{ __('Enter Domain Name') }}" required />
-                                <p class="mt-2">
-                                    <span id="domainPreview" class="monospace"></span>
-                                </p>
-                            </div>
-                            <div class="mb-2">
-                                <label for="name" class="form-label text-bold">
-                                    <b>{{ __('Number of Shops') }}</b>
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="number" name="shop_count" min="1" value="1" id="shop_count" class="form-control" placeholder="{{__('Number of Shops') }}" required>
-                            </div>
-                            <div class="mb-3" id="recaptcha-div">
-                                {!! NoCaptcha::display() !!}
-                            </div>
-                            <div class="mb-2">
-                                <input type="submit" class="btn btn-primary" value="{{ __('Register') }}"
-                                    id="submitBtn" />
-                            </div>
-                        </div>
-                    </div>
+                    @include('saas::guest.partials.plan_confirm_partials.step_one')
+                    @include('saas::guest.partials.plan_confirm_partials.step_two')
                 </form>
 
-                <div id="response-message" class="mt-3 d-none text-start" style="height: 100px;">
-                    <div class="mt-2">
-                        <h6 id="response-message-text">
-                            {{ __('Creating your Business. It can take a while, please wait...') }}
-                            Elapsed Time: <span id="timespan"></span> Seconds.
-                        </h6>
+                <div class="single-tab" id="orderCompletedTab">
+                    <div class="check-icon">
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                        </svg>
                     </div>
-                    <div class="mt-3">
-                        <div class="spinner-border text-dark" role="status">
-                            <span class="visually-hidden">{{ __('Loading') }}...</span>
-                        </div>
+                    <div class="order-complete-msg">
+                        <h2>{{ __('Your Order Has Been Completed') }}</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     @push('js')
         <script>
-            $('table').addClass('table table-striped');
-            $('.ck-container ul').addClass('list-group');
-            $('.ck-container ul li').addClass('list-group-item');
-
-            $('#btn').click(function() {
-                $('#exampleModalToggle').modal('show');
-            });
-
-            var isAvailable = false;
-            $('#submitBtn').click(function(e) {
-                e.preventDefault();
-                $(this).attr('disabled', 'disabled');
-                let url = $('#tenantStoreForm').attr('action');
-                $('#response-message').removeClass('d-none');
-                console.log(url);
-
-                $('#timespan').text(0);
-                setInterval(function() {
-                    let currentValue = parseInt($('#timespan').text() || 0);
-                    $('#timespan').text(currentValue + 1);
-                }, 1000);
-
-                var recaptchaResponse = grecaptcha.getResponse();
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        plan_id: $('#plan_id').val(),
-                        shop_count: $('#shop_count').val(),
-                        name: $('#name').val(),
-                        domain: $('#domain').val(),
-                        fullname: $('#fullname').val(),
-                        email: $('#email').val(),
-                        password: $('#password').val(),
-                        phone: $('#phone').val(),
-                        'g-recaptcha-response': recaptchaResponse
-                    },
-                    success: function(res) {
-                        $('#response-message-text').addClass('text-success');
-                        $('#response-message-text').text(
-                            "{{ __('Successfully created! Redirecting you to your Domain...') }}");
-                        window.location = res;
-                    },
-                    error: function(err) {
-                        $('#response-message').addClass('d-none');
-                        toastr.error(err.responseJSON.message);
-                    }
-                });
-
-                $('#submitBtn').removeAttr('disabled');
-            });
-
             // Domain Check
             var typingTimer; //timer identifier
             var doneTypingInterval = 800; //time in ms, 5 seconds for example
@@ -166,6 +90,13 @@
 
             //on keyup, start the countdown
             $input.on('keyup', function() {
+
+                if ($input.val() == '') {
+
+                    $('#domainPreview').html('');
+                    return;
+                }
+
                 clearTimeout(typingTimer);
                 typingTimer = setTimeout(doneTyping, doneTypingInterval);
             });
@@ -179,6 +110,13 @@
             function doneTyping() {
                 $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
                 var domain = $('#domain').val();
+
+                if ($input.val() == '') {
+
+                    $('#domainPreview').html('');
+                    return;
+                }
+
                 $.ajax({
                     url: "{{ route('saas.domain.checkAvailability') }}",
                     type: 'GET',
@@ -186,6 +124,13 @@
                         domain: domain
                     },
                     success: function(res) {
+
+                        if ($input.val() == '') {
+
+                            $('#domainPreview').html('');
+                            return;
+                        }
+
                         if (res.isAvailable) {
                             isAvailable = true;
                             $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);

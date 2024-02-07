@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('currencies', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('country', 100);
-            $table->string('currency', 100);
-            $table->string('code', 25);
-            $table->string('symbol', 25);
-            $table->string('thousand_separator', 10);
-            $table->string('decimal_separator', 10);
+            $table->id('id');
+            $table->string('country', 100)->nullable();
+            $table->string('currency', 100)->nullable();
+            $table->string('code', 25)->nullable();
+            $table->string('symbol', 25)->nullable();
+            $table->string('thousand_separator', 10)->nullable();
+            $table->string('decimal_separator', 10)->nullable();
+            $table->string('dialing_code', 25)->nullable();
+            $table->string('currency_rate', 25)->nullable();
             $table->timestamps();
         });
     }

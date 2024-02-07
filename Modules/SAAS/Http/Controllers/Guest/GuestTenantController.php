@@ -17,13 +17,14 @@ class GuestTenantController extends Controller
 
     public function store(GuestTenantStoreRequest $request)
     {
-        $tenantRequest = $request->validated();
+        $tenantRequest = $request->all();
         $tenant = $this->tenantService->create($tenantRequest);
         if (isset($tenant)) {
             $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
 
-            return response()->json($returningUrl, 201);
+            // return response()->json($returningUrl, 201);
+            return redirect()->intended($returningUrl);
         }
 
         throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);

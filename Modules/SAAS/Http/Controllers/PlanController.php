@@ -2,12 +2,14 @@
 
 namespace Modules\SAAS\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Modules\SAAS\Entities\Feature;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Modules\SAAS\Entities\Plan;
+use Illuminate\Routing\Controller;
+use Modules\SAAS\Entities\Feature;
+use Illuminate\Contracts\Support\Renderable;
+use Modules\SAAS\Entities\Currency;
 
 class PlanController extends Controller
 {
@@ -21,7 +23,7 @@ class PlanController extends Controller
         abort_unless(auth()->user()->can('plans_index'), 403);
 
         return view('saas::plans.index', [
-            'plans' => Plan::paginate(),
+            'plans' => Plan::with('currency')->paginate(),
         ]);
     }
 
@@ -34,7 +36,11 @@ class PlanController extends Controller
     {
         abort_unless(auth()->user()->can('plans_create'), 403);
 
+        $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
+        ->select('id','code')
+        ->get();
         return view('saas::plans.create', [
+            'currencies' => $currencies,
             'features' => Feature::all(),
         ]);
     }
@@ -47,20 +53,30 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         abort_unless(auth()->user()->can('plans_store'), 403);
+
+        $request->validate([
+            'name' => 'required|unique:plans,name',
+            'price_per_month' => 'required|numeric',
+            'price_per_year' => 'required|numeric',
+            'lifetime_price' => 'required|numeric',
+            'applicable_lifetime_years' => 'required|numeric'
+        ]);
+
         $plan = Plan::create([
             'name' => $request->name,
             'slug' => $request->slug ?? Str::slug($request->slug),
-            'currency_code' => $request->currency_code,
-            'price' => $request->price,
+            'price_per_month' => $request->price_per_month,
+            'price_per_year' => $request->price_per_year,
+            'lifetime_price' => $request->lifetime_price,
+            'applicable_lifetime_years' => $request->applicable_lifetime_years,
+            'currency_id' => $request->currency_id,
             'description' => $request->description,
-            'period_unit' => $request->period_unit,
-            'period_value' => $request->period_value,
             'status' => $request->status,
         ]);
 
         $plan->features()->sync($request->feature_id);
 
-        return redirect(route('saas.plans.index'))->with('success', 'Plan created successfully!');
+        return response()->json('Plan created successfully!');
     }
 
     /**
@@ -84,7 +100,11 @@ class PlanController extends Controller
      */
     public function edit($id)
     {
+        $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
+        ->select('id','code')->get();
+
         return view('saas::plans.edit', [
+            'currencies' => $currencies,
             'plan' => Plan::find($id),
             'features' => Feature::all(),
         ]);
@@ -98,20 +118,42 @@ class PlanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $plan = Plan::find($id);
-        $plan->update([
-            'name' => $request->name,
-            'slug' => $request->slug ?? Str::slug($request->slug),
-            'currency_code' => $request->currency_code,
-            'price' => $request->price,
-            'description' => $request->description,
-            'period_unit' => $request->period_unit,
-            'period_value' => $request->period_value,
-            'status' => $request->status,
+        $request->validate([
+            'name' => 'required|unique:plans,name,' . $id,
+            'price_per_month' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
+            'price_per_year' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
+            'lifetime_price' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
+            'applicable_lifetime_years' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
+            'currency_id' => Rule::when($request->is_trial_plan == 0, 'required'),
+            'trial_days' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
+            'trial_shop_count' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
+            'status' => 'required',
         ]);
-        $plan->features()->sync($request->feature_id);
 
-        return redirect(route('saas.plans.index'))->with('success', 'Plan updated successfully!');
+        $updatePlan = Plan::where('id', $id)->first();
+        $updatePlan->name = $request->name;
+        $updatePlan->slug = $request->slug ?? Str::slug($request->slug);
+
+        if ($updatePlan->is_trial_plan == 0) {
+
+            $updatePlan->price_per_month = $request->price_per_month;
+            $updatePlan->price_per_year = $request->price_per_year;
+            $updatePlan->lifetime_price = $request->lifetime_price;
+            $updatePlan->applicable_lifetime_years = $request->applicable_lifetime_years;
+            $updatePlan->currency_id = $request->currency_id;
+        }elseif($updatePlan->is_trial_plan == 1){
+
+            $updatePlan->trial_days = $request->trial_days;
+            $updatePlan->trial_shop_count = $request->trial_shop_count;
+        }
+
+        $updatePlan->description = $request->description;
+        $updatePlan->status = $request->status;
+        $updatePlan->save();
+
+        $updatePlan->features()->sync($request->feature_id);
+
+        return response()->json('Plan updated successfully!');
     }
 
     /**

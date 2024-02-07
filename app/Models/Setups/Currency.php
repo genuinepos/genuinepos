@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Currency extends BaseModel
 {
+    protected $table = 'currencies';
     use HasFactory;
 }

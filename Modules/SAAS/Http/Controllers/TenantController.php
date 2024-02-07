@@ -47,7 +47,7 @@ class TenantController extends Controller
         }
 
         if (isset($tenant)) {
-            
+
             return route('saas.tenants.index');
         }
 

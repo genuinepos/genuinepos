@@ -2,16 +2,18 @@
 
 namespace Modules\SAAS\Entities;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Modules\SAAS\Scope\IsActive;
+use Modules\SAAS\Entities\Currency;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
     use HasFactory;
     use IsActive;
 
-    protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status', 'currency_code'];
+    // protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status', 'currency_code'];
+    protected $guarded = [];
 
     public function scopeActive($query)
     {
@@ -21,6 +23,11 @@ class Plan extends Model
     protected static function newFactory()
     {
         return \Modules\SAAS\Database\factories\PlanFactory::new();
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function features()

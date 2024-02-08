@@ -16,9 +16,9 @@ return new class extends Migration
             // $table->unsignedBigInteger('shop_id')->comment('branch / shop id');
             // $table->unsignedBigInteger('user_id');
             // $table->unsignedBigInteger('plan_id');
-            $table->tinyInteger('count'); // = 8;
-            $table->timestamp('start_at'); // = 04-02-24;
-            $table->timestamp('end_at'); // = 04-02-25;
+            $table->tinyInteger('shop_count'); // = 8;
+            $table->timestamp('start_date'); // = 04-02-24;
+            $table->timestamp('expire_date'); // = 04-02-25;
             $table->integer('created_count'); // = 8;
             $table->integer('left_count'); // = 0;
 

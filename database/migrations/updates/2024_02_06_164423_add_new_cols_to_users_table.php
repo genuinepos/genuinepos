@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('currency_id')->after('id_proof_number')->nullable();
-            $table->string('city')->after('currency_id')->nullable();
-            $table->string('postal_code')->after('city')->nullable();
+            if (Schema::hasColumn('currency_id', 'city', 'postal_code')) {
+                
+                $table->unsignedBigInteger('currency_id')->after('id_proof_number')->nullable();
+                $table->string('city')->after('currency_id')->nullable();
+                $table->string('postal_code')->after('city')->nullable();
 
-            $table->foreign(['currency_id'])->references(['id'])->on('currencies')->onDelete('set null');
+                $table->foreign(['currency_id'])->references(['id'])->on('currencies')->onDelete('set null');
+            }
         });
     }
 

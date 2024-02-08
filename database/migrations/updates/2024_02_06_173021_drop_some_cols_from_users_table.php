@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->dropColumn('custom_field_1');
-            $table->dropColumn('custom_field_2');
-            $table->dropColumn('social_media_1');
-            $table->dropColumn('social_media_2');
+            if (Schema::hasColumn('custom_field_1', 'custom_field_2', 'social_media_1', 'social_media_2')) {
+
+                $table->dropColumn('custom_field_1');
+                $table->dropColumn('custom_field_2');
+                $table->dropColumn('social_media_1');
+                $table->dropColumn('social_media_2');
+            }
         });
     }
 

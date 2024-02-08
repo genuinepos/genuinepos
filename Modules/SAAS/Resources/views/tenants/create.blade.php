@@ -159,7 +159,7 @@
 
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text("{{ __('Successfully created! Redirecting you to the list') }}");
-                        window.location = res;
+                        // window.location = res;
                     }, error: function(err) {
 
                         $('#response-message').addClass('d-none');

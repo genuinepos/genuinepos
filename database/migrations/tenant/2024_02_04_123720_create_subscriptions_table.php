@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('plan_id');
-            $table->float('amount');
-            $table->integer('shop_count');
-            $table->tinyInteger('status');
-            $table->timestamp('start_at');
-            $table->timestamp('end_at');
-            $table->dateTime('cancels_at')->nullable();
-            $table->dateTime('canceled_at')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('plan_id')->nullable();
+            $table->decimal('total_amount', 22, 2)->default(0);
+            $table->decimal('due_amount', 22, 2)->default(0);
+            $table->integer('initial_shop_count')->default(1);
+            $table->tinyInteger('status')->default(1);
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('expire_at')->nullable()->comment('for installation due payment');
+            $table->timestamp('canceled_at')->nullable();
             $table->timestamps();
         });
     }

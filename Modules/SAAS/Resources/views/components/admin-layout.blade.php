@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/css/style.css">
     <link rel="stylesheet" id="primaryColor" href="{{ asset('modules/saas') }}/css/blue-color.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('backend/asset/css/plan-cart.css') }}">
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+
     {{-- <link rel="stylesheet" id="rtlStyle" href="" type="text/css"> --}}
     <style>
         .toast-success {
@@ -64,6 +66,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('modules/saas') }}/vendor/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('modules/saas') }}/js/dashboard.js"></script>
+    <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script>
     @include('saas::_includes.main-js')
     @stack('js')
 </body>

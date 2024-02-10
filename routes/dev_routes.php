@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\Tenant;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
+use Modules\SAAS\Entities\Plan;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
@@ -12,6 +14,7 @@ use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\AccountLedgerVoucherType;
 use App\Models\Accounts\AccountingVoucherDescription;
+use App\Models\Subscriptions\Subscription;
 
 Route::get('my-test', function () {
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
@@ -207,6 +210,22 @@ Route::get('my-test', function () {
     //         $query->where('email', 'superadmin@email.com');
     //     })
     //     ->first();
+
+    $startDate = new DateTime('2024-02-08');
+    $endDate = clone $startDate;
+    // Add 7 days to today's date
+    $lastDate = $endDate->modify('+1 years');
+    $lastDate = $lastDate->modify('+1 days');
+
+    // Format the date
+    // return $lastDate->format('Y-m-d');
+
+    // return DB::table('subscriptions')
+    // ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
+    // ->select('subscriptions.id', 'pos.plans.name as plan_name')
+    // ->first();
+
+    return Subscription::with('plan')->first();
 });
 
 

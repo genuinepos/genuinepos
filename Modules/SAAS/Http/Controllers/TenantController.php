@@ -38,8 +38,8 @@ class TenantController extends Controller
     {
         abort_unless(auth()->user()->can('tenants_store'), 403);
         // $tenantRequest = $request->validated();
-        $request['payment'] = 'Aamerpay-Bkash';
-        return $tenantRequest = $request->all();
+
+        $tenantRequest = $request->all();
 
         try {
             DB::beginTransaction();

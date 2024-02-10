@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-                <div class="cart-total-panel">
+                <div class="cart-total-panel payment-section">
                     <div class="panel-body">
                         <div class="row gy-5">
                             <div class="col-12">

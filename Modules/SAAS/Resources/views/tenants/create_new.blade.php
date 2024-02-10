@@ -202,7 +202,7 @@
 
             $(document).on('submit', '#tenantStoreForm', function(e) {
                 e.preventDefault();
-                
+
                 let url = $('#tenantStoreForm').attr('action');
                 $('#response-message').removeClass('d-none');
                 var request = $(this).serialize();
@@ -210,6 +210,7 @@
                 if (isAvailable == false) {
 
                     $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                    $('#response-message').addClass('d-none');
                     return;
                 }
 
@@ -273,11 +274,15 @@
                             $('.period_count').addClass('d-none');
                             $('#fixed_period_text').removeClass('d-none');
                             $('#fixed_period_text').html(plan.trial_days + ' days');
+                            $('#payment_status').prop('required', false);
+                            $('.payment-section').addClass('d-none');
                         }else {
 
                             $('.period_count').removeClass('d-none');
                             $('#fixed_period_text').html('');
                             $('#fixed_period_text').addClass('d-none');
+                            $('#payment_status').prop('required', true);
+                            $('.payment-section').removeClass('d-none');
                         }
                     }, error: function(err) {
 
@@ -301,16 +306,24 @@
                 $('.payment_details_field').addClass('d-none');
 
                 var paymentStatus = $(this).val();
-                if (paymentStatus == 1) {
 
-                    $('.repayment_field').addClass('d-none');
+                var isTrialPlan = $('#is_trial_plan').val();
+                if (isTrialPlan == 0) {
+
+                    if (paymentStatus == 1) {
+
+                        $('.repayment_field').addClass('d-none');
+                        $('#repayment_date').prop('required', false);
+                        $('.payment_details_field').removeClass('d-none');
+                    }else if (paymentStatus == 0) {
+
+                        $('.repayment_field').removeClass('d-none');
+                        $('#repayment_date').prop('required', true);
+                        $('.payment_details_field').addClass('d-none');
+                    }
+                }else {
+
                     $('#repayment_date').prop('required', false);
-                    $('.payment_details_field').removeClass('d-none');
-                }else if (paymentStatus == 0) {
-
-                    $('.repayment_field').removeClass('d-none');
-                    $('#repayment_date').prop('required', true);
-                    $('.payment_details_field').addClass('d-none');
                 }
             });
 

@@ -14,6 +14,7 @@ class UnitController extends Controller
         private UnitService $unitService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

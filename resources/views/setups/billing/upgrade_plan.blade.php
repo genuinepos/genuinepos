@@ -15,10 +15,20 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
+                <div class="col-md-4">
                     <h6>{{ __('Upgrade Plan') }}</h6>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+
+                <div class="col-md-4">
+                    @if (Session::has('trialExpireDate'))
+                        <p class="text-danger fw-bold">{{ session('trialExpireDate') }}</p>
+                    @endif
+                </div>
+     
+                <div class="col-md-4">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
+                </div>
+
             </div>
         </div>
 

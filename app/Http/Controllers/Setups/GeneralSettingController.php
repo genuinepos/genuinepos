@@ -23,6 +23,7 @@ class GeneralSettingController extends Controller
         private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index()

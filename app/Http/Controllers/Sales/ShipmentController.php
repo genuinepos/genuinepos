@@ -23,6 +23,7 @@ class ShipmentController extends Controller
         private AccountService $accountService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

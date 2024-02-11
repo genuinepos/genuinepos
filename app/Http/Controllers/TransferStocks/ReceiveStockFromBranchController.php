@@ -28,6 +28,7 @@ class ReceiveStockFromBranchController extends Controller
         private ProductLedgerService $productLedgerService,
         private PurchaseProductService $purchaseProductService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

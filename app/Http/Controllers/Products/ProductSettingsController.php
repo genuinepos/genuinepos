@@ -14,6 +14,7 @@ class ProductSettingsController extends Controller
         private ProductSettingsService $productSettingsService,
         private UnitService $unitService
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index()

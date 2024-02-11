@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class WorkSpaceTaskController extends Controller
 {
+    public function __construct() {
+        $this->middleware('expireDate');
+    }
+    
     public function index($workspaceId)
     {
         $generalSettings = config('generalSettings');

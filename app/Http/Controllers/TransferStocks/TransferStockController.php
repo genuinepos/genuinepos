@@ -29,6 +29,7 @@ class TransferStockController extends Controller
         private DayBookService $dayBookService,
         private ProductLedgerService $productLedgerService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

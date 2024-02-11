@@ -17,7 +17,7 @@ class DashboardController extends Controller
 {
     public function __construct(private DashboardService $dashboardService, private BranchService $branchService)
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'expireDate']);
     }
 
     public function index()

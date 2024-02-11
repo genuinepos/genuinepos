@@ -24,6 +24,7 @@ class OpeningStockController extends Controller
         private ProductLedgerService $productLedgerService,
         private WarehouseService $warehouseService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function createOrEdit($productId)

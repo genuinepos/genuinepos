@@ -32,6 +32,7 @@ class PayrollPaymentController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function show($id, PayrollPaymentControllerMethodContainersInterface $payrollPaymentControllerMethodContainersInterface)

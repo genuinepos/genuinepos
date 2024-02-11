@@ -13,6 +13,7 @@ class LeaveController extends Controller
     public function __construct(
         private LeaveService $leaveService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

@@ -48,6 +48,7 @@ class PurchaseController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request, $supplierAccountId = null)

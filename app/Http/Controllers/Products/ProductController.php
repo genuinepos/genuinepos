@@ -37,6 +37,7 @@ class ProductController extends Controller
         private PriceGroupService $priceGroupService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request, $isForCreatePage = 0)

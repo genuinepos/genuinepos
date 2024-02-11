@@ -47,6 +47,7 @@ class PosSaleExchangeController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function searchInvoice(Request $request)

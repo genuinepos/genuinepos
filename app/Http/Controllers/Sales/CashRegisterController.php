@@ -18,6 +18,7 @@ class CashRegisterController extends Controller
         private AccountService $accountService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function create($saleId = null)

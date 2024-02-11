@@ -15,6 +15,7 @@ class ProductionReportController extends Controller
 {
     public function __construct(private BranchService $branchService)
     {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

@@ -144,6 +144,7 @@ class TenantService implements TenantServiceInterface
         $subscribe->plan_id = $plan->id;
         $subscribe->status = 1;
         $subscribe->initial_period_count = $tenantRequest['period_count'];
+        $subscribe->initial_plan_start_date = Carbon::now();
 
         if ($plan->is_trial_plan == 0) {
 

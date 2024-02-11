@@ -13,8 +13,9 @@ class MoneyReceiptController extends Controller
 {
     public function __construct(
         private MoneyReceiptService $moneyReceiptService,
-        private ContactService $contactService,
+        private ContactService $contactService
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index($contactId)

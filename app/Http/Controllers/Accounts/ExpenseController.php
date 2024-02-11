@@ -30,6 +30,7 @@ class ExpenseController extends Controller
         private AccountingVoucherService $accountingVoucherService,
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

@@ -7,7 +7,7 @@ use App\Enums\BranchType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\ShopExpireDateHistory;
+use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Services\Setups\BranchService;
 use App\Services\GeneralSettingService;
 use App\Services\Setups\CurrencyService;
@@ -27,6 +27,7 @@ class BranchController extends Controller
         private BranchSettingService $branchSettingService,
         private GeneralSettingService $generalSettingService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

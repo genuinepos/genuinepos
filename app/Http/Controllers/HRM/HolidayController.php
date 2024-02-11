@@ -16,6 +16,7 @@ class HolidayController extends Controller
         private HolidayBranchService $holidayBranchService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

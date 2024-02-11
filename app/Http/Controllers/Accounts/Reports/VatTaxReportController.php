@@ -15,6 +15,7 @@ class VatTaxReportController extends Controller
         private BranchService $branchService,
         private AccountService $accountService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index()

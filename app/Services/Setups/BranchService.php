@@ -7,7 +7,7 @@ use App\Models\Accounts\Account;
 use App\Models\Accounts\AccountGroup;
 use App\Models\Role;
 use App\Models\Setups\Branch;
-use App\Models\ShopExpireDateHistory;
+use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -104,7 +104,7 @@ class BranchService
         $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        $addBranch->expire_at = $shopHistory->end_at;
+        // $addBranch->expire_at = $shopHistory->expire_date;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {

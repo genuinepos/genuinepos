@@ -28,6 +28,7 @@ class PayrollController extends Controller
         private AccountService $accountService,
         private DayBookService $dayBookService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

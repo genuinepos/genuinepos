@@ -25,35 +25,61 @@
                         <span><strong>FY :</strong> {{ $generalSettings['business_or_shop__financial_year'] }}</span>
                     </div>
 
+                    @if ($generalSettings['subscription']->is_trial_plan == 1)
+                        @php
+                            $planStartDate = $generalSettings['subscription']->initial_plan_start_date;
+                            $trialDays = $generalSettings['subscription']->trial_days;
+                            $startDate = new DateTime($planStartDate);
+                            $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
+                            $expireDate = $lastDate->format('Y-m-d');
+                            $dateFormat = $generalSettings['business_or_shop__date_format'];
+                        @endphp
+
+                        <p class="text-white mt-1">{{ __("Trial Expire on") }} :
+                            <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
+                            <a href="{{ route('software.service.billing.upgrade.plan') }}" class="btn btn-sm btn-danger">{{ __("Upgrade Plan") }}</a>
+                        </p>
+                    @elseif ($subscription->initial_payment_status == 0 && $generalSettings['subscription']->initial_plan_expire_date)
+
+                        @php
+                            $dateFormat = $generalSettings['business_or_shop__date_format'];
+                        @endphp
+
+                        <p class="text-white mt-1">
+                            {{ __("Due Repayment Date: ") }} : <span class="text-danger">{{ date($dateFormat, strtotime($generalSettings['subscription']->initial_plan_expire_date)) }}</span>
+                            <a href="#" class="btn btn-sm btn-danger">{{ __("Payment") }}</a>
+                        </p>
+                    @endif
+
                     <div class="head__content__sec">
                         <ul class="head__cn">
                             <li class="top-icon d-hide d-md-block">
                                 <a class="nav-btn create-btn" type="button" data-bs-toggle="dropdown">
                                     <span>
                                         <i class="fa fa-plus"></i>
-                                        <br>{{ __("Quick Add") }}</span>
+                                        <br>{{ __('Quick Add') }}</span>
                                     </span>
                                 </a>
 
                                 <ul class="dropdown-menu short_create_btn_list">
-                                    <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __("Quick Add") }}</span></li>
+                                    <li><span class="d-block fw-500 px-2 pb-1 fz-14">{{ __('Quick Add') }}</span></li>
                                     <hr class="m-0">
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Product") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Product Pricing/Costing") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sale") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Sales Return") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Purchase Return") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Transfer Stock") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Stock Adjustment") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Production") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add User") }}</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">{{ __("Add Role") }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Product') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Product Pricing/Costing') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Sale') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Sales Return') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Purchase') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Purchase Return') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Transfer Stock') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Stock Adjustment') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Production') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add User') }}</a></li>
+                                    <li><a class="dropdown-item text-dark" href="#">{{ __('Add Role') }}</a></li>
                                 </ul>
                             </li>
 
                             <li class="top-icon d-hide d-md-block" id="hard_reload">
-                                <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __("Reload") }}</span></a>
+                                <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __('Reload') }}</span></a>
                             </li>
                             {{-- @if ($generalSettings['addons__e_commerce'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
@@ -76,20 +102,20 @@
 
                             <li class="top-icon dropdown notification-dropdown">
                                 <a href="" class="nav-btn" id="dropdownMenuButton0" data-bs-toggle="dropdown">
-                                    <span><i class="far fa-bell"></i><br>{{ __("Notification") }}</span>
+                                    <span><i class="far fa-bell"></i><br>{{ __('Notification') }}</span>
                                 </a>
 
                                 <ul class="dropdown-menu dropdown__main__menu " aria-labelledby="dropdownMenuButton0">
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
                                     <li>
-                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __("3 Days ago") }}</span></a>
+                                        <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
                                     <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
@@ -99,7 +125,7 @@
 
                             @if ($generalSettings['modules__pos'] == '1')
                                 @if (auth()->user()->can('pos_add') && auth()->user()->branch_id)
-                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __("POS") }}</span></a></li>
+                                    <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif
                             @endif
 
@@ -108,7 +134,7 @@
                                     <span>
                                         <i class="fas fa-calculator"></i>
                                         <br>
-                                        {{ __("Calculator") }}
+                                        {{ __('Calculator') }}
                                     </span>
                                 </a>
                                 <div class="modal" id="calculatorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -151,7 +177,7 @@
                                     <span>
                                         <i class="fas fa-language"></i>
                                         <br>
-                                        {{ __("Language") }}
+                                        {{ __('Language') }}
                                     </span>
                                 </a>
 
@@ -171,7 +197,7 @@
                                 </ul>
                             </li>
                             <li class="top-icon d-hide d-md-block">
-                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __("Help") }}</span></a>
+                                <a href="https://help.genuinepos.com/" class="nav-btn" target="_blank"><span><i class="far fa-question-circle"></i><br>{{ __('Help') }}</span></a>
                             </li>
                             <li class="dp__top top-icon">
                                 <a role="button" class="nav-btn" id="openRightSidebar" title="User">

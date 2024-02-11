@@ -23,6 +23,7 @@ class PayrollPaymentReportController extends Controller
         private DepartmentService $departmentService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

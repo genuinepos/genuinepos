@@ -16,6 +16,7 @@ class BulkVariantController extends Controller
         private BulkVariantChildService $bulkVariantChildService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

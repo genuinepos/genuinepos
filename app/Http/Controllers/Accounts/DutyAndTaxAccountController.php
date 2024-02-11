@@ -13,6 +13,7 @@ class DutyAndTaxAccountController extends Controller
         private DutiesAndTaxesAccountService $dutiesAndTaxesAccountService,
         private AccountGroupService $accountGroupService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

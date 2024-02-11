@@ -14,6 +14,7 @@ class WarrantyController extends Controller
         private WarrantyService $warrantyService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

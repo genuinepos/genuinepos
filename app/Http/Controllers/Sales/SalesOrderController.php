@@ -44,6 +44,7 @@ class SalesOrderController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request, $customerAccountId = null)

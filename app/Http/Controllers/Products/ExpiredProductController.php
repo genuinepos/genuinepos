@@ -15,6 +15,7 @@ class ExpiredProductController extends Controller
         private AccountService $accountService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

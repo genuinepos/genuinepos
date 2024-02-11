@@ -19,6 +19,7 @@ class SalesReturnedProductReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     // Index view of supplier report

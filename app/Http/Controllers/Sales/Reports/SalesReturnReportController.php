@@ -19,6 +19,7 @@ class SalesReturnReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

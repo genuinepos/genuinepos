@@ -17,6 +17,7 @@ class PurchaseProductController extends Controller
         private AccountService $accountService,
         private CategoryService $categoryService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

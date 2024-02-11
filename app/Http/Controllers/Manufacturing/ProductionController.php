@@ -34,6 +34,7 @@ class ProductionController extends Controller
         private BranchService $branchService,
         private WarehouseService $warehouseService
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

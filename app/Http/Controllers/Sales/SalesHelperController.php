@@ -18,6 +18,7 @@ class SalesHelperController extends Controller
         private SalesHelperService $salesHelperService,
         private SaleProductService $saleProductService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function posSelectableProducts(Request $request)

@@ -15,6 +15,7 @@ class BrandController extends Controller
         private BrandService $brandService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

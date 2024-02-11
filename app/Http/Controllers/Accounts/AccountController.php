@@ -30,6 +30,7 @@ class AccountController extends Controller
         private BankAccessBranchService $bankAccessBranchService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

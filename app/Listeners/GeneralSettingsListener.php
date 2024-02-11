@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Listeners;
+
 use Exception;
 use App\Models\GeneralSetting;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Contracts\Queue\ShouldQueue;
+
 class GeneralSettingsListener
 {
     /**
@@ -25,9 +28,13 @@ class GeneralSettingsListener
     public function handle(Authenticated $event)
     {
         try {
+
             if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
+
                 $generalSettings = Cache::get('generalSettings');
+
                 if (!isset($generalSettings)) {
+
                     $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
                         ->orWhereIn('key', [
                             'addons__hrm',
@@ -39,16 +46,17 @@ class GeneralSettingsListener
                             'addons__cash_counter_limit',
                             'business_or_shop__business_name'
                         ])->pluck('value', 'key')->toArray();
-       
+
                     $branch = $event?->user?->branch;
                     if (isset($branch) && isset($branch->parent_branch_id)) {
+
                         $prefixes = [
                             'business_or_shop__',
                             'reward_point_settings__',
                             'send_email__',
                             'send_sms__',
                         ];
-                        
+
                         $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
                             ->whereNotIn(
                                 'key',
@@ -61,17 +69,19 @@ class GeneralSettingsListener
                                     'business_or_shop__timezone',
                                 ]
                             );
+
                         $query->where(function ($query) use ($prefixes) {
                             foreach ($prefixes as $prefix) {
                                 $query->orWhere('key', 'LIKE', $prefix . '%');
                             }
                         });
+
                         $parentBranchGeneralSettings = $query->get();
                         foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
                             $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
                         }
                     }
-                    
+
                     $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
 
                     $dateFormat = $generalSettings['business_or_shop__date_format'];
@@ -87,12 +97,11 @@ class GeneralSettingsListener
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
                         return $generalSettings;
                     });
-                    
                 }
-     
+
                 // request()->merge(['generalSettings' => $generalSettings]);
                 if (isset($generalSettings['invoice_layout__add_sale_invoice_layout_id'])) {
-                    
+
                     $columns = Schema::getColumnListing('invoice_layouts');
                     $excludedColumns = ['created_at', 'updated_at'];
                     $selectedColumns = array_diff($columns, $excludedColumns);
@@ -111,7 +120,22 @@ class GeneralSettingsListener
                         $generalSettings['pos_sale_invoice_layout'] = $invoicePosSaleLayout;
                     }
                 }
-             
+
+                $subscription = DB::table('subscriptions')
+                    ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
+                    ->select(
+                        [
+                            'subscriptions.initial_due_amount',
+                            'subscriptions.initial_payment_status',
+                            'subscriptions.initial_plan_start_date',
+                            'subscriptions.initial_plan_expire_date',
+                            'pos.plans.is_trial_plan',
+                            'pos.plans.trial_days',
+                        ]
+                    )->first();
+
+                $generalSettings['subscription'] = $subscription;
+
                 config([
                     'generalSettings' => $generalSettings,
                     // Tenant separated email config start

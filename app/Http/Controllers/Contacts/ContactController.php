@@ -28,6 +28,7 @@ class ContactController extends Controller
         private AccountLedgerService $accountLedgerService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function create($type)

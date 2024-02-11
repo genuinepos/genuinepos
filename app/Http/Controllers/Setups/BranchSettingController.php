@@ -28,6 +28,7 @@ class BranchSettingController extends Controller
         private PriceGroupService $priceGroupService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index($id)

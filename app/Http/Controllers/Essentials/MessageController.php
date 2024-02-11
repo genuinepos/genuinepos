@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
+    public function __construct() {
+        $this->middleware('expireDate');
+    }
+
     public function index()
     {
         if (!auth()->user()->can('msg')) {

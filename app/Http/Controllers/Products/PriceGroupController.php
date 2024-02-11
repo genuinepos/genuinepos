@@ -11,6 +11,7 @@ class PriceGroupController extends Controller
     public function __construct(
         private PriceGroupService $priceGroupService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

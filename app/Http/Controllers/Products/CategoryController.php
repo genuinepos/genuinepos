@@ -16,6 +16,7 @@ class CategoryController extends Controller
         private CategoryService $categoryService,
         private UserActivityLogService $userActivityLogService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

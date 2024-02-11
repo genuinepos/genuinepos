@@ -18,6 +18,7 @@ class ProcessController extends Controller
         private AccountService $accountService,
         private ProductService $productService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

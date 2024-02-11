@@ -139,5 +139,7 @@ Route::prefix('setups')->group(function () {
         Route::get('cart/for/upgrade/plan', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
         Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
         Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
+
+        Route::get('due/repayment', [SoftwareServiceBillingController::class, 'dueRepayment'])->name('software.service.billing.due.repayment');
     });
 });

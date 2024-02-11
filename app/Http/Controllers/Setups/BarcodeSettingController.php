@@ -11,6 +11,7 @@ class BarcodeSettingController extends Controller
     public function __construct(
         private BarcodeSettingService $barcodeSettingService,
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

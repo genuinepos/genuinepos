@@ -14,6 +14,7 @@ class BankController extends Controller
         private BankService $bankService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

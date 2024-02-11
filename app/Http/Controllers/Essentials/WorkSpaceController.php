@@ -12,6 +12,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class WorkSpaceController extends Controller
 {
+    public function __construct() {
+        $this->middleware('expireDate');
+    }
+
     public function index(Request $request)
     {
         if (!auth()->user()->can('work_space')) {

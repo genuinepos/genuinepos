@@ -16,6 +16,7 @@ class CashRegisterReportController extends Controller
     public function __construct(Converter $converter)
     {
         $this->converter = $converter;
+        $this->middleware('expireDate');
     }
 
     // Index view of cash register report

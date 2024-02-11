@@ -11,6 +11,7 @@ class PaymentMethodController extends Controller
 {
     public function __construct(private PaymentMethodService $paymentMethodService)
     {
+        $this->middleware('expireDate');
     }
 
     public function index(Request $request)

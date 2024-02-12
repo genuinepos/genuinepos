@@ -35,6 +35,7 @@ class BranchService
             'branches.zip_code',
             'branches.country',
             'branches.address',
+            'branches.expire_date',
             'parentBranch.name as parent_branch_name',
         )->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id');
 
@@ -79,12 +80,29 @@ class BranchService
                 }
             })
 
-            ->rawColumns(['branchName', 'shopLogo', 'logo', 'address', 'action'])
+            ->editColumn('expire_date', function ($row) use ($generalSettings) {
+
+                if (isset($row->expire_date)) {
+
+                    $__date_format = $generalSettings['business_or_shop__date_format'];
+
+                    $expireDate = date($__date_format, strtotime($row->expire_date));
+
+                    $expireDateText = date('Y-m-d') > date('Y-m-d', strtotime($expireDate)) ? ' | <span class="text-danger fw-bold">' . __('Expired') . '</span>' : ' | <span class="text-success fw-bold">' . __('Active') . '</span>';
+
+                    return '<span class="text-danger">' . $expireDate . '</span>' . $expireDateText;
+                }
+            })
+
+            ->rawColumns(['branchName', 'expire_date', 'logo', 'address', 'action'])
             ->make(true);
     }
 
     public function addBranch($request): object
     {
+        $generalSettings = config('generalSettings');
+        $subscription = $generalSettings['subscription'];
+
         $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
 
         $addBranch = new Branch();
@@ -104,7 +122,7 @@ class BranchService
         $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        // $addBranch->expire_at = $shopHistory->expire_date;
+        $addBranch->expire_date = $subscription->is_trial_plan == 0 ? $shopHistory?->expire_date : null;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -116,7 +134,10 @@ class BranchService
             $addBranch->logo = $branchLogoName;
         }
 
-        if($addBranch->save()) {
+        $addBranch->save();
+
+        if ($subscription->is_trial_plan == 0) {
+
             $this->shopExpireHistoryCheckUpdate($shopHistory);
         }
 
@@ -193,81 +214,6 @@ class BranchService
 
         return ['pass' => true];
     }
-
-    // public function addBranchDefaultAccountGroups(int $branchId): void
-    // {
-    //     $accountGroups = [
-    //         ['sorting_number' => '0', 'branch_id' => $branchId, 'name' => 'Assets', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '1', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '1', 'sub_group_number' => null, 'sub_sub_group_number' => null, 'main_group_name' => 'Assets', 'sub_group_name' => null, 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => null],
-    //         ['sorting_number' => '1', 'branch_id' => $branchId, 'name' => 'Current Assets', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => null, 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Assets'],
-    //         ['sorting_number' => '2', 'branch_id' => $branchId, 'name' => 'Cash-In-Hand', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '1', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => '2', 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => 'Cash-In-Hand', 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Current Assets'],
-    //         ['sorting_number' => '4', 'branch_id' => $branchId, 'name' => 'Deposits (Asset)', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => '3', 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => 'Deposits (Asset)', 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Current Assets'],
-    //         ['sorting_number' => '5', 'branch_id' => $branchId, 'name' => 'Loan & Advance (Asset)', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => '4', 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => 'Loan & Advance (Asset)', 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Current Assets'],
-    //         ['sorting_number' => '6', 'branch_id' => $branchId, 'name' => 'Stock-In-Hand', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => '5', 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => 'Stock-In-Hand', 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Current Assets'],
-    //         ['sorting_number' => '7', 'branch_id' => $branchId, 'name' => 'Account Receivable', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '1', 'sub_group_number' => '1', 'sub_sub_group_number' => '6', 'main_group_name' => 'Assets', 'sub_group_name' => 'Current Assets', 'sub_sub_group_name' => 'Sundry Debtors', 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Current Assets'],
-    //         ['sorting_number' => '8', 'branch_id' => $branchId, 'name' => 'Fixed Assets', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '1', 'sub_group_number' => '2', 'sub_sub_group_number' => null, 'main_group_name' => 'Assets', 'sub_group_name' => 'Fixed Assets', 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Assets'],
-    //         ['sorting_number' => '9', 'branch_id' => $branchId, 'name' => 'Investments', 'is_reserved' => '0', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '1', 'sub_group_number' => '3', 'sub_sub_group_number' => null, 'main_group_name' => 'Assets', 'sub_group_name' => 'Investments', 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Assets'],
-    //         ['sorting_number' => '10', 'branch_id' => $branchId, 'name' => 'Liabilities', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '1', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => null, 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => null, 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => null],
-    //         ['sorting_number' => '11', 'branch_id' => $branchId, 'name' => 'Branch / Divisions', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '5', 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Branch / Divisions', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Liabilities'],
-    //         // ['sorting_number' => '12', 'branch_id' => $branchId, 'name' => 'Capital Account', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '6', 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Capital Account', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Liabilities'],
-    //         // ['sorting_number' => '13', 'branch_id' => $branchId, 'name' => 'Reserves / Surplus', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '6', 'sub_sub_group_number' => '7', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Capital Account', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Capital Account'],
-    //         ['sorting_number' => '14', 'branch_id' => $branchId, 'name' => 'Current Liabilities', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '7', 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Current Liabilities', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Liabilities'],
-    //         // ['sorting_number' => '15', 'branch_id' => $branchId, 'name' => 'Duties & Taxes', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '1', 'is_default_tax_calculator' => '1', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '2', 'sub_group_number' => '7', 'sub_sub_group_number' => '8', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Current Liabilities', 'sub_sub_group_name' => 'Duties & Taxes', 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Current Liabilities'],
-    //         ['sorting_number' => '16', 'branch_id' => $branchId, 'name' => 'Provisions', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '2', 'sub_group_number' => '7', 'sub_sub_group_number' => '9', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Current Liabilities', 'sub_sub_group_name' => 'Provisions', 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Current Liabilities'],
-    //         // ['sorting_number' => '17', 'branch_id' => $branchId, 'name' => 'Account Payable', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '2', 'sub_group_number' => '7', 'sub_sub_group_number' => '10', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Current Liabilities', 'sub_sub_group_name' => 'Sundry Creditors', 'default_balance_type' => 'cr', 'is_global' => '1', 'parent_name' => 'Current Liabilities'],
-    //         ['sorting_number' => '18', 'branch_id' => $branchId, 'name' => 'Loans (Liability)', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '8', 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Loans (Liability)', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Liabilities'],
-    //         ['sorting_number' => '20', 'branch_id' => $branchId, 'name' => 'Secure Loans', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '2', 'sub_group_number' => '8', 'sub_sub_group_number' => '12', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Loans (Liability)', 'sub_sub_group_name' => 'Secure Loans', 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Loans (Liability)'],
-    //         ['sorting_number' => '21', 'branch_id' => $branchId, 'name' => 'Unsecure Loans', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '1', 'is_parent_sub_sub_group' => '1', 'main_group_number' => '2', 'sub_group_number' => '8', 'sub_sub_group_number' => '13', 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Loans (Liability)', 'sub_sub_group_name' => 'Unsecure Loans', 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Loans (Liability)'],
-    //         ['sorting_number' => '22', 'branch_id' => $branchId, 'name' => 'Suspense A/c', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '2', 'sub_group_number' => '9', 'sub_sub_group_number' => null, 'main_group_name' => 'Liabilities', 'sub_group_name' => 'Suspense', 'sub_sub_group_name' => null, 'default_balance_type' => 'cr', 'is_global' => '0', 'parent_name' => 'Liabilities'],
-    //         ['sorting_number' => '23', 'branch_id' => $branchId, 'name' => 'Expenses', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '1', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '3', 'sub_group_number' => null, 'sub_sub_group_number' => null, 'main_group_name' => 'Expenses', 'sub_group_name' => null, 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => null],
-    //         ['sorting_number' => '24', 'branch_id' => $branchId, 'name' => 'Direct Expenses', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '3', 'sub_group_number' => '10', 'sub_sub_group_number' => null, 'main_group_name' => 'Expenses', 'sub_group_name' => 'Direct Expenses', 'sub_sub_group_name' => null, 'default_balance_type' => 'dr', 'is_global' => '0', 'parent_name' => 'Expenses'],
-    //         ['sorting_number' => '25', 'branch_id' => $branchId, 'name' => 'Indirect Expenses', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '3', 'sub_group_number' => '11', 'sub_sub_group_number' => null, 'main_group_name' => 'Expenses', 'sub_group_name' => 'Indirect Expenses', 'sub_sub_group_name' => 'dr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => 'Expenses'],
-    //         ['sorting_number' => '26', 'branch_id' => $branchId, 'name' => 'Purchase Accounts', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '3', 'sub_group_number' => '12', 'sub_sub_group_number' => null, 'main_group_name' => 'Expenses', 'sub_group_name' => 'Purchase Accounts', 'sub_sub_group_name' => 'dr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => 'Expenses'],
-    //         ['sorting_number' => '27', 'branch_id' => $branchId, 'name' => 'Incomes', 'is_reserved' => '0', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '1', 'is_sub_group' => '0', 'is_parent_sub_group' => '0', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '4', 'sub_group_number' => null, 'sub_sub_group_number' => null, 'main_group_name' => 'Incomes', 'sub_group_name' => null, 'sub_sub_group_name' => 'cr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => null],
-    //         ['sorting_number' => '28', 'branch_id' => $branchId, 'name' => 'Direct Incomes', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '4', 'sub_group_number' => '13', 'sub_sub_group_number' => null, 'main_group_name' => 'Incomes', 'sub_group_name' => 'Direct Incomes', 'sub_sub_group_name' => 'cr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => 'Incomes'],
-    //         ['sorting_number' => '29', 'branch_id' => $branchId, 'name' => 'Indirect Incomes', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '4', 'sub_group_number' => '14', 'sub_sub_group_number' => null, 'main_group_name' => 'Incomes', 'sub_group_name' => 'Indirect Incomes', 'sub_sub_group_name' => 'cr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => 'Incomes'],
-    //         ['sorting_number' => '30', 'branch_id' => $branchId, 'name' => 'Sales Accounts', 'is_reserved' => '1', 'is_allowed_bank_details' => '0', 'is_bank_or_cash_ac' => '0', 'is_fixed_tax_calculator' => '0', 'is_default_tax_calculator' => '0', 'is_main_group' => '0', 'is_sub_group' => '1', 'is_parent_sub_group' => '1', 'is_sub_sub_group' => '0', 'is_parent_sub_sub_group' => '0', 'main_group_number' => '4', 'sub_group_number' => '15', 'sub_sub_group_number' => null, 'main_group_name' => 'Incomes', 'sub_group_name' => 'Sales Accounts', 'sub_sub_group_name' => 'cr', 'default_balance_type' => null, 'is_global' => '0', 'parent_name' => 'Incomes'],
-    //     ];
-
-    //     array_walk($account_groups, function (&$v) {
-    //         unset($v['id']);
-    //     });
-
-    //     foreach ($accountGroups as $group) {
-
-    //         $addAccountGroup = new AccountGroup();
-    //         $addAccountGroup->sorting_number = $group['sorting_number'];
-    //         $addAccountGroup->branch_id = $group['branch_id'];
-    //         $addAccountGroup->name = $group['name'];
-    //         $addAccountGroup->is_reserved = $group['is_reserved'];
-    //         $addAccountGroup->is_allowed_bank_details = $group['is_allowed_bank_details'];
-    //         $addAccountGroup->is_bank_or_cash_ac = $group['is_bank_or_cash_ac'];
-    //         $addAccountGroup->is_fixed_tax_calculator = $group['is_fixed_tax_calculator'];
-    //         $addAccountGroup->is_default_tax_calculator = $group['is_default_tax_calculator'];
-    //         $addAccountGroup->is_main_group = $group['is_main_group'];
-    //         $addAccountGroup->is_sub_group = $group['is_sub_group'];
-    //         $addAccountGroup->is_parent_sub_group = $group['is_parent_sub_group'];
-    //         $addAccountGroup->is_sub_sub_group = $group['is_sub_sub_group'];
-    //         $addAccountGroup->is_parent_sub_sub_group = $group['is_parent_sub_sub_group'];
-    //         $addAccountGroup->main_group_number = $group['main_group_number'];
-    //         $addAccountGroup->sub_group_number = $group['sub_group_number'];
-    //         $addAccountGroup->sub_sub_group_number = $group['sub_sub_group_number'];
-    //         $addAccountGroup->main_group_name = $group['main_group_name'];
-    //         $addAccountGroup->sub_group_name = $group['sub_group_name'];
-    //         $addAccountGroup->sub_sub_group_name = $group['sub_sub_group_name'];
-    //         $addAccountGroup->default_balance_type = $group['default_balance_type'];
-    //         $addAccountGroup->is_global = $group['is_global'];
-    //         $addAccountGroup->save();
-
-    //         if ($group['parent_name']) {
-
-    //             $parentGroup = DB::table('account_groups')->where('account_groups.name', $group['parent_name'])
-    //                 ->where('account_groups.branch_id', $group['branch_id'])->first(['id']);
-
-    //             $addAccountGroup->parent_group_id = $parentGroup->id;
-    //             $addAccountGroup->save();
-    //         }
-    //     }
-    // }
 
     public function addBranchDefaultAccounts(int $branchId): void
     {
@@ -454,8 +400,9 @@ class BranchService
     protected function shopExpireHistoryCheckUpdate($shopHistory)
     {
         if (!empty($shopHistory)) {
+
             $shopHistory->created_count += 1;
-            $shopHistory->left_count = $shopHistory->count - ($shopHistory->created_count);
+            $shopHistory->left_count = $shopHistory->shop_count - ($shopHistory->created_count);
             $shopHistory->save();
         }
     }

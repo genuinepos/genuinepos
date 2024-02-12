@@ -6,13 +6,20 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Shops') }}</h5>
-                 <div class="ms-2">Limit - {{ $generalSettings['addons__branch_limit'] }}</div>
+                <div class="col-md-4">
+                    <h5>{{ __('Shops') }}
+                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['addons__branch_limit'] }})</span>
+                    </h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
-                    <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
-                </a>
+                <div class="col-md-4 text-start">
+                    <p class="fw-bold"></p>
+                </div>
+                <div class="col-md-4">
+
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -23,7 +30,7 @@
                         <h6>{{ __('Shop List') }}</h6>
                     </div>
 
-                    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && $generalSettings['addons__branch_limit'] < $currentCreatedBranchCount)
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}
@@ -34,7 +41,7 @@
 
                 <div class="widget_content">
                     <div class="data_preloader">
-                        <h6><i class="fas fa-spinner text-primary"></i> @lang('menu.processing')...</h6>
+                        <h6><i class="fas fa-spinner text-primary"></i> {{ __("Processing") }}...</h6>
                     </div>
                     <div class="table-responsive" id="data-list">
                         <table class="display data_tbl data__table">
@@ -46,6 +53,7 @@
                                     <th>{{ __('Phone') }}</th>
                                     <th>{{ __('Address') }}</th>
                                     <th>{{ __('Shop Logo') }}</th>
+                                    <th>{{ __('Expire Date') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
@@ -125,6 +133,10 @@
                 {
                     data: 'logo',
                     name: 'branches.state'
+                },
+                {
+                    data: 'expire_date',
+                    name: 'branches.name'
                 },
                 {
                     data: 'action'

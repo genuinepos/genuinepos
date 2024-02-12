@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
+        Schema::table('branches', function (Blueprint $table) {
 
-            $table->bigInteger('id')->unsigned()->autoIncrement()->change();
+            if (!Schema::hasColumn('branches', 'expire_date')) {
+
+                $table->date('expire_date')->after('purchase_permission')->nullable();
+            }
         });
     }
 
@@ -22,8 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            $table->integer('id')->change();
+        Schema::table('branches', function (Blueprint $table) {
+
+            $table->dropColumn('expire_date');
         });
     }
 };

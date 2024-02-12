@@ -35,14 +35,15 @@ class BranchController extends Controller
         abort_if(!(auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::SuperAdmin->value) && auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
 
         $generalSettings = config('generalSettings');
-        $shopHistory = ShopExpireDateHistory::where('left_count', '>', 0)->first();
+
+        $currentCreatedBranchCount = $this->branchService->branches()->count();
 
         if ($request->ajax()) {
 
             return $this->branchService->branchListTable();
         }
 
-        return view('setups.branches.index', compact('shopHistory'));
+        return view('setups.branches.index', compact('currentCreatedBranchCount'));
     }
 
     public function create()

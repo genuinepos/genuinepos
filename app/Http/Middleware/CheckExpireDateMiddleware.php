@@ -22,11 +22,11 @@ class CheckExpireDateMiddleware
 
         if ($subscription->is_trial_plan == 1) {
 
-            $trialExpireDate = $this->getTrialExpireDate($subscription->initial_plan_start_date, $subscription->trial_days);
+            $trialExpireDate = $this->getTrialExpireDate($subscription->trial_start_date, $subscription->trial_days);
 
             if (date('Y-m-d') > date('Y-m-d', strtotime($trialExpireDate))) {
 
-                return redirect()->route('software.service.billing.upgrade.plan')->with(['trialExpireDate' => 'Your trial period is expired. Please Upgrade your plan.']);
+                return redirect()->route('software.service.billing.upgrade.plan')->with(['trialExpireDate' => __('Your trial period is expired. Please Upgrade your plan.')]);
             }
         } elseif (
             $subscription->initial_payment_status == SubscriptionPaymentStatus::Due->value &&
@@ -34,24 +34,13 @@ class CheckExpireDateMiddleware
             date('Y-m-d') > $generalSettings['subscription']->initial_plan_expire_date
         ) {
 
-            return redirect()->route('software.service.billing.upgrade.plan')->with(['trialExpireDate' => 'Please Repayment you due amount.']);
+            return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment you due amount.')]);
         }
 
         return $next($request);
     }
 
     function getTrialExpireDate($startDate, $trialDays)
-    {
-        $startDate = new \DateTime($startDate);
-        $endDate = clone $startDate;
-        // Add 7 days to today's date
-        $lastDate = $endDate->modify('+1 ' . $trialDays . ' days');
-        // $lastDate = $lastDate->modify('+1 days');
-
-        return $lastDate->format('Y-m-d');
-    }
-
-    function getRepaymentExpireDate($startDate, $trialDays)
     {
         $startDate = new \DateTime($startDate);
         $endDate = clone $startDate;

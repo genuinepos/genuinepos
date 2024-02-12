@@ -225,7 +225,8 @@ Route::get('my-test', function () {
     // ->select('subscriptions.id', 'pos.plans.name as plan_name')
     // ->first();
 
-    return Subscription::with('plan')->first();
+    // return Subscription::with('plan')->first();
+    return DB::table('branches')->whereNull('parent_branch_id')->orderBy('branch_code', 'desc')->first(['branch_code']);
 });
 
 

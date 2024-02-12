@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
 
-            $table->bigInteger('id')->unsigned()->autoIncrement()->change();
+            if (Schema::hasColumn('users', 'plan_id')) {
+
+                $table->dropColumn('plan_id');
+            }
         });
     }
 
@@ -22,8 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            $table->integer('id')->change();
+        Schema::table('users', function (Blueprint $table) {
+
+            $table->unsignedBigInteger('plan_id')->after('branch_id')->nullable();
         });
     }
 };

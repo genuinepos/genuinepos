@@ -65,7 +65,17 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username_or_email)->orWhere('email', $request->username_or_email)->first();
+        $user = User::with('branch')
+            ->where('username', $request->username_or_email)
+            ->orWhere('email', $request->username_or_email)->first();
+
+        if ($user?->branch && date('Y-m-d') > $user?->branch->expire_date) {
+
+            $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Business/Authority.');
+            session()->flash('errorMsg', $msg);
+            return redirect()->back();
+        }
+
         if (isset($user) && $user->allow_login == 1) {
 
             if (
@@ -80,19 +90,14 @@ class LoginController extends Controller
 
                 $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id,  user_id: $user->id);
 
-                if ($user->role_type == RoleType::SuperAdmin->value || $user->role_type == RoleType::Admin->value) {
-
-                    $user->branch_id = null;
-                    $user->is_belonging_an_area = BooleanType::False->value;
-                    $user->save();
-                }
-
                 return redirect()->intended(route('dashboard.index'));
             } else {
+
                 session()->flash('errorMsg', __('Sorry! Username/Email or Password not matched!'));
                 return redirect()->back();
             }
         } else {
+
             session()->flash('errorMsg', __('Login failed. Please try with correct username/email and password'));
             return redirect()->back();
         }
@@ -101,6 +106,13 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
+
+        if (auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::Admin->value) {
+
+            auth()->user()->branch_id = null;
+            auth()->user()->is_belonging_an_area = BooleanType::False->value;
+            auth()->user()->save();
+        }
 
         $this->guard()->logout();
         $request->session()->invalidate();

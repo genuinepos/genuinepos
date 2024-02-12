@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('plan_id')->nullable()->after('branch_id');
+        Schema::table('branches', function (Blueprint $table) {
+
+            if (Schema::hasColumn('branches', 'expire_at')) {
+
+                $table->renameColumn('expire_at', 'expire_date');
+            }
         });
     }
 
@@ -21,8 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('plan_id');
+        Schema::table('branches', function (Blueprint $table) {
+
+            $table->renameColumn('expire_date', 'expire_at');
         });
     }
 };

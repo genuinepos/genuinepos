@@ -60,7 +60,7 @@ class TenantService implements TenantServiceInterface
                     DB::statement('use ' . $tenant->tenancy_db_name);
                     $this->makeSuperAdminForTenant($tenantRequest);
                     // Insert settings coming from tenant creation form
-                    $this->saveBusinessSettings($tenantRequest);
+                    $this->saveBusinessSettings($tenantRequest, $plan);
 
                     $this->storeSubscription($tenantRequest, $plan);
 
@@ -78,13 +78,13 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    public function saveBusinessSettings(array $tenantRequest): void
+    public function saveBusinessSettings(array $tenantRequest, object $plan): void
     {
         $settings = [
             'business_or_shop__business_name' => $tenantRequest['name'],
             'business_or_shop__phone' => $tenantRequest['phone'],
             'business_or_shop__email' => $tenantRequest['email'],
-            'addons__branch_limit' => $tenantRequest['shop_count'],
+            'addons__branch_limit' => $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'],
             'business_or_shop__address' => $tenantRequest['address'],
             // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
@@ -166,6 +166,9 @@ class TenantService implements TenantServiceInterface
 
                 $subscribe->initial_due_amount = 0;
             }
+        }elseif($plan->is_trial_plan == 1){
+
+            $subscribe->trial_start_date = Carbon::now();
         }
 
         $subscribe->save();

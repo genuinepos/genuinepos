@@ -34,9 +34,11 @@ return new class extends Migration
             $table->string('logo', 191)->nullable()->default('default.png');
             $table->boolean('purchase_permission')->default(1);
             $table->date('expire_date')->nullable();
+            $table->unsignedBigInteger('shop_expire_date_history_id')->nullable();
             $table->timestamps();
 
             $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('shop_expire_date_history_id')->references('id')->on('shop_expire_date_histories')->onDelete('cascade');
         });
     }
 

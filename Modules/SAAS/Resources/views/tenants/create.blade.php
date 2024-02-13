@@ -1,4 +1,99 @@
 <x-saas::admin-layout title="Add Customer">
+    @push('css')
+        <style>
+            .tab-section .tab-nav .single-nav {
+                height: 35px;
+                font-size: 15px;
+            }
+
+            .quantity .quantity-nav .quantity-button {
+                width: 35px;
+                height: 28px;
+                line-height: 29px;
+            }
+
+            .quantity {
+                width: 140px;
+                height: 28px;
+            }
+
+            .revel-table .table-responsive th {
+                padding: 8px 30px;
+            }
+
+            .revel-table .table-responsive tr:last-child td {
+                padding-bottom: 20px;
+            }
+
+            .revel-table .table-responsive tr:first-child td {
+                padding-top: 20px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .title {
+                font-size: 16px;
+                height: 40px;
+                line-height: 40px;
+                padding: 0 20px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .panel-body .calculate-area ul li:nth-child(2) {
+                margin-bottom: 16px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .panel-body .calculate-area ul li {
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+
+            .tab-section .tab-contents .cart-total-panel .panel-body {
+                padding: 20px;
+            }
+
+            .cart-coupon-form input {
+                height: 40px;
+            }
+
+            .def-btn {
+                height: 40px;
+                line-height: 40px;
+                padding: 0 30px;
+                font-size: 13px;
+            }
+
+            .tab-section .tab-contents .tab-next-btn {
+                font-size: 13px;
+                text-align: center;
+            }
+
+            .tab-section .tab-contents .billing-details .form-row {
+                gap: 10px 20px;
+            }
+
+            .tab-section .tab-contents .billing-details .form-row .form-col-5 label,
+            .tab-section .tab-contents .billing-details .form-row .form-col-10 label {
+                font-size: 13px;
+            }
+
+            .tab-section .tab-contents .billing-details .form-row .form-control {
+                font-size: 14px;
+                height: 35px;
+                line-height: 33px;
+                padding: 0 15px;
+            }
+
+            .domain-field span.txt {
+                font-size: 17px;
+            }
+
+            .tab-section .tab-contents .billing-details .title {
+                font-size: 16px;
+            }
+
+            .plan-select {
+                max-width: 172px;
+            }
+        </style>
+    @endpush
     <div class="row">
         <div class="col-12">
             <div class="panel">
@@ -6,75 +101,48 @@
                     <h5>{{ __('Add Customer') }}</h5>
                 </div>
                 <div class="panel-body">
-                    <form id="tenantStoreForm" method="POST" action="{{ route('saas.tenants.store') }}">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="plan_id" class="form-label text-bold"><b>{{ __('Select Plan') }}</b></label>
-                                    <select name="plan_id" class="form-control" id="plan_id">
-                                        <option value="">{{ __('Select Plan') }}</option>
-                                        @foreach ($plans as $plan)
-                                            <option value="{{ $plan->id }}">{{ $plan->name }} ({{ $plan->price . ' Taka, ' . $plan->periodType }})</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                    <div class="tab-section py-120">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="tab-nav">
+                                        <button class="single-nav active" data-tab="cartTab">
+                                            <span class="txt">Step One</span>
+                                            <span class="sl-no">01</span>
+                                        </button>
 
-                                <div class="mb-3">
-                                    <label for="shop_count" class="form-label text-bold"><b>{{ __('Shop Count') }}</b></label>
-                                    <input type="number" name="shop_count" id="shop_count" class="form-control @error('shop_count') is-invalid  @enderror" placeholder="{{ __('Shop Count') }}" required />
-                                </div>
+                                        <button class="single-nav" data-tab="checkOutTab" disabled>
+                                            <span class="txt">Step Two</span>
+                                            <span class="sl-no">02</span>
+                                        </button>
 
-                                <div class="mb-3">
-                                    <label for="fullname" class="form-label text-bold"><b>{{ __('Full Name') }}</b></label>
-                                    <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid  @enderror" placeholder="{{ __('Enter Full Name') }}" required />
-                                </div>
+                                        <button class="single-nav" data-tab="orderCompletedTab" disabled>
+                                            <span class="txt">Step Three</span>
+                                            <span class="sl-no">03</span>
+                                        </button>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label for="email" class="form-label text-bold"><b>{{ __('Email Address') }}</b></label>
-                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid  @enderror" placeholder="{{ __('Enter Email Address') }}" required />
-                                </div>
+                                    <div class="tab-contents">
+                                        <form id="tenantStoreForm" method="POST" action="{{ route('saas.tenants.store') }}">
+                                            @csrf
+                                            @include('saas::tenants.partials.step_one')
 
-                                <div class="mb-3">
-                                    <label for="password" class="form-label text-bold"><b>{{ __('Password') }}</b></label>
-                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid  @enderror" placeholder="{{ __('Enter Password') }}" required />
-                                </div>
+                                            @include('saas::tenants.partials.step_two')
+                                        </form>
 
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label text-bold"><b>{{ __('Phone Number') }}</b></label>
-                                    <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid  @enderror" placeholder="{{ __('Enter Phone Number') }}" required />
+                                        <div class="single-tab" id="orderCompletedTab">
+                                            <div class="check-icon">
+                                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                                </svg>
+                                            </div>
+                                            <div class="order-complete-msg">
+                                                <h2>Your Order Has Been Completed</h2>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <hr />
-                                <div class="mb-3">
-                                    <label for="name" class="form-label text-bold"><b>{{ __('Business Name') }}</b></label>
-                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid  @enderror" placeholder="{{ __('Enter Business Name') }}" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="name" class="form-label text-bold"><b>{{ __('Domain Name') }}</b></label>
-                                    <input type="text" name="domain" id="domain" class="form-control @error('name') is-invalid  @enderror" placeholder="{{ __('Enter Domain Name') }}" {{-- placeholder="{{ __('Enter Domain Name') }}" oninput="domainPreview()" --}} required />
-                                    <p class="mt-2">
-                                        <span id="domainPreview" class="monospace"></span>
-                                    </p>
-                                </div>
-
-                                <div class="mb-3">
-                                    <input type="submit" class="btn btn-primary" value="{{ __('Create') }}" id="submitBtn" />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div id="response-message" class="mt-3 d-none text-start" style="height: 100px;">
-                        <div class="mt-2">
-                            <h6 id="response-message-text">
-                                {{ __('Creating your Business. It can take a while, please wait...') }}
-                                Elapsed Time: <span id="timespan"></span> Seconds.
-                            </h6>
-                        </div>
-                        <div class="mt-3">
-                            <div class="spinner-border text-dark" role="status">
-                                <span class="visually-hidden">{{ __('Loading') }}...</span>
                             </div>
                         </div>
                     </div>
@@ -84,6 +152,8 @@
     </div>
 
     @push('js')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
         <script>
             $('table').addClass('table table-striped');
             $('.ck-container ul').addClass('list-group');
@@ -92,7 +162,6 @@
             // $('#btn').click(function() {
             //     $('#exampleModalToggle').modal('show');
             // });
-
 
             // Domain Check
             var typingTimer; //timer identifier
@@ -112,6 +181,7 @@
 
             //user is "finished typing," do something
             var isAvailable = false;
+
             function doneTyping() {
                 $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
                 var domain = $('#domain').val();
@@ -133,8 +203,9 @@
                 });
             }
 
-            $(document).on('submit', '#tenantStoreForm',function(e) {
+            $(document).on('submit', '#tenantStoreForm', function(e) {
                 e.preventDefault();
+
                 let url = $('#tenantStoreForm').attr('action');
                 $('#response-message').removeClass('d-none');
                 var request = $(this).serialize();
@@ -142,6 +213,7 @@
                 if (isAvailable == false) {
 
                     $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                    $('#response-message').addClass('d-none');
                     return;
                 }
 
@@ -159,13 +231,122 @@
 
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text("{{ __('Successfully created! Redirecting you to the list') }}");
-                        // window.location = res;
-                    }, error: function(err) {
+                    },
+                    error: function(err) {
 
                         $('#response-message').addClass('d-none');
                         toastr.error(err.responseJSON.message);
                     }
                 });
+            });
+
+            $(document).on('change', '#plan_id', function () {
+
+                var planId = $(this).val();
+                var url = "{{ route('saas.plans.single.by.id', ':planId') }}";
+                var route = url.replace(':planId', planId);
+
+                if (planId == '') {
+                    return;
+                }
+
+                $.ajax({
+                    url: route,
+                    type: 'get',
+                    success: function(plan) {
+
+                        $('#price_period').prop('checked', true);
+                        $('#is_trial_plan').val(plan.is_trial_plan);
+                        $('#price_per_month').val(plan.price_per_month);
+                        $('#price_per_year').val(plan.price_per_year);
+                        $('#lifetime_price').val(plan.lifetime_price);
+                        $('#plan_price').val(plan.price_per_month);
+                        $('#span_plan_price').html(plan.price_per_month);
+                        $('#shop_count').val(plan.is_trial_plan == 1 ? plan.trial_shop_count : 1);
+                        $('#period_count').val(1);
+                        $('#subtotal').val(plan.price_per_month);
+                        $('#span_subtotal').html(plan.price_per_month);
+                        $('.span_total_shop_count').html(1);
+                        $('.span_subtotal_after_discount').html(plan.price_per_month);
+                        $('.span_total_shop_count').html(plan.is_trial_plan == 1 ? plan.trial_shop_count : 1);
+                        $('#total_payable').val(plan.price_per_month);
+                        $('.span_total_payable').html(plan.price_per_month);
+
+                        if (plan.is_trial_plan == 1) {
+
+                            $('.period_count').addClass('d-none');
+                            $('#fixed_period_text').removeClass('d-none');
+                            $('#fixed_period_text').html(plan.trial_days + ' days');
+                            $('#payment_status').prop('required', false);
+                            $('.payment-section').addClass('d-none');
+                        }else {
+
+                            $('.period_count').removeClass('d-none');
+                            $('#fixed_period_text').html('');
+                            $('#fixed_period_text').addClass('d-none');
+                            $('#payment_status').prop('required', true);
+                            $('.payment-section').removeClass('d-none');
+                        }
+                    }, error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                            return;
+                        }
+                    }
+                });
+            });
+
+            $(document).on('change', '#payment_status', function () {
+
+                $('.repayment_field').addClass('d-none');
+                $('#repayment_date').prop('required', false);
+                $('.payment_details_field').addClass('d-none');
+
+                var paymentStatus = $(this).val();
+
+                var isTrialPlan = $('#is_trial_plan').val();
+                if (isTrialPlan == 0) {
+
+                    if (paymentStatus == 1) {
+
+                        $('.repayment_field').addClass('d-none');
+                        $('#repayment_date').prop('required', false);
+                        $('.payment_details_field').removeClass('d-none');
+                    }else if (paymentStatus == 0) {
+
+                        $('.repayment_field').removeClass('d-none');
+                        $('#repayment_date').prop('required', true);
+                        $('.payment_details_field').addClass('d-none');
+                    }
+                }else {
+
+                    $('#repayment_date').prop('required', false);
+                }
+            });
+
+            new Litepicker({
+                singleMode: true,
+                element: document.getElementById('repayment_date'),
+                dropdowns: {
+                    minYear: new Date().getFullYear() - 50,
+                    maxYear: new Date().getFullYear() + 100,
+                    months: true,
+                    years: true
+                },
+                tooltipText: {
+                    one: 'night',
+                    other: 'nights'
+                },
+                tooltipNumber: (totalDays) => {
+                    return totalDays - 1;
+                },
+                format: 'DD-MM-YYYY',
             });
         </script>
     @endpush

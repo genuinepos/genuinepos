@@ -30,7 +30,7 @@
                         <h6>{{ __('Shop List') }}</h6>
                     </div>
 
-                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && $generalSettings['addons__branch_limit'] < $currentCreatedBranchCount)
+                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && $currentCreatedBranchCount < $generalSettings['addons__branch_limit'])
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}

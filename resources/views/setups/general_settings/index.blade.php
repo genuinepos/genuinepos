@@ -146,29 +146,29 @@
                                         @csrf
                                         <div class="form-group row">
                                             <div class="col-md-4">
-                                                <label class="fw-bold">{{ __('Business Name') }}</label>
-                                                <input type="text" name="business_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business_or_shop__business_name'] }}">
+                                                <label class="fw-bold">{{ __('Business Name') }} <span class="text-danger">*</span></label>
+                                                <input required type="text" name="business_name" class="form-control bs_input" autocomplete="off" value="{{ $generalSettings['business_or_shop__business_name'] }}">
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="fw-bold">{{ __('Address') }}</label>
-                                                <input type="text" name="address" class="form-control bs_input" autocomplete="off" placeholder="Business address" value="{{ $generalSettings['business_or_shop__address'] }}">
+                                                <label class="fw-bold">{{ __('Address') }} <span class="text-danger">*</span></label>
+                                                <input required type="text" name="address" class="form-control bs_input" autocomplete="off" placeholder="{{ __("Business address") }}" value="{{ $generalSettings['business_or_shop__address'] }}">
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="fw-bold">{{ __('Phone') }}</label>
-                                                <input type="text" name="phone" class="form-control bs_input" placeholder="Business phone number" value="{{ $generalSettings['business_or_shop__phone'] }}">
+                                                <label class="fw-bold">{{ __('Phone') }} <span class="text-danger">*</span></label>
+                                                <input required type="text" name="phone" class="form-control bs_input" placeholder="{{ __("Business phone number") }}" value="{{ $generalSettings['business_or_shop__phone'] }}">
                                             </div>
                                         </div>
 
                                         <div class="form-group row mt-1">
                                             <div class="col-md-4">
-                                                <label class="fw-bold">{{ __('Email') }}</label>
-                                                <input type="text" name="email" class="form-control bs_input" placeholder="Business email address" value="{{ $generalSettings['business_or_shop__email'] }}">
+                                                <label class="fw-bold">{{ __('Email') }} <span class="text-danger">*</span></label>
+                                                <input required type="text" name="email" class="form-control bs_input" placeholder="Business email address" value="{{ $generalSettings['business_or_shop__email'] }}">
                                             </div>
 
                                             <div class="col-md-4">
-                                                <label class="fw-bold">{{ __('Default Profit') }}(%) <span class="text-danger">*</span></label>
+                                                <label class="fw-bold">{{ __('Default Profit') }}(%)</label>
                                                 <input type="number" name="default_profit" class="form-control bs_input" autocomplete="off" data-name="Default profit" id="default_profit" value="{{ $generalSettings['business_or_shop__default_profit'] }}">
                                                 <span class="error error_default_profit"></span>
                                             </div>
@@ -178,13 +178,12 @@
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Business Logo') }} <small class="red-label-notice">{{ __('Recommended Size : H : 40px; W: 110px;') }}</small></label>
                                                 <input type="file" class="form-control" name="business_logo" id="business_logo">
-
                                                 <span class="error error_business_logo"></span>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Currency') }} <span class="text-danger">*</span></label>
-                                                <select name="currency_id" class="form-control select2" id="currency_id">
+                                                <select required name="currency_id" class="form-control select2" id="currency_id">
                                                     @foreach ($currencies as $currency)
                                                         <option data-currency_symbol="{{ $currency->symbol }}" {{ $generalSettings['business_or_shop__currency_id'] == $currency->id ? 'SELECTED' : '' }} value="{{ $currency->id }}">
                                                             {{ $currency->country . ' - ' . $currency->currency . '(' . $currency->code . ')' }}
@@ -205,14 +204,14 @@
                                                         <option {{ $stockAccountingMethod == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $item }}</option>
                                                     @endforeach
                                                 </select>
-                                                <span class="error error_financial_year_start"></span>
+                                                <span class="error error_stock_accounting_method"></span>
                                             </div>
                                         </div>
 
                                         <div class="form-group row mt-1">
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Date Format') }} <span class="text-danger">*</span></label>
-                                                <select name="date_format" class="form-control bs_input" data-name="Date format" id="date_format">
+                                                <select required name="date_format" class="form-control bs_input" data-name="Date format" id="date_format">
                                                     <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ __('DD-MM-YYYY') }} | {{ date('d-m-Y') }} </option>
                                                     <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ __('MM-DD-YYYY') }} | {{ date('m-d-Y') }}</option>
                                                     <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ __('YYYY-MM-DD') }} | {{ date('Y-m-d') }}</option>
@@ -222,7 +221,7 @@
 
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Time Format') }} <span class="text-danger">*</span></label>
-                                                <select name="time_format" class="form-control bs_input" data-name="Time format" id="time_format">
+                                                <select required name="time_format" class="form-control bs_input" data-name="Time format" id="time_format">
                                                     <option value="12" {{ $generalSettings['business_or_shop__time_format'] == '12' ? 'SELECTED' : '' }}>{{ __('12 Hour') }}</option>
                                                     <option value="24" {{ $generalSettings['business_or_shop__time_format'] == '24' ? 'SELECTED' : '' }}>{{ __('24 Hour') }}</option>
                                                 </select>
@@ -231,7 +230,7 @@
 
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                                <select name="timezone" class="form-control select2" data-name="Time format" id="time_format">
+                                                <select required name="timezone" class="form-control select2" data-name="Time format" id="time_format">
                                                     <option value="">{{ __('Time Zone') }}</option>
                                                     @foreach ($timezones as $key => $timezone)
                                                         <option {{ ($generalSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
@@ -245,7 +244,7 @@
                                             <div class="col-md-4">
                                                 <label class="fw-bold">{{ __('Account Start Date') }} <span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <input type="text" name="account_start_date" class="form-control" id="account_start_date" autocomplete="off" value="{{ $generalSettings['business_or_shop__account_start_date'] }}">
+                                                    <input required type="text" name="account_start_date" class="form-control" id="account_start_date" autocomplete="off" value="{{ $generalSettings['business_or_shop__account_start_date'] }}">
                                                 </div>
                                                 <span class="error error_account_start_date"></span>
                                             </div>

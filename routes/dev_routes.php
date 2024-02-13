@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\Tenant;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\AccountLedgerVoucherType;
-use App\Models\Accounts\AccountingVoucherDescription;
 use App\Models\Subscriptions\Subscription;
+use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
     // return $accounts = Account::query()->with(['bank', 'bankAccessBranch'])
@@ -226,7 +227,7 @@ Route::get('my-test', function () {
     // ->first();
 
     // return Subscription::with('plan')->first();
-    return DB::table('branches')->whereNull('parent_branch_id')->orderBy('branch_code', 'desc')->first(['branch_code']);
+    return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
 });
 
 

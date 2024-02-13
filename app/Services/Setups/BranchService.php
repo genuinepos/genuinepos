@@ -91,6 +91,15 @@ class BranchService
                     $expireDateText = date('Y-m-d') > date('Y-m-d', strtotime($expireDate)) ? ' | <span class="text-danger fw-bold">' . __('Expired') . '</span>' : ' | <span class="text-success fw-bold">' . __('Active') . '</span>';
 
                     return '<span class="text-danger">' . $expireDate . '</span>' . $expireDateText;
+                } else if ($generalSettings['subscription']->is_trial_plan) {
+
+                    $planStartDate = $generalSettings['subscription']->trial_start_date;
+                    $trialDays = $generalSettings['subscription']->trial_days;
+                    $startDate = new \DateTime($planStartDate);
+                    $lastDate = $startDate->modify('+ ' . $trialDays . ' days');
+                    $expireDate = $lastDate->format('Y-m-d');
+                    $dateFormat = $generalSettings['business_or_shop__date_format'];
+                    return date($dateFormat, strtotime($expireDate));
                 }
             })
 
@@ -123,6 +132,7 @@ class BranchService
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
         $addBranch->expire_date = $subscription->is_trial_plan == 0 ? $shopHistory?->expire_date : null;
+        $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == 0 ? $shopHistory?->id : null;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -147,6 +157,7 @@ class BranchService
     public function updateBranch(int $id, object $request): void
     {
         $updateBranch = $this->singleBranch($id);
+
         $updateBranch->name = $request->branch_type;
         $updateBranch->name = $request->branch_type == BranchType::DifferentShop->value ? $request->name : null;
         $updateBranch->area_name = $request->area_name;
@@ -185,7 +196,7 @@ class BranchService
 
     public function deleteBranch(int $id): array
     {
-        $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases', 'childBranches']);
+        $deleteBranch = $this->singleBranch(id: $id, with: ['sales', 'purchases', 'childBranches', 'shopExpireDateHistory']);
 
         if (count($deleteBranch->childBranches) > 0) {
 
@@ -208,6 +219,13 @@ class BranchService
 
                 unlink(public_path('uploads/branch_logo/' . $deleteBranch->logo));
             }
+        }
+
+        if ($deleteBranch?->shopExpireDateHistory) {
+
+            $deleteBranch->shopExpireDateHistory->created_count -= 1;
+            $deleteBranch->shopExpireDateHistory->left_count += 1;
+            $deleteBranch->shopExpireDateHistory->save();
         }
 
         $deleteBranch->delete();
@@ -331,6 +349,21 @@ class BranchService
     }
 
     public function restrictions(): array
+    {
+        $generalSettings = config('generalSettings');
+        $branchLimit = $generalSettings['addons__branch_limit'];
+
+        $branchCount = DB::table('branches')->count();
+
+        if ($branchLimit <= $branchCount) {
+
+            return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
+        }
+
+        return ['pass' => true];
+    }
+
+    public function updateRestrictions(): array
     {
         $generalSettings = config('generalSettings');
         $branchLimit = $generalSettings['addons__branch_limit'];

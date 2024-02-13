@@ -1,15 +1,10 @@
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 class="modal-title" id="exampleModalLabel">{{ __('Add Shop') }}</h6>
-            <a href="" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
+            <h6 class="modal-title">{{ __('Add Shop') }}</h6>
+            <a href="#" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times"></span></a>
         </div>
         <div class="modal-body">
-            {{-- @if(empty($shopHistory))
-                <div class="py-5">
-                    <h1>Your shop’s creation limit is currently zero. Please consider upgrading your plan.</h1>
-                </div>
-            @else --}}
             <form id="add_branch_form" action="{{ route('branches.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
@@ -17,7 +12,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Shop Type') }}</label>
-                                <select name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
+                                <select onchange="changeBranchType(this);" name="branch_type" class="form-control" id="branch_type" data-next="branch_name">
                                     @foreach (\App\Enums\BranchType::cases() as $branchType)
                                         <option value="{{ $branchType->value }}">{{ preg_replace('/[A-Z]/', ' ' . "$0", $branchType->name) }}</option>
                                     @endforeach
@@ -26,7 +21,7 @@
 
                             <div class="col-lg-3 col-md-6 parent_branches_field d-hide">
                                 <label class="fw-bold">{{ __('Parent Shop') }} <span class="text-danger">*</span></label>
-                                <select name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="area_name">
+                                <select onchange="getBranchCode(this);" name="parent_branch_id" class="form-control" id="branch_parent_branch_id" data-next="area_name">
                                     <option value="">{{ __('Select Parent Shop') }}</option>
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->name . '/' . $branch->branch_code }}</option>
@@ -44,13 +39,13 @@
 
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Area Name') }} <span class="text-danger">*</span></label>
-                                <input required type="text" name="area_name" class="form-control" id="branch_area_name" data-next="branch_code" placeholder="{{ __('Area Name') }}" />
+                                <input required type="text" name="area_name" class="form-control" id="branch_area_name" data-next="branch_phone" placeholder="{{ __('Area Name') }}" />
                                 <span class="error error_branch_area_name"></span>
                             </div>
 
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Shop ID') }} <span class="text-danger">*</span></label>
-                                <input required type="text" name="branch_code" class="form-control" id="branch_code" data-next="branch_phone" placeholder="{{ __('Shop ID') }}" autocomplete="off" />
+                                <input readonly required type="text" name="branch_code" class="form-control fw-bold" id="branch_code" data-next="branch_phone" value="{{ $branchCode }}" placeholder="{{ __('Shop ID') }}" autocomplete="off" />
                                 <span class="error error_branch_code"></span>
                             </div>
 
@@ -64,17 +59,17 @@
                         <div class="form-group row mt-1">
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Alternative Phone') }} </label>
-                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_bin_no" placeholder="{{ __('Alternative Phone') }}" />
+                                <input type="text" name="alternate_phone_number" class="form-control" id="branch_alternate_phone_number" data-next="branch_bin" placeholder="{{ __('Alternative Phone') }}" />
                             </div>
 
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Business Indentification No.') }} </label>
-                                <input type="text" name="bin" class="form-control" id="branch_bin" data-next="branch_tin" placeholder="{{ __('Business Indentification Number') }}" autocomplete="off"/>
+                                <input type="text" name="bin" class="form-control" id="branch_bin" data-next="branch_tin" placeholder="{{ __('Business Indentification Number') }}" autocomplete="off" />
                             </div>
 
                             <div class="col-lg-3 col-md-6">
                                 <label class="fw-bold">{{ __('Vat/Tax No.') }} </label>
-                                <input type="text" name="tin" class="form-control" id="branch_tin" data-next="branch_country" placeholder="{{ __('Vat/Tax Number') }}" autocomplete="off"/>
+                                <input type="text" name="tin" class="form-control" id="branch_tin" data-next="branch_country" placeholder="{{ __('Vat/Tax Number') }}" autocomplete="off" />
                             </div>
                         </div>
 
@@ -106,7 +101,7 @@
 
                         <div class="form-group row mt-1">
                             <div class="col-lg-6 col-md-6">
-                                <label class="fw-bold">{{ __('Address') }}</label>
+                                <label class="fw-bold">{{ __('Address') }} <span class="text-danger">*</span></label>
                                 <input required type="text" name="address" class="form-control" id="branch_address" data-next="branch_email" placeholder="{{ __('Address') }}" />
                             </div>
                         </div>
@@ -133,10 +128,10 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Date Format') }}</label>
-                                <select name="date_format" class="form-control" id="date_format" data-next="time_format">
-                                    <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }} | {{ __("DD-MM-YYYY") }}</option>
-                                    <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }} | {{ __("MM-DD-YYYY") }}</option>
-                                    <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }} | {{ __("YYYY-MM-DD") }}</option>
+                                <select name="date_format" class="form-control" id="branch_date_format" data-next="time_format">
+                                    <option value="d-m-Y" {{ $generalSettings['business_or_shop__date_format'] == 'd-m-Y' ? 'SELECTED' : '' }}>{{ date('d-m-Y') }} | {{ __('DD-MM-YYYY') }}</option>
+                                    <option value="m-d-Y" {{ $generalSettings['business_or_shop__date_format'] == 'm-d-Y' ? 'SELECTED' : '' }}>{{ date('m-d-Y') }} | {{ __('MM-DD-YYYY') }}</option>
+                                    <option value="Y-m-d" {{ $generalSettings['business_or_shop__date_format'] == 'Y-m-d' ? 'SELECTED' : '' }}>{{ date('Y-m-d') }} | {{ __('YYYY-MM-DD') }}</option>
                                 </select>
                                 <span class="error error_date_format"></span>
                             </div>
@@ -145,7 +140,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Format') }}</label>
-                                <select name="time_format" class="form-control" id="time_format" data-next="timezone">
+                                <select name="time_format" class="form-control" id="branch_time_format" data-next="timezone">
                                     <option value="12">{{ __('12 Hour') }}</option>
                                     <option value="24">{{ __('24 Hour') }}</option>
                                 </select>
@@ -156,7 +151,7 @@
                         <div class="row mt-1">
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Time Zone') }} <span class="text-danger">*</span> {{ now()->format('Y-m-d') }}</label>
-                                <select required name="timezone" class="form-control" id="timezone" data-next="stock_accounting_method">
+                                <select required name="timezone" class="form-control" id="branch_timezone" data-next="stock_accounting_method">
                                     <option value="">{{ __('Time Zone') }}</option>
                                     @foreach ($timezones as $key => $timezone)
                                         <option {{ ($generalSettings['business_or_shop__timezone'] ?? 'Asia/Dhaka') == $key ? 'SELECTED' : '' }} value="{{ $key }}">{{ $timezone }}</option>
@@ -193,7 +188,7 @@
                             <div class="col-md-12">
                                 <label class="fw-bold">{{ __('Financial Year Start Month') }}</label>
                                 <div class="input-group">
-                                    <select name="financial_year_start_month" id="financial_year_start_month" class="form-control select2" data-next="add_initial_user_btn">
+                                    <select name="financial_year_start_month" id="branch_financial_year_start_month" class="form-control select2" data-next="add_initial_user_btn">
                                         @php
                                             $months = \App\Enums\Months::cases();
                                         @endphp
@@ -275,7 +270,6 @@
                     </div>
                 </div>
             </form>
-            {{-- @endif --}}
         </div>
     </div>
 </div>
@@ -436,12 +430,14 @@
         }
     });
 
-    $('#branch_type').on('click', function() {
+    function changeBranchType(e) {
 
         $('.parent_branches_field').hide();
-        $('#parent_branch_id').val('');
+        $('#branch_parent_branch_id').val('');
+        console.log($('#branch_parent_branch_id'));
+        getBranchCode($('#branch_parent_branch_id'));
 
-        if ($(this).val() == 2) {
+        if ($(e).val() == 2) {
 
             $('.parent_branches_field').show();
             $('#branch_parent_branch_id').prop('required', true);
@@ -464,5 +460,34 @@
             $('#branch_account_start_date').prop('required', true);
             $('#financial_year_start_month_field').show();
         }
-    });
+    };
+
+    function getBranchCode(e) {
+
+        console.log(e);
+        var parentBranchId = $(e).val();
+        var url = "{{ route('branches.code', ':parentBranchId') }}";
+        var route = url.replace(':parentBranchId', parentBranchId);
+
+        $.ajax({
+            url: route,
+            type: 'get',
+            success: function(data) {
+
+                $('#branch_code').val(data);
+            },
+            error: function(err) {
+
+                if (err.status == 0) {
+
+                    toastr.error('Net Connetion Error.');
+                    return;
+                } else if (err.status == 500) {
+
+                    toastr.error("{{ __('Server Error. Please contact to the support team.') }}");
+                    return;
+                }
+            }
+        });
+    };
 </script>

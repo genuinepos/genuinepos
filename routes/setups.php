@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Setups\SetupController;
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
@@ -14,6 +15,11 @@ use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 use App\Http\Controllers\Setups\SoftwareServiceBillingController;
 
 Route::prefix('setups')->group(function () {
+
+    Route::controller(SetupController::class)->group(function () {
+
+        Route::get('startup', 'startup')->name('setup.startup');
+    });
 
     Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {
 
@@ -44,6 +50,7 @@ Route::prefix('setups')->group(function () {
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
         Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
+        Route::get('branch/code/{parentBranchId?}', 'branchCode')->name('branches.code');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 

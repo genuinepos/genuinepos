@@ -31,7 +31,7 @@ class TenantController extends Controller
         $plans = Plan::with('currency:id,code')->where('status', 1)->get();
         $currencies = Currency::select('id', 'country', 'currency', 'code')->get();
         // return view('saas::tenants.create', compact('plans'));
-        return view('saas::tenants.create_new', compact('plans', 'currencies'));
+        return view('saas::tenants.create', compact('plans', 'currencies'));
     }
 
     public function store(TenantStoreRequest $request)

@@ -52,6 +52,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check('web')) {
+            
             return redirect()->back();
         }
 

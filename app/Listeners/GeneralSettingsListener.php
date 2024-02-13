@@ -44,7 +44,8 @@ class GeneralSettingsListener
                             'addons__e_commerce',
                             'addons__branch_limit',
                             'addons__cash_counter_limit',
-                            'business_or_shop__business_name'
+                            'business_or_shop__business_name',
+                            'business_or_shop__address',
                         ])->pluck('value', 'key')->toArray();
 
                     $branch = $event?->user?->branch;
@@ -94,6 +95,7 @@ class GeneralSettingsListener
                     $generalSettings['business_or_shop__financial_year'] = $financialYear;
                     $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
                     $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
+
                     Cache::rememberForever('generalSettings', function () use ($generalSettings) {
                         return $generalSettings;
                     });

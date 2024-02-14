@@ -74,6 +74,7 @@
     <div class="modal fade" id="branchSettingEditModal" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true"></div>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var branchTable = $('.data_tbl').DataTable({
             "processing": true,
@@ -200,7 +201,14 @@
 
                         setTimeout(function() {
 
-                            $('#branch_type').focus();
+                            if ($('#branch_name').val() != undefined) {
+
+                                $('#branch_name').focus();
+                            }else {
+
+                                $('#branch_area_name').focus();
+                            }
+
                         }, 500);
                     },
                     error: function(err) {

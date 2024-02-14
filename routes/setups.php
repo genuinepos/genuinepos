@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Setups\SetupController;
+use App\Http\Controllers\Setups\StartupController;
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
@@ -16,9 +16,9 @@ use App\Http\Controllers\Setups\SoftwareServiceBillingController;
 
 Route::prefix('setups')->group(function () {
 
-    Route::controller(SetupController::class)->group(function () {
+    Route::controller(StartupController::class)->prefix('startup')->group(function () {
 
-        Route::get('startup', 'startup')->name('setup.startup');
+        Route::get('form', 'startupFrom')->name('setup.startup.form');
     });
 
     Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {

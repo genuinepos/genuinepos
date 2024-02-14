@@ -107,18 +107,18 @@
                                 <div class="col-12">
                                     <div class="tab-nav">
                                         <button class="single-nav active" data-tab="cartTab">
-                                            <span class="txt">Step One</span>
-                                            <span class="sl-no">01</span>
+                                            <span class="txt">{{ __("Step One") }}</span>
+                                            <span class="sl-no">{{ __("01") }}</span>
                                         </button>
 
                                         <button class="single-nav" data-tab="checkOutTab" disabled>
-                                            <span class="txt">Step Two</span>
-                                            <span class="sl-no">02</span>
+                                            <span class="txt">{{ __("Step Two") }}</span>
+                                            <span class="sl-no">{{ __("02") }}</span>
                                         </button>
 
                                         <button class="single-nav" data-tab="orderCompletedTab" disabled>
-                                            <span class="txt">Step Three</span>
-                                            <span class="sl-no">03</span>
+                                            <span class="txt">{{ __("Step Three") }}</span>
+                                            <span class="sl-no">{{ __("03") }}</span>
                                         </button>
                                     </div>
 
@@ -138,7 +138,7 @@
                                                 </svg>
                                             </div>
                                             <div class="order-complete-msg">
-                                                <h2>Your Order Has Been Completed</h2>
+                                                <h2>{{ __("Your Order Has Been Completed") }}</h2>
                                             </div>
                                         </div>
                                     </div>

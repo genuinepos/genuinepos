@@ -10,6 +10,7 @@ use App\Models\Hrm\Attendance;
 use App\Models\Hrm\Department;
 use App\Models\Hrm\Designation;
 use App\Models\Hrm\AllowanceEmployee;
+use App\Models\Setups\Currency;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -76,5 +77,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isVerified()
     {
         return isset($this->email_verified_at);
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 }

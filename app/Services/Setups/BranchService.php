@@ -2,16 +2,17 @@
 
 namespace App\Services\Setups;
 
-use App\Enums\BranchType;
-use App\Models\Accounts\Account;
-use App\Models\Accounts\AccountGroup;
 use App\Models\Role;
-use App\Models\Setups\Branch;
-use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Models\User;
+use App\Enums\BranchType;
+use App\Models\Setups\Branch;
+use Illuminate\Validation\Rule;
+use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Accounts\AccountGroup;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class BranchService
 {
@@ -381,6 +382,7 @@ class BranchService
     public function branchStoreValidation(object $request)
     {
         $request->validate([
+            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
             'area_name' => 'required',
             'branch_code' => 'required',
             'phone' => 'required',
@@ -388,30 +390,38 @@ class BranchService
             'state' => 'required',
             'country' => 'required',
             'zip_code' => 'required',
-            'logo' => 'sometimes|image|max:2048',
+            'timezone' => 'required',
+            'currency_id' => 'required',
+            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
+            'logo' => 'sometimes|image|max:1024',
+            'first_name' => Rule::when($request->add_initial_user == 1, 'required'),
+            'user_phone' => Rule::when($request->add_initial_user == 1, 'required'),
+            'username' => Rule::when($request->add_initial_user == 1, 'required'),
+            'password' => Rule::when($request->add_initial_user == 1, 'required|confirmed'),
         ]);
 
-        if (BranchType::DifferentShop->value == $request->branch_type) {
+        // if (BranchType::DifferentShop->value == $request->branch_type) {
 
-            $request->validate([
-                'name' => 'required',
-            ]);
-        }
+        //     $request->validate([
+        //         'name' => 'required',
+        //     ]);
+        // }
 
-        if ($request->add_initial_user) {
+        // if ($request->add_initial_user) {
 
-            $request->validate([
-                'first_name' => 'required',
-                'user_phone' => 'required',
-                'username' => 'required|unique:users,username',
-                'password' => 'required|confirmed',
-            ]);
-        }
+        //     $request->validate([
+        //         'first_name' => 'required',
+        //         'user_phone' => 'required',
+        //         'username' => 'required|unique:users,username',
+        //         'password' => 'required|confirmed',
+        //     ]);
+        // }
     }
 
     public function branchUpdateValidation(object $request)
     {
         $request->validate([
+            'name' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required'),
             'area_name' => 'required',
             'branch_code' => 'required',
             'phone' => 'required',
@@ -419,15 +429,11 @@ class BranchService
             'state' => 'required',
             'country' => 'required',
             'zip_code' => 'required',
-            'logo' => 'sometimes|image|max:2048',
+            'timezone' => 'required',
+            'currency_id' => 'required',
+            'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
+            'logo' => 'sometimes|image|max:1',
         ]);
-
-        if (BranchType::DifferentShop->value == $request->branch_type) {
-
-            $request->validate([
-                'name' => 'required',
-            ]);
-        }
     }
 
     protected function shopExpireHistoryCheckUpdate($shopHistory)

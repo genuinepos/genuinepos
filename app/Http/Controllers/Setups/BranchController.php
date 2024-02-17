@@ -14,11 +14,9 @@ use App\Services\Setups\CurrencyService;
 use App\Services\Setups\TimezoneService;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\Setups\CashCounterService;
-use App\Services\Setups\GenerateBranchCode;
 use App\Services\Setups\BranchSettingService;
 use App\Services\Setups\InvoiceLayoutService;
 use App\Services\Setups\GenerateBranchCodeService;
-use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class BranchController extends Controller
 {

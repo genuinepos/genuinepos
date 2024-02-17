@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('initial_price_period')->nullable();
             $table->string('initial_period_count')->nullable();
             $table->decimal('initial_plan_price', 22, 2)->nullable();
+            $table->decimal('initial_business_price', 22, 2)->default(0)->nullable();
             $table->bigInteger('initial_shop_count')->nullable();
             $table->bigInteger('current_shop_count')->nullable();
             $table->decimal('initial_subtotal', 22, 2)->default(0);
@@ -29,7 +30,10 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1);
             $table->timestamp('initial_plan_start_date')->nullable();
             $table->date('initial_plan_expire_date')->nullable()->comment('for installation due payment, if initial payable amount is paid then this col will be null');
-            $table->boolean('is_completed_startup')->default(0);
+            $table->boolean('has_business')->default(0);
+            $table->date('business_expire_date')->nullable();
+            $table->boolean('is_completed_business_startup')->default(0);
+            $table->boolean('is_completed_branch_startup')->default(0);
             $table->timestamp('canceled_date')->nullable();
             $table->timestamps();
         });

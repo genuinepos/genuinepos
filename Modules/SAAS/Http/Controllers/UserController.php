@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Modules\SAAS\Entities\Role;
-use Modules\SAAS\Entities\User;
+use App\Models\User;
 use Modules\SAAS\Http\Requests\UserStoreRequest;
 use Modules\SAAS\Http\Requests\UserUpdateRequest;
 use Yajra\DataTables\Facades\DataTables;

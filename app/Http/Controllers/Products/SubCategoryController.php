@@ -17,7 +17,7 @@ class SubCategoryController extends Controller
         private SubCategoryService $subCategoryService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

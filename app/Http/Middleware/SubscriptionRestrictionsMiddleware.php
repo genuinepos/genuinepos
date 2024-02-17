@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckExpireDateMiddleware
+class SubscriptionRestrictionsMiddleware
 {
     /**
      * Handle an incoming request.
@@ -35,6 +35,9 @@ class CheckExpireDateMiddleware
         ) {
 
             return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment you due amount.')]);
+        } else if ($subscription->is_completed_startup == 0) {
+
+            return redirect()->route('setup.startup.form');
         }
 
         return $next($request);

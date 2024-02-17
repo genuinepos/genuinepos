@@ -48,7 +48,7 @@ class PurchaseController extends Controller
         private AccountingVoucherDescriptionService $accountingVoucherDescriptionService,
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, $supplierAccountId = null)
@@ -105,7 +105,8 @@ class PurchaseController extends Controller
         return view('purchase.purchases.ajax_view.show', compact('purchase'));
     }
 
-    function print($id, Request $request) {
+    function print($id, Request $request)
+    {
 
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',

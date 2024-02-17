@@ -28,7 +28,7 @@ class ReceiveStockFromBranchController extends Controller
         private ProductLedgerService $productLedgerService,
         private PurchaseProductService $purchaseProductService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -68,7 +68,7 @@ class ReceiveStockFromBranchController extends Controller
         try {
             DB::beginTransaction();
 
-           $transferStock = $this->transferStockService->singleTransferStock(
+            $transferStock = $this->transferStockService->singleTransferStock(
                 id: $transferStockId,
                 with: ['transferStockProducts']
             );

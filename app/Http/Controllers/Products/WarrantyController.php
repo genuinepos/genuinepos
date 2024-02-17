@@ -14,12 +14,12 @@ class WarrantyController extends Controller
         private WarrantyService $warrantyService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_warranty_index')) {
+        if (!auth()->user()->can('product_warranty_index')) {
 
             abort(403, __('Access Forbidden.'));
         }
@@ -39,7 +39,7 @@ class WarrantyController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_warranty_add')) {
+        if (!auth()->user()->can('product_warranty_add')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -78,7 +78,7 @@ class WarrantyController extends Controller
 
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('product_warranty_edit')) {
+        if (!auth()->user()->can('product_warranty_edit')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -110,7 +110,7 @@ class WarrantyController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (! auth()->user()->can('product_warranty_delete')) {
+        if (!auth()->user()->can('product_warranty_delete')) {
 
             return response()->json(__('Access Denied'));
         }
@@ -121,7 +121,7 @@ class WarrantyController extends Controller
 
             $deleteWarranty = $this->warrantyService->deleteWarranty(id: $id);
 
-            if (! is_null($deleteWarranty)) {
+            if (!is_null($deleteWarranty)) {
 
                 $this->userActivityLogUtil->addLog(action: 3, subject_type: 25, data_obj: $deleteWarranty);
             }

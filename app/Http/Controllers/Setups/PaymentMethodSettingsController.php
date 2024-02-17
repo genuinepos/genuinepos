@@ -18,7 +18,7 @@ class PaymentMethodSettingsController extends Controller
         private PaymentMethodService $paymentMethodService,
         private AccountFilterService $accountFilterService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function settingsView()

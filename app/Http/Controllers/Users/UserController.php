@@ -24,7 +24,7 @@ class UserController extends Controller
         private UserService $userService,
         private RoleService $roleService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

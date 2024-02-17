@@ -23,7 +23,7 @@ class GeneralSettingController extends Controller
         private InvoiceLayoutService $invoiceLayoutService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
@@ -276,8 +276,8 @@ class GeneralSettingController extends Controller
         $posSaleModule = isset($request->add_sale) ? 1 : 0;
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
-            'modules__add_sale' => auth()?->user()?->branch_id ? $addSaleModule: 1,
-            'modules__pos' => auth()?->user()?->branch_id ? $posSaleModule: 1,
+            'modules__add_sale' => auth()?->user()?->branch_id ? $addSaleModule : 1,
+            'modules__pos' => auth()?->user()?->branch_id ? $posSaleModule : 1,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,

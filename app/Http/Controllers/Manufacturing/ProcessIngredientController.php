@@ -14,7 +14,7 @@ class ProcessIngredientController extends Controller
         private ProcessIngredientService $processIngredientService,
         private WarehouseService $warehouseService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function ingredientsForProduction($processId, $warehouseId = null)

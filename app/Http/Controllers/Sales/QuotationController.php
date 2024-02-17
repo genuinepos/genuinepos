@@ -44,12 +44,12 @@ class QuotationController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sale_quotation')) {
+        if (!auth()->user()->can('sale_quotation')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -71,7 +71,7 @@ class QuotationController extends Controller
 
     public function show($id, QuotationControllerMethodContainersInterface $quotationControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('sale_quotation')) {
+        if (!auth()->user()->can('sale_quotation')) {
 
             abort(403, 'Access Forbidden.');
         }

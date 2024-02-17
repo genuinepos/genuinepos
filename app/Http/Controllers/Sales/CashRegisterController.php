@@ -18,12 +18,12 @@ class CashRegisterController extends Controller
         private AccountService $accountService,
         private BranchService $branchService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function create($saleId = null)
     {
-        if (! auth()->user()->can('pos_add')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -53,7 +53,7 @@ class CashRegisterController extends Controller
 
         $branchName = $this->branchService->branchName();
 
-        if (! $openedCashRegister) {
+        if (!$openedCashRegister) {
 
             return view('sales.cash_register.create', compact('cashCounters', 'saleAccounts', 'cashAccounts', 'branchName', 'saleId'));
         } else {
@@ -64,7 +64,7 @@ class CashRegisterController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('pos_add')) {
+        if (!auth()->user()->can('pos_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -87,12 +87,11 @@ class CashRegisterController extends Controller
 
             return redirect()->route('sales.pos.create');
         }
-
     }
 
     public function show($id)
     {
-        if (! auth()->user()->can('register_view')) {
+        if (!auth()->user()->can('register_view')) {
 
             return 'Access Forbidden';
         }
@@ -111,7 +110,7 @@ class CashRegisterController extends Controller
 
     public function close($id)
     {
-        if (! auth()->user()->can('register_close')) {
+        if (!auth()->user()->can('register_close')) {
 
             return 'Access Forbidden';
         }

@@ -15,7 +15,7 @@ class CustomerGroupController extends Controller
         private PriceGroupService $priceGroupService,
         private BranchService $branchService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -59,7 +59,7 @@ class CustomerGroupController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:customer_groups,name,'.$id,
+            'name' => 'required|unique:customer_groups,name,' . $id,
         ]);
 
         $this->customerGroupService->updateCustomerGroup(id: $id, request: $request);

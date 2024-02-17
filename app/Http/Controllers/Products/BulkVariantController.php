@@ -16,12 +16,12 @@ class BulkVariantController extends Controller
         private BulkVariantChildService $bulkVariantChildService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_variant_index')) {
+        if (!auth()->user()->can('product_variant_index')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -41,7 +41,7 @@ class BulkVariantController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_variant_add')) {
+        if (!auth()->user()->can('product_variant_add')) {
 
             return response()->json('Access Denied');
         }
@@ -72,7 +72,7 @@ class BulkVariantController extends Controller
 
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('product_variant_edit')) {
+        if (!auth()->user()->can('product_variant_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -96,7 +96,7 @@ class BulkVariantController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (! auth()->user()->can('product_variant_delete')) {
+        if (!auth()->user()->can('product_variant_delete')) {
 
             return response()->json('Access Denied');
         }

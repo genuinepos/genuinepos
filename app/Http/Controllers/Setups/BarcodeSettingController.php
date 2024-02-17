@@ -11,12 +11,12 @@ class BarcodeSettingController extends Controller
     public function __construct(
         private BarcodeSettingService $barcodeSettingService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('barcode_settings')) {
+        if (!auth()->user()->can('barcode_settings')) {
             abort(403, 'Access Forbidden.');
         }
 

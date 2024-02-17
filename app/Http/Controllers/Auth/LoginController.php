@@ -8,6 +8,7 @@ use App\Enums\BooleanType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
@@ -52,7 +53,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check('web')) {
-            
+
             return redirect()->back();
         }
 
@@ -65,6 +66,9 @@ class LoginController extends Controller
             'username_or_email' => 'required',
             'password' => 'required',
         ]);
+
+        $branchCount = DB::table('general_settings')->where('key', 'addons__branch_limit')->first();
+        $firstBranch = DB::table('branches')->first();
 
         $user = User::with('branch')
             ->where('username', $request->username_or_email)
@@ -90,6 +94,13 @@ class LoginController extends Controller
                 }
 
                 $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id,  user_id: $user->id);
+
+                if (isset($branchCount) && isset($firstBranch) && $branchCount->value == 1) {
+
+                    $user->branch_id = $firstBranch->id;
+                    $user->is_belonging_an_area = BooleanType::True->value;
+                    $user->save();
+                }
 
                 return redirect()->intended(route('dashboard.index'));
             } else {

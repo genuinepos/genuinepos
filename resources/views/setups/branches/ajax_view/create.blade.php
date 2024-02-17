@@ -223,8 +223,9 @@
                 <div class="row mt-2">
                     <div class="col-md-12 text-center">
                         <button type="button" value="1" class="btn text-white btn-sm btn-success float-center" id="add_initial_user_btn">
-                            <i class="fas fa-user text-white"></i> {{ __('Add Initial User') }}</button>
-                        <input type="hidden" name="add_initial_user" id="add_initial_user" value="">
+                            <i class="fas fa-user text-white"></i> {{ __('Add Initial User') }}
+                        </button>
+                        <input type="hidden" name="add_initial_user" id="add_initial_user" value="0">
                     </div>
                 </div>
 
@@ -232,24 +233,24 @@
                     <div class="row mt-1">
                         <div class="col-lg-3 col-md-6">
                             <label> <b>{{ __('First Name') }}</b> <span class="text-danger">*</span> </label>
-                            <input type="text" name="first_name" class="form-control initial_user_field" id="first_name" data-next="Last_name" placeholder="{{ __('First Name') }}" data-name="First Name" autocomplete="off" />
-                            <span class="error error_first_name"></span>
+                            <input type="text" name="user_first_name" class="form-control initial_user_required_field" id="user_first_name" data-next="user_last_name" placeholder="{{ __('First Name') }}" autocomplete="off" />
+                            <span class="error error_user_first_name"></span>
                         </div>
 
                         <div class="col-lg-3 col-md-6">
                             <label><b>{{ __('Last Name') }}</b></label>
-                            <input type="text" name="Last_name" class="form-control" id="Last_name" data-next="user_phone" placeholder="{{ __('Last Name') }}" autocomplete="off" />
+                            <input type="text" name="user_last_name" class="form-control" id="user_last_name" data-next="user_phone" placeholder="{{ __('Last Name') }}" autocomplete="off" />
                         </div>
 
                         <div class="col-lg-3 col-md-6">
                             <label><b>{{ __('Phone') }}</b> <span class="text-danger">*</span> </label>
-                            <input type="text" name="user_phone" class="form-control initial_user_field" id="user_phone" data-next="role_id" placeholder="{{ __('User Phone Number') }}" autocomplete="off" />
+                            <input type="text" name="user_phone" class="form-control initial_user_required_field" id="user_phone" data-next="role_id" placeholder="{{ __('User Phone Number') }}" autocomplete="off" />
                             <span class="error error_user_phone"></span>
                         </div>
 
                         <div class="col-lg-3 col-md-6">
                             <label> <b>{{ __('Role Permission') }} </b> <span class="text-danger">*</span> </label>
-                            <select name="role_id" id="role_id" class="form-control initial_user_field" data-next="username">
+                            <select name="role_id" id="role_id" class="form-control initial_user_required_field" data-next="user_username">
                                 <option value="">{{ __('Select Role Permission') }}</option>
                                 @foreach ($roles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -261,14 +262,20 @@
 
                     <div class="row mt-1">
                         <div class="col-lg-3 col-md-6">
+                            <label><b>{{ __('Email') }}</b> <span class="text-danger">*</span> </label>
+                            <input type="text" name="user_email" class="form-control initial_user_required_field" id="user_email" data-next="user_username" placeholder="{{ __('Username') }}" autocomplete="off" />
+                            <span class="error error_username"></span>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
                             <label><b>{{ __('Username') }}</b> <span class="text-danger">*</span> </label>
-                            <input type="text" name="username" class="form-control initial_user_field" id="username" data-next="password" placeholder="{{ __('Username') }}" autocomplete="off" />
+                            <input type="text" name="user_username" class="form-control initial_user_required_field" id="user_username" data-next="password" placeholder="{{ __('Username') }}" autocomplete="off" />
                             <span class="error error_username"></span>
                         </div>
 
                         <div class="col-lg-3 col-md-6">
                             <label><b>{{ __('Password') }} </b> <span class="text-danger">*</span> </label>
-                            <input type="text" name="password" class="form-control initial_user_field" id="password" data-next="password_confirmation" placeholder="{{ __('Password') }}" autocomplete="off" />
+                            <input type="text" name="password" class="form-control initial_user_required_field" id="password" data-next="password_confirmation" placeholder="{{ __('Password') }}" autocomplete="off" />
                             <span class="error error_password"></span>
                         </div>
 
@@ -441,13 +448,13 @@
         if ($('#add_initial_user').val() == '') {
 
             $('#add_initial_user').val(1);
-            $('#first_name').focus();
-            $('.initial_user_field').prop('required', true);
+            $('#user_first_name').focus();
+            $('.initial_user_required_field').prop('required', true);
         } else {
 
             $('#add_initial_user').val('');
             $('#branch_save').focus();
-            $('.initial_user_field').prop('required', false);
+            $('.initial_user_required_field').prop('required', false);
         }
     });
 

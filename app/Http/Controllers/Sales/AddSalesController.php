@@ -49,7 +49,7 @@ class AddSalesController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, $customerAccountId = null, $saleScreen = null)

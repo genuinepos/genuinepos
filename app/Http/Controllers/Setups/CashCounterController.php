@@ -13,7 +13,7 @@ class CashCounterController extends Controller
 {
     public function __construct(private CashCounterService $cashCounterService, private BranchService $branchService)
     {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

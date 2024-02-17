@@ -290,16 +290,17 @@ class BranchService
         return $query->where('id', $id)->first();
     }
 
-    public function addBranchOpeningUser(object $request, int $branchId): void
+    public function addBranchInitialUser(object $request, int $branchId): void
     {
         $addUser = new User();
-        $addUser->name = $request->first_name;
-        $addUser->last_name = $request->last_name;
+        $addUser->name = $request->user_first_name;
+        $addUser->last_name = $request->user_last_name;
         $addUser->phone = $request->user_phone;
         $addUser->branch_id = $branchId;
 
         $addUser->allow_login = 1;
-        $addUser->username = $request->username;
+        $addUser->email = $request->user_email;
+        $addUser->username = $request->user_username;
         $addUser->password = Hash::make($request->password);
 
         // Assign role
@@ -310,7 +311,7 @@ class BranchService
         $role = Role::find($roleId);
         $addUser->assignRole($role->name);
 
-        $addUser->branch_id = $branch_id;
+        $addUser->branch_id = $branchId;
 
         $addUser->save();
     }
@@ -394,9 +395,10 @@ class BranchService
             'currency_id' => 'required',
             'account_start_date' => Rule::when(BranchType::DifferentShop->value == $request->branch_type, 'required|date'),
             'logo' => 'sometimes|image|max:1024',
-            'first_name' => Rule::when($request->add_initial_user == 1, 'required'),
+            'user_first_name' => Rule::when($request->add_initial_user == 1, 'required'),
             'user_phone' => Rule::when($request->add_initial_user == 1, 'required'),
-            'username' => Rule::when($request->add_initial_user == 1, 'required'),
+            'user_email' => Rule::when($request->add_initial_user == 1, 'required'),
+            'user_username' => Rule::when($request->add_initial_user == 1, 'required'),
             'password' => Rule::when($request->add_initial_user == 1, 'required|confirmed'),
         ]);
 

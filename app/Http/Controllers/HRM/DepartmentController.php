@@ -13,7 +13,7 @@ class DepartmentController extends Controller
         private DepartmentService $departmentService,
         private UserService $userService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

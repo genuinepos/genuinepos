@@ -19,6 +19,7 @@ Route::prefix('setups')->group(function () {
     Route::controller(StartupController::class)->prefix('startup')->group(function () {
 
         Route::get('form', 'startupFrom')->name('setup.startup.form');
+        Route::post('finish', 'finish')->name('setup.startup.finish');
     });
 
     Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {

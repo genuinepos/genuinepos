@@ -19,7 +19,7 @@ class TodaySummaryController extends Controller
         private BranchService $branchService,
         private ProfitLossService $profitLossService
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

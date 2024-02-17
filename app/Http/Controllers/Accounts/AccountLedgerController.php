@@ -18,7 +18,7 @@ class AccountLedgerController extends Controller
         private AccountLedgerService $accountLedgerService,
         private AccountLedgerEntryService $accountLedgerEntryService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, $id, $fromDate = null, $toDate = null, $branchId = null)

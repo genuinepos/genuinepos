@@ -15,7 +15,7 @@ class UserProfileController extends Controller
         private UserProfileService $userProfileService,
         private UserService $userService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

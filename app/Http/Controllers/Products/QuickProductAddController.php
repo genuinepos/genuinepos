@@ -46,7 +46,7 @@ class QuickProductAddController extends Controller
         private PurchaseProductService $purchaseProductService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function create()

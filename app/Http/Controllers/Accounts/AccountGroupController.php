@@ -14,7 +14,7 @@ class AccountGroupController extends Controller
         private AccountGroupService $accountGroupService,
         private BranchService $branchService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

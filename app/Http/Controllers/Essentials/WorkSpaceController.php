@@ -12,8 +12,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class WorkSpaceController extends Controller
 {
-    public function __construct() {
-        $this->middleware('expireDate');
+    public function __construct()
+    {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

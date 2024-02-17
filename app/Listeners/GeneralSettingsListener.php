@@ -131,8 +131,10 @@ class GeneralSettingsListener
                             'subscriptions.initial_payment_status',
                             'subscriptions.initial_plan_start_date',
                             'subscriptions.initial_plan_expire_date',
+                            'subscriptions.is_completed_startup',
                             'pos.plans.is_trial_plan',
                             'pos.plans.trial_days',
+                            'subscriptions.current_shop_count',
                         ]
                     )->first();
 

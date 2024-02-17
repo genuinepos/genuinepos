@@ -27,7 +27,7 @@ class ReceiveStockFromWarehouseController extends Controller
         private DayBookService $dayBookService,
         private ProductLedgerService $productLedgerService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

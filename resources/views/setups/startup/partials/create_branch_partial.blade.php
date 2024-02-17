@@ -3,7 +3,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12">
             <div class="billing-details create-branch">
                 <h3 class="title">{{ __('Create Store') }}</h3>
-                <input type="hidden" name="branch_type">
+                <input type="hidden" name="branch_type" value="1">
                 <input type="hidden" name="parent_branch_id">
                 <div class="form-row">
                     <div class="col-md-4">
@@ -36,7 +36,7 @@
                 <div class="form-row">
                     <div class="col-md-4">
                         <label for="branch_alternative_phone">{{ __('Alternative Phone') }}</label>
-                        <input required type="text" name="branch_alternative_phone" class="form-control" id="branch_alternative_phone" placeholder="{{ __('Alternative Phone') }}">
+                        <input type="text" name="branch_alternative_phone" class="form-control" id="branch_alternative_phone" placeholder="{{ __('Alternative Phone') }}">
                         <span></span>
                     </div>
 
@@ -213,6 +213,12 @@
 
                     <div class="form-row">
                         <div class="col-md-4">
+                            <label for="branch_user_email">{{ __('Email') }} <span class="text-danger">*</span></label>
+                            <input type="email" name="branch_user_email" class="form-control branch-user-required-field" id="branch_user_email" placeholder="{{ __('Store User: Email') }}" autocomplete="off">
+                            <span class="error error_branch_user_email"></span>
+                        </div>
+
+                        <div class="col-md-4">
                             <label for="branch_user_username">{{ __('Username') }} <span class="text-danger">*</span></label>
                             <input type="text" name="branch_user_username" class="form-control branch-user-required-field" id="branch_user_username" placeholder="{{ __('Store User: Username') }}" autocomplete="off">
                             <span class="error error_branch_user_username"></span>
@@ -241,15 +247,17 @@
 
                         <div class="col-md-4">
                             <label for="password_confirmation">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
-                            <input type="text" name="password_confirmation" class="form-control branch-user-required-field" id="password_confirmation" placeholder="{{ __('Store User Phone No.') }}" autocomplete="off">
+                            <input type="text" name="password_confirmation" class="form-control branch-user-required-field" id="password_confirmation" placeholder="{{ __('Confirm Password') }}" autocomplete="off">
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="submit" class="def-btn palce-order tab-next-btn btn-success float-end">{{ __('Finish') }}</button>
+                        <button type="button" class="def-btn btn-secondary float-end bg-secondary text-white submit_blue_btn d-none">{{ __('Finish') }}</button>
+                        <button type="submit" class="def-btn btn-success float-end submit_button">{{ __('Finish') }}</button>
                         <a class="def-btn tab-next-btn float-end me-1" id="single-nav" data-tab="businessSetupTab">{{ __('Previous Step') }}</a>
+                        <button type="button" class="btn loading_button float-end d-none"><i class="fas fa-spinner"></i> <span>{{ __('Loading') }}...</span> </button>
                     </div>
                 </div>
             </div>

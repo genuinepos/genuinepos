@@ -32,7 +32,7 @@ class BranchController extends Controller
         private GeneralSettingService $generalSettingService,
         private GenerateBranchCodeService $generateBranchCodeService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -96,9 +96,9 @@ class BranchController extends Controller
 
             $this->branchSettingService->addBranchSettings(branchId: $addBranch->id, parentBranchId: $addBranch->parent_branch_id, defaultInvoiceLayoutId: $addInvoiceLayout->id, branchService: $this->branchService, request: $request);
 
-            if ($request->add_opening_user) {
+            if ($request->add_initial_user == 1) {
 
-                $this->branchService->addBranchOpeningUser($request, $addBranch->id);
+                $this->branchService->addBranchInitialUser(request: $request, branchId: $addBranch->id);
             }
 
             DB::commit();

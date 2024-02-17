@@ -16,12 +16,12 @@ class PriceGroupManageController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private ProductService $productService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($productId, $type)
     {
-        if (! auth()->user()->can('manage_price_group')) {
+        if (!auth()->user()->can('manage_price_group')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -48,7 +48,7 @@ class PriceGroupManageController extends Controller
 
     public function storeOrUpdate(Request $request)
     {
-        if (! auth()->user()->can('manage_price_group')) {
+        if (!auth()->user()->can('manage_price_group')) {
 
             abort(403, 'Access Forbidden.');
         }

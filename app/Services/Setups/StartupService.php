@@ -31,7 +31,6 @@ class StartupService
             'branch_currency_id' => 'required',
             'branch_logo' => 'sometimes|image|max:1024',
             'branch_user_first_name' => Rule::when($request->add_initial_user == 1, 'required'),
-            'branch_user_last_name' => Rule::when($request->add_initial_user == 1, 'required'),
             'branch_user_phone' => Rule::when($request->add_initial_user == 1, 'required'),
             'branch_user_username' => Rule::when($request->add_initial_user == 1, 'required'),
             'role_id' => Rule::when($request->add_initial_user == 1, 'required'),
@@ -39,29 +38,48 @@ class StartupService
         ]);
     }
 
-    public function prepareAddBranchRequest(object $request): object
+    public function prepareAddBranchRequest(object $request)
     {
-        $request->name = $request->branch_name;
-        $request->area_name = $request->branch_area_name;
-        $request->phone = $request->branch_phone;
-        $request->alternate_phone_number = $request->branch_alternate_phone_number;
-        $request->bin = $request->branch_bin;
-        $request->tin = $request->branch_tin;
-        $request->country = $request->branch_country;
-        $request->state = $request->branch_state;
-        $request->city = $request->branch_city;
-        $request->address = $request->branch_address;
-        $request->email = $request->branch_email;
-        $request->date_format = $request->branch_date_format;
-        $request->timezone = $request->branch_timezone;
-        $request->stock_accounting_method = $request->branch_stock_accounting_method;
-        $request->account_start_date = $request->branch_account_start_date;
-        $request->financial_year_start_month = $request->branch_financial_year_start_month;
-        $request->first_name = $request->branch_user_first_name;
-        $request->last_name = $request->branch_user_last_name;
-        $request->user_phone = $request->branch_user_phone;
-        $request->username = $request->branch_user_username;
+        $requestData = $request->all();
 
+        $keyMappings = [
+            'branch_name' => 'name',
+            'branch_area_name' => 'area_name',
+            'branch_phone' => 'phone',
+            'branch_alternative_phone' => 'alternative_phone',
+            'branch_bin'=> 'bin',
+            'branch_tin'=> 'tin',
+            'branch_country'=> 'country',
+            'branch_state'=> 'state',
+            'branch_city'=> 'city',
+            'branch_zip_code'=> 'zip_code',
+            'branch_address'=> 'address',
+            'branch_email'=> 'email',
+            'branch_website'=> 'website',
+            'branch_logo'=> 'logo',
+            'branch_date_format'=> 'date_format',
+            'branch_time_format'=> 'time_format',
+            'branch_timezone'=> 'timezone',
+            'branch_stock_accounting_method'=> 'stock_accounting_method',
+            'branch_account_start_date'=> 'account_start_date',
+            'branch_financial_year_start_month'=> 'financial_year_start_month',
+            'branch_currency_id'=> 'currency_id',
+            'branch_currency_symbol'=> 'currency_symbol',
+            'branch_user_first_name'=> 'user_first_name',
+            'branch_user_last_name'=> 'user_last_name',
+            'branch_user_phone'=> 'user_phone',
+            'branch_user_email'=> 'user_email',
+            'branch_user_username'=> 'user_username',
+        ];
+
+        foreach ($keyMappings as $oldKey => $newKey) {
+            if (isset($requestData[$oldKey])) {
+                $requestData[$newKey] = $requestData[$oldKey];
+                unset($requestData[$oldKey]);
+            }
+        }
+
+        $request->replace($requestData);
         return $request;
     }
 }

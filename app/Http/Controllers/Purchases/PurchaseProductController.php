@@ -17,12 +17,12 @@ class PurchaseProductController extends Controller
         private AccountService $accountService,
         private CategoryService $categoryService,
     ) {
-        $this->middleware('expireDate');
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('purchased_product_list')) {
+        if (!auth()->user()->can('purchased_product_list')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -76,7 +76,7 @@ class PurchaseProductController extends Controller
 
                 foreach ($purchaseProduct?->product?->unit?->childUnits as $unit) {
 
-                    $multiplierDetails = '(1 '.$unit->name.' = '.$unit->base_unit_multiplier.'/'.$purchaseProduct?->product?->unit?->name.')';
+                    $multiplierDetails = '(1 ' . $unit->name . ' = ' . $unit->base_unit_multiplier . '/' . $purchaseProduct?->product?->unit?->name . ')';
 
                     array_push($itemUnitsArray[$purchaseProduct->product_id], [
                         'unit_id' => $unit->id,

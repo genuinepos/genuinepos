@@ -15,6 +15,10 @@ class Plan extends Model
     // protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status', 'currency_code'];
     protected $guarded = [];
 
+    protected $casts = [
+        'features' => 'array',
+    ];
+
     public function scopeActive($query)
     {
         return $query->where('status', 1);

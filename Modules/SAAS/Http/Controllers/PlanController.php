@@ -57,13 +57,17 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         abort_unless(auth()->user()->can('plans_store'), 403);
-        dd($request->all());
+
         $request->validate([
             'name' => 'required|unique:plans,name',
             'price_per_month' => 'required|numeric',
             'price_per_year' => 'required|numeric',
             'lifetime_price' => 'required|numeric',
-            'applicable_lifetime_years' => 'required|numeric'
+            'applicable_lifetime_years' => 'required|numeric',
+            'business_price_per_month' => 'required|numeric',
+            'business_price_per_year' => 'required|numeric',
+            'business_lifetime_price' => 'required|numeric',
+            'features' => 'required',
         ]);
 
         $plan = Plan::create([
@@ -73,12 +77,16 @@ class PlanController extends Controller
             'price_per_year' => $request->price_per_year,
             'lifetime_price' => $request->lifetime_price,
             'applicable_lifetime_years' => $request->applicable_lifetime_years,
+            'business_price_per_month' => $request->business_price_per_month,
+            'business_price_per_year' => $request->business_price_per_year,
+            'business_lifetime_price' => $request->business_lifetime_price,
             'currency_id' => $request->currency_id,
             'description' => $request->description,
+            'features' => $request->features,
             'status' => $request->status,
         ]);
 
-        $plan->features()->sync($request->feature_id);
+        // $plan->features()->sync($request->feature_id);
 
         return response()->json('Plan created successfully!');
     }
@@ -111,11 +119,12 @@ class PlanController extends Controller
     {
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
         ->select('id','code')->get();
+        $features = config('planfeatures');
 
         return view('saas::plans.edit', [
             'currencies' => $currencies,
             'plan' => Plan::find($id),
-            'features' => Feature::all(),
+            'features' => $features//Feature::all(),
         ]);
     }
 

@@ -11,7 +11,7 @@ return [
     'setup' => true,
     'cash_counter_count' => '',
     'warehouse_count' => '',
-    'customer' => '',
+    'customer_count' => '',
     'supplier' => true,
     'user_count' => '',
     'ecommerce' => true,

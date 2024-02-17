@@ -36,12 +36,16 @@ class PlanController extends Controller
     {
         abort_unless(auth()->user()->can('plans_create'), 403);
 
+        $features = config('planfeatures');
+
+        // return $planFeatures;
+
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
         ->select('id','code')
         ->get();
         return view('saas::plans.create', [
             'currencies' => $currencies,
-            'features' => Feature::all(),
+            'features' => $features,
         ]);
     }
 
@@ -53,7 +57,7 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         abort_unless(auth()->user()->can('plans_store'), 403);
-
+        dd($request->all());
         $request->validate([
             'name' => 'required|unique:plans,name',
             'price_per_month' => 'required|numeric',

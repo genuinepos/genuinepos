@@ -84,18 +84,34 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <div class="py-2">
-                                        <input type="checkbox" class="form-check-input" name="select_all" id="select_all">
-                                        <label for="select_all" class="form-check-label">
-                                            {{ __('Select All Features') }}
-                                        </label>
-                                    </div>
-                                    @foreach ($features as $feature)
-                                        <div>
-                                            <input type="checkbox" class="form-check-input checkbox-child" name="feature_id[]" value="{{ $feature->id }}" id="{{ $feature->id }}" />
-                                            <label for="{{ $feature->id }}">{{ str($feature->name)->headline() }}</label>
+                                    <div class="row">
+                                        <div class="py-2">
+                                            <input type="checkbox" class="form-check-input" name="select_all" id="select_all">
+                                            <label for="select_all" class="form-check-label">
+                                                {{ __('Select All Features') }}
+                                            </label>
+                                        </div>
+                                    @foreach ($features as $key => $feature)
+                                        {{-- <div class="row">
+                                            <label for="{{ $key }}" class="col-sm-3 col-form-label pt-0">
+                                                <input type="checkbox" id="{{ $key }}" class="form-check-input checkbox-child" name="feature[]" value="{{ $feature }}" />
+                                                {{ str($key)->headline() }}
+                                            </label>
+                                            @if($key == 'cash_counter')
+                                            <div class="col-sm-2">
+                                                <input type="number" min="0" class="form-control" id="staticEmail" value="">
+                                            </div>
+                                            @endif
+                                        </div> --}}
+                                        <div class="col-md-6 mt-0">
+                                            <input type="checkbox" class="form-check-input checkbox-child" @if($feature) name="feature[{{$key}}]" @endif value="{{ $feature }}" id="{{ $key }}" />
+                                            <label for="{{ $key }}">{{ str($key)->headline() }}</label>
+                                            @if(!$feature)
+                                            <input type="text" name="feature[{{$key}}]" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
+                                            @endif
                                         </div>
                                     @endforeach
+                                    </div>
                                 </div>
 
                                 <div class="mb-4 p-2" style="border: 1px solid red;">
@@ -122,6 +138,21 @@
     </div>
     @push('js')
         <script>
+            $(document).ready(function() {
+                // if($('#hrm').is(":checked")) {
+                    $('#employee_count_input').hide();
+                    // Toggle the input field on checkbox click
+                    $('#employee_count').change(function() {
+                        if($(this).is(":checked")) {
+                            $('#employee_count_input').show();
+                        } else {
+                            $('#employee_count_input').val('');
+                            $('#employee_count_input').hide();
+                        }
+                    });
+                // }
+            });
+
             const selectAll = document.getElementById('select_all');
             selectAll.addEventListener('click', function() {
 

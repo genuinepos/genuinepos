@@ -20,6 +20,7 @@ class BarcodeController extends Controller
         private AccountService $accountService,
         private PurchaseProductService $purchaseProductService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

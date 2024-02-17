@@ -28,6 +28,7 @@ class BranchSettingController extends Controller
         private PriceGroupService $priceGroupService,
         private GeneralSettingServiceInterface $generalSettingService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index($id)
@@ -48,7 +49,7 @@ class BranchSettingController extends Controller
 
         $branch = $this->branchService->singleBranch(id: $id, with: ['parentBranch']);
 
-        if(!auth()->user()->branch_id){
+        if (!auth()->user()->branch_id) {
 
             return redirect()->route('settings.general.index');
         }

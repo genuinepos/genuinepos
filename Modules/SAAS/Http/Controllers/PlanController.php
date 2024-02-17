@@ -92,6 +92,11 @@ class PlanController extends Controller
         return view('saas::plans.show');
     }
 
+    public function singlePlanById($id)
+    {
+        return Plan::with(['currency'])->where('id', $id)->first();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

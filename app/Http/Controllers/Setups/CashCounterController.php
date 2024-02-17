@@ -13,6 +13,7 @@ class CashCounterController extends Controller
 {
     public function __construct(private CashCounterService $cashCounterService, private BranchService $branchService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
@@ -80,7 +81,7 @@ class CashCounterController extends Controller
     {
         abort_if(!auth()->user()->can('cash_counters_edit'), 403);
 
-        
+
 
         try {
 

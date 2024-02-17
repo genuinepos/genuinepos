@@ -30,6 +30,7 @@ class AccountController extends Controller
         private BankAccessBranchService $bankAccessBranchService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

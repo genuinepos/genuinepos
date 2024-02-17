@@ -15,11 +15,12 @@ class BrandController extends Controller
         private BrandService $brandService,
         private UserActivityLogUtil $userActivityLogUtil
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('product_brand_index')) {
+        if (!auth()->user()->can('product_brand_index')) {
             abort(403, __('Access Forbidden.'));
         }
 
@@ -32,7 +33,7 @@ class BrandController extends Controller
 
     public function create()
     {
-        if (! auth()->user()->can('product_brand_add')) {
+        if (!auth()->user()->can('product_brand_add')) {
             abort(403, __('Access Forbidden.'));
         }
 
@@ -41,7 +42,7 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        if (! auth()->user()->can('product_brand_add')) {
+        if (!auth()->user()->can('product_brand_add')) {
             abort(403, __('Access Forbidden.'));
         }
 
@@ -68,7 +69,7 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        if (! auth()->user()->can('product_brand_edit')) {
+        if (!auth()->user()->can('product_brand_edit')) {
             abort(403, __('Access Forbidden.'));
         }
 
@@ -80,7 +81,7 @@ class BrandController extends Controller
     // Update Brand method
     public function update($id, Request $request)
     {
-        if (! auth()->user()->can('product_brand_edit')) {
+        if (!auth()->user()->can('product_brand_edit')) {
             abort(403, __('Access Forbidden.'));
         }
 
@@ -109,7 +110,7 @@ class BrandController extends Controller
     // Delete Brand method//
     public function delete($id, Request $request)
     {
-        if (! auth()->user()->can('product_brand_delete')) {
+        if (!auth()->user()->can('product_brand_delete')) {
             abort(403, __('Access Forbidden.'));
         }
 

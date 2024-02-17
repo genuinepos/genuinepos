@@ -11,6 +11,7 @@ class ProfitLossReportController extends Controller
 {
     public function __construct(private BranchService $branchService, private ProfitLossService $profitLossService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()

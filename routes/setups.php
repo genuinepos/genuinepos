@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Setups\StartupController;
 use App\Http\Controllers\Setups\BranchController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
@@ -14,6 +15,12 @@ use App\Http\Controllers\Setups\PaymentMethodSettingsController;
 use App\Http\Controllers\Setups\SoftwareServiceBillingController;
 
 Route::prefix('setups')->group(function () {
+
+    Route::controller(StartupController::class)->prefix('startup')->group(function () {
+
+        Route::get('form', 'startupFrom')->name('setup.startup.form');
+        Route::post('finish', 'finish')->name('setup.startup.finish');
+    });
 
     Route::controller(GeneralSettingController::class)->prefix('general-settings')->group(function () {
 
@@ -44,6 +51,7 @@ Route::prefix('setups')->group(function () {
         Route::post('update/{id}', 'update')->name('branches.update');
         Route::delete('delete/{id}', 'delete')->name('branches.delete');
         Route::get('parent/with/child/branches/{id}', 'parentWithChildBranches')->name('branches.parent.with.child.branches');
+        Route::get('branch/code/{parentBranchId?}', 'branchCode')->name('branches.code');
 
         Route::controller(BranchSettingController::class)->prefix('settings')->group(function () {
 
@@ -139,5 +147,7 @@ Route::prefix('setups')->group(function () {
         Route::get('cart/for/upgrade/plan', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
         Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
         Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
+
+        Route::get('due/repayment', [SoftwareServiceBillingController::class, 'dueRepayment'])->name('software.service.billing.due.repayment');
     });
 });

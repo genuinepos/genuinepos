@@ -69,6 +69,7 @@ class PosSaleController extends Controller
         private UnitService $unitService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

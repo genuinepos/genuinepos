@@ -412,7 +412,7 @@ class ProductService
         $addProduct->barcode_type = $request->barcode_type;
         $addProduct->warranty_id = $request->warranty_id;
         $addProduct->weight = isset($request->weight) ? $request->weight : null;
-        $addProduct->has_multiple_unit = $request->has_multiple_unit;
+        $addProduct->has_multiple_unit = isset($request->has_multiple_unit) ? $request->has_multiple_unit : 0;
 
         if ($request->type == 1) {
 

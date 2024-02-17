@@ -34,11 +34,12 @@ class ProductionController extends Controller
         private BranchService $branchService,
         private WarehouseService $warehouseService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('production_view')) {
+        if (!auth()->user()->can('production_view')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -56,7 +57,7 @@ class ProductionController extends Controller
 
     public function show($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('production_view')) {
+        if (!auth()->user()->can('production_view')) {
 
             return response()->json('Access Denied');
         }
@@ -73,7 +74,7 @@ class ProductionController extends Controller
 
     public function create(ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('production_add')) {
+        if (!auth()->user()->can('production_add')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -93,7 +94,7 @@ class ProductionController extends Controller
         CodeGenerationService $codeGenerator,
         ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface
     ) {
-        if (! auth()->user()->can('production_add')) {
+        if (!auth()->user()->can('production_add')) {
 
             return response()->json('Access Denied');
         }
@@ -151,7 +152,7 @@ class ProductionController extends Controller
 
     public function edit($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('production_edit')) {
+        if (!auth()->user()->can('production_edit')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -171,7 +172,7 @@ class ProductionController extends Controller
 
     public function update($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('production_edit')) {
+        if (!auth()->user()->can('production_edit')) {
 
             return response()->json('Access Denied');
         }
@@ -220,7 +221,7 @@ class ProductionController extends Controller
 
     public function delete($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('production_delete')) {
+        if (!auth()->user()->can('production_delete')) {
 
             return response()->json('Access Denied');
         }

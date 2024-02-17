@@ -13,11 +13,31 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('currency_id')->after('id_proof_number')->nullable();
-            $table->string('city')->after('currency_id')->nullable();
-            $table->string('postal_code')->after('city')->nullable();
+            if (!Schema::hasColumn('users', 'currency_id', 'city', 'postal_code')) {
 
-            $table->foreign(['currency_id'])->references(['id'])->on('currencies')->onDelete('set null');
+                if (!Schema::hasColumn('users', 'currency_id')) {
+
+                    $table->unsignedBigInteger('currency_id')->after('id_proof_number')->nullable();
+                }
+
+                if (!Schema::hasColumn('users', 'city')) {
+
+                    $table->string('city')->after('currency_id')->nullable();
+                }
+
+                if (!Schema::hasColumn('users', 'postal_code')) {
+                    
+                    $table->string('postal_code')->after('city')->nullable();
+                }
+
+                $doctrineTable = Schema::getConnection()->getDoctrineSchemaManager()->listTableDetails('users');
+
+                $hasForeignKey = $doctrineTable->hasForeignKey('users_currency_id_foreign');
+                if (!isset($hasForeignKey)) {
+
+                    $table->foreign(['currency_id'])->references(['id'])->on('currencies')->onDelete('set null');
+                }
+            }
         });
     }
 

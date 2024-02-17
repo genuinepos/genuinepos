@@ -23,11 +23,12 @@ class ShipmentController extends Controller
         private AccountService $accountService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('shipment_access')) {
+        if (!auth()->user()->can('shipment_access')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -56,7 +57,7 @@ class ShipmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (! auth()->user()->can('shipment_access')) {
+        if (!auth()->user()->can('shipment_access')) {
 
             return response()->json('Access Denied');
         }

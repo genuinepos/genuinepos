@@ -64,6 +64,7 @@ Route::middleware(['is_verified'])->group(function () {
     Route::get('profile/{user}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile/{user}/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('plans', PlanController::class);
+    Route::get('plans/single/plan/by/{id}', [PlanController::class, 'singlePlanById'])->name('plans.single.by.id');
 
     Route::resource('users', UserController::class);
     Route::delete('users/{user}/trash', [UserController::class, 'trash'])->name('users.trash');

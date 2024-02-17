@@ -13,6 +13,7 @@ class AllowanceAndDeductionController extends Controller
 {
     public function __construct(private AllowanceAndDeductionService $allowanceAndDeductionService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

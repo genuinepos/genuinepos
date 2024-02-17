@@ -28,6 +28,7 @@ class PayrollController extends Controller
         private AccountService $accountService,
         private DayBookService $dayBookService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

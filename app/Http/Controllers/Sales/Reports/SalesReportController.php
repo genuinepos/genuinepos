@@ -20,6 +20,7 @@ class SalesReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use App\Models\GeneralSetting;
 use App\Services\CacheService;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use App\Services\CacheServiceInterface;
 use App\Services\CodeGenerationService;
 use App\Services\GeneralSettingService;

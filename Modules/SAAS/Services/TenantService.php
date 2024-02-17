@@ -6,16 +6,17 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\GeneralSetting;
-use App\Models\ShopExpireDateHistory;
 use App\Models\Payment;
-use App\Models\Subscription;
+use App\Models\GeneralSetting;
 use Modules\SAAS\Entities\Plan;
 use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\Subscriptions\Subscription;
 use Modules\SAAS\Database\factories\AdminFactory;
+use App\Models\Subscriptions\ShopExpireDateHistory;
+use App\Models\Subscriptions\SubscriptionTransaction;
 
 class TenantService implements TenantServiceInterface
 {
@@ -24,16 +25,17 @@ class TenantService implements TenantServiceInterface
         try {
             DB::beginTransaction();
             $plan = Plan::find($tenantRequest['plan_id']);
-            $expireAt = $plan->expireAt();
+
+            // $expireAt = $plan->expireAt();
 
             $tenant = Tenant::create([
                 'id' => $tenantRequest['domain'],
                 'name' => $tenantRequest['name'],
                 'impersonate_user' => 1,
                 'plan_id' => $tenantRequest['plan_id'],
-                'shop_count' => $tenantRequest['shop_count'],
-                'expire_at' => $expireAt,
-                'user_id' => auth()?->user()?->id ? auth()?->user()?->id : 1,
+                // 'shop_count' => $tenantRequest['shop_count'],
+                // 'expire_at' => null,
+                'user_id' => 1,
             ]);
 
             if (isset($tenant)) {
@@ -56,14 +58,18 @@ class TenantService implements TenantServiceInterface
                     // ]);
 
                     DB::statement('use ' . $tenant->tenancy_db_name);
-                    $this->makeSuperAdminForTenant($tenantRequest, $expireAt);
+                    $this->makeSuperAdminForTenant($tenantRequest);
                     // Insert settings coming from tenant creation form
-                    $this->saveBusinessSettings($tenantRequest);
+                    $this->saveBusinessSettings($tenantRequest, $plan);
+
+                    $this->storeSubscription($tenantRequest, $plan);
+
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
                     return $tenant;
                 }
             }
+
         } catch (Exception $e) {
             Log::debug($e->getMessage());
             Log::info($e->getMessage());
@@ -72,13 +78,13 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    public function saveBusinessSettings(array $tenantRequest): void
+    public function saveBusinessSettings(array $tenantRequest, object $plan): void
     {
         $settings = [
             'business_or_shop__business_name' => $tenantRequest['name'],
             'business_or_shop__phone' => $tenantRequest['phone'],
             'business_or_shop__email' => $tenantRequest['email'],
-            'addons__branch_limit' => $tenantRequest['shop_count'],
+            'addons__branch_limit' => $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'],
             'business_or_shop__address' => $tenantRequest['address'],
             // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
@@ -89,14 +95,12 @@ class TenantService implements TenantServiceInterface
         }
     }
 
-    private function makeSuperAdminForTenant(array $tenantRequest, $expireAt): int
+    private function makeSuperAdminForTenant(array $tenantRequest): int
     {
         $admin = $this->getAdmin($tenantRequest);
         $tenantAdminUser = User::create($admin);
         $adminRole = Role::first();
         $tenantAdminUser->assignRole($adminRole);
-        $this->storeSubscription($tenantAdminUser, $tenantRequest, $expireAt);
-        $this->storeShopExpireHistory($tenantRequest, $expireAt);
         return $tenantAdminUser->id;
     }
 
@@ -123,8 +127,6 @@ class TenantService implements TenantServiceInterface
             'permanent_address' => $tenantRequest['address'],
             'current_address' => $tenantRequest['address'],
             'created_at' => Carbon::now(),
-            'updated_at' => null,
-            'plan_id' => $tenantRequest['plan_id'],
         ];
 
         // $admin = (new AdminFactory)->definition(request: $tenantRequest);
@@ -135,43 +137,111 @@ class TenantService implements TenantServiceInterface
         return $admin;
     }
 
-    protected function storeSubscription($tenantAdminUser, $tenantRequest, $expireAt)
+    protected function storeSubscription($tenantRequest, $plan)
     {
         $subscribe = new Subscription();
-        $subscribe->user_id = $tenantAdminUser->id;
-        $subscribe->plan_id = $tenantRequest['plan_id'];
-        $subscribe->amount = $tenantRequest['amount'] ?? 0;
-        $subscribe->shop_count = $tenantRequest['shop_count'];
-        $subscribe->status = 0;
-        $subscribe->start_at = now();
-        $subscribe->end_at = $expireAt;
+        $subscribe->user_id = 1;
+        $subscribe->plan_id = $plan->id;
+        $subscribe->status = 1;
+        $subscribe->initial_period_count = $tenantRequest['period_count'];
+        $subscribe->initial_plan_start_date = Carbon::now();
+        $subscribe->initial_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
+        $subscribe->current_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
+
+        if ($plan->is_trial_plan == 0) {
+
+            $subscribe->initial_plan_start_date = Carbon::now();
+            $subscribe->initial_price_period = $tenantRequest['price_period'] ? $tenantRequest['price_period'] : null;
+            $subscribe->initial_plan_price = $tenantRequest['plan_price'] ? $tenantRequest['plan_price'] : 0;
+
+            $subscribe->initial_subtotal = $tenantRequest['subtotal'] ? $tenantRequest['subtotal'] : 0;
+            $subscribe->initial_discount = $tenantRequest['discount'] ? $tenantRequest['discount'] : 0;
+            $subscribe->initial_total_payable_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
+
+            $subscribe->initial_payment_status = $tenantRequest['payment_status'];
+            if ($tenantRequest['payment_status'] == 0) {
+
+                $subscribe->initial_due_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
+                $subscribe->initial_plan_expire_date = $tenantRequest['repayment_date'] ? date('Y-m-d', strtotime($tenantRequest['repayment_date'])) : null;
+            } elseif ($tenantRequest['payment_status'] == 1) {
+
+                $subscribe->initial_due_amount = 0;
+            }
+        }elseif($plan->is_trial_plan == 1){
+
+            $subscribe->trial_start_date = Carbon::now();
+        }
+
         $subscribe->save();
+
+        if ($plan->is_trial_plan == 0 && $subscribe->initial_payment_status == 1) {
+
+            $this->storeSubscriptionTransaction($subscribe, $tenantRequest);
+        }
+
+        if ($plan->is_trial_plan == 0) {
+
+            $this->storeShopExpireHistory($tenantRequest);
+        }
     }
 
-    protected function storeShopExpireHistory($tenantRequest, $expireAt)
+    protected function storeSubscriptionTransaction($subscribe, $tenantRequest)
     {
+        $payment = new SubscriptionTransaction();
+        $payment->transaction_type = 0;
+        $payment->subscription_id = $subscribe->id;
+        $payment->plan_id = $subscribe->plan_id;
+        $payment->increase_shop_count = $subscribe->initial_shop_count;
+        $payment->payment_method_name = $tenantRequest['payment_method_name'];
+        $payment->payment_trans_id = $tenantRequest['payment_trans_id'];
+        $payment->subtotal = $subscribe->initial_subtotal;
+        $payment->discount = $subscribe->initial_discount;
+        $payment->total_payable_amount = $subscribe->initial_total_payable_amount;
+        $payment->paid = $subscribe->initial_total_payable_amount;
+        $payment->payment_status = 1;
+        $payment->payment_date = Carbon::now();
+        $payment->save();
+    }
+
+    protected function storeShopExpireHistory($tenantRequest)
+    {
+        $expireDate = '';
+        if ($tenantRequest['price_period'] == 'month') {
+
+            $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
+        } else {
+
+            $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
+        }
+
         $shopHistory = new ShopExpireDateHistory();
-        $shopHistory->count = $tenantRequest['shop_count'];
-        $shopHistory->start_at = now();
-        $shopHistory->end_at = $expireAt;
+        $shopHistory->shop_count = $tenantRequest['shop_count'];
+        $shopHistory->start_date = Carbon::now();
+        $shopHistory->expire_date = $expireDate;
         $shopHistory->created_count = 0;
         $shopHistory->left_count = $tenantRequest['shop_count'];
         $shopHistory->save();
     }
 
-    protected function storeSubscriptionPayment($request, $subscribe, $tenantRequest, $shop)
+    private function getExpireDate(string $period, int $periodCount)
     {
-        $payment = new Payment();
-        $payment->subscription_id = $subscribe->id;
-        $payment->plan_id = $tenantRequest['plan_id'];
-        $payment->plan_id = $shop->shop_id;
-        $payment->payment_method_id = $request->payment_method_id;
-        $payment->transaction_id = $request->transaction_id;
-        $payment->subtotal = $request->subtotal;
-        $payment->discount = $request->discount;
-        $payment->total = $request->total;
-        $payment->status = $request->status;
-        $payment->payment_type = $request->payment_type;
-        $payment->payment_at = now();
+        $today = new \DateTime();
+
+        if ($period == 'day') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' days');
+            $lastDate = $today->modify('+1 days');
+        } elseif ($period == 'month') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' months');
+            $lastDate = $today->modify('+1 days');
+        } elseif ($period == 'year') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' years');
+            $lastDate = $today->modify('+1 days');
+        }
+
+        // Format the date
+        return $lastDate->format('Y-m-d');
     }
 }

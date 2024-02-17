@@ -11,6 +11,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TodoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('subscriptionRestrictions');
+    }
+
     public function index(Request $request)
     {
         if (!auth()->user()->can('assign_todo')) {

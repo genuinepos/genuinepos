@@ -1,4 +1,4 @@
-<script src="{{asset('backend/js/jquery-1.7.1.min.js')}}"></script>
+{{-- <script src="{{asset('backend/js/jquery-1.7.1.min.js')}}"></script> --}}
 <script src="{{asset('backend/js/number-bdt-formater.js')}}"></script>
 <!--Jquery Cdn-->
 <script src="{{asset('backend/asset/cdn/js/jquery-3.6.0.js')}}"></script>
@@ -88,7 +88,7 @@
             document.querySelector('.select2-search--dropdown .select2-search__field').focus();
         }
     });
-    
+
     if ($(window).width() < 768) {
         $('.notify-menu .company-name').appendTo('.top-menu .logo__sec');
     }

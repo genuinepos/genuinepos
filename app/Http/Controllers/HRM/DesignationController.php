@@ -13,6 +13,7 @@ class DesignationController extends Controller
     public function __construct(
         private DesignationService $designationService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

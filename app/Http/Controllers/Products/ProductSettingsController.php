@@ -14,11 +14,12 @@ class ProductSettingsController extends Controller
         private ProductSettingsService $productSettingsService,
         private UnitService $unitService
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index()
     {
-        if (! auth()->user()->can('product_settings')) {
+        if (!auth()->user()->can('product_settings')) {
 
             abort(403, __('Access Forbidden.'));
         }
@@ -30,7 +31,7 @@ class ProductSettingsController extends Controller
 
     public function update(Request $request, GeneralSettingServiceInterface $generalSettingService)
     {
-        if (! auth()->user()->can('product_settings')) {
+        if (!auth()->user()->can('product_settings')) {
 
             abort(403, __('Access Forbidden.'));
         }

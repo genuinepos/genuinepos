@@ -11,6 +11,7 @@ class PaymentMethodController extends Controller
 {
     public function __construct(private PaymentMethodService $paymentMethodService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

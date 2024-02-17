@@ -10,6 +10,7 @@ class LeaveTypeController extends Controller
 {
     public function __construct(private LeaveTypeService $leaveTypeService)
     {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

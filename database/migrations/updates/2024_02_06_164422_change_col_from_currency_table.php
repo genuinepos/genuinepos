@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('currencies', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->change();
+
+            $table->bigInteger('id')->unsigned()->autoIncrement()->change();
         });
     }
 

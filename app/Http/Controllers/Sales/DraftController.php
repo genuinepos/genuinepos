@@ -52,11 +52,12 @@ class DraftController extends Controller
         private ManagePriceGroupService $managePriceGroupService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (! auth()->user()->can('sale_draft')) {
+        if (!auth()->user()->can('sale_draft')) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -78,7 +79,7 @@ class DraftController extends Controller
 
     public function show($id, DraftControllerMethodContainersInterface $draftControllerMethodContainersInterface)
     {
-        if (! auth()->user()->can('sale_draft')) {
+        if (!auth()->user()->can('sale_draft')) {
 
             abort(403, 'Access Forbidden.');
         }

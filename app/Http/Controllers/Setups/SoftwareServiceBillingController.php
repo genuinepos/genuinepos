@@ -26,4 +26,8 @@ class SoftwareServiceBillingController extends Controller
     public function cartForRenewBranch() {
         return view('setups.billing.cart_for_branch_renew');
     }
+
+    public function dueRepayment() {
+        return view('setups.billing.due_repayment');
+    }
 }

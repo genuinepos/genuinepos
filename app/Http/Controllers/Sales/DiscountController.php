@@ -22,6 +22,7 @@ class DiscountController extends Controller
         private CategoryService $categoryService,
         private PriceGroupService $priceGroupService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

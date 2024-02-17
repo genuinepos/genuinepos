@@ -1,9 +1,12 @@
 <?php
 
+use Carbon\Carbon;
+use App\Models\Tenant;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use App\Models\GeneralSetting;
+use Modules\SAAS\Entities\Plan;
 use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
@@ -11,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Accounts\AccountLedger;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\AccountLedgerVoucherType;
+use App\Models\Subscriptions\Subscription;
 use App\Models\Accounts\AccountingVoucherDescription;
 
 Route::get('my-test', function () {
@@ -207,6 +211,24 @@ Route::get('my-test', function () {
     //         $query->where('email', 'superadmin@email.com');
     //     })
     //     ->first();
+
+    $startDate = new DateTime('2024-02-08');
+    $endDate = clone $startDate;
+    // Add 7 days to today's date
+    $lastDate = $endDate->modify('+1 years');
+    $lastDate = $lastDate->modify('+1 days');
+
+    // Format the date
+    // return $lastDate->format('Y-m-d');
+
+    // return DB::table('subscriptions')
+    // ->leftJoin('pos.plans', 'subscriptions.plan_id', 'pos.plans.id')
+    // ->select('subscriptions.id', 'pos.plans.name as plan_name')
+    // ->first();
+
+    // return Subscription::with('plan')->first();
+    // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
+    return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
 });
 
 

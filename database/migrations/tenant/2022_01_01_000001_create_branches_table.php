@@ -32,16 +32,13 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('website')->nullable();
             $table->string('logo', 191)->nullable()->default('default.png');
-            $table->string('timezone')->nullable();
-            $table->string('time_format')->nullable();
-            $table->string('date_format')->nullable();
-            $table->tinyInteger('stock_accounting_method')->nullable();
-            $table->string('account_start_date')->nullable();
-            $table->integer('financial_year_start_month')->nullable();
-            $table->boolean('purchase_permission')->default(false);
+            $table->boolean('purchase_permission')->default(1);
+            $table->date('expire_date')->nullable();
+            $table->unsignedBigInteger('shop_expire_date_history_id')->nullable();
             $table->timestamps();
-            $table->timestamp('expire_at')->nullable();
+
             $table->foreign('parent_branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('shop_expire_date_history_id')->references('id')->on('shop_expire_date_histories')->onDelete('cascade');
         });
     }
 

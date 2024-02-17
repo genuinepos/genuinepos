@@ -20,6 +20,7 @@ class SoldProductReportController extends Controller
         private AccountFilterService $accountFilterService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     // Index view of supplier report

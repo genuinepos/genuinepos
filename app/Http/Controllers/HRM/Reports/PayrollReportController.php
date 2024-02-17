@@ -20,6 +20,7 @@ class PayrollReportController extends Controller
         private DepartmentService $departmentService,
         private BranchService $branchService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)

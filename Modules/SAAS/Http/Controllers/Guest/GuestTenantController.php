@@ -17,6 +17,7 @@ class GuestTenantController extends Controller
 
     public function store(GuestTenantStoreRequest $request)
     {
+        return 'Under construction';
         $tenantRequest = $request->all();
         $tenant = $this->tenantService->create($tenantRequest);
         if (isset($tenant)) {

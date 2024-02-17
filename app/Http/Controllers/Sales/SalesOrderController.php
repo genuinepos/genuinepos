@@ -44,11 +44,12 @@ class SalesOrderController extends Controller
         private AccountingVoucherDescriptionReferenceService $accountingVoucherDescriptionReferenceService,
         private UserActivityLogUtil $userActivityLogUtil,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request, $customerAccountId = null)
     {
-        if (! auth()->user()->can('sales_order_list')) {
+        if (!auth()->user()->can('sales_order_list')) {
 
             abort(403, 'Access Forbidden.');
         }

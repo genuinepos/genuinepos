@@ -10,6 +10,7 @@ class DayBookController extends Controller
     public function __construct(
         private DayBookVoucherService $dayBookVoucherService,
     ) {
+        $this->middleware('subscriptionRestrictions');
     }
 
     public function vouchersForReceiptOrPayment($accountId = null, $type = null)

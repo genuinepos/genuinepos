@@ -34,25 +34,46 @@
                                     <tr class="">
                                         <td class="text-start">{{ $loop->iteration }}</td>
                                         <td class="text-start {{ $plan->is_trial_plan == 1 ? 'text-danger' : '' }}">{!! $plan->name . ' ' . ($plan->is_trial_plan == 1 ? ' <samll style="font-size: 10px!important;">(Period : ' . $plan->trial_days . ' Days)</samll>' : '') !!}</td>
-                                        <td class="text-start fw-bold">
+                                        <td class="text-start">
                                             @if ($plan->is_trial_plan == 1)
                                                 {{ __('N/A') }}
                                             @else
-                                                {{ \App\Utils\Converter::format_in_bdt($plan->price_per_month) }}
+                                                <span class="fw-bold">
+                                                    {{ \App\Utils\Converter::format_in_bdt($plan->price_per_month) }}
+                                                </span>
+                                                <p>{{ __('Back Office') }}:
+                                                    <span class="fw-bold">
+                                                        {{ \App\Utils\Converter::format_in_bdt($plan->business_price_per_month) }}
+                                                    </span>
+                                                </p>
                                             @endif
                                         </td>
-                                        <td class="text-start fw-bold">
+                                        <td class="text-start">
                                             @if ($plan->is_trial_plan == 1)
                                                 {{ __('N/A') }}
                                             @else
-                                                {{ \App\Utils\Converter::format_in_bdt($plan->price_per_year) }}
+                                                <span class="fw-bold">
+                                                    {{ \App\Utils\Converter::format_in_bdt($plan->price_per_year) }}
+                                                </span>
+                                                <p>{{ __('Back Office') }}:
+                                                    <span class="fw-bold">
+                                                        {{ \App\Utils\Converter::format_in_bdt($plan->business_price_per_year) }}
+                                                    </span>
+                                                </p>
                                             @endif
                                         </td>
-                                        <td class="text-start fw-bold">
+                                        <td class="text-start">
                                             @if ($plan->is_trial_plan == 1)
                                                 {{ __('N/A') }}
                                             @else
-                                                {{ \App\Utils\Converter::format_in_bdt($plan->lifetime_price) }}
+                                                <span class="fw-bold">
+                                                    {{ \App\Utils\Converter::format_in_bdt($plan->lifetime_price) }}
+                                                </span>
+                                                <p>{{ __('Back Office') }}:
+                                                    <span class="fw-bold">
+                                                        {{ \App\Utils\Converter::format_in_bdt($plan->business_lifetime_price) }}
+                                                    </span>
+                                                </p>
                                             @endif
                                         </td>
                                         <td class="text-start">

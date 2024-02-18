@@ -812,6 +812,11 @@ img {
     transform: scale(1);
   }
 }
+
+tr#add_business_tr {
+    border-top: 1px solid lightgray;
+}
+
 @keyframes checkBig {
   0% {
     top: 50%;

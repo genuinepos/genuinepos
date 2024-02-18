@@ -18,6 +18,7 @@
                 <input type="hidden" name="price_per_month" id="price_per_month" value="">
                 <input type="hidden" name="price_per_year" id="price_per_year" value="">
                 <input type="hidden" name="lifetime_price" id="lifetime_price" value="">
+                <input type="hidden" name="lifetime_applicable_years" id="lifetime_applicable_years" value="">
             </div>
         </div>
 

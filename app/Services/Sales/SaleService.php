@@ -527,12 +527,17 @@ class SaleService
             $query->where('sales.sale_screen', $saleScreen);
         }
 
+        if (auth()->user()->can('view_own_sale')) {
+
+            $query->where('sales.created_by_id', auth()->user()->id);
+        }
+
         if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
-            if (auth()->user()->can('view_own_sale')) {
+            $query->where('sales.branch_id', auth()->user()->branch_id);
+        }
 
-                $query->where('sales.created_by_id', auth()->user()->id);
-            }
+        if (!auth()->user()->can('has_access_to_branch') || auth()->user()->is_belonging_an_area == 1) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }

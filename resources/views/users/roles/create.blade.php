@@ -16,36 +16,13 @@
         }
 
         /* Custom Accordion button */
-        .accordion-button {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 0rem 1.25rem;
-            font-size: 1rem;
-            color: #212529;
-            text-align: left;
-            background-color: #fff;
-            border: 0;
-            border-radius: 0;
-            overflow-anchor: none;
-            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease;
-        }
+        .accordion-button { position: relative; display: flex; align-items: center; width: 100%; padding: 0rem 1.25rem; font-size: 1rem; color: #212529; text-align: left; background-color: #fff; border: 0; border-radius: 0; overflow-anchor: none; transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, border-radius .15s ease; }
 
-        .form_element {
-            border: 1px solid #adadad;
-            padding: 0;
-            background: #ffffff;
-            border: 1px solid var(--brand-color);
-        }
+        .form_element { border: 1px solid #adadad; padding: 0; background: #ffffff; border: 1px solid var(--brand-color); }
 
-        .accordion-header {
-            position: relative;
-            margin-bottom: 0;
-        }
+        .accordion-header { position: relative; margin-bottom: 0; }
 
-        .accordion-header a {
-            display: block;
+        .accordion-header a { display: block;
             height: 35px;
             line-height: 35px;
             padding-left: 8px;
@@ -91,19 +68,31 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><b>{{ __('Role Name') }} : <span class="text-danger">*</span></b> </label>
+                                        <label class="col-4"><b>{{ __('Role Name') }} : <span class="text-danger">*</span></b> </label>
                                         <div class="col-8">
                                             <input required type="text" name="role_name" class="form-control" id="role_name" placeholder="{{ __('Role Name') }}">
                                             <span class="error error_role_name">{{ $errors->first('role_name') }}</span>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group align-items-center gap-2">
+                                        <label> <b>{{ __("Has Access To All Store/Place") }}</b> </label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="checkbox" name="has_access_to_all_area" id="has_access_to_all_area"  autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="input-group align-items-center gap-2">
-                                    <label for="inputEmail3"> <b> Select All </b> </label>
-                                    <div class="d-flex align-items-center">
-                                        <input type="checkbox" class="select_all super_select_all" id="super_select_all" data-target="super_select_all" autocomplete="off">
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="input-group align-items-center gap-2">
+                                        <label> <b> Select All </b> </label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="checkbox" class="select_all super_select_all" id="super_select_all" data-target="super_select_all" autocomplete="off">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2210,7 +2199,7 @@
                     <div class="d-flex justify-content-end">
                         <div class="btn-loading">
                             <button type="button" class="btn loading_button d-hide"><i class="fas fa-spinner"></i></button>
-                            <button class="btn btn-sm btn-success submit_button">{{ __("Save") }}</button>
+                            <button class="btn btn-sm btn-success submit_button">{{ __('Save') }}</button>
                         </div>
                     </div>
                 </section>

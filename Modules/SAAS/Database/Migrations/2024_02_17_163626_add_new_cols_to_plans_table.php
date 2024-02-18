@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('plans', function (Blueprint $table) {
             $table->json('features')->after('status')->nullable();
-            $table->decimal('business_price_per_month')->after('price_per_month')->default(0);
+            $table->decimal('business_price_per_month')->after('lifetime_price')->default(0);
             $table->decimal('business_price_per_year')->after('business_price_per_month')->default(0);
             $table->decimal('business_lifetime_price')->after('business_price_per_year')->default(0);
         });

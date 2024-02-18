@@ -59,6 +59,8 @@ class UserController extends Controller
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
+
+
         return view('users.create', compact('departments', 'designations', 'shifts', 'branches', 'roles'));
     }
 

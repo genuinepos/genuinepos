@@ -757,6 +757,10 @@ img {
   width: 250px;
 }
 
+tr#add_business_tr {
+    border-top: 1px solid lightgray;
+}
+
 @keyframes stroke {
   100% {
     stroke-dashoffset: 0;

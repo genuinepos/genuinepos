@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\SubscriptionPaymentStatus;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use App\Enums\SubscriptionPaymentStatus;
 use Symfony\Component\HttpFoundation\Response;
 
 class SubscriptionRestrictionsMiddleware
@@ -35,8 +36,61 @@ class SubscriptionRestrictionsMiddleware
         ) {
 
             return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment you due amount.')]);
-        } else if ($subscription->is_completed_startup == 0) {
+        }
 
+        if (
+            $subscription->current_shop_count > 1 &&
+            $subscription->has_business == 1 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 0)
+        ) {
+
+            Session::put('startupType', 'business_and_branch');
+            return redirect()->route('setup.startup.form');
+        } else if (
+            $subscription->current_shop_count > 1 &&
+            $subscription->has_business == 0 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            $subscription->is_completed_branch_startup == 1
+        ) {
+
+            Session::put('startupType', 'branch');
+            return redirect()->route('setup.startup.form');
+        } else if (
+            $subscription->current_shop_count > 1 &&
+            $subscription->has_business == 1 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 1)
+        ) {
+
+            Session::put('startupType', 'business');
+            return redirect()->route('setup.startup.form');
+        }else if (
+            $subscription->current_shop_count == 1 &&
+            $subscription->has_business == 1 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 1)
+        ) {
+
+            Session::put('startupType', 'business');
+            return redirect()->route('setup.startup.form');
+        }else if (
+            $subscription->current_shop_count == 1 &&
+            $subscription->has_business == 1 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 0)
+        ) {
+
+            Session::put('startupType', 'business_and_branch');
+            return redirect()->route('setup.startup.form');
+        }else if (
+            $subscription->current_shop_count == 1 &&
+            $subscription->has_business == 0 &&
+            auth()->user()->can('has_access_to_all_area') &&
+            $subscription->is_completed_branch_startup == 0
+        ) {
+
+            Session::put('startupType', 'branch');
             return redirect()->route('setup.startup.form');
         }
 

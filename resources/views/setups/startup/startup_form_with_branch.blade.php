@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('backend/css/cart.css') }}">
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
     <style>
         .error{
             font-size: 11px;
@@ -226,17 +227,12 @@
 
 <body class="inner">
     @include('setups.startup.partials.header')
-
     <div class="tab-section py-120">
         <div class="container">
             <div class="row mt-2">
                 <div class="col-12">
                     <div class="tab-nav">
-                        <button class="single-nav businessSetupTab active" id="single-nav" data-tab="businessSetupTab">
-                            <span class="txt">{{ __('Business Setup') }}</span>
-                        </button>
-
-                        <button class="single-nav createBranchTab" id="single-nav" data-tab="createBranchTab">
+                        <button class="single-nav active" id="single-nav">
                             <span class="txt">{{ __('Create Store') }}</span>
                         </button>
                     </div>
@@ -244,11 +240,7 @@
                     <div class="tab-contents">
                         <form id="startup_from" action="{{ route('setup.startup.finish') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <div class="single-tab active" id="businessSetupTab">
-                                @include('setups.startup.partials.business_setup_partial')
-                            </div>
-
-                            <div class="single-tab" id="createBranchTab">
+                            <div class="single-tab active" id="createBranchTab">
                                 @include('setups.startup.partials.create_branch_partial')
                             </div>
                         </form>
@@ -270,16 +262,9 @@
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script>
-        $('#business_logo').dropify({
-            messages: {
-                'default': "{{ __('Drag and drop a file here or click') }}",
-                'replace': "{{ __('Drag and drop or click to replace') }}",
-                'remove': "{{ __('Remove') }}",
-                'error': "{{ __('Ooops, something wrong happended.') }}",
-            }
-        });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
+    <script>
         $('#branch_logo').dropify({
             messages: {
                 'default': "{{ __('Drag and drop a file here or click') }}",
@@ -291,25 +276,6 @@
 
         $(document).ready(function() {
             $('.select2').select2();
-        });
-
-        new Litepicker({
-            singleMode: true,
-            element: document.getElementById('business_account_start_date'),
-            dropdowns: {
-                minYear: new Date().getFullYear() - 50,
-                maxYear: new Date().getFullYear() + 100,
-                months: true,
-                years: true
-            },
-            tooltipText: {
-                one: 'night',
-                other: 'nights'
-            },
-            tooltipNumber: (totalDays) => {
-                return totalDays - 1;
-            },
-            format: 'YYYY-MM-DD',
         });
 
         new Litepicker({
@@ -347,72 +313,10 @@
             }
         });
 
-        $(document).on('click', '#single-nav', function(e) {
-
-            e.preventDefault();
-
-            var tabData = $(this).data('tab');
-            if (tabData == 'createBranchTab') {
-
-                if ($('#business_name').val() == '') {
-
-                    toastr.error("{{ __('Business name is required.') }}");
-                    return;
-                }
-
-                if ($('#business_address').val() == '') {
-
-                    toastr.error("{{ __('Business address is required.') }}");
-                    return;
-                }
-
-                if ($('#business_email').val() == '') {
-
-                    toastr.error("{{ __('Business email address is required.') }}");
-                    return;
-                }
-
-                if ($('#business_currency_id').val() == '') {
-
-                    toastr.error("{{ __('Business currency is required.') }}");
-                    return;
-                }
-
-                if ($('#business_timezone').val() == '') {
-
-                    toastr.error("{{ __('Business timezone is required.') }}");
-                    return;
-                }
-
-                if ($('#business_account_start_date').val() == '') {
-
-                    toastr.error("{{ __('Business account start date is required.') }}");
-                    return;
-                }
-            }
-
-            $('.single-nav').removeClass('active');
-
-            $('.single-tab').removeClass('active');
-            $(this).addClass('active');
-            $('#' + tabData).addClass('active');
-            $('.' + tabData).addClass('active');
-        });
-
-        $(document).on('change', '#business_currency_id', function(e) {
-            var currencySymbol = $(this).find('option:selected').data('currency_symbol');
-            $('#business_currency_symbol').val(currencySymbol);
-        });
-
         $(document).on('change', '#branch_currency_id', function(e) {
             var currencySymbol = $(this).find('option:selected').data('currency_symbol');
             $('#branch_currency_symbol').val(currencySymbol);
         });
-
-        $('.single-nav').removeClass('active');
-        $('.single-tab').removeClass('active');
-        $('#businessSetupTab').addClass('active');
-        $('.businessSetupTab').addClass('active');
 
         $(window).scroll(function() {
             if ($('.select2').is(':visible')) {
@@ -482,7 +386,8 @@
                     $('.submit_button').removeClass('d-none');
 
                     window.location = res;
-                }, error: function(err) {
+                },
+                error: function(err) {
 
                     $('.loading_button').addClass('d-none');
                     $('.submit_blue_btn').addClass('d-none');

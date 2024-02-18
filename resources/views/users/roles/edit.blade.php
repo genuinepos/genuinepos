@@ -44,10 +44,19 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="input-group">
-                                        <label for="inputEmail3" class="col-4"><strong>{{ __('Role Name') }} : <span class="text-danger">*</span></strong> </label>
+                                        <label class="col-4"><strong>{{ __('Role Name') }} : <span class="text-danger">*</span></strong> </label>
                                         <div class="col-8">
                                             <input required type="text" name="role_name" class="form-control" id="role_name" placeholder="{{ __('Role Name') }}" value="{{ $role->name }}">
                                             <span class="error error_role_name">{{ $errors->first('role_name') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="input-group align-items-center gap-2">
+                                        <label> <b>{{ __("Has Access To All Store/Place") }}</b> </label>
+                                        <div class="d-flex align-items-center">
+                                            <input {{ $role->hasPermissionTo('user_view') ? 'CHECKED' : '' }} type="checkbox" name="has_access_to_all_area" id="has_access_to_all_area"  autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -2045,7 +2054,7 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('process_view') ? 'CHECKED' : '' }} name="process_view" id="process_view" class="manufacturings manufacturing_all">
                                                         <label for="process_view">{{ __('View process') }}</label>
                                                     </p>
-                                                    
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('process_add') ? 'CHECKED' : '' }} name="process_add" id="process_add" class="manufacturings manufacturing_all">
                                                         <label for="process_add">{{ __('Add Process') }}</label>

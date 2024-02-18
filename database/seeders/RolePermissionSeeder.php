@@ -40,16 +40,21 @@ class RolePermissionSeeder extends Seeder
     {
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
+
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
             if (!$roleAlreadyExists) {
+
                 Role::create(['name' => $role['name']]);
             }
         }
 
         $permissions = $this->getPermissionsArray();
         foreach ($permissions as $permission) {
+
             $permissionExists = Permission::where('id', $permission['id'])->where('name', $permission['name'])->exists();
+
             if (!$permissionExists) {
+
                 Permission::create([
                     'id' => $permission['id'],
                     'name' => $permission['name'],
@@ -61,21 +66,43 @@ class RolePermissionSeeder extends Seeder
 
     public function syncRolesPermissions(): void
     {
-        $permissions = Permission::all();
-        $role = Role::first();
-        $role->syncPermissions($permissions);
+        $roleNames = $this->getRolesArray();
+        foreach ($roleNames as $roleName) {
 
-        $role = Role::skip(1)->first();
-        $role->syncPermissions($permissions);
+            $role = Role::where('name', $roleName)->first();
+
+            if (isset($role)) {
+
+                $permissions = $role->getPermissionNames();
+                $countPermissions = count($permissions);
+
+                if ($role->name == 'superadmin' && $role->name == 'admin') {
+
+                    $role->syncPermissions($permissions);
+                    $role->revokePermissionTo('view_own_sale');
+                }elseif($countPermissions == 0){
+
+                    $role->syncPermissions($permissions);
+                    $role->revokePermissionTo('view_own_sale');
+                    $role->revokePermissionTo('has_access_to_all_area');
+                }
+            }
+        }
+
+        // $permissions = Permission::all();
+        // $role = Role::first();
+        // $role->syncPermissions($permissions);
+
+        // $role = Role::skip(1)->first();
+        // $role->syncPermissions($permissions);
     }
 
     public function getRolesArray(): array
     {
         $roles = [
             ['id' => '1', 'name' => 'superadmin'],
-            ['id' => '2', 'name' => 'admin'],
-            ['id' => '3', 'name' => 'Accountant'],
-            ['id' => '4', 'name' => 'POS Seller'],
+            ['id' => '2', 'name' => 'accountant'],
+            ['id' => '3', 'name' => 'seller'],
         ];
 
         return $roles;
@@ -186,20 +213,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '100', 'name' => 'barcode_settings'],
             ['id' => '101', 'name' => 'cash_counters'],
             ['id' => '102', 'name' => 'view_dashboard_data'],
-            // ['id' => '103', 'name' => 'accounting_access'],
-            // ['id' => '104', 'name' => 'hrm_dashboard'],
-            // ['id' => '105', 'name' => 'leave_type'],
-            // ['id' => '106', 'name' => 'leave_assign'],
-            // ['id' => '107', 'name' => 'shift'],
-            // ['id' => '108', 'name' => 'attendance'],
-            // ['id' => '109', 'name' => 'view_allowance_and_deduction'],
-            // ['id' => '110', 'name' => 'payroll'],
-            // ['id' => '111', 'name' => 'holiday'],
-            // ['id' => '112', 'name' => 'department'],
-            // ['id' => '113', 'name' => 'designation'],
-            // ['id' => '114', 'name' => 'payroll_report'],
-            // ['id' => '115', 'name' => 'payroll_payment_report'],
-            // ['id' => '116', 'name' => 'attendance_report'],
             ['id' => '117', 'name' => 'assign_todo'],
             ['id' => '118', 'name' => 'work_space'],
             ['id' => '119', 'name' => 'memo'],
@@ -218,22 +231,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '132', 'name' => 'project_create'],
             ['id' => '133', 'name' => 'project_edit'],
             ['id' => '134', 'name' => 'project_delete'],
-            // ['id' => '136', 'name' => 'ripe_add_invo'],
-            // ['id' => '137', 'name' => 'ripe_edit_invo'],
-            // ['id' => '138', 'name' => 'ripe_view_invo'],
-            // ['id' => '139', 'name' => 'ripe_delete_invo'],
-            // ['id' => '140', 'name' => 'change_invo_status'],
-            // ['id' => '141', 'name' => 'ripe_jop_sheet_status'],
-            // ['id' => '142', 'name' => 'ripe_jop_sheet_add'],
-            // ['id' => '143', 'name' => 'ripe_jop_sheet_edit'],
-            // ['id' => '144', 'name' => 'ripe_jop_sheet_delete'],
-            // ['id' => '145', 'name' => 'ripe_only_assinged_job_sheet'],
-            // ['id' => '146', 'name' => 'ripe_view_all_job_sheet'],
-            // ['id' => '147', 'name' => 'superadmin_access_pack_subscrip'],
-            // ['id' => '148', 'name' => 'e_com_sync_pro_cate'],
-            // ['id' => '149', 'name' => 'e_com_sync_pro'],
-            // ['id' => '150', 'name' => 'e_com_sync_order'],
-            // ['id' => '151', 'name' => 'e_com_map_tax_rate'],
             ['id' => '152', 'name' => 'today_summery'],
             ['id' => '153', 'name' => 'communication'],
             ['id' => '154', 'name' => 'receive_payment_index'],
@@ -497,6 +494,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '367', 'name' => 'billing_renew_shop'],
 
             ['id' => '368', 'name' => 'module_settings'],
+            ['id' => '369', 'name' => 'has_access_to_all_area'],
         ];
 
         return $permissions;

@@ -47,7 +47,25 @@
                                     <div class="mb-4">
                                         <label for="applicable_lifetime_years">{{ __('Lifetime Applicable Years') }} <span class="text-danger">*</span></label>
                                         <input type="number" name="applicable_lifetime_years" class="form-control" id="applicable_lifetime_years" value="{{ $plan->applicable_lifetime_years }}" placeholder="{{ __('Applicable Years') }}">
-                                        <span class="text-danger error error_period_unit"></span>
+                                        <span class="text-danger error error_applicable_lifetime_years"></span>
+                                    </div>
+
+                                    <div class="mb-1">
+                                        <label for="business_price_per_month">{{ __('Business price per month') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __("Applicable month") }}">
+                                        <span class="text-danger error error_business_price_per_month"></span>
+                                    </div>
+
+                                    <div class="mb-1">
+                                        <label for="business_price_per_year">{{ __('Business price per years') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __("Applicable Year") }}">
+                                        <span class="text-danger error error_business_price_per_year"></span>
+                                    </div>
+
+                                    <div class="mb-1">
+                                        <label for="business_lifetime_price">{{ __('Business price lifetime') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control" id="business_lifetime_price" placeholder="{{ __("Applicable lifetime") }}">
+                                        <span class="text-danger error error_business_lifetime_price"></span>
                                     </div>
 
                                     <div class="mb-4">
@@ -88,7 +106,26 @@
                                             {{ __('Select All Features') }}
                                         </label>
                                     </div>
-                                    @foreach ($features as $feature)
+                                    @php
+                                        $planFeatures = $plan->features;
+                                    @endphp
+
+                                    @foreach ($features as $key => $feature)
+                                        <div class=" @if(!$feature && ($key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif"  id="feature_{{ $key }}">
+                                            @if($feature)
+                                            <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }}/>
+                                            @else
+                                                @if($key != 'employee_count' && $key != 'cash_counter_count' && $key != 'warehouse_count')
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }}/>
+                                                @endif
+                                            @endif
+                                            <label for="{{ $key }}">{{ str($key)->headline() }} </label>
+                                            @if(!$feature)
+                                            <input type="text" name="features[{{$key}}]" value="{{ array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }}" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                    {{-- @foreach ($features as $feature)
                                         @php
                                             $isEnabled = $plan->features->where('id', $feature->id)->first();
                                         @endphp
@@ -98,7 +135,7 @@
                                                 {{ str($feature->name)->headline() }}
                                             </label>
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
                                 </div>
 
                                 <div class="mb-4 p-3" style="border: 1px solid red;">
@@ -125,6 +162,53 @@
     </div>
     @push('js')
         <script>
+            $(document).ready(function() {
+                // $('#feature_employee_count').hide();
+
+                // $('#feature_warehouse_count').hide();
+                // $('#feature_cash_counter_count').hide();
+
+                // $('#hrm').change( function() {
+                //     if($(this).is(":checked")) {
+                //         $('#feature_employee_count').show();
+                //     } else {
+                //         $('#employee_count_input').val('');
+                //         $('#feature_employee_count').hide();
+                //     }
+                // })
+
+                // $('#setup').change( function() {
+                //     if($(this).is(":checked")) {
+                //         $('#feature_warehouse_count').show();
+                //         $('#feature_cash_counter_count').show();
+                //     } else {
+                //         $('#feature_warehouse_count').hide();
+                //         $('#feature_cash_counter_count').hide();
+                //     }
+                // })
+
+                // $('#user_count_input').hide();
+                // $('#user_count').change(function() {
+                //     if($(this).is(":checked")) {
+                //         $('#user_count_input').show();
+                //     } else {
+                //         $('#user_count_input').val('');
+                //         $('#user_count_input').hide();
+                //     }
+                // });
+
+                // $('#customer_count_input').hide();
+                // $('#customer_count').change(function() {
+                //     if($(this).is(":checked")) {
+                //         $('#customer_count_input').show();
+                //     } else {
+                //         $('#customer_count_input').val('');
+                //         $('#customer_count_input').hide();
+                //     }
+                // });
+
+            });
+
             const selectAll = document.getElementById('select_all');
             selectAll.addEventListener('click', function() {
 

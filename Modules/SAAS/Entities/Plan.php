@@ -34,11 +34,11 @@ class Plan extends Model
         return $this->belongsTo(Currency::class, 'currency_id');
     }
 
-    public function features()
-    {
-        return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
-            ->withPivot('capacity');
-    }
+    // public function features()
+    // {
+    //     return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
+    //         ->withPivot('capacity');
+    // }
 
     public function getPriceLabelAttribute()
     {

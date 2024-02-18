@@ -1,9 +1,9 @@
 {
-    "name": "Best Points of Sales System (POS) Billing, Inventory &amp; Accounting - GPOS",
+    "name": "GPOS",
     "short_name": "GPOS",
     "start_url": "/index.php",
     "background_color": "#6777ef",
-    "description": "Best Points of Sales System (POS) Billing, Inventory &amp; Accounting - GPOS",
+    "description": "GPOS",
     "display": "fullscreen",
     "theme_color": "#6777ef",
     "icons": [

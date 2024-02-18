@@ -171,6 +171,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Ladumor\LaravelPwa\PWAServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -238,5 +239,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
     ],
 ];

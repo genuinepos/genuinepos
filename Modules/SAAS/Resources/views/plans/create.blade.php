@@ -121,9 +121,13 @@
                                             </div>
                                             @endif
                                         </div> --}}
-                                        <div class=" @if(!$feature) ms-3 @endif"  id="feature_{{ $key }}">
+                                        <div class=" @if(!$feature && ($key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif"  id="feature_{{ $key }}">
                                             @if($feature)
                                             <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" />
+                                            @else
+                                                @if($key != 'employee_count' && $key != 'cash_counter_count' && $key != 'warehouse_count')
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" />
+                                                @endif
                                             @endif
                                             <label for="{{ $key }}">{{ str($key)->headline() }}</label>
                                             @if(!$feature)

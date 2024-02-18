@@ -102,7 +102,7 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <div class="row">
+
                                         <div class="py-2">
                                             <input type="checkbox" class="form-check-input" name="select_all" id="select_all">
                                             <label for="select_all" class="form-check-label">
@@ -121,15 +121,17 @@
                                             </div>
                                             @endif
                                         </div> --}}
-                                        <div class="col-md-6 mt-0" id="feature_{{ $key }}">
-                                            <input type="checkbox" class="form-check-input checkbox-child" @if($feature) name="features[{{$key}}]" @endif value="{{ $feature }}" id="{{ $key }}" />
+                                        <div class=" @if(!$feature) ms-3 @endif"  id="feature_{{ $key }}">
+                                            @if($feature)
+                                            <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" />
+                                            @endif
                                             <label for="{{ $key }}">{{ str($key)->headline() }}</label>
                                             @if(!$feature)
                                             <input type="text" name="features[{{$key}}]" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
                                             @endif
                                         </div>
                                     @endforeach
-                                    </div>
+
                                 </div>
 
                                 <div class="mb-4 p-2" style="border: 1px solid red;">
@@ -157,7 +159,6 @@
     @push('js')
         <script>
             $(document).ready(function() {
-                $('#employee_count_input').hide();
                 $('#feature_employee_count').hide();
 
                 $('#feature_warehouse_count').hide();
@@ -184,34 +185,34 @@
                 // if($('#hrm').is(":checked")) {
 
                 // })
-                    
+
                     // Toggle the input field on checkbox click
-                    $('#employee_count').change(function() {
-                        if($(this).is(":checked")) {
-                            $('#employee_count_input').show();
-                        } else {
-                            $('#employee_count_input').val('');
-                            $('#employee_count_input').hide();
-                        }
-                    });
-                    $('#cash_counter_count_input').hide();
-                    $('#cash_counter_count').change(function() {
-                        if($(this).is(":checked")) {
-                            $('#cash_counter_count_input').show();
-                        } else {
-                            $('#cash_counter_count_input').val('');
-                            $('#cash_counter_count_input').hide();
-                        }
-                    });
-                    $('#warehouse_count_input').hide();
-                    $('#warehouse_count').change(function() {
-                        if($(this).is(":checked")) {
-                            $('#warehouse_count_input').show();
-                        } else {
-                            $('#warehouse_count_input').val('');
-                            $('#warehouse_count_input').hide();
-                        }
-                    });
+                    // $('#employee_count').change(function() {
+                    //     if($(this).is(":checked")) {
+                    //         $('#employee_count_input').show();
+                    //     } else {
+                    //         $('#employee_count_input').val('');
+                    //         $('#employee_count_input').hide();
+                    //     }
+                    // });
+                    // $('#cash_counter_count_input').hide();
+                    // $('#cash_counter_count').change(function() {
+                    //     if($(this).is(":checked")) {
+                    //         $('#cash_counter_count_input').show();
+                    //     } else {
+                    //         $('#cash_counter_count_input').val('');
+                    //         $('#cash_counter_count_input').hide();
+                    //     }
+                    // });
+                    // $('#warehouse_count_input').hide();
+                    // $('#warehouse_count').change(function() {
+                    //     if($(this).is(":checked")) {
+                    //         $('#warehouse_count_input').show();
+                    //     } else {
+                    //         $('#warehouse_count_input').val('');
+                    //         $('#warehouse_count_input').hide();
+                    //     }
+                    // });
 
                     $('#user_count_input').hide();
                     $('#user_count').change(function() {

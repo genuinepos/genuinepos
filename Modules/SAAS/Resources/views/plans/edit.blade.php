@@ -113,15 +113,15 @@
                                     @foreach ($features as $key => $feature)
                                         <div class=" @if(!$feature && ($key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif"  id="feature_{{ $key }}">
                                             @if($feature)
-                                            <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }}/>
+                                            <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
                                             @else
                                                 @if($key != 'employee_count' && $key != 'cash_counter_count' && $key != 'warehouse_count')
-                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }}/>
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
                                                 @endif
                                             @endif
                                             <label for="{{ $key }}">{{ str($key)->headline() }} </label>
                                             @if(!$feature)
-                                            <input type="text" name="features[{{$key}}]" value="{{ array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }}" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
+                                            <input type="text" name="features[{{$key}}]" value=" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }} @endif" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
                                             @endif
                                         </div>
                                     @endforeach

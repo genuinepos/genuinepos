@@ -17,11 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_id')->nullable()->comment('initial plan and upgraded plan id will be go here.');
             $table->timestamp('trial_start_date')->nullable();
             $table->string('initial_price_period')->nullable();
-            $table->string('initial_period_count')->nullable();
+            $table->bigInteger('initial_period_count')->nullable();
             $table->decimal('initial_plan_price', 22, 2)->nullable();
-            $table->decimal('initial_business_price', 22, 2)->default(0)->nullable();
+            $table->string('initial_business_price_period')->nullable();
+            $table->decimal('initial_business_price', 22, 2)->default(0);
+            $table->bigInteger('initial_business_period_count')->nullable();
             $table->bigInteger('initial_shop_count')->nullable();
             $table->bigInteger('current_shop_count')->nullable();
+            $table->decimal('initial_business_subtotal', 22, 2)->default(0);
             $table->decimal('initial_subtotal', 22, 2)->default(0);
             $table->decimal('initial_discount', 22, 2)->default(0);
             $table->decimal('initial_total_payable_amount', 22, 2)->default(0);
@@ -29,6 +32,7 @@ return new class extends Migration
             $table->tinyInteger('initial_payment_status')->default(1);
             $table->tinyInteger('status')->default(1);
             $table->timestamp('initial_plan_start_date')->nullable();
+            $table->timestamp('initial_business_start_date')->nullable();
             $table->date('initial_plan_expire_date')->nullable()->comment('for installation due payment, if initial payable amount is paid then this col will be null');
             $table->boolean('has_business')->default(0);
             $table->date('business_expire_date')->nullable();

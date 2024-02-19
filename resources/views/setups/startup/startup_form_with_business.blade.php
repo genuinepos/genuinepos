@@ -27,13 +27,12 @@
     <link rel="stylesheet" href="{{ asset('backend/css/cart.css') }}">
     <link href="{{ asset('assets/plugins/custom/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
     <style>
         .error{
             font-size: 11px;
             color: red;
         }
-        
+
         .tab-section .tab-nav .single-nav {
             height: 35px;
             font-size: 15px;
@@ -227,20 +226,23 @@
 
 <body class="inner">
     @include('setups.startup.partials.header')
+
     <div class="tab-section py-120">
         <div class="container">
             <div class="row mt-2">
                 <div class="col-12">
                     <div class="tab-nav">
-                        <button class="single-nav active" id="single-nav">
-                            <span class="txt">{{ __('Create Store') }}</span>
+                        <button class="single-nav businessSetupTab active" id="single-nav" data-tab="businessSetupTab">
+                            <span class="txt">{{ __('Business Setup') }}</span>
                         </button>
                     </div>
 
                     <div class="tab-contents">
                         <form id="startup_from" action="{{ route('setup.startup.finish') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            @include('setups.startup.partials.create_branch_partial')
+                            <div class="single-tab active" id="businessSetupTab">
+                                @include('setups.startup.partials.business_setup_partial')
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -260,10 +262,8 @@
     <script src="{{ asset('assets/plugins/custom/dropify/js/dropify.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-
     <script>
-        $('#branch_logo').dropify({
+        $('#business_logo').dropify({
             messages: {
                 'default': "{{ __('Drag and drop a file here or click') }}",
                 'replace': "{{ __('Drag and drop or click to replace') }}",
@@ -278,7 +278,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('branch_account_start_date'),
+            element: document.getElementById('business_account_start_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -295,25 +295,10 @@
             format: 'YYYY-MM-DD',
         });
 
-        $('#add_initial_user_btn').on('click', function() {
-            $('.branch_initial_user_field').toggleClass('d-none');
 
-            if ($('#add_initial_user').val() == 0) {
-
-                $('#add_initial_user').val(1);
-                $('#branch_user_first_name').focus();
-
-                $('.branch-user-required-field').prop('required', true);
-            } else {
-
-                $('#add_initial_user').val(0);
-                $('.branch-user-required-field').prop('required', false);
-            }
-        });
-
-        $(document).on('change', '#branch_currency_id', function(e) {
+        $(document).on('change', '#business_currency_id', function(e) {
             var currencySymbol = $(this).find('option:selected').data('currency_symbol');
-            $('#branch_currency_symbol').val(currencySymbol);
+            $('#business_currency_symbol').val(currencySymbol);
         });
 
         $(window).scroll(function() {
@@ -384,8 +369,7 @@
                     $('.submit_button').removeClass('d-none');
 
                     window.location = res;
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     $('.loading_button').addClass('d-none');
                     $('.submit_blue_btn').addClass('d-none');

@@ -42,7 +42,6 @@
         $('.quantity').each(function () {
 
             var isTrialPlan = $('#is_trial_plan').val();
-
             var spinner = jQuery(this),
                 input = spinner.find('input[type="number"]'),
                 btnUp = spinner.find('.quantity-up'),
@@ -60,8 +59,11 @@
                     } else {
                         var newVal = oldValue + 1;
                     }
+
                     spinner.find("input").val(newVal);
                     spinner.find("input").trigger("change");
+                    calculateCartAmount();
+                    showOrHideHasBusinessBtn();
                     calculateCartAmount();
                 }
             });
@@ -79,11 +81,60 @@
                     spinner.find("input").val(newVal);
                     spinner.find("input").trigger("change");
                     calculateCartAmount();
+                    showOrHideHasBusinessBtn();
+                    calculateCartAmount();
                 }
             });
 
             calculateCartAmount();
+            showOrHideHasBusinessBtn();
+            calculateCartAmount();
+        });
 
+        $(document).on('click', '.business_period_down_btn',function () {
+
+            var isTrialPlan = $('#is_trial_plan').val();
+            if (isTrialPlan == 0 || isTrialPlan == undefined) {
+
+                var business_period_count = $('#business_period_count');
+
+                var newVal = 0;
+                var oldValue = parseInt(business_period_count.val());
+                var min = $('#business_period_count').attr('min');
+                if (oldValue <= min) {
+                    newVal = oldValue;
+                } else {
+                    newVal = oldValue - 1;
+                }
+
+                business_period_count.val(parseInt(newVal))
+                calculateCartAmount();
+                showOrHideHasBusinessBtn();
+                calculateCartAmount();
+            }
+        });
+
+        $(document).on('click', '.business_period_up_btn',function () {
+
+            var isTrialPlan = $('#is_trial_plan').val();
+            if (isTrialPlan == 0 || isTrialPlan == undefined) {
+
+                var business_period_count = $('#business_period_count');
+
+                var newVal = 0;
+                var oldValue = parseInt(business_period_count.val());
+                var max = $('#business_period_count').attr('max');
+                if (oldValue >= max) {
+                    newVal = oldValue;
+                } else {
+                    newVal = oldValue + 1;
+                }
+
+                business_period_count.val(parseInt(newVal))
+                calculateCartAmount();
+                showOrHideHasBusinessBtn();
+                calculateCartAmount();
+            }
         });
 
         $(document).on('change', '#price_period', function () {
@@ -118,12 +169,47 @@
                     $('.period_count').addClass('d-none');
                     $('#fixed_period_text').removeClass('d-none');
                     $('#fixed_period_text').html('Lifetime');
-                    $('#fixed_period_text').html('Lifetime');
                 }
 
                 calculateCartAmount();
             }
-        })
+        });
+
+        $(document).on('change', '#business_price_period', function () {
+
+            var isTrialPlan = $('#is_trial_plan').val();
+
+            if (isTrialPlan == 0 || isTrialPlan == undefined) {
+
+                var business_price_period = $(this).val();
+                var business_price_per_month = $('#business_price_per_month').val() ? $('#business_price_per_month').val() : 0;
+                var business_price_per_year = $('#business_price_per_year').val() ? $('#business_price_per_year').val() : 0;
+                var business_lifetime_price = $('#business_lifetime_price').val() ? $('#business_lifetime_price').val() : 0;
+
+                if (business_price_period == 'month') {
+
+                    $('#business_price').val(parseFloat(business_price_per_month));
+                    $('#span_business_price').html(parseFloat(business_price_per_month).toFixed(2));
+                    $('.business_period_count').removeClass('d-none');
+                    $('#business_fixed_period_text').html('');
+                } else if (business_price_period == 'year') {
+
+                    $('#business_price').val(parseFloat(business_price_per_year));
+                    $('#span_business_price').html(parseFloat(business_price_per_year).toFixed(2));
+                    $('.business_period_count').removeClass('d-none');
+                    $('#business_fixed_period_text').html('');
+                } else if (business_price_period == 'lifetime') {
+
+                    $('#business_price').val(parseFloat(business_lifetime_price));
+                    $('#span_business_price').html(parseFloat(business_lifetime_price).toFixed(2));
+                    $('.business_period_count').addClass('d-none');
+                    $('#business_fixed_period_text').removeClass('d-none');
+                    $('#business_fixed_period_text').html('Lifetime');
+                }
+
+                calculateCartAmount();
+            }
+        });
 
         function calculateCartAmount() {
 
@@ -131,17 +217,24 @@
 
             if (isTrialPlan == 0 || isTrialPlan == undefined) {
 
-                var price_period = $('#price_period:checked').val();
+                var price_period = $('#price_period:checked').val() ? $('#price_period:checked').val() : 0;
+                var business_price_period = $('#business_price_period').val() ? $('#business_price_period').val() : 0;
                 var plan_price = $('#plan_price').val() ? $('#plan_price').val() : 0;
+                var business_price = $('#business_price').val() ? $('#business_price').val() : 0;
                 var shop_count = $('#shop_count').val() ? $('#shop_count').val() : 0;
                 var discount = $('#discount').val() ? $('#discount').val() : 0;
                 var period_count = $('#period_count').val() ? $('#period_count').val() : 0;
+                var business_period_count = $('#business_period_count').val() ? $('#business_period_count').val() : 0;
                 var __period_count = price_period == 'month' || price_period == 'year' ? parseFloat(period_count) : 1;
+                var __business_period_count = business_price_period == 'month' || business_price_period == 'year' ? parseFloat(business_period_count) : 1;
 
                 var subtotal = (parseFloat(plan_price) * parseFloat(shop_count)) * parseFloat(__period_count);
-                var totalPayableAmount = parseFloat(subtotal) - parseFloat(discount)
                 $('#subtotal').val(parseFloat(subtotal).toFixed(2));
                 $('#span_subtotal').html(parseFloat(subtotal).toFixed(2));
+                var businessSubtotal = (parseFloat(business_price) * parseFloat(__business_period_count));
+                $('#business_subtotal').val(parseFloat(businessSubtotal).toFixed(2));
+                $('#span_business_subtotal').html(parseFloat(businessSubtotal).toFixed(2));
+                var totalPayableAmount = parseFloat(subtotal) + parseFloat(businessSubtotal) - parseFloat(discount)
 
                 $('.span_total_shop_count').html(parseInt(shop_count));
                 $('.span_subtotal_after_discount').html(parseFloat(subtotal).toFixed(2));
@@ -179,5 +272,78 @@
         //         $(this).siblings('.symbol').css('opacity', '0');
         //     }
         // });
+
+        function showOrHideHasBusinessBtn() {
+
+            var shop_count = $('#shop_count').val() ? $('#shop_count').val() : 0;
+
+            if (shop_count > 1) {
+
+                $('#has_business_btn').removeClass('d-none');
+            } else {
+
+                $('#has_business').prop('checked', false);
+                $('#has_business_btn').addClass('d-none');
+                $('#add_business_tr').remove();
+            }
+        }
+
+        $(document).on('change', '#has_business', function () {
+
+            var businessPricePerMonth = $('#business_price_per_month').val() ? $('#business_price_per_month').val() : 0;
+            // var businessPricePerYear = $('#business_price_per_year').val() ? $('#business_price_per_year').val() : 0;
+            // var businessLifetimePrice = $('#business_lifetime_price').val() ? $('#business_lifetime_price').val() : 0;
+
+            if ($(this).is(':checked') == true) {
+
+                var html = '';
+                html += '<tr id="add_business_tr">';
+                html += '<td>Multi Store Management System</td>';
+                html += '<td>';
+                html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(businessPricePerMonth).toFixed(2) + '>';
+                html += '<span class="price-txt"><span id="span_business_price">' + parseFloat(businessPricePerMonth).toFixed(2) + '</span></span>';
+                html += '</td>';
+
+                html += '<td class="text-start">';
+                html += '<label>Period</label>';
+                html += '<select name="business_price_period" class="form-control" id="business_price_period">';
+                html += '<option value="month">Monthly</option>';
+                html += '<option value="year">Yearly</option>';
+                html += '<option value="lifetime">Lifetime</option>';
+                html += '</select>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<label>Period Count</label>';
+                html += '<div class="product-count cart-product-count business_period_count">';
+                html += '<div class="quantity rapper-quantity">';
+                html += '<input readonly name="business_period_count" id="business_period_count" type="number" min="1" step="1" value="1">';
+                html += '<div class="quantity-nav">';
+                html += '<div class="quantity-button quantity-down business_period_down_btn">';
+                html += '<i class="fa-solid fa-minus"></i>';
+                html += '</div>';
+                html += '<div class="quantity-button quantity-up business_period_up_btn">';
+                html += '<i class="fa-solid fa-plus"></i>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '<div id="business_fixed_period_text"></div>';
+                html += '</td>';
+
+                html += '<td>';
+                html += '<input type="hidden" name="business_subtotal" id="business_subtotal" value="' + parseFloat(businessPricePerMonth).toFixed(2) + '">';
+                html += '<span class="price-txt"><span id="span_business_subtotal">' + parseFloat(businessPricePerMonth).toFixed(2) + '</span></span>';
+                html += '</td>';
+                html += '</tr>';
+
+                $('#plan_price_table').append(html);
+                calculateCartAmount();
+            } else {
+
+                $('#add_business_tr').remove();
+                calculateCartAmount();
+            }
+        });
     });
 })(jQuery);

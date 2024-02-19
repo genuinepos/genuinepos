@@ -1,6 +1,6 @@
 <div class="single-tab active" id="cartTab">
     <div class="table-wrap revel-table">
-        <div class="period_buttons_area mb-1">
+        <div class="period_buttons_area mb-1 w-100">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-secondary {{ $pricePeriod == 'month' ? 'bg-danger active' : '' }}">
                     <input type="radio" name="price_period" id="price_period" value="month" autocomplete="off" {{ $pricePeriod == 'month' ? 'checked' : '' }}> {{ __('Monthly') }}
@@ -18,7 +18,15 @@
                 <input type="hidden" name="price_per_month" id="price_per_month" value="{{ $plan->price_per_month }}">
                 <input type="hidden" name="price_per_year" id="price_per_year" value="{{ $plan->price_per_year }}">
                 <input type="hidden" name="lifetime_price" id="lifetime_price" value="{{ $plan->lifetime_price }}">
+                <input type="hidden" name="business_price_per_month" id="business_price_per_month" value="{{ $plan->business_price_per_month }}">
+                <input type="hidden" name="business_price_per_year" id="business_price_per_year" value="{{ $plan->business_price_per_year }}">
+                <input type="hidden" name="business_lifetime_price" id="business_lifetime_price" value="{{ $plan->business_lifetime_price }}">
             </div>
+
+            <label class="btn btn-danger float-end d-none" id="has_business_btn">
+                <input type="checkbox" name="has_business" id="has_business" value="1" autocomplete="off">
+                {{ __('I Need Multi Store Management System') }}
+            </label>
         </div>
 
         <div class="table-responsive">
@@ -29,11 +37,9 @@
                         <th>{{ __('Price') }}</th>
                         <th>{{ __('Store Quantity') }}</th>
                         <th id="period_count_header">
-                            @if($pricePeriod == 'month')
-
+                            @if ($pricePeriod == 'month')
                                 {{ __('Months') }}
                             @elseif ($pricePeriod == 'year')
-
                                 {{ __('Years') }}
                             @elseif ($pricePeriod == 'lifetime')
                                 {{ __('Years') }}
@@ -43,22 +49,17 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="plan_price_table">
                     <tr>
-                        <td>
-                            {{ $plan->name }}
-                        </td>
+                        <td>{{ $plan->name }}</td>
                         <td>
                             @php
                                 $defaultPricePeriod = 0;
-                                if($pricePeriod == 'month') {
-
+                                if ($pricePeriod == 'month') {
                                     $defaultPricePeriod = $plan->price_per_month;
-                                } else if ($pricePeriod == 'year') {
-
+                                } elseif ($pricePeriod == 'year') {
                                     $defaultPricePeriod = $plan->price_per_year;
-                                } else if ($pricePeriod == 'lifetime') {
-
+                                } elseif ($pricePeriod == 'lifetime') {
                                     $defaultPricePeriod = $plan->lifetime_price;
                                 }
                             @endphp
@@ -95,7 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="is_life_time">
+                            <div id="fixed_period_text">
                                 {{ $pricePeriod == 'lifetime' ? 'Lifetime' : '' }}
                             </div>
                         </td>

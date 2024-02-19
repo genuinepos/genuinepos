@@ -69,7 +69,6 @@ class TenantService implements TenantServiceInterface
                     return $tenant;
                 }
             }
-
         } catch (Exception $e) {
             Log::debug($e->getMessage());
             Log::info($e->getMessage());
@@ -143,7 +142,6 @@ class TenantService implements TenantServiceInterface
         $subscribe->user_id = 1;
         $subscribe->plan_id = $plan->id;
         $subscribe->status = 1;
-        $subscribe->initial_period_count = $tenantRequest['period_count'];
         $subscribe->initial_plan_start_date = Carbon::now();
         $subscribe->initial_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
         $subscribe->current_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
@@ -152,6 +150,7 @@ class TenantService implements TenantServiceInterface
 
             $subscribe->initial_plan_start_date = Carbon::now();
             $subscribe->initial_price_period = $tenantRequest['price_period'] ? $tenantRequest['price_period'] : null;
+            $subscribe->initial_period_count = $tenantRequest['period_count'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['period_count'];
             $subscribe->initial_plan_price = $tenantRequest['plan_price'] ? $tenantRequest['plan_price'] : 0;
 
             $subscribe->initial_subtotal = $tenantRequest['subtotal'] ? $tenantRequest['subtotal'] : 0;
@@ -167,7 +166,7 @@ class TenantService implements TenantServiceInterface
 
                 $subscribe->initial_due_amount = 0;
             }
-        }elseif($plan->is_trial_plan == 1){
+        } elseif ($plan->is_trial_plan == 1) {
 
             $subscribe->trial_start_date = Carbon::now();
         }
@@ -203,15 +202,18 @@ class TenantService implements TenantServiceInterface
         $payment->save();
     }
 
-    protected function storeShopExpireHistory($tenantRequest)
+    protected function storeShopExpireHistory($tenantRequest, $plan)
     {
         $expireDate = '';
         if ($tenantRequest['price_period'] == 'month') {
 
             $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
-        } else {
+        } else if ($tenantRequest['price_period'] == 'year') {
 
             $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
+        } else if ($tenantRequest['lifetime'] == 'lifetime') {
+
+            $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
         }
 
         $shopHistory = new ShopExpireDateHistory();

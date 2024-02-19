@@ -8,6 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
+
+    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
     <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('modules/saas') }}/vendor/css/OverlayScrollbars.min.css">
@@ -30,6 +34,23 @@
 </head>
 
 <body class="body-padding body-p-top light-theme">
+    <div class="modal fade" id="appInstallModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="appInstallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="appInstallModalLabel">Welcome to GPOS!</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              If you want to add a shortcut on your desktop, click the OK button.
+            </div>
+            <div class="modal-footer">
+              {{-- <button type="button" class="btn btn-secondary" id="closeInstallModal" data-bs-dismiss="modal">Close</button> --}}
+              <button type="button" id="installPwa" class="btn btn-primary">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <x-saas::_preloader />
     <x-saas::_header />
     <x-saas::_rightsidebar />
@@ -69,6 +90,9 @@
     <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script>
     @include('saas::_includes.main-js')
     @stack('js')
+
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/install-pwa-app.js') }}"></script>
 </body>
 
 </html>

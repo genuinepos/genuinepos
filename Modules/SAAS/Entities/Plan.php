@@ -15,6 +15,10 @@ class Plan extends Model
     // protected $fillable = ['name', 'slug', 'description', 'price', 'period_unit', 'period_value', 'status', 'currency_code'];
     protected $guarded = [];
 
+    protected $casts = [
+        'features' => 'array',
+    ];
+
     public function scopeActive($query)
     {
         return $query->where('status', 1);
@@ -30,11 +34,11 @@ class Plan extends Model
         return $this->belongsTo(Currency::class, 'currency_id');
     }
 
-    public function features()
-    {
-        return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
-            ->withPivot('capacity');
-    }
+    // public function features()
+    // {
+    //     return $this->belongsToMany(Feature::class, 'plan_features', 'plan_id', 'feature_id')
+    //         ->withPivot('capacity');
+    // }
 
     public function getPriceLabelAttribute()
     {

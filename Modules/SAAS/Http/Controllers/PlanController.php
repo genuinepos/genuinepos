@@ -36,12 +36,14 @@ class PlanController extends Controller
     {
         abort_unless(auth()->user()->can('plans_create'), 403);
 
+        $features = config('planfeatures');
+
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
         ->select('id','code')
         ->get();
         return view('saas::plans.create', [
             'currencies' => $currencies,
-            'features' => Feature::all(),
+            'features' => $features,
         ]);
     }
 
@@ -59,7 +61,11 @@ class PlanController extends Controller
             'price_per_month' => 'required|numeric',
             'price_per_year' => 'required|numeric',
             'lifetime_price' => 'required|numeric',
-            'applicable_lifetime_years' => 'required|numeric'
+            'applicable_lifetime_years' => 'required|numeric',
+            'business_price_per_month' => 'required|numeric',
+            'business_price_per_year' => 'required|numeric',
+            'business_lifetime_price' => 'required|numeric',
+            'features' => 'required',
         ]);
 
         $plan = Plan::create([
@@ -69,12 +75,14 @@ class PlanController extends Controller
             'price_per_year' => $request->price_per_year,
             'lifetime_price' => $request->lifetime_price,
             'applicable_lifetime_years' => $request->applicable_lifetime_years,
+            'business_price_per_month' => $request->business_price_per_month,
+            'business_price_per_year' => $request->business_price_per_year,
+            'business_lifetime_price' => $request->business_lifetime_price,
             'currency_id' => $request->currency_id,
             'description' => $request->description,
+            'features' => $request->features,
             'status' => $request->status,
         ]);
-
-        $plan->features()->sync($request->feature_id);
 
         return response()->json('Plan created successfully!');
     }
@@ -107,11 +115,13 @@ class PlanController extends Controller
     {
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
         ->select('id','code')->get();
+        
+        $features = config('planfeatures');
 
         return view('saas::plans.edit', [
             'currencies' => $currencies,
             'plan' => Plan::find($id),
-            'features' => Feature::all(),
+            'features' => $features
         ]);
     }
 
@@ -133,6 +143,10 @@ class PlanController extends Controller
             'trial_days' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'trial_shop_count' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'status' => 'required',
+            'business_price_per_month' => 'required',
+            'business_price_per_year' => 'required',
+            'business_lifetime_price' => 'required',
+            'features' => 'required',
         ]);
 
         $updatePlan = Plan::where('id', $id)->first();
@@ -140,23 +154,24 @@ class PlanController extends Controller
         $updatePlan->slug = $request->slug ?? Str::slug($request->slug);
 
         if ($updatePlan->is_trial_plan == 0) {
-
             $updatePlan->price_per_month = $request->price_per_month;
             $updatePlan->price_per_year = $request->price_per_year;
             $updatePlan->lifetime_price = $request->lifetime_price;
             $updatePlan->applicable_lifetime_years = $request->applicable_lifetime_years;
             $updatePlan->currency_id = $request->currency_id;
         }elseif($updatePlan->is_trial_plan == 1){
-
             $updatePlan->trial_days = $request->trial_days;
             $updatePlan->trial_shop_count = $request->trial_shop_count;
         }
 
+        $updatePlan->business_price_per_month = $request->business_price_per_month;
+        $updatePlan->business_price_per_year = $request->business_price_per_year;
+        $updatePlan->business_lifetime_price = $request->business_lifetime_price;
+        $updatePlan->features = $request->features;
+
         $updatePlan->description = $request->description;
         $updatePlan->status = $request->status;
         $updatePlan->save();
-
-        $updatePlan->features()->sync($request->feature_id);
 
         return response()->json('Plan updated successfully!');
     }

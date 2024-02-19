@@ -34,6 +34,7 @@
         "barryvdh/laravel-debugbar": "^3.8.1",
         "fakerphp/faker": "^1.9.1",
         "kitloong/laravel-migrations-generator": "^6.8.0",
+        "ladumor/laravel-pwa": "^0.0.4",
         "laravel/pint": "^1.10",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

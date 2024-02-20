@@ -70,18 +70,19 @@ class RolePermissionSeeder extends Seeder
         foreach ($roles as $role) {
 
             $role = Role::where('id', $role['id'])->first();
-
+            
             if (isset($role)) {
 
-                $permissions = $role->getPermissionNames();
-                $countPermissions = count($permissions);
+                $permissions = $this->getPermissionsArray();
+                $rolePermissions = $role->getPermissionNames();
+                $countRolePermissions = count($rolePermissions);
 
                 if ($role->id == 1 || $role->id == 2) {
 
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('view_own_sale');
                     // $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
-                } elseif ($countPermissions == 0) {
+                } elseif ($countRolePermissions == 0) {
 
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('view_own_sale');

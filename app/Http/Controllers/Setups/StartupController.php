@@ -37,7 +37,7 @@ class StartupController extends Controller
 
     public function startupFrom()
     {
-        if (Session::get('startupType')) {
+        if (!Session::get('startupType')) {
 
             return redirect()->back();
         }

@@ -195,7 +195,7 @@ class TenantService implements TenantServiceInterface
 
         if ($plan->is_trial_plan == 0) {
 
-            $this->storeShopExpireHistory($tenantRequest);
+            $this->storeShopExpireHistory($tenantRequest, $plan);
         }
     }
 
@@ -226,7 +226,7 @@ class TenantService implements TenantServiceInterface
         } else if ($tenantRequest['price_period'] == 'year') {
 
             $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
-        } else if ($tenantRequest['lifetime'] == 'lifetime') {
+        } else if ($tenantRequest['price_period'] == 'lifetime') {
 
             $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
         }

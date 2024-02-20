@@ -29,77 +29,79 @@ class GeneralSettingsListener
     {
         try {
 
-            if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
+            // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
+            // if (Schema::hasTable('general_settings') && GeneralSetting::count() > 0) {
 
-                $generalSettings = Cache::get('generalSettings');
+                // $generalSettings = Cache::get('generalSettings');
 
-                if (!isset($generalSettings)) {
+                // if (!isset($generalSettings)) {
 
-                    $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
-                        ->orWhereIn('key', [
-                            'addons__hrm',
-                            'addons__manage_task',
-                            'addons__service',
-                            'addons__manufacturing',
-                            'addons__e_commerce',
-                            'addons__branch_limit',
-                            'addons__cash_counter_limit',
-                            'business_or_shop__business_name',
-                            'business_or_shop__address',
-                        ])->pluck('value', 'key')->toArray();
+                $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
+                    ->orWhereIn('key', [
+                        'addons__hrm',
+                        'addons__manage_task',
+                        'addons__service',
+                        'addons__manufacturing',
+                        'addons__e_commerce',
+                        'addons__branch_limit',
+                        'addons__cash_counter_limit',
+                        'business_or_shop__business_name',
+                        'business_or_shop__address',
+                    ])->pluck('value', 'key')->toArray();
 
-                    $branch = $event?->user?->branch;
-                    if (isset($branch) && isset($branch->parent_branch_id)) {
+                $branch = $event?->user?->branch;
+                if (isset($branch) && isset($branch->parent_branch_id)) {
 
-                        $prefixes = [
-                            'business_or_shop__',
-                            'reward_point_settings__',
-                            'send_email__',
-                            'send_sms__',
-                        ];
+                    $prefixes = [
+                        'business_or_shop__',
+                        'reward_point_settings__',
+                        'send_email__',
+                        'send_sms__',
+                    ];
 
-                        $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
-                            ->whereNotIn(
-                                'key',
-                                [
-                                    'business_or_shop__business_name',
-                                    'business_or_shop__currency_id',
-                                    'business_or_shop__currency_symbol',
-                                    'business_or_shop__date_format',
-                                    'business_or_shop__time_format',
-                                    'business_or_shop__timezone',
-                                ]
-                            );
+                    $query = GeneralSetting::query()->where('branch_id', $branch->parent_branch_id)
+                        ->whereNotIn(
+                            'key',
+                            [
+                                'business_or_shop__business_name',
+                                'business_or_shop__currency_id',
+                                'business_or_shop__currency_symbol',
+                                'business_or_shop__date_format',
+                                'business_or_shop__time_format',
+                                'business_or_shop__timezone',
+                            ]
+                        );
 
-                        $query->where(function ($query) use ($prefixes) {
-                            foreach ($prefixes as $prefix) {
-                                $query->orWhere('key', 'LIKE', $prefix . '%');
-                            }
-                        });
-
-                        $parentBranchGeneralSettings = $query->get();
-                        foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
-                            $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
+                    $query->where(function ($query) use ($prefixes) {
+                        foreach ($prefixes as $prefix) {
+                            $query->orWhere('key', 'LIKE', $prefix . '%');
                         }
-                    }
-
-                    $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
-
-                    $dateFormat = $generalSettings['business_or_shop__date_format'];
-                    $__financialYearStartMonth = date("m", mktime(0, 0, 0, $financialYearStartMonth, 1, date("Y")));
-
-                    $startDateFormat = 'Y' . '-' . $__financialYearStartMonth . '-' . '1';
-                    $startDate = date($startDateFormat);
-                    $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
-                    $financialYear = date('d M Y', strtotime($startDate)) . ' - ' . date('d M Y', strtotime($endDate));
-                    $generalSettings['business_or_shop__financial_year'] = $financialYear;
-                    $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
-                    $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
-
-                    Cache::rememberForever('generalSettings', function () use ($generalSettings) {
-                        return $generalSettings;
                     });
+
+                    $parentBranchGeneralSettings = $query->get();
+                    foreach ($parentBranchGeneralSettings as $parentBranchGeneralSetting) {
+                        $generalSettings[$parentBranchGeneralSetting->key] = $parentBranchGeneralSetting->value;
+                    }
                 }
+
+                $financialYearStartMonth = $generalSettings['business_or_shop__financial_year_start_month'];
+
+                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                $__financialYearStartMonth = date("m", mktime(0, 0, 0, $financialYearStartMonth, 1, date("Y")));
+
+                $startDateFormat = 'Y' . '-' . $__financialYearStartMonth . '-' . '1';
+                $startDate = date($startDateFormat);
+                $endDate = date('Y-m-d', strtotime(' + 1 year - 1 day', strtotime($startDate)));
+                $financialYear = date('d M Y', strtotime($startDate)) . ' - ' . date('d M Y', strtotime($endDate));
+                $generalSettings['business_or_shop__financial_year'] = $financialYear;
+                $generalSettings['business_or_shop__financial_year_start_date'] = date($dateFormat, strtotime($startDate));
+                $generalSettings['business_or_shop__financial_year_end_date'] = date($dateFormat, strtotime($endDate));
+
+                Cache::rememberForever('generalSettings', function () use ($generalSettings) {
+                    return $generalSettings;
+                });
+
+                // }
 
                 // request()->merge(['generalSettings' => $generalSettings]);
                 if (isset($generalSettings['invoice_layout__add_sale_invoice_layout_id'])) {
@@ -170,7 +172,7 @@ class GeneralSettingsListener
                     view()->share('generalSettings', $generalSettings);
                     view()->share('__date_format', $__date_format);
                 }
-            }
+            // }
         } catch (Exception $e) {
         }
     }

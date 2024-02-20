@@ -1,0 +1,29 @@
+generalSettings\['([a-z_\-0-9]+)'\]\['([a-z_\-0-9]+)'\]
+
+\$generalSettings\['([a-z_\-0-9]+)'\]\['([a-z_\-0-9]+)'\]
+
+$generalSettings['$1__$2']
+
+\$([a-zA-Z_0-9\-]+)\s*=\s*DB::table\('general_settings'\).*
+
+$generalSettings = config('generalSettings');
+
+json_decode\(\$([a-zA-Z0-9_-]+)->([a-zA-Z0-9_-]+),\s*true\s*\)\['([a-zA-Z0-9_\-]+)'\];
+
+
+
+\$([a-zA-Z_0-9\-]+)\s*=\s*DB::table\('general_settings'\)(.|\n).*
+
+
+Update:
+"
+\$([a-zA-Z_0-9\-]+)\s*=\s*DB::table\('general_settings'\)(.|\n).*
+by
+$generalSettings = config('generalSettings');
+
+Update:
+json_decode\(\$([a-zA-Z0-9_-]+)->([a-zA-Z0-9_-]+),\s*true\s*\)\['([a-zA-Z0-9_\-]+)'\];
+By
+$generalSettings['$2__$3'];
+"
+

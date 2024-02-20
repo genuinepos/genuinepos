@@ -1,0 +1,43 @@
+Listen 81
+ServerName marketnewsbd.com
+
+<VirtualHost *:443>
+        ServerName www.marketnewsbd.com
+        ServerAdmin webmaster@localhost
+        ServerAlias marketnesbd.com
+        DocumentRoot /var/www/news/public
+
+        <Directory /var/www/news/public>
+                AllowOverride All
+                Require all granted
+
+        </Directory>
+
+
+        SSLEngine on
+        SSLCertificateFile /root/marketnewsbd.com.crt
+        SSLCertificateKeyFile /root/marketnewsbd.com.key
+
+</VirtualHost>
+
+<VirtualHost *:80>
+        ServerName marketnewsbd.com
+        ServerAlias www.marketnewsbd.com
+        RedirectMatch permanent ^(.*)$ https://marketnewsbd.com$1
+        #Redirect permanent / https://marketnewsbd.com/
+        #ServerName www.marketnewsbd.com
+        #Redirect / https://marketnewsbd.com/
+</VirtualHost>
+
+<VirtualHost *:81>
+        ServerName www.marketnewsbd.com/phpmyadmin
+        ServerAdmin webmaster@localhost
+        ServerAlias marketnesbd.com/phpmyadmin
+        DocumentRoot /var/www/phpmyadmin
+
+        <Directory /var/www/phpmyadmin>
+                AllowOverride All
+                Require all granted
+
+        </Directory>
+</VirtualHost>

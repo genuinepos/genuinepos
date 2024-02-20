@@ -1,0 +1,35 @@
+<?php
+
+namespace Modules\SAAS\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class BusinessVerificationRequest extends FormRequest
+{
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = [
+            'email' => ['required', 'string', 'email', 'max:255'],
+        ];
+        if (! config('app.debug')) {
+            $rules['g-recaptcha-response'] = 'required|captcha';
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+}

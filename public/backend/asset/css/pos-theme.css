@@ -1,0 +1,589 @@
+:root {
+    --brand-color: #3b3d58;
+    --red-color-gradient: linear-gradient(#8c0437ee, #1e000d);
+    --red-color-1: var(--brand-color);
+    --red-color-2: #3a1026;
+
+    --blue-color-gradient: linear-gradient(#036dad 0%, #29b0fd 100%);
+    --blue-color-1: #29b0fd;
+    --blue-color-2: #036dad;
+
+    --dark-color-gradient: linear-gradient(var(--brand-color), #444444);
+    --dark-color-1: #0d3850;
+    --brand-color: #3b3d58;
+    --light-color-gradient: -webkit-linear-gradient(
+        top,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(141, 141, 141, 0.35) 50%,
+        rgba(148, 149, 150, 0.35) 51%,
+        rgba(66, 66, 66, 0.4) 100%
+    );
+    --light-color-1: #c4c4c4;
+    --light-color-2: #989898;
+
+    --white-color: #fff;
+    --black-color: rgb(41, 41, 41);
+    --black-color-1: rgb(71, 71, 71);
+    --black-color-2: rgb(62, 62, 62);
+}
+
+/*================= Color pallette  ===================*/
+.color_change_wrapper {
+    position: fixed;
+    right: 6px;
+    bottom: 40px;
+    z-index: 999;
+}
+
+.color_change_wrapper ul {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 3px;
+}
+
+.color_change_wrapper li {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid;
+    box-shadow: 1px 2px 4px #161616ad;
+}
+
+.color_change_wrapper li.red {
+    background: var(--red-color-gradient);
+}
+
+.color_change_wrapper li.blue {
+    background: var(--blue-color-gradient);
+}
+
+.color_change_wrapper li.dark {
+    background: #18242e;
+}
+
+.color_change_wrapper li.light {
+    background: #c8c8c8;
+}
+
+/*================= Color pallete end ===================*/
+
+/* =================Red theme =====================  */
+body.blue-theme {
+    background: var(--light-color-gradient) !important;
+}
+
+.blue-theme .pos-body {
+    border: 1px solid var(--blue-color-2);
+    background: linear-gradient(#dedede, #444444);
+}
+
+.blue-theme .head-pos {
+    border-bottom: 1px solid var(--blue-color-2);
+}
+
+.blue-theme .pos-btn {
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.blue-theme nav.pos-navigation {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .date {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.blue-theme .left-cat-pos {
+    background: var(--light-color-gradient);
+    border: 1px solid #6f5a5a !important;
+}
+
+.blue-theme .pos-footer {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .cat-button {
+    background: var(--blue-color-gradient);
+    color: #fff;
+}
+
+.blue-theme .cat-button:hover {
+    background: var(--blue-color-gradient);
+    color: #fff;
+}
+
+.blue-theme .product-inner {
+    background: #fff;
+    border: 1px solid var(--blue-color-2);
+}
+
+.blue-theme .show-product {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--blue-color-2);
+}
+
+.blue-theme .product {
+    background: #f7f7f7;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.blue-theme .product-ctn .product-name {
+    color: var(--title-color);
+    background: #ddd;
+}
+
+.blue-theme .product-name a {
+    color: #000;
+}
+
+.blue-theme .cart-table {
+    border: 1px solid var(--blue-color-2);
+    background: var(--light-color-gradient);
+}
+
+.blue-theme .cart-table-inner-pos {
+    background: #fff;
+    border: 1px solid var(--blue-color-2);
+}
+
+.blue-theme .tbl-head {
+    border-bottom: 2px solid #000;
+}
+
+.blue-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.blue-theme .sub-total-input {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .pos-right-inner {
+    border: 1px solid var(--blue-color-2);
+    background: var(--light-color-gradient);
+}
+
+.blue-theme .check-out-wraper {
+    background: var(--blue-color-gradient);
+    border: 1px solid var(--blue-color-2);
+}
+
+.blue-theme .resent-tn {
+    color: #fff;
+    background: var(--blue-color-1);
+}
+
+.blue-theme .modal-header {
+    background: var(--blue-color-gradient);
+    color: #fff;
+}
+
+.blue-theme .modal-body {
+    background: #fff;
+}
+
+.blue-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.blue-theme .bg-primary {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .btn_30_blue a {
+    border: var(--blue-color-2) 1px solid;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: #fff;
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--blue-color-gradient);
+}
+
+.blue-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--blue-color-1);
+}
+
+.blue-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--blue-color-2);
+}
+
+.blue-theme .all-cat {
+    border: 1px solid #000;
+}
+/* =================Blue theme end=========================  */
+
+/* =================Dark theme =======================  */
+body.dark-theme {
+    background: #eef0f8 !important;
+}
+
+.dark-theme .pos-btn {
+    border: 1px solid var(--blue-color-1);
+    color: #fff;
+}
+
+.dark-theme nav.pos-navigation {
+    background: var(--black-color);
+}
+
+.dark-theme .date {
+    border: 1px solid #4a4a4a;
+    color: #cecece;
+}
+
+.dark-theme .pos-footer {
+    background: var(--black-color);
+}
+
+.dark-theme .cat-button {
+    background: var(--black-color-1);
+    border-left: 3px solid var(--black-color-1);
+    color: #fff;
+    transition: .3s;
+}
+.dark-theme .cat-button.active {
+    background: var(--black-color-2);
+    border-left-color: #7bc4ff;
+}
+
+.dark-theme .cat-button:hover {
+    background: var(--black-color-2);
+    border-left: 3px solid #7bc4ff;
+    color: #fff;
+}
+
+.dark-theme .product-inner {
+    background: var(--black-color);
+}
+
+.dark-theme .show-product {
+    background: var(--black-color);
+}
+
+.dark-theme .product {
+    background: var(--black-color-1);
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.dark-theme .product-ctn .product-name {
+    color: #fff;
+    background: var(--black-color-1);
+}
+
+.dark-theme .product-name a {
+    color: #fff;
+}
+
+.dark-theme .cart-table-inner-pos {
+    background: #ededed;
+}
+
+.dark-theme .tbl-head {
+    background: var(--black-color);
+}
+
+.dark-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.dark-theme .sub-total-input {
+    background: var(--black-color);
+}
+
+.dark-theme .check-out-wraper {
+    background: var(--black-color);
+}
+
+.dark-theme .function-sec {
+    background: var(--black-color-2);
+}
+
+.dark-theme .btn-bg {
+    background: var(--black-color-1);
+}
+
+.dark-theme .resent-tn {
+    color: #fff;
+    background: var(--brand-color);
+}
+
+.dark-theme .modal-header {
+    background: var(--dark-color-gradient);
+    color: #fff;
+}
+
+.dark-theme .modal-body {
+    background: #fff;
+}
+
+.dark-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.dark-theme .bg-primary {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .btn_30_blue a {
+    /* border: var(--brand-color) 1px solid; */
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: #fff;
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--dark-color-gradient);
+}
+
+.dark-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--brand-color);
+}
+
+.dark-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--brand-color);
+}
+
+.dark-theme .set-height {
+    background: rgb(255, 255, 255);
+}
+
+.dark-theme .all-cat {
+    background: var(--black-color);
+}
+
+/* =================Dark theme end =======================  */
+
+/* =================Light theme =======================  */
+body.light-theme {
+    background: var(--light-color-gradient) !important;
+}
+
+.light-theme .pos-body {
+    border: 1px solid var(--light-color-1);
+    background: var(--light-color-2);
+}
+
+.light-theme .head-pos {
+    border-bottom: 1px solid var(--light-color-2);
+}
+
+.light-theme .pos-btn {
+    border: 2px solid var(--brand-color);
+    color: #fff;
+}
+
+.light-theme nav.pos-navigation {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .date {
+    border: 1px solid var(--brand-color);
+    color: var(--brand-color);
+}
+
+.light-theme .left-cat-pos {
+    background: var(--light-color-gradient);
+    border: 1px solid #6f5a5a !important;
+}
+
+.light-theme .pos-footer {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .cat-button {
+    background: var(--light-color-gradient);
+    color: var(--brand-color);
+}
+
+.light-theme .cat-button:hover {
+    background: var(--light-color-gradient);
+    color: var(--brand-color);
+}
+
+.light-theme .product-inner {
+    background: #fff;
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .show-product {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .product {
+    background: #f7f7f7;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+}
+
+.light-theme .product-ctn .product-name {
+    color: var(--title-color);
+    background: #ddd;
+}
+
+.light-theme .product-name a {
+    color: #000;
+}
+
+.light-theme .cart-table {
+    border: 1px solid var(--light-color-2);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .cart-table-inner-pos {
+    background: #fff;
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .tbl-head {
+    border-bottom: 2px solid #000;
+}
+
+.light-theme .data_preloader {
+    background: white;
+    color: black;
+}
+
+.light-theme .sub-total-input {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .pos-right-inner {
+    border: 1px solid var(--light-color-2);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .check-out-wraper {
+    background: var(--light-color-gradient);
+    border: 1px solid var(--light-color-2);
+}
+
+.light-theme .resent-tn {
+    color: var(--brand-color);
+    background: var(--light-color-1);
+}
+
+.light-theme .modal-header {
+    background: var(--light-color-gradient);
+    color: #fff;
+}
+
+.light-theme .modal-body {
+    background: #fff;
+}
+
+.light-theme .menu-list-area ul li {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 3px 1px lightgrey;
+}
+
+.light-theme .bg-primary {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .btn_30_blue a {
+    border: var(--light-color-2) 1px solid;
+    box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    -moz-box-shadow: 0px 0px 2px rgba(000, 000, 000, 0.8),
+        inset 0 1px 1px -1px #fff;
+    -webkit-box-shadow: 0px 0px 2px rgb(0 0 0 / 80%), inset 0 1px 1px -1px #fff;
+    text-shadow: 0px -1px 0px rgb(0 0 0 / 50%),
+        0px 1px 0px rgb(255 255 255 / 20%);
+    color: var(--brand-color);
+    background: var(--light-color-gradient);
+}
+
+.light-theme .jconfirm .jconfirm-box div.jconfirm-title-c {
+    background: var(--light-color-gradient);
+}
+
+.light-theme .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default {
+    background: var(--light-color-1);
+    color: var(--brand-color);
+}
+
+.light-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    color: var(--brand-color);
+}
+
+.light-theme
+    .jconfirm.jconfirm-light
+    .jconfirm-box
+    .jconfirm-buttons
+    button.btn-default:hover {
+    background: var(--light-color-2);
+}
+
+.light-theme p.address-name {
+    color: var(--brand-color);
+}
+
+.light-theme p.store-name {
+    color: var(--brand-color);
+}
+
+.light-theme small.login-user-name {
+    color: var(--brand-color);
+}
+
+.light-theme .date p span {
+    color: var(--red-color-1);
+}
+
+.light-theme .text-white {
+    color: var(--brand-color) !important;
+}
+
+.light-theme .modal-title {
+    color: var(--brand-color);
+}
+
+.light-theme .jconfirm .jconfirm-box div.jconfirm-title-c .jconfirm-title {
+    color: var(--brand-color);
+}
+/* =================Light theme end=======================  */
+
+
+
+
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    .dark-theme .cat-button {
+        border-left-width: 0;
+    }
+    .dark-theme .cat-button:hover,
+    .dark-theme .cat-button.active {
+        border-left: 0;
+        border-bottom-color: #7bc4ff;
+    }
+}

@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\TransferStockToBranchProduct;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<\App\Models\TransferStockToBranchProduct>
+ */
+final class TransferStockToBranchProductFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = TransferStockToBranchProduct::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
+    {
+        return [
+            'transfer_stock_id' => $this->faker->randomNumber(),
+            'product_id' => \App\Models\Product::factory(),
+            'product_variant_id' => \App\Models\ProductVariant::factory(),
+            'unit_price' => $this->faker->randomFloat(),
+            'quantity' => $this->faker->randomFloat(),
+            'received_qty' => $this->faker->randomFloat(),
+            'unit' => $this->faker->word,
+            'subtotal' => $this->faker->randomFloat(),
+            'is_delete_in_update' => $this->faker->boolean,
+        ];
+    }
+}

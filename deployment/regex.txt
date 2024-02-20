@@ -1,0 +1,6 @@
+json_decode\(\$generalSettings\?->([a-zA-Z_\-]+), true\)\['([a-zA-Z_\-]+)'\]
+Replaced by: $generalSettings['$1']['$2']
+
+src="assets/([\S]+)"
+src="{{ asset('modules/saas/$1') }}"
+

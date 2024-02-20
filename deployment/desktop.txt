@@ -1,0 +1,29 @@
+GPOSS Desktop Version
+===============================================================================
+
+- Anyone can run the software offline using given .exe file
+- Self contained with release versions.
+- Error and Bug free. Tested for all type of corner cases.
+- Updatable over internet or new-versions .exe file
+- Can use local and remote both type of database connection.
+- Data can be exported as .sql format and imported to remote server and replace local connection completely. Should behave the same.
+- User Registration, Email verification, Login, Logout, Forgot password.
+- Role-permission assignments and revokes.
+- License key registration, verification, validity-checks, renewal, etc. Both online & offline mechanisms.
+- Role permissions check for all actions inside the application.
+
+Key modules and features:
+=====================================
+- Products module (Categories, Brands, Products, Product-variants, Product-stocks, Combo-products, etc)
+- Sale module (Sale, Return, POS, Coupons/Offer/Discount/Rewards, Etc)
+- Customer module
+- Purchase module
+- Returns module
+- Adjustment module
+- POS module
+- Accounting (Payments, Ledger, Returns, Invoice management, Etc) module
+- HRM module
+- Settings, Preferences, Cache, Accessibility (Keyboard shortcuts, Font & screen customization), Etc
+- User Management (User management, Ban/Disable user, User Roles and Permissions, Permissions assignment and revokes, etc), User activity-log.
+- Communication and Notifications (Email, SMS, Whatsapp, Etc) module
+- Reports module

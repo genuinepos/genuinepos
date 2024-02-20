@@ -1,0 +1,2 @@
+For the first time when there is no database, users will promt to a
+installer interface where he set everything needed for a fresh software installation of our POS system.

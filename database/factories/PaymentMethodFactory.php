@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\Setups\PaymentMethod;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<\App\Models\Setups\PaymentMethod>
+ */
+final class PaymentMethodFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = PaymentMethod::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->name,
+            'is_fixed' => $this->faker->boolean,
+        ];
+    }
+}

@@ -44,7 +44,7 @@ class RolePermissionSeeder extends Seeder
             $roleAlreadyExists = Role::where('name', $role['name'])->exists();
             if (!$roleAlreadyExists) {
 
-                Role::create(['name' => $role['name']]);
+                Role::create(['id' => $role['id'], 'name' => $role['name']]);
             }
         }
 
@@ -66,21 +66,22 @@ class RolePermissionSeeder extends Seeder
 
     public function syncRolesPermissions(): void
     {
-        $roleNames = $this->getRolesArray();
-        foreach ($roleNames as $roleName) {
+        $roles = $this->getRolesArray();
+        foreach ($roles as $role) {
 
-            $role = Role::where('name', $roleName)->first();
+            $role = Role::where('id', $role['id'])->first();
 
             if (isset($role)) {
 
                 $permissions = $role->getPermissionNames();
                 $countPermissions = count($permissions);
 
-                if ($role->name == 'superadmin' && $role->name == 'admin') {
+                if ($role->id == 1 || $role->id == 2) {
 
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('view_own_sale');
-                }elseif($countPermissions == 0){
+                    // $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
+                } elseif ($countPermissions == 0) {
 
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('view_own_sale');
@@ -101,8 +102,9 @@ class RolePermissionSeeder extends Seeder
     {
         $roles = [
             ['id' => '1', 'name' => 'superadmin'],
-            ['id' => '2', 'name' => 'accountant'],
-            ['id' => '3', 'name' => 'seller'],
+            ['id' => '2', 'name' => 'admin'],
+            ['id' => '3', 'name' => 'accountant'],
+            ['id' => '4', 'name' => 'seller'],
         ];
 
         return $roles;

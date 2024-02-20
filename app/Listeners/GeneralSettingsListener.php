@@ -111,14 +111,18 @@ class GeneralSettingsListener
                         ->where('id', $generalSettings['invoice_layout__add_sale_invoice_layout_id'])
                         ->select($selectedColumns)
                         ->first();
+
                     if (isset($invoiceAddSaleLayout)) {
                         $generalSettings['add_sale_invoice_layout'] = $invoiceAddSaleLayout;
                     }
+
                     $invoicePosSaleLayout = DB::table('invoice_layouts')
                         ->where('id', $generalSettings['invoice_layout__pos_sale_invoice_layout_id'])
                         ->select($selectedColumns)
                         ->first();
+
                     if (isset($invoicePosSaleLayout)) {
+
                         $generalSettings['pos_sale_invoice_layout'] = $invoicePosSaleLayout;
                     }
                 }
@@ -138,6 +142,8 @@ class GeneralSettingsListener
                             'pos.plans.is_trial_plan',
                             'pos.plans.trial_days',
                             'subscriptions.current_shop_count',
+                            'subscriptions.has_business',
+                            'subscriptions.business_expire_date',
                         ]
                     )->first();
 

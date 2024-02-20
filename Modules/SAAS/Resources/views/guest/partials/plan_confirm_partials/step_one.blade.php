@@ -10,11 +10,14 @@
                     <input type="radio" name="price_period" id="price_period" value="year" {{ $pricePeriod == 'year' ? 'checked' : '' }} autocomplete="off"> {{ __('Yearly') }}
                 </label>
 
-                <label class="btn btn-secondary {{ $pricePeriod == 'lifetime' ? 'bg-danger active' : '' }}">
-                    <input type="radio" name="price_period" id="price_period" value="lifetime" {{ $pricePeriod == 'lifetime' ? 'checked' : '' }} autocomplete="off"> {{ __('Lifetime') }}
-                </label>
+                @if ($plan->has_lifetime_period == 1)
+                    <label class="btn btn-secondary {{ $pricePeriod == 'lifetime' ? 'bg-danger active' : '' }}">
+                        <input type="radio" name="price_period" id="price_period" value="lifetime" {{ $pricePeriod == 'lifetime' ? 'checked' : '' }} autocomplete="off"> {{ __('Lifetime') }}
+                    </label>
+                @endif
 
                 <input type="hidden" name="plan_id" id="plan_id" value="{{ $plan->id }}" />
+                <input type="hidden" name="has_lifetime_period" id="has_lifetime_period" value="{{ $plan->has_lifetime_period }}" />
                 <input type="hidden" name="price_per_month" id="price_per_month" value="{{ $plan->price_per_month }}">
                 <input type="hidden" name="price_per_year" id="price_per_year" value="{{ $plan->price_per_year }}">
                 <input type="hidden" name="lifetime_price" id="lifetime_price" value="{{ $plan->lifetime_price }}">
@@ -23,7 +26,7 @@
                 <input type="hidden" name="business_lifetime_price" id="business_lifetime_price" value="{{ $plan->business_lifetime_price }}">
             </div>
 
-            <label class="btn btn-danger float-end d-none" id="has_business_btn">
+            <label class="btn btn-danger float-end" id="has_business_btn">
                 <input type="checkbox" name="has_business" id="has_business" value="1" autocomplete="off">
                 {{ __('I Need Multi Store Management System') }}
             </label>

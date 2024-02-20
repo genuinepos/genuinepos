@@ -65,9 +65,9 @@ class StartupController extends Controller
         try {
             DB::beginTransaction();
 
-            if (Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'business') {
+            $generalSettings = config('generalSettings');
 
-                $generalSettings = config('generalSettings');
+            if (Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'business') {
 
                 $business_logo = null;
                 if ($request->hasFile('business_logo')) {
@@ -99,6 +99,7 @@ class StartupController extends Controller
                 ];
 
                 $this->generalSettingService->updateAndSync($settings);
+                $this->updateBusinessStartUpCompletingStatus();
             }
 
             if (Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'branch') {
@@ -122,9 +123,9 @@ class StartupController extends Controller
                     $this->branchService->addBranchInitialUser($preparedAddBranchRequest, $addBranch->id);
                 }
 
-                $this->subscriptionService->updateStartCompletingStatus();
+                $this->subscriptionService->updateBranchStartUpCompletingStatus();
 
-                if ($generalSettings['addons__branch_limit'] == 1) {
+                if ($generalSettings['subscription']->current_shop_count == 1 && $generalSettings['subscription']->has_business == 0) {
 
                     auth()->user()->branch_id = $addBranch->id;
                     auth()->user()->is_belonging_an_area = BooleanType::True->value;

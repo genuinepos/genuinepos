@@ -157,6 +157,20 @@ class TenantService implements TenantServiceInterface
             $subscribe->initial_discount = $tenantRequest['discount'] ? $tenantRequest['discount'] : 0;
             $subscribe->initial_total_payable_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
 
+            if (isset($tenantRequest['has_business'])) {
+
+                $subscribe->has_business = 1;
+                $subscribe->initial_business_price_period = $tenantRequest['business_price_period'] ? $tenantRequest['business_price_period'] : 0;
+                $subscribe->initial_business_price = $tenantRequest['business_price'] ? $tenantRequest['business_price'] : 0;
+                $subscribe->initial_business_period_count = $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count'];
+                $subscribe->initial_business_subtotal = $tenantRequest['business_subtotal'] ? $tenantRequest['business_subtotal'] : 0;
+                $subscribe->initial_business_start_date = Carbon::now();
+
+                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count']);
+
+                $subscribe->business_expire_date = $expireDate;
+            }
+
             $subscribe->initial_payment_status = $tenantRequest['payment_status'];
             if ($tenantRequest['payment_status'] == 0) {
 
@@ -169,6 +183,7 @@ class TenantService implements TenantServiceInterface
         } elseif ($plan->is_trial_plan == 1) {
 
             $subscribe->trial_start_date = Carbon::now();
+            $subscribe->has_business = 1;
         }
 
         $subscribe->save();

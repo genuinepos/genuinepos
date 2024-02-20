@@ -24,27 +24,38 @@
 
         <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
-                <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
-                <li class="my-1 me-2 ms-1 branch_switcher">
-                    <form id="change_branch_form" action="{{ route('users.change.branch') }}">
-                        @csrf
-                        <div class="select-dropdown">
-                            <select name="branch_id" id="switch_branch_id">
-                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
-                                @foreach ($branches as $branch)
-                                    <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
-                                        @php
-                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
-                                            $branchCode = '-' . $branch->branch_code;
-                                        @endphp
-                                        {{ $branchName . $areaName . $branchCode }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
-                </li>
+                @if (
+                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 0) &&
+                    auth()->user()->can('has_access_to_all_area')
+                )
+                    <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
+                    <li class="my-1 me-2 ms-1 branch_switcher">
+                        <form id="change_branch_form" action="{{ route('users.change.branch') }}">
+                            @csrf
+                            <div class="select-dropdown">
+                                <select name="branch_id" id="switch_branch_id">
+
+                                    @if ($generalSettings['subscription']->has_business == 1)
+
+                                        <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                    @endif
+
+                                    @foreach ($branches as $branch)
+
+                                        <option {{ auth()->user()->branch_id == $branch->id ? 'SELECTED' : '' }} value="{{ $branch->id }}">
+                                            @php
+                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                $branchCode = '-' . $branch->branch_code;
+                                            @endphp
+                                            {{ $branchName . $areaName . $branchCode }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </li>
+                @endif
             </ul>
         </div>
 

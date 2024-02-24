@@ -24,7 +24,7 @@
                         <p class="text-danger fw-bold">{{ session('trialExpireDate') }}</p>
                     @endif
                 </div>
-     
+
                 <div class="col-md-4">
                     <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
                 </div>
@@ -53,47 +53,22 @@
                                                                 <h4>Choose Your Plan</h4>
                                                             </div>
                                                         </th>
+                                                        @foreach ($plans as $plan)
                                                         <th>
                                                             <div class="table-top">
-                                                                <h3>Lean</h3>
-                                                                <h2 class="price">$<span class="amount">120 </span> <span class="type">Monthly</span>
+                                                                <h3>{{ $plan->name }}</h3>
+                                                                <h2 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type">Yearly</span>
                                                                 </h2>
                                                                 <p>For your essential business needs.</p>
-                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan') }}" class="btn btn-primary">Select</a>
+                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}" class="btn btn-primary">Select</a>
                                                             </div>
                                                         </th>
-                                                        <th>
-                                                            <div class="table-top">
-                                                                <h3>Standard</h3>
-                                                                <h2 class="price">$<span class="amount">450</span> <span class="type">Monthly</span>
-                                                                </h2>
-                                                                <p>For your essential business needs.</p>
-                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan') }}" class="btn btn-primary">Select</a>
-                                                            </div>
-                                                        </th>
-                                                        <th>
-                                                            <div class="table-top">
-                                                                <h3>Advanced</h3>
-                                                                <h2 class="price">$<span class="amount">780</span> <span class="type">Monthly</span>
-                                                                </h2>
-                                                                <p>For your essential business needs.</p>
-                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan') }}" class="btn btn-primary">Select</a>
-                                                            </div>
-                                                        </th>
-                                                        <th>
-                                                            <div class="table-top">
-                                                                <h3>Enterprise</h3>
-                                                                <h2 class="price">$<span class="amount">150</span> <span class="type">Monthly</span>
-                                                                </h2>
-                                                                <p>For your essential business needs.</p>
-                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan') }}" class="btn btn-primary">Select</a>
-                                                            </div>
-                                                        </th>
+                                                        @endforeach
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr class="table-secondary">
-                                                        <td colspan="3"><span>Products</span></td>
+                                                        <td colspan="{{ $plans->count() - 1 }}"><span>Features</span></td>
                                                         <td></td>
                                                         <td></td>
                                                     </tr>
@@ -143,46 +118,6 @@
                                                         <td>Advanced Reporting</td>
                                                         <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
                                                         <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr class="table-secondary">
-                                                        <td colspan="3"><span>Services</span></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Digiboard Payments Card-present rate</td>
-                                                        <td>2.6%+ 10c</td>
-                                                        <td>2.6%+ 10c</td>
-                                                        <td>2.6%+ 10c</td>
-                                                        <td>2.6%+ 10c</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>24/7 customer support</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>One on one onboarding</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Additional free training</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Dedicated account manager</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
                                                         <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
                                                         <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
                                                     </tr>

@@ -138,6 +138,7 @@ class GeneralSettingsListener
                             'pos.plans.is_trial_plan',
                             'pos.plans.trial_days',
                             'subscriptions.current_shop_count',
+                            'subscriptions.trial_start_date',
                         ]
                     )->first();
 

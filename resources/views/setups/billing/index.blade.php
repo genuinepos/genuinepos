@@ -46,7 +46,7 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h6>Basic Plan</h6>
+                                        <h6>{{ optional($currentSubscription->plan)->name }}</h6>
                                     </div>
 
                                     <div class="card-body">
@@ -54,7 +54,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th>{{ __("Plan Active Date") }}</th>
-                                                    <th>:10-12-2023</th>
+                                                    <th>: {{ $currentSubscription->created_at->format('d M Y') }}</th>
                                                 </tr>
                                                 <tr>
                                                     <th>{{ __("Current Status") }}</th>
@@ -101,36 +101,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach ($shops as $shop)
                                                     <tr>
-                                                        <td><input type="checkbox" name=""></td>
-                                                        <td>1</td>
-                                                        <td>Farea Super Market(Uttara Sector 4)</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>30-11-2024</td>
-                                                        <td>365 Days</td>
+                                                        <td><input type="checkbox" name="" value="{{ $shop->id }}"></td>
+                                                        <td>{{ $shop->id }}</td>
+                                                        <td>{{ $shop->name }}({{ $shop->area_name }})</td>
+                                                        <td>{{ $shop->created_at->format('d-m-Y') }}</td>
+                                                        <td></td>
+                                                        <td>{{ $shop->expire_date }}</td>
+                                                        <td> Days</td>
                                                         <td>Active</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" name=""></td>
-                                                        <td>2</td>
-                                                        <td>Farea Super Market(Uttara Sector 6)</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>30-11-2024</td>
-                                                        <td>365 Days</td>
-                                                        <td>Active</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><input type="checkbox" name=""></td>
-                                                        <td>3</td>
-                                                        <td>SpeedDigit Computers</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>01-12-2023</td>
-                                                        <td>30-11-2025</td>
-                                                        <td>730 Days</td>
-                                                        <td>Active</td>
-                                                    </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -158,33 +140,19 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @forelse ($subscriptionHistory as $history)
                                                 <tr>
-                                                    <td>1</td>
+                                                    <td>{{ $history->id }}</td>
                                                     <td>Buy Package</td>
-                                                    <td>01-12-2023</td>
-                                                    <td>M08NSBQSRMPRSOZOHX</td>
-                                                    <td>120</td>
-                                                    <td>Strpe</td>
+                                                    <td>{{ $history->payment_date->format('d-m-Y') }}</td>
+                                                    <td>{{ $history->payment_trans_id }}</td>
+                                                    <td>{{ $history->total_payable_amount }}</td>
+                                                    <td>{{ $history->payment_method_name }}</td>
                                                     <td><a href="#"><i class="fa-solid fa-download"></i></a></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Shop Renew</td>
-                                                    <td>01-3-2024</td>
-                                                    <td>M08NSBQSRMPRSOZOHX</td>
-                                                    <td>120</td>
-                                                    <td>Strpe</td>
-                                                    <td><a href="#"><i class="fa-solid fa-download"></i></a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Upgrade Package (Pro Plan)</td>
-                                                    <td>01-3-2024</td>
-                                                    <td>M08NSBQSRMPRSOZOHX</td>
-                                                    <td>120</td>
-                                                    <td>Strpe</td>
-                                                    <td><a href="#"><i class="fa-solid fa-download"></i></a></td>
-                                                </tr>
+                                                @empty
+                                                <td colspan="7" class="text-center">No data found!</td>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
     <title>Cart - GPOSS</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
         $rtl  = app()->isLocale('ar');
@@ -66,8 +67,8 @@
 
                                         <tbody>
                                             <tr>
-                                                <td><p>Previous package (<b>Basic</b>) <i class="fa-solid fa-xmark text-danger"></i></p></td>
-                                                <td class=""><span class="price-txt">$<span class="main-price">460</span></span></td>
+                                                <td><p>Previous package (<b>{{ $currentSubscription->plan->name }}</b>) <i class="fa-solid fa-xmark text-danger"></i></p></td>
+                                                <td class=""><span class="price-txt">$<span class="main-price">{{ $currentSubscription->plan->price_per_year }}</</span></span></td>
                                                 <td>
                                                     1
                                                     {{-- <div class="product-count cart-product-count">
@@ -86,14 +87,14 @@
                                                     </div> --}}
                                                     {{-- <input class="bg-secondary" type="number" min="1" max="100" step="1" value="1" readonly> --}}
                                                 </td>
-                                                <td><span class="price-txt text-danger">$<span class="total-price">460</span></span></td>
+                                                <td><span class="price-txt text-danger">$<span class="total-price">{{ $currentSubscription->plan->price_per_year }}</span></span></td>
                                                 <td><span>$<span class="adjusted-price">0.00</span></span></td>
-                                                <td><span>$<span class="total-price">460</span></span></td>
+                                                <td><span>$<span class="total-price">{{ $currentSubscription->plan->price_per_year }}</</span></span></td>
                                             </tr>
 
                                             <tr>
-                                                <td>Pro</td>
-                                                <td><span class="price-txt">$<span class="main-price">700</span></span></td>
+                                                <td>{{  $plan->name }}</td>
+                                                <td><span class="price-txt">$<span class="main-price">{{ $plan->price_per_year }}</span></span></td>
                                                 <td>
                                                     {{-- <div class="product-count cart-product-count">
                                                         <div class="quantity rapper-quantity">
@@ -110,9 +111,11 @@
                                                     </div> --}}
                                                     1
                                                 </td>
-                                                <td><span class="price-txt">$<span class="total-price">700</span></span></td>
-                                                <td><span class="price-txt text-danger">$<span class="adjusted-price">120</span></span></td>
-                                                <td><span class="price-txt">$<span class="total-price">580</span></span></td>
+                                                <td><span class="price-txt">$<span class="total-price">{{ $plan->price_per_year }}</span></span></td>
+                                                <td>
+                                                    <span class="price-txt text-danger">$<span class="adjusted-price">{{ $currentSubscription->plan->is_trial_plan ? 0 : 120  }}</span></span>
+                                                </td>
+                                                <td><span class="price-txt">$<span class="total-price">{{ $plan->price_per_year }}</span></span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -134,11 +137,11 @@
                                             <div class="calculate-area">
                                                 <ul>
                                                     <li>Total Store Quantity <span class="price-txt"><span class="">1</span></span></li>
-                                                    <li>Net Total <span class="price-txt">$<span class="sub-total">700</span></span></li>
-                                                    <li>Adjusted Amount <span class="price-txt">$<span class="sub-total">120</span></span></li>
+                                                    <li>Net Total <span class="price-txt">$<span class="sub-total">{{ $plan->price_per_year }}</span></span></li>
+                                                    <li>Adjusted Amount <span class="price-txt">$<span class="sub-total">0</span></span></li>
                                                     <li>Tax <span class="price-txt" id="tax"><span class="text-success">Free</span></span></li>
                                                     <li>Discount <span class="price-txt" id="discount"><span>0</span></span></li>
-                                                    <li class="total-price-wrap">Total <span class="price-txt">$<span id="totalPrice">580</span></span></li>
+                                                    <li class="total-price-wrap">Total <span class="price-txt">$<span id="totalPrice">{{ $plan->price_per_year }}</span></span></li>
                                                 </ul>
                                                 <button class="def-btn tab-next-btn" id="proceedToCheckout">Proceed to checkout</button>
                                             </div>
@@ -160,11 +163,11 @@
                                                         <div class="calculate-area">
                                                             <ul>
                                                                 <li>Total Store Quantity <span class="price-txt"><span class="">1</span></span></li>
-                                                                <li>Net Total <span class="price-txt">$<span class="sub-total">$700</span></span></li>
-                                                                <li>Adjusted Amount <span class="price-txt">$<span class="sub-total">$120</span></span></li>
+                                                                <li>Net Total <span class="price-txt">$<span class="sub-total">{{ $plan->price_per_year }}</span></span></li>
+                                                                <li>Adjusted Amount <span class="price-txt">$<span class="sub-total">0</span></span></li>
                                                                 <li>Tax <span class="price-txt" id="tax"><span class="text-success">Free</span></span></li>
                                                                 <li>Discount <span class="price-txt" id="discount"><span>0</span></span></li>
-                                                                <li class="total-price-wrap">Total <span class="price-txt">$<span id="totalPrice">$580</span></span></li>
+                                                                <li class="total-price-wrap">Total <span class="price-txt">$<span id="totalPrice">{{ $plan->price_per_year }}</span></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -289,7 +292,7 @@
                                                 <div class="panel-header">
                                                     <div class="left-wrap">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" name="cash" type="checkbox" disabled>
+                                                            <input class="form-check-input" id="cash-on-delivery" name="cash" type="checkbox" disabled>
                                                             <span class="sub-input"><i class="fa-regular fa-check"></i></span>
                                                         </div>
                                                         <span class="type">
@@ -302,8 +305,10 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <button class="def-btn palce-order tab-next-btn btn-success" id="palceOrder">Place Order <i class="fa-light fa-truck-arrow-right"></i></button>
+                                        <input type="hidden" id="plan-id" value="{{ $plan->id }}" />
+                                        <button class="def-btn palce-order tab-next-btn btn-success" type="button" id="palceOrder">
+                                            Place Order <i class="fa-light fa-truck-arrow-right"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -331,6 +336,12 @@
     <script src="{{asset('backend/js/jquery-1.7.1.min.js')}}"></script>
     <script src="{{ asset('backend/asset/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('backend/js/cart.js') }}"></script>
+
+    <script>
+        $(document).ready( function() {
+
+        });
+    </script>
 </body>
 
 </html>

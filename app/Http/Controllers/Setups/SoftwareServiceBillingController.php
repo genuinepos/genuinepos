@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SubscriptionUpgradeMail;
 use App\Models\Setups\Branch;
 use App\Models\Subscriptions\Subscription;
 use App\Models\Subscriptions\SubscriptionTransaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Entities\Plan;
 
 class SoftwareServiceBillingController extends Controller
@@ -74,6 +77,15 @@ class SoftwareServiceBillingController extends Controller
             $transaction->payment_date = now();
 
             $transaction->save();
+
+            $user = auth()->user();
+
+            try {
+                Mail::to($user->email)->send(new SubscriptionUpgradeMail($user));
+                logger('email sending', ['sending mail' => 'email successfully send']);
+            }catch(Exception $e) {
+                logger('email send fail', ['test mail' => $e->getMessage()]);
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);

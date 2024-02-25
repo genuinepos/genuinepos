@@ -150,5 +150,7 @@ Route::prefix('setups')->group(function () {
         Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
 
         Route::get('due/repayment', [SoftwareServiceBillingController::class, 'dueRepayment'])->name('software.service.billing.due.repayment');
+        Route::get('invoice/view/{id}', [SoftwareServiceBillingController::class, 'invoiceView'])->name('software.service.billing.invoice.view');
+        Route::get('invoice/download/{id}', [SoftwareServiceBillingController::class, 'invoiceDownload'])->name('software.service.billing.invoice.download');
     });
 });

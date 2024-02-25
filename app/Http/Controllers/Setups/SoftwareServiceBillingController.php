@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Entities\Plan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SoftwareServiceBillingController extends Controller
 {
@@ -102,5 +103,28 @@ class SoftwareServiceBillingController extends Controller
 
     public function dueRepayment() {
         return view('setups.billing.due_repayment');
+    }
+
+    public function invoiceView($id)
+    {
+        $transaction = $this->invoiceQuery($id);
+
+        return view('setups.invoices.invoice_view', compact('transaction'));
+    }
+
+    public function invoiceDownload($id)
+    {
+        $transaction = $this->invoiceQuery($id);
+        // return view('setups.invoices.invoice_download', compact('transaction'));
+        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']); ;
+        return $pdf->download('invoice.pdf');
+    }
+
+    protected function invoiceQuery($id)
+    {
+        $transaction = SubscriptionTransaction::with('subscription', 'subscription.user', 'plan')->find($id);
+        DB::reconnect();
+
+        return $transaction;
     }
 }

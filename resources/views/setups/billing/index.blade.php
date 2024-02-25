@@ -16,7 +16,7 @@
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Billing') }}</h6>
+                    <h6>{{ __('Invoice') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
@@ -148,7 +148,15 @@
                                                     <td>{{ $history->payment_trans_id }}</td>
                                                     <td>{{ $history->total_payable_amount }}</td>
                                                     <td>{{ $history->payment_method_name }}</td>
-                                                    <td><a href="#"><i class="fa-solid fa-download"></i></a></td>
+                                                    <td>
+                                                        <a href="{{ route('software.service.billing.invoice.view', $history->id) }}">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </a>
+
+                                                        <a href="{{ route('software.service.billing.invoice.download', $history->id) }}">
+                                                            <i class="fa-solid fa-download"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 @empty
                                                 <td colspan="7" class="text-center">No data found!</td>

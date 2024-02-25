@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('is_minimum_purchase')->default(0);
             $table->decimal('purchase_price',18,2)->nullable();
             $table->integer('is_maximum_usage')->default(0);
-            $table->integer('no_of_usage')->nullable();
+            $table->integer('no_of_usage')->default(0);
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@
         <div class="panel-header">
             <h5>{{ __('Coupons') }}</h5>
             <div>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-sm btn-primary">{{ __('Create Coupon') }}</a>
+                <a href="{{route('saas.coupons.create')}}" class="btn btn-sm btn-primary">{{ __('Create Coupon') }}</a>
             </div>
         </div>
         <div class="panel-body">
@@ -22,9 +22,6 @@
                                 <th>{{ __('Start Date') }}</th>
                                 <th>{{ __('End Date') }}</th>
                                 <th>{{ __('Percent') }}</th>
-                                <th>{{ __('Minimum Purchase') }}</th>
-                                <th>{{ __('Purchase Price') }}</th>
-                                <th>{{ __('Maximum Usage') }}</th>
                                 <th>{{ __('No Of Usage') }}</th>
                                 <th>{{ __('Action') }}</th>
                             </tr>
@@ -35,52 +32,8 @@
                     </table>
                 </div>
             </div>
-
-
-
-<!-- Bootstrap Modal -->
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          Modal body..
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
         </div>
     </div>
-
-
-
-
-
-
 
 
     @push('js')
@@ -111,18 +64,6 @@
                         data: 'percent'
                     },
                     {
-                        name: 'is_minimum_purchase',
-                        data: 'is_minimum_purchase'
-                    },
-                    {
-                        name: 'purchase_price',
-                        data: 'purchase_price'
-                    },
-                    {
-                        name: 'is_maximum_usage',
-                        data: 'is_maximum_usage'
-                    },
-                    {
                         name: 'no_of_usage',
                         data: 'no_of_usage'
                     },
@@ -130,7 +71,8 @@
                         name: 'action',
                         data: 'action'
                     }
-                ]
+                ],
+                order: [[1, 'desc']]
             });
         </script>
     @endpush

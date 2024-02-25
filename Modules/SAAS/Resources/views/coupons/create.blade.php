@@ -403,7 +403,7 @@
   background:#0D99FF;
 }
 
-    </style>
+</style>
 @endpush
     <div class="row">
         <div class="col-12">
@@ -415,28 +415,30 @@
                     </div>
                 </div>
                 <div class="panel-body">
+                  
                     <form method="POST" action="{{ route('saas.coupons.store') }}" id="couponstoreForm" enctype="multipart/form-data">
                         @csrf
                         <div class="row g-3">
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="code" class="form-label"><strong>{{ __('Coupon Code') }}</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="code" class="form-control" id="code" placeholder="{{ __('Enter Coupon Code') }}" required>
+                                <input type="text" name="code" value="{{old('code')}}" class="form-control" id="code" placeholder="{{ __('Enter Coupon Code') }}" required>
+                                <button type="button" class="btn btn-primary btn-sm mt-2" id="generate_code">Generate Code</button>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="start_date" class="form-label"><strong>{{ __('Start Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="start_date" class="form-control" id="start_date" placeholder="{{ __('Enter Start Date') }}" required>
+                                <input type="date" name="start_date" value="{{old('start_date')}}" class="form-control" id="start_date" placeholder="{{ __('Enter Start Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="end_date" class="form-label"><strong>{{ __('End Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="end_date" class="form-control" id="end_date" placeholder="{{ __('Enter End Date') }}" required>
+                                <input type="date" name="end_date" value="{{old('end_date')}}" class="form-control" id="end_date" placeholder="{{ __('Enter End Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="percent" class="form-label"><strong>{{ __('Percentage %') }}</strong><span class="text-danger">*</span></label>
-                                <input type="number" name="percent" class="form-control" id="percent" placeholder="{{ __('Enter Percentage') }}" required>
+                                <input type="number" name="percent" value="{{old('percent')}}" class="form-control" id="percent" placeholder="{{ __('Enter Percentage') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -447,10 +449,9 @@
                                 <input type="hidden" id="minimum_purchase_input" name="is_minimum_purchase" value="1">
                             </div>
 
-
-                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6" style="display:none" id="is_minimum_purchase_id">
                                 <label for="purchase_price" class="form-label"><strong>{{ __('Price(IDR)') }}</strong></label>
-                                <input type="number" name="purchase_price" class="form-control" id="purchase_price" placeholder="{{ __('Enter Purchase Price') }}" required>
+                                <input type="number" name="purchase_price" class="form-control" id="purchase_price" placeholder="{{ __('Enter Purchase Price') }}">
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -461,9 +462,9 @@
                                 <input type="hidden" id="maximum_purchase_input" name="is_maximum_usage" value="0">
                             </div>
 
-                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6" style="display:none" id="is_maximum_usage_id">
                                 <label for="purchase_price" class="form-label"><strong>{{ __('No Of Usage') }}</strong></label>
-                                <input type="number" name="purchase_price" class="form-control" id="purchase_price" placeholder="{{ __('no Of Usage') }}" required>
+                                <input type="number" name="no_of_usage" class="form-control" id="purchase_price" placeholder="{{ __('no Of Usage') }}">
                             </div>
 
                             <div class="mt-3">
@@ -480,15 +481,35 @@
 
         <script>
             $(document).ready(function(){
+
                 $('.minimum_purchase_class').on('click', function(){
                     var toggleValue = $(this).hasClass('active') ? 0 : 1;
                     $('#minimum_purchase_input').val(toggleValue);
+                    if(toggleValue==1){
+                      $("#is_minimum_purchase_id").show();
+                    }else{
+                      $("#is_minimum_purchase_id").hide();
+                    }
+
                 });
 
                 $('.maximum_purchase_class').on('click', function(){
                     var toggleValue = $(this).hasClass('active') ? 0 : 1;
+                    console.log(toggleValue);
                     $('#maximum_purchase_input').val(toggleValue);
+                    if(toggleValue==1){
+                      $("#is_maximum_usage_id").show();
+                    }else{
+                      $("#is_maximum_usage_id").hide();
+                    }
                 });
+
+                $('#generate_code').on('click', function(){
+                    let code = Math.random().toString(36).substring(2,7);
+                    $("#code").val(code); 
+                });
+
+
             });
         </script>
     @endpush

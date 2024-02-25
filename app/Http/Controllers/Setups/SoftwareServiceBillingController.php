@@ -18,7 +18,7 @@ class SoftwareServiceBillingController extends Controller
 {
     public function index()
     {
-        $currentSubscription = Subscription::with('plan')->find(1);
+        $currentSubscription = Subscription::with('plan')->first();
         DB::reconnect();
 
         $shops = Branch::all();
@@ -28,7 +28,8 @@ class SoftwareServiceBillingController extends Controller
         return view('setups.billing.index', compact('currentSubscription', 'shops', 'subscriptionHistory'));
     }
 
-    public function upgradePlan() {
+    public function upgradePlan()
+    {
         DB::statement('use ' . env('DB_DATABASE'));
         $plans = Plan::all();
 

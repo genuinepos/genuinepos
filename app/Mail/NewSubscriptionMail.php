@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SubscriptionUpgradeMail extends Mailable
+class NewSubscriptionMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class SubscriptionUpgradeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Upgrade Mail',
+            subject: 'New Subscription Mail',
         );
     }
 
@@ -39,7 +39,7 @@ class SubscriptionUpgradeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.subscription_upgrade',
+            view: 'mail.new_subscription',
         );
     }
 

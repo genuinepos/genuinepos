@@ -2,6 +2,7 @@
 
 namespace Modules\SAAS\Services;
 
+use App\Mail\NewSubscriptionMail;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Role;
@@ -17,6 +18,7 @@ use App\Models\Subscriptions\Subscription;
 use Modules\SAAS\Database\factories\AdminFactory;
 use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Models\Subscriptions\SubscriptionTransaction;
+use Illuminate\Support\Facades\Mail;
 
 class TenantService implements TenantServiceInterface
 {
@@ -66,6 +68,14 @@ class TenantService implements TenantServiceInterface
 
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
+
+                    try {
+                        Mail::to($tenantRequest['email'])->send(new NewSubscriptionMail($tenant));
+                        logger('email sending', ['sending mail' => 'email successfully send']);
+                    }catch(Exception $e) {
+                        logger('email send fail', ['test mail' => $e->getMessage()]);
+                    }
+
                     return $tenant;
                 }
             }
@@ -180,7 +190,7 @@ class TenantService implements TenantServiceInterface
 
         if ($plan->is_trial_plan == 0) {
 
-            $this->storeShopExpireHistory($tenantRequest);
+            $this->storeShopExpireHistory($tenantRequest, $plan);
         }
     }
 

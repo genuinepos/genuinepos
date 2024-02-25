@@ -18,19 +18,19 @@ class CouponController extends Controller
         if ($request->ajax()) {
             return DataTables::of($coupons)
                 ->addIndexColumn()
-               
+
                 ->addColumn('is_minimum_purchase', function ($row) {
                     if($row->is_minimum_purchase==1){
                         return "Yes";
                      }else{
-                         return "No"; 
+                         return "No";
                      }
                 })
                 ->addColumn('is_maximum_usage', function ($row) {
                     if($row->is_maximum_usage==1){
                         return "Yes";
                      }else{
-                         return "No"; 
+                         return "No";
                      }
                 })
                 ->addColumn('action', function ($row) {
@@ -55,24 +55,9 @@ class CouponController extends Controller
         return view('saas::coupons.create');
     }
 
-    public function store(UserStoreRequest $request, FileUploader $fileUploader)
+    public function store(Request $request)
     {
-        $this->authorize('users_store');
-        $photo = null;
-        if ($request->hasFile('photo')) {
-            $photo = $fileUploader->upload($request->file('photo'), 'uploads/saas/users/');
-        }
-        $user = Coupon::create([
-            ...$request->except(['role_id', 'photo', 'password']),
-            'photo' => $photo,
-            'password' => bcrypt($request->password),
-        ]);
-        $role = Role::find($request->role_id);
-        if ($user && $role) {
-            $user->assignRole($role);
-
-            return redirect(route('saas.users.index'))->with('success', 'User created successfully!');
-        }
+        
     }
 
     public function show($id)

@@ -399,6 +399,10 @@
   background-color: #ff8300;
 }
 
+.btn-toggle.btn-sm:hover{
+  background:#0D99FF;
+}
+
     </style>
 @endpush
     <div class="row">
@@ -434,19 +438,15 @@
                                 <label for="percent" class="form-label"><strong>{{ __('Percentage %') }}</strong><span class="text-danger">*</span></label>
                                 <input type="number" name="percent" class="form-control" id="percent" placeholder="{{ __('Enter Percentage') }}" required>
                             </div>
-                        
+
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="phone" class="form-label"><strong>{{ __('Minimum Purchase') }}</strong></label>
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="minimum_purchase" id="minimum_purchase_on" autocomplete="off" value="1"> Yes
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="minimum_purchase" id="minimum_purchase_off" autocomplete="off" value="0"> No
-                                    </label>
-                                </div>
+                                <button type="button" class="btn btn-sm btn-toggle minimum_purchase_class"  data-toggle="button" aria-pressed="true" autocomplete="off">
+                                    <div class="handle"></div>
+                                </button>
+                                <input type="hidden" id="minimum_purchase_input" name="is_minimum_purchase" value="1">
                             </div>
-                            
+
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="purchase_price" class="form-label"><strong>{{ __('Price(IDR)') }}</strong></label>
@@ -455,9 +455,10 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="phone" class="form-label"><strong>{{ __('Maximum Usage') }}</strong></label>
-                                <button type="button" class="btn btn-sm btn-toggle active" data-toggle="button" aria-pressed="true" autocomplete="off">
+                                <button type="button" class="btn btn-sm btn-toggle maximum_purchase_class"  data-toggle="button" aria-pressed="true" autocomplete="off">
                                     <div class="handle"></div>
-                                  </button>
+                                </button>
+                                <input type="hidden" id="maximum_purchase_input" name="is_maximum_usage" value="0">
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -475,8 +476,20 @@
         </div>
     </div>
     @push('js')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js">
-            
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function(){
+                $('.minimum_purchase_class').on('click', function(){
+                    var toggleValue = $(this).hasClass('active') ? 0 : 1;
+                    $('#minimum_purchase_input').val(toggleValue);
+                });
+
+                $('.maximum_purchase_class').on('click', function(){
+                    var toggleValue = $(this).hasClass('active') ? 0 : 1;
+                    $('#maximum_purchase_input').val(toggleValue);
+                });
+            });
         </script>
     @endpush
 </x-saas::admin-layout>

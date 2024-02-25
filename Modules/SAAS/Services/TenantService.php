@@ -28,7 +28,17 @@ class TenantService implements TenantServiceInterface
             DB::beginTransaction();
             $plan = Plan::find($tenantRequest['plan_id']);
 
-            // $expireAt = $plan->expireAt();
+            $expireDate = '';
+            if ($tenantRequest['price_period'] == 'month') {
+
+                $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
+            } else if ($tenantRequest['price_period'] == 'year') {
+
+                $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
+            } else if ($tenantRequest['lifetime'] == 'lifetime') {
+
+                $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
+            }
 
             $tenant = Tenant::create([
                 'id' => $tenantRequest['domain'],
@@ -37,6 +47,8 @@ class TenantService implements TenantServiceInterface
                 'plan_id' => $tenantRequest['plan_id'],
                 // 'shop_count' => $tenantRequest['shop_count'],
                 // 'expire_at' => null,
+                'start_date' => Carbon::now(),
+                'expire_date' => $expireDate,
                 'user_id' => 1,
             ]);
 

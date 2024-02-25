@@ -141,7 +141,7 @@ Route::prefix('setups')->group(function () {
     });
 
     Route::group(['prefix' => 'billing'], function () {
-
+        
         Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
         Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
         Route::get('cart/for/upgrade/plan/{id}', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');

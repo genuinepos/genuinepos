@@ -54,10 +54,10 @@
                         <div class="mail-footer">
                             <div class="logo"><img src="{{ asset('assets/images/logo_black.png') }}" alt="LOGO"></div>
                             <div class="footer-social">
-                                <a href="#" title="Facebook" target="_blank"><img src="assets/images/facebook.png" alt="facebook"></a>
-                                <a href="#" title="Instagram" target="_blank"><img src="assets/images/instagram.png" alt="instagram"></a>
-                                <a href="#" title="Twitter" target="_blank"><img src="assets/images/twitter.png" alt="twitter"></a>
-                                <a href="#" title="Linkedin" target="_blank"><img src="assets/images/linkedin.png" alt="linkedin"></a>
+                                <a href="{{ config('speeddigit.facebook') }}" title="Facebook" target="_blank"><img src="{{ asset('assets/images/facebook.png') }}" alt="facebook"></a>
+                                <a href="{{ config('speeddigit.youtube') }}" title="Instagram" target="_blank"><img src="{{ asset('assets/images/instagram.png') }}" alt="instagram"></a>
+                                <a href="{{ config('speeddigit.twitter') }}" title="Twitter" target="_blank"><img src="{{ asset('assets/images/twitter.png') }}" alt="twitter"></a>
+                                <a href="{{ config('speeddigit.linkedin') }}" title="Linkedin" target="_blank"><img src="{{ asset('assets/images/linkedin.png') }}" alt="linkedin"></a>
                             </div>
                         </div>
                     </td>

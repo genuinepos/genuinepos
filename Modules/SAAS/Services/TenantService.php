@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\SAAS\Services;
 
 use App\Mail\NewSubscriptionMail;

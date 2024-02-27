@@ -70,8 +70,21 @@ class RolePermissionSeeder extends Seeder
         foreach ($roles as $role) {
 
             $role = Role::where('id', $role['id'])->first();
-            
+
             if (isset($role)) {
+
+                $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
+                $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
+                $hasShopIndexPermission = $role->hasPermissionTo('shops_index');
+                $hasShopCreatePermission = $role->hasPermissionTo('shops_create');
+                $hasShopEditPermission = $role->hasPermissionTo('shops_edit');
+                $hasShopDeletePermission = $role->hasPermissionTo('shops_delete');
+                $hasBillingIndexPermission = $role->hasPermissionTo('billing_index');
+                $hasBillingUpgradePlanPermission = $role->hasPermissionTo('billing_upgrade_plan');
+                $hasBillingShopAddPermission = $role->hasPermissionTo('billing_shop_add');
+                $hasBillingRenewShopPermission = $role->hasPermissionTo('billing_renew_shop');
+                $hasBillingBusinessAddPermission = $role->hasPermissionTo('billing_business_add');
+                $hasBillingPayDuePaymentPermission = $role->hasPermissionTo('billing_pay_due_payment');
 
                 $permissions = $this->getPermissionsArray();
                 $rolePermissions = $role->getPermissionNames();
@@ -80,13 +93,89 @@ class RolePermissionSeeder extends Seeder
                 if ($role->id == 1 || $role->id == 2) {
 
                     $role->syncPermissions($permissions);
-                    $role->revokePermissionTo('view_own_sale');
-                    // $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
-                } elseif ($countRolePermissions == 0) {
+                    if ($role->id == 1) {
+
+                        $role->revokePermissionTo('view_own_sale');
+                    }
+
+                    if ($role->id == 2) {
+
+                        if (!$hasAccessToAllAreaPermission) {
+
+                            $role->revokePermissionTo('has_access_to_all_area');
+                        }
+
+                        if (!$hasViewOwnSalePermission) {
+
+                            $role->revokePermissionTo('view_own_sale');
+                        }
+
+                        if (!$hasShopIndexPermission) {
+
+                            $role->revokePermissionTo('shops_index');
+                        }
+
+                        if (!$hasShopCreatePermission) {
+
+                            $role->revokePermissionTo('shops_create');
+                        }
+
+                        if (!$hasShopEditPermission) {
+
+                            $role->revokePermissionTo('shops_edit');
+                        }
+
+                        if (!$hasShopDeletePermission) {
+
+                            $role->revokePermissionTo('shops_delete');
+                        }
+
+                        if (!$hasBillingIndexPermission) {
+
+                            $role->revokePermissionTo('billing_index');
+                        }
+
+                        if (!$hasBillingUpgradePlanPermission) {
+
+                            $role->revokePermissionTo('billing_upgrade_plan');
+                        }
+
+                        if (!$hasBillingShopAddPermission) {
+
+                            $role->revokePermissionTo('billing_shop_add');
+                        }
+
+                        if (!$hasBillingRenewShopPermission) {
+
+                            $role->revokePermissionTo('billing_renew_shop');
+                        }
+
+                        if (!$hasBillingBusinessAddPermission) {
+
+                            $role->revokePermissionTo('billing_business_add');
+                        }
+
+                        if (!$hasBillingPayDuePaymentPermission) {
+
+                            $role->revokePermissionTo('billing_pay_due_payment');
+                        }
+                    }
+                } elseif (!$role->id == 1 && !$role->id == 2 && $countRolePermissions == 0) {
 
                     $role->syncPermissions($permissions);
-                    $role->revokePermissionTo('view_own_sale');
                     $role->revokePermissionTo('has_access_to_all_area');
+                    $role->revokePermissionTo('view_own_sale');
+                    $role->revokePermissionTo('shops_index');
+                    $role->revokePermissionTo('shops_create');
+                    $role->revokePermissionTo('shops_edit');
+                    $role->revokePermissionTo('shops_delete');
+
+                    $role->revokePermissionTo('billing_index');
+                    $role->revokePermissionTo('billing_upgrade_plan');
+                    $role->revokePermissionTo('billing_shop_add');
+                    $role->revokePermissionTo('billing_renew_shop');
+                    $role->revokePermissionTo('billing_business_add');
+                    $role->revokePermissionTo('billing_pay_due_payment');
                 }
             }
         }
@@ -105,7 +194,7 @@ class RolePermissionSeeder extends Seeder
             ['id' => '1', 'name' => 'superadmin'],
             ['id' => '2', 'name' => 'admin'],
             ['id' => '3', 'name' => 'accountant'],
-            ['id' => '4', 'name' => 'seller'],
+            ['id' => '4', 'name' => 'sales'],
         ];
 
         return $roles;
@@ -498,6 +587,13 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '368', 'name' => 'module_settings'],
             ['id' => '369', 'name' => 'has_access_to_all_area'],
+            ['id' => '370', 'name' => 'billing_business_add'],
+            ['id' => '371', 'name' => 'billing_pay_due_payment'],
+
+            ['id' => '372', 'name' => 'shops_index'],
+            ['id' => '373', 'name' => 'shops_create'],
+            ['id' => '374', 'name' => 'shops_edit'],
+            ['id' => '375', 'name' => 'shops_delete'],
         ];
 
         return $permissions;

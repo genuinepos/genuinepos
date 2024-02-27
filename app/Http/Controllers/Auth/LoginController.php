@@ -67,7 +67,7 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $branchCount = DB::table('general_settings')->where('key', 'addons__branch_limit')->first();
+        $subscription = DB::table('subscriptions')->first();
         $firstBranch = DB::table('branches')->first();
 
         $user = User::with('branch')
@@ -93,9 +93,9 @@ class LoginController extends Controller
                     session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id,  user_id: $user->id);
+                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id, user_id: $user->id);
 
-                if (isset($branchCount) && isset($firstBranch) && $branchCount->value == 1) {
+                if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == 0) {
 
                     $user->branch_id = $firstBranch->id;
                     $user->is_belonging_an_area = BooleanType::True->value;
@@ -119,7 +119,7 @@ class LoginController extends Controller
     {
         $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
 
-        if (auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::Admin->value) {
+        if (auth()->user()->can('has_access_to_all_area')) {
 
             auth()->user()->branch_id = null;
             auth()->user()->is_belonging_an_area = BooleanType::False->value;

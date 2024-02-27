@@ -15,11 +15,20 @@
                 </label>
 
                 <input type="hidden" name="is_trial_plan" id="is_trial_plan" value="0">
-                <input type="hidden" name="price_per_month" id="price_per_month" value="">
-                <input type="hidden" name="price_per_year" id="price_per_year" value="">
-                <input type="hidden" name="lifetime_price" id="lifetime_price" value="">
-                <input type="hidden" name="lifetime_applicable_years" id="lifetime_applicable_years" value="">
+                <input type="hidden" name="price_per_month" id="price_per_month">
+                <input type="hidden" name="price_per_year" id="price_per_year">
+                <input type="hidden" name="has_lifetime_period" id="has_lifetime_period" value="1"/>
+                <input type="hidden" name="lifetime_price" id="lifetime_price">
+                <input type="hidden" name="lifetime_applicable_years" id="lifetime_applicable_years">
+                <input type="hidden" name="business_price_per_month" id="business_price_per_month">
+                <input type="hidden" name="business_price_per_year" id="business_price_per_year">
+                <input type="hidden" name="business_lifetime_price" id="business_lifetime_price">
             </div>
+
+            <label class="btn btn-danger float-end" id="has_business_btn">
+                <input type="checkbox" name="has_business" id="has_business" value="1" autocomplete="off">
+                {{ __('Need Multi Store Management System?') }}
+            </label>
         </div>
 
         <div class="table-responsive">
@@ -34,7 +43,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="plan_price_table">
                     <tr>
                         <td>
                             <select name="plan_id" id="plan_id" class="form-control plan-select select wide">

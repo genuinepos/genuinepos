@@ -33,7 +33,7 @@ return new class extends Migration
                 $table->date('business_expire_date')->after('has_business')->nullable();
             }
 
-            if (Schema::hasColumn('subscriptions', 'is_completed_startup')) {
+            if (!Schema::hasColumn('subscriptions', 'is_completed_startup')) {
 
                 $table->renameColumn('is_completed_startup', 'is_completed_business_startup');
             }

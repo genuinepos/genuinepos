@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            if (!Schema::hasColumn('subscriptions', 'initial_business_period')) {
+
+            if (!Schema::hasColumn('subscriptions', 'initial_business_price_period')) {
 
                 $table->string('initial_business_price_period')->after('initial_plan_price')->nullable();
             }

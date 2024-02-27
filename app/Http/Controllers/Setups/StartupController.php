@@ -99,7 +99,7 @@ class StartupController extends Controller
                 ];
 
                 $this->generalSettingService->updateAndSync($settings);
-                $this->updateBusinessStartUpCompletingStatus();
+                $this->subscriptionService->updateBusinessStartUpCompletingStatus();
             }
 
             if (Session::get('startupType') == 'business_and_branch' || Session::get('startupType') == 'branch') {

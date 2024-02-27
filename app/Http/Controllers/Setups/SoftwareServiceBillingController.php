@@ -3,23 +3,98 @@
 namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SubscriptionUpgradeMail;
+use App\Models\Setups\Branch;
+use App\Models\Subscriptions\Subscription;
+use App\Models\Subscriptions\SubscriptionTransaction;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Modules\SAAS\Entities\Plan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SoftwareServiceBillingController extends Controller
 {
-    public function index() {
-        return view('setups.billing.index');
+    public function index()
+    {
+        $currentSubscription = Subscription::with('plan')->first();
+        DB::reconnect();
+
+        $shops = Branch::all();
+
+        $subscriptionHistory = SubscriptionTransaction::latest()->get();
+
+        return view('setups.billing.index', compact('currentSubscription', 'shops', 'subscriptionHistory'));
     }
 
-    public function upgradePlan() {
-        return view('setups.billing.upgrade_plan');
+    public function upgradePlan()
+    {
+        DB::statement('use ' . env('DB_DATABASE'));
+        $plans = Plan::all();
+
+        DB::reconnect();
+
+        return view('setups.billing.upgrade_plan', compact('plans'));
     }
 
-    public function cartFoUpgradePlan() {
-        return view('setups.billing.cart_for_upgrade_plan');
+    public function cartFoUpgradePlan($id)
+    {
+        DB::statement('use ' . env('DB_DATABASE'));
+        $plan = Plan::findOrFail($id);
+
+        DB::reconnect();
+
+        $currentSubscription = Subscription::with('plan')->find(1);
+
+        return view('setups.billing.cart_for_upgrade_plan', compact('plan', 'currentSubscription'));
+    }
+
+    public function processUpgradePlan(Request $request, $id)
+    {
+        DB::statement('use ' . env('DB_DATABASE'));
+        $plan = Plan::findOrFail($id);
+        DB::reconnect();
+
+        $subscription = Subscription::first();
+
+        $subscription->trial_start_date = null;
+        $subscription->initial_plan_start_date = $request->initial_plan_start_date;
+        $subscription->plan_id = $id;
+        $subscription->initial_subtotal = $plan->price_per_year;
+        $subscription->initial_plan_start_date = now();
+        $subscription->initial_plan_expire_date = $request->initial_plan_expire_date;
+
+        if($subscription->save()) {
+            $transaction = new SubscriptionTransaction();
+            $transaction->subscription_id = $subscription->id;
+            $transaction->plan_id = $plan->id;
+            $transaction->transaction_type = 1;
+            $transaction->payment_method_provider_name = $request->payment_method_name;
+            $transaction->payment_method_name = $request->payment_method_name;
+            $transaction->subtotal = $plan->price_per_year;
+            $transaction->total_payable_amount = $plan->price_per_year;
+            $transaction->paid = $plan->price_per_year;
+            $transaction->payment_status = 1;
+            $transaction->payment_date = now();
+
+            $transaction->save();
+
+            $user = auth()->user();
+
+            try {
+                Mail::to($user->email)->send(new SubscriptionUpgradeMail($user));
+                logger('email sending', ['sending mail' => 'email successfully send']);
+            }catch(Exception $e) {
+                logger('email send fail', ['test mail' => $e->getMessage()]);
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
     }
 
     public function cartFoAddBranch() {
+
         return view('setups.billing.cart_for_add_branch');
     }
 
@@ -29,5 +104,28 @@ class SoftwareServiceBillingController extends Controller
 
     public function dueRepayment() {
         return view('setups.billing.due_repayment');
+    }
+
+    public function invoiceView($id)
+    {
+        $transaction = $this->invoiceQuery($id);
+
+        return view('setups.invoices.invoice_view', compact('transaction'));
+    }
+
+    public function invoiceDownload($id)
+    {
+        $transaction = $this->invoiceQuery($id);
+        // return view('setups.invoices.invoice_download', compact('transaction'));
+        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']); ;
+        return $pdf->download('invoice.pdf');
+    }
+
+    protected function invoiceQuery($id)
+    {
+        $transaction = SubscriptionTransaction::with('subscription', 'subscription.user', 'plan')->find($id);
+        DB::reconnect();
+
+        return $transaction;
     }
 }

@@ -12,5 +12,6 @@ return [
     'facebook' => env('FACEBOOK'),
     'twitter' => env('TWITTER'),
     'youtube' => env('YOUTUBE'),
+    'linkedin' => env('LINKEDIN'),
     'slogan' => env('SLOGAN'),
 ];

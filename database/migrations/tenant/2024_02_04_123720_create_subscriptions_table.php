@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('initial_price_period')->nullable();
             $table->bigInteger('initial_period_count')->nullable();
             $table->decimal('initial_plan_price', 22, 2)->nullable();
-            $table->bigInteger('initial_business_price_period')->nullable();
+            $table->string('initial_business_price_period')->nullable();
             $table->bigInteger('initial_business_period_count')->nullable();
             $table->decimal('initial_business_price', 22, 2)->default(0);
             $table->bigInteger('initial_shop_count')->nullable();

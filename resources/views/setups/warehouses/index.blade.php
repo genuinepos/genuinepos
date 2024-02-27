@@ -7,10 +7,20 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Warehouses') }}</h5>
+                <div class="col-md-4">
+                    <h5>{{ __('Warehouses') }}
+                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $count }}</span>/{{ $generalSettings['subscription']->features['warehouse_count'] }})</span>
+                    </h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __("Back") }}</a>
+                <div class="col-md-4 text-start">
+                    <p class="fw-bold"></p>
+                </div>
+                <div class="col-md-4">
+
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -26,7 +36,7 @@
                                             <div class="col-md-4">
                                                 <label><strong>{{ __('Created From') }}</strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                    <option value="">@lang('menu.all')</option>
+                                                    <option value="">{{ __("All") }}</option>
                                                     <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                     @foreach ($branches as $branch)
                                                         <option value="{{ $branch->id }}">

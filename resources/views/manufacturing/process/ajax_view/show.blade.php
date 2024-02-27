@@ -20,11 +20,14 @@
                                 @if ($process->branch_id)
 
                                     @if ($process?->branch?->parentBranch)
+
                                         {{ $process?->branch?->parentBranch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                     @else
+
                                         {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                                     @endif
                                 @else
+
                                     {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
                                 @endif
                             </li>
@@ -74,7 +77,7 @@
                                 <tbody>
                                     <tr>
                                         <th class="text-end">{{ __('Total Output Qty') }} : </th>
-                                        <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->total_output_qty) . '/' . $process->unit->name }}</td>
+                                        <td class="text-end"> {{ App\Utils\Converter::format_in_bdt($process->total_output_qty) . '/' . $process?->unit?->name }}</td>
                                     </tr>
                                     <tr>
                                         <th class="text-end">{{ __('Instructions') }} :</th>
@@ -167,24 +170,55 @@
     <div class="details_area">
         <div class="row" style="border-bottom: 1px solid black; padding-botton: 3px;">
             <div class="col-4">
-                @if ($generalSettings['business_or_shop__business_logo'] != null)
-                    <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                @if (auth()->user()->branch)
+                    @if (auth()->user()->branch->logo != 'default.png')
+
+                        <img src="{{ asset('uploads/branch_logo/' . auth()->user()->branch->logo) }}" alt="logo" class="logo__img">
+                    @else
+                        @php
+                            $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
+                        @endphp
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $branchName }}</span>
+                    @endif
                 @else
-                    <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                    @if ($generalSettings['business_or_shop__business_logo'] != null)
+                        <img src="{{ asset('uploads/business_logo/' . $generalSettings['business_or_shop__business_logo']) }}" alt="logo" class="logo__img">
+                    @else
+                        <span style="font-family: 'Anton', sans-serif;font-size:15px;color:gray;">{{ $generalSettings['business_or_shop__business_name'] }}</span>
+                    @endif
                 @endif
             </div>
 
             <div class="col-8 text-end">
                 <p style="text-transform: uppercase;" class="p-0 m-0">
-                    <strong>{{ $generalSettings['business_or_shop__business_name'] }}</strong>
+                    @if (auth()->user()->branch)
+                        @php
+                            $branchName = auth()->user()?->branch?->parentBranch ? auth()->user()?->branch?->parentBranch->name : auth()->user()?->branch?->name;
+                        @endphp
+                        <strong>{{ $branchName.'('.auth()->user()?->branch?->area_name.')'}}</strong>
+                    @else
+
+                        <strong>{{ $generalSettings['business_or_shop__business_name'] }}</strong>
+                    @endif
                 </p>
 
-                <p>{{ $generalSettings['business_or_shop__address'] }}</p>
+                <p>
+                    @if (auth()->user()->branch)
+                        @if (auth()->user()->branch->address)
+                            {{ auth()->user()->branch->address }}
+                        @else
+                            {{ auth()->user()->branch->city . ', ' . auth()->user()->branch->state . ', ' . auth()->user()->branch->zip_code . ', ' . auth()->user()->branch->country}}
+                        @endif
+                    @else
+
+                        {{ $generalSettings['business_or_shop__address'] }}
+                    @endif
+                </p>
 
                 <p>
                     @php
-                        $email = $generalSettings['business_or_shop__email'];
-                        $phone = $generalSettings['business_or_shop__phone'];
+                        $email = auth()->user()?->branch ? auth()->user()?->branch->email : $generalSettings['business_or_shop__email'];
+                        $phone = auth()->user()?->branch ? auth()->user()?->branch->phone : $generalSettings['business_or_shop__phone'];
                     @endphp
 
                     <strong>{{ __('Email') }} : </strong> {{ $email }},
@@ -210,11 +244,14 @@
                         @if ($process->branch_id)
 
                             @if ($process?->branch?->parentBranch)
+
                                 {{ $process?->branch?->parentBranch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                             @else
+
                                 {{ $process?->branch?->name . '(' . $process?->branch?->area_name . ')' . '-(' . $process?->branch?->branch_code . ')' }}
                             @endif
                         @else
+
                             {{ $generalSettings['business_or_shop__business_name'] . '(Business)' }}
                         @endif
                     </li>
@@ -223,7 +260,7 @@
         </div>
 
         <div class="sale_product_table pt-3 pb-3">
-            <table class="table modal-table table-sm table-bordered">
+            <table class="table print-table table-sm table-bordered">
                 <thead>
                     <tr>
                         <th class="fw-bold text-start" style="font-size:11px!important;">{{ __('Ingredient') }}</th>
@@ -259,7 +296,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="table print-table table-sm table-bordered">
                     <tr>
                         <th class="text-start" style="font-size:11px!important;">{{ __('Total Output Quantity') }} : </th>
                         <td class="text-start" style="font-size:11px!important;"> {{ App\Utils\Converter::format_in_bdt($process->total_output_qty) . '/' . $process->unit->name }}</td>
@@ -268,7 +305,7 @@
             </div>
 
             <div class="col-md-6">
-                <table class="table modal-table table-sm">
+                <table class="table print-table table-sm table-bordered">
                     <tbody>
                         <tr>
                             <th class="text-end" style="font-size:11px!important;">{{ __('Addl. Production Cost') }} : {{ $generalSettings['business_or_shop__currency_symbol'] }}</th>

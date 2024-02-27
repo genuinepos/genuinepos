@@ -13,11 +13,6 @@ use Modules\SAAS\Entities\Currency;
 
 class PlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Renderable
-     */
     public function index()
     {
         abort_unless(auth()->user()->can('plans_index'), 403);
@@ -27,11 +22,6 @@ class PlanController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Renderable
-     */
     public function create()
     {
         abort_unless(auth()->user()->can('plans_create'), 403);
@@ -41,22 +31,17 @@ class PlanController extends Controller
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
             ->select('id', 'code')
             ->get();
+
         return view('saas::plans.create', [
             'currencies' => $currencies,
             'features' => $features,
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Renderable
-     */
     public function store(Request $request)
     {
         abort_unless(auth()->user()->can('plans_store'), 403);
 
-        $countExcept = ['user_count', 'employee_count', 'cash_counter_count', 'warehouse_count'];
         $checkFeatures = $request->features;
         unset($checkFeatures['user_count']);
         unset($checkFeatures['employee_count']);
@@ -80,6 +65,8 @@ class PlanController extends Controller
             'business_lifetime_price' => Rule::when($request->has_lifetime_period == 1, 'required|numeric'),
         ]);
 
+        $preparedPlanFeatures = $this->preparedPlanFeatures($request);
+
         $plan = Plan::create([
             'name' => $request->name,
             'slug' => $request->slug ? $request->slug : Str::slug($request->name),
@@ -93,19 +80,13 @@ class PlanController extends Controller
             'business_lifetime_price' => $request->has_lifetime_period == 1 ? $request->business_lifetime_price : 0,
             'currency_id' => $request->currency_id,
             'description' => $request->description,
-            'features' => $request->features,
+            'features' => $preparedPlanFeatures,
             'status' => $request->status,
         ]);
 
         return response()->json('Plan created successfully!');
     }
 
-    /**
-     * Show the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function show($id)
     {
         abort_unless(auth()->user()->can('plans_show'), 403);
@@ -118,12 +99,6 @@ class PlanController extends Controller
         return Plan::with(['currency'])->where('id', $id)->first();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function edit($id)
     {
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
@@ -138,12 +113,6 @@ class PlanController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function update(Request $request, $id)
     {
         $countExcept = ['user_count', 'employee_count', 'cash_counter_count', 'warehouse_count'];
@@ -192,7 +161,7 @@ class PlanController extends Controller
             $updatePlan->trial_shop_count = $request->trial_shop_count;
         }
 
-        $updatePlan->features = $request->features;
+        $updatePlan->features = $this->preparedPlanFeatures($request);
         $updatePlan->description = $request->description;
         $updatePlan->status = $request->status;
         $updatePlan->save();
@@ -200,17 +169,35 @@ class PlanController extends Controller
         return response()->json('Plan updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Renderable
-     */
     public function destroy($id)
     {
         $plan = Plan::find($id);
         $plan->delete();
 
         return response()->json(__('Plan deleted successfully!'), 201);
+    }
+
+    private function preparedPlanFeatures($request)
+    {
+        return [
+            'contacts' => isset($request->features['contacts']) ? 1 : 0,
+            'inventory' => isset($request->features['inventory']) ? 1 : 0,
+            'purchase' => isset($request->features['purchase']) ? 1 : 0,
+            'sales' => isset($request->features['sales']) ? 1 : 0,
+            'transfer_stocks' => isset($request->features['transfer_stocks']) ? 1 : 0,
+            'stock_adjustments' => isset($request->features['stock_adjustments']) ? 1 : 0,
+            'accounting' => isset($request->features['accounting']) ? 1 : 0,
+            'users' => isset($request->features['users']) ? 1 : 0,
+            'user_count' => isset($request->features['user_count']) ? $request->features['user_count'] : 0,
+            'hrm' => isset($request->features['hrm']) ? 1 : 0,
+            'employee_count' => isset($request->features['employee_count']) ? $request->features['employee_count'] : 0,
+            'manufacturing' => isset($request->features['manufacturing']) ? $request->features['manufacturing'] : 0,
+            'task_management' => isset($request->features['task_management']) ? 1 : 0,
+            'communication' => isset($request->features['communication']) ? 1 : 0,
+            'setup' => isset($request->features['setup']) ? 1 : 0,
+            'cash_counter_count' => isset($request->features['cash_counter_count']) ? $request->features['cash_counter_count'] : 0,
+            'warehouse_count' => isset($request->features['warehouse_count']) ? $request->features['warehouse_count'] : 0,
+            'ecommerce' => isset($request->features['ecommerce']) ? 1 : 0,
+        ];
     }
 }

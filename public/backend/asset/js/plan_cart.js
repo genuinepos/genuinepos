@@ -63,8 +63,6 @@
                     spinner.find("input").val(newVal);
                     spinner.find("input").trigger("change");
                     calculateCartAmount();
-                    showOrHideHasBusinessBtn();
-                    calculateCartAmount();
                 }
             });
 
@@ -81,17 +79,13 @@
                     spinner.find("input").val(newVal);
                     spinner.find("input").trigger("change");
                     calculateCartAmount();
-                    showOrHideHasBusinessBtn();
-                    calculateCartAmount();
                 }
             });
 
             calculateCartAmount();
-            showOrHideHasBusinessBtn();
-            calculateCartAmount();
         });
 
-        $(document).on('click', '.business_period_down_btn',function () {
+        $(document).on('click', '.business_period_down_btn', function () {
 
             var isTrialPlan = $('#is_trial_plan').val();
             if (isTrialPlan == 0 || isTrialPlan == undefined) {
@@ -109,12 +103,10 @@
 
                 business_period_count.val(parseInt(newVal))
                 calculateCartAmount();
-                showOrHideHasBusinessBtn();
-                calculateCartAmount();
             }
         });
 
-        $(document).on('click', '.business_period_up_btn',function () {
+        $(document).on('click', '.business_period_up_btn', function () {
 
             var isTrialPlan = $('#is_trial_plan').val();
             if (isTrialPlan == 0 || isTrialPlan == undefined) {
@@ -132,7 +124,6 @@
 
                 business_period_count.val(parseInt(newVal))
                 calculateCartAmount();
-                showOrHideHasBusinessBtn();
                 calculateCartAmount();
             }
         });
@@ -273,49 +264,61 @@
         //     }
         // });
 
-        function showOrHideHasBusinessBtn() {
-
-            var shop_count = $('#shop_count').val() ? $('#shop_count').val() : 0;
-
-            if (shop_count > 1) {
-
-                $('#has_business_btn').removeClass('d-none');
-            } else {
-
-                $('#has_business').prop('checked', false);
-                $('#has_business_btn').addClass('d-none');
-                $('#add_business_tr').remove();
-            }
-        }
-
         $(document).on('change', '#has_business', function () {
 
+            var planId = $('#plan_id').val();
+            var price_period = $('#price_period:checked').val() ? $('#price_period:checked').val() : 0;
+            var has_lifetime_period = $('#has_lifetime_period').val() ? $('#has_lifetime_period').val() : 0;
             var businessPricePerMonth = $('#business_price_per_month').val() ? $('#business_price_per_month').val() : 0;
-            // var businessPricePerYear = $('#business_price_per_year').val() ? $('#business_price_per_year').val() : 0;
-            // var businessLifetimePrice = $('#business_lifetime_price').val() ? $('#business_lifetime_price').val() : 0;
+            var businessPricePerYear = $('#business_price_per_year').val() ? $('#business_price_per_year').val() : 0;
+            var businessLifetimePrice = $('#business_lifetime_price').val() ? $('#business_lifetime_price').val() : 0;
+
+            var initialBusinessPrice = 0;
+            if (price_period == 'month') {
+
+                initialBusinessPrice = parseFloat(businessPricePerMonth);
+            } else if (price_period == 'year') {
+
+                initialBusinessPrice = parseFloat(businessPricePerYear);
+            } else if (price_period == 'lifetime') {
+
+                initialBusinessPrice = parseFloat(businessLifetimePrice);
+            }
 
             if ($(this).is(':checked') == true) {
+
+                if (planId == '') {
+
+                    toastr.error('Please select a plan first.');
+                    $(this).prop('checked', false);
+                    return;
+                }
 
                 var html = '';
                 html += '<tr id="add_business_tr">';
                 html += '<td>Multi Store Management System</td>';
                 html += '<td>';
-                html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(businessPricePerMonth).toFixed(2) + '>';
-                html += '<span class="price-txt"><span id="span_business_price">' + parseFloat(businessPricePerMonth).toFixed(2) + '</span></span>';
+                html += '<input type="hidden" name="business_price" id="business_price" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
+                html += '<span class="price-txt"><span id="span_business_price">' + parseFloat(initialBusinessPrice).toFixed(2) + '</span></span>';
                 html += '</td>';
 
                 html += '<td class="text-start">';
                 html += '<label>Period</label>';
                 html += '<select name="business_price_period" class="form-control" id="business_price_period">';
-                html += '<option value="month">Monthly</option>';
-                html += '<option value="year">Yearly</option>';
-                html += '<option value="lifetime">Lifetime</option>';
+                html += '<option ' + (price_period == 'month' ? "SELECTED" : '') + ' value="month">Monthly</option>';
+                html += '<option ' + (price_period == 'year' ? "SELECTED" : '') + ' value="year">Yearly</option>';
+
+                if (has_lifetime_period == 1) {
+
+                    html += '<option ' + (price_period == 'lifetime' ? "SELECTED" : '') + ' value="lifetime">Lifetime</option>';
+                }
+
                 html += '</select>';
                 html += '</td>';
 
                 html += '<td>';
                 html += '<label>Period Count</label>';
-                html += '<div class="product-count cart-product-count business_period_count">';
+                html += '<div class="product-count cart-product-count business_period_count ' + (price_period == 'lifetime' ? "d-none" : '') + '">';
                 html += '<div class="quantity rapper-quantity">';
                 html += '<input readonly name="business_period_count" id="business_period_count" type="number" min="1" step="1" value="1">';
                 html += '<div class="quantity-nav">';
@@ -328,12 +331,12 @@
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
-                html += '<div id="business_fixed_period_text"></div>';
+                html += '<div id="business_fixed_period_text">' + (price_period == 'lifetime' ? "Lifetime" : '') + '</div>';
                 html += '</td>';
 
                 html += '<td>';
-                html += '<input type="hidden" name="business_subtotal" id="business_subtotal" value="' + parseFloat(businessPricePerMonth).toFixed(2) + '">';
-                html += '<span class="price-txt"><span id="span_business_subtotal">' + parseFloat(businessPricePerMonth).toFixed(2) + '</span></span>';
+                html += '<input type="hidden" name="business_subtotal" id="business_subtotal" value="' + parseFloat(initialBusinessPrice).toFixed(2) + '">';
+                html += '<span class="price-txt"><span id="span_business_subtotal">' + parseFloat(initialBusinessPrice).toFixed(2) + '</span></span>';
                 html += '</td>';
                 html += '</tr>';
 

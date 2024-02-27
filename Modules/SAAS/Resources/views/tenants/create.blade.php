@@ -255,12 +255,17 @@
                     type: 'get',
                     success: function(plan) {
 
+                        $('#add_business_tr').remove();
+                        $('#has_business').prop('checked', false);
                         $('#price_period').prop('checked', true);
                         $('#is_trial_plan').val(plan.is_trial_plan);
                         $('#price_per_month').val(plan.price_per_month);
                         $('#price_per_year').val(plan.price_per_year);
                         $('#lifetime_price').val(plan.lifetime_price);
                         $('#plan_price').val(plan.price_per_month);
+                        $('#business_price_per_month').val(plan.business_price_per_month);
+                        $('#business_price_per_year').val(plan.business_price_per_year);
+                        $('#business_lifetime_price').val(plan.business_lifetime_price);
                         $('#span_plan_price').html(plan.price_per_month);
                         $('#shop_count').val(plan.is_trial_plan == 1 ? plan.trial_shop_count : 1);
                         $('#period_count').val(1);
@@ -287,6 +292,8 @@
                             $('#payment_status').prop('required', true);
                             $('.payment-section').removeClass('d-none');
                         }
+
+                        calculateCartAmount();
                     }, error: function(err) {
 
                         if (err.status == 0) {

@@ -15,61 +15,70 @@
                         <input type="hidden" name="is_trial_plan" value="{{ $plan->is_trial_plan }}">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mb-4">
-                                    <label for="name" class="form-label">{{ __('Plan Name') }}</label>
+                                <div class="mb-1">
+                                    <label class="form-label" class="form-label">{{ __('Plan Name') }}</label>
                                     <input required type="text" class="form-control" name="name" placeholder="{{ __("Enter Plan Name") }}" value="{{ $plan->name }}">
                                     <span class="text-danger error_name"></span>
                                 </div>
+
                                 <div class="mb-4">
-                                    <label for="name" class="form-label">{{ __('URL Slug') }} ({{ __('Keep empty to get auto-generated slug') }})</label>
+                                    <label class="form-label" class="form-label">{{ __('URL Slug') }} ({{ __('Keep empty to get auto-generated slug') }})</label>
                                     <input type="text" class="form-control" name="slug" placeholder="{{ __('Enter URL Slug') }}" value="{{ $plan->slug }}">
                                 </div>
 
                                 @if ($plan->is_trial_plan == 0)
-                                    <div class="mb-4">
-                                        <label for="price_per_year">{{ __('Price Per Month') }} <span class="text-danger">*</span></label>
+                                    <div class="mb-1">
+                                        <label class="form-label">{{ __('Price Per Month') }} <span class="text-danger">*</span></label>
                                         <input type="number" name="price_per_month" class="form-control" id="price_per_month" value="{{ $plan->price_per_month }}" placeholder="{{ __('Price Per Month') }}">
                                         <span class="text-danger error_price_per_month"></span>
                                     </div>
 
-                                    <div class="mb-4">
-                                        <label for="price_per_year">{{ __('Price Per Year') }} <span class="text-danger">*</span></label>
+                                    <div class="mb-1">
+                                        <label class="form-label">{{ __('Price Per Year') }} <span class="text-danger">*</span></label>
                                         <input type="number" name="price_per_year" class="form-control" id="price_per_year" value="{{ $plan->price_per_year }}" placeholder="{{ __('Price Per Year') }}">
                                         <span class="text-danger error error_price_per_year"></span>
                                     </div>
 
                                     <div class="mb-4">
-                                        <label for="lifetime_price">{{ __('Life Time Price') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="lifetime_price" class="form-control" id="lifetime_price" value="{{ $plan->lifetime_price }}" placeholder="{{ __('Lifetime Price') }}">
+                                        <label class="form-label">{{ __('Is Enable Lifetime Period') }} <span class="text-danger">*</span></label>
+                                        <select name="has_lifetime_period" class="form-control" id="has_lifetime_period">
+                                            <option value="0">{{ __("No") }}</option>
+                                            <option @selected($plan->has_lifetime_period == 1) value="1">{{ __("Yes") }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
+                                        <label class="form-label">{{ __('LifeTime Price') }} <span class="text-danger">*</span></label>
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="lifetime_price" class="form-control lifetime-required-field" id="lifetime_price" value="{{ $plan->lifetime_price }}" placeholder="{{ __('Lifetime Price') }}">
                                         <span class="text-danger error error_lifetime_price"></span>
                                     </div>
 
-                                    <div class="mb-4">
-                                        <label for="applicable_lifetime_years">{{ __('Lifetime Applicable Years') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="applicable_lifetime_years" class="form-control" id="applicable_lifetime_years" value="{{ $plan->applicable_lifetime_years }}" placeholder="{{ __('Applicable Years') }}">
+                                    <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
+                                        <label class="form-label">{{ __('Lifetime Applicable Years') }} <span class="text-danger">*</span></label>
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="applicable_lifetime_years" class="form-control lifetime-required-field" id="applicable_lifetime_years" value="{{ $plan->applicable_lifetime_years }}" placeholder="{{ __('Applicable Years') }}">
                                         <span class="text-danger error error_applicable_lifetime_years"></span>
                                     </div>
 
                                     <div class="mb-1">
-                                        <label for="business_price_per_month">{{ __('Business price per month') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __("Applicable month") }}">
+                                        <label class="form-label">{{ __('Business Price Per Month') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_month" value="{{ $plan->business_price_per_month }}" class="form-control" id="business_price_per_month" placeholder="{{ __('Business Price Per Month') }}">
                                         <span class="text-danger error error_business_price_per_month"></span>
                                     </div>
 
                                     <div class="mb-1">
-                                        <label for="business_price_per_year">{{ __('Business price per years') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __("Applicable Year") }}">
+                                        <label class="form-label">{{ __('Business Price Per Years') }} <span class="text-danger">*</span></label>
+                                        <input type="number" name="business_price_per_year" value="{{ $plan->business_price_per_year }}" class="form-control" id="business_price_per_year" placeholder="{{ __('Business Price Per Years') }}">
                                         <span class="text-danger error error_business_price_per_year"></span>
                                     </div>
 
-                                    <div class="mb-1">
-                                        <label for="business_lifetime_price">{{ __('Business price lifetime') }} <span class="text-danger">*</span></label>
-                                        <input type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control" id="business_lifetime_price" placeholder="{{ __("Applicable lifetime") }}">
+                                    <div class="mb-1 {{ $plan->has_lifetime_period == 0 ? 'd-none' : '' }} lifetime_field">
+                                        <label class="form-label">{{ __('Business lifetime Price') }} <span class="text-danger">*</span></label>
+                                        <input {{ $plan->has_lifetime_period == 1 ? 'required' : '' }} type="number" name="business_lifetime_price" value="{{ $plan->business_lifetime_price }}" class="form-control lifetime-required-field" id="business_lifetime_price" placeholder="{{ __('Business lifetime Price') }}">
                                         <span class="text-danger error error_business_lifetime_price"></span>
                                     </div>
 
-                                    <div class="mb-4">
-                                        <label for="currency_code" class="form-label">{{ __('Select Currency') }}</label>
+                                    <div class="mb-1">
+                                        <label class="form-label" class="form-label">{{ __('Select Currency') }}</label>
                                         <select required name="currency_id" id="currency_id" class="form-select">
                                             @foreach ($currencies as $currency)
                                                 <option {{ $plan->currency_id == $currency->id ? 'SELECTED' : '' }} value="{{ $currency->id }}">{{ $currency->code }}</option>
@@ -77,21 +86,21 @@
                                         </select>
                                     </div>
                                 @else
-                                    <div class="mb-4">
-                                        <label for="trial_days">{{ __('Trial Days') }} <span class="text-danger">*</span></label>
+                                    <div class="mb-1">
+                                        <label class="form-label">{{ __('Trial Days') }} <span class="text-danger">*</span></label>
                                         <input type="number" name="trial_days" class="form-control" id="trial_days" value="{{ $plan->trial_days }}" placeholder="{{ __('Trial Days') }}">
                                         <span class="text-danger error error_trial_days"></span>
                                     </div>
 
-                                    <div class="mb-4">
-                                        <label for="trial_shop_count">{{ __('Trial Shop Count') }} <span class="text-danger">*</span></label>
+                                    <div class="mb-1">
+                                        <label class="form-label">{{ __('Trial Shop Count') }} <span class="text-danger">*</span></label>
                                         <input type="number" name="trial_shop_count" class="form-control" id="trial_shop_count" value="{{ $plan->trial_shop_count }}" placeholder="{{ __('Trial Shop Count') }}">
                                         <span class="text-danger error error_trial_shop_count"></span>
                                     </div>
                                 @endif
 
-                                <div class="mb-4">
-                                    <label for="description" class="form-label">{{ __('Description') }}</label>
+                                <div class="mb-1">
+                                    <label class="form-label" class="form-label">{{ __('Description') }}</label>
                                     <textarea class="form-control editor" name="description" placeholder="Enter Description" rows="4">{{ $plan->description }}</textarea>
                                 </div>
 
@@ -99,29 +108,28 @@
                                     <h6>{{ __('Assign Features') }}</h6>
                                 </div>
 
-                                <div class="mb-4">
+                                <div class="mb-1">
                                     <div class="py-2">
                                         <input type="checkbox" class="form-check-input" name="select_all" id="select_all">
-                                        <label for="select_all" class="form-check-label">
+                                        <label class="form-label" class="form-check-label">
                                             {{ __('Select All Features') }}
                                         </label>
                                     </div>
                                     @php
-                                        $planFeatures = $plan->features;
+                                        $planFeatures = $plan?->features;
                                     @endphp
 
                                     @foreach ($features as $key => $feature)
-                                        <div class=" @if(!$feature && ($key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif"  id="feature_{{ $key }}">
+
+                                        <div class=" @if(!$feature && ($key == 'user_count' || $key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif" id="feature_{{ $key }}">
                                             @if($feature)
-                                            <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
-                                            @else
-                                                @if($key != 'employee_count' && $key != 'cash_counter_count' && $key != 'warehouse_count')
-                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
-                                                @endif
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ isset($planFeatures) &&array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
                                             @endif
+
                                             <label for="{{ $key }}">{{ str($key)->headline() }} </label>
+
                                             @if(!$feature)
-                                            <input type="text" name="features[{{$key}}]" value=" @if(isset($planFeatures)) {{ array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }} @endif" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="enter {{$key}} count" />
+                                                <input type="text" name="features[{{$key}}]" value=" @if(isset($planFeatures)) {{ isset($planFeatures) && array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }} @endif" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="Enter {{ str($key)->headline() }}" />
                                             @endif
                                         </div>
                                     @endforeach
@@ -207,6 +215,18 @@
                 //     }
                 // });
 
+                 $('#has_lifetime_period').change(function() {
+
+                    if($(this).val() == 1) {
+
+                        $('.lifetime_field').removeClass('d-none');
+                        $('.lifetime-required-field').prop('required', true);
+                    } else {
+
+                        $('.lifetime_field').addClass('d-none');
+                        $('.lifetime-required-field').prop('required', false);
+                    }
+                });
             });
 
             const selectAll = document.getElementById('select_all');

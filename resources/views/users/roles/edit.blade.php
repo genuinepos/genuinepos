@@ -56,7 +56,7 @@
                                     <div class="input-group align-items-center gap-2">
                                         <label> <b>{{ __("Has Access To All Store/Place") }}</b> </label>
                                         <div class="d-flex align-items-center">
-                                            <input {{ $role->hasPermissionTo('user_view') ? 'CHECKED' : '' }} type="checkbox" name="has_access_to_all_area" id="has_access_to_all_area"  autocomplete="off">
+                                            <input {{ $role->hasPermissionTo('has_access_to_all_area') ? 'CHECKED' : '' }} type="checkbox" name="has_access_to_all_area" id="has_access_to_all_area"  autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -1191,6 +1191,37 @@
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
+                                                        <input type="checkbox" class="setup" id="select_all" data-target="shops" autocomplete="off">
+                                                        <strong>{{ __('Shops') }}</strong>
+                                                    </label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('shops_index') ? 'CHECKED' : '' }} type="checkbox" name="shops_index" id="shops_index" class="shops setup">
+                                                    <label for="shops_index">{{ __('Shop List') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('shops_create') ? 'CHECKED' : '' }} type="checkbox" name="shops_create" id="shops_create" class="shops setup">
+                                                    <label for="shops_create">{{ __('Shop Add') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('shops_edit') ? 'CHECKED' : '' }} type="checkbox" name="shops_edit" id="shops_edit" class="shops setup">
+                                                    <label for="shops_edit">{{ __('Shop Edit') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('shops_delete') ? 'CHECKED' : '' }} type="checkbox" name="shops_delete" id="shops_delete" class="shops setup">
+                                                    <label for="shops_delete">{{ __('Shop Delete') }}</label>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-lg-3 col-sm-6">
+                                                <p class="text-info checkbox_input_wrap">
+                                                    <label>
                                                         <input type="checkbox" class="setup" id="select_all" data-target="payment_methods" autocomplete="off">
                                                         <strong>{{ __('Payment Methods') }}</strong>
                                                     </label>
@@ -1221,9 +1252,7 @@
                                                     <label for="payment_methods_settings">{{ __('Payment Method Settings') }}</label>
                                                 </p>
                                             </div>
-                                        </div>
 
-                                        <div class="row mt-2">
                                             <div class="col-lg-3 col-sm-6">
                                                 <p class="text-info checkbox_input_wrap">
                                                     <label>
@@ -1301,6 +1330,11 @@
                                                 </p>
 
                                                 <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('billing_business_add') ? 'CHECKED' : '' }}  type="checkbox" name="billing_business_add" id="billing_business_add" class="billing setup">
+                                                    <label for="billing_business_add">{{ __('Add Multi Shop Management System/Company') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
                                                     <input {{ $role->hasPermissionTo('billing_shop_add') ? 'CHECKED' : '' }} type="checkbox" name="billing_shop_add" id="billing_shop_add" class="billing setup">
                                                     <label for="billing_shop_add">{{ __('Add Shop') }}</label>
                                                 </p>
@@ -1308,6 +1342,11 @@
                                                 <p class="checkbox_input_wrap mt-1">
                                                     <input {{ $role->hasPermissionTo('billing_renew_shop') ? 'CHECKED' : '' }} type="checkbox" name="billing_renew_shop" id="billing_renew_shop" class="billing setup">
                                                     <label for="billing_renew_shop">{{ __('Renew Shop') }}</label>
+                                                </p>
+
+                                                <p class="checkbox_input_wrap mt-1">
+                                                    <input {{ $role->hasPermissionTo('billing_pay_due_payment') ? 'CHECKED' : '' }}  type="checkbox" name="billing_pay_due_payment" id="billing_pay_due_payment" class="billing setup">
+                                                    <label for="billing_pay_due_payment">{{ __('Pay Due Payment') }}</label>
                                                 </p>
                                             </div>
                                         </div>

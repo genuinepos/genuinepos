@@ -46,7 +46,7 @@
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h6>{{ optional($currentSubscription->plan)->name }}</h6>
+                                        <h6>{{ $generalSettings['subscription']->plan_name }}</h6>
                                     </div>
 
                                     <div class="card-body">
@@ -54,7 +54,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th>{{ __("Plan Active Date") }}</th>
-                                                    <th>: {{ $currentSubscription->created_at->format('d M Y') }}</th>
+                                                    <th>: {{ $generalSettings['subscription']->initial_plan_start_date }}</th>
                                                 </tr>
                                                 <tr>
                                                     <th>{{ __("Current Status") }}</th>
@@ -70,7 +70,6 @@
                                 <a href="{{ route('software.service.billing.upgrade.plan') }}" class="btn btn-danger p-2">{{ __("Upgrade Plan") }}</a>
                                 <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __("Add Shop") }}</a>
                             </div>
-
                         </div>
 
                         <div class="row mt-2">
@@ -102,16 +101,16 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($shops as $shop)
-                                                    <tr>
-                                                        <td><input type="checkbox" name="" value="{{ $shop->id }}"></td>
-                                                        <td>{{ $shop->id }}</td>
-                                                        <td>{{ $shop->name }}({{ $shop->area_name }})</td>
-                                                        <td>{{ $shop->created_at->format('d-m-Y') }}</td>
-                                                        <td></td>
-                                                        <td>{{ $shop->expire_date }}</td>
-                                                        <td> Days</td>
-                                                        <td>Active</td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td><input type="checkbox" name="" value="{{ $shop->id }}"></td>
+                                                            <td>{{ $shop->id }}</td>
+                                                            <td>{{ $shop->name }}({{ $shop->area_name }})</td>
+                                                            <td>{{ $shop->created_at->format('d-m-Y') }}</td>
+                                                            <td></td>
+                                                            <td>{{ $shop->expire_date }}</td>
+                                                            <td> Days</td>
+                                                            <td>Active</td>
+                                                        </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>

@@ -123,13 +123,13 @@
 
                                         <div class=" @if(!$feature && ($key == 'user_count' || $key == 'employee_count' || $key == 'cash_counter_count' || $key == 'warehouse_count')) ms-3 @endif" id="feature_{{ $key }}">
                                             @if($feature)
-                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" @if(isset($planFeatures)) {{ isset($planFeatures) &&array_key_exists($key, $planFeatures) ? 'checked' : '' }} @endif/>
+                                                <input type="checkbox" class="form-check-input checkbox-child" name="features[{{$key}}]" value="{{ $feature }}" id="{{ $key }}" {{ isset($planFeatures) &&array_key_exists($key, $planFeatures) ? 'checked' : '' }}/>
                                             @endif
 
                                             <label for="{{ $key }}">{{ str($key)->headline() }} </label>
 
                                             @if(!$feature)
-                                                <input type="text" name="features[{{$key}}]" value=" @if(isset($planFeatures)) {{ isset($planFeatures) && array_key_exists($key, $planFeatures) ? $planFeatures[$key] : '' }} @endif" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="Enter {{ str($key)->headline() }}" />
+                                                <input type="text" name="features[{{$key}}]" value="{{ isset($planFeatures) && array_key_exists($key, $planFeatures) ? $planFeatures[$key] : null }}" class="form-control my-1 w-75" id="{{ $key }}_input" placeholder="Enter {{ str($key)->headline() }}" />
                                             @endif
                                         </div>
                                     @endforeach

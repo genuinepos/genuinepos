@@ -18,14 +18,10 @@ class SoftwareServiceBillingController extends Controller
 {
     public function index()
     {
-        $currentSubscription = Subscription::with('plan')->first();
-        DB::reconnect();
-
         $shops = Branch::all();
-
         $subscriptionHistory = SubscriptionTransaction::latest()->get();
 
-        return view('setups.billing.index', compact('currentSubscription', 'shops', 'subscriptionHistory'));
+        return view('setups.billing.index', compact('shops', 'subscriptionHistory'));
     }
 
     public function upgradePlan()

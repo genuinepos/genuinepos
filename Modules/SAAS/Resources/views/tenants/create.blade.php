@@ -181,7 +181,6 @@
 
             //user is "finished typing," do something
             var isAvailable = false;
-
             function doneTyping() {
                 $('#domainPreview').html(`<span class="">🔍Checking availability...<span>`);
                 var domain = $('#domain').val();
@@ -231,8 +230,8 @@
 
                         $('#response-message-text').addClass('text-success');
                         $('#response-message-text').text("{{ __('Successfully created! Redirecting you to the list') }}");
-                    },
-                    error: function(err) {
+                        window.location = "{{ url()->previous() }}";
+                    }, error: function(err) {
 
                         $('#response-message').addClass('d-none');
                         toastr.error(err.responseJSON.message);
@@ -284,7 +283,7 @@
                             $('#fixed_period_text').html(plan.trial_days + ' days');
                             $('#payment_status').prop('required', false);
                             $('.payment-section').addClass('d-none');
-                        }else {
+                        } else {
 
                             $('.period_count').removeClass('d-none');
                             $('#fixed_period_text').html('');

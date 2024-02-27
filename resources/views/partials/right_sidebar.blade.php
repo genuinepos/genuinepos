@@ -8,13 +8,6 @@
         color: #fff !important;
     }
 </style>
-@php
-    $branchService = new App\Services\Setups\BranchService();
-    $branches = $branchService
-        ->branches(with: ['parentBranch'])
-        ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
-        ->get();
-@endphp
 <div id="rightSidebar">
     <div class="sidebar-container position-relative">
         <div class="d-flex align-items-center justify-content-between">
@@ -25,9 +18,15 @@
         <div class="border-top py-1">
             <ul class="d-flex flex-row justify-content-start">
                 @if (
-                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 0) &&
+                    ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1) &&
                     auth()->user()->can('has_access_to_all_area')
                 )
+                    @php
+                        $branchService = new App\Services\Setups\BranchService();
+                        $branches = $branchService->branches(with: ['parentBranch'])
+                            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')
+                            ->get();
+                    @endphp
                     <li class="icon text-white"><span class=""><i class="fa-solid fa-shop"></i></span></li>
                     <li class="my-1 me-2 ms-1 branch_switcher">
                         <form id="change_branch_form" action="{{ route('users.change.branch') }}">

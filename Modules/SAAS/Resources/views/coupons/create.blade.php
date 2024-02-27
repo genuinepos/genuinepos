@@ -1,39 +1,7 @@
 <x-saas::admin-layout title="Create Coupon">
     @push('css')
     <style>
-    .jumbotron {
-  background: #6b7381;
-  color: #bdc1c8;
-  border-radius: 0;
-  padding: 2rem;
-}
-.jumbotron h1 {
-  color: #fff;
-}
-.switch > .row {
-  padding-bottom: 2rem;
-  vertical-align: middle;
-  text-align: center;
-  border-bottom: 1px solid rgba(189, 193, 200, 0.5);
-}
 
-.switch h3 {
-  font-weight: 400;
-}
-.switch h3 > small {
-  font-weight: 200;
-  font-size: 0.75em;
-  color: #939aa5;
-}
-.switch h6 {
-  font-weight: 700;
-  font-size: 0.65rem;
-  letter-spacing: 3.32px;
-  text-transform: uppercase;
-  color: #bdc1c8;
-  margin: 0;
-  line-height: 5rem;
-}
 .switch .btn-toggle {
   top: 50%;
   transform: translateY(-50%);
@@ -339,16 +307,6 @@
   right: 0;
   opacity: 0.5;
 }
-.btn-toggle.btn-xs > .handle {
-  position: absolute;
-  top: 0.125rem;
-  left: 0.125rem;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 0.75rem;
-  background: #fff;
-  transition: left 0.25s;
-}
 .btn-toggle.btn-xs.active {
   transition: background-color 0.25s;
 }
@@ -428,12 +386,12 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="start_date" class="form-label"><strong>{{ __('Start Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="start_date" value="{{old('start_date')}}" class="form-control" id="start_date" placeholder="{{ __('Enter Start Date') }}" required>
+                                <input type="text" name="start_date" value="{{old('start_date')}}" class="form-control" id="start_date" placeholder="{{ __('Enter Start Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="end_date" class="form-label"><strong>{{ __('End Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="end_date" value="{{old('end_date')}}" class="form-control" id="end_date" placeholder="{{ __('Enter End Date') }}" required>
+                                <input type="text" name="end_date" value="{{old('end_date')}}" class="form-control" id="end_date" placeholder="{{ __('Enter End Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -479,6 +437,8 @@
     @push('js')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
         <script>
             $(document).ready(function(){
 
@@ -505,9 +465,13 @@
                 });
 
                 $('#generate_code').on('click', function(){
-                    let code = Math.random().toString(36).substring(2,7);
+                    let code = Math.random().toString(36).substring(2,7).toUpperCase();
                     $("#code").val(code); 
                 });
+
+
+                $('#start_date').datepicker();
+                $('#end_date').datepicker();
 
 
             });

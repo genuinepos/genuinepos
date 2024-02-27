@@ -505,7 +505,7 @@
                 });
 
                 $('#generate_code').on('click', function(){
-                    let code = Math.random().toString(36).substring(2,7);
+                    let code = Math.random().toString(36).substring(2,7).toUpperCase();
                     $("#code").val(code); 
                 });
 

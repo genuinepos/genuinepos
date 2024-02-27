@@ -38,7 +38,7 @@
                                         <td>{{ $domain }}</td>
                                         <td>{{ $tenant?->plan?->name }}</td>
                                         <td>{{ $tenant->created_at }}</td>
-                                        <td>{{ $tenant?->expire_at }}</td>
+                                        <td>{{ $tenant?->expire_date }}</td>
                                         <td class="">
                                             <a href="{{ $domain }}" target="_blank" role="button" class="btn btn-primary btn-sm text-white">
                                                 {{ __('Open Business') }}

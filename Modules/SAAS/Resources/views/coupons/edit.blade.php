@@ -1,39 +1,8 @@
-<x-saas::admin-layout title="Create Coupon">
-    @push('css')
-    <style>
-    .jumbotron {
-  background: #6b7381;
-  color: #bdc1c8;
-  border-radius: 0;
-  padding: 2rem;
-}
-.jumbotron h1 {
-  color: #fff;
-}
-.switch > .row {
-  padding-bottom: 2rem;
-  vertical-align: middle;
-  text-align: center;
-  border-bottom: 1px solid rgba(189, 193, 200, 0.5);
-}
+<x-saas::admin-layout title="Edit Coupon">
+ @push('css')
 
-.switch h3 {
-  font-weight: 400;
-}
-.switch h3 > small {
-  font-weight: 200;
-  font-size: 0.75em;
-  color: #939aa5;
-}
-.switch h6 {
-  font-weight: 700;
-  font-size: 0.65rem;
-  letter-spacing: 3.32px;
-  text-transform: uppercase;
-  color: #bdc1c8;
-  margin: 0;
-  line-height: 5rem;
-}
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"><style>
+
 .switch .btn-toggle {
   top: 50%;
   transform: translateY(-50%);
@@ -339,16 +308,6 @@
   right: 0;
   opacity: 0.5;
 }
-.btn-toggle.btn-xs > .handle {
-  position: absolute;
-  top: 0.125rem;
-  left: 0.125rem;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 0.75rem;
-  background: #fff;
-  transition: left 0.25s;
-}
 .btn-toggle.btn-xs.active {
   transition: background-color 0.25s;
 }
@@ -403,7 +362,7 @@
   background:#0D99FF;
 }
 
-    </style>
+</style>
 @endpush
     <div class="row">
         <div class="col-12">
@@ -422,23 +381,23 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="code" class="form-label"><strong>{{ __('Coupon Code') }}</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="code" value="{{$coupon->code}}" class="form-control" id="code" placeholder="{{ __('Enter Coupon Code') }}" required>
+                                <input type="text" name="code" value="{{$coupon->code}}" class="form-control" autocomplete="off" id="code" placeholder="{{ __('Enter Coupon Code') }}" required>
                                 <button type="button" class="btn btn-primary btn-sm mt-2" id="generate_code">Generate Code</button>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="start_date" class="form-label"><strong>{{ __('Start Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="start_date" value="{{$coupon->start_date}}" class="form-control" id="start_date" placeholder="{{ __('Enter Start Date') }}" required>
+                                <input type="text" name="start_date" id="start_date" value="{{$coupon->start_date}}" autocomplete="off" class="form-control" placeholder="{{ __('Enter Start Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="end_date" class="form-label"><strong>{{ __('End Date') }}</strong><span class="text-danger">*</span></label>
-                                <input type="date" name="end_date" value="{{$coupon->end_date}}" class="form-control" id="end_date" placeholder="{{ __('Enter End Date') }}" required>
+                                <input type="text" name="end_date" id="end_date" value="{{$coupon->end_date}}" autocomplete="off" class="form-control" placeholder="{{ __('Enter End Date') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="percent" class="form-label"><strong>{{ __('Percentage %') }}</strong><span class="text-danger">*</span></label>
-                                <input type="number" name="percent" value="{{$coupon->percent}}" class="form-control" id="percent" placeholder="{{ __('Enter Percentage') }}" required>
+                                <input type="number" name="percent" value="{{$coupon->percent}}" autocomplete="off" class="form-control" id="percent" placeholder="{{ __('Enter Percentage') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -451,7 +410,7 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6" style="@if($coupon->is_minimum_purchase==0) display:none  @endif" id="is_minimum_purchase_id">
                                 <label for="purchase_price" class="form-label"><strong>{{ __('Price(IDR)') }}</strong></label>
-                                <input type="number" name="purchase_price" value="{{$coupon->purchase_price}}" class="form-control" id="purchase_price" placeholder="{{ __('Enter Purchase Price') }}">
+                                <input type="number" name="purchase_price" value="{{$coupon->purchase_price}}" autocomplete="off" class="form-control" id="purchase_price" placeholder="{{ __('Enter Purchase Price') }}">
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -464,7 +423,7 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6" style="@if($coupon->is_maximum_usage==0) display:none @endif" id="is_maximum_usage_id">
                                 <label for="purchase_price" class="form-label"><strong>{{ __('No Of Usage') }}</strong></label>
-                                <input type="number" name="no_of_usage" value="{{$coupon->no_of_usage}}" class="form-control" id="purchase_price" placeholder="{{ __('no Of Usage') }}">
+                                <input type="number" name="no_of_usage" value="{{$coupon->no_of_usage}}" autocomplete="off" class="form-control" id="purchase_price" placeholder="{{ __('no Of Usage') }}">
                             </div>
 
                             <div class="mt-3">
@@ -476,12 +435,15 @@
             </div>
         </div>
     </div>
-    @push('js')
+     @push('js')
+    
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
         <script>
             $(document).ready(function(){
-              
+
                 $('.minimum_purchase_class').on('click', function(){
                     var toggleValue = $(this).hasClass('active') ? 0 : 1;
                     $('#minimum_purchase_input').val(toggleValue);
@@ -506,7 +468,12 @@
 
                 $('#generate_code').on('click', function(){
                     let code = Math.random().toString(36).substring(2,7).toUpperCase();
-                    $("#code").val(code); 
+                    $("#code").val(code);
+                });
+
+                $(function() {
+                  $("#start_date").datepicker();
+                  $("#end_date").datepicker();
                 });
 
             });

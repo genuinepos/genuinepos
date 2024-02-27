@@ -17,6 +17,7 @@ use Modules\SAAS\Http\Controllers\RoleController;
 use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\UserController;
 use Modules\SAAS\Http\Controllers\CouponController;
+use Modules\SAAS\Http\Controllers\EmailSettingsController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -73,7 +74,11 @@ Route::middleware(['is_verified'])->group(function () {
 
     Route::resource('roles', RoleController::class);
 
-    //coupons route 
+    //Coupons Route 
     Route::resource('coupons',CouponController::class);
+
+    //Email Settings Route 
+    Route::resource('email-settings',EmailSettingsController::class);
+
 
 });

@@ -2,6 +2,7 @@
 
 namespace App\Models\Subscriptions;
 
+use App\Models\User;
 use Modules\SAAS\Entities\Plan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -28,4 +29,8 @@ class Subscription extends Model
         return $this->belongsTo(Plan::class, 'plan_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

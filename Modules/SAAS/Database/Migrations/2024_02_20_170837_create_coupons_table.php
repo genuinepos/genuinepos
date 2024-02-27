@@ -18,9 +18,11 @@ return new class extends Migration
             $table->date('end_date');
             $table->integer('percent')->nullable();
             $table->integer('is_minimum_purchase')->default(0);
-            $table->decimal('purchase_price',18,2)->nullable();
+            $table->decimal('purchase_price', 18, 2)->nullable();
             $table->integer('is_maximum_usage')->default(0);
             $table->integer('no_of_usage')->default(0);
+            $table->integer('no_of_used')->default(0);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

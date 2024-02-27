@@ -39,8 +39,8 @@ class PlanController extends Controller
         $features = config('planfeatures');
 
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
-        ->select('id','code')
-        ->get();
+            ->select('id', 'code')
+            ->get();
         return view('saas::plans.create', [
             'currencies' => $currencies,
             'features' => $features,
@@ -56,28 +56,41 @@ class PlanController extends Controller
     {
         abort_unless(auth()->user()->can('plans_store'), 403);
 
+        $countExcept = ['user_count', 'employee_count', 'cash_counter_count', 'warehouse_count'];
+        $checkFeatures = $request->features;
+        unset($checkFeatures['user_count']);
+        unset($checkFeatures['employee_count']);
+        unset($checkFeatures['cash_counter_count']);
+        unset($checkFeatures['warehouse_count']);
+
+        if (count($checkFeatures) == 0) {
+
+            return response()->json(['errorMsg' => 'Plan features are not selected.']);
+        }
+
         $request->validate([
             'name' => 'required|unique:plans,name',
+            'slug' => 'nullable|unique:plans,slug',
             'price_per_month' => 'required|numeric',
             'price_per_year' => 'required|numeric',
-            'lifetime_price' => 'required|numeric',
-            'applicable_lifetime_years' => 'required|numeric',
+            'lifetime_price' => Rule::when($request->has_lifetime_period == 1, 'required|numeric'),
+            'applicable_lifetime_years' => Rule::when($request->has_lifetime_period == 1, 'required|numeric'),
             'business_price_per_month' => 'required|numeric',
             'business_price_per_year' => 'required|numeric',
-            'business_lifetime_price' => 'required|numeric',
-            'features' => 'required',
+            'business_lifetime_price' => Rule::when($request->has_lifetime_period == 1, 'required|numeric'),
         ]);
 
         $plan = Plan::create([
             'name' => $request->name,
-            'slug' => $request->slug ?? Str::slug($request->slug),
+            'slug' => $request->slug ? $request->slug : Str::slug($request->name),
             'price_per_month' => $request->price_per_month,
             'price_per_year' => $request->price_per_year,
-            'lifetime_price' => $request->lifetime_price,
-            'applicable_lifetime_years' => $request->applicable_lifetime_years,
+            'has_lifetime_period' => $request->has_lifetime_period,
+            'lifetime_price' => $request->has_lifetime_period == 1 ? $request->lifetime_price : 0,
+            'applicable_lifetime_years' => $request->has_lifetime_period == 1 ? $request->applicable_lifetime_years : 0,
             'business_price_per_month' => $request->business_price_per_month,
             'business_price_per_year' => $request->business_price_per_year,
-            'business_lifetime_price' => $request->business_lifetime_price,
+            'business_lifetime_price' => $request->has_lifetime_period == 1 ? $request->business_lifetime_price : 0,
             'currency_id' => $request->currency_id,
             'description' => $request->description,
             'features' => $request->features,
@@ -114,8 +127,8 @@ class PlanController extends Controller
     public function edit($id)
     {
         $currencies = Currency::whereIn('country', ['Bangladesh', 'United States of America'])
-        ->select('id','code')->get();
-        
+            ->select('id', 'code')->get();
+
         $features = config('planfeatures');
 
         return view('saas::plans.edit', [
@@ -133,42 +146,53 @@ class PlanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $countExcept = ['user_count', 'employee_count', 'cash_counter_count', 'warehouse_count'];
+        $checkFeatures = $request->features;
+        unset($checkFeatures['user_count']);
+        unset($checkFeatures['employee_count']);
+        unset($checkFeatures['cash_counter_count']);
+        unset($checkFeatures['warehouse_count']);
+
+        if (count($checkFeatures) == 0) {
+
+            return response()->json(['errorMsg' => 'Plan features are not selected.']);
+        }
+
         $request->validate([
             'name' => 'required|unique:plans,name,' . $id,
             'price_per_month' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
             'price_per_year' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
-            'lifetime_price' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
-            'applicable_lifetime_years' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
+            'lifetime_price' => Rule::when($request->is_trial_plan == 0 && $request->has_lifetime_period == 1, 'required|numeric'),
+            'applicable_lifetime_years' => Rule::when($request->is_trial_plan == 0 && $request->has_lifetime_period == 1, 'required|numeric'),
             'currency_id' => Rule::when($request->is_trial_plan == 0, 'required'),
             'trial_days' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'trial_shop_count' => Rule::when($request->is_trial_plan == 1, 'required|numeric'),
             'status' => 'required',
             'business_price_per_month' => 'required',
             'business_price_per_year' => 'required',
-            'business_lifetime_price' => 'required',
-            'features' => 'required',
+            'business_lifetime_price' => Rule::when($request->is_trial_plan == 0 && $request->has_lifetime_period == 1, 'required|numeric'),
         ]);
 
         $updatePlan = Plan::where('id', $id)->first();
         $updatePlan->name = $request->name;
-        $updatePlan->slug = $request->slug ?? Str::slug($request->slug);
+        $updatePlan->slug = $request->slug ? $request->slug : Str::slug($request->name);
 
         if ($updatePlan->is_trial_plan == 0) {
             $updatePlan->price_per_month = $request->price_per_month;
+            $updatePlan->has_lifetime_period = $request->has_lifetime_period;
             $updatePlan->price_per_year = $request->price_per_year;
-            $updatePlan->lifetime_price = $request->lifetime_price;
-            $updatePlan->applicable_lifetime_years = $request->applicable_lifetime_years;
+            $updatePlan->lifetime_price = $request->has_lifetime_period == 1 ? $request->lifetime_price : 0;
+            $updatePlan->applicable_lifetime_years = $request->has_lifetime_period == 1 ? $request->applicable_lifetime_years : 0;
+            $updatePlan->business_price_per_month = $request->business_price_per_month;
+            $updatePlan->business_price_per_year = $request->business_price_per_year;
+            $updatePlan->business_lifetime_price = $request->has_lifetime_period == 1 ? $request->business_lifetime_price : 0;
             $updatePlan->currency_id = $request->currency_id;
-        }elseif($updatePlan->is_trial_plan == 1){
+        } elseif ($updatePlan->is_trial_plan == 1) {
             $updatePlan->trial_days = $request->trial_days;
             $updatePlan->trial_shop_count = $request->trial_shop_count;
         }
 
-        $updatePlan->business_price_per_month = $request->business_price_per_month;
-        $updatePlan->business_price_per_year = $request->business_price_per_year;
-        $updatePlan->business_lifetime_price = $request->business_lifetime_price;
         $updatePlan->features = $request->features;
-
         $updatePlan->description = $request->description;
         $updatePlan->status = $request->status;
         $updatePlan->save();

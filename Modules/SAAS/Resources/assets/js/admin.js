@@ -5,7 +5,7 @@ import '../vendor/js/jquery.dataTables.min.js';
 import '../vendor/js/moment.min.js';
 import '../vendor/js/daterangepicker.js';
 import '../vendor/js/bootstrap.bundle.min.js';
-import './main.js';
+// import './main.js';
 
 // import './dashboard.js';
 // import '../vendor/js/jquery-ui.min.js';

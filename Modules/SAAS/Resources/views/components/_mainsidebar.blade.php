@@ -101,11 +101,11 @@
                         </a>
                         <ul class="sidebar-dropdown-menu" id="cuponsDropdown">
                             <li class="sidebar-dropdown-item">
-                                <a href="#" class="sidebar-link">{{ __('Add Cupon') }}</a>
+                                <a href="{{ route('saas.coupons.create') }}" class="sidebar-link">{{ __('Add Cupon') }}</a>
                             </li>
 
                             <li class="sidebar-dropdown-item">
-                                <a href="#" class="sidebar-link">{{ __('All Cupons') }}</a>
+                                <a href="{{ route('saas.coupons.index') }}" class="sidebar-link">{{ __('All Cupons') }}</a>
                             </li>
                         </ul>
                     </li>
@@ -178,6 +178,11 @@
                         <ul class="sidebar-dropdown-menu" id="setupDropdown">
                             <li class="sidebar-dropdown-item">
                                 <a href="#" class="sidebar-link">{{ __('Settings') }}</a>
+                            </li>
+                        </ul>
+                        <ul class="sidebar-dropdown-menu" id="setupDropdown">
+                            <li class="sidebar-dropdown-item">
+                                <a href="{{route('saas.email-settings.index')}}" class="sidebar-link">{{ __('Email Settings') }}</a>
                             </li>
                         </ul>
                     </li>

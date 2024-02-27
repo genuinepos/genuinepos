@@ -7,5 +7,5 @@ import '../vendor/js/jquery.overlayScrollbars.min.js';
 // import '../vendor/js/select2.min.js';
 import '../vendor/js/bootstrap.bundle.min.js';
 // import './dashboard.js';
-import './main.js';
+// import './main.js';
 // import './select2-init.js';

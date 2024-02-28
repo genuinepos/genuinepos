@@ -316,8 +316,7 @@
                         header: null,
                     });
                 }
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 isAjaxIn = true;
                 isAllowSubmit = true;
@@ -374,6 +373,12 @@
         var nextId = $(this).data('next');
 
         if (e.which == 13) {
+
+            if (nextId == 'stock_warehouse_id' && $('#stock_warehouse_id').val() == undefined) {
+                
+                $('#process_id').focus();
+                return;
+            }
 
             $('#' + nextId).focus().select();
         }

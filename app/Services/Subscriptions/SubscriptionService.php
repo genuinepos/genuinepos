@@ -2,21 +2,22 @@
 
 namespace App\Services\Subscriptions;
 
+use App\Enums\BooleanType;
 use App\Models\Subscriptions\Subscription;
 
 class SubscriptionService
 {
-    public function updateBusinessStartUpCompletingStatus() {
-
+    public function updateBusinessStartUpCompletingStatus()
+    {
         $subscription = Subscription::first();
-        $subscription->is_completed_business_startup = 1;
+        $subscription->is_completed_business_startup = BooleanType::True->value;
         $subscription->save();
     }
 
-    public function updateBranchStartUpCompletingStatus() {
-
+    public function updateBranchStartUpCompletingStatus()
+    {
         $subscription = Subscription::first();
-        $subscription->is_completed_branch_startup = 1;
+        $subscription->is_completed_branch_startup = BooleanType::True->value;
         $subscription->save();
     }
 }

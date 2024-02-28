@@ -20,7 +20,7 @@
                             <select required name="account_group_id" class="form-control select2 form-select" id="account_group_id">
                                 <option value="">{{ __('Select Account Group') }}</option>
                                 @foreach ($groups as $group)
-                                    @if (($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2))
+                                    @if (($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11) && auth()->user()->can('accounts_bank_account_create'))
                                         <option {{ $account->account_group_id == $group->id ? 'SELECTED' : '' }} value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
                                             {{ $group->name }}{{ $group->parentGroup ? '-(' . $group->parentGroup->name . ')' : '' }}
                                         </option>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
 
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                @if (auth()->user()->can('has_access_to_all_area') && $generalSettings['subscription']->current_shop_count > 1)
 
                     <div class="form-group mt-1 {{ ($account->group->sub_sub_group_number == 1 || $account->group->sub_sub_group_number == 11) && $account->group->is_allowed_bank_details == 1 ? '' : 'd-hide' }}" id="access_branches">
                         <label><strong>{{ __('Access Shop') }}</strong></label>

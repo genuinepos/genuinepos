@@ -143,7 +143,8 @@ class ProfitLossService
             $saleProductQuery->where('sales.branch_id', $childBranchId);
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $adjustmentQuery->where('stock_adjustments.branch_id', auth()->user()->branch_id);
             $saleQuery->where('sales.branch_id', auth()->user()->branch_id);

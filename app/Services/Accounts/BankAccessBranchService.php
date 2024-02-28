@@ -2,6 +2,7 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\BooleanType;
 use App\Models\Accounts\BankAccessBranch;
 
 class BankAccessBranchService
@@ -21,7 +22,7 @@ class BankAccessBranchService
     {
         foreach ($bankAccount->bankAccessBranches as $bankAccessBranch) {
 
-            $bankAccessBranch->is_delete_in_update = 1;
+            $bankAccessBranch->is_delete_in_update = BooleanType::True->value;
             $bankAccessBranch->save();
         }
 
@@ -42,12 +43,12 @@ class BankAccessBranchService
 
                 $addOrEditBankAccessBranch->bank_account_id = $bankAccount->id;
                 $addOrEditBankAccessBranch->branch_id = $branchId;
-                $addOrEditBankAccessBranch->is_delete_in_update = 0;
+                $addOrEditBankAccessBranch->is_delete_in_update = BooleanType::False->value;
                 $addOrEditBankAccessBranch->save();
             }
         }
 
-        $deletableUnusedBankAccessBranches = BankAccessBranch::where('bank_account_id', $bankAccount->id)->where('is_delete_in_update', 1)->get();
+        $deletableUnusedBankAccessBranches = BankAccessBranch::where('bank_account_id', $bankAccount->id)->where('is_delete_in_update', BooleanType::True->value)->get();
 
         foreach ($deletableUnusedBankAccessBranches as $deletableUnusedBankAccessBranch) {
 

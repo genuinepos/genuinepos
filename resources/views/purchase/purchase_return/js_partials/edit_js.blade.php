@@ -109,7 +109,7 @@
 
                 $('#purchase_invoice_id').val(purchase_invoice_id.trim());
                 $('#purchase_id').val(purchase_id);
-                $('#warehouse_id').val(warehouse_id);
+                $('#e_warehouse_id').val(warehouse_id);
                 $('#supplier_account_id').val(supplier_account_id).trigger('change');
                 $('#current_balance').val(supplier_curr_balance);
                 $('.invoice_search_result').hide();
@@ -399,9 +399,9 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
         var e_current_return_qty = $('#e_current_return_qty').val() ? $('#e_current_return_qty').val() : 0;
-        var e_current_warehouse_id = $('#e_current_warehouse_id').val();
-        var warehouse_id = $('#warehouse_id').val();
-        var warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
+        var e_current_warehouse_id = $('#e_current_warehouse_id').val() ? $('#e_current_warehouse_id').val() : '';
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
+        var warehouse_name = $('#e_warehouse_id').find('option:selected').data('warehouse_name');
 
         if (e_return_quantity == '') {
 
@@ -416,7 +416,7 @@
         }
 
         var stock_location_name = '';
-        if (warehouse_id) {
+        if (e_warehouse_id) {
 
             stock_location_name = warehouse_name;
         } else {
@@ -430,12 +430,12 @@
             var url = "{{ route('general.product.search.variant.product.stock', [':e_product_id', ':e_variant_id', ':warehouse_id']) }}";
             route = url.replace(':e_product_id', e_product_id);
             route = route.replace(':e_variant_id', e_variant_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         } else {
 
             var url = "{{ route('general.product.search.single.product.stock', [':e_product_id', ':warehouse_id']) }}";
             route = url.replace(':e_product_id', e_product_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         }
 
         $.ajax({
@@ -447,12 +447,12 @@
 
                     var check_quantity = parseFloat(e_return_quantity);
 
-                    if (e_current_warehouse_id == warehouse_id) {
+                    if (e_current_warehouse_id == e_warehouse_id) {
 
                         check_quantity = parseFloat(e_return_quantity) - parseFloat(e_current_return_qty);
                     }
 
-                    var stockLocationMessage = warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
+                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
 
                     if (parseFloat(check_quantity) > parseFloat(data.stock)) {
 
@@ -460,7 +460,7 @@
                         return;
                     }
 
-                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + warehouse_id;
+                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + e_warehouse_id;
                     var uniqueIdValue = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).val();
 
                     if (uniqueIdValue == undefined) {
@@ -481,7 +481,7 @@
                         tr += '<input type="hidden" name="unit_discount_amounts[]" id="unit_discount_amount" value="' + e_discount_amount + '">';
                         tr += '<input type="hidden" name="purchase_product_ids[]" value="">';
                         tr += '<input type="hidden" name="purchase_return_product_ids[]">';
-                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + warehouse_id + '" value="' + e_product_id + e_variant_id + warehouse_id + '">';
+                        tr += '<input type="hidden" class="unique_id" id="' + e_product_id + e_variant_id + e_warehouse_id + '" value="' + e_product_id + e_variant_id + warehouse_id + '">';
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
@@ -496,8 +496,8 @@
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + warehouse_id + '">';
-                        tr += '<input type="hidden" id="current_warehouse_id" value="' + warehouse_id + '">';
+                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + e_warehouse_id + '">';
+                        tr += '<input type="hidden" id="current_warehouse_id" value="' + e_warehouse_id + '">';
                         tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
                         tr += '</td>';
 
@@ -975,9 +975,14 @@
 
         var nextId = $(this).data('next');
 
-        $('#' + nextId).focus();
 
         setTimeout(function() {
+
+            if (nextId == 'e_warehouse_id' && $('#e_warehouse_id').val() == undefined) {
+                console.log(nextId);
+                $('#date').select().focus();
+                return;
+            }
 
             $('#' + nextId).focus();
         }, 100);
@@ -1122,8 +1127,11 @@
 
     setMethodAccount($('#payment_method_id').find('option:selected').data('account_id'));
 
-    document.getElementById('supplier_account_id').focus();
-
     calculateTotalAmount();
+
+    setTimeout(function() {
+
+        $('#supplier_account_id').focus().select();
+    }, 1000);
 </script>
 <script src="{{ asset('assets/plugins/custom/select_li/selectli.custom.js') }}"></script>

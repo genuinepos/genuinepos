@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Sales\Reports;
 
-use App\Enums\PaymentStatus;
-use App\Enums\SaleStatus;
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountService;
-use App\Services\Setups\BranchService;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Enums\PaymentStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Services\Accounts\AccountService;
+use App\Services\Accounts\AccountFilterService;
 
 class SalesReportController extends Controller
 {
@@ -219,7 +220,8 @@ class SalesReportController extends Controller
             }
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }

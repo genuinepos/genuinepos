@@ -68,7 +68,7 @@ class AccountLedgerEntryService
 
                 return $ledgerParticulars->particulars($request, $voucherType, $row);
             })
-            
+
             ->editColumn('voucher_type', function ($row) {
 
                 //return $row->voucher_type;
@@ -170,7 +170,7 @@ class AccountLedgerEntryService
             $query->whereBetween('account_ledgers.date', $date_range);
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if ($account?->group?->sub_sub_group_number != 6) {
 
@@ -343,7 +343,7 @@ class AccountLedgerEntryService
             }
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if ($account?->group?->sub_sub_group_number != 6) {
 

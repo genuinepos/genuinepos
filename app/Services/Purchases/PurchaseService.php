@@ -71,7 +71,12 @@ class PurchaseService
             $query->where('purchases.supplier_account_id', $supplierAccountId);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+        //     $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
+        // }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
 
             $purchases = $query->where('purchases.branch_id', auth()->user()->branch_id);
         }

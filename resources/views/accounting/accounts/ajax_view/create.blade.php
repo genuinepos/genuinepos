@@ -21,7 +21,7 @@
                             @foreach ($groups as $group)
                                 @if (
                                     ($group->sub_sub_group_number == 1 || $group->sub_sub_group_number == 11)
-                                    && (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                    && (auth()->user()->can('account_bank_account_create'))
                                 )
 
                                     <option value="{{ $group->id }}" data-is_allowed_bank_details="{{ $group->is_allowed_bank_details }}" data-is_bank_or_cash_ac="{{ $group->is_bank_or_cash_ac }}" data-is_fixed_tax_calculator="{{ $group->is_fixed_tax_calculator }}" data-is_default_tax_calculator="{{ $group->is_default_tax_calculator }}" data-main_group_number="{{ $group->main_group_number }}" data-sub_group_number="{{ $group->sub_group_number }}" data-sub_sub_group_number="{{ $group->sub_sub_group_number }}">
@@ -146,8 +146,8 @@
                     </div>
                 </div>
 
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-
+                {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
+                @if (auth()->user()->can('has_access_to_all_area') == 1 && $generalSettings['subscription']->current_shop_count > 1)
                     <div class="form-group mt-1 d-hide" id="access_branches">
                         <label><strong>{{ __('Access Shop') }}</strong></label>
                         <input type="hidden" name="branch_count" id="branch_count" value="yes">
@@ -167,7 +167,7 @@
                 @endif
 
                 <div class="form-group mt-1">
-                    <label><strong>{{ __('Remarks') }} </strong></label>
+                    <label><strong>{{ __('Remarks') }}</strong></label>
                     <input type="text" name="remark" class="form-control" id="remarks" data-next="account_save" placeholder="{{ __('Remarks') }}" />
                 </div>
 

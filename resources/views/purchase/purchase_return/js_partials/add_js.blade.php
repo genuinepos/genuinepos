@@ -109,7 +109,7 @@
 
                 $('#purchase_invoice_id').val(purchase_invoice_id.trim());
                 $('#purchase_id').val(purchase_id);
-                $('#warehouse_id').val(warehouse_id);
+                $('#e_warehouse_id').val(warehouse_id);
                 $('#supplier_account_id').val(supplier_account_id).trigger('change');
                 $('#current_balance').val(supplier_curr_balance);
                 $('.invoice_search_result').hide();
@@ -399,7 +399,7 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-        var warehouse_id = $('#warehouse_id').val();
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
         var warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
 
         if (e_return_quantity == '') {
@@ -415,7 +415,7 @@
         }
 
         var stock_location_name = '';
-        if (warehouse_id) {
+        if (e_warehouse_id) {
 
             stock_location_name = warehouse_name;
         } else {
@@ -429,12 +429,12 @@
             var url = "{{ route('general.product.search.variant.product.stock', [':e_product_id', ':e_variant_id', ':warehouse_id']) }}";
             route = url.replace(':e_product_id', e_product_id);
             route = route.replace(':e_variant_id', e_variant_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         } else {
 
             var url = "{{ route('general.product.search.single.product.stock', [':e_product_id', ':warehouse_id']) }}";
             route = url.replace(':e_product_id', e_product_id);
-            route = route.replace(':warehouse_id', warehouse_id);
+            route = route.replace(':warehouse_id', e_warehouse_id);
         }
 
         $.ajax({
@@ -444,14 +444,14 @@
             success: function(data) {
                 if ($.isEmptyObject(data.errorMsg)) {
 
-                    var stockLocationMessage = warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
+                    var stockLocationMessage = e_warehouse_id ? ' in selected warehouse' : ' in the Shop/Business';
                     if (parseFloat(e_return_quantity) > parseFloat(data.stock)) {
 
                         toastr.error('Current stock is ' + parseFloat(data.stock) + stockLocationMessage);
                         return;
                     }
 
-                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + warehouse_id;
+                    var uniqueIdForPreventDuplicateEntry = e_product_id + e_variant_id + e_warehouse_id;
                     var uniqueIdValue = $('#' + (e_unique_id ? e_unique_id : uniqueIdForPreventDuplicateEntry)).val();
 
                     if (uniqueIdValue == undefined) {
@@ -486,7 +486,7 @@
                         tr += '</td>';
 
                         tr += '<td class="text-start">';
-                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + warehouse_id + '">';
+                        tr += '<input type="hidden" name="warehouse_ids[]" id="warehouse_id" value="' + e_warehouse_id + '">';
                         tr += '<span id="stock_location_name">' + stock_location_name + '</span>';
                         tr += '</td>';
 
@@ -536,9 +536,9 @@
                         tr.find('#span_unit_cost_inc_tax').html(parseFloat(e_unit_cost_inc_tax).toFixed(2));
                         tr.find('#span_subtotal').html(parseFloat(e_subtotal).toFixed(2));
                         tr.find('#subtotal').val(parseFloat(e_subtotal).toFixed(2));
-                        tr.find('.unique_id').val(e_product_id + e_variant_id + warehouse_id);
-                        tr.find('.unique_id').attr('id', e_product_id + e_variant_id + warehouse_id);
-                        tr.find('#warehouse_id').val(warehouse_id);
+                        tr.find('.unique_id').val(e_product_id + e_variant_id + e_warehouse_id);
+                        tr.find('.unique_id').attr('id', e_product_id + e_variant_id + e_warehouse_id);
+                        tr.find('#warehouse_id').val(e_warehouse_id);
                         tr.find('#stock_location_name').html(stock_location_name);
 
                         clearEditItemFileds();
@@ -592,7 +592,7 @@
         $('#e_variant_id').val(variant_id);
         $('#e_return_quantity').val(parseFloat(return_quantity).toFixed(2)).focus().select();
         $('#e_unique_id').val(unique_id);
-        $('#warehouse_id').val(warehouse_id);
+        $('#e_warehouse_id').val(warehouse_id);
         $('#e_unit_cost_exc_tax').val(unit_cost_exc_tax);
         $('#e_discount').val(unit_discount);
         $('#e_discount_type').val(unit_discount_type);
@@ -995,9 +995,13 @@
 
         var nextId = $(this).data('next');
 
-        $('#' + nextId).focus();
-
         setTimeout(function() {
+
+            if (nextId == 'e_warehouse_id' && $('#e_warehouse_id').val() == undefined) {
+
+                $('#date').select().focus();
+                return;
+            }
 
             $('#' + nextId).focus();
         }, 100);

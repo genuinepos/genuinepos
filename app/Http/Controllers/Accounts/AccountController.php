@@ -109,6 +109,9 @@ class AccountController extends Controller
                 if (isset($request->branch_count) && count($request->branch_ids) > 0) {
 
                     $this->bankAccessBranchService->addBankAccessBranch(bankAccountId: $addAccount->id, branchIds: $request->branch_ids);
+                } else if (auth()?->user()?->branch_id) {
+
+                    $this->bankAccessBranchService->addBankAccessBranch(bankAccountId: $addAccount->id, branchIds: [auth()?->user()?->branch_id]);
                 }
             }
 
@@ -212,12 +215,12 @@ class AccountController extends Controller
 
             // @if ($loop->first) @continue @endif
 
-            if ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 11) {
+            if (
+                ($accountGroup->sub_sub_group_number == 1 || $accountGroup->sub_sub_group_number == 11) &&
+                isset($request->branch_count)
+            ) {
 
-                $this->bankAccessBranchService->updateBankAccessBranch(bankAccount: $updateAccount, branchIds: $request->branch_ids ?? []);
-            } else {
-
-                $updateAccount->bankAccessBranches()->delete();
+                $this->bankAccessBranchService->updateBankAccessBranch(bankAccount: $updateAccount, branchIds: $request->branch_ids);
             }
 
             if ($accountGroup->sub_sub_group_number == 6 || $accountGroup->sub_sub_group_number == 10) {

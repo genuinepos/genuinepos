@@ -594,6 +594,8 @@ class RolePermissionSeeder extends Seeder
             ['id' => '373', 'name' => 'shops_create'],
             ['id' => '374', 'name' => 'shops_edit'],
             ['id' => '375', 'name' => 'shops_delete'],
+
+            ['id' => '376', 'name' => 'accounts_bank_account_create'],
         ];
 
         return $permissions;

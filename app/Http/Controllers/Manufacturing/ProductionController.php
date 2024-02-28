@@ -88,18 +88,7 @@ class ProductionController extends Controller
     ) {
         abort_if(!auth()->user()->can('production_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
-        $this->validate($request, [
-            'process_id' => 'required',
-            'date' => 'required|date',
-            'total_output_quantity' => 'required',
-            'total_final_output_quantity' => 'required',
-            'net_cost' => 'required',
-        ], ['process_id.required' => 'Please select the product']);
-
-        if ($request->store_warehouse_count > 0) {
-
-            $this->validate($request, ['store_warehouse_id' => 'required']);
-        }
+        $this->productionService->productionValidation(request: $request);
 
         try {
 
@@ -160,18 +149,7 @@ class ProductionController extends Controller
     {
         abort_if(!auth()->user()->can('production_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
-        $this->validate($request, [
-            'process_id' => 'required',
-            'date' => 'required',
-            'total_output_quantity' => 'required',
-            'total_final_output_quantity' => 'required',
-            'net_cost' => 'required',
-        ], ['process_id.required' => 'Please select the product']);
-
-        if ($request->store_warehouse_count == 1) {
-
-            $this->validate($request, ['store_warehouse_id' => 'required']);
-        }
+        $this->productionService->productionValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -205,7 +183,7 @@ class ProductionController extends Controller
     public function delete($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
         abort_if(!auth()->user()->can('production_delete') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
-        
+
         try {
             DB::beginTransaction();
 

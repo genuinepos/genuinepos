@@ -24,7 +24,7 @@ class EmailSettingsController extends Controller
                 ->addColumn('action', function ($row) {
                     // $activeBtn = '<a href="#" class="active-btn btn btn-success btn-sm text-white" title="Active" data-id="' . $row->id . '"><span class="fas fa- pe-1"></span>Edit</a>';
                     $editBtn = '<a href="#" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit pe-1"></span>Edit</a>';
-                    $deleteBtn = '<a href="#" class="delete-btn btn btn-danger btn-sm text-white ms-2" title="Delete" data-id="' . $row->id . '"><span class="fas fa-trash pe-1"></span>Delete</a>';
+                    $deleteBtn = '<a onclick="return confirm("are you sure")" href="#" class="delete-btn btn btn-danger btn-sm text-white ms-2" title="Delete" data-id="' . $row->id . '"><span class="fas fa-trash pe-1"></span>Delete</a>';
                     return $editBtn . $deleteBtn;
 
                 })
@@ -79,7 +79,7 @@ class EmailSettingsController extends Controller
         ]);
 
         $emailServer = EmailServer::findOrFail($id);
-        
+
         $emailServer->update($validatedData);
 
         if ($emailServer) {

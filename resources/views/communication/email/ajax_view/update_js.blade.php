@@ -3,8 +3,8 @@ $(document).on('submit', '#edit_data', function(event) {
     event.preventDefault();
     var formData = $(this).serialize();
     var id = $('#edit_input').val();
-    var url = "{{ route('servers.update', ':id') }}"; // Define URL template
-    url = url.replace(':id', id); // Replace ':id' with actual ID
+    var url = "{{ route('servers.update', ':id') }}"; 
+    url = url.replace(':id', id); 
     $.ajax({
         url: url,
         type: 'PATCH',

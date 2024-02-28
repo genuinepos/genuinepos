@@ -171,4 +171,5 @@
    @include('communication.email.ajax_view.create_js')
    @include('communication.email.ajax_view.edit_js')
    @include('communication.email.ajax_view.update_js')
+   @include('communication.email.ajax_view.delete_js')
 @endpush

@@ -2401,10 +2401,17 @@
                                         </a>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
+
+                          <!-- email start -->
+                          <div class="container-fluid">
+                            <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __("Email") }}</p>
                                 <div class="sub-menu-row">
                                     <div class="sub-menu-col">
-                                        <a href="" class="switch-bar-wrap">
+                                        <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="far fa-envelope"></i></span>
@@ -2415,64 +2422,130 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('communication.email.settings') }}" class="switch-bar-wrap settings-wrap">
+                                        <a href="#" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("Email Settings") }}</p>
+                                            <p class="switch_text">{{ __("Send Email") }}</p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('communication.email.settings.server.setup.design.pages') }}" class="switch-bar-wrap">
+                                        <a href="{{route('servers.index')}}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __('Email Server Setup Design Pages') }}</p>
+                                            <p class="switch_text">{{ __('Add Server') }}</p>
                                         </a>
                                     </div>
-                                </div>
 
-                                <div class="sub-menu-row">
                                     <div class="sub-menu-col">
                                         <a href="" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
-                                                    <span><i class="fas fa-sms"></i></span>
+                                                    <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("SMS") }}</p>
+                                            <p class="switch_text">{{ __('Body Format') }}</p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('communication.sms.settings') }}" class="switch-bar-wrap settings-wrap">
+                                        <a href="" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __('SMS Settings') }}</p>
+                                            <p class="switch_text">{{ __('Default Server') }}</p>
                                         </a>
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="{{ route('communication.sms.settings.server.setup.design.pages') }}" class="switch-bar-wrap">
+                                        <a href="" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __('SMS Server Setup Design Pages') }}</p>
+                                            <p class="switch_text">{{ __('Manual Email') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Email Permission') }}</p>
                                         </a>
                                     </div>
                                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
                             </div>
-                        </div>
+                          </div>
+                          <!-- email end -->
+
+                          <!-- sms start -->
+                          <div class="container-fluid">
+                            <div class="sub-menu-group">
+                                <p class="sub-menu-group-title">{{ __("Sms") }}</p>
+                                <div class="sub-menu-row">
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="far fa-envelope"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Sms") }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap settings-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __("Send Sms") }}</p>
+                                        </a>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                            </div>
+                          </div>
+                         <!-- sms end -->
+
                     </div>
                 </div>
             @endif

@@ -182,7 +182,7 @@
                         </ul>
                         <ul class="sidebar-dropdown-menu" id="setupDropdown">
                             <li class="sidebar-dropdown-item">
-                                <a href="{{route('saas.email-settings.index')}}" class="sidebar-link">{{ __('Email Settings') }}</a>
+                                <a href="{{route('saas.email-settings.index')}}" class="sidebar-link">{{ __('Email') }}</a>
                             </li>
                         </ul>
                     </li>

@@ -15,9 +15,12 @@
 
                                 {{ auth()?->user()?->branch?->parentBranch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                             @else
+
                                 @if (auth()?->user()?->branch)
+
                                     {{ auth()?->user()?->branch?->name . '(' . auth()?->user()?->branch?->area_name . ')' . '-(' . auth()?->user()?->branch?->branch_code . ')' }}
                                 @else
+
                                     {{ $generalSettings['business_or_shop__business_name'] }}
                                 @endif
                             @endif
@@ -64,7 +67,16 @@
                                 $__branchExpireDate = date($dateFormat, strtotime($branchExpireDate));
                             @endphp
                             <p class="text-white mt-1">
-                                <span class="text-white">{{ __("Shop Expire On") }}</span> : <span class="text-danger">{{ $__branchExpireDate }}</span>
+                                <span class="text-white">{{ __("Shop | Expire On") }}</span> : <span class="text-success">{{ $__branchExpireDate }}</span>
+                            </p>
+                        @else
+                            @php
+                                $dateFormat = $generalSettings['business_or_shop__date_format'];
+                                $businessExpireDate = $generalSettings['subscription']->business_expire_date;
+                                $__businessExpireDate = date($dateFormat, strtotime($businessExpireDate));
+                            @endphp
+                            <p class="text-white mt-1">
+                                <span class="text-white">{{ __("Business | Expire On") }}</span> : <span class="text-success">{{ $__businessExpireDate }}</span>
                             </p>
                         @endif
                     @endif
@@ -142,7 +154,7 @@
                             </li>
 
                             @if ($generalSettings['modules__pos'] == '1')
-                                @if (auth()->user()->can('pos_add') && auth()->user()->branch_id)
+                                @if (auth()->user()->can('pos_add'))
                                     <li class="top-icon"><a href="{{ route('sales.pos.create') }}" class="nav-btn"><span><i class="fas fa-cash-register"></i><br>{{ __('POS') }}</span></a></li>
                                 @endif
                             @endif

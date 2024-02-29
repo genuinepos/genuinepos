@@ -19,7 +19,8 @@
         </div>
 
         <div class="p-1">
-            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                 <div class="form_element rounded mt-0 mb-lg-1 mb-1">
                     <div class="element-body">
                         <form id="filter_form" action="" method="get">

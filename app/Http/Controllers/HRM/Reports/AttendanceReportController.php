@@ -25,6 +25,8 @@ class AttendanceReportController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('attendance_report') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
@@ -98,7 +100,7 @@ class AttendanceReportController extends Controller
     {
         if ($request->month_year == '') {
 
-            return response()->json(['errorMsg' => 'Month & Year is required']);
+            return response()->json(['errorMsg' => __('Month & Year is required')]);
         }
 
         $ownOrParentBranch = '';
@@ -184,9 +186,10 @@ class AttendanceReportController extends Controller
             }
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-            $query->where('branch_id', auth()->user()->branch_id)->whereNotIn('role_type', [RoleType::SuperAdmin->value, RoleType::Admin->value]);
+            $query->where('branch_id', auth()->user()->branch_id)->whereNotIn('role_type', [RoleType::SuperAdmin->value]);
         }
 
         return $query;

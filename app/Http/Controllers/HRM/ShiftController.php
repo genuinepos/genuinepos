@@ -16,9 +16,7 @@ class ShiftController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('shifts_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -30,18 +28,14 @@ class ShiftController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('shifts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         return view('hrm.shifts.ajax.create');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('shifts_create')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->shiftService->addValidation(request: $request);
         return $this->shiftService->addShift($request);
@@ -49,9 +43,7 @@ class ShiftController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('shifts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $shift = DB::table('hrm_shifts')->where('id', $id)->first();
 
@@ -60,9 +52,7 @@ class ShiftController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('shifts_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->shiftService->updateValidation(request: $request, id: $id);
         $this->shiftService->updateShift(request: $request, id: $id);
@@ -72,9 +62,7 @@ class ShiftController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('shifts_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('shifts_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->shiftService->deleteShift(id: $id);
 

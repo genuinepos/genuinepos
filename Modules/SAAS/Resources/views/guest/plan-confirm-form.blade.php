@@ -82,6 +82,7 @@
         </div>
     </div>
     @push('js')
+        <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script>
         <script>
             // Domain Check
             var typingTimer; //timer identifier

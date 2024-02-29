@@ -48,6 +48,7 @@ class UserController extends Controller
     public function create()
     {
         if (!auth()->user()->can('user_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -67,6 +68,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if (!auth()->user()->can('user_add')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -81,6 +83,7 @@ class UserController extends Controller
     public function edit($id)
     {
         if (!auth()->user()->can('user_edit')) {
+
             abort(403, 'Access Forbidden.');
         }
 
@@ -100,6 +103,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         if (!auth()->user()->can('user_edit')) {
+            
             abort(403, 'Access Forbidden.');
         }
 

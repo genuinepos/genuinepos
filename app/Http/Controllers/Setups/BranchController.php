@@ -37,7 +37,7 @@ class BranchController extends Controller
     {
         $generalSettings = config('generalSettings');
 
-        abort_if(!auth()->user()->can('shops_create') && $generalSettings['subscription']->current_shop_count == 1);
+        abort_if(!auth()->user()->can('shops_create') && $generalSettings['subscription']->current_shop_count == 1, 403);
 
         $currentCreatedBranchCount = $this->branchService->branches()->count();
 

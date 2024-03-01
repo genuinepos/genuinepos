@@ -136,8 +136,7 @@
                             isAvailable = true;
                             $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
                         }
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
                         isAvailable = false;
                         $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                     }

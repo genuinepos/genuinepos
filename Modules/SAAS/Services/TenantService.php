@@ -1,23 +1,25 @@
 <?php
+
 namespace Modules\SAAS\Services;
 
-use App\Mail\NewSubscriptionMail;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Payment;
+use App\Enums\BooleanType;
 use App\Models\GeneralSetting;
 use Modules\SAAS\Entities\Plan;
+use App\Mail\NewSubscriptionMail;
 use Modules\SAAS\Entities\Tenant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Subscriptions\Subscription;
 use Modules\SAAS\Database\factories\AdminFactory;
 use App\Models\Subscriptions\ShopExpireDateHistory;
 use App\Models\Subscriptions\SubscriptionTransaction;
-use Illuminate\Support\Facades\Mail;
 
 class TenantService implements TenantServiceInterface
 {
@@ -28,15 +30,21 @@ class TenantService implements TenantServiceInterface
             $plan = Plan::find($tenantRequest['plan_id']);
 
             $expireDate = '';
-            if ($tenantRequest['price_period'] == 'month') {
+            if ($plan->is_trial_plan == BooleanType::False->value) {
 
-                $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
-            } else if ($tenantRequest['price_period'] == 'year') {
+                if ($tenantRequest['price_period'] == 'month') {
 
-                $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
-            } else if ($tenantRequest['lifetime'] == 'lifetime') {
+                    $expireDate = $this->getExpireDate(period: 'month', periodCount: $tenantRequest['period_count']);
+                } else if ($tenantRequest['price_period'] == 'year') {
 
-                $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
+                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
+                } else if ($tenantRequest['lifetime'] == 'lifetime') {
+
+                    $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
+                }
+            } else if($plan->is_trial_plan == BooleanType::True->value) {
+
+                $expireDate = $this->getExpireDate(period: 'day', periodCount: $plan->trial_days);
             }
 
             $tenant = Tenant::create([
@@ -47,7 +55,7 @@ class TenantService implements TenantServiceInterface
                 // 'shop_count' => $tenantRequest['shop_count'],
                 // 'expire_at' => null,
                 'start_date' => Carbon::now(),
-                'expire_date' => $expireDate,
+                'expire_date' => $expireDate ? $expireDate : null,
                 'user_id' => 1,
             ]);
 
@@ -82,8 +90,8 @@ class TenantService implements TenantServiceInterface
 
                     try {
                         Mail::to($tenantRequest['email'])->send(new NewSubscriptionMail($tenant));
-                        logger('email sending', ['sending mail' => 'email successfully send']);
-                    }catch(Exception $e) {
+                        logger('email sending', ['sending mail' => 'Email successfully send']);
+                    } catch (Exception $e) {
                         logger('email send fail', ['test mail' => $e->getMessage()]);
                     }
 
@@ -162,12 +170,12 @@ class TenantService implements TenantServiceInterface
         $subscribe = new Subscription();
         $subscribe->user_id = 1;
         $subscribe->plan_id = $plan->id;
-        $subscribe->status = 1;
+        $subscribe->status = BooleanType::True->value;
         $subscribe->initial_plan_start_date = Carbon::now();
-        $subscribe->initial_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
-        $subscribe->current_shop_count = $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'];
+        $subscribe->initial_shop_count = $plan->is_trial_plan == BooleanType::True->value ? $plan->trial_shop_count : $tenantRequest['shop_count'];
+        $subscribe->current_shop_count = $plan->is_trial_plan == BooleanType::True->value ? $plan->trial_shop_count : $tenantRequest['shop_count'];
 
-        if ($plan->is_trial_plan == 0) {
+        if ($plan->is_trial_plan == BooleanType::False->value) {
 
             $subscribe->initial_plan_start_date = Carbon::now();
             $subscribe->initial_price_period = $tenantRequest['price_period'] ? $tenantRequest['price_period'] : null;
@@ -180,7 +188,7 @@ class TenantService implements TenantServiceInterface
 
             if (isset($tenantRequest['has_business'])) {
 
-                $subscribe->has_business = 1;
+                $subscribe->has_business = BooleanType::True->value;
                 $subscribe->initial_business_price_period = $tenantRequest['business_price_period'] ? $tenantRequest['business_price_period'] : 0;
                 $subscribe->initial_business_price = $tenantRequest['business_price'] ? $tenantRequest['business_price'] : 0;
                 $subscribe->initial_business_period_count = $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count'];
@@ -193,28 +201,28 @@ class TenantService implements TenantServiceInterface
             }
 
             $subscribe->initial_payment_status = $tenantRequest['payment_status'];
-            if ($tenantRequest['payment_status'] == 0) {
+            if ($tenantRequest['payment_status'] == BooleanType::False->value) {
 
                 $subscribe->initial_due_amount = $tenantRequest['total_payable'] ? $tenantRequest['total_payable'] : 0;
                 $subscribe->initial_plan_expire_date = $tenantRequest['repayment_date'] ? date('Y-m-d', strtotime($tenantRequest['repayment_date'])) : null;
-            } elseif ($tenantRequest['payment_status'] == 1) {
+            } elseif ($tenantRequest['payment_status'] == BooleanType::False->value) {
 
                 $subscribe->initial_due_amount = 0;
             }
-        } elseif ($plan->is_trial_plan == 1) {
+        } elseif ($plan->is_trial_plan == BooleanType::True->value) {
 
             $subscribe->trial_start_date = Carbon::now();
-            $subscribe->has_business = 1;
+            $subscribe->has_business = BooleanType::True->value;
         }
 
         $subscribe->save();
 
-        if ($plan->is_trial_plan == 0 && $subscribe->initial_payment_status == 1) {
+        if ($plan->is_trial_plan == BooleanType::False->value && $subscribe->initial_payment_status == BooleanType::True->value) {
 
             $this->storeSubscriptionTransaction($subscribe, $tenantRequest);
         }
 
-        if ($plan->is_trial_plan == 0) {
+        if ($plan->is_trial_plan == BooleanType::False->value) {
 
             $this->storeShopExpireHistory($tenantRequest, $plan);
         }
@@ -233,7 +241,7 @@ class TenantService implements TenantServiceInterface
         $payment->discount = $subscribe->initial_discount;
         $payment->total_payable_amount = $subscribe->initial_total_payable_amount;
         $payment->paid = $subscribe->initial_total_payable_amount;
-        $payment->payment_status = 1;
+        $payment->payment_status = BooleanType::True->value;
         $payment->payment_date = Carbon::now();
         $payment->save();
     }
@@ -264,7 +272,7 @@ class TenantService implements TenantServiceInterface
     private function getExpireDate(string $period, int $periodCount)
     {
         $today = new \DateTime();
-
+        $lastDate = '';
         if ($period == 'day') {
 
             $lastDate = $today->modify('+' . $periodCount . ' days');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('email', 255);
             $table->string('code', 6);
+            $table->boolean('is_verified')->default(0);
             $table->timestamps();
         });
     }

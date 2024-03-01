@@ -81,6 +81,14 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-col-10">
+                    <div class="form-row">
+                        <div class="form-col-10">
+                            <a class="def-btn float-end" id="single-nav" data-tab="stepTwoTab">{{ __('Next Step') }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

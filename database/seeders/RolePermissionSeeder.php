@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
+        Artisan::call('permission:cache-reset');
         $this->truncateRolePermissionDataButKeepOldData();
         $this->createRolePermission();
         $this->syncRolesPermissions();
@@ -24,6 +26,7 @@ class RolePermissionSeeder extends Seeder
     public function truncateRolePermissionDataButKeepOldData(): void
     {
         Schema::disableForeignKeyConstraints();
+
         if (Role::count() == 0) {
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE `roles` AUTO_INCREMENT = 1');
         }
@@ -58,7 +61,7 @@ class RolePermissionSeeder extends Seeder
                 Permission::create([
                     'id' => $permission['id'],
                     'name' => $permission['name'],
-                    'guard_name' => 'web',
+                    // 'guard_name' => 'web',
                 ]);
             }
         }
@@ -339,17 +342,17 @@ class RolePermissionSeeder extends Seeder
             ['id' => '163', 'name' => 'sms_setting_update'],
             ['id' => '164', 'name' => 'sms_setting_delete'],
 
-            ['id' => '165', 'name' => 'warehouse_to_business_location__add_transfer'],
-            ['id' => '166', 'name' => 'warehouse_to_business_location__transfer_list'],
-            ['id' => '167', 'name' => 'warehouse_to_business_location__receive_stock'],
+            // ['id' => '165', 'name' => 'warehouse_to_business_location__add_transfer'],
+            // ['id' => '166', 'name' => 'warehouse_to_business_location__transfer_list'],
+            // ['id' => '167', 'name' => 'warehouse_to_business_location__receive_stock'],
 
-            ['id' => '168', 'name' => 'business_location_to_warehouse__add_transfer'],
-            ['id' => '169', 'name' => 'business_location_to_warehouse__transfer_list'],
-            ['id' => '170', 'name' => 'business_location_to_warehouse__receive_stock'],
+            // ['id' => '168', 'name' => 'business_location_to_warehouse__add_transfer'],
+            // ['id' => '169', 'name' => 'business_location_to_warehouse__transfer_list'],
+            // ['id' => '170', 'name' => 'business_location_to_warehouse__receive_stock'],
 
-            ['id' => '171', 'name' => 'own_to_other_business_location__add_transfer'],
-            ['id' => '172', 'name' => 'own_to_other_business_location__transfer_list'],
-            ['id' => '173', 'name' => 'own_to_other_business_location__receive_stock'],
+            // ['id' => '171', 'name' => 'own_to_other_business_location__add_transfer'],
+            // ['id' => '172', 'name' => 'own_to_other_business_location__transfer_list'],
+            // ['id' => '173', 'name' => 'own_to_other_business_location__receive_stock'],
             // ['id' => '174', 'name' => 'brand_create'],
             // ['id' => '175', 'name' => 'brand_edit'],
             // ['id' => '176', 'name' => 'brand_delete'],
@@ -596,6 +599,8 @@ class RolePermissionSeeder extends Seeder
             ['id' => '375', 'name' => 'shops_delete'],
 
             ['id' => '376', 'name' => 'accounts_bank_account_create'],
+            ['id' => '377', 'name' => 'supplier_manage'],
+            ['id' => '378', 'name' => 'customer_manage'],
         ];
 
         return $permissions;

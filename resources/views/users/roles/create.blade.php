@@ -198,6 +198,10 @@
                                                         <label for="supplier_all">{{ __('View All Supplier') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="supplier_manage" id="supplier_manage" class="contacts contact_all">
+                                                        <label for="supplier_manage">{{ __('Manage Supplier') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="supplier_add" id="supplier_add" class="contacts contact_all">
                                                         <label for="supplier_add">{{ __('Add Supplier') }}</label>
                                                     </p>
@@ -225,6 +229,10 @@
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="customer_all" id="customer_all" class="contacts customer_all">
                                                         <label for="customer_all">{{ __('View All Customer') }}</label>
+                                                    </p>
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input type="checkbox" name="customer_manage" id="customer_manage" class="contacts customer_all">
+                                                        <label for="customer_manage">{{ __('Manage Customer') }}</label>
                                                     </p>
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="customer_add" id="customer_add" class="contacts customer_all">

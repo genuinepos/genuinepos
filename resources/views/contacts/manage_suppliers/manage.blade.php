@@ -96,7 +96,8 @@
                                     <div class="account_summary_table">
                                         <form id="filter_supplier_ledgers" method="get" class="px-2">
                                             <div class="form-group row align-items-end justify-content-end g-3">
-                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-lg-3 col-md-3">
                                                         <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                         <select name="branch_id" class="form-control select2" id="ledger_branch_id" autofocus>
@@ -269,7 +270,8 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                             <div class="col-lg-6 col-md-6">
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchases_branch_id" autofocus>
@@ -399,7 +401,8 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                             <div class="col-lg-6 col-md-6">
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="purchase_orders_branch_id" autofocus>
@@ -527,7 +530,8 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                             <div class="col-lg-6 col-md-6">
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_branch_id" autofocus>
@@ -661,7 +665,8 @@
                                             <div class="form-group row align-items-end justify-content-end g-3">
                                                 <div class="col-lg-9 col-md-6">
                                                     <div class="row">
-                                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                             <div class="col-lg-6 col-md-6">
                                                                 <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                 <select name="branch_id" class="form-control select2" id="sales_order_branch_id" autofocus>
@@ -794,7 +799,8 @@
                                                 <div class="card pb-5">
                                                     <form id="filter_payments" class="py-2 px-2 mt-2" method="get">
                                                         <div class="form-group row align-items-end">
-                                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                                 <div class="col-lg-3 col-md-6">
                                                                     <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="payments_branch_id" autofocus>
@@ -921,7 +927,8 @@
                                                 <div class="card pb-5">
                                                     <form id="filter_receipts" class="py-2 px-2 mt-2" method="get">
                                                         <div class="form-group row align-items-end">
-                                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                                 <div class="col-lg-3 col-md-6">
                                                                     <label><strong>{{ __('Shop/Business') }}</strong></label>
                                                                     <select name="branch_id" class="form-control select2" id="receipts_branch_id" autofocus>

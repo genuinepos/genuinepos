@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +14,8 @@ class ManageSupplierService
         $__branchId = $branchId == 'NULL' ? null : $branchId;
         $sumQueryBranchId = null;
 
-        if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+        // if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == BooleanType::False->value) {
 
             $sumQueryBranchId = $__branchId ? $__branchId : null;
         } else {

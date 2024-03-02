@@ -42,7 +42,7 @@
                                 $dateFormat = $generalSettings['business_or_shop__date_format'];
                             @endphp
 
-                            <p class="text-white mt-1">{{ __('Trial Expire on') }} :
+                            <p class="text-white mt-1">{{ __('Trial | Expire on') }} :
                                 <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
                                 <a href="{{ route('software.service.billing.upgrade.plan') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
                             </p>
@@ -148,8 +148,7 @@
                                         <span class="dropdown__icon"><i class="fas fa-user"></i></span> <a class="dropdown-item" href="#"> @lang('menu.notification') 1 <span>{{ __('3 Days ago') }}</span></a>
                                     </li>
 
-                                    <a href="#" class="btn btn-sm btn-primary">@lang('menu.view_all')</a>
-
+                                    <a href="#" class="btn btn-sm btn-primary">{{ __("View All") }}</a>
                                 </ul>
                             </li>
 

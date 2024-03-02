@@ -88,12 +88,7 @@ class TenantService implements TenantServiceInterface
                     DB::reconnect();
                     Artisan::call('tenants:run cache:clear --tenants=' . $tenant->id);
 
-                    try {
-                        Mail::to($tenantRequest['email'])->send(new NewSubscriptionMail($tenant));
-                        logger('email sending', ['sending mail' => 'Email successfully send']);
-                    } catch (Exception $e) {
-                        logger('email send fail', ['test mail' => $e->getMessage()]);
-                    }
+                    dispatch(new \Modules\SAAS\Jobs\SendNewSubscriptionMailQueueJob(to: $tenantRequest['email'], user: $tenant));
 
                     return $tenant;
                 }

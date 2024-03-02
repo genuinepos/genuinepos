@@ -22,7 +22,16 @@
                             <h2 class="price">$<span class="amount">{{ $plan->lifetime_price }} </span> <span class="type">Monthly</span>
                             @endif
                             <div class="">For your essential business needs.</div>
-                            <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}" class="btn btn-primary">Upgrade</a>
+                            @if($plantype == 'monthly')
+                            <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=monthly" id="link-plan" class="btn btn-primary">Upgrade</a>
+                            @endif
+                            @if($plantype == 'yearly')
+                            <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=yearly" id="link-plan" class="btn btn-primary">Upgrade</a>
+                            @endif
+
+                            @if($plantype == 'lifetime')
+                            <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=lifetime" id="link-plan" class="btn btn-primary">Upgrade</a>
+                            @endif
                         </div>
                     </th>
                     @endforeach

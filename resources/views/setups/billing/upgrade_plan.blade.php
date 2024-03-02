@@ -35,15 +35,15 @@
         <div class="main-content p-0 my-5">
 
             <div class="container">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="planTab" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">Monthly</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false">Yearly</button>
+                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false" onclick="activeTab('yearly')">Yearly</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false">Lifetime</button>
+                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false" onclick="activeTab('lifetime')">Lifetime</button>
                     </li>
                   </ul>
                   <div class="tab-content" id="myTabContent">
@@ -73,6 +73,15 @@
             $('.' + show_content).show();
             $(this).addClass('tab_active');
         });
+
+        // function activeTab(planType) {
+        //     let elements = document.querySelectorAll('#link-plan');
+        //     elements.forEach(el => {
+        //         el.href = 'upgrade-plan/'+el.dataset.id + '?type=' + planType;
+        //         console.log(el.href, 'active');
+        //     });
+        // }
+
     </script>
 @endpush
 

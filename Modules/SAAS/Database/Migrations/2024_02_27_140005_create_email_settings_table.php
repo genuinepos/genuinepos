@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('email_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('provider_name',100)->nullable();
-            $table->string('mail_mailer',50)->default('smtp');
-            $table->string('mail_host',50)->default('email@genuinepos.com');
+            $table->string('mail_host', 50)->default('email@genuinepos.com');
+            $table->string('mail_mailer', 50)->default('smtp');
             $table->integer('mail_port')->default(587);
-            $table->string('mail_username',50)->default('email@genuinepos.com');
-            $table->string('mail_password',50)->default('Password2020');
-            $table->string('mail_encryption',50)->default('tls');
-            $table->string('mail_from_address',50)->default('email@genuinepos.com');
-            $table->string('mail_from_name',50)->default('SpeedDigit');
-            $table->string('mail_active',50)->default(1);  
+            $table->string('mail_username', 50)->default('email@genuinepos.com');
+            $table->string('mail_password', 50)->default('Password2020');
+            $table->string('mail_encryption', 50)->default('tls');
+            $table->string('mail_from_address', 50)->default('email@genuinepos.com');
+            $table->string('mail_from_name', 50)->default('SpeedDigit');
+            $table->string('mail_active', 50)->default(1);
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

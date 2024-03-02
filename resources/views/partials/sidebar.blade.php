@@ -1117,7 +1117,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('cash_register_report'))
+                                        @if (auth()->user()->can('cash_register_report') && $generalSettings['subscription']->features['cash_counter_count'] > 0)
                                             <div class="sub-menu-col">
                                                 <a href="#" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -1907,7 +1907,7 @@
                                             </div>
                                         @endif --}}
 
-                                        @if (auth()->user()->can('cash_counters_index') & ($generalSettings['subscription']->features['cash_counter_count'] > 0))
+                                        @if (auth()->user()->can('cash_counters_index') && $generalSettings['subscription']->features['cash_counter_count'] > 0)
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('cash.counters.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">

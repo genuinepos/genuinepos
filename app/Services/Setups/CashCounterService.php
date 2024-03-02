@@ -35,10 +35,6 @@ class CashCounterService
         }
 
         // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
-        //     $query->where('cash_counters.branch_id', auth()->user()->branch_id);
-        // }
-
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
 
             $query->where('cash_counters.branch_id', auth()->user()->branch_id);
@@ -96,15 +92,16 @@ class CashCounterService
 
     public function restriction(array|object $generalSettings): array
     {
-        $cashCounterLimit = $generalSettings['addons__cash_counter_limit'];
+        $generalSettings = config('generalSettings');
+        $cashCounterLimit = (int)$generalSettings['subscription']->features['cash_counter_count'];
 
         $cashCounters = DB::table('cash_counters')
             ->where('branch_id', auth()->user()->branch_id)
             ->count();
 
-        if ($cashCounterLimit <= $cashCounters) {
+        if ($cashCounterLimit == $cashCounters) {
 
-            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit}")];
+            return ['pass' => false, 'msg' => __("Cash counter limit is ${cashCounterLimit} for every shop.")];
         }
 
         return ['pass' => true];

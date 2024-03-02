@@ -96,7 +96,8 @@ class ProductService
             $query->where('products.status', $request->status);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
         }
@@ -446,7 +447,7 @@ class ProductService
     {
         $updateProduct = $this->singleProduct(id: $productId, with: ['productUnits', 'variants', 'variants.variantUnits', 'productAccessBranches']);
 
-        foreach($updateProduct->productUnits as $productUnit){
+        foreach ($updateProduct->productUnits as $productUnit) {
 
             $productUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
             $productUnit->save();
@@ -459,7 +460,7 @@ class ProductService
                 $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                 $variant->save();
 
-                foreach($variant->variantUnits as $variantUnit){
+                foreach ($variant->variantUnits as $variantUnit) {
 
                     $variantUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                     $variantUnit->save();

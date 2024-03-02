@@ -2,10 +2,11 @@
 
 namespace App\Services\Products;
 
+use App\Enums\BooleanType;
 use App\Models\Products\Product;
+use Illuminate\Support\Facades\DB;
 use App\Models\Products\ProductStock;
 use App\Models\Products\ProductVariant;
-use Illuminate\Support\Facades\DB;
 
 class ProductStockService
 {
@@ -13,7 +14,7 @@ class ProductStockService
     {
         $product = Product::where('id', $productId)->first();
 
-        if ($product->is_manage_stock == 1) {
+        if ($product->is_manage_stock == BooleanType::True->value) {
 
             $productLedger = DB::table('product_ledgers')->where('product_ledgers.product_id', $productId)
                 ->select(
@@ -50,7 +51,7 @@ class ProductStockService
 
         $this->addBranchProduct(productId: $productId, variantId: $variantId, branchId: $branchId);
 
-        if ($product->is_manage_stock == 1) {
+        if ($product->is_manage_stock == BooleanType::True->value) {
 
             $productLedger = DB::table('product_ledgers')
                 ->where('product_ledgers.product_id', $productId)
@@ -120,7 +121,7 @@ class ProductStockService
 
         $this->addWarehouseProduct(productId: $productId, variantId: $variantId, warehouseId: $warehouseId);
 
-        if ($product->is_manage_stock == 1) {
+        if ($product->is_manage_stock == BooleanType::True->value) {
 
             $productLedger = DB::table('product_ledgers')
                 ->where('product_ledgers.product_id', $productId)
@@ -177,7 +178,7 @@ class ProductStockService
             ->where('id', $productId)->select('id', 'is_manage_stock')
             ->first();
 
-        if ($product->is_manage_stock == 1) {
+        if ($product->is_manage_stock == BooleanType::True->value) {
 
             $productStock = ProductStock::where('product_id', $productId)
                 ->where('variant_id', $variantId)

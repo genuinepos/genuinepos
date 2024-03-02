@@ -858,10 +858,14 @@
                                                         <input type="checkbox" {{ $role->hasPermissionTo('received_against_sales_report') ? 'CHECKED' : '' }} name="received_against_sales_report" id="received_against_sales_report" class="sales sales_report">
                                                         <label for="received_against_sales_report">{{ __('Received Against Sales Report') }}</label>
                                                     </p>
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('cash_register_report') ? 'CHECKED' : '' }} name="cash_register_report" id="cash_register_report" class="sales sales_report">
-                                                        <label for="cash_register_report">{{ __('Cash Register Reports') }}</label>
-                                                    </p>
+
+                                                    @if ($generalSettings['subscription']->features['cash_counter_count'] > 0)
+                                                        <p class="checkbox_input_wrap mt-1">
+                                                            <input type="checkbox" {{ $role->hasPermissionTo('cash_register_report') ? 'CHECKED' : '' }} name="cash_register_report" id="cash_register_report" class="sales sales_report">
+                                                            <label for="cash_register_report">{{ __('Cash Register Reports') }}</label>
+                                                        </p>
+                                                    @endif
+                                                    
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sale_representative_report') ? 'CHECKED' : '' }} name="sale_representative_report" id="sale_representative_report" class="sales sales_report">
                                                         <label for="sale_representative_report">{{ __('Sales Representative Report') }}</label>

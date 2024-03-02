@@ -13,7 +13,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 |--------------------------------------------------------------------------
 | WebApp Route Files Registration
 |--------------------------------------------------------------------------
-*/
+ */
 Route::middleware([
     'web',
     // 'plan_subscription',
@@ -27,8 +27,8 @@ Route::middleware([
     // Impersonate User
     Route::get('impersonate/{token}', [UserImpersonateController::class, 'impersonate'])->name('users.impersonate');
     // Authenticated User
-    Route::middleware([])->group(function() {
-    // Route::middleware(['plan_check'])->group(function() {
+    Route::middleware([])->group(function () {
+        // Route::middleware(['plan_check'])->group(function() {
         Route::middleware('auth')->group(base_path('routes/dev_routes.php'));
         Route::middleware('auth')->group(base_path('routes/admin.php'));
         Route::middleware('auth')->group(base_path('routes/hrms.php'));
@@ -46,6 +46,8 @@ Route::middleware([
         Route::middleware('auth')->group(base_path('routes/dashboard.php'));
         Route::middleware('auth')->group(base_path('routes/today_summary.php'));
         Route::middleware('auth')->group(base_path('routes/users.php'));
+        Route::middleware('auth')->group(base_path('routes/communication.php'));
+
     });
 });
 
@@ -53,10 +55,10 @@ Route::middleware([
 |--------------------------------------------------------------------------
 | Redirects to landlord or tenant based on request type
 |--------------------------------------------------------------------------
-*/
+ */
 Route::get('/', function (Request $request) {
     $isTenant = tenant();
     return isset($isTenant) ?
-        redirect(RouteServiceProvider::HOME) :
-        redirect()->route('saas.welcome-page');
+    redirect(RouteServiceProvider::HOME) :
+    redirect()->route('saas.welcome-page');
 })->middleware(['universal', InitializeTenancyByDomainOrSubdomain::class]);

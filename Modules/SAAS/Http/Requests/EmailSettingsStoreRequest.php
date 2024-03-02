@@ -14,7 +14,6 @@ class EmailSettingsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'provider_name' => 'required',
             'mail_mailer' => 'required',
             'mail_host' => 'required',
             'mail_port' => 'required',

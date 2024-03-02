@@ -380,18 +380,13 @@
                         <div class="row g-3">
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="code" class="form-label"><strong>{{ __('Provider Name') }}</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="provider_name" value="{{$settings->provider_name}}" class="form-control" autocomplete="off" id="provider_name" placeholder="{{ __('Enter Provider Name') }}" required>
+                                <label for="end_date" class="form-label"><strong>{{ __('Mail Provider') }}</strong><span class="text-danger">*</span></label>
+                                <input type="text" name="mail_host" value="{{$settings->mail_host}}" class="form-control" autocomplete="off" id="mail_host" placeholder="{{ __('Enter Mail Host') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label for="start_date" class="form-label"><strong>{{ __('Mail Mailer') }}</strong><span class="text-danger">*</span></label>
                                 <input type="text" name="mail_mailer"  value="{{$settings->mail_mailer}}" autocomplete="off" class="form-control date-picker hasDatepicker" id="dp1709016555514"  placeholder="{{ __('Enter Mail Mailer') }}" required>
-                            </div>
-
-                            <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                <label for="end_date" class="form-label"><strong>{{ __('Mail Host') }}</strong><span class="text-danger">*</span></label>
-                                <input type="text" name="mail_host" value="{{$settings->mail_host}}" class="form-control" autocomplete="off" id="mail_host" placeholder="{{ __('Enter Mail Host') }}" required>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">

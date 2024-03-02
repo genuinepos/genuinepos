@@ -32,104 +32,31 @@
             </div>
         </div>
 
-        <div class="main-content p-0 mt-2">
-            <div class="panel pricing-panel">
-                <div class="panel-body d-flex flex-column align-items-center justify-content-center">
-                    <div class="pricing">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="plan-type d-flex justify-content-center gap-2 mb-20 mb-2">
-                                        <button id="Yearly" class="btn btn-primary">Yearly</button>
-                                    </div>
+        <div class="main-content p-0 my-5">
 
-                                    <div class="table-responsive">
-                                        <div class="table-wrap">
-                                            <table class="table table-light table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <div class="table-title">
-                                                                <h4>Choose Your Plan</h4>
-                                                            </div>
-                                                        </th>
-                                                        @foreach ($plans as $plan)
-                                                        <th>
-                                                            <div class="table-top">
-                                                                <h3>{{ $plan->name }}</h3>
-                                                                <h2 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type">Yearly</span>
-                                                                </h2>
-                                                                <p>For your essential business needs.</p>
-                                                                <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}" class="btn btn-primary">Select</a>
-                                                            </div>
-                                                        </th>
-                                                        @endforeach
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="table-secondary">
-                                                        <td colspan="{{ $plans->count() - 1 }}"><span>Features</span></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Retail POS</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Registers</td>
-                                                        <td>1 Included</td>
-                                                        <td>1 Included</td>
-                                                        <td>1 Included</td>
-                                                        <td>1 Included</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Integrated Payments</td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Accounting</td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>eCommerce</td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Omnichannel Loyalty</td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Advanced Reporting</td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon minus"><i class="fas fa-minus"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                        <td><span class="icon check"><i class="far fa-check-circle text-success"></i></span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="container">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">Monthly</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false">Yearly</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false">Lifetime</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="plan-monthly" role="tabpanel" aria-labelledby="plan-monthly-tab">
+                        @include('setups.billing.price_plan', ['plantype' => 'monthly'])
                     </div>
-                </div>
+                    <div class="tab-pane fade" id="plan-yearly" role="tabpanel" aria-labelledby="plan-yearly-tab">
+                        @include('setups.billing.price_plan', ['plantype' => 'yearly'])
+                    </div>
+                    <div class="tab-pane fade" id="plan-lifetime" role="tabpanel" aria-labelledby="contact-tab">
+                        @include('setups.billing.price_plan', ['plantype' => 'lifetime'])
+                    </div>
+                  </div>
             </div>
         </div>
     </div>

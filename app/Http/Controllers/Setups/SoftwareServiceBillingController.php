@@ -26,7 +26,7 @@ class SoftwareServiceBillingController extends Controller
     public function upgradePlan()
     {
         DB::statement('use ' . env('DB_DATABASE'));
-        $plans = Plan::all();
+        $plans = Plan::active()->where('is_trial_plan', 0)->get();
 
         DB::reconnect();
 
@@ -84,7 +84,7 @@ class SoftwareServiceBillingController extends Controller
             dispatch(new \Modules\SAAS\Jobs\SendSubscriptionUpgradeMailQueueJob(to: $user->email, user: $user));
 
             return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
-            
+
         } catch (\Exception $e) {
             DB::rollback();
         }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail;
+namespace Modules\SAAS\Emails;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SubscriptionUpgradeMail extends Mailable
 {
@@ -39,7 +39,7 @@ class SubscriptionUpgradeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.subscription_upgrade',
+            view: 'saas::mail.subscription_upgrade',
         );
     }
 

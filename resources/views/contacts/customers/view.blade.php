@@ -74,11 +74,12 @@
                                         <form id="filter_customer_ledgers" method="get" class="px-2">
                                             <div class="form-group row align-items-end justify-content-end g-3">
 
-                                                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                                                {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-lg-3 col-md-6">
                                                         <label><strong>@lang('menu.business_location') </strong></label>
                                                         <select name="branch_id" class="form-control submit_able select2" id="ledger_branch_id" autofocus>
-                                                            <option value="">@lang('menu.all')</option>
+                                                            <option value="">{{ __("All") }}</option>
                                                             <option value="NULL">
                                                                 {{ $generalSettings['business_or_shop__business_name'] }}
                                                             </option>
@@ -91,11 +92,10 @@
                                                     </div>
                                                 @endif
 
-
                                                 <div class="col-lg-3 col-md-6">
                                                     <label><strong>@lang('menu.voucher_type') </strong></label>
                                                     <select name="voucher_type" class="form-control submit_able select2" id="ledger_voucher_type" autofocus>
-                                                        <option value="">@lang('menu.all')</option>
+                                                        <option value="">{{ __("All") }}</option>
                                                         @foreach (App\Utils\CustomerUtil::voucherTypes() as $key => $type)
                                                             <option value="{{ $key }}">{{ $type }}</option>
                                                         @endforeach

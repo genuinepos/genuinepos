@@ -20,6 +20,8 @@ class ManageCustomerController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('customer_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         if ($request->ajax()) {
 
             return $this->manageCustomerService->customerListTable($request);
@@ -36,6 +38,8 @@ class ManageCustomerController extends Controller
 
     public function manage($id)
     {
+        abort_if(!auth()->user()->can('customer_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $contact = $this->contactService->singleContact(id: $id, with: [
             'account:id,contact_id,branch_id',
             'account.branch:id,name,branch_code,parent_branch_id',

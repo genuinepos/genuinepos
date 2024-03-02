@@ -15,32 +15,31 @@
         </div>
 
         <div class="p-1">
-            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_area == 0)
+            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_area == 0) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form_element rounded mt-0 mb-1">
                             <div class="element-body">
                                 <form action="" method="get">
                                     <div class="form-group row">
-                                        @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
-                                            <div class="col-md-4">
-                                                <label><strong>@lang('menu.business_location') </strong></label>
-                                                <select name="branch_id" class="form-control submit_able select2" id="branch_id">
-                                                    <option value="">@lang('menu.all')</option>
-                                                    <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
-                                                    @foreach ($branches as $branch)
-                                                        <option value="{{ $branch->id }}">
-                                                            @php
-                                                                $parentBranchName = $branch?->parentBranch?->name;
-                                                                $areaName = $branch?->area_name ? ' (' . $branch->area_name . ')' : '';
-                                                                $branchCode = $branch?->branch_code ? '-(' . $branch->branch_code . ')' : '';
-                                                            @endphp
-                                                            {{ $branch->name . $parentBranchName . $areaName . $branchCode }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @endif
+                                        <div class="col-md-4">
+                                            <label><strong>@lang('menu.business_location') </strong></label>
+                                            <select name="branch_id" class="form-control submit_able select2" id="branch_id">
+                                                <option value="">{{ __("All") }}</option>
+                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $parentBranchName = $branch?->parentBranch?->name;
+                                                            $areaName = $branch?->area_name ? ' (' . $branch->area_name . ')' : '';
+                                                            $branchCode = $branch?->branch_code ? '-(' . $branch->branch_code . ')' : '';
+                                                        @endphp
+                                                        {{ $branch->name . $parentBranchName . $areaName . $branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -194,8 +193,7 @@
                 success: function(data) {
                     table.ajax.reload();
                     toastr.error(data);
-                },
-                error: function(error) {
+                }, error: function(error) {
                     toastr.error(error.responseJSON.message);
                 }
             });

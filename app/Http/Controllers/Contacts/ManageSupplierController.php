@@ -20,6 +20,7 @@ class ManageSupplierController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('supplier_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -38,6 +39,8 @@ class ManageSupplierController extends Controller
 
     public function manage($id)
     {
+        abort_if(!auth()->user()->can('supplier_manage') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        
         $contact = $this->contactService->singleContact(id: $id, with: ['account:id,contact_id']);
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();

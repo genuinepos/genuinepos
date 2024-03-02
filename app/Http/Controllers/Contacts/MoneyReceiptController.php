@@ -20,9 +20,7 @@ class MoneyReceiptController extends Controller
 
     public function index($contactId)
     {
-        if (!auth()->user()->can('money_receipt_index')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_index') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch', 'moneyReceiptsOfOwnBranch', 'moneyReceiptsOfOwnBranch.branch', 'moneyReceiptsOfOwnBranch.branch.parentBranch']);
 
@@ -31,9 +29,7 @@ class MoneyReceiptController extends Controller
 
     public function create($contactId)
     {
-        if (!auth()->user()->can('money_receipt_add')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         $contact = $this->contactService->singleContact(id: $contactId, with: ['account', 'account.branch']);
 
@@ -42,14 +38,11 @@ class MoneyReceiptController extends Controller
 
     public function store(Request $request, $contactId, CodeGenerationServiceInterface $codeGenerator)
     {
-        if (!auth()->user()->can('money_receipt_add')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         $this->validate($request, ['date' => 'required|date']);
 
         try {
-
             DB::beginTransaction();
 
             $addMoneyReceipt = $this->moneyReceiptService->addMoneyReceipt(contactId: $contactId, request: $request, codeGenerator: $codeGenerator);
@@ -66,12 +59,9 @@ class MoneyReceiptController extends Controller
 
     public function edit($receiptId)
     {
-        if (!auth()->user()->can('money_receipt_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         try {
-
             DB::beginTransaction();
 
             $moneyReceipt = $this->moneyReceiptService->singleMoneyReceipt(id: $receiptId, with: ['contact', 'contact.account', 'contact.account.branch']);
@@ -87,9 +77,7 @@ class MoneyReceiptController extends Controller
 
     public function update(Request $request, $receiptId)
     {
-        if (!auth()->user()->can('money_receipt_edit')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         $this->validate($request, ['date' => 'required|date']);
 
@@ -101,12 +89,9 @@ class MoneyReceiptController extends Controller
 
     public function delete($receiptId)
     {
-        if (!auth()->user()->can('money_receipt_delete')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('money_receipt_delete') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
 
         try {
-
             DB::beginTransaction();
 
             $this->moneyReceiptService->deleteMoneyReceipt($receiptId);

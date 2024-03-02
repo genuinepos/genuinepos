@@ -33,7 +33,13 @@
             .badge {
                 font-size: 2em;
             }
+
+            div#response-message {
+                position: fixed;
+                top: 69%;
+            }
         </style>
+        <link rel="stylesheet" href="{{ asset('backend/asset/css/animated-headline.css') }}">
     @endpush
     <header class="cart-header my-3">
         <div class="row">
@@ -91,7 +97,7 @@
                 </form>
 
                 <div class="single-tab" id="stepThreeTab">
-                    <div id="successSection" class="d-none">
+                    {{-- <div id="successSection" class="d-none">
                         <div class="check-icon">
                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                                 <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
@@ -102,18 +108,46 @@
                         <div class="order-complete-msg">
                             <h2>{{ __('App is created successfully') }}</h2>
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div id="response-message" class="mt-3 n-none text-center" style="height: 100px;">
-                        <div class="mt-2">
-                            <h6 id="response-message-text">
-                                {{ __('Creating The App. please wait...') }}
-                                {{ __('Elapsed Time') }}: <span id="timespan"></span> {{ __('Seconds') }}.
+                    <div class="preloader">
+                        <div id="loading" class="loading-screen d-flex align-items-center justify-content-center flex-column ">
+                            <div class="o_pyro" ></div>
+                            <div class="content d-inline-block text-center position-relative w-100 p-5">
+                                <div class="container position-relative py-5" id="preloader-animitation-section">
+                                    <div class="o_start_trial_message_container position-relative">
+                                        <h1 class="o_start_trial_message text-white animate o_start_first one fadeInUpOne message">
+                                            Welcome to GPOS System
+                                            <span class="d-block">
+                                                <span class="slides fadeInUpOne">
+                                                    <span class="slide1">
+                                                        <span>Build Your Shop</span>
+                                                        <span>Manage Your Inventory</span>
+                                                        <span>Mange Your Sales</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </h1>
 
-                                <div class="spinner-border text-dark" role="status">
-                                    <span class="visually-hidden">{{ __('Loading') }}...</span>
+                                        <h2 class="o_start_trial_message text-white animate o_start_second two fadeInUpTwo" >
+                                            <span class="d-block">No. #1</span> Retail POS Software.
+                                        </h2>
+                                    </div>
                                 </div>
-                            </h6>
+                            </div>
+
+                            <div id="response-message" class="mt-3 text-center" style="height: 100px;">
+                                <div class="mt-2">
+                                    <h6 id="response-message-text" style="color: white;">
+                                        {{ __('Creating Your App. please wait...') }}
+                                        {{ __('Elapsed Time') }}: <span id="timespan"></span> {{ __('Seconds') }}.
+
+                                        <div class="spinner-border text-dark" role="status">
+                                            <span class="visually-hidden" style="color: white!important;">{{ __('Loading') }}...</span>
+                                        </div>
+                                    </h6>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

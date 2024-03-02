@@ -208,7 +208,8 @@
             data: {
                 email,
                 code
-            }, success: function(data) {
+            },
+            success: function(data) {
 
                 if (data == 0) {
 
@@ -220,7 +221,8 @@
                 $('#email-verification-section').addClass('d-none');
                 $('#email-verification-success').removeClass('d-none');
                 $('#tenantStoreForm').submit();
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 if (err.status == 0) {
 
@@ -280,7 +282,8 @@
                 $('#successSection').removeClass('d-none');
 
                 window.location = res;
-            }, error: function(err) {
+            },
+            error: function(err) {
 
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');
@@ -289,4 +292,12 @@
             }
         });
     });
+
+    var res = setInterval(function() {
+        $('#preloader-animitation-section').addClass('d-none');
+        setTimeout(() => {
+            $('#preloader-animitation-section').removeClass('d-none');
+        }, 100);
+
+    }, 13000);
 </script>

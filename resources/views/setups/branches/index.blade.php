@@ -8,7 +8,7 @@
             <div class="sec-name">
                 <div class="col-md-4">
                     <h5>{{ __('Shops') }}
-                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['addons__branch_limit'] }})</span>
+                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $currentCreatedBranchCount }}</span>/{{ $generalSettings['subscription']->current_shop_count }})</span>
                     </h5>
                 </div>
                 <div class="col-md-4 text-start">
@@ -30,7 +30,7 @@
                         <h6>{{ __('Shop List') }}</h6>
                     </div>
 
-                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && $currentCreatedBranchCount < $generalSettings['addons__branch_limit'])
+                    @if (auth()->user()->can('shops_create') && $currentCreatedBranchCount < $generalSettings['subscription']->current_shop_count)
                         <div class="col-md-6 d-flex justify-content-end">
                             <a id="addBtn" href="{{ route('branches.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-plus-square"></i> {{ __('Add New Shop') }}

@@ -616,4 +616,28 @@ class PurchaseController extends Controller
 
         return response()->json(__('Purchase is deleted successfully'));
     }
+
+    public function searchPurchasesByInvoiceId($keyWord)
+    {
+        $purchases = DB::table('purchases')
+            ->leftJoin('warehouses', 'purchases.warehouse_id', 'warehouses.id')
+            ->where('purchases.invoice_id', 'like', "%{$keyWord}%")
+            ->where('purchases.branch_id', auth()->user()->branch_id)
+            ->where('purchases.purchase_status', 1)
+            ->select(
+                'purchases.id as purchase_id',
+                'purchases.warehouse_id',
+                'purchases.invoice_id as p_invoice_id',
+                'purchases.supplier_account_id',
+                'warehouses.warehouse_name',
+            )->limit(35)->get();
+
+        if (count($purchases) > 0) {
+
+            return view('search_results_view.purchase_invoice_search_result_list', compact('purchases'));
+        } else {
+
+            return response()->json(['noResult' => 'no result']);
+        }
+    }
 }

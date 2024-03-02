@@ -14,7 +14,11 @@ class HolidayBranchService
 {
     public function addHolidayBranches(object $request, int $holidayId): void
     {
-        if ($request->allowed_branch_count) {
+        if (
+            isset($request->allowed_branch_count) &&
+            auth()->user()->can('has_access_to_all_area') &&
+            (config('generalSettings')['subscription']->has_business == 1 || config('generalSettings')['subscription']->current_shop_count > 1)
+        ) {
 
             foreach ($request->allowed_branch_ids as $branchId) {
 
@@ -37,8 +41,8 @@ class HolidayBranchService
     {
         if (
             isset($request->allowed_branch_count) &&
-            auth()->user()->role_type != RoleType::Other->value &&
-            auth()->user()->is_belonging_an_area == BooleanType::False->value
+            auth()->user()->can('has_access_to_all_area') &&
+            (config('generalSettings')['subscription']->has_business == 1 || config('generalSettings')['subscription']->current_shop_count > 1)
         ) {
             foreach ($holiday->allowedBranches as $allowedBranch) {
 
@@ -67,7 +71,6 @@ class HolidayBranchService
                     }
                 }
             }
-
 
             $deleteUnusedHolidayAllowedBranches = $this->holidayAllowedBranch()->where('holiday_id', $holiday->id)
                 ->where('is_delete_in_update', IsDeleteInUpdate::Yes->value)->get();

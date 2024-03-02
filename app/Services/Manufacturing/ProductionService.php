@@ -2,12 +2,13 @@
 
 namespace App\Services\Manufacturing;
 
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Enums\IsDeleteInUpdate;
 use App\Enums\ProductionStatus;
-use App\Models\Manufacturing\Production;
-use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Models\Manufacturing\Production;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionService
@@ -276,6 +277,18 @@ class ProductionService
         }
 
         return $query;
+    }
+
+    function productionValidation(object $request): ?array
+    {
+        return $request->validate([
+            'process_id' => 'required',
+            'date' => 'required|date',
+            'total_output_quantity' => 'required',
+            'total_final_output_quantity' => 'required',
+            'net_cost' => 'required',
+            'store_warehouse_id' => Rule::when(isset($request->store_warehouse_count) && $request->store_warehouse_count > 0, 'required'),
+        ], ['process_id.required' => 'Please select the product']);
     }
 
     private function filter(object $request, object $query): object

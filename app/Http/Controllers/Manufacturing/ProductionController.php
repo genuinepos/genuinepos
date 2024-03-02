@@ -39,10 +39,7 @@ class ProductionController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('production_view')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -57,10 +54,7 @@ class ProductionController extends Controller
 
     public function show($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_view')) {
-
-            return response()->json('Access Denied');
-        }
+        abort_if(!auth()->user()->can('production_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
         $showMethodContainer = $productionControllerMethodContainersInterface->showMethodContainer(
             id: $id,
@@ -74,16 +68,14 @@ class ProductionController extends Controller
 
     public function create(ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('production_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
         $createMethodContainer = $productionControllerMethodContainersInterface->createMethodContainer(
             warehouseService: $this->warehouseService,
             accountService: $this->accountService,
             processService: $this->processService,
         );
+
         extract($createMethodContainer);
 
         return view('manufacturing.production.create', compact('warehouses', 'processes', 'taxAccounts'));
@@ -94,23 +86,9 @@ class ProductionController extends Controller
         CodeGenerationService $codeGenerator,
         ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface
     ) {
-        if (!auth()->user()->can('production_add')) {
+        abort_if(!auth()->user()->can('production_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'process_id' => 'required',
-            'date' => 'required|date',
-            'total_output_quantity' => 'required',
-            'total_final_output_quantity' => 'required',
-            'net_cost' => 'required',
-        ], ['process_id.required' => 'Please select the product']);
-
-        if ($request->store_warehouse_count > 0) {
-
-            $this->validate($request, ['store_warehouse_id' => 'required']);
-        }
+        $this->productionService->productionValidation(request: $request);
 
         try {
 
@@ -152,10 +130,7 @@ class ProductionController extends Controller
 
     public function edit($id, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('production_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
         $editMethodContainer = $productionControllerMethodContainersInterface->editMethodContainer(
             id: $id,
@@ -172,23 +147,9 @@ class ProductionController extends Controller
 
     public function update($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_edit')) {
+        abort_if(!auth()->user()->can('production_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'process_id' => 'required',
-            'date' => 'required',
-            'total_output_quantity' => 'required',
-            'total_final_output_quantity' => 'required',
-            'net_cost' => 'required',
-        ], ['process_id.required' => 'Please select the product']);
-
-        if ($request->store_warehouse_count == 1) {
-
-            $this->validate($request, ['store_warehouse_id' => 'required']);
-        }
+        $this->productionService->productionValidation(request: $request);
 
         try {
             DB::beginTransaction();
@@ -221,10 +182,7 @@ class ProductionController extends Controller
 
     public function delete($id, Request $request, ProductionControllerMethodContainersInterface $productionControllerMethodContainersInterface)
     {
-        if (!auth()->user()->can('production_delete')) {
-
-            return response()->json('Access Denied');
-        }
+        abort_if(!auth()->user()->can('production_delete') || config('generalSettings')['subscription']->features['manufacturing'] == 0, 403);
 
         try {
             DB::beginTransaction();

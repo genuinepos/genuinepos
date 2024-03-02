@@ -298,7 +298,6 @@ class VatTaxReportService
 
                 $outputVatTaxParticularAndOnAmount = new \App\Services\Accounts\Reports\VatTax\OutputVatTaxParticularAndOnAmountService();
                 return $outputVatTaxParticularAndOnAmount->onAmounts(voucherType: $row->voucher_type, data: $row);
-
             })
             ->rawColumns(['date', 'particulars', 'branch', 'voucher_type', 'voucher_no', 'output_amount', 'on_amount'])
             ->make(true);
@@ -399,7 +398,8 @@ class VatTaxReportService
             $query->whereBetween('account_ledgers.date', $date_range);
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('account_ledgers.branch_id', auth()->user()->branch_id);
         }

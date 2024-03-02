@@ -2,11 +2,12 @@
 
 namespace App\Services\StockAdjustments;
 
-use App\Enums\StockAdjustmentType;
-use App\Models\StockAdjustments\StockAdjustment;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use App\Enums\StockAdjustmentType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\StockAdjustments\StockAdjustment;
 
 class StockAdjustmentService
 {
@@ -187,7 +188,12 @@ class StockAdjustmentService
             $query->whereBetween('stock_adjustments.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+        //     $query->where('stock_adjustments.branch_id', auth()->user()->branch_id);
+        // }
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('stock_adjustments.branch_id', auth()->user()->branch_id);
         }

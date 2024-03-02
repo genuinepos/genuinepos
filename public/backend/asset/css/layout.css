@@ -289,7 +289,7 @@ ul.dropdown-menu.dropdown__main__menu.show {
 .model__close {
     text-align: right;
     margin-bottom: 5px;
-    padding: 6px 23px;
+    padding: 5px 23px;
 }
 
 button.btn-close.close-model:focus {

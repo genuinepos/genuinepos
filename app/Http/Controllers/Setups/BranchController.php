@@ -35,11 +35,9 @@ class BranchController extends Controller
 
     public function index(Request $request)
     {
-        // abort_if(auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value, route('dashboard.index'));
-
-        abort_if(auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value, Redirect::to('/dashboard'));
-
         $generalSettings = config('generalSettings');
+
+        abort_if(!auth()->user()->can('shops_create') && $generalSettings['subscription']->current_shop_count == 1, 403);
 
         $currentCreatedBranchCount = $this->branchService->branches()->count();
 
@@ -53,7 +51,7 @@ class BranchController extends Controller
 
     public function create()
     {
-        abort_if(auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
+        abort_if(!auth()->user()->can('shops_create'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -68,7 +66,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
+        abort_if(!auth()->user()->can('shops_create'), 403);
 
         $this->branchService->branchStoreValidation(request: $request);
 
@@ -110,7 +108,7 @@ class BranchController extends Controller
 
     public function edit($id)
     {
-        abort_if(auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value, 403);
+        abort_if(!auth()->user()->can('shops_edit'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -134,7 +132,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if((auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) && !auth()->user()->can('general_settings'), 403);
+        abort_if(!auth()->user()->can('shops_edit') && !auth()->user()->can('general_settings'), 403);
 
         $this->branchService->branchUpdateValidation(request: $request);
 
@@ -178,6 +176,8 @@ class BranchController extends Controller
 
     public function delete(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('shops_delete'), 403);
+
         $deleteBranch = $this->branchService->deleteBranch(id: $id);
 
         if ($deleteBranch['pass'] == false) {

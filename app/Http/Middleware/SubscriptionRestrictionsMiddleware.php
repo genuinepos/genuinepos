@@ -18,7 +18,6 @@ class SubscriptionRestrictionsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         $generalSettings = config('generalSettings');
         $subscription = $generalSettings['subscription'];
 

@@ -2,8 +2,9 @@
 
 namespace App\Services\Accounts;
 
-use App\Models\Accounts\Account;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use App\Models\Accounts\Account;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -20,7 +21,7 @@ class AccountService
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
             ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
             ->leftJoin('account_ledgers', 'accounts.id', 'account_ledgers.account_id')
-            ->where('accounts.is_global', 0);
+            ->where('accounts.is_global', BooleanType::False->value);
 
         if ($request->branch_id) {
 
@@ -38,7 +39,8 @@ class AccountService
             $query = $query->where('accounts.account_group_id', $request->account_group_id);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('accounts.branch_id', auth()->user()->branch_id);
         }
@@ -347,6 +349,7 @@ class AccountService
             ->where('account_groups.sub_sub_group_number', 6);
 
         $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
+        // if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
 
         //     $query->where('accounts.branch_id', $ownBranchIdOrParentBranchId);
@@ -379,7 +382,7 @@ class AccountService
             )
             ->union($customerAccounts)
             // ->orderBy('IF(accounts.is_walk_in_customer = 1, 0,1)')
-            ->orderByDesc('is_walk_in_customer') // Order by 'is_walk_in_customer' in descending order
+            ->orderBy('is_walk_in_customer', 'desc') // Order by 'is_walk_in_customer' in descending order
             ->orderBy('name', 'asc')
             ->get();
     }

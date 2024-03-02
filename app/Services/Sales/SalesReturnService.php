@@ -2,9 +2,10 @@
 
 namespace App\Services\Sales;
 
+use Carbon\Carbon;
+use App\Enums\BooleanType;
 use App\Enums\PaymentStatus;
 use App\Models\Sales\SaleReturn;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,7 +25,8 @@ class SalesReturnService
 
         $this->filteredQuery($request, $query);
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('sale_returns.branch_id', auth()->user()->branch_id);
         }

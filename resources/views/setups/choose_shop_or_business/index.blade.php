@@ -17,34 +17,6 @@
     <!-- <link rel="stylesheet" id="rtlStyle" href="#"> -->
 
     <style>
-        /* .main-content .steps-sidebar .sidebar-content .step-list li::after {
-            display: none;
-        }
-
-        .main-content .all-steps .account-types .form-check label {
-            padding: 8px;
-            gap: 10px;
-            min-width: 360px;
-        }
-
-        .main-content .all-steps .account-types .form-check label .part-icon {
-            width: 20px;
-        }
-
-        .main-content .all-steps .account-types .form-check label .part-icon img {
-            height: 20px !important;
-            object-fit: 100%;
-        }
-
-        .main-content .all-steps .account-types .form-check label .title {
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .main-content .all-steps .account-types {
-            gap: 10px;
-        } */
-
         .light-theme .main-content .all-steps .account-types .form-check input:checked+label {
             width: 100%;
         }
@@ -58,6 +30,21 @@
             line-height: 30px;
             background: #fff;
         }
+
+        .light-theme .main-content .all-steps .account-types .form-check label {
+            min-width: 366px;
+        }
+
+        .light-theme .main-content .all-steps .account-types .form-check label .title {
+            color: #000000;
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        .main-content .steps-sidebar .sidebar-logo {
+            /* -webkit-filter: brightness(); */
+            filter: brightness(1);
+        }
     </style>
 </head>
 
@@ -68,13 +55,12 @@
 
     <!-- main content start -->
     <div class="main-content login-panel multi-step-signup-panel">
-        <div class="steps-sidebar bg-primary">
+        <div class="steps-sidebar bg-dark">
             <div class="sidebar-content">
-                <div class="sidebar-logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo-big.png" alt="Logo">
-                    </a>
+                <div class="sidebar-logo text-center pb-3">
+                    <img style="height: 50px; width:auto;" src="{{ asset('assets/images/app_logo.png') }}" alt="System Logo" class="logo__img">
                 </div>
+
                 <ul class="step-list scrollable">
                     <li class="active">
                         <span class="step-txt">
@@ -117,55 +103,71 @@
         <div class="all-steps">
             <div class="single-step scrollable show">
                 <div class="step-content-wrap">
-                    <div class="step-content">
-                        <div class="step-heading">
-                            <h4 class="step-title">Choose Account Type <button class="btn-flush" data-bs-toggle="tooltip" data-bs-title="Billing is issued based on your selected account type"><i class="fa-duotone fa-circle-info"></i></button></h4>
-                            <span>For further details, visit our <a href="#">Help Page</a>.</span>
-                        </div>
-                        <div class="account-types">
-                            <div class="form-check border-primary">
-                                <input class="form-check-input" type="radio" name="accountType" id="personalAccountType">
-                                <label class="form-check-label" for="personalAccountType">
-                                    <span class="part-icon">
-                                        <i class="fa-duotone fa-user-tie"></i>
-                                    </span>
-                                    <span class="part-txt">
-                                        <span class="title">Personal Account</span>
-                                        <span class="dscr">Create a personal account for your self only</span>
-                                    </span>
-                                </label>
+                    <form action="{{ route('change.business.branch.location.redirect.location') }}" method="post">
+                        @csrf
+                        <div class="step-content">
+                            <div class="step-heading">
+                                <h4 class="step-title">{{ __('Choose Redirection Location') }} <button class="btn-flush" data-bs-toggle="tooltip" data-bs-title="Billing is issued based on your selected account type"><i class="fa-duotone fa-circle-info"></i></button></h4>
+
+                                <span>{{ __('For further details, visit our') }} <a href="#">{{ __('Help Page') }}</a>.</span>
                             </div>
-                            <div class="form-check border-primary">
-                                <input class="form-check-input" type="radio" name="accountType" id="corporateAccountType" checked>
-                                <label class="form-check-label" for="corporateAccountType">
-                                    <span class="part-icon">
-                                        <i class="fa-duotone fa-briefcase"></i>
-                                    </span>
-                                    <span class="part-txt">
-                                        <span class="title">Corporate Account</span>
-                                        {{-- <span class="dscr">Create corporate account to manage users</span> --}}
-                                        <select class="select2">
-                                            <option value="option 1">Option 1</option>
-                                            <option value="option 1">Option 1</option>
-                                            <option value="option 1">Option 1</option>
-                                            <option value="option 1">Option 1</option>
-                                            <option value="option 1">Option 1</option>
-                                            <option value="option 1">Option 1</option>
-                                        </select>
-                                    </span>
-                                </label>
 
+                            <div class="account-types">
+                                @foreach ($errors->all() as $error)
+                                    <p class="text-danger m-0 p-0">{{ $error }}</p>
+                                @endforeach
 
+                                @if ($generalSettings['subscription']->has_business == 1)
+                                    <div class="form-check border-primary">
+                                        <input required checked class="form-check-input" type="radio" name="select_type" id="personalAccountType" value="business">
+                                        <label class="form-check-label" for="personalAccountType">
+                                            <span class="part-icon">
+                                                <i class="fa-solid fa-business-time"></i>
+                                            </span>
+                                            <span class="part-txt">
+                                                <span class="title">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Company') }})</span>
+                                                <span class="dscr">{{ __('To Supervise All Shops') }}</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endif
 
+                                <div class="form-check border-primary">
+                                    <input required class="form-check-input" type="radio" name="select_type" id="corporateAccountType" value="shop">
+                                    <label class="form-check-label" for="corporateAccountType">
+                                        <span class="part-icon">
+                                            <i class="fa-solid fa-shop"></i>
+                                        </span>
+                                        <span class="part-txt">
+                                            <span class="title">{{ __('Choose Shop') }}</span>
+                                            {{-- <span class="dscr">Create corporate account to manage users</span> --}}
+                                            <select name="branch_id" class="select2">
+                                                <option value="">{{ __("Select Shop") }}</option>
+                                                @foreach ($branches as $branch)
+                                                    <option value="{{ $branch->id }}">
+                                                        @php
+                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                            $branchCode = '-' . $branch->branch_code;
+                                                        @endphp
+                                                        {{ $branchName . $areaName . $branchCode }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="btn-box w-100 d-flex justify-content-end">
-                        <button class="btn btn-sm btn-primary next-button px-3">Continue <i class="fa-light fa-arrow-right"></i></button>
-                    </div>
+
+                        <div class="btn-box w-100 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-sm btn-success next-button px-3">{{ __('Continue') }} <i class="fa-light fa-arrow-right"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="single-step scrollable">
+
+            {{-- <div class="single-step scrollable">
                 <div class="step-content-wrap">
                     <div class="step-content">
                         <div class="step-heading">
@@ -247,6 +249,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="single-step scrollable">
                 <div class="step-content-wrap">
                     <div class="step-content">
@@ -285,12 +288,14 @@
                             </form>
                         </div>
                     </div>
-                    <div class="btn-box w-100 d-flex justify-content-between">
+
+                    <div class="btn-box w-100 d-flex">
                         <button class="btn btn-sm btn-secondary prev-button px-3"><i class="fa-light fa-arrow-left"></i> Previous</button>
-                        <button class="btn btn-sm btn-primary next-button px-3">Continue <i class="fa-light fa-arrow-right"></i></button>
+                        <button class="btn btn-sm btn-primary next-button float-end">{{ __('Continue') }} <i class="fa-light fa-arrow-right"></i></button>
                     </div>
                 </div>
             </div>
+
             <div class="single-step scrollable">
                 <div class="step-content-wrap">
                     <div class="step-content">
@@ -368,6 +373,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="single-step scrollable">
                 <div class="step-content-wrap">
                     <div class="step-content mb-0">
@@ -389,7 +395,7 @@
                         <button class="btn btn-sm btn-secondary prev-button px-3"><i class="fa-light fa-arrow-left"></i> Previous</button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- footer start -->
@@ -397,7 +403,7 @@
             <p>Copyright©
                 <script>
                     document.write(new Date().getFullYear())
-                </script> All Rights Reserved By <span class="text-primary">Digiboard</span>
+                </script> {{ __('All Rights Reserved By') }} <span class="text-primary">Gposs</span>
             </p>
         </div>
         <!-- footer end -->
@@ -405,11 +411,11 @@
     <!-- main content end -->
 
     <script src="{{ asset('backend/asset/cdn/js/jquery-3.6.0.js') }}"></script>
-    <script src="assets/vendor/js/jquery.overlayScrollbars.min.js"></script>
+    {{-- <script src="assets/vendor/js/jquery.overlayScrollbars.min.js"></script> --}}
     <script src="{{ asset('backend/asset/js/select2.min.js') }}"></script>
-    <script src="assets/vendor/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/select2-init.js"></script>
+    {{-- <script src="assets/vendor/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <script src="assets/js/main.js"></script> --}}
+    {{-- <script src="assets/js/select2-init.js"></script> --}}
     <!-- for demo purpose -->
     <script>
         jQuery('.select2').select2();

@@ -70,8 +70,9 @@ class PaymentService
             $query->whereBetween('accounting_vouchers.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
-
+        // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+            
             if (!isset($debitAccountId) && $account?->sub_sub_group_number != 6) {
 
                 $query->where('accounting_vouchers.branch_id', auth()->user()->branch_id);

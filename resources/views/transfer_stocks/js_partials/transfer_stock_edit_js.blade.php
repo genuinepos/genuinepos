@@ -260,7 +260,7 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-        var senderWarehouseId = $('#sender_warehouse_id').val();
+        var senderWarehouseId = $('#sender_warehouse_id').val() ? $('#sender_warehouse_id').val() : '';
 
         if (e_quantity == '') {
 
@@ -582,7 +582,7 @@
 
         if (e.which == 0) {
 
-            if ($(this).attr('id') == 'sender_warehouse_id' && parseFloat(totalReceivedQty) > 0) {
+            if ($(this).attr('id') == 'sender_warehouse_id' && $('#sender_warehouse_id').val() != undefined && parseFloat(totalReceivedQty) > 0) {
 
                 $('#date').focus().select();
                 return;

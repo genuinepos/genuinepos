@@ -34,7 +34,13 @@ class TransferStockController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('transfer_stock_index'), 403);
+        abort_if(!auth()->user()->can('transfer_stock_index') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         if ($request->ajax()) {
 
@@ -92,7 +98,13 @@ class TransferStockController extends Controller
 
     public function create()
     {
-        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
+        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         $branchName = $this->branchService->branchName();
         $branches = $this->branchService->branches(with: ['parentBranch'])
@@ -105,7 +117,13 @@ class TransferStockController extends Controller
 
     public function store(Request $request, CodeGenerationService $codeGenerator)
     {
-        abort_if(!auth()->user()->can('transfer_stock_create'), 403);
+        abort_if(!auth()->user()->can('transfer_stock_create') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         $this->transferStockService->transferStockValidation(request: $request);
 
@@ -175,7 +193,13 @@ class TransferStockController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
+        abort_if( !auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $id,
@@ -209,7 +233,13 @@ class TransferStockController extends Controller
 
     public function update($id, Request $request)
     {
-        abort_if(!auth()->user()->can('transfer_stock_edit'), 403);
+        abort_if( !auth()->user()->can('transfer_stock_edit') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         $this->transferStockService->transferStockValidation(request: $request);
 
@@ -267,7 +297,13 @@ class TransferStockController extends Controller
 
     public function delete($id)
     {
-        abort_if(!auth()->user()->can('transfer_stock_delete'), 403);
+        abort_if( !auth()->user()->can('transfer_stock_delete') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
 
         try {
             DB::beginTransaction();

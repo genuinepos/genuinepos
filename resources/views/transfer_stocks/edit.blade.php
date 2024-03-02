@@ -71,17 +71,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="input-group mt-1">
-                                        <label class="col-5"><b>{{ __('Send At') }}</b></label>
-                                        <div class="col-7">
-                                            <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
-                                                <option value="">{{ __('Select Warehouse') }}</option>
-                                                @foreach ($warehouses as $w)
-                                                    <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
-                                                @endforeach
-                                            </select>
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                        <div class="input-group mt-1">
+                                            <label class="col-5"><b>{{ __('Send At') }}</b></label>
+                                            <div class="col-7">
+                                                <select name="sender_warehouse_id" class="form-control" id="sender_warehouse_id" data-next="receiver_branch_id" autofocus>
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
+                                                    @foreach ($warehouses as $w)
+                                                        <option {{ $w->id == $transferStock->sender_warehouse_id ? 'SELECTED' : '' }} value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
 
                                 @if ($transferStock->total_received_qty == 0)
@@ -108,17 +110,19 @@
                                             </div>
                                         </div>
 
-                                        <div class="input-group mt-1">
-                                            <label class="col-5"><b>{{ __('Receive At') }}</b></label>
-                                            <div class="col-7">
-                                                <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($selectedBranchWarehouses as $warehouse)
-                                                        <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
-                                                    @endforeach
-                                                </select>
+                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                            <div class="input-group mt-1">
+                                                <label class="col-5"><b>{{ __('Receive At') }}</b></label>
+                                                <div class="col-7">
+                                                    <select name="receiver_warehouse_id" class="form-control" id="receiver_warehouse_id" data-next="date" autofocus>
+                                                        <option value="">{{ __('Select Warehouse') }}</option>
+                                                        @foreach ($selectedBranchWarehouses as $warehouse)
+                                                            <option {{ $warehouse->id == $transferStock->receiver_warehouse_id ? 'SELECTED' : '' }} value="{{ $warehouse->id }}">{{ $warehouse->warehouse_name . '/' . $warehouse->warehouse_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 @else
                                     @php
@@ -142,16 +146,15 @@
                                             </div>
                                         </div>
 
-                                        @if ($transferStock->receiver_warehouse_id)
+                                        @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && $transferStock->receiver_warehouse_id)
                                             <div class="input-group mt-1">
                                                 <label class="col-5"><b>{{ __('Receive At') }}</b></label>
                                                 <div class="col-7">
-                                                    <input readonly type="text" class="form-control fw-bold" value="{{ $transferStock?->receiverWarehouse?->warehouse_name . '-(' . $transferStock?->receiverWarehouse->warehouse_code . ')' }}" autocomplete="off">
+                                                    <input readonly type="text" class="form-control fw-bold" value="{{ $transferStock?->receiverWarehouse?->warehouse_name . '-(' . $transferStock?->receiverWarehouse?->warehouse_code . ')' }}" autocomplete="off">
                                                     <input type="hidden" name="receiver_warehouse_id" class="form-control fw-bold" value="{{ $transferStock->receiver_warehouse_id }}">
                                                 </div>
                                             </div>
                                         @endif
-
                                     </div>
                                 @endif
 

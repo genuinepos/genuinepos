@@ -103,7 +103,7 @@ class ProcessIngredientService
 
         foreach ($ingredients as $ingredient) {
 
-            $productName = $ingredient->product_name.($ingredient->variant_name ? $ingredient->variant_name : '');
+            $productName = $ingredient->product_name . ($ingredient->variant_name ? $ingredient->variant_name : '');
 
             if (isset($warehouseId)) {
 
@@ -111,14 +111,14 @@ class ProcessIngredientService
                     ->where('product_id', $ingredient->product_id)->where('variant_id', $ingredient->variant_id)
                     ->where('warehouse_id', $warehouseId)->first(['stock']);
 
-                if (! $productStock) {
+                if (!$productStock) {
 
-                    return ['pass' => false, 'msg' => 'Ingredient Name : '.$productName.' stock is not available in selected warehouse.'];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is not available in selected warehouse.')];
                 }
 
                 if ($productStock->stock < $ingredient->final_qty) {
 
-                    return ['pass' => false, 'msg' => 'Ingredient Name : '.$productName.' stock is insufficient in selected warehouse.'.'Stock : '.$productStock->stock];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ', ' . __('insufficient stock in selected warehouse. Current Stock') . ': ' . $productStock->stock];
                 } else {
 
                     $ingredient->stock = $productStock->stock;
@@ -131,14 +131,14 @@ class ProcessIngredientService
                     ->where('warehouse_id', null)
                     ->first(['stock']);
 
-                if (! $productStock) {
+                if (!$productStock) {
 
-                    return ['pass' => false, 'msg' => 'Ingredient Name : '.$productName.' stock is not available in shop/business.'];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is not available in shop/business.')];
                 }
 
                 if ($productStock->stock < $ingredient->final_qty) {
 
-                    return ['pass' => false, 'msg' => 'Ingredient Name : '.$productName.' stock is insufficient in the shop/business.'];
+                    return ['pass' => false, 'msg' => __('Ingredient Name') . ': ' . $productName . ' ' . __('stock is insufficient in the shop/business.')];
                 } else {
 
                     $ingredient->stock = $productStock->stock;

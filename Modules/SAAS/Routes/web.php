@@ -2,22 +2,24 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Modules\SAAS\Http\Controllers\Auth\VerificationController;
-use Modules\SAAS\Http\Controllers\BusinessVerificationController;
-use Modules\SAAS\Http\Controllers\DashboardController;
-use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
-use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
-use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
-use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\PlanController;
-use Modules\SAAS\Http\Controllers\ProfileController;
-use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\RoleController;
-use Modules\SAAS\Http\Controllers\TenantController;
 use Modules\SAAS\Http\Controllers\UserController;
+use Modules\SAAS\Http\Controllers\LoginController;
 use Modules\SAAS\Http\Controllers\CouponController;
+use Modules\SAAS\Http\Controllers\TenantController;
+use Modules\SAAS\Http\Controllers\ProfileController;
+use Modules\SAAS\Http\Controllers\DashboardController;
+use Modules\SAAS\Http\Controllers\Guest\TrialController;
+use Modules\SAAS\Http\Controllers\RegistrationController;
 use Modules\SAAS\Http\Controllers\EmailSettingsController;
+use Modules\SAAS\Http\Controllers\Guest\SendEmailController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
+use Modules\SAAS\Http\Controllers\Auth\VerificationController;
+use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
+use Modules\SAAS\Http\Controllers\BusinessVerificationController;
+use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
 
 Route::get('welcome', fn () => Auth::check() ? redirect()->route('saas.dashboard') : redirect()->route('saas.login.showForm'))->name('welcome-page');
 // Route::get('welcome', fn() => view('saas::guest.welcome-page'))->name('welcome-page');
@@ -44,6 +46,18 @@ Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscrib
 Route::get('plan/{plan:slug}/{pricePeriod?}/confirm', [PlanSelectController::class, 'confirm'])->name('plan.confirm');
 Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
+
+Route::controller(TrialController::class)->prefix('guest/trial')->group(function () {
+
+    Route::get('create', 'create')->name('guest.trial.create');
+    Route::post('store', 'store')->name('guest.trial.store');
+});
+
+Route::controller(SendEmailController::class)->prefix('guest/email')->group(function () {
+
+    Route::get('send/verification/code', 'sendVerificationCode')->name('guest.email.send.verification.code');
+    Route::get('verification/code/match', 'emailVerificationCodeMatch')->name('guest.email.verification.code.match');
+});
 
 // Auth User **Not-Verified
 Route::middleware('is_auth')->group(function () {
@@ -74,11 +88,9 @@ Route::middleware(['is_verified'])->group(function () {
 
     Route::resource('roles', RoleController::class);
 
-    //Coupons Route 
-    Route::resource('coupons',CouponController::class);
+    //Coupons Route
+    Route::resource('coupons', CouponController::class);
 
-    //Email Settings Route 
-    Route::resource('email-settings',EmailSettingsController::class);
-
-
+    //Email Settings Route
+    Route::resource('email-settings', EmailSettingsController::class);
 });

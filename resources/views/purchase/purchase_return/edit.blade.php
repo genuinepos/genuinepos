@@ -153,7 +153,7 @@
                                         <label class="col-4"><b>{{ __('P. Invoice ID') }}</b></label>
                                         <div class="col-8">
                                             <div style="position: relative;">
-                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" value="{{ $return?->purchase?->invoice_id }}" data-next="warehouse_id" placeholder="{{ __('Serach Purchase Invoice ID') }}" autocomplete="off">
+                                                <input type="text" name="purchase_invoice_id" id="purchase_invoice_id" class="form-control fw-bold" value="{{ $return?->purchase?->invoice_id }}" data-next="purchase_account_id" placeholder="{{ __('Serach Purchase Invoice ID') }}" autocomplete="off">
                                                 <input type="hidden" name="purchase_id" id="purchase_id" value="{{ $return->purchase_id }}">
 
                                                 <div class="invoice_search_result d-hide">
@@ -164,16 +164,16 @@
                                     </div>
 
                                     <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                        <label class="col-4"><b>{{ __('Pur. Ledger') }}</b> <span class="text-danger">*</span></label>
                                         <div class="col-8">
-                                            <select class="form-control" name="warehouse_id" id="warehouse_id" data-next="purchase_account_id">
-                                                <option value="">{{ __('Select Warehouse') }}</option>
-                                                @foreach ($warehouses as $w)
-                                                    <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
-                                                        {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                            <select name="purchase_account_id" class="form-control select2" id="purchase_account_id" data-next="e_warehouse_id">
+                                                @foreach ($purchaseAccounts as $purchaseAccount)
+                                                    <option {{ $return->purchase_account_id == $purchaseAccount->id ? 'SELECTED' : '' }} value="{{ $purchaseAccount->id }}">
+                                                        {{ $purchaseAccount->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-                                            <span class="error error_warehouse_id"></span>
+                                            <span class="error error_purchase_account_id"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -186,19 +186,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="input-group mt-1">
-                                        <label class="col-4"><b>{{ __('Pur. Ledger') }}</b> <span class="text-danger">*</span></label>
-                                        <div class="col-8">
-                                            <select name="purchase_account_id" class="form-control select2" id="purchase_account_id" data-next="date">
-                                                @foreach ($purchaseAccounts as $purchaseAccount)
-                                                    <option {{ $return->purchase_account_id == $purchaseAccount->id ? 'SELECTED' : '' }} value="{{ $purchaseAccount->id }}">
-                                                        {{ $purchaseAccount->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <span class="error error_purchase_account_id"></span>
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                        <div class="input-group mt-1">
+                                            <label class="col-4"><b>{{ __('Warehouse') }}</b></label>
+                                            <div class="col-8">
+                                                <select class="form-control" name="warehouse_id" id="e_warehouse_id" data-next="date">
+                                                    <option value="">{{ __('Select Warehouse') }}</option>
+                                                    @foreach ($warehouses as $w)
+                                                        <option data-warehouse_name="{{ $w->warehouse_name }}" data-warehouse_code="{{ $w->warehouse_code }}" value="{{ $w->id }}">
+                                                            {{ $w->warehouse_name . '/' . $w->warehouse_code }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-xl-3 col-md-6">

@@ -67,12 +67,16 @@
                                         <form id="filter_account_ledgers" method="get">
                                             <div class="form-group row g-2 align-items-end">
                                                 @if ($account?->group?->is_global == 1)
-                                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id)
+                                                    {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && !auth()->user()->branch_id) --}}
+                                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->current_shop_count > 1)
                                                         <div class="col-md-3">
                                                             <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                                 <option value="">{{ __('All') }}</option>
-                                                                <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                @if ($generalSettings['subscription']->has_business == 1)
+                                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                                @endif
+
                                                                 @foreach ($branches as $branch)
                                                                     @php
                                                                         $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;

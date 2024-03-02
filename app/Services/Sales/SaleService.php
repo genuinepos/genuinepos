@@ -533,11 +533,7 @@ class SaleService
         }
 
         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-        //     $query->where('sales.branch_id', auth()->user()->branch_id);
-        // }
-
-        if (!auth()->user()->can('has_access_to_branch') || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == 1) {
 
             $query->where('sales.branch_id', auth()->user()->branch_id);
         }
@@ -581,8 +577,8 @@ class SaleService
             'sale_account_id' => 'required',
             'account_id' => 'required',
         ], [
-            'sale_account_id.required' => 'Sales A/c is required',
-            'account_id.required' => 'Debit A/c is required',
+            'sale_account_id.required' => __('Sales A/c is required'),
+            'account_id.required' => __('Debit A/c is required'),
         ]);
     }
 }

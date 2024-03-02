@@ -27,7 +27,7 @@ class ProcessService
             ->select(
                 'processes.*',
                 'branches.name as branch_name',
-                'branches.area_name as branch_area_name',
+                'branches.area_name',
                 'branches.branch_code',
                 'parentBranch.name as parent_branch_name',
                 'products.name as p_name',

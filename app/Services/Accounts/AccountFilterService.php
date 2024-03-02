@@ -2,6 +2,8 @@
 
 namespace App\Services\Accounts;
 
+use App\Enums\BooleanType;
+
 class AccountFilterService
 {
     public function filterCashBankAccounts(object $accounts)
@@ -21,7 +23,8 @@ class AccountFilterService
                     $account->has_bank_access_branch = 1;
                 }
 
-                if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+                // if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+                if (auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::False->value) {
 
                     $account->has_bank_access_branch = 1;
                 }

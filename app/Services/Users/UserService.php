@@ -318,9 +318,10 @@ class UserService
     public function changeBranch(object $request): void
     {
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
+        $__branchId = isset($request->select_type) && $request->select_type == 'business' ? null : $branchId;
         $user = $this->singleUser(id: auth()->user()->id);
-        $user->branch_id = $branchId;
-        $user->is_belonging_an_area = isset($branchId) ? BooleanType::True->value : BooleanType::False->value;
+        $user->branch_id = $__branchId;
+        $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
         $user->save();
     }
 

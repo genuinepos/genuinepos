@@ -4,6 +4,7 @@ namespace App\Services\Accounts;
 
 use Carbon\Carbon;
 use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Enums\AccountingVoucherType;
@@ -67,7 +68,9 @@ class ReceiptService
             $query->whereBetween('accounting_vouchers.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if (!isset($creditAccountId) && $account?->sub_sub_group_number != 6) {
 

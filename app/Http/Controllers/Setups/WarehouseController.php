@@ -18,17 +18,19 @@ class WarehouseController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('warehouses_index'), 403);
+        $generalSettings = config('generalSettings');
+        abort_if(!auth()->user()->can('warehouses_index') && $generalSettings['subscription']->features['warehouse_count'] == 0, 403);
 
         if ($request->ajax()) {
 
             return $this->warehouseService->warehouseListTable($request);
         }
 
+        $count = $this->warehouseService->warehouses()->count();
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('setups.warehouses.index', compact('branches'));
+        return view('setups.warehouses.index', compact('branches', 'count'));
     }
 
     public function create()
@@ -45,6 +47,12 @@ class WarehouseController extends Controller
 
         try {
             DB::beginTransaction();
+
+            $restriction = $this->warehouseService->restriction();
+            if ($restriction['pass'] == false) {
+
+                return response()->json(['errorMsg' => $restriction['msg']]);
+            }
 
             $addWarehouse = $this->warehouseService->addWarehouse($request);
 

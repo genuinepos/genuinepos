@@ -19,15 +19,7 @@
 
                 @if ($generalSettings['subscription']->features['contacts'] == 1)
                     @if ($generalSettings['modules__contacts'] == '1')
-                        @if (auth()->user()->can('supplier_all') ||
-                                auth()->user()->can('supplier_add') ||
-                                auth()->user()->can('supplier_import') ||
-                                auth()->user()->can('customer_all') ||
-                                auth()->user()->can('customer_add') ||
-                                auth()->user()->can('customer_import') ||
-                                auth()->user()->can('customer_group') ||
-                                auth()->user()->can('supplier_report') ||
-                                auth()->user()->can('customer_report'))
+                        @if (auth()->user()->can('supplier_all') || auth()->user()->can('supplier_add') || auth()->user()->can('supplier_import') || auth()->user()->can('customer_all') || auth()->user()->can('customer_add') || auth()->user()->can('customer_import') || auth()->user()->can('customer_group') || auth()->user()->can('supplier_report') || auth()->user()->can('customer_report'))
                             <li data-menu="contact" class="{{ request()->is('contacts*') ? 'menu_active' : '' }}">
                                 <a href="#" class=""><img src="{{ asset('backend/asset/img/icon/agenda.svg') }}">
                                     <p class="title">{{ __('Contacts') }}</p>
@@ -38,21 +30,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['inventory'] == 1)
-                    @if (
-                        auth()->user()->can('product_all') ||
-                        auth()->user()->can('product_add') ||
-                        auth()->user()->can('product_import') ||
-                        auth()->user()->can('product_category_index') ||
-                        auth()->user()->can('product_brand_index') ||
-                        auth()->user()->can('product_unit_index') ||
-                        auth()->user()->can('product_variant_index') ||
-                        auth()->user()->can('product_warranty_index') ||
-                        auth()->user()->can('selling_price_group_index') ||
-                        auth()->user()->can('generate_barcode') ||
-                        auth()->user()->can('product_settings') ||
-                        auth()->user()->can('stock_report') ||
-                        auth()->user()->can('stock_in_out_report')
-                    )
+                    @if (auth()->user()->can('product_all') || auth()->user()->can('product_add') || auth()->user()->can('product_import') || auth()->user()->can('product_category_index') || auth()->user()->can('product_brand_index') || auth()->user()->can('product_unit_index') || auth()->user()->can('product_variant_index') || auth()->user()->can('product_warranty_index') || auth()->user()->can('selling_price_group_index') || auth()->user()->can('generate_barcode') || auth()->user()->can('product_settings') || auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report'))
                         <li data-menu="product" class="{{ request()->is('product*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/package.svg') }}" alt="">
@@ -62,27 +40,8 @@
                     @endif
                 @endif
 
-                @if (
-                    $generalSettings['subscription']->features['purchase'] == 1 &&
-                    $generalSettings['modules__purchases'] == '1'
-                )
-                    @if (auth()->user()->can('purchase_all') ||
-                            auth()->user()->can('purchased_product_list') ||
-                            auth()->user()->can('purchase_add') ||
-                            auth()->user()->can('purchase_settings') ||
-                            auth()->user()->can('purchase_order_index') ||
-                            auth()->user()->can('purchase_order_add') ||
-                            auth()->user()->can('purchase_return_index') ||
-                            auth()->user()->can('purchase_return_add') ||
-                            auth()->user()->can('purchase_report') ||
-                            auth()->user()->can('purchase_order_report') ||
-                            auth()->user()->can('purchase_ordered_product_report') ||
-                            auth()->user()->can('purchase_return_report') ||
-                            auth()->user()->can('purchase_returned_product_report') ||
-                            auth()->user()->can('product_purchase_report') ||
-                            auth()->user()->can('purchase_sale_report') ||
-                            auth()->user()->can('product_purchase_report') ||
-                            auth()->user()->can('purchase_payment_report'))
+                @if ($generalSettings['subscription']->features['purchase'] == 1 && $generalSettings['modules__purchases'] == '1')
+                    @if (auth()->user()->can('purchase_all') || auth()->user()->can('purchased_product_list') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_settings') || auth()->user()->can('purchase_order_index') || auth()->user()->can('purchase_order_add') || auth()->user()->can('purchase_return_index') || auth()->user()->can('purchase_return_add') || auth()->user()->can('purchase_report') || auth()->user()->can('purchase_order_report') || auth()->user()->can('purchase_ordered_product_report') || auth()->user()->can('purchase_return_report') || auth()->user()->can('purchase_returned_product_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_sale_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_payment_report'))
                         <li data-menu="purchases" class="{{ request()->is('purchases*') ? 'menu_active' : '' }}">
                             <a href="#" class="">
                                 <img src="{{ asset('backend/asset/img/icon/bill.svg') }}">
@@ -93,27 +52,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['sales'] == 1)
-                    @if (
-                        auth()->user()->can('pos_all') ||
-                        auth()->user()->can('pos_add') ||
-                        auth()->user()->can('create_add_sale') ||
-                        auth()->user()->can('view_add_sale') ||
-                        auth()->user()->can('sale_draft') ||
-                        auth()->user()->can('sale_quotation') ||
-                        auth()->user()->can('shipment_access') ||
-                        auth()->user()->can('pos_sale_settings') ||
-                        auth()->user()->can('add_sale_settings') ||
-                        auth()->user()->can('discounts') ||
-                        auth()->user()->can('sales_order_to_invoice') ||
-                        auth()->user()->can('sales_report') ||
-                        auth()->user()->can('sales_return_report') ||
-                        auth()->user()->can('sold_product_report') ||
-                        auth()->user()->can('sales_order_report') ||
-                        auth()->user()->can('sales_ordered_products_report') ||
-                        auth()->user()->can('received_against_sales_report') ||
-                        auth()->user()->can('sales_returned_products_report') ||
-                        auth()->user()->can('cash_register_report')
-                    )
+                    @if (auth()->user()->can('pos_all') || auth()->user()->can('pos_add') || auth()->user()->can('create_add_sale') || auth()->user()->can('view_add_sale') || auth()->user()->can('sale_draft') || auth()->user()->can('sale_quotation') || auth()->user()->can('shipment_access') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('discounts') || auth()->user()->can('sales_order_to_invoice') || auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('cash_register_report'))
                         <li data-menu="sales" class="{{ request()->is('sales*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/shopping-bag.svg') }}">
@@ -123,24 +62,25 @@
                     @endif
                 @endif
 
-                @if ($generalSettings['subscription']->features['transfer_stocks'] == 1 && $generalSettings['modules__transfer_stock'] == '1')
-                    @if (auth()->user()->can('transfer_stock_index') ||
-                            auth()->user()->can('transfer_stock_create') ||
-                            auth()->user()->can('transfer_stock_receive_from_warehouse') ||
-                            auth()->user()->can('transfer_stock_receive_from_branch'))
-                        <li data-menu="transfer" class="{{ request()->is('transfer-stocks*') ? 'menu_active' : '' }}">
-                            <a href="#">
-                                <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
-                                <p class="title">{{ __('Transfer') }}</p>
-                            </a>
-                        </li>
+                @if (
+                    $generalSettings['subscription']->has_business == 1 ||
+                    $generalSettings['subscription']->current_shop_count > 1 ||
+                    $generalSettings['subscription']->features['warehouse_count'] > 0
+                )
+                    @if ($generalSettings['subscription']->features['transfer_stocks'] == 1 && $generalSettings['modules__transfer_stock'] == '1')
+                        @if (auth()->user()->can('transfer_stock_index') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
+                            <li data-menu="transfer" class="{{ request()->is('transfer-stocks*') ? 'menu_active' : '' }}">
+                                <a href="#">
+                                    <img src="{{ asset('backend/asset/img/icon/transfer.svg') }}">
+                                    <p class="title">{{ __('Transfer') }}</p>
+                                </a>
+                            </li>
+                        @endif
                     @endif
                 @endif
 
                 @if ($generalSettings['subscription']->features['stock_adjustments'] == 1 && $generalSettings['modules__stock_adjustments'] == '1')
-                    @if (auth()->user()->can('stock_adjustment_all') ||
-                            auth()->user()->can('stock_adjustment_add') ||
-                            auth()->user()->can('stock_adjustment_report'))
+                    @if (auth()->user()->can('stock_adjustment_all') || auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_report'))
                         <li data-menu="adjustment" class="{{ request()->is('stock/adjustments*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/slider-tool.svg') }}">
@@ -151,21 +91,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['accounting'] == 1 && $generalSettings['modules__accounting'] == '1')
-                    @if (auth()->user()->can('banks_index') ||
-                            auth()->user()->can('account_groups_index') ||
-                            auth()->user()->can('accounts_index') ||
-                            auth()->user()->can('capital_accounts_index') ||
-                            auth()->user()->can('duties_and_taxes_index') ||
-                            auth()->user()->can('receipts_index') ||
-                            auth()->user()->can('payments_index') ||
-                            auth()->user()->can('expenses_index') ||
-                            auth()->user()->can('contras_index') ||
-                            auth()->user()->can('profit_loss') ||
-                            auth()->user()->can('financial_report') ||
-                            auth()->user()->can('profit_loss_account') ||
-                            auth()->user()->can('balance_sheet') ||
-                            auth()->user()->can('trial_balance') ||
-                            auth()->user()->can('cash_flow'))
+                    @if (auth()->user()->can('banks_index') || auth()->user()->can('account_groups_index') || auth()->user()->can('accounts_index') || auth()->user()->can('capital_accounts_index') || auth()->user()->can('duties_and_taxes_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index') || auth()->user()->can('expenses_index') || auth()->user()->can('contras_index') || auth()->user()->can('profit_loss') || auth()->user()->can('financial_report') || auth()->user()->can('profit_loss_account') || auth()->user()->can('balance_sheet') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
                         <li data-menu="accounting" class="{{ request()->is('accounting*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/accounting.svg') }}">
@@ -176,12 +102,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['users'] == 1 && $generalSettings['modules__accounting'] == '1')
-                    @if (
-                        auth()->user()->can('user_view') ||
-                        auth()->user()->can('user_add') ||
-                        auth()->user()->can('role_view') ||
-                        auth()->user()->can('role_add')
-                    )
+                    @if (auth()->user()->can('user_view') || auth()->user()->can('user_add') || auth()->user()->can('role_view') || auth()->user()->can('role_add'))
                         <li data-menu="users" class="{{ request()->is('users*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/team.svg') }}">
@@ -192,22 +113,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['hrm'] == 1)
-                    @if (
-                        auth()->user()->can('hrm_dashboard') ||
-                        auth()->user()->can('leaves_index') ||
-                        auth()->user()->can('leave_types_index') ||
-                        auth()->user()->can('shifts_index') ||
-                        auth()->user()->can('attendances_index') ||
-                        auth()->user()->can('allowances_index') ||
-                        auth()->user()->can('deductions_index') ||
-                        auth()->user()->can('holidays_index') ||
-                        auth()->user()->can('payrolls_index') ||
-                        auth()->user()->can('departments_index') ||
-                        auth()->user()->can('designations_index') ||
-                        auth()->user()->can('payroll_report') ||
-                        auth()->user()->can('payroll_payment_report') ||
-                        auth()->user()->can('attendance_report')
-                    )
+                    @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
                         <li data-menu="hrm" class="{{ request()->is('hrm*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/human-resources.svg') }}">
@@ -218,10 +124,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['manufacturing'] == 1 && $generalSettings['modules__manufacturing'] == 1)
-                    @if (auth()->user()->can('process_view') ||
-                            auth()->user()->can('production_view') ||
-                            auth()->user()->can('manufacturing_settings') ||
-                            auth()->user()->can('manufacturing_report'))
+                    @if (auth()->user()->can('process_view') || auth()->user()->can('production_view') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('manufacturing_report'))
                         <li data-menu="manufacture" class="{{ request()->is('manufacturing*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/conveyor.svg') }}">
@@ -232,12 +135,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['task_management'] == 1 && $generalSettings['modules__manage_task'] == 1)
-                    @if (
-                        auth()->user()->can('assign_todo') ||
-                        auth()->user()->can('work_space') ||
-                        auth()->user()->can('memo') ||
-                        auth()->user()->can('msg')
-                    )
+                    @if (auth()->user()->can('assign_todo') || auth()->user()->can('work_space') || auth()->user()->can('memo') || auth()->user()->can('msg'))
                         <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
@@ -275,28 +173,7 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['setup'] == 1)
-                    @if (
-                        auth()->user()->can('business_or_shop_settings') ||
-                        auth()->user()->can('dashboard_settings') ||
-                        auth()->user()->can('product_settings') ||
-                        auth()->user()->can('purchase_settings') ||
-                        auth()->user()->can('manufacturing_settings') ||
-                        auth()->user()->can('add_sale_settings') ||
-                        auth()->user()->can('pos_sale_settings') ||
-                        auth()->user()->can('prefix_settings') ||
-                        auth()->user()->can('invoice_layout_settings') ||
-                        auth()->user()->can('print_settings') ||
-                        auth()->user()->can('system_settings') ||
-                        auth()->user()->can('reward_point_settings') ||
-                        auth()->user()->can('module_settings') ||
-                        auth()->user()->can('send_email_settings') ||
-                        auth()->user()->can('send_sms_settings') ||
-                        auth()->user()->can('warehouses_index') ||
-                        auth()->user()->can('payment_methods_index') ||
-                        auth()->user()->can('invoice_layouts_index') ||
-                        auth()->user()->can('cash_counters_index') ||
-                        auth()->user()->can('billing_index')
-                    )
+                    @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
                         <li data-menu="setups" class="{{ request()->is('setups*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/settings.svg') }}">
@@ -520,8 +397,7 @@
 
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __('Product Reports') }}</p>
-                                @if (auth()->user()->can('stock_report') ||
-                                        auth()->user()->can('stock_in_out_report'))
+                                @if (auth()->user()->can('stock_report') || auth()->user()->can('stock_in_out_report'))
                                     <div class="sub-menu-row">
                                         @if (auth()->user()->can('stock_report'))
                                             <div class="sub-menu-col">
@@ -640,13 +516,11 @@
                                 </div>
                             </div>
 
-                            @if (auth()->user()->can('supplier_report') ||
-                                    auth()->user()->can('customer_report'))
+                            @if (auth()->user()->can('supplier_report') || auth()->user()->can('customer_report'))
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Contact Reports') }}</p>
                                     <div class="sub-menu-row">
-                                        @if (auth()->user()->can('supplier_report') &&
-                                                auth()->user()->can('supplier_report'))
+                                        @if (auth()->user()->can('supplier_report') && auth()->user()->can('supplier_report'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('reports.supplier.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -680,23 +554,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['purchase'] == 1 && $generalSettings['modules__purchases'] == '1')
-                @if (auth()->user()->can('purchase_all') ||
-                        auth()->user()->can('purchased_product_list') ||
-                        auth()->user()->can('purchase_add') ||
-                        auth()->user()->can('purchase_settings') ||
-                        auth()->user()->can('purchase_order_index') ||
-                        auth()->user()->can('purchase_order_add') ||
-                        auth()->user()->can('purchase_return_index') ||
-                        auth()->user()->can('purchase_return_add') ||
-                        auth()->user()->can('purchase_report') ||
-                        auth()->user()->can('purchase_order_report') ||
-                        auth()->user()->can('purchase_ordered_product_report') ||
-                        auth()->user()->can('purchase_return_report') ||
-                        auth()->user()->can('purchase_returned_product_report') ||
-                        auth()->user()->can('product_purchase_report') ||
-                        auth()->user()->can('purchase_sale_report') ||
-                        auth()->user()->can('product_purchase_report') ||
-                        auth()->user()->can('purchase_payment_report'))
+                @if (auth()->user()->can('purchase_all') || auth()->user()->can('purchased_product_list') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_settings') || auth()->user()->can('purchase_order_index') || auth()->user()->can('purchase_order_add') || auth()->user()->can('purchase_return_index') || auth()->user()->can('purchase_return_add') || auth()->user()->can('purchase_report') || auth()->user()->can('purchase_order_report') || auth()->user()->can('purchase_ordered_product_report') || auth()->user()->can('purchase_return_report') || auth()->user()->can('purchase_returned_product_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_sale_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_payment_report'))
                     <div class="sub-menu_t" id="purchases">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -708,10 +566,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('purchase_all') ||
-                                        auth()->user()->can('purchased_product_list') ||
-                                        auth()->user()->can('purchase_add') ||
-                                        auth()->user()->can('purchase_settings'))
+                                @if (auth()->user()->can('purchase_all') || auth()->user()->can('purchased_product_list') || auth()->user()->can('purchase_add') || auth()->user()->can('purchase_settings'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Purchase Management') }}</p>
                                         <div class="sub-menu-row">
@@ -770,8 +625,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('purchase_order_index') ||
-                                        auth()->user()->can('purchase_order_add'))
+                                @if (auth()->user()->can('purchase_order_index') || auth()->user()->can('purchase_order_add'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Purchase Order Management') }}</p>
                                         <div class="sub-menu-row">
@@ -815,8 +669,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('purchase_return_index') ||
-                                        auth()->user()->can('purchase_return_add'))
+                                @if (auth()->user()->can('purchase_return_index') || auth()->user()->can('purchase_return_add'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Purchase Return Management') }}</p>
                                         <div class="sub-menu-row">
@@ -849,15 +702,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('purchase_report') ||
-                                        auth()->user()->can('purchase_order_report') ||
-                                        auth()->user()->can('purchase_ordered_product_report') ||
-                                        auth()->user()->can('purchase_return_report') ||
-                                        auth()->user()->can('purchase_returned_product_report') ||
-                                        auth()->user()->can('product_purchase_report') ||
-                                        auth()->user()->can('purchase_sale_report') ||
-                                        auth()->user()->can('product_purchase_report') ||
-                                        auth()->user()->can('purchase_payment_report'))
+                                @if (auth()->user()->can('purchase_report') || auth()->user()->can('purchase_order_report') || auth()->user()->can('purchase_ordered_product_report') || auth()->user()->can('purchase_return_report') || auth()->user()->can('purchase_returned_product_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_sale_report') || auth()->user()->can('product_purchase_report') || auth()->user()->can('purchase_payment_report'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('PURCHASE REPORTS') }}</p>
                                         <div class="sub-menu-row">
@@ -986,7 +831,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __('Sale Management') }}</p>
+                                <p class="sub-menu-group-title">{{ __('Sales Management') }}</p>
                                 <div class="sub-menu-row">
                                     @if ($generalSettings['modules__add_sale'] == '1')
                                         @if (auth()->user()->can('create_add_sale'))
@@ -1115,28 +960,15 @@
                                 </div>
 
                                 <div class="sub-menu-row">
-                                    @if (auth()->user()->can('create_sales_return'))
+                                    @if (auth()->user()->can('create_add_sale'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('sales.returns.create') }}" class="switch-bar-wrap">
+                                            <a href="#" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-plus-circle"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __('Add Sales Return') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('sales_return_index'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('sales.returns.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-list"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Sales Return List') }}</p>
+                                                <p class="switch_text">{{ __('Sales Order To Invoice') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -1154,31 +986,42 @@
                                         </div>
                                     @endif
                                 </div>
-
-                                <div class="sub-menu-row">
-                                    @if (auth()->user()->can('create_add_sale'))
-                                        <div class="sub-menu-col">
-                                            <a href="#" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-plus-circle"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Sales Order To Invoice') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-                                </div>
                             </div>
 
-                            @if (auth()->user()->can('sales_report') ||
-                                    auth()->user()->can('sales_return_report') ||
-                                    auth()->user()->can('sold_product_report') ||
-                                    auth()->user()->can('sales_order_report') ||
-                                    auth()->user()->can('sales_ordered_products_report') ||
-                                    auth()->user()->can('sales_returned_products_report') ||
-                                    auth()->user()->can('received_against_sales_report') ||
-                                    auth()->user()->can('cash_register_report'))
+                            @if (auth()->user()->can('create_sales_return') || auth()->user()->can('sales_return_index'))
+                                <div class="sub-menu-group">
+                                    <p class="sub-menu-group-title">{{ __('Sales Return') }}</p>
+                                    <div class="sub-menu-row">
+                                        @if (auth()->user()->can('create_sales_return'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('sales.returns.create') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-plus-circle"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Add Sales Return') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        @if (auth()->user()->can('sales_return_index'))
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('sales.returns.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('Sales Return List') }}</p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if (auth()->user()->can('sales_report') || auth()->user()->can('sales_return_report') || auth()->user()->can('sold_product_report') || auth()->user()->can('sales_order_report') || auth()->user()->can('sales_ordered_products_report') || auth()->user()->can('sales_returned_products_report') || auth()->user()->can('received_against_sales_report') || auth()->user()->can('cash_register_report'))
 
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Sale Reports') }}</p>
@@ -1294,101 +1137,99 @@
                 </div>
             @endif
 
-            @if ($generalSettings['subscription']->features['transfer_stocks'] == 1 && $generalSettings['modules__transfer_stock'] == '1')
-                @if (
-                    auth()->user()->can('transfer_stock_index') ||
-                    auth()->user()->can('transfer_stock_create') ||
-                    auth()->user()->can('transfer_stock_receive_from_warehouse') ||
-                    auth()->user()->can('transfer_stock_receive_from_branch')
-                )
-                    <div class="sub-menu_t" id="transfer">
-                        <div class="sub-menu-width">
-                            <div class="model__close bg-secondary-2 mb-3">
-                                <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-4">
-                                        <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+            @if (
+                $generalSettings['subscription']->has_business == 1 ||
+                $generalSettings['subscription']->current_shop_count > 1 ||
+                $generalSettings['subscription']->features['warehouse_count'] > 0
+            )
+                @if ($generalSettings['subscription']->features['transfer_stocks'] == 1 && $generalSettings['modules__transfer_stock'] == '1')
+                    @if (auth()->user()->can('transfer_stock_index') || auth()->user()->can('transfer_stock_create') || auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
+                        <div class="sub-menu_t" id="transfer">
+                            <div class="sub-menu-width">
+                                <div class="model__close bg-secondary-2 mb-3">
+                                    <div class="row align-items-center justify-content-end">
+                                        <div class="col-md-4">
+                                            <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="container-fluid">
-                                @if (auth()->user()->can('transfer_stock_index') || auth()->user()->can('transfer_stock_create'))
-                                    <div class="sub-menu-group">
-                                        <p class="sub-menu-group-title">{{ __('Transfer Stock') }}</p>
-                                        <div class="sub-menu-row">
-                                            @if (auth()->user()->can('transfer_stock_create'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('transfer.stocks.create') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-exchange-alt"></i></span>
+                                <div class="container-fluid">
+                                    @if (auth()->user()->can('transfer_stock_index') || auth()->user()->can('transfer_stock_create'))
+                                        <div class="sub-menu-group">
+                                            <p class="sub-menu-group-title">{{ __('Transfer Stock') }}</p>
+                                            <div class="sub-menu-row">
+                                                @if (auth()->user()->can('transfer_stock_create'))
+                                                    <div class="sub-menu-col">
+                                                        <a href="{{ route('transfer.stocks.create') }}" class="switch-bar-wrap">
+                                                            <div class="switch_bar">
+                                                                <div class="bar-link">
+                                                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Add Transfer Stock') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif
+                                                            <p class="switch_text">{{ __('Add Transfer Stock') }}</p>
+                                                        </a>
+                                                    </div>
+                                                @endif
 
-                                            @if (auth()->user()->can('transfer_stock_index'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('transfer.stocks.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-list-ul"></i></span>
+                                                @if (auth()->user()->can('transfer_stock_index'))
+                                                    <div class="sub-menu-col">
+                                                        <a href="{{ route('transfer.stocks.index') }}" class="switch-bar-wrap">
+                                                            <div class="switch_bar">
+                                                                <div class="bar-link">
+                                                                    <span><i class="fas fa-list-ul"></i></span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Transfer Stock List') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif
+                                                            <p class="switch_text">{{ __('Transfer Stock List') }}</p>
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
 
-                                @if (auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
-                                    <div class="sub-menu-group">
-                                        <p class="sub-menu-group-title">{{ __('Receive Transferred Stocks') }} <strong></strong></p>
-                                        <div class="sub-menu-row">
-                                            @if (auth()->user()->can('transfer_stock_receive_from_warehouse'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('receive.stock.from.warehouse.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-exchange-alt"></i></span>
+                                    @if (auth()->user()->can('transfer_stock_receive_from_warehouse') || auth()->user()->can('transfer_stock_receive_from_branch'))
+                                        <div class="sub-menu-group">
+                                            <p class="sub-menu-group-title">{{ __('Receive Transferred Stocks') }} <strong></strong></p>
+                                            <div class="sub-menu-row">
+                                                @if (auth()->user()->can('transfer_stock_receive_from_warehouse'))
+                                                    <div class="sub-menu-col">
+                                                        <a href="{{ route('receive.stock.from.warehouse.index') }}" class="switch-bar-wrap">
+                                                            <div class="switch_bar">
+                                                                <div class="bar-link">
+                                                                    <span><i class="fas fa-exchange-alt"></i></span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Receive From Warehouse') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif
+                                                            <p class="switch_text">{{ __('Receive From Warehouse') }}</p>
+                                                        </a>
+                                                    </div>
+                                                @endif
 
-                                            @if (auth()->user()->can('transfer_stock_receive_from_branch'))
-                                                <div class="sub-menu-col">
-                                                    <a href="{{ route('receive.stock.from.branch.index') }}" class="switch-bar-wrap">
-                                                        <div class="switch_bar">
-                                                            <div class="bar-link">
-                                                                <span><i class="fas fa-list-ul"></i></span>
+                                                @if (auth()->user()->can('transfer_stock_receive_from_branch'))
+                                                    <div class="sub-menu-col">
+                                                        <a href="{{ route('receive.stock.from.branch.index') }}" class="switch-bar-wrap">
+                                                            <div class="switch_bar">
+                                                                <div class="bar-link">
+                                                                    <span><i class="fas fa-list-ul"></i></span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <p class="switch_text">{{ __('Receive From Shop/Business') }}</p>
-                                                    </a>
-                                                </div>
-                                            @endif
+                                                            <p class="switch_text">{{ __('Receive From Shop/Business') }}</p>
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endif
             @endif
 
             @if ($generalSettings['subscription']->features['stock_adjustments'] == 1 && $generalSettings['modules__stock_adjustments'] == '1')
 
-                @if (auth()->user()->can('stock_adjustment_add') ||
-                        auth()->user()->can('stock_adjustment_list') ||
-                        auth()->user()->can('stock_adjustment_report') ||
-                        auth()->user()->can('stock_adjustment_product_report'))
+                @if (auth()->user()->can('stock_adjustment_add') || auth()->user()->can('stock_adjustment_list') || auth()->user()->can('stock_adjustment_report') || auth()->user()->can('stock_adjustment_product_report'))
                     <div class="sub-menu_t" id="adjustment">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1473,21 +1314,7 @@
 
             @if ($generalSettings['subscription']->features['accounting'] == 1 && $generalSettings['modules__accounting'] == '1')
 
-                @if (auth()->user()->can('banks_index') ||
-                        auth()->user()->can('account_groups_index') ||
-                        auth()->user()->can('accounts_index') ||
-                        auth()->user()->can('capital_accounts_index') ||
-                        auth()->user()->can('duties_and_taxes_index') ||
-                        auth()->user()->can('receipts_index') ||
-                        auth()->user()->can('payments_index') ||
-                        auth()->user()->can('expenses_index') ||
-                        auth()->user()->can('contras_index') ||
-                        auth()->user()->can('profit_loss') ||
-                        auth()->user()->can('financial_report') ||
-                        auth()->user()->can('profit_loss_account') ||
-                        auth()->user()->can('balance_sheet') ||
-                        auth()->user()->can('trial_balance') ||
-                        auth()->user()->can('cash_flow'))
+                @if (auth()->user()->can('banks_index') || auth()->user()->can('account_groups_index') || auth()->user()->can('accounts_index') || auth()->user()->can('capital_accounts_index') || auth()->user()->can('duties_and_taxes_index') || auth()->user()->can('receipts_index') || auth()->user()->can('payments_index') || auth()->user()->can('expenses_index') || auth()->user()->can('contras_index') || auth()->user()->can('profit_loss') || auth()->user()->can('financial_report') || auth()->user()->can('profit_loss_account') || auth()->user()->can('balance_sheet') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
                     <div class="sub-menu_t" id="accounting">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1499,11 +1326,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (auth()->user()->can('banks_index') ||
-                                        auth()->user()->can('account_groups_index') ||
-                                        auth()->user()->can('accounts_index') ||
-                                        auth()->user()->can('capital_accounts_index') ||
-                                        auth()->user()->can('duties_and_taxes_index'))
+                                @if (auth()->user()->can('banks_index') || auth()->user()->can('account_groups_index') || auth()->user()->can('accounts_index') || auth()->user()->can('capital_accounts_index') || auth()->user()->can('duties_and_taxes_index'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Account Management') }}</p>
                                         <div class="sub-menu-row">
@@ -1575,10 +1398,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('receipts_index') ||
-                                        auth()->user()->can('payments_index') ||
-                                        auth()->user()->can('expenses_index') ||
-                                        auth()->user()->can('contras_index'))
+                                @if (auth()->user()->can('receipts_index') || auth()->user()->can('payments_index') || auth()->user()->can('expenses_index') || auth()->user()->can('contras_index'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Accounting Vouchers') }}</p>
                                         <div class="sub-menu-row">
@@ -1637,12 +1457,7 @@
                                     </div>
                                 @endif
 
-                                @if (auth()->user()->can('profit_loss') ||
-                                        auth()->user()->can('financial_report') ||
-                                        auth()->user()->can('profit_loss_account') ||
-                                        auth()->user()->can('balance_sheet') ||
-                                        auth()->user()->can('trial_balance') ||
-                                        auth()->user()->can('cash_flow'))
+                                @if (auth()->user()->can('profit_loss') || auth()->user()->can('financial_report') || auth()->user()->can('profit_loss_account') || auth()->user()->can('balance_sheet') || auth()->user()->can('trial_balance') || auth()->user()->can('cash_flow'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Account Reports') }}</p>
                                         <div class="sub-menu-row">
@@ -1680,7 +1495,7 @@
                                                                 <span><i class="fas fa-chart-line"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Profit Loss Account") }}</p>
+                                                        <p class="switch_text">{{ __('Profit Loss Account') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1744,10 +1559,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['users'] == 1)
-                @if (auth()->user()->can('user_add') ||
-                        auth()->user()->can('user_view') ||
-                        auth()->user()->can('role_add') ||
-                        auth()->user()->can('role_view'))
+                @if (auth()->user()->can('user_add') || auth()->user()->can('user_view') || auth()->user()->can('role_add') || auth()->user()->can('role_view'))
                     <div class="sub-menu_t" id="users">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1824,22 +1636,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['hrm'] == 1 && $generalSettings['modules__hrms'] == 1)
-                @if (
-                    auth()->user()->can('hrm_dashboard') ||
-                    auth()->user()->can('leaves_index') ||
-                    auth()->user()->can('leave_types_index') ||
-                    auth()->user()->can('shifts_index') ||
-                    auth()->user()->can('attendances_index') ||
-                    auth()->user()->can('allowances_index') ||
-                    auth()->user()->can('deductions_index') ||
-                    auth()->user()->can('holidays_index') ||
-                    auth()->user()->can('payrolls_index') ||
-                    auth()->user()->can('departments_index') ||
-                    auth()->user()->can('designations_index') ||
-                    auth()->user()->can('payroll_report') ||
-                    auth()->user()->can('payroll_payment_report') ||
-                    auth()->user()->can('attendance_report')
-                )
+                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index') || auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
                     <div class="sub-menu_t" id="hrm">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1851,19 +1648,7 @@
                             </div>
 
                             <div class="container-fluid">
-                                @if (
-                                    auth()->user()->can('hrm_dashboard') ||
-                                    auth()->user()->can('leaves_index') ||
-                                    auth()->user()->can('leave_types_index') ||
-                                    auth()->user()->can('shifts_index') ||
-                                    auth()->user()->can('attendances_index') ||
-                                    auth()->user()->can('allowances_index') ||
-                                    auth()->user()->can('deductions_index') ||
-                                    auth()->user()->can('holidays_index') ||
-                                    auth()->user()->can('payrolls_index') ||
-                                    auth()->user()->can('departments_index') ||
-                                    auth()->user()->can('designations_index')
-                                )
+                                @if (auth()->user()->can('hrm_dashboard') || auth()->user()->can('leaves_index') || auth()->user()->can('leave_types_index') || auth()->user()->can('shifts_index') || auth()->user()->can('attendances_index') || auth()->user()->can('allowances_index') || auth()->user()->can('deductions_index') || auth()->user()->can('holidays_index') || auth()->user()->can('payrolls_index') || auth()->user()->can('departments_index') || auth()->user()->can('designations_index'))
                                     <div class="sub-menu-group">
                                         <p class="sub-menu-group-title">{{ __('Human Resource Management System') }}</p>
                                         <div class="sub-menu-row">
@@ -1875,7 +1660,7 @@
                                                                 <span><i class="fas fa-level-down-alt"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Leaves") }}</p>
+                                                        <p class="switch_text">{{ __('Leaves') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1888,7 +1673,7 @@
                                                                 <span><i class="fas fa-network-wired"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Shifts") }}</p>
+                                                        <p class="switch_text">{{ __('Shifts') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1901,7 +1686,7 @@
                                                                 <span><i class="fas fa-paste"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Attendances") }}</p>
+                                                        <p class="switch_text">{{ __('Attendances') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1916,7 +1701,7 @@
                                                                 <span><i class="fas fa-plus"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Allowances & Deductions") }}</p>
+                                                        <p class="switch_text">{{ __('Allowances & Deductions') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1929,7 +1714,7 @@
                                                                 <span><i class="fas fa-toggle-off"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Holidays") }}</p>
+                                                        <p class="switch_text">{{ __('Holidays') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1942,7 +1727,7 @@
                                                                 <span><i class="far fa-building"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Departments") }}</p>
+                                                        <p class="switch_text">{{ __('Departments') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1955,7 +1740,7 @@
                                                                 <span><i class="fas fa-map-marker-alt"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Designations") }}</p>
+                                                        <p class="switch_text">{{ __('Designations') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1968,7 +1753,7 @@
                                                                 <span><i class="far fa-money-bill-alt"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Payrolls") }}</p>
+                                                        <p class="switch_text">{{ __('Payrolls') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -1976,13 +1761,9 @@
                                     </div>
                                 @endif
 
-                                @if (
-                                    auth()->user()->can('payroll_report') ||
-                                    auth()->user()->can('payroll_payment_report') ||
-                                    auth()->user()->can('attendance_report')
-                                )
+                                @if (auth()->user()->can('payroll_report') || auth()->user()->can('payroll_payment_report') || auth()->user()->can('attendance_report'))
                                     <div class="sub-menu-group">
-                                        <p class="sub-menu-group-title">{{ __("HRM Reports") }}</p>
+                                        <p class="sub-menu-group-title">{{ __('HRM Reports') }}</p>
                                         <div class="sub-menu-row">
 
                                             @if (auth()->user()->can('payroll_report'))
@@ -1993,7 +1774,7 @@
                                                                 <span><i class="fas fa-money-bill-alt"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Payroll Report") }}</p>
+                                                        <p class="switch_text">{{ __('Payroll Report') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -2006,7 +1787,7 @@
                                                                 <span><i class="fas fa-money-bill-alt"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Payroll Payment Report") }}</p>
+                                                        <p class="switch_text">{{ __('Payroll Payment Report') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -2019,7 +1800,7 @@
                                                                 <span><i class="fas fa-paste"></i></span>
                                                             </div>
                                                         </div>
-                                                        <p class="switch_text">{{ __("Attendances Report") }}</p>
+                                                        <p class="switch_text">{{ __('Attendances Report') }}</p>
                                                     </a>
                                                 </div>
                                             @endif
@@ -2033,28 +1814,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['setup'] == 1)
-                @if (
-                    auth()->user()->can('business_or_shop_settings') ||
-                    auth()->user()->can('dashboard_settings') ||
-                    auth()->user()->can('product_settings') ||
-                    auth()->user()->can('purchase_settings') ||
-                    auth()->user()->can('manufacturing_settings') ||
-                    auth()->user()->can('add_sale_settings') ||
-                    auth()->user()->can('pos_sale_settings') ||
-                    auth()->user()->can('prefix_settings') ||
-                    auth()->user()->can('invoice_layout_settings') ||
-                    auth()->user()->can('print_settings') ||
-                    auth()->user()->can('system_settings') ||
-                    auth()->user()->can('reward_point_settings') ||
-                    auth()->user()->can('module_settings') ||
-                    auth()->user()->can('send_email_settings') ||
-                    auth()->user()->can('send_sms_settings') ||
-                    auth()->user()->can('warehouses_index') ||
-                    auth()->user()->can('payment_methods_index') ||
-                    auth()->user()->can('invoice_layouts_index') ||
-                    auth()->user()->can('cash_counters_index') ||
-                    auth()->user()->can('billing_index')
-                )
+                @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings') || auth()->user()->can('warehouses_index') || auth()->user()->can('payment_methods_index') || auth()->user()->can('invoice_layouts_index') || auth()->user()->can('cash_counters_index') || auth()->user()->can('billing_index'))
                     <div class="sub-menu_t" id="setups">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -2069,23 +1829,7 @@
                                 <div class="sub-menu-group">
                                     <p class="sub-menu-group-title">{{ __('Set-up') }}</p>
                                     <div class="sub-menu-row">
-                                        @if (
-                                            auth()->user()->can('business_or_shop_settings') ||
-                                            auth()->user()->can('dashboard_settings') ||
-                                            auth()->user()->can('product_settings') ||
-                                            auth()->user()->can('purchase_settings') ||
-                                            auth()->user()->can('manufacturing_settings') ||
-                                            auth()->user()->can('add_sale_settings') ||
-                                            auth()->user()->can('pos_sale_settings') ||
-                                            auth()->user()->can('prefix_settings') ||
-                                            auth()->user()->can('invoice_layout_settings') ||
-                                            auth()->user()->can('print_settings') ||
-                                            auth()->user()->can('system_settings') ||
-                                            auth()->user()->can('reward_point_settings') ||
-                                            auth()->user()->can('module_settings') ||
-                                            auth()->user()->can('send_email_settings') ||
-                                            auth()->user()->can('send_sms_settings')
-                                        )
+                                        @if (auth()->user()->can('business_or_shop_settings') || auth()->user()->can('dashboard_settings') || auth()->user()->can('product_settings') || auth()->user()->can('purchase_settings') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('add_sale_settings') || auth()->user()->can('pos_sale_settings') || auth()->user()->can('prefix_settings') || auth()->user()->can('invoice_layout_settings') || auth()->user()->can('print_settings') || auth()->user()->can('system_settings') || auth()->user()->can('reward_point_settings') || auth()->user()->can('module_settings') || auth()->user()->can('send_email_settings') || auth()->user()->can('send_sms_settings'))
                                             <div class="sub-menu-col">
                                                 <a href="{{ auth()->user()->branch_id ? route('branches.settings.index', auth()->user()->branch_id) : route('settings.general.index') }}" class="switch-bar-wrap settings-wrap">
                                                     <div class="switch_bar">
@@ -2093,15 +1837,12 @@
                                                             <span><i class="fas fa-cogs"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __("General Settings") }}</p>
+                                                    <p class="switch_text">{{ __('General Settings') }}</p>
                                                 </a>
                                             </div>
                                         @endif
 
-                                        @if (
-                                            (auth()->user()->role_type == \App\Enums\RoleType::SuperAdmin->value || auth()->user()->role_type == \App\Enums\RoleType::Admin->value) &&
-                                            auth()->user()->is_belonging_an_area == \App\Enums\BooleanType::False->value
-                                        )
+                                        @if (auth()->user()->can('shops_index') && $generalSettings['subscription']->current_shop_count > 1)
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('branches.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -2114,7 +1855,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('warehouses_index'))
+                                        @if (auth()->user()->can('warehouses_index') & ($generalSettings['subscription']->features['warehouse_count'] > 0))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('warehouses.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -2122,7 +1863,7 @@
                                                             <span><i class="fas fa-warehouse"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __("Warehouses") }}</p>
+                                                    <p class="switch_text">{{ __('Warehouses') }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -2135,7 +1876,7 @@
                                                             <span><i class="fas fa-credit-card"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __("Payment Methods") }}</p>
+                                                    <p class="switch_text">{{ __('Payment Methods') }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -2148,7 +1889,7 @@
                                                             <span><i class="fas fa-file-invoice"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __("Invoice Layouts") }}</p>
+                                                    <p class="switch_text">{{ __('Invoice Layouts') }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -2166,7 +1907,7 @@
                                             </div>
                                         @endif --}}
 
-                                        @if (auth()->user()->can('cash_counters_index'))
+                                        @if (auth()->user()->can('cash_counters_index') & ($generalSettings['subscription']->features['cash_counter_count'] > 0))
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('cash.counters.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -2174,7 +1915,7 @@
                                                             <span><i class="fas fa-store"></i></span>
                                                         </div>
                                                     </div>
-                                                    <p class="switch_text">{{ __("Cash Counters") }}</p>
+                                                    <p class="switch_text">{{ __('Cash Counters') }}</p>
                                                 </a>
                                             </div>
                                         @endif
@@ -2199,7 +1940,7 @@
                                                         <span><i class="far fa-arrow-alt-circle-up"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Version Release Notes") }}</p>
+                                                <p class="switch_text">{{ __('Version Release Notes') }}</p>
                                             </a>
                                         </div>
 
@@ -2222,10 +1963,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['manufacturing'] == 1 && $generalSettings['modules__manufacturing'] == 1)
-                @if (auth()->user()->can('process_view') ||
-                        auth()->user()->can('production_view') ||
-                        auth()->user()->can('manufacturing_settings') ||
-                        auth()->user()->can('manufacturing_report'))
+                @if (auth()->user()->can('process_view') || auth()->user()->can('production_view') || auth()->user()->can('manufacturing_settings') || auth()->user()->can('manufacturing_report'))
                     <div class="sub-menu_t" id="manufacture">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -2325,7 +2063,7 @@
                                                         <span><i class="fas fa-th-list"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Todo") }}</p>
+                                                <p class="switch_text">{{ __('Todo') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2338,7 +2076,7 @@
                                                         <span><i class="fas fa-th-large"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Work Space") }}</p>
+                                                <p class="switch_text">{{ __('Work Space') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2351,7 +2089,7 @@
                                                         <span><i class="fas fa-file-alt"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Memo") }}</p>
+                                                <p class="switch_text">{{ __('Memo') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2364,7 +2102,7 @@
                                                         <span><i class="fas fa-envelope"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __("Message") }}</p>
+                                                <p class="switch_text">{{ __('Message') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2388,7 +2126,7 @@
 
                         <div class="container-fluid">
                             <div class="sub-menu-group">
-                                <p class="sub-menu-group-title">{{ __("Communication") }}</p>
+                                <p class="sub-menu-group-title">{{ __('Communication') }}</p>
                                 <div class="sub-menu-row">
                                     <div class="sub-menu-col">
                                         <a href="" class="switch-bar-wrap">
@@ -2397,7 +2135,7 @@
                                                     <span><i class="fas fa-exclamation"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("Notice Board") }}</p>
+                                            <p class="switch_text">{{ __('Notice Board') }}</p>
                                         </a>
                                     </div>
                                 </div>
@@ -2417,7 +2155,7 @@
                                                     <span><i class="far fa-envelope"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("Email") }}</p>
+                                            <p class="switch_text">{{ __('Email') }}</p>
                                         </a>
                                     </div>
 
@@ -2428,6 +2166,7 @@
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
+
                                             <p class="switch_text">{{ __("Send Email") }}</p>
                                         </a>
                                     </div>
@@ -2530,22 +2269,9 @@
                                         </a>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
                             </div>
                           </div>
                          <!-- sms end -->
-
                     </div>
                 </div>
             @endif

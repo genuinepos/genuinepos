@@ -20,7 +20,7 @@ class TenantController extends Controller
     public function index()
     {
         abort_unless(auth()->user()->can('tenants_index'), 403);
-        $tenants = Tenant::latest()->paginate();
+        $tenants = Tenant::with('plan:id,name')->latest()->paginate();
 
         return view('saas::tenants.index', compact('tenants'));
     }

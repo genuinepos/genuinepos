@@ -865,7 +865,7 @@
                                                             <label for="cash_register_report">{{ __('Cash Register Reports') }}</label>
                                                         </p>
                                                     @endif
-                                                    
+
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" {{ $role->hasPermissionTo('sale_representative_report') ? 'CHECKED' : '' }} name="sale_representative_report" id="sale_representative_report" class="sales sales_report">
                                                         <label for="sale_representative_report">{{ __('Sales Representative Report') }}</label>
@@ -2063,37 +2063,134 @@
                                 <div class="form_element rounded mt-0 mb-0">
                                     <div class="accordion-header d-flex">
                                         <p class="checkbox_input_wrap ">
-                                            <input type="checkbox" class="ms-2" id="select_all" data-target="manage_tasks" autocomplete="off">
+                                            <input type="checkbox" class="ms-2" id="select_all" data-target="task_management" autocomplete="off">
                                         </p>
                                         <a data-bs-toggle="collapse" class="collapsed" href="#manage_tasks_permission" aria-expanded="false">
                                             {{ __('Manage Task Permissions') }}
                                         </a>
                                     </div>
+
                                     <div id="manage_tasks_permission" class="collapse" data-bs-parent="#manage_tasks_permission" style="">
                                         <div class="element-body border-top">
                                             <div class="row">
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
-                                                            <input type="checkbox" class="manage_tasks" id="select_all" data-target="manage_task_all" autocomplete="off">
-                                                            <strong>{{ __('Manage Task') }}</strong>
+                                                            <input type="checkbox" class="todo" id="select_all" data-target="todo" autocomplete="off">
+                                                            <strong>{{ __('Todo') }}</strong>
                                                         </label>
                                                     </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('assign_todo') ? 'CHECKED' : '' }} name="assign_todo" id="assign_todo" class="manage_tasks manage_task_all">
-                                                        <label for="assign_todo"> {{ __('Todo') }}</label>
+                                                        <input {{ $role->hasPermissionTo('todo_index') ? 'CHECKED' : '' }} type="checkbox" name="todo_index" id="todo_index" class="todo task_management">
+                                                        <label for="todo_index"> {{ __('Todo List') }}</label>
                                                     </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('work_space') ? 'CHECKED' : '' }} name="work_space" id="work_space" class="manage_tasks manage_task_all">
-                                                        <label for="work_space">{{ __('Work Spaces') }}</label>
+                                                        <input {{ $role->hasPermissionTo('todo_create') ? 'CHECKED' : '' }} type="checkbox" name="todo_create" id="todo_create" class="todo task_management">
+                                                        <label for="todo_create"> {{ __('Todo Add') }}</label>
                                                     </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('memo') ? 'CHECKED' : '' }} name="memo" id="memo" class="manage_tasks manage_task_all">
-                                                        <label for="memo"> {{ __('Memo') }}</label>
+                                                        <input {{ $role->hasPermissionTo('todo_edit') ? 'CHECKED' : '' }} type="checkbox" name="todo_edit" id="todo_edit" class="todo task_management">
+                                                        <label for="todo_edit">{{ __('Todo Edit') }}</label>
                                                     </p>
+
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" {{ $role->hasPermissionTo('msg') ? 'CHECKED' : '' }} name="msg" id="msg" class="manage_tasks manage_task_all">
-                                                        <label for="msg">{{ __('Message') }}</label>
+                                                        <input {{ $role->hasPermissionTo('todo_change_status') ? 'CHECKED' : '' }} type="checkbox" name="todo_change_status" id="todo_change_status" class="todo task_management">
+                                                        <label for="todo_change_status"> {{ __('Todo Change Status') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('todo_delete') ? 'CHECKED' : '' }} type="checkbox" name="todo_delete" id="todo_delete" class="todo task_management">
+                                                        <label for="todo_delete">{{ __('Todo Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="workspaces" id="select_all" data-target="workspaces" autocomplete="off">
+                                                            <strong>{{ __('Workspace') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('workspaces_index') ? 'CHECKED' : '' }} type="checkbox" name="workspaces_index" id="workspace_index" class="workspaces task_management">
+                                                        <label for="workspaces_index"> {{ __('Workspace List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('workspaces_create') ? 'CHECKED' : '' }} type="checkbox" name="workspaces_create" id="workspaces_create" class="workspaces task_management">
+                                                        <label for="workspaces_create"> {{ __('Workspace Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('workspaces_edit') ? 'CHECKED' : '' }} type="checkbox" name="workspaces_edit" id="workspaces_edit" class="workspaces task_management">
+                                                        <label for="workspaces_edit">{{ __('Workspace Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('workspaces_mange_task') ? 'CHECKED' : '' }} type="checkbox" name="workspaces_mange_task" id="workspaces_mange_task" class="workspaces task_management">
+                                                        <label for="workspaces_mange_task">{{ __('Workspace Manage Task') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('workspaces_delete') ? 'CHECKED' : '' }} type="checkbox" name="workspaces_delete" id="workspaces_delete" class="workspaces task_management">
+                                                        <label for="workspaces_delete">{{ __('Workspace Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="memos" id="select_all" data-target="memos" autocomplete="off">
+                                                            <strong>{{ __('Memos') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('memos_index') ? 'CHECKED' : '' }} type="checkbox" name="memos_index" id="memos_index" class="memos task_management">
+                                                        <label for="memos_index"> {{ __('Memo List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('memos_create') ? 'CHECKED' : '' }} type="checkbox" name="memos_create" id="memos_create" class="memos task_management">
+                                                        <label for="memos_create"> {{ __('Memo Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('memos_edit') ? 'CHECKED' : '' }} type="checkbox" name="memos_edit" id="memos_edit" class="memos task_management">
+                                                        <label for="memos_edit">{{ __('Memo Edit') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('memos_delete') ? 'CHECKED' : '' }} type="checkbox" name="memos_delete" id="memos_delete" class="memos task_management">
+                                                        <label for="msg">{{ __('Memo Delete') }}</label>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-lg-3 col-sm-6">
+                                                    <p class="text-info checkbox_input_wrap">
+                                                        <label>
+                                                            <input type="checkbox" class="messages" id="select_all" data-target="messages" autocomplete="off">
+                                                            <strong>{{ __('Messages') }}</strong>
+                                                        </label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('messages_index') ? 'CHECKED' : '' }} type="checkbox" name="messages_index" id="messages_index" class="messages task_management">
+                                                        <label for="messages_index"> {{ __('Message List') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('messages_create') ? 'CHECKED' : '' }} type="checkbox" name="messages_create" id="memos_create" class="messages task_management">
+                                                        <label for="messages_create"> {{ __('Message Add') }}</label>
+                                                    </p>
+
+                                                    <p class="checkbox_input_wrap mt-1">
+                                                        <input {{ $role->hasPermissionTo('messages_delete') ? 'CHECKED' : '' }} type="checkbox" name="messages_delete" id="messages_delete" class="messages task_management">
+                                                        <label for="messages_delete">{{ __('Message Delete') }}</label>
                                                     </p>
                                                 </div>
                                             </div>

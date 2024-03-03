@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Essentials;
+namespace App\Http\Controllers\TaskManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Essential\Workspace;
-use App\Models\Essential\WorkspaceAttachment;
-use App\Models\Essential\WorkspaceUsers;
+use App\Models\TaskManagement\Workspace;
+use App\Models\TaskManagement\WorkspaceAttachment;
+use App\Models\TaskManagement\WorkspaceUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,15 +19,7 @@ class WorkSpaceController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('work_space')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         if ($request->ajax()) {
             $generalSettings = config('generalSettings');
@@ -127,20 +119,12 @@ class WorkSpaceController extends Controller
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
 
-        return view('essentials.work_space.index', compact('branches', 'users'));
+        return view('task_management.work_space.index', compact('branches', 'users'));
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('work_space')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $this->validate($request, [
             'name' => 'required',
@@ -200,30 +184,19 @@ class WorkSpaceController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('work_space')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $ws = Workspace::with(['ws_users'])->where('id', $id)->first();
         $users = DB::table('users')
             ->where('branch_id', auth()->user()->branch_id)
             ->get(['id', 'prefix', 'name', 'last_name']);
 
-        return view('essentials.work_space.ajax_view.edit', compact('ws', 'users'));
+        return view('task_management.work_space.ajax_view.edit', compact('ws', 'users'));
     }
 
     public function update(Request $request, $id)
     {
-        if (!auth()->user()->can('work_space')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $this->validate($request, [
             'name' => 'required',
@@ -289,15 +262,7 @@ class WorkSpaceController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('work_space')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $deleteWorkspace = Workspace::where('id', $id)->first();
         if (!is_null($deleteWorkspace)) {
@@ -309,22 +274,16 @@ class WorkSpaceController extends Controller
 
     public function viewDocs($id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $docs = DB::table('workspace_attachments')->where('workspace_id', $id)->get(['id', 'attachment', 'extension']);
 
-        return view('essentials.work_space.ajax_view.view_documents', compact('docs'));
+        return view('task_management.work_space.ajax_view.view_documents', compact('docs'));
     }
 
     public function deleteDoc($docId)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
         if (!is_null($deleteDoc)) {

@@ -447,7 +447,7 @@
                                 </div>
                             </div>
 
-                            @if ($generalSettings['addons__hrm'] == 1)
+                            @if ($generalSettings['subscription']->features['hrm'] == 1)
                                 <div class="form_element rounded mt-0 mb-1">
                                     <div class="heading_area">
                                         <p class="px-1 pt-1 pb-0 text-primary"><strong>{{ __('Human Resource Details') }}</strong> </p>

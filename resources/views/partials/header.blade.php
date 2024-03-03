@@ -111,7 +111,7 @@
                             <li class="top-icon d-hide d-md-block" id="hard_reload">
                                 <a href="#" class="nav-btn" title="Reload"><span><i class="fas fa-redo-alt"></i><br>{{ __('Reload') }}</span></a>
                             </li>
-                            {{-- @if ($generalSettings['addons__e_commerce'] == 1)
+                            {{-- @if ($generalSettings['subscription']->features['manufacturing'] == 1)
                                 <li class="top-icon d-hide d-md-block"><a href="#" target="_blank"><b><span class="fas fa-globe"></span></b></a></li>
                             @endif --}}
 

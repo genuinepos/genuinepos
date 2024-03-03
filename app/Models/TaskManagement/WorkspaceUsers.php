@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models\Essential;
+namespace App\Models\TaskManagement;
 
-use App\Models\BaseModel;
 use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\TaskManagement\Workspace;
 
 class WorkspaceUsers extends BaseModel
 {

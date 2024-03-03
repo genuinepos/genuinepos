@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Essentials;
+namespace App\Http\Controllers\TaskManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Essential\Workspace;
-use App\Models\Essential\WorkspaceTask;
+use App\Models\TaskManagement\Workspace;
+use App\Models\TaskManagement\WorkspaceTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +17,7 @@ class WorkSpaceTaskController extends Controller
 
     public function index($workspaceId)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $ws = Workspace::with(['admin', 'ws_users', 'ws_users.user'])->where('id', $workspaceId)->first();
 
@@ -29,10 +26,7 @@ class WorkSpaceTaskController extends Controller
 
     public function store(Request $request)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         WorkspaceTask::insert([
             'workspace_id' => $request->ws_id,
@@ -45,10 +39,7 @@ class WorkSpaceTaskController extends Controller
 
     public function taskList($workspaceId)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $ws_tasks = DB::table('workspace_tasks')->where('workspace_id', $workspaceId)
             ->leftJoin('users', 'workspace_tasks.user_id', 'users.id')
@@ -71,18 +62,14 @@ class WorkSpaceTaskController extends Controller
                 'users.prefix',
                 'users.name',
                 'users.last_name',
-            )
-            ->get();
+            )->get();
 
         return view('essentials.work_space.tasks.ajax_view.task_list', compact('ws_tasks', 'ws_users'));
     }
 
     public function update(Request $request)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $updateTask = WorkspaceTask::where('id', $request->id)->first();
         $updateTask->update([
@@ -94,10 +81,7 @@ class WorkSpaceTaskController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $deleteWorkspaceTask = WorkspaceTask::where('id', $id)->first();
         if (!is_null($deleteWorkspaceTask)) {
@@ -109,10 +93,7 @@ class WorkSpaceTaskController extends Controller
 
     public function assignUser(Request $request, $id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
@@ -124,10 +105,7 @@ class WorkSpaceTaskController extends Controller
 
     public function changeStatus(Request $request, $id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([
@@ -139,10 +117,7 @@ class WorkSpaceTaskController extends Controller
 
     public function changePriority(Request $request, $id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $updateTask = WorkspaceTask::where('id', $id)->first();
         $updateTask->update([

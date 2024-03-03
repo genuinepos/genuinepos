@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\Essentials\MemoController;
 use App\Http\Controllers\Essentials\MessageController;
-use App\Http\Controllers\Essentials\TodoController;
-use App\Http\Controllers\Essentials\WorkSpaceController;
-use App\Http\Controllers\Essentials\WorkSpaceTaskController;
+use App\Http\Controllers\TaskManagement\TodoController;
+use App\Http\Controllers\TaskManagement\WorkSpaceController;
+use App\Http\Controllers\TaskManagement\WorkSpaceTaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'essentials'], function () {
+Route::group(['prefix' => 'task-management'], function () {
 
     Route::group(['prefix' => 'workspaces'], function () {
         Route::get('/', [WorkSpaceController::class, 'index'])->name('workspace.index');
@@ -31,17 +31,19 @@ Route::group(['prefix' => 'essentials'], function () {
         });
     });
 
-    Route::group(['prefix' => 'todo'], function () {
-        Route::get('/', [TodoController::class, 'index'])->name('todo.index');
-        Route::get('show/{id}', [TodoController::class, 'show'])->name('todo.show');
-        Route::post('store', [TodoController::class, 'store'])->name('todo.store');
-        Route::get('assign/user/{id}', [TodoController::class, 'assignUser'])->name('todo.assign.user');
-        Route::get('change/status/modal/{id}', [TodoController::class, 'changeStatusModal'])->name('todo.status.modal');
-        Route::post('change/status/{id}', [TodoController::class, 'changeStatus'])->name('todo.status');
-        Route::get('change/priority/{id}', [TodoController::class, 'changePriority'])->name('todo.priority');
-        Route::get('edit/{id}', [TodoController::class, 'edit'])->name('todo.edit');
-        Route::post('update/{id}', [TodoController::class, 'update'])->name('todo.update');
-        Route::delete('delete/{id}', [TodoController::class, 'delete'])->name('todo.delete');
+    Route::controller(TodoController::class)->prefix('todo')->group(function () {
+
+        Route::get('/', 'index')->name('todo.index');
+        Route::get('show/{id}', 'show')->name('todo.show');
+        Route::post('store', 'store')->name('todo.store');
+        Route::get('create', 'create')->name('todo.create');
+        Route::get('assign/user/{id}', 'assignUser')->name('todo.assign.user');
+        Route::get('change/status/{id}', 'changeStatusModal')->name('todo.change.status');
+        Route::post('change/status/{id}', 'changeStatus')->name('todo.change.status');
+        Route::get('change/priority/{id}', 'changePriority')->name('todo.priority');
+        Route::get('edit/{id}', 'edit')->name('todo.edit');
+        Route::post('update/{id}', 'update')->name('todo.update');
+        Route::delete('delete/{id}', 'delete')->name('todo.delete');
     });
 
     // Route::group(['prefix' => 'documents'], function()

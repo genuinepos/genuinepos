@@ -253,8 +253,7 @@
 
                         $('.data_preloader').hide();
 
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {

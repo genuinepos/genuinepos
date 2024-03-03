@@ -32,7 +32,7 @@ Route::middleware([
         Route::middleware('auth')->group(base_path('routes/dev_routes.php'));
         Route::middleware('auth')->group(base_path('routes/admin.php'));
         Route::middleware('auth')->group(base_path('routes/hrms.php'));
-        Route::middleware('auth')->group(base_path('routes/essential.php'));
+        Route::middleware('auth')->group(base_path('routes/task_management.php'));
         Route::middleware('auth')->group(base_path('routes/manufacturing.php'));
         Route::middleware('auth')->group(base_path('routes/contacts.php'));
         Route::middleware('auth')->group(base_path('routes/accounts.php'));

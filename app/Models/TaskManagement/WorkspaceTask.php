@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Essential;
+namespace App\Models\TaskManagement;
 
 use App\Models\BaseModel;
 
-class MemoUser extends BaseModel
+class WorkspaceTask extends BaseModel
 {
     protected $guarded = [];
 

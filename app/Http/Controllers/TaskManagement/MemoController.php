@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Essentials;
+namespace App\Http\Controllers\TaskManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Essential\Memo;
-use App\Models\Essential\MemoUser;
+use App\Models\TaskManagement\Memo;
+use App\Models\TaskManagement\MemoUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -18,20 +18,7 @@ class MemoController extends Controller
 
     public function index(Request $request)
     {
-
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        if (!auth()->user()->can('memo')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         if ($request->ajax()) {
             $memos = DB::table('memo_users')
@@ -85,15 +72,7 @@ class MemoController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $this->validate($request, [
             'heading' => 'required',
@@ -118,15 +97,7 @@ class MemoController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $deleteMemo = Memo::where('id', $id)->first();
         if (!is_null($deleteMemo)) {
@@ -138,30 +109,14 @@ class MemoController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         return $memo = Memo::where('id', $id)->first(['id', 'heading', 'description']);
     }
 
     public function update(Request $request)
     {
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $this->validate($request, [
             'heading' => 'required',
@@ -179,7 +134,6 @@ class MemoController extends Controller
 
     public function addUserView($id)
     {
-
         $memo = Memo::with(['memo_users'])->where('id', $id)->first('id', 'admin_id');
         $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get();
 
@@ -188,10 +142,7 @@ class MemoController extends Controller
 
     public function addUsers(Request $request, $id)
     {
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $memo = Memo::with(['memo_users'])->where('id', $id)->first();
         foreach ($memo->memo_users as $user) {
@@ -225,15 +176,7 @@ class MemoController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('memo')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('memo') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $memo = Memo::where('id', $id)->first();
 

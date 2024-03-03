@@ -115,11 +115,11 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sales Return</th>
+                            <th class="text-start">{{ __("Total Sales Return") }}</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
-                        @if ($generalSettings['addons__hrm'] == 1)
+                        @if ($generalSettings['subscription']->features['hrm'] == 1)
                             <tr>
                                 <th class="text-start">{{ __('Total Payroll') }}</th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>

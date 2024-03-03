@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Essentials;
+namespace App\Http\Controllers\TaskManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Essential\Message;
+use App\Models\TaskManagement\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,34 +17,14 @@ class MessageController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('msg')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
-
-        if (!auth()->user()->can('msg')) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('msg') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         return view('essentials.messages.index');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('msg')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('msg') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $this->validate($request, [
 
@@ -63,15 +43,7 @@ class MessageController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('msg')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('msg') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $deleteMsg = Message::where('id', $id)->first();
         if (!is_null($deleteMsg)) {
@@ -83,15 +55,7 @@ class MessageController extends Controller
 
     public function allMessage()
     {
-        if (!auth()->user()->can('msg')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
-        $generalSettings = config('generalSettings');
-        if ($generalSettings['addons__manage_task'] == 0) {
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('msg') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         $messages = DB::table('messages')
             ->leftJoin('users', 'messages.user_id', 'users.id')

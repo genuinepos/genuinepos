@@ -53,7 +53,6 @@ class TenantService implements TenantServiceInterface
                 'impersonate_user' => 1,
                 'plan_id' => $tenantRequest['plan_id'],
                 // 'shop_count' => $tenantRequest['shop_count'],
-                // 'expire_at' => null,
                 'start_date' => Carbon::now(),
                 'expire_date' => $expireDate ? $expireDate : null,
                 'user_id' => 1,
@@ -107,9 +106,7 @@ class TenantService implements TenantServiceInterface
             'business_or_shop__business_name' => $tenantRequest['name'],
             'business_or_shop__phone' => $tenantRequest['phone'],
             'business_or_shop__email' => $tenantRequest['email'],
-            'addons__branch_limit' => $plan->is_trial_plan == 1 ? $plan->trial_shop_count : $tenantRequest['shop_count'],
             'business_or_shop__address' => $tenantRequest['address'],
-            // 'addons__cash_counter_limit' => $addons__cash_counter_limit,
         ];
 
         foreach ($settings as $key => $setting) {

@@ -11,13 +11,6 @@ class GeneralSettingsSeeder extends Seeder
     private function getSettings(): array
     {
         $generalSettings = [
-            ['key' => 'addons__hrm', 'value' => '1', 'branch_id' => null],
-            ['key' => 'addons__manage_task', 'value' => '1', 'branch_id' => null],
-            ['key' => 'addons__service', 'value' => '1', 'branch_id' => null],
-            ['key' => 'addons__manufacturing', 'value' => '1', 'branch_id' => null],
-            ['key' => 'addons__e_commerce', 'value' => '0', 'branch_id' => null],
-            ['key' => 'addons__branch_limit', 'value' => 3, 'branch_id' => null],
-            ['key' => 'addons__cash_counter_limit', 'value' => 3, 'branch_id' => null],
             ['key' => 'business_or_shop__business_name', 'value' => 'Company Name', 'branch_id' => null],
             ['key' => 'business_or_shop__address', 'value' => 'Dhaka, Bangladesh', 'branch_id' => null],
             ['key' => 'business_or_shop__phone', 'value' => 'XXXXXXXXXX', 'branch_id' => null],
@@ -117,7 +110,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'modules__contacts', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null],
-            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => null],
+            ['key' => 'modules__manufacturing', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
 
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => 0, 'branch_id' => null],

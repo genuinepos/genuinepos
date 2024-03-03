@@ -145,7 +145,7 @@
                     @endif
                 @endif
 
-                {{-- @if ($generalSettings['addons__service'] == 1)
+                {{-- @if ($generalSettings['subscription']->features['service'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
@@ -154,7 +154,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['addons__e_commerce'] == 1)
+                @if ($generalSettings['subscription']->features['ecommerce'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/ecommerce2.svg') }}">

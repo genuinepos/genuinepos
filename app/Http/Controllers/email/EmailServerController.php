@@ -7,7 +7,7 @@ use App\Models\Communication\EmailServer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class EmailSettingsController extends Controller
+class EmailServerController extends Controller
 {
 
     public function index(Request $request)
@@ -22,9 +22,8 @@ class EmailSettingsController extends Controller
                     return $row->status == 1 ? "Active" : "Inactive";
                 })
                 ->addColumn('action', function ($row) {
-                    // $activeBtn = '<a href="#" class="active-btn btn btn-success btn-sm text-white" title="Active" data-id="' . $row->id . '"><span class="fas fa- pe-1"></span>Edit</a>';
-                    $editBtn = '<a href="#" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit pe-1"></span>Edit</a>';
-                    $deleteBtn = '<a onclick="return confirm("are you sure")" href="#" class="delete-btn btn btn-danger btn-sm text-white ms-2" title="Delete" data-id="' . $row->id . '"><span class="fas fa-trash pe-1"></span>Delete</a>';
+                    $editBtn = '<a href="#" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+                    $deleteBtn = '<a onclick="return confirm("are you sure")" href="#" class="delete-btn btn btn-danger btn-sm text-white ms-2" title="Delete" data-id="' . $row->id . '"><span class="fas fa-trash"></span></a>';
                     return $editBtn . $deleteBtn;
 
                 })

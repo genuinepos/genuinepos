@@ -564,11 +564,6 @@ class RolePermissionSeeder extends Seeder
             ['id' => '387', 'name' => 'workspaces_manage_task'],
             ['id' => '388', 'name' => 'workspaces_delete'],
 
-            ['id' => '389', 'name' => 'memos_index'],
-            ['id' => '390', 'name' => 'memos_create'],
-            ['id' => '391', 'name' => 'memos_edit'],
-            ['id' => '392', 'name' => 'memos_delete'],
-
             ['id' => '393', 'name' => 'messages_index'],
             ['id' => '394', 'name' => 'messages_create'],
             ['id' => '396', 'name' => 'messages_delete'],

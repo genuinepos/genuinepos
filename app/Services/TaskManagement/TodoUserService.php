@@ -50,6 +50,7 @@ class TodoUserService
 
         $deleteUnusedTodoUsers = $this->todoUsers()->where('todo_id', $todoId)->where('is_delete_in_update', BooleanType::True->value)->get();
         foreach ($deleteUnusedTodoUsers as $deleteUnusedTodoUser) {
+            
             $deleteUnusedTodoUser->delete();
         }
     }

@@ -26,7 +26,7 @@ Route::group(['prefix' => 'task-management'], function () {
     });
 
     Route::controller(WorkSpaceController::class)->prefix('workspaces')->group(function () {
-        
+
         Route::get('/', 'index')->name('workspaces.index');
         Route::get('create', 'create')->name('workspaces.create');
         Route::get('show/{id}', 'show')->name('workspaces.show');
@@ -64,21 +64,11 @@ Route::group(['prefix' => 'task-management'], function () {
     //     Route::delete('delete/{id}', [DocumentController::class, 'delete'])->name('documents.delete');
     // });
 
-    Route::group(['prefix' => 'memos'], function () {
-        Route::get('/', [MemoController::class, 'index'])->name('memos.index');
-        Route::get('show/{id}', [MemoController::class, 'show'])->name('memos.show');
-        Route::post('store', [MemoController::class, 'store'])->name('memos.store');
-        Route::get('edit/{id}', [MemoController::class, 'edit'])->name('memos.edit');
-        Route::post('update', [MemoController::class, 'update'])->name('memos.update');
-        Route::delete('delete/{id}', [MemoController::class, 'delete'])->name('memos.delete');
-        Route::get('add/user/view/{id}', [MemoController::class, 'addUserView'])->name('memos.add.user.view');
-        Route::post('add/user/{id}', [MemoController::class, 'addUsers'])->name('memos.add.users');
-    });
+    Route::controller(MessageController::class)->prefix('messages')->group(function () {
 
-    Route::group(['prefix' => 'messages'], function () {
-        Route::get('/', [MessageController::class, 'index'])->name('messages.index');
-        Route::get('all', [MessageController::class, 'allMessage'])->name('messages.all');
-        Route::post('store', [MessageController::class, 'store'])->name('messages.store');
-        Route::delete('delete/{id}', [MessageController::class, 'delete'])->name('messages.delete');
+        Route::get('/', 'index')->name('messages.index');
+        Route::get('all', 'allMessage')->name('messages.all');
+        Route::post('store', 'store')->name('messages.store');
+        Route::delete('delete/{id}', 'delete')->name('messages.delete');
     });
 });

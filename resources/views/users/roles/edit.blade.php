@@ -2144,35 +2144,6 @@
                                                 <div class="col-lg-3 col-sm-6">
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
-                                                            <input type="checkbox" class="memos" id="select_all" data-target="memos" autocomplete="off">
-                                                            <strong>{{ __('Memos') }}</strong>
-                                                        </label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input {{ $role->hasPermissionTo('memos_index') ? 'CHECKED' : '' }} type="checkbox" name="memos_index" id="memos_index" class="memos task_management">
-                                                        <label for="memos_index"> {{ __('Memo List') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input {{ $role->hasPermissionTo('memos_create') ? 'CHECKED' : '' }} type="checkbox" name="memos_create" id="memos_create" class="memos task_management">
-                                                        <label for="memos_create"> {{ __('Memo Add') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input {{ $role->hasPermissionTo('memos_edit') ? 'CHECKED' : '' }} type="checkbox" name="memos_edit" id="memos_edit" class="memos task_management">
-                                                        <label for="memos_edit">{{ __('Memo Edit') }}</label>
-                                                    </p>
-
-                                                    <p class="checkbox_input_wrap mt-1">
-                                                        <input {{ $role->hasPermissionTo('memos_delete') ? 'CHECKED' : '' }} type="checkbox" name="memos_delete" id="memos_delete" class="memos task_management">
-                                                        <label for="msg">{{ __('Memo Delete') }}</label>
-                                                    </p>
-                                                </div>
-
-                                                <div class="col-lg-3 col-sm-6">
-                                                    <p class="text-info checkbox_input_wrap">
-                                                        <label>
                                                             <input type="checkbox" class="messages" id="select_all" data-target="messages" autocomplete="off">
                                                             <strong>{{ __('Messages') }}</strong>
                                                         </label>
@@ -2312,7 +2283,7 @@
                                 <button type="button" class="btn btn-sm btn-secondary submit_button float-end" disabled>{{ __("Save Changes") }}</button>
                             @else
 
-                                <button type="button" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
+                                <button type="submit" class="btn btn-sm btn-success submit_button float-end">{{ __("Save Changes") }}</button>
                             @endif
                         </div>
                     </div>

@@ -97,6 +97,7 @@ class TodoService
                 }
             })
             ->editColumn('from', function ($row) use ($generalSettings) {
+                
                 if ($row->branch_id) {
 
                     if ($row->parent_branch_name) {

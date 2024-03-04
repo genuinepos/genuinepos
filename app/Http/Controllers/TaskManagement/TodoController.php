@@ -88,7 +88,7 @@ class TodoController extends Controller
             DB::rollBack();
         }
 
-        return response()->json('Todo update successfully.');
+        return response()->json(__('Todo update successfully.'));
     }
 
     public function changeStatusModal($id)

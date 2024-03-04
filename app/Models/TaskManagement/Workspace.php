@@ -5,20 +5,25 @@ namespace App\Models\TaskManagement;
 use App\Models\User;
 use App\Models\BaseModel;
 use App\Models\TaskManagement\WorkspaceUsers;
+use App\Models\TaskManagement\WorkspaceAttachment;
 
 class Workspace extends BaseModel
 {
     protected $guarded = [];
+    protected $hidden = ['updated_at'];
 
-    protected $hidden = ['created_at', 'updated_at'];
-
-    public function ws_users()
+    public function users()
     {
         return $this->hasMany(WorkspaceUsers::class);
     }
 
-    public function admin()
+    public function attachments()
     {
-        return $this->belongsTo(User::class, 'admin_id')->select('id', 'prefix', 'name', 'last_name');
+        return $this->hasMany(WorkspaceAttachment::class, 'workspace_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
     }
 }

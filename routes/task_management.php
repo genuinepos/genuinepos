@@ -1,35 +1,14 @@
 <?php
 
-use App\Http\Controllers\Essentials\MemoController;
-use App\Http\Controllers\Essentials\MessageController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskManagement\MemoController;
 use App\Http\Controllers\TaskManagement\TodoController;
+use App\Http\Controllers\TaskManagement\MessageController;
 use App\Http\Controllers\TaskManagement\WorkSpaceController;
 use App\Http\Controllers\TaskManagement\WorkSpaceTaskController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskManagement\WorkSpaceAttachmentController;
 
 Route::group(['prefix' => 'task-management'], function () {
-
-    Route::group(['prefix' => 'workspaces'], function () {
-        Route::get('/', [WorkSpaceController::class, 'index'])->name('workspace.index');
-        Route::get('view/docs/{id}', [WorkSpaceController::class, 'viewDocs'])->name('workspace.view.docs');
-        Route::get('show/{id}', [WorkSpaceController::class, 'show'])->name('workspace.show');
-        Route::post('store', [WorkSpaceController::class, 'store'])->name('workspace.store');
-        Route::get('edit/{id}', [WorkSpaceController::class, 'edit'])->name('workspace.edit');
-        Route::post('update/{id}', [WorkSpaceController::class, 'update'])->name('workspace.update');
-        Route::delete('delete/{id}', [WorkSpaceController::class, 'delete'])->name('workspace.delete');
-        Route::delete('delete/doc/{docId}', [WorkSpaceController::class, 'deleteDoc'])->name('workspace.delete.doc');
-
-        Route::group(['prefix' => 'tasks'], function () {
-            Route::get('{workspaceId}', [WorkSpaceTaskController::class, 'index'])->name('workspace.task.index');
-            Route::post('store', [WorkSpaceTaskController::class, 'store'])->name('workspace.task.store');
-            Route::get('list/{workspaceId}', [WorkSpaceTaskController::class, 'taskList'])->name('workspace.task.list');
-            Route::get('assign/user/{id}', [WorkSpaceTaskController::class, 'assignUser'])->name('workspace.task.assign.user');
-            Route::get('change/status/{id}', [WorkSpaceTaskController::class, 'changeStatus'])->name('workspace.task.status');
-            Route::get('change/priority/{id}', [WorkSpaceTaskController::class, 'changePriority'])->name('workspace.task.priority');
-            Route::post('update', [WorkSpaceTaskController::class, 'update']);
-            Route::delete('delete/{id}', [WorkSpaceTaskController::class, 'delete'])->name('workspace.task.delete');
-        });
-    });
 
     Route::controller(TodoController::class)->prefix('todo')->group(function () {
 
@@ -44,6 +23,35 @@ Route::group(['prefix' => 'task-management'], function () {
         Route::get('edit/{id}', 'edit')->name('todo.edit');
         Route::post('update/{id}', 'update')->name('todo.update');
         Route::delete('delete/{id}', 'delete')->name('todo.delete');
+    });
+
+    Route::controller(WorkSpaceController::class)->prefix('workspaces')->group(function () {
+        
+        Route::get('/', 'index')->name('workspaces.index');
+        Route::get('create', 'create')->name('workspaces.create');
+        Route::get('show/{id}', 'show')->name('workspaces.show');
+        Route::post('store', 'store')->name('workspaces.store');
+        Route::get('edit/{id}', 'edit')->name('workspaces.edit');
+        Route::post('update/{id}', 'update')->name('workspaces.update');
+        Route::delete('delete/{id}', 'delete')->name('workspaces.delete');
+
+        Route::controller(WorkSpaceAttachmentController::class)->prefix('attachments')->group(function () {
+
+            Route::get('index/{workspaceId}', 'index')->name('workspaces.attachments.index');
+            Route::delete('delete/{id}', 'delete')->name('workspaces.attachments.delete');
+        });
+
+        Route::controller(WorkSpaceTaskController::class)->prefix('tasks')->group(function () {
+
+            Route::get('index/{workspaceId}', 'index')->name('workspaces.task.index');
+            Route::post('store', 'store')->name('workspaces.task.store');
+            Route::get('list/{workspaceId}', 'taskList')->name('workspaces.task.list');
+            Route::get('assign/user/{id}', 'assignUser')->name('workspaces.task.assign.user');
+            Route::get('change/status/{id}', 'changeStatus')->name('workspaces.task.status');
+            Route::get('change/priority/{id}', 'changePriority')->name('workspaces.task.priority');
+            Route::post('update', 'update')->name('workspaces.task.update');
+            Route::delete('delete/{id}', 'delete')->name('workspaces.task.delete');
+        });
     });
 
     // Route::group(['prefix' => 'documents'], function()

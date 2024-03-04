@@ -17,7 +17,7 @@
                 <div class="form-group mt-1">
                     <div class="col-md-12">
                         <label><b>{{ __('Assigned To') }}</b></label>
-                        <select required name="user_ids[]" class="form-control select2" id="todo_user_id" multiple="multiple">
+                        <select required name="user_ids[]" class="form-control select2" id="todo_user_ids" multiple="multiple">
                             <option value="">{{ __('Select User') }}</option>
                             @foreach ($users as $user)
                                 <option
@@ -28,6 +28,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        <span class="error error_todo_user_ids"></span>
                     </div>
                 </div>
 

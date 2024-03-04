@@ -135,8 +135,8 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['task_management'] == 1 && $generalSettings['modules__manage_task'] == 1)
-                    @if (auth()->user()->can('assign_todo') || auth()->user()->can('work_space') || auth()->user()->can('memo') || auth()->user()->can('msg'))
-                        <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                    @if (auth()->user()->can('todo_index') || auth()->user()->can('workspaces_index') || auth()->user()->can('memos_index') || auth()->user()->can('messages_index'))
+                        <li data-menu="essentials" class="{{ request()->is('task-management*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
                                 <p class="title">{{ __('Manage Task') }}</p>
@@ -2070,13 +2070,13 @@
 
                                     @if (auth()->user()->can('work_space'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('workspace.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('workspaces.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-th-large"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __('Work Space') }}</p>
+                                                <p class="switch_text">{{ __('Project Management') }}</p>
                                             </a>
                                         </div>
                                     @endif
@@ -2141,7 +2141,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                           <!-- email start -->
                           <div class="container-fluid">
@@ -2226,18 +2225,6 @@
                                         </a>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
                             </div>
                           </div>
                           <!-- email end -->

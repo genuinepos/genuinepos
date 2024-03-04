@@ -6,7 +6,6 @@
         .form-control { padding: 4px!important; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/css/litepicker.min.css" integrity="sha512-7chVdQ5tu5/geSTNEpofdCgFp1pAxfH7RYucDDfb5oHXmcGgTz0bjROkACnw4ltVSNdaWbCQ0fHATCZ+mmw/oQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" type="text/css" href="{{asset('backend/asset/css/select2.min.css') }}"/>
 @endpush
 @section('title', 'Todo - ')
 @section('content')
@@ -109,10 +108,10 @@
                             <div class="card">
                                 <div class="section-header">
                                     <div class="col-md-6">
-                                        <h6>{{ __('All Todo') }} </h6>
+                                        <h6>{{ __('List of Todo') }} </h6>
                                     </div>
 
-                                    @if (auth()->user()->can('assign_todo'))
+                                    @if (auth()->user()->can('todo_create'))
                                         <div class="col-6 d-flex justify-content-end">
                                             <a href="{{ route('todo.create') }}" class="btn btn-sm btn-primary" id="addBtn"><i class="fas fa-plus-square"></i> {{ __('Add') }}</a>
                                         </div>
@@ -159,7 +158,6 @@
    <div class="modal fade" id="changeStatusModal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"></div>
 @endsection
 @push('scripts')
-<script src="{{asset('backend/asset/js/select2.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     var todoTable = $('.data_tbl').DataTable({
@@ -355,50 +353,9 @@
             }
         });
     });
-
 </script>
 
-<script type="text/javascript">
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('from_date'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY'
-    });
-
-    new Litepicker({
-        singleMode: true,
-        element: document.getElementById('to_date'),
-        dropdowns: {
-            minYear: new Date().getFullYear() - 50,
-            maxYear: new Date().getFullYear() + 100,
-            months: true,
-            years: true
-        },
-        tooltipText: {
-            one: 'night',
-            other: 'nights'
-        },
-        tooltipNumber: (totalDays) => {
-            return totalDays - 1;
-        },
-        format: 'DD-MM-YYYY',
-    });
-</script>
-
-<script type="text/javascript">
+<script>
     $('.select2').select2();
 
     var dateFormat = "{{ $generalSettings['business_or_shop__date_format'] }}";

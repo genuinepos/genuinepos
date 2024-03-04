@@ -2,297 +2,116 @@
 
 namespace App\Http\Controllers\TaskManagement;
 
-use App\Http\Controllers\Controller;
-use App\Models\TaskManagement\Workspace;
-use App\Models\TaskManagement\WorkspaceAttachment;
-use App\Models\TaskManagement\WorkspaceUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
+use App\Services\Users\UserService;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
+use App\Services\TaskManagement\WorkspaceService;
+use App\Services\TaskManagement\WorkspaceUserService;
+use App\Http\Requests\TaskManagement\WorkspaceStoreRequest;
+use App\Http\Requests\TaskManagement\WorkspaceUpdateRequest;
+use App\Services\TaskManagement\WorkspaceAttachmentService;
 
 class WorkSpaceController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private WorkspaceService $workspaceService,
+        private WorkspaceUserService $workspaceUserService,
+        private WorkspaceAttachmentService $workspaceAttachmentService,
+        private BranchService $branchService,
+        private UserService $userService,
+    ) {
         $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_index') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
         if ($request->ajax()) {
-            $generalSettings = config('generalSettings');
 
-            $workspaces = '';
-            $query = DB::table('workspaces')->leftJoin('branches', 'workspaces.branch_id', 'branches.id')
-                ->leftJoin('users', 'workspaces.admin_id', 'users.id');
-
-            if ($request->branch_id) {
-                if ($request->branch_id == 'NULL') {
-                    $query->where('workspaces.branch_id', null);
-                } else {
-                    $query->where('workspaces.branch_id', $request->branch_id);
-                }
-            }
-
-            if ($request->priority) {
-                $query->where('workspaces.priority', $request->priority);
-            }
-
-            if ($request->status) {
-                $query->where('workspaces.status', $request->status);
-            }
-
-            if ($request->date_range) {
-                $date_range = explode('-', $request->date_range);
-                $form_date = date('Y-m-d', strtotime($date_range[0]));
-                $to_date = date('Y-m-d', strtotime($date_range[1] . ' +1 days'));
-                $query->whereBetween('workspaces.created_at', [$form_date . ' 00:00:00', $to_date . ' 00:00:00']); // Final
-            }
-
-            if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
-                $workspaces = $query->select(
-                    'workspaces.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'users.prefix',
-                    'users.name as a_name',
-                    'users.last_name',
-                )->orderBy('id', 'desc');
-            } else {
-                $workspaces = $query->select(
-                    'workspaces.*',
-                    'branches.name as branch_name',
-                    'branches.branch_code',
-                    'users.prefix',
-                    'users.name as a_name',
-                    'users.last_name',
-                )->where('workspaces.branch_id', auth()->user()->branch_id)
-                    ->orderBy('id', 'desc');
-            }
-
-            return DataTables::of($workspaces)
-                ->addColumn('action', function ($row) {
-                    $html = '<div class="btn-group" role="group">';
-                    $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Action
-                    </button>';
-                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">';
-                    $html .= '<a class="dropdown-item details_button" href="#"><i class="far fa-eye mr-1 text-primary"></i> View</a>';
-                    $html .= '<a class="dropdown-item" href="' . route('workspace.task.index', [$row->id]) . '"><i class="fas fa-tasks text-primary"></i> Manage Tasks</a>';
-                    $html .= '<a class="dropdown-item" id="edit" href="' . route('workspace.edit', [$row->id]) . '"><i class="far fa-edit text-primary"></i> Edit</a>';
-                    $html .= '<a class="dropdown-item" id="delete" href="' . route('workspace.delete', [$row->id]) . '"><i class="far fa-trash-alt text-primary"></i> Delete</a>';
-                    $html .= '</div>';
-                    $html .= '</div>';
-
-                    return $html;
-                })
-                ->editColumn('date', function ($row) {
-                    return date('d/m/Y', strtotime($row->created_at));
-                })
-                ->editColumn('name', function ($row) {
-                    return $row->name . ' <a class="btn btn-sm btn-info text-white" id="docs" href="' . route('workspace.view.docs', [$row->id]) . '">Docs</a>';
-                })
-                ->editColumn('from', function ($row) {
-                    if ($row->branch_name) {
-                        return $row->branch_name . '/' . $row->branch_code . '(<b>BR</b>)';
-                    } else {
-                        return '<b>Head Office</b>';
-                    }
-                })
-                ->editColumn('start_date', function ($row) {
-                    return date('d/m/Y', strtotime($row->start_date));
-                })
-                ->editColumn('end_date', function ($row) {
-                    return date('d/m/Y', strtotime($row->end_date));
-                })
-                ->editColumn('assigned_by', function ($row) {
-                    return $row->prefix . ' ' . $row->a_name . ' ' . $row->last_name;
-                })
-                ->rawColumns(['action', 'date', 'from', 'name', 'assigned_by'])
-                ->make(true);
+            return $this->workspaceService->workspacesTable(request: $request);
         }
-        $branches = DB::table('branches')->get(['id', 'name', 'branch_code']);
-        $users = DB::table('users')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get(['id', 'prefix', 'name', 'last_name']);
 
-        return view('task_management.work_space.index', compact('branches', 'users'));
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+
+        return view('task_management.workspaces.index', compact('branches'));
     }
 
-    public function store(Request $request)
+    public function create()
     {
         abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
-        $this->validate($request, [
-            'name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-        ]);
+        $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)
+            ->select(['id', 'prefix', 'name', 'last_name'])->get();
+        return view('task_management.workspaces.ajax_view.create', compact('users'));
+    }
 
-        // generate invoice ID
-        $i = 4;
-        $a = 0;
-        $IdNo = '';
-        while ($a < $i) {
-            $IdNo .= rand(1, 9);
-            $a++;
+    public function store(WorkspaceStoreRequest $request, CodeGenerationService $codeGenerator)
+    {
+        try {
+            DB::beginTransaction();
+
+            $branch = $this->branchService->singleBranch(id: auth()->user()->branch_id, with: ['parentBranch', 'childBranches']);
+            $addWorkspace = $this->workspaceService->addWorkspace(request: $request, branch: $branch, codeGenerator: $codeGenerator);
+            $this->workspaceUserService->addWorkspaceUsers(request: $request, workspaceId: $addWorkspace->id);
+            $this->workspaceAttachmentService->addWorkspaceAttachments(request: $request, workspaceId: $addWorkspace->id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        $addWorkspace = Workspace::insertGetId([
-            'ws_id' => date('Y/') . $IdNo,
-            'branch_id' => auth()->user()->branch_id,
-            'name' => $request->name,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'start_date' => date('Y-m-d', strtotime($request->start_date)),
-            'end_date' => date('Y-m-d', strtotime($request->end_date)),
-            'description' => $request->description,
-            'estimated_hours' => $request->estimated_hours,
-            'admin_id' => auth()->user()->id,
-            'created_at' => date('Y-m-d'),
-        ]);
-
-        if (count($request->user_ids) > 0) {
-            foreach ($request->user_ids as $user_id) {
-                WorkspaceUsers::insert([
-                    'workspace_id' => $addWorkspace,
-                    'user_id' => $user_id,
-                ]);
-            }
-        }
-
-        if ($request->file('documents')) {
-            if (count($request->file('documents')) > 0) {
-                foreach ($request->file('documents') as $document) {
-                    $wpDocument = $document;
-                    $wpDocumentName = uniqid() . '.' . $wpDocument->getClientOriginalExtension();
-                    $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
-                    WorkspaceAttachment::insert([
-                        'workspace_id' => $addWorkspace,
-                        'attachment' => $wpDocumentName,
-                        'extension' => $wpDocument->getClientOriginalExtension(),
-                    ]);
-                }
-            }
-        }
-
-        return response()->json('Workspace created successfully.');
+        return response()->json(__('Project created successfully.'));
     }
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_edit') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
-        $ws = Workspace::with(['ws_users'])->where('id', $id)->first();
-        $users = DB::table('users')
-            ->where('branch_id', auth()->user()->branch_id)
-            ->get(['id', 'prefix', 'name', 'last_name']);
+        $workspace = $this->workspaceService->singleWorkspace(id: $id, with: ['users']);
+        $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name']);
 
-        return view('task_management.work_space.ajax_view.edit', compact('ws', 'users'));
+        return view('task_management.workspaces.ajax_view.edit', compact('workspace', 'users'));
     }
 
-    public function update(Request $request, $id)
+    public function update(WorkspaceUpdateRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        try {
+            DB::beginTransaction();
 
-        $this->validate($request, [
-            'name' => 'required',
-            'start_date' => 'required',
-            'start_date' => 'required',
-        ]);
+            $updateWorkspace = $this->workspaceService->updateWorkspace(request: $request, id: $id);
+            $this->workspaceUserService->updateWorkspaceUsers(request: $request, workspaceId: $updateWorkspace->id);
+            $this->workspaceAttachmentService->addWorkspaceAttachments(request: $request, workspaceId: $updateWorkspace->id);
 
-        $updateWorkspace = Workspace::with(['ws_users'])->where('id', $id)->first();
-        $updateWorkspace->update([
-            'branch_id' => auth()->user()->branch_id,
-            'name' => $request->name,
-            'priority' => $request->priority,
-            'status' => $request->status,
-            'start_date' => date('Y-m-d', strtotime($request->start_date)),
-            'end_date' => date('Y-m-d', strtotime($request->end_date)),
-            'description' => $request->description,
-            'estimated_hours' => $request->estimated_hours,
-        ]);
+            DB::commit();
+        } catch (Exception $e) {
 
-        foreach ($updateWorkspace->ws_users as $user) {
-            $user->is_delete_in_update = 1;
-            $user->save();
+            DB::rollBack();
         }
 
-        if (count($request->user_ids) > 0) {
-            foreach ($request->user_ids as $user_id) {
-                $existsUser = WorkspaceUsers::where('workspace_id', $id)
-                    ->where('user_id', $user_id)->first();
-                if ($existsUser) {
-                    $existsUser->is_delete_in_update = 0;
-                    $existsUser->save();
-                } else {
-                    WorkspaceUsers::insert([
-                        'workspace_id' => $id,
-                        'user_id' => $user_id,
-                    ]);
-                }
-            }
-        }
-
-        $deleteUsers = WorkspaceUsers::where('workspace_id', $id)->where('is_delete_in_update', 1)->get();
-        foreach ($deleteUsers as $deleteUser) {
-            $deleteUser->delete();
-        }
-
-        if ($request->file('documents')) {
-            if (count($request->file('documents')) > 0) {
-                foreach ($request->file('documents') as $document) {
-                    $wpDocument = $document;
-                    $wpDocumentName = uniqid() . '.' . $wpDocument->getClientOriginalExtension();
-                    $wpDocument->move(public_path('uploads/workspace_docs/'), $wpDocumentName);
-                    WorkspaceAttachment::insert([
-                        'workspace_id' => $id,
-                        'attachment' => $wpDocumentName,
-                        'extension' => $wpDocument->getClientOriginalExtension(),
-                    ]);
-                }
-            }
-        }
-
-        return response()->json('Workspace updated successfully.');
+        return response()->json(__('Project updated successfully.'));
     }
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
+        abort_if(!auth()->user()->can('workspaces_delete') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
 
-        $deleteWorkspace = Workspace::where('id', $id)->first();
-        if (!is_null($deleteWorkspace)) {
-            $deleteWorkspace->delete();
+        try {
+            DB::beginTransaction();
+
+            $this->workspaceService->deleteWorkspace(id: $id);
+
+            DB::commit();
+        } catch (Exception $e) {
+
+            DB::rollBack();
         }
 
-        return response()->json('Workspace deleted successfully.');
-    }
-
-    public function viewDocs($id)
-    {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
-        $docs = DB::table('workspace_attachments')->where('workspace_id', $id)->get(['id', 'attachment', 'extension']);
-
-        return view('task_management.work_space.ajax_view.view_documents', compact('docs'));
-    }
-
-    public function deleteDoc($docId)
-    {
-        abort_if(!auth()->user()->can('work_space') || config('generalSettings')['subscription']->features['task_management'] == 0, 403);
-
-        $deleteDoc = WorkspaceAttachment::where('id', $docId)->first();
-        if (!is_null($deleteDoc)) {
-            if (file_exists(public_path('uploads/workspace_docs/' . $deleteDoc->attachment))) {
-                unlink(public_path('uploads/workspace_docs/' . $deleteDoc->attachment));
-            }
-            $deleteDoc->delete();
-        }
-
-        return response()->json('Document deleted successfully.');
+        return response()->json(__('Project deleted successfully.'));
     }
 }

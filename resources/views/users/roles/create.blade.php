@@ -2144,33 +2144,33 @@
                                                     <p class="text-info checkbox_input_wrap">
                                                         <label>
                                                             <input type="checkbox" class="workspaces" id="select_all" data-target="workspaces" autocomplete="off">
-                                                            <strong>{{ __('Workspace') }}</strong>
+                                                            <strong>{{ __('Project Management') }}</strong>
                                                         </label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="workspaces_index" id="workspace_index" class="workspaces task_management">
-                                                        <label for="workspaces_index"> {{ __('Workspace List') }}</label>
+                                                        <label for="workspaces_index"> {{ __('Project List') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="workspaces_create" id="workspaces_create" class="workspaces task_management">
-                                                        <label for="workspaces_create"> {{ __('Workspace Add') }}</label>
+                                                        <label for="workspaces_create"> {{ __('Project Add') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="workspaces_edit" id="workspaces_edit" class="workspaces task_management">
-                                                        <label for="workspaces_edit">{{ __('Workspace Edit') }}</label>
+                                                        <label for="workspaces_edit">{{ __('Project Edit') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
-                                                        <input type="checkbox" name="workspaces_mange_task" id="workspaces_mange_task" class="workspaces task_management">
-                                                        <label for="workspaces_mange_task">{{ __('Workspace Manage Task') }}</label>
+                                                        <input type="checkbox" name="workspaces_manage_task" id="workspaces_manage_task" class="workspaces task_management">
+                                                        <label for="workspaces_manage_task">{{ __('Project Manage Task') }}</label>
                                                     </p>
 
                                                     <p class="checkbox_input_wrap mt-1">
                                                         <input type="checkbox" name="workspaces_delete" id="workspaces_delete" class="workspaces task_management">
-                                                        <label for="workspaces_delete">{{ __('Workspace Delete') }}</label>
+                                                        <label for="workspaces_delete">{{ __('Project Delete') }}</label>
                                                     </p>
                                                 </div>
 

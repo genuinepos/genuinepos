@@ -2146,14 +2146,14 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap settings-wrap">
+                                        <a href="{{route('send.index')}}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
 
-                                            <p class="switch_text">{{ __("Send Email") }}</p>
+                                            <p class="switch_text">{{ __("Send Mail") }}</p>
                                         </a>
                                     </div>
 
@@ -2169,7 +2169,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="" class="switch-bar-wrap">
+                                        <a href="{{route('body.index')}}" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>

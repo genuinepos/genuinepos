@@ -23,7 +23,7 @@ class ProcessController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('process_view')) {
+        if (!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -38,7 +38,7 @@ class ProcessController extends Controller
 
     public function show($id)
     {
-        if (!auth()->user()->can('process_view')) {
+        if (!auth()->user()->can('process_view') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             return response()->json('Access Denied');
         }
@@ -67,7 +67,7 @@ class ProcessController extends Controller
 
     public function create(Request $request)
     {
-        if (!auth()->user()->can('process_add')) {
+        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -95,7 +95,7 @@ class ProcessController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('process_add')) {
+        if (!auth()->user()->can('process_add') || config('generalSettings')['subscription']->features['manufaturing'] == 0) {
 
             return response()->json('Access Denied.');
         }
@@ -127,7 +127,7 @@ class ProcessController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('process_edit')) {
+        if (!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             abort(403, 'Access Forbidden.');
         }
@@ -153,7 +153,7 @@ class ProcessController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('process_edit')) {
+        if (!auth()->user()->can('process_edit') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             return response()->json('Access Denied');
         }
@@ -181,7 +181,7 @@ class ProcessController extends Controller
 
     public function delete($id)
     {
-        if (!auth()->user()->can('process_delete')) {
+        if (!auth()->user()->can('process_delete') || config('generalSettings')['subscription']->features['manufacturing'] == 0) {
 
             return response()->json('Access Denied');
         }

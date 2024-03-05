@@ -3,11 +3,12 @@
     $currency = $generalSettings['business_or_shop__currency'];
 @endphp
 <div class="form-group row">
-    @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+    {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
+    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
         <div class="col-md-6">
             <select name="branch_id" id="today_branch_id" class="form-control">
-                <option value="">@lang('menu.all_business_locations')</option>
-                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business_or_shop__business_name'] }}(@lang('menu.head_office'))</option>
+                <option value="">{{ __("All Shop/Business") }}</option>
+                <option {{ $branch_id == 'HF' ? 'SELECTED' : '' }} value="HF">{{ $generalSettings['business_or_shop__business_name'] }}({{ __("Business") }})</option>
                 @foreach ($branches as $br)
                     <option {{ $branch_id == $br->id ? 'SELECTED' : '' }} value="{{ $br->id }}">{{ $br->name . '/' . $br->branch_code }}</option>
                 @endforeach
@@ -115,11 +116,11 @@
                         </tr>
 
                         <tr>
-                            <th class="text-start">Total Sales Return</th>
+                            <th class="text-start">{{ __("Total Sales Return") }}</th>
                             <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalSalesReturn) }}</td>
                         </tr>
 
-                        @if ($generalSettings['addons__hrm'] == 1)
+                        @if ($generalSettings['subscription']->features['hrm'] == 1)
                             <tr>
                                 <th class="text-start">{{ __('Total Payroll') }}</th>
                                 <td class="text-start">{{ $currency }} {{ App\Utils\Converter::format_in_bdt($totalPayroll) }}</td>

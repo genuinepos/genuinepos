@@ -22,6 +22,11 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         return $this->belongsTo(Plan::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

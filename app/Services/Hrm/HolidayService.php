@@ -32,7 +32,8 @@ class HolidayService
             }
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('hrm_holiday_branches.branch_id', $ownBranchIdOrParentBranchId);
         }
@@ -81,7 +82,8 @@ class HolidayService
                     }
                 }
 
-                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+                // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+                if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
                     $allowedBranches->where('hrm_holiday_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }

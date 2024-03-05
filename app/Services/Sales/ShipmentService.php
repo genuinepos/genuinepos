@@ -2,11 +2,12 @@
 
 namespace App\Services\Sales;
 
-use App\Enums\PaymentStatus;
-use App\Enums\SaleStatus;
-use App\Enums\ShipmentStatus;
-use App\Models\Sales\Sale;
 use Carbon\Carbon;
+use App\Enums\SaleStatus;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
+use App\Enums\PaymentStatus;
+use App\Enums\ShipmentStatus;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,11 +22,12 @@ class ShipmentService
             ->leftJoin('accounts as customers', 'sales.customer_account_id', 'customers.id')
             ->leftJoin('branches', 'sales.branch_id', 'branches.id')
             ->leftJoin('branches as parentBranch', 'branches.parent_branch_id', 'parentBranch.id')
-            ->where('sales.shipment_status', '!=', 0);
+            ->where('sales.shipment_status', '!=', BooleanType::False->value);
 
         $this->filteredQuery($request, $query);
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             if (auth()->user()->can('view_own_sale')) {
 

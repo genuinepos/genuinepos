@@ -52,7 +52,8 @@
                                     <div class="col-md-10">
                                         <form id="profit_loss_filter_form" method="get">
                                             <div class="form-group row">
-                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <div class="col-md-3">
                                                         <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                         <select name="branch_id" id="branch_id" class="form-control select2" autofocus>

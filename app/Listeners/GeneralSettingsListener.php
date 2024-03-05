@@ -39,13 +39,6 @@ class GeneralSettingsListener
 
             $generalSettings = GeneralSetting::where('branch_id', $event?->user?->branch_id)
                 ->orWhereIn('key', [
-                    'addons__hrm',
-                    'addons__manage_task',
-                    'addons__service',
-                    'addons__manufacturing',
-                    'addons__e_commerce',
-                    'addons__branch_limit',
-                    'addons__cash_counter_limit',
                     'business_or_shop__business_name',
                     'business_or_shop__address',
                 ])->pluck('value', 'key')->toArray();

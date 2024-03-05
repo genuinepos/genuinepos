@@ -11,7 +11,7 @@ class BranchSettingService
     {
         $branch = $branchService->singleBranch(id: $branchId, with: ['parentBranch', 'childBranches']);
 
-        $numberOfChildBranch = count($branch->childBranches) > 0 ? count($branch->childBranches) : '';
+        $numberOfChildBranch = $branch?->parentBranch && count($branch?->parentBranch?->childBranches) > 0 ? count($branch->parentBranch->childBranches) : '';
 
         $branchName = $branch?->parentBranch ? $branch?->parentBranch->name : $branch->name;
 

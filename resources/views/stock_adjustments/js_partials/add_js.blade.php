@@ -269,7 +269,7 @@
         var e_unit_cost_inc_tax = $('#e_unit_cost_inc_tax').val() ? $('#e_unit_cost_inc_tax').val() : 0;
         var e_subtotal = $('#e_subtotal').val() ? $('#e_subtotal').val() : 0;
 
-        var e_warehouse_id = $('#e_warehouse_id').val();
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
         var warehouse_name = $('#e_warehouse_id').find('option:selected').data('w_name');
 
         var stock_location_name = '';
@@ -472,7 +472,13 @@
 
             if ($(this).val() != '' && parseFloat($(this).val()) > 0) {
 
-                $('#e_warehouse_id').focus();
+                if ($('#e_warehouse_id').val() == undefined) {
+
+                    $('#add_item').focus();
+                }else {
+
+                    $('#e_warehouse_id').focus();
+                }
             }
         }
     });

@@ -6377,6 +6377,7 @@ pre .punctuation {
   background: inherit;
   z-index: -1;
 }
+
 .main-content .steps-sidebar::after {
   content: "";
   position: absolute;
@@ -6389,6 +6390,7 @@ pre .punctuation {
   opacity: 0.17;
   z-index: -1;
 }
+
 .main-content .steps-sidebar .sidebar-logo {
   -webkit-filter: brightness(10);
           filter: brightness(10);

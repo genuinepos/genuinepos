@@ -30,7 +30,7 @@
                     <input name="address" class="form-control" id="warehouse_address" data-next="is_global" placeholder="Warehouse address">
                 </div>
 
-                @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2)
+                @if (auth()->user()->can('has_access_to_all_area'))
                     <div class="form-group mt-1">
                         <label><b>{{ __('Is Global Warehouse') }}</b> </label>
                         <select name="is_global" class="form-control" id="is_global" data-next="warehouse_save">

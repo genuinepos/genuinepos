@@ -46,7 +46,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            //
+
+            $table->dropColumn('initial_business_price_period');
+            $table->dropColumn('initial_business_period_count');
+            $table->dropColumn('initial_business_subtotal');
+            $table->dropColumn('initial_business_start_date');
+            $table->dropColumn('initial_period_count');
         });
     }
 };

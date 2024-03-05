@@ -14,21 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('workspaces', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('branch_id')->nullable()->index('workspaces_branch_id_foreign');
-            $table->string('ws_id');
-            $table->string('name');
-            $table->string('priority');
-            $table->string('status');
+            $table->string('workspace_no', 255);
+            $table->string('name', 255);
+            $table->string('priority', 20);
+            $table->string('status', 20);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->unsignedBigInteger('admin_id')->nullable()->index('workspaces_admin_id_foreign');
+            $table->unsignedBigInteger('created_by_id')->nullable()->index('workspaces_created_by_id_foreign');
             $table->text('description')->nullable();
             $table->string('estimated_hours', 191)->nullable();
             $table->timestamps();
 
-            $table->foreign(['admin_id'])->references(['id'])->on('users')->onUpdate('NO ACTION')->onDelete('SET NULL');
-            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onUpdate('NO ACTION')->onDelete('CASCADE');
+            $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');
+            $table->foreign(['created_by_id'])->references(['id'])->on('users')->onDelete('SET NULL');
         });
     }
 

@@ -142,10 +142,10 @@ Route::prefix('setups')->group(function () {
     });
 
     Route::group(['prefix' => 'billing'], function () {
-        
+
         Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
         Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
-        Route::get('cart/for/upgrade/plan/{id}', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
+        Route::get('cart/for/upgrade-plan/{id}', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
         Route::post('cart/for/upgrade/plan/{id}', [SoftwareServiceBillingController::class, 'processUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan.process');
         Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
         Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
@@ -155,19 +155,9 @@ Route::prefix('setups')->group(function () {
         Route::get('invoice/download/{id}', [SoftwareServiceBillingController::class, 'invoiceDownload'])->name('software.service.billing.invoice.download');
     });
 
-    Route::group(['prefix' => 'billing'], function () {
-
-        Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
-        Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
-        Route::get('cart/for/upgrade/plan', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
-        Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
-        Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
-
-        Route::get('due/repayment', [SoftwareServiceBillingController::class, 'dueRepayment'])->name('software.service.billing.due.repayment');
-    });
-
     Route::group(['prefix' => 'choose/business/branch'], function () {
 
         Route::get('/', [ChangeBusinessOrBranchLocationController::class, 'index'])->name('change.business.branch.location.index');
+        Route::post('redirect/location', [ChangeBusinessOrBranchLocationController::class, 'redirectLocation'])->name('change.business.branch.location.redirect.location');
     });
 });

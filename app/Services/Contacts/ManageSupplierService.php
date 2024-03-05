@@ -2,6 +2,7 @@
 
 namespace App\Services\Contacts;
 
+use App\Enums\BooleanType;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +14,8 @@ class ManageSupplierService
         $__branchId = $branchId == 'NULL' ? null : $branchId;
         $sumQueryBranchId = null;
 
-        if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+        // if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) {
+        if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == BooleanType::False->value) {
 
             $sumQueryBranchId = $__branchId ? $__branchId : null;
         } else {
@@ -133,17 +135,20 @@ class ManageSupplierService
             ->addColumn('action', function ($row) {
                 $html = '';
                 $html .= '<div class="btn-group" role="group">';
-                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.__('Action').'</button>';
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="'.route('contacts.manage.supplier.manage', [$row->id]).'">'.__('Manage').'</a>';
+                $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
+
+                if (auth()->user()->can('supplier_manage')) {
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.supplier.manage', [$row->id]) . '">' . __('Manage') . '</a>';
+                }
 
                 if (auth()->user()->can('supplier_edit')) {
 
-                    $html .= '<a class="dropdown-item" href="'.route('contacts.edit', [$row->id, \App\Enums\ContactType::Supplier->value]).'" id="editContact">'.__('Edit').'</a>';
+                    $html .= '<a class="dropdown-item" href="' . route('contacts.edit', [$row->id, \App\Enums\ContactType::Supplier->value]) . '" id="editContact">' . __('Edit') . '</a>';
                 }
 
                 if (auth()->user()->can('supplier_delete')) {
 
-                    $html .= '<a class="dropdown-item" id="deleteContact" href="'.route('contacts.delete', [$row->id]).'">'.__('Delete').'</a>';
+                    $html .= '<a class="dropdown-item" id="deleteContact" href="' . route('contacts.delete', [$row->id]) . '">' . __('Delete') . '</a>';
                 }
 
                 $html .= '</div>';
@@ -166,21 +171,21 @@ class ManageSupplierService
                     $openingBalanceInFlatAmount = $openingBalanceCredit - $openingBalanceDebit;
                 }
 
-                return '<span class="opening_balance" data-value="'.$openingBalanceInFlatAmount.'">'.\App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount).'</span>';
+                return '<span class="opening_balance" data-value="' . $openingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($openingBalanceInFlatAmount) . '</span>';
             })
 
             ->editColumn('total_purchase', function ($row) {
 
                 $totalSale = $row->total_purchase;
 
-                return '<span class="total_purchase" data-value="'.$totalSale.'">'.\App\Utils\Converter::format_in_bdt($totalSale).'</span>';
+                return '<span class="total_purchase" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
             })
 
             ->editColumn('total_sale', function ($row) {
 
                 $totalSale = $row->total_sale;
 
-                return '<span class="total_sale" data-value="'.$totalSale.'">'.\App\Utils\Converter::format_in_bdt($totalSale).'</span>';
+                return '<span class="total_sale" data-value="' . $totalSale . '">' . \App\Utils\Converter::format_in_bdt($totalSale) . '</span>';
             })
 
             ->editColumn('total_return', function ($row) {
@@ -197,21 +202,21 @@ class ManageSupplierService
                     $totalReturn = $totalPurchaseReturn - $totalSalesReturn;
                 }
 
-                return '<span class="total_return" data-value="'.$totalReturn.'">'.\App\Utils\Converter::format_in_bdt($totalReturn).'</span>';
+                return '<span class="total_return" data-value="' . $totalReturn . '">' . \App\Utils\Converter::format_in_bdt($totalReturn) . '</span>';
             })
 
             ->editColumn('total_received', function ($row) {
 
                 $totalReceived = $row->total_received;
 
-                return '<span class="total_received" data-value="'.$totalReceived.'">'.\App\Utils\Converter::format_in_bdt($totalReceived).'</span>';
+                return '<span class="total_received" data-value="' . $totalReceived . '">' . \App\Utils\Converter::format_in_bdt($totalReceived) . '</span>';
             })
 
             ->editColumn('total_paid', function ($row) {
 
                 $totalPaid = $row->total_paid;
 
-                return '<span class="total_paid" data-value="'.$totalPaid.'">'.\App\Utils\Converter::format_in_bdt($totalPaid).'</span>';
+                return '<span class="total_paid" data-value="' . $totalPaid . '">' . \App\Utils\Converter::format_in_bdt($totalPaid) . '</span>';
             })
 
             ->editColumn('current_balance', function ($row) {
@@ -246,7 +251,7 @@ class ManageSupplierService
                     $closingBalanceInFlatAmount = $currTotalCredit - $currTotalDebit;
                 }
 
-                return '<span class="current_balance" data-value="'.$closingBalanceInFlatAmount.'">'.\App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount).'</span>';
+                return '<span class="current_balance" data-value="' . $closingBalanceInFlatAmount . '">' . \App\Utils\Converter::format_in_bdt($closingBalanceInFlatAmount) . '</span>';
             })
 
             ->editColumn('status', function ($row) {
@@ -254,14 +259,14 @@ class ManageSupplierService
                 if ($row->status == 1) {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important;  background-color: #2ea074; margin-left: -7px;" type="checkbox" checked/>';
                     $html .= '</div>';
 
                     return $html;
                 } else {
 
                     $html = '<div class="form-check form-switch">';
-                    $html .= '<input class="form-check-input" id="change_status" data-url="'.route('contacts.change.status', [$row->id]).'" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
+                    $html .= '<input class="form-check-input" id="change_status" data-url="' . route('contacts.change.status', [$row->id]) . '" style="width: 34px; border-radius: 10px; height: 14px !important; margin-left: -7px;" type="checkbox" />';
                     $html .= '</div>';
 
                     return $html;

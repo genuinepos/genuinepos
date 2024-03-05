@@ -28,15 +28,20 @@
                     </div>
                 </div>
 
-                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                @if (auth()->user()->can('has_access_to_all_area') && ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1))
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
                             <label class="fw-bold">{{ __('Allowed Shop/Business') }} <span class="text-danger">*</span></label>
                             <input type="hidden" name="allowed_branch_count" value="allowed_branch_count">
                             <select class="form-control select2" name="allowed_branch_ids[]" id="allowed_branch_id" multiple>
-                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                @if ($generalSettings['subscription']->has_business == 1)
+
+                                    <option @selected(!auth()->user()->branch_id) value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                @endif
+
                                 @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                    <option @selected(auth()->user()->branch_id == $branch->id) value="{{ $branch->id }}">{{ $branch->name }}</option>
                                 @endforeach
                             </select>
                             <span class="error error_allowed_branch_ids"></span>

@@ -82,6 +82,7 @@
         </div>
     </div>
     @push('js')
+        <script src="{{ asset('backend/asset/js/plan_cart.js') }}"></script>
         <script>
             // Domain Check
             var typingTimer; //timer identifier
@@ -135,8 +136,7 @@
                             isAvailable = true;
                             $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
                         }
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
                         isAvailable = false;
                         $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                     }

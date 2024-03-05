@@ -21,10 +21,7 @@ class HolidayController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('holidays_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('holidays_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -38,10 +35,7 @@ class HolidayController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('holidays_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('holidays_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
         return view('hrm.holidays.ajax_view.create', compact('branches'));
@@ -49,10 +43,7 @@ class HolidayController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('holidays_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('holidays_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->holidayService->storeAndUpdateValidation(request: $request);
 
@@ -73,10 +64,7 @@ class HolidayController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('holidays_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('holidays_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $holiday = $this->holidayService->singleHoliday(id: $id, with: ['allowedBranches']);
         $branches = $this->branchService->branches()->where('parent_branch_id', null)->get();
@@ -86,10 +74,7 @@ class HolidayController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('holidays_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('holidays_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->holidayService->storeAndUpdateValidation(request: $request);
 
@@ -110,11 +95,8 @@ class HolidayController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('holidays_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
+        abort_if(!auth()->user()->can('holidays_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+     
         $this->holidayService->deleteHoliday(id: $id);
 
         return response()->json(__('Holiday deletes successfully'));

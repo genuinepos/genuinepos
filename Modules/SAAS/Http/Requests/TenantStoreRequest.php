@@ -23,6 +23,7 @@ class TenantStoreRequest extends FormRequest
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:191',
             'email' => 'required|email|max:191|unique:users,email',
+            'currency_id' => 'required',
             'phone' => 'required|max:60',
             'payment_status' => Rule::when($request->is_trial_plan == 0, 'required|numeric'),
             'repayment_date' => Rule::when($request->is_trial_plan == 0 &&  $request->payment_status == 0, 'required'),

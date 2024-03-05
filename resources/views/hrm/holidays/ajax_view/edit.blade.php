@@ -31,7 +31,8 @@
                     </div>
                 </div>
 
-                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                @if (auth()->user()->can('has_access_to_all_area') && ($generalSettings['subscription']->has_business == 1 || $generalSettings['subscription']->current_shop_count > 1))
                     <div class="form-group row mt-1">
                         <div class="col-md-12">
                             <label class="fw-bold">{{ __('Allowed Shop/Business') }} <span class="text-danger">*</span></label>
@@ -40,11 +41,11 @@
                                 @php
                                    $business = $holiday->allowedBranches()->where('branch_id', NUll)->first();
                                 @endphp
-                                <option value="NULL" {{ isset($business) ? 'SELECTED' : '' }}>{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                <option value="NULL" @selected(isset($business))>{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                 @foreach ($branches as $branch)
                                     <option
                                         @foreach ($holiday->allowedBranches as $allowedBranch)
-                                            {{ $branch->id == $allowedBranch->branch_id ? 'SELECTED' : '' }}
+                                            @selected($branch->id == $allowedBranch->branch_id)
                                         @endforeach
                                         value="{{ $branch->id }}"
                                     >

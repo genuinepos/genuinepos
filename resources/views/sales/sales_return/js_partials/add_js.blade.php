@@ -145,9 +145,9 @@
         $('.variant_list_area').empty();
         $('.select_area').hide();
 
-        if ($('#supplier_account_id').val() == '') {
+        if ($('#customer_account_id').val() == '') {
 
-            toastr.error('Please select a listed supplier first.');
+            toastr.error("{{ __('Please select a listed customer first.') }}");
             $(this).val('');
             return;
         }
@@ -1091,6 +1091,12 @@
         var nextId = $(this).data('next');
 
         if (e.which == 13) {
+
+            if (nextId == 'warehouse_id' && $('#warehouse_id').val() == undefined) {
+
+                $('#sale_account_id').focus();
+                return;
+            }
 
             $('#' + nextId).focus().select();
         }

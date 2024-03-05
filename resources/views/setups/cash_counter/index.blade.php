@@ -6,25 +6,35 @@
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
-                <div class="name-head">
-                    <h5>{{ __('Cash Counters') }}</h5>
+                <div class="col-md-4">
+                    <h5>{{ __('Cash Counters') }}
+                        <span>({{ __("Limit") }} -<span class="text-danger">{{ $count }}</span>/{{ $generalSettings['subscription']->features['cash_counter_count'] }})</span>
+                    </h5>
                 </div>
-                <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')</a>
+                <div class="col-md-4 text-start">
+                    <p class="fw-bold"></p>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
+                        <i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}
+                    </a>
+                </div>
             </div>
         </div>
 
         <div class="p-1">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form_element rounded mt-0 mb-1">
-                        <div class="element-body">
-                            <form id="filter_form">
-                                <div class="form-group row">
-                                    @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form_element rounded mt-0 mb-1">
+                            <div class="element-body">
+                                <form id="filter_form">
+                                    <div class="form-group row">
                                         <div class="col-md-4">
                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
-                                                <option value="">@lang('menu.all')</option>
+                                                <option value="">{{ __("All") }}</option>
                                                 <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
@@ -38,29 +48,29 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                    @endif
 
-                                    <div class="col-md-2">
-                                        <label><strong></strong></label>
-                                        <div class="input-group">
-                                            <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> @lang('menu.filter')</button>
+                                        <div class="col-md-2">
+                                            <label><strong></strong></label>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn text-white btn-sm btn-info float-start m-0"><i class="fas fa-funnel-dollar"></i> {{ __("Filter") }}</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-7">
-                        <h6>{{ __('List Of Cash Counters') }}</h6>
+                        <h6>{{ __('List of Cash Counters') }}</h6>
                     </div>
 
                     <div class="col-5 d-flex justify-content-end">
-                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> @lang('menu.add')</a>
+                        <a href="{{ route('cash.counters.create') }}" class="btn btn-sm btn-primary" id="addCashCounter"><i class="fas fa-plus-square"></i> {{ __("Add Cash Counter") }}</a>
                     </div>
                 </div>
 
@@ -72,7 +82,7 @@
                                     <th class="text-black">{{ __('Serial') }}</th>
                                     <th class="text-black">{{ __('Counter Name') }}</th>
                                     <th class="text-black">{{ __('Short Name') }}</th>
-                                    <th class="text-black">{{ __('Shop') }}</th>
+                                    <th class="text-black">{{ __('Shop/Business') }}</th>
                                     <th class="text-black">{{ __('Action') }}</th>
                                 </tr>
                             </thead>
@@ -243,8 +253,7 @@
 
                         $('.data_preloader').hide();
 
-                    },
-                    error: function(err) {
+                    }, error: function(err) {
 
                         $('.data_preloader').hide();
                         if (err.status == 0) {

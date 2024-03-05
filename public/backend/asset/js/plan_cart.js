@@ -6,8 +6,10 @@
         Tab Change Function
         ---------------------------*/
         $('.single-nav').on('click', function () {
+
             var tabId = $(this).attr('data-tab');
             var planId = $('#plan_id').val();
+            
             if (tabId == 'checkOutTab' && planId == '') {
 
                 toastr.error('Please select a plan first.');

@@ -156,8 +156,7 @@
                         </div>
 
                         <div class="row mt-1">
-                            @if ($generalSettings['addons__branch_limit'] > 1)
-                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                            @if (auth()->user()->can('has_access_to_all_area') == 1 && ($generalSettings['subscription']->current_shop_count > 1 || $generalSettings['subscription']->has_business == 1))
                                     <div class="col-md-4">
                                         <label><b>{{ __('Access Shop') }}</b> </label>
                                         <input type="hidden" name="access_branch_count" value="access_branch_count">

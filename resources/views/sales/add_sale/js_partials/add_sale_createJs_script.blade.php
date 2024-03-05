@@ -446,7 +446,7 @@
         var e_descriptions = $('#e_descriptions').val();
         var stock_quantity = $('#stock_quantity').val();
 
-        var e_warehouse_id = $('#e_warehouse_id').val();
+        var e_warehouse_id = $('#e_warehouse_id').val() ? $('#e_warehouse_id').val() : '';
         var warehouse_name = $('#e_warehouse_id').find('option:selected').data('w_name');
 
         var stock_location_name = '';
@@ -766,7 +766,14 @@
 
                     if (status == 1 || status == '') {
 
-                        $('#e_warehouse_id').focus();
+                        var warehouse = $('#e_warehouse_id').val();
+                        if (warehouse != undefined) {
+
+                            $('#e_warehouse_id').focus();
+                        }else {
+
+                            $('#add_item').focus();
+                        }
                     } else {
 
                         $('#add_item').focus();
@@ -791,7 +798,14 @@
 
                 if (status == 1 || status == '') {
 
-                    $('#e_warehouse_id').focus();
+                    var warehouse = $('#e_warehouse_id').val();
+                    if (warehouse != undefined) {
+
+                        $('#e_warehouse_id').focus();
+                    }else {
+
+                        $('#add_item').focus();
+                    }
                 } else {
 
                     $('#add_item').focus();
@@ -806,7 +820,14 @@
 
         if (e.which == 13) {
 
-            $('#e_warehouse_id').focus();
+            var warehouse = $('#e_warehouse_id').val();
+            if (warehouse != undefined) {
+
+                $('#e_warehouse_id').focus();
+            }else {
+
+                $('#add_item').focus();
+            }
         }
     });
 

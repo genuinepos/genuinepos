@@ -230,17 +230,6 @@ Route::get('my-test', function () {
     // return Subscription::with('plan')->first();
     // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
-
-    Session::put('test_2', 'business_and_branch');
-    Session::forget('test_1');
-
-    if (Session::has('test_1')) {
-        return Session::get('test_1');
-    } else {
-        return 'No session set';
-    }
-
-
 });
 
 

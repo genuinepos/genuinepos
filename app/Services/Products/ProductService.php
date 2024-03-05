@@ -96,7 +96,8 @@ class ProductService
             $query->where('products.status', $request->status);
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
         }
@@ -226,13 +227,11 @@ class ProductService
             ->editColumn('access_branches', function ($row) use ($generalSettings, $request, $ownBranchIdOrParentBranchId) {
 
                 $productAccessBranches = $row->productAccessBranches;
-                // $query = DB::table('product_branches')->leftJoin('branches', 'product_branches.branch_id', 'branches.id')->where('product_branches.product_id', $row->id);
 
                 if ($request->branch_id) {
 
                     if ($request->branch_id == 'NULL') {
 
-                        // $query->where('product_branches.branch_id', null);
                         $productAccessBranches->where('branch_id', null);
                     } else {
 
@@ -241,23 +240,23 @@ class ProductService
                     }
                 }
 
-                // if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+                // if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
-                //     $productBranches = $query->select('branches.name as b_name')->orderBy('product_branches.branch_id', 'asc')->get();
-                // } else {
-
-                //     $productBranches = $query->where('product_branches.branch_id', auth()->user()->branch_id)
-                //         ->select('branches.name as b_name')
-                //         ->orderBy('product_branches.branch_id', 'asc')->get();
+                //     $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 // }
 
-                if (auth()->user()->role_type == RoleType::Other->value || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+                if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
                     $productAccessBranches->where('product_access_branches.branch_id', $ownBranchIdOrParentBranchId);
                 }
 
                 $text = '';
                 foreach ($productAccessBranches as $productAccessBranch) {
+
+                    if ($productAccessBranch?->branch_id == null && $generalSettings['subscription']->has_business == 0) {
+
+                        continue;
+                    }
 
                     $branchName = $productAccessBranch?->branch?->parent_branch_id ? $productAccessBranch?->branch?->name : $productAccessBranch?->branch?->name;
 
@@ -448,7 +447,7 @@ class ProductService
     {
         $updateProduct = $this->singleProduct(id: $productId, with: ['productUnits', 'variants', 'variants.variantUnits', 'productAccessBranches']);
 
-        foreach($updateProduct->productUnits as $productUnit){
+        foreach ($updateProduct->productUnits as $productUnit) {
 
             $productUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
             $productUnit->save();
@@ -461,7 +460,7 @@ class ProductService
                 $variant->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                 $variant->save();
 
-                foreach($variant->variantUnits as $variantUnit){
+                foreach ($variant->variantUnits as $variantUnit) {
 
                     $variantUnit->is_delete_in_update = IsDeleteInUpdate::Yes->value;
                     $variantUnit->save();

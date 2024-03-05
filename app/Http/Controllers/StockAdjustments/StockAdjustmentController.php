@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers\StockAdjustments;
 
+use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
-use App\Services\Accounts\AccountingVoucherDescriptionService;
-use App\Services\Accounts\AccountingVoucherService;
-use App\Services\Accounts\AccountLedgerService;
+use App\Services\Setups\BranchService;
+use App\Services\CodeGenerationService;
 use App\Services\Accounts\AccountService;
 use App\Services\Accounts\DayBookService;
-use App\Services\CodeGenerationService;
-use App\Services\Products\ProductLedgerService;
-use App\Services\Products\ProductStockService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\PaymentMethodService;
 use App\Services\Setups\WarehouseService;
-use App\Services\StockAdjustments\StockAdjustmentProductService;
+use App\Services\Setups\PaymentMethodService;
+use App\Services\Products\ProductStockService;
+use App\Services\Accounts\AccountFilterService;
+use App\Services\Accounts\AccountLedgerService;
+use App\Services\Products\ProductLedgerService;
+use App\Services\Accounts\AccountingVoucherService;
 use App\Services\StockAdjustments\StockAdjustmentService;
-use App\Utils\UserActivityLogUtil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Accounts\AccountingVoucherDescriptionService;
+use App\Services\StockAdjustments\StockAdjustmentProductService;
+use App\Http\Requests\StockAdjustments\StockAdjustmentStoreRequest;
+use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
+use App\Interfaces\StockAdjustments\StockAdjustmentControllerMethodContainersInterface;
 
 class StockAdjustmentController extends Controller
 {
@@ -103,14 +104,10 @@ class StockAdjustmentController extends Controller
     }
 
     public function store(
-        Request $request,
+        StockAdjustmentStoreRequest $request,
         StockAdjustmentControllerMethodContainersInterface $stockAdjustmentControllerMethodContainersInterface,
         CodeGenerationService $codeGenerator
     ) {
-        abort_if(!auth()->user()->can('stock_adjustment_add'), 403);
-
-        $this->stockAdjustmentService->stockAdjustmentValidation(request: $request);
-
         try {
             DB::beginTransaction();
 

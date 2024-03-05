@@ -141,23 +141,22 @@ Route::prefix('setups')->group(function () {
         Route::get('/', [ReleaseNoteController::class, 'index'])->name('settings.release.note.index');
     });
 
-    Route::group(['prefix' => 'billing'], function () {
+    Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
-        Route::get('/', [SoftwareServiceBillingController::class, 'index'])->name('software.service.billing.index');
-        Route::get('upgrade/plan', [SoftwareServiceBillingController::class, 'upgradePlan'])->name('software.service.billing.upgrade.plan');
-        Route::get('cart/for/upgrade-plan/{id}', [SoftwareServiceBillingController::class, 'cartFoUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan');
-        Route::post('cart/for/upgrade/plan/{id}', [SoftwareServiceBillingController::class, 'processUpgradePlan'])->name('software.service.billing.cart.for.upgrade.plan.process');
-        Route::get('cart/for/add/branch', [SoftwareServiceBillingController::class, 'cartFoAddBranch'])->name('software.service.billing.cart.for.add.branch');
-        Route::get('cart/for/renew/branch', [SoftwareServiceBillingController::class, 'cartForRenewBranch'])->name('software.service.billing.cart.for.renew.branch');
-
-        Route::get('due/repayment', [SoftwareServiceBillingController::class, 'dueRepayment'])->name('software.service.billing.due.repayment');
-        Route::get('invoice/view/{id}', [SoftwareServiceBillingController::class, 'invoiceView'])->name('software.service.billing.invoice.view');
-        Route::get('invoice/download/{id}', [SoftwareServiceBillingController::class, 'invoiceDownload'])->name('software.service.billing.invoice.download');
+        Route::get('/', 'index')->name('software.service.billing.index');
+        Route::get('upgrade/plans', 'upgradePlan')->name('software.service.billing.upgrade.plan');
+        Route::get('cart/for/upgrade-plan/{id}', 'cartFoUpgradePlan')->name('software.service.billing.cart.for.upgrade.plan');
+        Route::post('cart/for/upgrade/plan/{id}', 'processUpgradePlan')->name('software.service.billing.cart.for.upgrade.plan.process');
+        Route::get('cart/for/add/branch', 'cartFoAddBranch')->name('software.service.billing.cart.for.add.branch');
+        Route::get('cart/for/renew/branch', 'cartForRenewBranch')->name('software.service.billing.cart.for.renew.branch');
+        Route::get('due/repayment', 'dueRepayment')->name('software.service.billing.due.repayment');
+        Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
+        Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
     });
 
-    Route::group(['prefix' => 'choose/business/branch'], function () {
+    Route::controller(ChangeBusinessOrBranchLocationController::class)->prefix('choose-business-branch')->group(function () {
 
-        Route::get('/', [ChangeBusinessOrBranchLocationController::class, 'index'])->name('change.business.branch.location.index');
-        Route::post('redirect/location', [ChangeBusinessOrBranchLocationController::class, 'redirectLocation'])->name('change.business.branch.location.redirect.location');
+        Route::get('/', 'index')->name('change.business.branch.location.index');
+        Route::post('redirect/location', 'redirectLocation')->name('change.business.branch.location.redirect.location');
     });
 });

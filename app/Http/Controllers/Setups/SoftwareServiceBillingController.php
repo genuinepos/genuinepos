@@ -23,26 +23,39 @@ class SoftwareServiceBillingController extends Controller
         return view('setups.billing.index', compact('shops', 'subscriptionHistory'));
     }
 
+    function upgradablePlansForTrial()
+    {
+    }
+
     public function upgradePlan()
     {
         DB::statement('use ' . env('DB_DATABASE'));
         $plans = Plan::active()->where('is_trial_plan', 0)->get();
-
         DB::reconnect();
 
-        return view('setups.billing.upgrade_plan', compact('plans'));
+        if (config('generalSettings')['subscription']->is_trial_plan == 1) {
+
+            return view('setups.billing.upgrade_plan_from_trial.plans', compact('plans'));
+        } else {
+
+            return view('setups.billing.upgrade_plan', compact('plans'));
+        }
     }
 
     public function cartFoUpgradePlan($id)
     {
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = Plan::findOrFail($id);
-
         DB::reconnect();
 
         $currentSubscription = Subscription::with('plan')->first();
+        if (config('generalSettings')['subscription']->is_trial_plan == 1) {
 
-        return view('setups.billing.cart_for_upgrade_plan', compact('plan', 'currentSubscription'));
+            return view('setups.billing.upgrade_plan_from_trial.cart', compact('plan', 'currentSubscription'));
+        }else {
+
+            return view('setups.billing.cart_for_upgrade_plan', compact('plan', 'currentSubscription'));
+        }
     }
 
     public function processUpgradePlan(Request $request, $id)
@@ -84,22 +97,24 @@ class SoftwareServiceBillingController extends Controller
             dispatch(new \Modules\SAAS\Jobs\SendSubscriptionUpgradeMailQueueJob(to: $user->email, user: $user));
 
             return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
-
         } catch (\Exception $e) {
             DB::rollback();
         }
     }
 
-    public function cartFoAddBranch() {
+    public function cartFoAddBranch()
+    {
 
         return view('setups.billing.cart_for_add_branch');
     }
 
-    public function cartForRenewBranch() {
+    public function cartForRenewBranch()
+    {
         return view('setups.billing.cart_for_branch_renew');
     }
 
-    public function dueRepayment() {
+    public function dueRepayment()
+    {
         return view('setups.billing.due_repayment');
     }
 
@@ -114,7 +129,7 @@ class SoftwareServiceBillingController extends Controller
     {
         $transaction = $this->invoiceQuery($id);
         // return view('setups.invoices.invoice_download', compact('transaction'));
-        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']); ;
+        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']);;
         return $pdf->download('invoice.pdf');
     }
 

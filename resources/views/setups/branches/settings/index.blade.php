@@ -63,7 +63,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['addons__manufacturing'] == 1)
+                                        @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="manufacturing_settings_form" href="#">{{ __('Manufacturing Settings') }}</a>
                                             </li>
@@ -506,7 +506,7 @@
                                     </form>
                                 @endif
 
-                                @if (auth()->user()->can('purchase_settings') && $generalSettings['addons__manufacturing'] == 1)
+                                @if (auth()->user()->can('purchase_settings') && $generalSettings['subscription']->features['manufacturing'] == 1)
                                     <form id="manufacturing_settings_form" class="setting_form hide-all" action="{{ route('branches.settings.manufacturing', $branch->id) }}" method="post">
                                         @csrf
                                         <div class="form-group">
@@ -1330,7 +1330,7 @@
                                                 </div>
                                             </div>
 
-                                            @if ($generalSettings['addons__hrm'] == 1)
+                                            @if ($generalSettings['subscription']->features['hrm'] == 1)
                                                 <div class="col-md-4">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">
@@ -1350,7 +1350,7 @@
                                                 </div>
                                             </div>
 
-                                            @if ($generalSettings['addons__manufacturing'] == 1)
+                                            @if ($generalSettings['subscription']->features['manufacturing'] == 1)
                                                 <div class="col-md-4">
                                                     <div class="row">
                                                         <p class="checkbox_input_wrap">

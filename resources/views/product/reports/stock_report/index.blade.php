@@ -45,9 +45,11 @@
                                 <i class="fas fa-scroll"></i> {{ __('Shop/Business Stock') }}
                             </a>
 
-                            <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
-                                <i class="fas fa-info-circle"></i> {{ __('Warehouse Stock') }}
-                            </a>
+                            @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                <a id="tab_btn" data-show="warehouse_stock" class="btn btn-sm btn-primary tab_btn" href="#">
+                                    <i class="fas fa-info-circle"></i> {{ __('Warehouse Stock') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
 
@@ -57,7 +59,8 @@
                                 <form id="branch_stock_filter_form">
                                     @csrf
                                     <div class="form-group row">
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                             <div class="col-md-4">
                                                 <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_stock_branch_id" autofocus>
@@ -156,130 +159,134 @@
                         </div>
                     </div>
 
-                    <div class="tab_contant warehouse_stock d-hide">
-                        <div class="row g-lg-1 g-1">
-                            <div class="col-12">
-                                <form id="warehouse_stock_filter_form">
-                                    @csrf
-                                    <div class="form-group row justify-content-end">
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                            <div class="col-md-4">
-                                                <label><strong>{{ __('Shop/Business') }} </strong></label>
-                                                <select name="branch_id" class="form-control select2" id="warehouse_stock_branch_id" autofocus>
-                                                    <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
-                                                    @foreach ($branches as $branch)
-                                                        @php
-                                                            $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
-                                                            $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
-                                                            $branchCode = '-' . $branch->branch_code;
-                                                        @endphp
-                                                        <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
-                                                            {{ $branchName . $areaName . $branchCode }}
-                                                        </option>
+                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                        <div class="tab_contant warehouse_stock d-hide">
+                            <div class="row g-lg-1 g-1">
+                                <div class="col-12">
+                                    <form id="warehouse_stock_filter_form">
+                                        @csrf
+                                        <div class="form-group row justify-content-end">
+                                            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                                <div class="col-md-4">
+                                                    <label><strong>{{ __('Shop/Business') }} </strong></label>
+                                                    <select name="branch_id" class="form-control select2" id="warehouse_stock_branch_id" autofocus>
+                                                        <option data-branch_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                        <option data-branch_name="{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})" value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                        @foreach ($branches as $branch)
+                                                            @php
+                                                                $branchName = $branch->parent_branch_id ? $branch->parentBranch?->name : $branch->name;
+                                                                $areaName = $branch->area_name ? '(' . $branch->area_name . ')' : '';
+                                                                $branchCode = '-' . $branch->branch_code;
+                                                            @endphp
+                                                            <option data-branch_name="{{ $branchName . $areaName . $branchCode }}" value="{{ $branch->id }}">
+                                                                {{ $branchName . $areaName . $branchCode }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
+
+                                            <div class="col-lg-2 col-md-4">
+                                                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                                    <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                    <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                        <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
+                                                    </select>
+                                                @else
+                                                    @php
+                                                        $wh = DB::table('warehouses')
+                                                            ->where('branch_id', auth()->user()->branch_id)
+                                                            ->orWhere('is_global', 1)
+                                                            ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+                                                    @endphp
+
+                                                    <label><strong>{{ __('Warehouse') }}</strong></label>
+                                                    <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
+                                                        <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                        @foreach ($wh as $row)
+                                                            <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                            </div>
+
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>{{ __('Category') }}</strong></label>
+                                                <select name="category_id" class="form-control select2" id="warehouse_stock_category_id">
+                                                    <option data-category_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                    @foreach ($categories as $category)
+                                                        <option data-category_name="{{ __('All') }}" value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        @endif
 
-                                        <div class="col-lg-2 col-md-4">
-                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
-                                                <label><strong>{{ __('Warehouse') }}</strong></label>
-                                                <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
-                                                    <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
-                                                </select>
-                                            @else
-                                                @php
-                                                    $wh = DB::table('warehouses')
-                                                        ->where('branch_id', auth()->user()->branch_id)
-                                                        ->orWhere('is_global', 1)
-                                                        ->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
-                                                @endphp
-
-                                                <label><strong>{{ __('Warehouse') }}</strong></label>
-                                                <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
-                                                    <option data-warehouse_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                    @foreach ($wh as $row)
-                                                        <option data-warehouse_name="{{ $row->warehouse_name . '/' . $row->warehouse_code }}" value="{{ $row->id }}">{{ $row->warehouse_name . '/' . $row->warehouse_code }}</option>
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>{{ __('Brand.') }}</strong></label>
+                                                <select name="brand_id" class="form-control select2" id="warehouse_stock_brand_id">
+                                                    <option data-brand_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                    @foreach ($brands as $brand)
+                                                        <option data-brand_name="{{ $brand->name }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            @endif
-                                        </div>
+                                            </div>
 
-                                        <div class="col-lg-2 col-md-4">
-                                            <label><strong>{{ __('Category') }}</strong></label>
-                                            <select name="category_id" class="form-control select2" id="warehouse_stock_category_id">
-                                                <option data-category_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                @foreach ($categories as $category)
-                                                    <option data-category_name="{{ __('All') }}" value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <label><strong>{{ __('Unit') }}</strong></label>
+                                                <select name="unit_id" class="form-control select2" id="warehouse_stock_unit_id">
+                                                    <option data-unit_name="{{ __('All') }}" value="">{{ __('All') }}</option>
+                                                    @foreach ($units as $unit)
+                                                        <option data-unit_name="{{ $unit->name . '/' . $unit->code_name }}" value="{{ $unit->id }}">{{ $unit->name . '/' . $unit->code_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                                        <div class="col-lg-2 col-md-4">
-                                            <label><strong>{{ __('Brand.') }}</strong></label>
-                                            <select name="brand_id" class="form-control select2" id="warehouse_stock_brand_id">
-                                                <option data-brand_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                @foreach ($brands as $brand)
-                                                    <option data-brand_name="{{ $brand->name }}" value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                            <div class="col-lg-2 col-md-4">
+                                                <div class="form-group row align-items-end mt-2">
+                                                    <div class="col-6">
+                                                        <div class="input-group">
+                                                            <a href="#" class="btn btn-sm btn-primary float-end" id="warehouseStockPrint"><i class="fas fa-print "></i> {{ __('Print') }}</a>
+                                                        </div>
+                                                    </div>
 
-                                        <div class="col-lg-2 col-md-4">
-                                            <label><strong>{{ __('Unit') }}</strong></label>
-                                            <select name="unit_id" class="form-control select2" id="warehouse_stock_unit_id">
-                                                <option data-unit_name="{{ __('All') }}" value="">{{ __('All') }}</option>
-                                                @foreach ($units as $unit)
-                                                    <option data-unit_name="{{ $unit->name . '/' . $unit->code_name }}" value="{{ $unit->id }}">{{ $unit->name . '/' . $unit->code_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="col-lg-2 col-md-4">
-                                            <div class="form-group row align-items-end mt-2">
-                                                <div class="col-6">
-                                                    <div class="input-group">
-                                                        <a href="#" class="btn btn-sm btn-primary float-end" id="warehouseStockPrint"><i class="fas fa-print "></i> {{ __('Print') }}</a>
+                                                    <div class="col-6">
+                                                        <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-6">
-                                                    <button type="submit" id="filter_button" class="btn text-white btn-sm btn-info mt-1 float-end"><i class="fas fa-funnel-dollar"></i> {{ __('Filter') }}</button>
-                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row g-lg-1 g-1">
-                            <div class="col-12">
-                                <div class="table-responsive" id="data_list">
-                                    <table class="display data_tbl data__table warehouse_stock_table w-100">
-                                        <thead>
-                                            <tr class="text-start">
-                                                <th>{{ __('Product') }}</th>
-                                                <th>{{ __('Code(SKU)') }}</th>
-                                                <th>{{ __('Stock Location') }}</th>
-                                                <th>{{ __('Default Unit Cost Inc. Tax') }}</th>
-                                                <th>{{ __('Default Unit Price Exc. Tax') }}</th>
-                                                <th>{{ __('Current Stock') }}</th>
-                                                <th>{{ __('Stock Value') }}<b><small>({{ __('By Unit Cost Inc. Tax') }})</small></b></th>
+                            <div class="row g-lg-1 g-1">
+                                <div class="col-12">
+                                    <div class="table-responsive" id="data_list">
+                                        <table class="display data_tbl data__table warehouse_stock_table w-100">
+                                            <thead>
+                                                <tr class="text-start">
+                                                    <th>{{ __('Product') }}</th>
+                                                    <th>{{ __('Code(SKU)') }}</th>
+                                                    <th>{{ __('Stock Location') }}</th>
+                                                    <th>{{ __('Default Unit Cost Inc. Tax') }}</th>
+                                                    <th>{{ __('Default Unit Price Exc. Tax') }}</th>
+                                                    <th>{{ __('Current Stock') }}</th>
+                                                    <th>{{ __('Stock Value') }}<b><small>({{ __('By Unit Cost Inc. Tax') }})</small></b></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            <tr class="bg-secondary">
+                                                <th class="text-white text-end" colspan="5">{{ __('Total') }} : </th>
+                                                <th class="text-white text-end" id="warehouse_stock"></th>
+                                                <th class="text-white text-end" id="warehouse_stock_value"></th>
                                             </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                        <tr class="bg-secondary">
-                                            <th class="text-white text-end" colspan="5">{{ __('Total') }} : </th>
-                                            <th class="text-white text-end" id="warehouse_stock"></th>
-                                            <th class="text-white text-end" id="warehouse_stock_value"></th>
-                                        </tr>
-                                    </table>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     {{-- <div class="tab_list_area row pb-0">
                         <div class="col-12">
@@ -376,84 +383,89 @@
             branchStocksTable.ajax.reload();
         });
 
-        var warehouseStocksTable = $('.warehouse_stock_table').DataTable({
-            dom: "lBfrtip",
-            buttons: [{
-                    extend: 'excel',
-                    text: 'Excel',
-                    className: 'btn btn-primary'
-                },
-                {
-                    extend: 'pdf',
-                    text: 'Pdf',
-                    className: 'btn btn-primary'
-                }
-            ],
-            "processing": true,
-            "serverSide": true,
-            "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
-            "lengthMenu": [
-                [10, 25, 50, 100, 500, 1000, -1],
-                [10, 25, 50, 100, 500, 1000, "All"]
-            ],
-            "ajax": {
-                "url": "{{ route('reports.product.stock.warehouse.stock') }}",
-                "data": function(d) {
-                    d.warehouse_id = $('#warehouse_id').val();
-                    d.category_id = $('#warehouse_stock_category_id').val();
-                    d.brand_id = $('#warehouse_stock_brand_id').val();
-                    d.unit_id = $('#warehouse_stock_unit_id').val();
-                }
-            },
-            columns: [{
-                    data: 'product_name',
-                    name: 'products.name'
-                },
-                {
-                    data: 'product_code',
-                    name: 'products.product_code'
-                },
-                {
-                    data: 'stock_location',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'cost',
-                    name: 'product_variants.variant_name',
-                    className: 'text-end'
-                },
-                {
-                    data: 'price',
-                    name: 'parentBranch.name',
-                    className: 'text-end'
-                },
-                {
-                    data: 'stock',
-                    name: 'warehouses.warehouse_name',
-                    className: 'text-end fw-bold'
-                },
-                {
-                    data: 'stock_value',
-                    name: 'product_stocks.stock_value',
-                    className: 'text-end fw-bold'
-                },
-            ],
-            fnDrawCallback: function() {
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
 
-                var warehouse_stock = sum_table_col($('.warehouse_stock_table'), 'warehouse_stock');
-                $('#warehouse_stock').text(bdFormat(warehouse_stock));
+            var warehouseStocksTable = $('.warehouse_stock_table').DataTable({
+                dom: "lBfrtip",
+                buttons: [{
+                        extend: 'excel',
+                        text: 'Excel',
+                        className: 'btn btn-primary'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        className: 'btn btn-primary'
+                    }
+                ],
+                "processing": true,
+                "serverSide": true,
+                "pageLength": parseInt("{{ $generalSettings['system__datatables_page_entry'] }}"),
+                "lengthMenu": [
+                    [10, 25, 50, 100, 500, 1000, -1],
+                    [10, 25, 50, 100, 500, 1000, "All"]
+                ],
+                "ajax": {
+                    "url": "{{ route('reports.product.stock.warehouse.stock') }}",
+                    "data": function(d) {
+                        d.warehouse_id = $('#warehouse_id').val();
+                        d.category_id = $('#warehouse_stock_category_id').val();
+                        d.brand_id = $('#warehouse_stock_brand_id').val();
+                        d.unit_id = $('#warehouse_stock_unit_id').val();
+                    }
+                },
+                columns: [{
+                        data: 'product_name',
+                        name: 'products.name'
+                    },
+                    {
+                        data: 'product_code',
+                        name: 'products.product_code'
+                    },
+                    {
+                        data: 'stock_location',
+                        name: 'branches.name'
+                    },
+                    {
+                        data: 'cost',
+                        name: 'product_variants.variant_name',
+                        className: 'text-end'
+                    },
+                    {
+                        data: 'price',
+                        name: 'parentBranch.name',
+                        className: 'text-end'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'warehouses.warehouse_name',
+                        className: 'text-end fw-bold'
+                    },
+                    {
+                        data: 'stock_value',
+                        name: 'product_stocks.stock_value',
+                        className: 'text-end fw-bold'
+                    },
+                ],
+                fnDrawCallback: function() {
 
-                var warehouse_stock_value = sum_table_col($('.warehouse_stock_table'), 'warehouse_stock_value');
-                $('#warehouse_stock_value').text(bdFormat(warehouse_stock_value));
-                $('.data_preloader').hide();
-            },
-        });
+                    var warehouse_stock = sum_table_col($('.warehouse_stock_table'), 'warehouse_stock');
+                    $('#warehouse_stock').text(bdFormat(warehouse_stock));
 
-        $(document).on('submit', '#warehouse_stock_filter_form', function(e) {
-            e.preventDefault();
-            $('#w_data_preloader').show();
-            warehouseStocksTable.ajax.reload();
-        });
+                    var warehouse_stock_value = sum_table_col($('.warehouse_stock_table'), 'warehouse_stock_value');
+                    $('#warehouse_stock_value').text(bdFormat(warehouse_stock_value));
+                    $('.data_preloader').hide();
+                },
+            });
+        @endif
+
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+            $(document).on('submit', '#warehouse_stock_filter_form', function(e) {
+                e.preventDefault();
+                $('#w_data_preloader').show();
+                warehouseStocksTable.ajax.reload();
+            });
+        @endif
 
         function sum_table_col(table, class_name) {
             var sum = 0;
@@ -467,54 +479,58 @@
             return sum;
         }
 
-        $(document).on('change', '#warehouse_stock_branch_id', function(e) {
-            e.preventDefault();
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+            $(document).on('change', '#warehouse_stock_branch_id', function(e) {
+                e.preventDefault();
 
-            var branchId = $(this).val();
-            getWarehouseByBranch(branchId);
-        });
-
-        function getWarehouseByBranch(branchId = '') {
-
-            var branchId = branchId ? branchId : 'noid';
-
-            // if (branchId == '') {
-            //     return;
-            // }
-
-            var route = '';
-            var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
-            route = url.replace(':branchId', branchId);
-
-            $.ajax({
-                url: route,
-                type: 'get',
-                success: function(warehouses) {
-
-                    $('#warehouse_id').empty();
-                    $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
-
-                    $.each(warehouses, function(key, warehouse) {
-
-                        $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
-                    });
-                },
-                error: function(err) {
-
-                    if (err.status == 0) {
-
-                        toastr.error("{{ __('Net Connetion Error.') }}");
-                        return;
-                    } else if (err.status == 500) {
-
-                        toastr.error("{{ __('Server error. Please contact to the support team.') }}");
-                        return;
-                    }
-                }
+                var branchId = $(this).val();
+                getWarehouseByBranch(branchId);
             });
-        }
+        @endif
 
-        getWarehouseByBranch(branchId = '');
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+            function getWarehouseByBranch(branchId = '') {
+
+                var branchId = branchId ? branchId : 'noid';
+
+                // if (branchId == '') {
+                //     return;
+                // }
+
+                var route = '';
+                var url = "{{ route('warehouses.by.branch', [':branchId', 1]) }}";
+                route = url.replace(':branchId', branchId);
+
+                $.ajax({
+                    url: route,
+                    type: 'get',
+                    success: function(warehouses) {
+
+                        $('#warehouse_id').empty();
+                        $('#warehouse_id').append('<option data-warehouse_name="' + "{{ __('All') }}" + '" value="">' + "{{ __('All') }}" + '</option>');
+
+                        $.each(warehouses, function(key, warehouse) {
+
+                            $('#warehouse_id').append('<option data-warehouse_name="' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '" value="' + warehouse.id + '">' + warehouse.warehouse_name + '/' + warehouse.warehouse_code + '</option>');
+                        });
+                    },
+                    error: function(err) {
+
+                        if (err.status == 0) {
+
+                            toastr.error("{{ __('Net Connetion Error.') }}");
+                            return;
+                        } else if (err.status == 500) {
+
+                            toastr.error("{{ __('Server error. Please contact to the support team.') }}");
+                            return;
+                        }
+                    }
+                });
+            }
+
+            getWarehouseByBranch(branchId = '');
+        @endif
 
         $(document).on('click', '.tab_btn', function(e) {
             e.preventDefault();
@@ -571,53 +587,56 @@
             });
         });
 
-        $(document).on('click', '#warehouoseStockPrint', function(e) {
-            e.preventDefault();
+        @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
 
-            // reports.stock.print.branch.stock
-            var url = "{{ route('reports.product.stock.warehouse.stock.print') }}";
+            $(document).on('click', '#warehouoseStockPrint', function(e) {
+                e.preventDefault();
 
-            var branch_id = $('#warehosue_stock_branch_id').val();
-            var branch_name = $('#warehouse_stock_branch_id').find('option:selected').data('branch_name');
-            var warehouse_id = $('#warehouse_id').val();
-            var warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
-            var category_id = $('#branch_stock_category_id').val();
-            var category_name = $('#branch_stock_category_id').find('option:selected').data('category_name');
-            var brand_id = $('#branch_stock_brand_id').val();
-            var brand_name = $('#branch_stock_brand_id').find('option:selected').data('brand_name');
-            var unit_id = $('#branch_stock_unit_id').val();
-            var unit_name = $('#branch_stock_unit_id').find('option:selected').data('unit_name');
+                // reports.stock.print.branch.stock
+                var url = "{{ route('reports.product.stock.warehouse.stock.print') }}";
 
-            $.ajax({
-                url: url,
-                type: 'get',
-                data: {
-                    branch_id,
-                    branch_name,
-                    warehouse_id,
-                    warehouse_name,
-                    category_id,
-                    category_name,
-                    brand_id,
-                    brand_name,
-                    unit_id,
-                    unit_name,
-                },
-                success: function(data) {
+                var branch_id = $('#warehosue_stock_branch_id').val();
+                var branch_name = $('#warehouse_stock_branch_id').find('option:selected').data('branch_name');
+                var warehouse_id = $('#warehouse_id').val();
+                var warehouse_name = $('#warehouse_id').find('option:selected').data('warehouse_name');
+                var category_id = $('#branch_stock_category_id').val();
+                var category_name = $('#branch_stock_category_id').find('option:selected').data('category_name');
+                var brand_id = $('#branch_stock_brand_id').val();
+                var brand_name = $('#branch_stock_brand_id').find('option:selected').data('brand_name');
+                var unit_id = $('#branch_stock_unit_id').val();
+                var unit_name = $('#branch_stock_unit_id').find('option:selected').data('unit_name');
 
-                    $(data).printThis({
-                        debug: false,
-                        importCSS: true,
-                        importStyle: true,
-                        loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
-                        removeInline: false,
-                        printDelay: 500,
-                        header: "",
-                        pageTitle: "",
-                        // footer: 'Footer Text',
-                    });
-                }
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    data: {
+                        branch_id,
+                        branch_name,
+                        warehouse_id,
+                        warehouse_name,
+                        category_id,
+                        category_name,
+                        brand_id,
+                        brand_name,
+                        unit_id,
+                        unit_name,
+                    },
+                    success: function(data) {
+
+                        $(data).printThis({
+                            debug: false,
+                            importCSS: true,
+                            importStyle: true,
+                            loadCSS: "{{ asset('assets/css/print/sale.print.css') }}",
+                            removeInline: false,
+                            printDelay: 500,
+                            header: "",
+                            pageTitle: "",
+                            // footer: 'Footer Text',
+                        });
+                    }
+                });
             });
-        });
+        @endif
     </script>
 @endpush

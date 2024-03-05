@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\TransferStocks;
 
+use App\Enums\BooleanType;
 use App\Enums\DayBookVoucherType;
 use App\Enums\ProductLedgerVoucherType;
 use App\Http\Controllers\Controller;
@@ -32,19 +33,35 @@ class ReceiveStockFromWarehouseController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+
         if ($request->ajax()) {
 
             return $this->receiveStockFromWarehouseService->receivableTransferredStockTable(request: $request);
         }
 
         $warehouses = $this->warehouseService->warehouses()->where('branch_id', auth()->user()->branch_id)
-            ->orWhere('is_global', 1)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
+            ->orWhere('is_global', BooleanType::True->value)->get(['id', 'warehouse_name', 'warehouse_code', 'is_global']);
 
         return view('transfer_stocks.receive_stocks.from_warehouse.index', compact('warehouses'));
     }
 
     public function create($transferStockId)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $transferStockId,
             with: [
@@ -68,6 +85,14 @@ class ReceiveStockFromWarehouseController extends Controller
 
     public function receive($transferStockId, Request $request)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+
         try {
             DB::beginTransaction();
 

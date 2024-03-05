@@ -234,7 +234,7 @@
 
                                                 <td style="font-size:10px!important;" class="fw-bold">
                                                     @if ($ownBranchAndWarehouseStock->warehouse_name)
-                                                        {{ $ownBranchAndWarehouseStock->warehouse_name }}
+                                                        {{ $ownBranchAndWarehouseStock->warehouse_name .'('.__('WH').')' }}
                                                     @else
                                                         @if ($ownBranchAndWarehouseStock->branch_id)
                                                             @if ($ownBranchAndWarehouseStock->parent_branch_name)

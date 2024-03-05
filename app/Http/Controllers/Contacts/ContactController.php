@@ -34,16 +34,11 @@ class ContactController extends Controller
     public function create($type)
     {
         if ($type == ContactType::Customer->value) {
-            if (!auth()->user()->can('customer_add')) {
 
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('customer_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_add')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('supplier_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
         $customerGroups = $this->customerGroupService->customerGroups()->get(['id', 'name']);
@@ -54,16 +49,11 @@ class ContactController extends Controller
     public function store($type, Request $request, CodeGenerationServiceInterface $codeGenerator)
     {
         if ($type == ContactType::Customer->value) {
-            if (!auth()->user()->can('customer_add')) {
 
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('customer_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_add')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('supplier_add') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
         try {
@@ -125,16 +115,10 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (!auth()->user()->can('customer_edit')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('customer_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_edit')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('supplier_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
         $customerGroups = $this->customerGroupService->customerGroups()->get(['id', 'name']);
@@ -147,16 +131,10 @@ class ContactController extends Controller
     {
         if ($type == ContactType::Customer->value) {
 
-            if (!auth()->user()->can('customer_edit')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('customer_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         } elseif ($type == ContactType::Supplier->value) {
 
-            if (!auth()->user()->can('supplier_edit')) {
-
-                abort(403, 'Access Forbidden.');
-            }
+            abort_if(!auth()->user()->can('supplier_edit') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
         try {
@@ -226,13 +204,18 @@ class ContactController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('supplier_delete')) {
+        $contact = $contactService->singleContact(id: $id);
 
-            abort(403, 'Access Forbidden.');
+        if ($contact->type == ContactType::Customer->value) {
+
+            abort_if(!auth()->user()->can('customer_delete') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+        } elseif ($contact->type == ContactType::Supplier->value) {
+
+            abort_if(!auth()->user()->can('supplier_delete') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
         }
 
         $this->contactService->deleteContact($id);
 
-        return response()->json('Contact deleted successfully');
+        return response()->json(__('Contact deleted successfully'));
     }
 }

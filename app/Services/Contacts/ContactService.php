@@ -110,14 +110,9 @@ class ContactService
         }
     }
 
-    public function deleteContact(int $id): void
+    public function deleteContact(object $contact): void
     {
-        $deleteContact = $this->singleContact(id: $id);
-
-        if (!is_null($deleteContact)) {
-
-            $deleteContact->delete();
-        }
+        $contact->delete();
     }
 
     public function singleContact(int $id, array $with = null)

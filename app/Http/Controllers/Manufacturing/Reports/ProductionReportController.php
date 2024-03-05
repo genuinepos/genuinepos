@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Manufacturing\Reports;
 
+use Carbon\Carbon;
+use App\Enums\BooleanType;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Enums\ProductionStatus;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductionReportController extends Controller
@@ -234,7 +235,8 @@ class ProductionReportController extends Controller
             $query->whereBetween('productions.date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('productions.branch_id', auth()->user()->branch_id);
         }

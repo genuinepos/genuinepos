@@ -2,19 +2,25 @@
 
 namespace Modules\SAAS\Providers;
 
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
+use Modules\SAAS\Services\PlanService;
 use Illuminate\Support\ServiceProvider;
 use Modules\SAAS\Console\BackupCommand;
+use Modules\SAAS\Services\TenantService;
+use Modules\SAAS\Services\CurrencyService;
+use Illuminate\Console\Scheduling\Schedule;
 use Modules\SAAS\Console\RolePermissionSync;
+use Modules\SAAS\Interfaces\PlanServiceInterface;
+use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
+use Modules\SAAS\Services\EmailVerificationService;
+use Modules\SAAS\Interfaces\CurrencyServiceInterface;
+use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Http\Middleware\IsAuthenticatedMiddleware;
 use Modules\SAAS\Http\Middleware\IsEmailVerifiedMiddleware;
-use Modules\SAAS\Http\Middleware\IsGuestMiddleware;
-use Modules\SAAS\Http\Middleware\PlanCheckerMiddleware;
 use Modules\SAAS\Http\Middleware\PlanSubscriptionMiddleware;
-use Modules\SAAS\Services\TenantService;
-use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
 
 class SAASServiceProvider extends ServiceProvider
 {
@@ -70,6 +76,9 @@ class SAASServiceProvider extends ServiceProvider
         app()->make('router')->aliasMiddleware('plan_check', PlanCheckerMiddleware::class);
 
         $this->app->bind(TenantServiceInterface::class, TenantService::class);
+        $this->app->bind(CurrencyServiceInterface::class, CurrencyService::class);
+        $this->app->bind(PlanServiceInterface::class, PlanService::class);
+        $this->app->bind(EmailVerificationServiceInterface::class, EmailVerificationService::class);
     }
 
     /**

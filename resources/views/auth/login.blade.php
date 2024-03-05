@@ -7,9 +7,9 @@
     <div class="form-wraper user_login">
         <div class="container">
             <div class="form-content">
-                <div class="inner-div col-lg-7">
-                    <div class="border-div">
-                        <div class="row">
+                <div class="inner-divsssssss col-lg-7">
+                    <div class="border-divsssssssss">
+                        <div class="row justify-content-center">
                             <div class="col-lg-6 col-md-6 col-12">
                                 {{-- <div class="form-head">
                                     <div class="head p-1">
@@ -26,48 +26,54 @@
                                     </div>
                                 </div> --}}
 
-                                <div class="main-form">
-                                    <div class="form_inner">
-                                        <div class="form-title">
-                                            <p>{{ __('User Login') }}</p>
+                                <div class="inner-div">
+                                    <div class="border-div">
+
+                                        <div class="main-form">
+                                            <div class="form_inner">
+                                                <div class="form-title">
+                                                    <p>{{ __('User Login') }}</p>
+                                                </div>
+                                                <form action="{{ route('login') }}" method="POST">
+                                                    @csrf
+                                                    <div class="left-inner-addon input-container">
+                                                        <i class="fa fa-user"></i>
+                                                        <input required type="text" name="username_or_email" class="form-control form-st" value="{{ old('username_or_email') }}" placeholder="{{ __('Username Or Email Address') }}" />
+                                                    </div>
+
+                                                    <div class="left-inner-addon input-container">
+                                                        <i class="fa fa-key"></i>
+                                                        <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
+                                                    </div>
+
+                                                    @if (Session::has('errorMsg'))
+                                                        <div class="bg-danger p-3 mt-4">
+                                                            <p class="text-white">
+                                                                {{ session('errorMsg') }}
+                                                            </p>
+                                                        </div>
+                                                    @endif
+
+                                                    <button type="submit" class="submit-button">{{ __('Login') }}</button>
+                                                    <div class="login_opt_link">
+                                                        @if (Route::has('password.request'))
+                                                            <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp;
+                                                                {{ __('Forgot Your Password?') }}</a>
+                                                        @endif
+                                                        <div class="form-group cx-box">
+                                                            <input type="checkbox" id="remembar" class="form-control">
+                                                            <label for="remembar">{{ __('Remember Me') }}</label>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <form action="{{ route('login') }}" method="POST">
-                                            @csrf
-                                            <div class="left-inner-addon input-container">
-                                                <i class="fa fa-user"></i>
-                                                <input required type="text" name="username_or_email" class="form-control form-st" value="{{ old('username_or_email') }}" placeholder="{{ __('Username Or Email Address') }}" />
-                                            </div>
 
-                                            <div class="left-inner-addon input-container">
-                                                <i class="fa fa-key"></i>
-                                                <input required name="password" type="Password" class="form-control form-st rounded-bottom" placeholder="{{ __('Password') }}" />
-                                            </div>
-
-                                            @if (Session::has('errorMsg'))
-                                                <div class="bg-danger p-3 mt-4">
-                                                    <p class="text-white">
-                                                        {{ session('errorMsg') }}
-                                                    </p>
-                                                </div>
-                                            @endif
-
-                                            <button type="submit" class="submit-button">{{ __('Login') }}</button>
-                                            <div class="login_opt_link">
-                                                @if (Route::has('password.request'))
-                                                    <a class="forget-pw" href="{{ route('password.request') }}"> &nbsp;
-                                                        {{ __('Forgot Your Password?') }}</a>
-                                                @endif
-                                                <div class="form-group cx-box">
-                                                    <input type="checkbox" id="remembar" class="form-control">
-                                                    <label for="remembar">{{ __('Remember Me') }}</label>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-lg-6 col-md-6 col-12">
+                            {{--
+                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                 <div class="form-head addr">
                                     <div class="head addr-t">
 
@@ -101,7 +107,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

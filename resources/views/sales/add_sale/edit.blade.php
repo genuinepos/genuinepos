@@ -326,18 +326,20 @@
                                                 <input type="number" step="any" class="form-control fw-bold" id="e_descriptions" value="" placeholder="{{ __('IMEI/SL No./Other Info.') }}">
                                             </div>
 
-                                            <div class="col-xl-2 col-md-6 warehouse_field">
-                                                <label class="fw-bold">{{ __('Warehouse') }}</label>
-                                                <select class="form-control" id="e_warehouse_id">
-                                                    <option value="">{{ __('Select Warehouse') }}</option>
-                                                    @foreach ($warehouses as $w)
-                                                        @php
-                                                            $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
-                                                        @endphp
-                                                        <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
+                                                <div class="col-xl-2 col-md-6 warehouse_field">
+                                                    <label class="fw-bold">{{ __('Warehouse') }}</label>
+                                                    <select class="form-control" id="e_warehouse_id">
+                                                        <option value="">{{ __('Select Warehouse') }}</option>
+                                                        @foreach ($warehouses as $w)
+                                                            @php
+                                                                $isGlobal = $w->is_global == 1 ? ' (' . __('Global Access') . ')' : '';
+                                                            @endphp
+                                                            <option data-w_name="{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}" value="{{ $w->id }}">{{ $w->warehouse_name . '/' . $w->warehouse_code . $isGlobal }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
 
                                             <div class="col-xl-2 col-md-6">
                                                 <label class="fw-bold">{{ __('Subtotal') }}</label>

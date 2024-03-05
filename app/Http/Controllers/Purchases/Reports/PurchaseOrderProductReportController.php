@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Purchases\Reports;
 
-use App\Http\Controllers\Controller;
-use App\Services\Accounts\AccountFilterService;
-use App\Services\Accounts\AccountService;
-use App\Services\Setups\BranchService;
-use App\Services\Setups\WarehouseService;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Services\Accounts\AccountService;
+use App\Services\Setups\WarehouseService;
+use App\Services\Accounts\AccountFilterService;
 
 class PurchaseOrderProductReportController extends Controller
 {
@@ -90,7 +91,8 @@ class PurchaseOrderProductReportController extends Controller
                 $query->whereBetween('purchases.report_date', $date_range); // Final
             }
 
-            if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+            // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+            if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
                 $query->where('purchases.branch_id', auth()->user()->branch_id);
             }
@@ -266,7 +268,8 @@ class PurchaseOrderProductReportController extends Controller
             $query->whereBetween('purchases.report_date', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('purchases.branch_id', auth()->user()->branch_id);
         }

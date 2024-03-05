@@ -20,6 +20,8 @@ class CustomerGroupController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         if ($request->ajax()) {
 
             return $this->customerGroupService->customerGroupsTable($request);
@@ -32,6 +34,8 @@ class CustomerGroupController extends Controller
 
     public function create()
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
         return view('contacts.customer_group.ajax_view.create', compact('priceGroups'));
@@ -39,6 +43,8 @@ class CustomerGroupController extends Controller
 
     public function store(Request $request)
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $this->validate($request, [
             'name' => 'required|unique:customer_groups,name',
         ]);
@@ -50,6 +56,8 @@ class CustomerGroupController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $customerGroup = $this->customerGroupService->singleCustomerGroup(id: $id);
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -58,6 +66,8 @@ class CustomerGroupController extends Controller
 
     public function update(Request $request, $id)
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $this->validate($request, [
             'name' => 'required|unique:customer_groups,name,' . $id,
         ]);
@@ -69,6 +79,8 @@ class CustomerGroupController extends Controller
 
     public function delete($id)
     {
+        abort_if(!auth()->user()->can('customer_group') || config('generalSettings')['subscription']->features['contacts'] == 0, 403);
+
         $this->customerGroupService->deleteCustomerGroup(id: $id);
 
         return response()->json(__('Customer group deleted successfully'));

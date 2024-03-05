@@ -3,6 +3,7 @@
 namespace App\Services\Accounts;
 
 use App\Enums\AccountingVoucherType;
+use App\Enums\BooleanType;
 use App\Models\Accounts\AccountingVoucher;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -52,7 +53,9 @@ class ContraService
             $query->whereBetween('date_ts', $date_range); // Final
         }
 
-        if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+
+        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
+        if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('branch_id', auth()->user()->branch_id);
         }

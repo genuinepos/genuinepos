@@ -178,7 +178,7 @@
                                         </div>
                                     </div>
 
-                                    @if (count($warehouses) > 0)
+                                    @if ($generalSettings['subscription']->features['warehouse_count'] > 0 && count($warehouses) > 0)
 
                                         <input name="warehouse_count" value="YES" type="hidden" />
                                         <div class="input-group mt-1">
@@ -196,7 +196,7 @@
                                         </div>
                                     @else
                                         <div class="input-group mt-1">
-                                            <label class="col-4"><b>{{ __('Stored Location') }}</b></label>
+                                            <label class="col-4"><b>{{ __('Store Location') }}</b></label>
                                             <div class="col-8">
                                                 <input readonly type="text" class="form-control" value="{{ $branchName }}" />
                                             </div>
@@ -248,7 +248,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

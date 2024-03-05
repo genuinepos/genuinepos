@@ -15,10 +15,7 @@ class LeaveTypeController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('leave_types_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -28,20 +25,14 @@ class LeaveTypeController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('leave_types_create')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         return view('hrm.leaves.ajax_view.types.create');
     }
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('leave_types_create')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->addLeaveType(request: $request);
@@ -51,10 +42,7 @@ class LeaveTypeController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('leave_types_edit')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $leaveType = $this->leaveTypeService->singleLeaveType(id: $id);
 
@@ -63,10 +51,7 @@ class LeaveTypeController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('leave_types_edit')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->leaveTypeService->storeAndUpdateValidation(request: $request);
         $this->leaveTypeService->updateLeaveType(request: $request, id: $id);
@@ -76,10 +61,7 @@ class LeaveTypeController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('leave_types_delete')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('leave_types_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->leaveTypeService->deleteLeaveType(id: $id);
 

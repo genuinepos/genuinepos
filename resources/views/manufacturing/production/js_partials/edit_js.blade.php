@@ -292,8 +292,7 @@
 
                 toastr.success(data);
                 window.location = "{{ url()->previous() }}";
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 $('.loading_button').hide();
                 $('.error').html('');
@@ -342,6 +341,12 @@
         var nextId = $(this).data('next');
 
         if (e.which == 13) {
+
+            if (nextId == 'stock_warehouse_id' && $('#stock_warehouse_id').val() == undefined) {
+
+                $('#process_id').focus();
+                return;
+            }
 
             $('#' + nextId).focus().select();
         }

@@ -26,10 +26,7 @@ class AttendanceController extends Controller
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('attendances_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('attendances_index') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->ajax()) {
 
@@ -45,10 +42,7 @@ class AttendanceController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('attendances_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $departments = DB::table('hrm_departments')->get(['id', 'name']);
         $users = DB::table('users')->where('branch_id', auth()->user()->branch_id)->get(['id', 'prefix', 'name', 'last_name', 'emp_id']);
@@ -58,10 +52,7 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        if (!auth()->user()->can('attendances_create')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('attendances_create') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         if ($request->user_ids == null) {
 
@@ -84,10 +75,7 @@ class AttendanceController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('attendances_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $attendance = DB::table('hrm_attendances')
             ->leftJoin('users', 'hrm_attendances.user_id', 'users.id')
@@ -107,10 +95,7 @@ class AttendanceController extends Controller
 
     public function update($id, Request $request)
     {
-        if (!auth()->user()->can('attendances_edit')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('attendances_edit') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
 
         $this->attendanceService->validation(request: $request);
         $this->attendanceService->updateAttendance(request: $request, id: $id);
@@ -119,11 +104,8 @@ class AttendanceController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('attendances_delete')) {
-
-            abort(403, 'Access Forbidden.');
-        }
-
+        abort_if(!auth()->user()->can('attendances_delete') || config('generalSettings')['subscription']->features['hrm'] == 0, 403);
+       
         $this->attendanceService->deleteAttendance(id: $id);
         return response()->json(__('Attendance deleted successfully'));
     }

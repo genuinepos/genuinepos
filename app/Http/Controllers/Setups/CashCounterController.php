@@ -7,7 +7,6 @@ use App\Services\Setups\BranchService;
 use App\Services\Setups\CashCounterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class CashCounterController extends Controller
 {
@@ -18,34 +17,34 @@ class CashCounterController extends Controller
 
     public function index(Request $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_index'), 403);
+        abort_if(!auth()->user()->can('cash_counters_index') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         if ($request->ajax()) {
 
             return $this->cashCounterService->cashCounterListTable($request);
         }
 
+        $count = $this->cashCounterService->cashCounters()->where('branch_id', auth()->user()->branch_id)->count();
         $branches = $this->branchService->branches(with: ['parentBranch'])
             ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('setups.cash_counter.index', compact('branches'));
+        return view('setups.cash_counter.index', compact('branches', 'count'));
     }
 
     public function create()
     {
-        abort_if(!auth()->user()->can('cash_counters_add'), 403);
+        abort_if(!auth()->user()->can('cash_counters_add') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         return view('setups.cash_counter.ajax_view.create');
     }
 
     public function store(Request $request)
     {
-        abort_if(!auth()->user()->can('cash_counters_add'), 403);
+        abort_if(!auth()->user()->can('cash_counters_add') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         $this->cashCounterService->cashCounterStoreValidation(request: $request);
 
         try {
-
             DB::beginTransaction();
 
             $generalSettings = config('generalSettings');
@@ -70,7 +69,7 @@ class CashCounterController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('cash_counters_edit'), 403);
+        abort_if(!auth()->user()->can('cash_counters_edit') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         $cashCounter = $this->cashCounterService->singleCashCounter(id: $id);
 
@@ -79,12 +78,9 @@ class CashCounterController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('cash_counters_edit'), 403);
-
-
+        abort_if(!auth()->user()->can('cash_counters_edit') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         try {
-
             DB::beginTransaction();
 
             $this->cashCounterService->updateCashCounter(id: $id, request: $request);
@@ -100,7 +96,7 @@ class CashCounterController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('cash_counters_delete'), 403);
+        abort_if(!auth()->user()->can('cash_counters_delete') || config('generalSettings')['subscription']->features['cash_counter_count'] == 0, 403);
 
         try {
             DB::beginTransaction();

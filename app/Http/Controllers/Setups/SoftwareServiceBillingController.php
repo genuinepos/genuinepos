@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Setups;
 
+use App\Enums\SubscriptionTransactionType;
 use App\Http\Controllers\Controller;
-use App\Mail\SubscriptionUpgradeMail;
 use App\Models\Setups\Branch;
 use App\Models\Subscriptions\Subscription;
 use App\Models\Subscriptions\SubscriptionTransaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Modules\SAAS\Entities\Plan;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -27,7 +26,7 @@ class SoftwareServiceBillingController extends Controller
     public function upgradePlan()
     {
         DB::statement('use ' . env('DB_DATABASE'));
-        $plans = Plan::all();
+        $plans = Plan::active()->where('is_trial_plan', 0)->get();
 
         DB::reconnect();
 
@@ -41,7 +40,7 @@ class SoftwareServiceBillingController extends Controller
 
         DB::reconnect();
 
-        $currentSubscription = Subscription::with('plan')->find(1);
+        $currentSubscription = Subscription::with('plan')->first();
 
         return view('setups.billing.cart_for_upgrade_plan', compact('plan', 'currentSubscription'));
     }
@@ -52,20 +51,22 @@ class SoftwareServiceBillingController extends Controller
         $plan = Plan::findOrFail($id);
         DB::reconnect();
 
-        $subscription = Subscription::first();
+        DB::beginTransaction();
 
-        $subscription->trial_start_date = null;
-        $subscription->initial_plan_start_date = $request->initial_plan_start_date;
-        $subscription->plan_id = $id;
-        $subscription->initial_subtotal = $plan->price_per_year;
-        $subscription->initial_plan_start_date = now();
-        $subscription->initial_plan_expire_date = $request->initial_plan_expire_date;
+        try {
+            $subscription = Subscription::first();
 
-        if($subscription->save()) {
+            $subscription->trial_start_date = null;
+            $subscription->plan_id = $id;
+            $subscription->initial_subtotal = $plan->price_per_year;
+            $subscription->initial_plan_start_date = now();
+            $subscription->initial_plan_expire_date = null;
+            $subscription->save();
+
             $transaction = new SubscriptionTransaction();
             $transaction->subscription_id = $subscription->id;
             $transaction->plan_id = $plan->id;
-            $transaction->transaction_type = 1;
+            $transaction->transaction_type = SubscriptionTransactionType::UpgradePlan->value;
             $transaction->payment_method_provider_name = $request->payment_method_name;
             $transaction->payment_method_name = $request->payment_method_name;
             $transaction->subtotal = $plan->price_per_year;
@@ -78,15 +79,15 @@ class SoftwareServiceBillingController extends Controller
 
             $user = auth()->user();
 
-            try {
-                Mail::to($user->email)->send(new SubscriptionUpgradeMail($user));
-                logger('email sending', ['sending mail' => 'email successfully send']);
-            }catch(Exception $e) {
-                logger('email send fail', ['test mail' => $e->getMessage()]);
-            }
-        }
+            DB::commit();
 
-        return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
+            dispatch(new \Modules\SAAS\Jobs\SendSubscriptionUpgradeMailQueueJob(to: $user->email, user: $user));
+
+            return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
     }
 
     public function cartFoAddBranch() {

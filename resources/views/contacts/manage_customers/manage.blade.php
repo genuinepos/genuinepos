@@ -457,7 +457,6 @@
                                                             </select>
                                                         </div>
 
-
                                                         <div class="col-lg-6 col-md-6">
                                                             <label><strong>{{ __('Payment Status') }}</strong></label>
                                                             <select name="payment_status" id="sales_order_payment_status" class="form-control">

@@ -33,6 +33,14 @@ class ReceiveStockFromBranchController extends Controller
 
     public function index(Request $request)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+
         if ($request->ajax()) {
 
             return $this->receiveStockFromBranchService->receivableTransferredStockTable(request: $request);
@@ -43,6 +51,14 @@ class ReceiveStockFromBranchController extends Controller
 
     public function create($transferStockId)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+
         $transferStock = $this->transferStockService->singleTransferStock(
             id: $transferStockId,
             with: [
@@ -65,6 +81,14 @@ class ReceiveStockFromBranchController extends Controller
 
     public function receive($transferStockId, Request $request)
     {
+        abort_if(!auth()->user()->can('transfer_stock_receive_from_warehouse') || config('generalSettings')['subscription']->features['transfer_stocks'] == 0, 403);
+
+        abort_if(
+            config('generalSettings')['subscription']->has_business == 0 &&
+            config('generalSettings')['subscription']->current_shop_count == 1 &&
+            config('generalSettings')['subscription']->features['warehouse_count'] == 0
+        , 403);
+        
         try {
             DB::beginTransaction();
 

@@ -107,7 +107,6 @@ class PurchaseController extends Controller
 
     function print($id, Request $request)
     {
-
         $purchase = $this->purchaseService->singlePurchase(id: $id, with: [
             'warehouse:id,warehouse_name,warehouse_code',
             'supplier:id,name,phone,address',

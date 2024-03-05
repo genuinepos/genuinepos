@@ -11,13 +11,13 @@ class StartupService
         $generalSettings = config('generalSettings');
 
         return $request->validate([
-            'business_name' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_address' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_phone' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_email' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_currency_id' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_account_start_date' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'required'),
-            'business_logo' => Rule::when($generalSettings['addons__branch_limit'] > 1, 'sometimes|image|max:1024'),
+            'business_name' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_address' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_phone' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_email' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_currency_id' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_account_start_date' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'required'),
+            'business_logo' => Rule::when($generalSettings['subscription']->current_shop_count > 1, 'sometimes|image|max:1024'),
             'branch_code' => 'required',
             'branch_name' => 'required',
             'branch_area_name' => 'required',

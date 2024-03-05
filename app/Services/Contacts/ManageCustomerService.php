@@ -127,7 +127,9 @@ class ManageCustomerService
                 $html .= '<div class="btn-group" role="group">';
                 $html .= '<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' . __('Action') . '</button>';
 
-                $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
+                if (auth()->user()->can('customer_manage')) {
+                    $html .= '<div class="dropdown-menu" aria-labelledby="btnGroupDrop1"><a class="dropdown-item" href="' . route('contacts.manage.customer.manage', [$row->id]) . '">' . __('Manage') . '</a>';
+                }
 
                 if (auth()->user()->can('money_receipt_index')) {
 

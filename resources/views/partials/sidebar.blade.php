@@ -135,8 +135,8 @@
                 @endif
 
                 @if ($generalSettings['subscription']->features['task_management'] == 1 && $generalSettings['modules__manage_task'] == 1)
-                    @if (auth()->user()->can('assign_todo') || auth()->user()->can('work_space') || auth()->user()->can('memo') || auth()->user()->can('msg'))
-                        <li data-menu="essentials" class="{{ request()->is('essentials*') ? 'menu_active' : '' }}">
+                    @if (auth()->user()->can('todo_index') || auth()->user()->can('workspaces_index') || auth()->user()->can('messages_index'))
+                        <li data-menu="task-management" class="{{ request()->is('task-management*') ? 'menu_active' : '' }}">
                             <a href="#">
                                 <img src="{{ asset('backend/asset/img/icon/to-do-list.svg') }}">
                                 <p class="title">{{ __('Manage Task') }}</p>
@@ -145,7 +145,7 @@
                     @endif
                 @endif
 
-                {{-- @if ($generalSettings['addons__service'] == 1)
+                {{-- @if ($generalSettings['subscription']->features['service'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/service.svg') }}">
@@ -154,7 +154,7 @@
                     </li>
                 @endif
 
-                @if ($generalSettings['addons__e_commerce'] == 1)
+                @if ($generalSettings['subscription']->features['ecommerce'] == 1)
                     <li class="">
                         <a href="#">
                             <img src="{{ asset('backend/asset/img/icon/ecommerce2.svg') }}">
@@ -1117,7 +1117,7 @@
                                             </div>
                                         @endif
 
-                                        @if (auth()->user()->can('cash_register_report'))
+                                        @if (auth()->user()->can('cash_register_report') && $generalSettings['subscription']->features['cash_counter_count'] > 0)
                                             <div class="sub-menu-col">
                                                 <a href="#" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -1907,7 +1907,7 @@
                                             </div>
                                         @endif --}}
 
-                                        @if (auth()->user()->can('cash_counters_index') & ($generalSettings['subscription']->features['cash_counter_count'] > 0))
+                                        @if (auth()->user()->can('cash_counters_index') && $generalSettings['subscription']->features['cash_counter_count'] > 0)
                                             <div class="sub-menu-col">
                                                 <a href="{{ route('cash.counters.index') }}" class="switch-bar-wrap">
                                                     <div class="switch_bar">
@@ -2041,7 +2041,7 @@
             @endif
 
             @if ($generalSettings['subscription']->features['task_management'] == 1)
-                <div class="sub-menu_t" id="essentials">
+                <div class="sub-menu_t" id="task-management">
                     <div class="sub-menu-width">
                         <div class="model__close bg-secondary-2 mb-3">
                             <div class="row align-items-center justify-content-end">
@@ -2055,7 +2055,7 @@
                             <div class="sub-menu-group">
                                 <p class="sub-menu-group-title">{{ __('Task Management') }}</p>
                                 <div class="sub-menu-row">
-                                    @if (auth()->user()->can('assign_todo'))
+                                    @if (auth()->user()->can('todo_index'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('todo.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -2068,33 +2068,20 @@
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('work_space'))
+                                    @if (auth()->user()->can('workspaces_index'))
                                         <div class="sub-menu-col">
-                                            <a href="{{ route('workspace.index') }}" class="switch-bar-wrap">
+                                            <a href="{{ route('workspaces.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
                                                     <div class="bar-link">
                                                         <span><i class="fas fa-th-large"></i></span>
                                                     </div>
                                                 </div>
-                                                <p class="switch_text">{{ __('Work Space') }}</p>
+                                                <p class="switch_text">{{ __('Project Management') }}</p>
                                             </a>
                                         </div>
                                     @endif
 
-                                    @if (auth()->user()->can('memo'))
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('memos.index') }}" class="switch-bar-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span><i class="fas fa-file-alt"></i></span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Memo') }}</p>
-                                            </a>
-                                        </div>
-                                    @endif
-
-                                    @if (auth()->user()->can('msg'))
+                                    @if (auth()->user()->can('messages_index'))
                                         <div class="sub-menu-col">
                                             <a href="{{ route('messages.index') }}" class="switch-bar-wrap">
                                                 <div class="switch_bar">
@@ -2141,7 +2128,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                           <!-- email start -->
                           <div class="container-fluid">
@@ -2226,18 +2212,6 @@
                                         </a>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
                             </div>
                           </div>
                           <!-- email end -->

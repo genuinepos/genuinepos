@@ -11,7 +11,7 @@ use App\Http\Controllers\Purchases\Reports\PurchaseProductReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReturnProductReportController;
 use App\Http\Controllers\Purchases\Reports\PurchaseReturnReportController;
-use App\Http\Controllers\Report\SalePurchaseReportController;
+use App\Http\Controllers\Purchases\Reports\SalePurchaseReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PurchaseController::class)->prefix('purchases')->group(function () {
@@ -101,6 +101,7 @@ Route::controller(PurchaseController::class)->prefix('purchases')->group(functio
         });
 
         Route::group(['prefix' => 'sales/purchase'], function () {
+            
             Route::get('/', [SalePurchaseReportController::class, 'index'])->name('reports.sales.purchases.index');
             Route::get('sale/purchase/amounts', [SalePurchaseReportController::class, 'salePurchaseAmounts'])->name('reports.profit.sales.purchases.amounts');
             Route::get('filter/sale/purchase/amounts', [SalePurchaseReportController::class, 'filterSalePurchaseAmounts'])->name('reports.profit.sales.filter.purchases.amounts');

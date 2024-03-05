@@ -59,7 +59,8 @@
                                 <form id="branch_stock_filter_form">
                                     @csrf
                                     <div class="form-group row">
-                                        @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                        {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                        @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                             <div class="col-md-4">
                                                 <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                 <select name="branch_id" class="form-control select2" id="branch_stock_branch_id" autofocus>
@@ -165,7 +166,8 @@
                                     <form id="warehouse_stock_filter_form">
                                         @csrf
                                         <div class="form-group row justify-content-end">
-                                            @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                            {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                            @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                 <div class="col-md-4">
                                                     <label><strong>{{ __('Shop/Business') }} </strong></label>
                                                     <select name="branch_id" class="form-control select2" id="warehouse_stock_branch_id" autofocus>
@@ -186,7 +188,8 @@
                                             @endif
 
                                             <div class="col-lg-2 col-md-4">
-                                                @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0)
+                                                {{-- @if ((auth()->user()->role_type == 1 || auth()->user()->role_type == 2) && auth()->user()->is_belonging_an_area == 0) --}}
+                                                @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
                                                     <label><strong>{{ __('Warehouse') }}</strong></label>
                                                     <select name="warehouse_id" class="form-control select2" id="warehouse_id" autofocus>
                                                         <option data-warehouse_name="All" value="">{{ __('Select Shop/Business First') }}</option>
@@ -585,7 +588,7 @@
         });
 
         @if ($generalSettings['subscription']->features['warehouse_count'] > 0)
-        
+
             $(document).on('click', '#warehouoseStockPrint', function(e) {
                 e.preventDefault();
 

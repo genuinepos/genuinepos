@@ -357,7 +357,7 @@ class BranchService
 
         $branchCount = DB::table('branches')->count();
 
-        if ($branchLimit >= $branchCount) {
+        if ($branchLimit == $branchCount) {
 
             return ['pass' => false, 'msg' => __("Shop limit is ${branchLimit}")];
         }
@@ -368,7 +368,7 @@ class BranchService
     public function updateRestrictions(): array
     {
         $generalSettings = config('generalSettings');
-        $branchLimit = $generalSettings['addons__branch_limit'];
+        $branchLimit = $generalSettings['subscription']->current_shop_count;
 
         $branchCount = DB::table('branches')->count();
 

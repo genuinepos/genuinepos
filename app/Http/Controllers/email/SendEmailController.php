@@ -3,16 +3,22 @@
 namespace App\Http\Controllers\email;
 
 use App\Http\Controllers\Controller;
+use App\Services\Email\EmailSendService;
 use Illuminate\Http\Request;
 
 class SendEmailController extends Controller
 {
+
+    public function __construct(private EmailSendService $emailSendService)
+    {
+
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('communication.email.send.index');
+        return $this->emailSendService->index($request);
     }
 
     /**
@@ -60,6 +66,9 @@ class SendEmailController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = $this->emailSendService->destroy($id);
+
+        return response()->json($response);
+
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers\Purchases\Reports;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -55,16 +55,20 @@ class SalePurchaseReportController extends Controller
         $sale_query = DB::table('sales');
         $purchase_query = DB::table('purchases');
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $sale_query->where('branch_id', null);
                 $purchase_query->where('branch_id', null);
             } else {
+
                 $sale_query->where('branch_id', $request->branch_id);
                 $purchase_query->where('branch_id', $request->branch_id);
             }
         }
 
         if ($request->from_date) {
+
             $from_date = date('Y-m-d', strtotime($request->from_date));
             $to_date = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $from_date;
             //$date_range = [$from_date . ' 00:00:00', $to_date . ' 00:00:00'];
@@ -74,9 +78,11 @@ class SalePurchaseReportController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $sales = $sale_query->where('sales.status', 1)->get();
             $purchases = $purchase_query->get();
         } else {
+
             $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
             $purchases = $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
         }
@@ -102,16 +108,20 @@ class SalePurchaseReportController extends Controller
         $sale_query = DB::table('sales');
         $purchase_query = DB::table('purchases');
         if ($request->branch_id) {
+
             if ($request->branch_id == 'NULL') {
+
                 $sale_query->where('branch_id', null);
                 $purchase_query->where('branch_id', null);
             } else {
+
                 $sale_query->where('branch_id', $request->branch_id);
                 $purchase_query->where('branch_id', $request->branch_id);
             }
         }
 
         if ($request->from_date) {
+
             $fromDate = date('Y-m-d', strtotime($request->from_date));
             $toDate = $request->to_date ? date('Y-m-d', strtotime($request->to_date)) : $fromDate;
             //$date_range = [$fromDate . ' 00:00:00', $toDate . ' 00:00:00'];
@@ -121,9 +131,11 @@ class SalePurchaseReportController extends Controller
         }
 
         if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) {
+
             $sales = $sale_query->where('sales.status', 1)->get();
             $purchases = $purchase_query->get();
         } else {
+
             $sales = $sale_query->where('sales.status', 1)->where('sales.branch_id', auth()->user()->branch_id)->get();
             $purchases = $purchase_query->where('purchases.branch_id', auth()->user()->branch_id)->get();
         }

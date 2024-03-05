@@ -72,7 +72,7 @@ class UserService
 
                         return $row->branch_name . ' (' . $row->area_name . ')';
                     } else {
-
+                        
                         return $generalSettings['business_or_shop__business_name'];
                     }
                 }

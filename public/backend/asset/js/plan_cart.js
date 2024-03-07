@@ -1,7 +1,6 @@
 (function ($) {
     'use strict';
     $(document).ready(function () {
-
         /*---------------------------
         Tab Change Function
         ---------------------------*/
@@ -9,7 +8,7 @@
 
             var tabId = $(this).attr('data-tab');
             var planId = $('#plan_id').val();
-            
+
             if (tabId == 'checkOutTab' && planId == '') {
 
                 toastr.error('Please select a plan first.');
@@ -33,6 +32,12 @@
         });
 
         $('#palceOrder').on('click', function () {
+            // $(this).prop('disabled', true);
+            $('#orderCompletedTab').addClass('active').siblings().removeClass('active');
+            $('.single-nav.active').next('.single-nav').addClass('active').removeAttr('disabled');
+        });
+
+        $('#verifyTab').on('click', function () {
             // $(this).prop('disabled', true);
             $('#orderCompletedTab').addClass('active').siblings().removeClass('active');
             $('.single-nav.active').next('.single-nav').addClass('active').removeAttr('disabled');

@@ -734,6 +734,13 @@ img {
   align-items: start;
 }
 
+.single-tab.active#stepOneTab {
+  display: grid;
+  grid-template-columns: 69% auto;
+  gap: 30px;
+  align-items: start;
+}
+
 .domain-field span.txt {
   position: absolute;
   right: 0;

@@ -17,6 +17,7 @@ use Modules\SAAS\Http\Controllers\Guest\SendEmailController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
@@ -51,6 +52,13 @@ Route::controller(TrialController::class)->prefix('guest/trial')->group(function
 
     Route::get('create', 'create')->name('guest.trial.create');
     Route::post('store', 'store')->name('guest.trial.store');
+});
+
+Route::controller(PlanConfirmController::class)->prefix('guest/plan-confirm')->group(function () {
+
+    Route::get('create/{slug}/{pricePeriod?}', 'create')->name('guest.plan.confirm.create');
+    Route::post('confirm', 'confirm')->name('guest.plan.confirm');
+    Route::post('store', 'store')->name('guest.plan.confirm.tenant.store');
 });
 
 Route::controller(SendEmailController::class)->prefix('guest/email')->group(function () {

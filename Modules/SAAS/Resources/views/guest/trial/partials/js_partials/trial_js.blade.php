@@ -167,8 +167,7 @@
             success: function(data) {
 
                 sendVerificationCode = true;
-            },
-            error: function(err) {
+            }, error: function(err) {
 
                 if (err.status == 0) {
 

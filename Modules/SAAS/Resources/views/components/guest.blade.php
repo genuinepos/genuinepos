@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ (isset($title) ? $title . ' | ' : '') . config('app.name') }}</title>
-
+    <link rel="shortcut icon" href="{{ asset('modules/saas/images/favicon.png') }}">
     {{-- <link rel="stylesheet" href="assets/vendor/css/all.min.css">
     <link rel="stylesheet" href="assets/vendor/css/bootstrap.min.css"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"

@@ -48,15 +48,15 @@
 
                   <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="plan-monthly" role="tabpanel" aria-labelledby="plan-monthly-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'monthly'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'month'])
                     </div>
 
                     <div class="tab-pane fade" id="plan-yearly" role="tabpanel" aria-labelledby="plan-yearly-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'yearly'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'year'])
                     </div>
 
                     <div class="tab-pane fade" id="plan-lifetime" role="tabpanel" aria-labelledby="contact-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'lifetime'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_trial.partials.index_partials.plan_prices', ['plantype' => 'lifetime'])
                     </div>
                   </div>
             </div>

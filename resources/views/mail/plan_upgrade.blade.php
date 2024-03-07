@@ -39,7 +39,7 @@
                 <tr>
                     <td>
                         <div class="mail-body">
-                            <div><strong>Dear {{ $user->name }}</strong>,</div>
+                            <div>Dear <strong>{{ $user->prefix . ' '. $user->name . $user->last_name }}</strong>,</div>
                             <p>We are excited to inform you that your subscription plan has been <b>successfully upgraded</b>! You now have access to all the premium features and benefits that come with your new subscription level.</p><br><br>
                             <p>Thank you for choosing us!</p>
                             <p>Best Regards,</p>

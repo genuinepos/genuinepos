@@ -3,23 +3,23 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SaleOrderCreated extends Mailable
+class SendSubscriptionPlanUpgradeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $sale;
-
-    public function __construct($sale)
+    private $user;
+    public function __construct($user)
     {
-        $this->sale = $sale;
+        $this->user = $user;
     }
 
     /**
@@ -28,18 +28,14 @@ class SaleOrderCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Sale Order Created',
+            subject: 'Subscription Plan Upgrade Mail',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
+    public function build(): self
     {
-        return new Content(
-            view: 'mail.sale-quotation-created',
-        );
+        $user = $this->user;
+        return $this->view('mail.plan_upgrade', compact('user'));
     }
 
     /**

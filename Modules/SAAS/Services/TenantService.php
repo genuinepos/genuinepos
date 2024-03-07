@@ -254,6 +254,7 @@ class TenantService implements TenantServiceInterface
 
         $shopHistory = new ShopExpireDateHistory();
         $shopHistory->shop_count = $tenantRequest['shop_count'];
+        $shopHistory->price_period = $tenantRequest['period_count'];
         $shopHistory->start_date = Carbon::now();
         $shopHistory->expire_date = $expireDate;
         $shopHistory->created_count = 0;

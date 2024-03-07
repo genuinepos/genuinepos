@@ -6,6 +6,7 @@ use App\Http\Controllers\Setups\StartupController;
 use App\Http\Controllers\Setups\WarehouseController;
 use App\Http\Controllers\Setups\CashCounterController;
 use App\Http\Controllers\Setups\ReleaseNoteController;
+use App\Http\Controllers\Setups\UpgradePlanController;
 use App\Http\Controllers\Setups\BranchSettingController;
 use App\Http\Controllers\Setups\InvoiceLayoutController;
 use App\Http\Controllers\Setups\PaymentMethodController;
@@ -144,14 +145,18 @@ Route::prefix('setups')->group(function () {
     Route::controller(SoftwareServiceBillingController::class)->prefix('billing')->group(function () {
 
         Route::get('/', 'index')->name('software.service.billing.index');
-        Route::get('upgrade/plans', 'upgradePlan')->name('software.service.billing.upgrade.plan');
-        Route::get('cart/for/upgrade-plan/{id}', 'cartFoUpgradePlan')->name('software.service.billing.cart.for.upgrade.plan');
-        Route::post('cart/for/upgrade/plan/{id}', 'processUpgradePlan')->name('software.service.billing.cart.for.upgrade.plan.process');
         Route::get('cart/for/add/branch', 'cartFoAddBranch')->name('software.service.billing.cart.for.add.branch');
         Route::get('cart/for/renew/branch', 'cartForRenewBranch')->name('software.service.billing.cart.for.renew.branch');
         Route::get('due/repayment', 'dueRepayment')->name('software.service.billing.due.repayment');
         Route::get('invoice/view/{id}', 'invoiceView')->name('software.service.billing.invoice.view');
         Route::get('invoice/download/{id}', 'invoiceDownload')->name('software.service.billing.invoice.download');
+
+        Route::controller(UpgradePlanController::class)->prefix('upgrade-plan')->group(function () {
+
+            Route::get('/', 'index')->name('software.service.billing.upgrade.plan.index');
+            Route::get('cart/{id}/{pricePeriod?}', 'cart')->name('software.service.billing.upgrade.plan.cart');
+            Route::post('confirm', 'confirm')->name('software.service.billing.upgrade.plan.confirm');
+        });
     });
 
     Route::controller(ChangeBusinessOrBranchLocationController::class)->prefix('choose-business-branch')->group(function () {

@@ -44,7 +44,7 @@
 
                             <p class="text-white mt-1">{{ __('Trial | Expire on') }} :
                                 <span class="text-danger">{{ date($dateFormat, strtotime($expireDate)) }}</span>
-                                <a href="{{ route('software.service.billing.upgrade.plan') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
+                                <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-sm btn-danger">{{ __('Upgrade Plan') }}</a>
                             </p>
                         @elseif (
                             $generalSettings['subscription']->initial_payment_status == 0 &&

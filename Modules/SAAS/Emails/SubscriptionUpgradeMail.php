@@ -29,7 +29,7 @@ class SubscriptionUpgradeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Subscription Upgrade Mail',
+            subject: 'Plan Upgrade Mail',
         );
     }
 

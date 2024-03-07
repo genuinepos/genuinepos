@@ -36,27 +36,27 @@
             <div class="container">
                 <ul class="nav nav-tabs" id="planTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">Monthly</button>
+                      <button class="nav-link active" id="plan-monthly-tab" data-bs-toggle="tab" data-bs-target="#plan-monthly" type="button" role="tab" aria-controls="plan-monthly" aria-selected="true">{{ __("Monthly") }}</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false" onclick="activeTab('yearly')">Yearly</button>
+                      <button class="nav-link" id="plan-yearly-tab" data-bs-toggle="tab" data-bs-target="#plan-yearly" type="button" role="tab" aria-controls="plan-yearly" aria-selected="false" onclick="activeTab('yearly')">{{ __("Yearly") }}</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false" onclick="activeTab('lifetime')">Lifetime</button>
+                      <button class="nav-link" id="plan-lifetime-tab" data-bs-toggle="tab" data-bs-target="#plan-lifetime" type="button" role="tab" aria-controls="plan-lifetime" aria-selected="false" onclick="activeTab('lifetime')">{{ __("Lifetime") }}</button>
                     </li>
                   </ul>
 
                   <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="plan-monthly" role="tabpanel" aria-labelledby="plan-monthly-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'monthly'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.partials.index_partials.price_plan', ['plantype' => 'month'])
                     </div>
 
                     <div class="tab-pane fade" id="plan-yearly" role="tabpanel" aria-labelledby="plan-yearly-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'yearly'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.partials.index_partials.price_plan', ['plantype' => 'year'])
                     </div>
 
                     <div class="tab-pane fade" id="plan-lifetime" role="tabpanel" aria-labelledby="contact-tab">
-                        @include('setups.billing.price_plan', ['plantype' => 'lifetime'])
+                        @include('setups.billing.plan_upgrade.upgrade_plan_from_real_plan.partials.index_partials.price_plan', ['plantype' => 'lifetime'])
                     </div>
                   </div>
             </div>

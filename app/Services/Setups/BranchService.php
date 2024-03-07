@@ -5,6 +5,7 @@ namespace App\Services\Setups;
 use App\Models\Role;
 use App\Models\User;
 use App\Enums\BranchType;
+use App\Enums\BooleanType;
 use App\Models\Setups\Branch;
 use Illuminate\Validation\Rule;
 use App\Models\Accounts\Account;
@@ -132,8 +133,9 @@ class BranchService
         $addBranch->tin = $request->tin;
         $addBranch->email = $request->email;
         $addBranch->website = $request->website;
-        $addBranch->expire_date = $subscription->is_trial_plan == 0 ? $shopHistory?->expire_date : null;
-        $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == 0 ? $shopHistory?->id : null;
+        $addBranch->expire_date = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->expire_date : null;
+        $addBranch->shop_expire_date_history_id = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->id : null;
+        $addBranch->current_price_period = $subscription->is_trial_plan == BooleanType::False->value ? $shopHistory?->price_period : null;
 
         $branchLogoName = '';
         if ($request->hasFile('logo')) {
@@ -147,7 +149,7 @@ class BranchService
 
         $addBranch->save();
 
-        if ($subscription->is_trial_plan == 0) {
+        if ($subscription->is_trial_plan == BooleanType::False->value) {
 
             $this->shopExpireHistoryCheckUpdate($shopHistory);
         }

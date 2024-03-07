@@ -12,11 +12,11 @@
                         <th>
                             <div class="table-top text-center">
                                 <h4>{{ $plan->name }}</h4>
-                                @if ($plantype == 'monthly')
+                                @if ($plantype == 'month')
                                     <h5 class="price">$<span class="amount">{{ $plan->price_per_month }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
                                 @endif
 
-                                @if ($plantype == 'yearly')
+                                @if ($plantype == 'year')
                                     <h5 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
                                 @endif
 
@@ -31,16 +31,16 @@
                                     </p>
                                 </div>
 
-                                @if ($plantype == 'monthly')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=monthly" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                @if ($plantype == 'month')
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'month']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
 
-                                @if ($plantype == 'yearly')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=yearly" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                @if ($plantype == 'year')
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'year']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
 
                                 @if ($plantype == 'lifetime')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=lifetime" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'lifetime']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
                             </div>
                         </th>

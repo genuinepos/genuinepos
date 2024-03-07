@@ -77,7 +77,7 @@ class SubscriptionRestrictionsMiddleware
 
             if (date('Y-m-d') > date('Y-m-d', strtotime($trialExpireDate))) {
 
-                return redirect()->route('software.service.billing.upgrade.plan')->with(['trialExpireDate' => __('Your trial period is expired. Please Upgrade your plan.')]);
+                return redirect()->route('software.service.billing.upgrade.plan.index')->with(['trialExpireDate' => __('Your trial period is expired. Please Upgrade your plan.')]);
             }
         } elseif (
             $subscription->initial_payment_status == SubscriptionPaymentStatus::Due->value &&

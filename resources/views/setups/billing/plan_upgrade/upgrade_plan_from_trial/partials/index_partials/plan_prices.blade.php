@@ -12,16 +12,28 @@
                         <th>
                             <div class="table-top text-center">
                                 <h4>{{ $plan->name }}</h4>
-                                @if ($plantype == 'monthly')
-                                    <h5 class="price">$<span class="amount">{{ $plan->price_per_month }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
+                                @if ($plantype == 'month')
+                                    <h5 class="price">
+                                        {{ $plan?->currency->symbol }}
+                                        <span class="amount">{{ $plan->price_per_month }} </span>
+                                        <span class="type text-muted">/{{ __('Monthly') }}</span>
+                                    </h5>
                                 @endif
 
-                                @if ($plantype == 'yearly')
-                                    <h5 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
+                                @if ($plantype == 'year')
+                                    <h5 class="price">
+                                        {{ $plan?->currency->symbol }}
+                                        <span class="amount">{{ $plan->price_per_year }} </span>
+                                        <span class="type text-muted">/{{ __('Yearly') }}</span>
+                                    </h5>
                                 @endif
 
                                 @if ($plantype == 'lifetime')
-                                    <h5 class="price">$<span class="amount">{{ $plan->lifetime_price }} </span> <span class="type text-muted">/{{ __('Lifetime') }}</span>
+                                    <h5 class="price">
+                                        {{ $plan?->currency->symbol }}
+                                        <span class="amount">{{ $plan->lifetime_price }} </span>
+                                        <span class="type text-muted">/{{ __('Lifetime') }}</span>
+                                    </h5>
                                 @endif
 
                                 <div class="">
@@ -31,30 +43,30 @@
                                     </p>
                                 </div>
 
-                                @if ($plantype == 'monthly')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=monthly" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                @if ($plantype == 'month')
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'month']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
 
-                                @if ($plantype == 'yearly')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=yearly" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                @if ($plantype == 'year')
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'year']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
 
                                 @if ($plantype == 'lifetime')
-                                    <a href="{{ route('software.service.billing.cart.for.upgrade.plan', $plan->id) }}?type=lifetime" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
+                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'lifetime']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                                 @endif
                             </div>
                         </th>
                     @endforeach
                     <th>
                         <div class="table-top">
-                            <h4>ENTERPRISE CUSTOM PACKAGE</h4>
+                            <h4>{{ __("ENTERPRISE CUSTOM PACKAGE") }}</h4>
                             <div class="">
                                 <p class="p-0 m-0" style="font-size: 12px;line-height:1.2;">
                                     {{-- {{ $plan->description }} --}}
                                     {{ __('Bill annually') }}
                                 </p>
                             </div>
-                            <button class="btn btn-primary">Contact</button>
+                            <button class="btn btn-primary">{{ __("Contact") }}</button>
                         </div>
                     </th>
                 </tr>
@@ -141,7 +153,7 @@
                     @foreach ($plans as $plan)
                         <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                     @endforeach
-                    <td class="text-center">Everything of business</td>
+                    <td class="text-center">{{ __("Everything of business") }}</td>
                 </tr>
                 <tr>
                     <th>{{ __('Warehouse') }}</th>

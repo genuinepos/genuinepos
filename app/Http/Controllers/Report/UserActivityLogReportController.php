@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Http\Controllers\Controller;
-use App\Utils\UserActivityLogUtil;
 use Carbon\Carbon;
+use App\Enums\BooleanType;
 use Illuminate\Http\Request;
+use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Cache;
+use App\Services\Users\UserService;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserActivityLogReportController extends Controller
 {
-    public $userActivityLogUtil;
-
-    public function __construct(UserActivityLogUtil $userActivityLogUtil)
-    {
-        $this->userActivityLogUtil = $userActivityLogUtil;
+    public function __construct(
+        private BranchService $branchService,
+        private UserService $userService,
+        private UserActivityLogUtil $userActivityLogUtil
+    ) {
     }
 
     public function index(Request $request)
@@ -106,9 +108,16 @@ class UserActivityLogReportController extends Controller
                 ->make(true);
         }
 
-        $branches = DB::table('branches')->select('id', 'name', 'branch_code')->get();
+        $branches = $this->branchService->branches(with: ['parentBranch'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
 
-        return view('reports.user_activity_log.index', compact('branches'));
+        $users = null;
+        if (auth()->user()->can('has_access_to_all_area') && config('generalSettings')['subscription']->current_shop_count > 0) {
+
+            $users = $this->userService->users()->select('id', 'prefix', 'name', 'last_name')->get();
+        }
+
+        return view('reports.user_activity_log.index', compact('branches', 'users'));
     }
 
     private function filteredQuery($request, $query)

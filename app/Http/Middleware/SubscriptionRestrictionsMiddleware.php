@@ -85,32 +85,32 @@ class SubscriptionRestrictionsMiddleware
             date('Y-m-d') > $generalSettings['subscription']->initial_plan_expire_date
         ) {
 
-            return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment you due amount.')]);
+            return redirect()->route('software.service.billing.due.repayment')->with(['duePayment' => __('Please Repayment your due amount.')]);
         } elseif (
             auth()->user()?->branch &&
             auth()->user()?->branch?->expire_date &&
             date('Y-m-d') > auth()->user()?->branch?->expire_date
         ) {
 
-            if (auth()->user()->can('billing_renew_shop')) {
+            if (auth()->user()->can('billing_renew_branch')) {
 
                 return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['branchExpired' => __('Shop is expired please renew the shop')]);
             } else {
 
                 auth()->logout();
-                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact you Business/Authority'));
+                return redirect()->back()->with('branchExpired', __('Shop is expired. Please contact your Business/Authority'));
             }
         } elseif (
             !auth()->user()?->branch_id &&
             date('Y-m-d') > $generalSettings['subscription']->business_expire_date
         ) {
-            if (auth()->user()->can('billing_renew_shop')) {
+            if (auth()->user()->can('billing_renew_branch')) {
 
                 return redirect()->route('software.service.billing.cart.for.renew.branch')->with(['businessExpired' => __('Business is expired please renew your business')]);
             } else {
 
                 auth()->logout();
-                return response()->json(['businessExpired' => __('Shop is expired. Please contact you Business/Authority')]);
+                return response()->json(['businessExpired' => __('Shop is expired. Please contact your Business/Authority')]);
             }
         }
 

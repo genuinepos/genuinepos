@@ -47,6 +47,8 @@ class UpgradePlanController extends Controller
 
     public function cart($id, $pricePeriod, Request $request)
     {
+        abort_if(!auth()->user()->can('billing_upgrade_plan'), 403);
+
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = $this->planServiceInterface->singlePlanById(id: $id, with: ['currency:id,symbol']);
         DB::reconnect();
@@ -64,6 +66,8 @@ class UpgradePlanController extends Controller
 
     public function confirm(Request $request)
     {
+        abort_if(!auth()->user()->can('billing_upgrade_plan'), 403);
+        
         DB::statement('use ' . env('DB_DATABASE'));
         $plan = $this->planServiceInterface->singlePlanById(id: $request->plan_id);
         DB::reconnect();

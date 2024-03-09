@@ -20,6 +20,8 @@ class VatTaxReportController extends Controller
 
     public function index()
     {
+        abort_if(!auth()->user()->can('vat_tax_report'), 403);
+
         $ownBranchIdOrParentBranchId = auth()->user()?->branch?->parent_branch_id ? auth()->user()?->branch?->parent_branch_id : auth()->user()->branch_id;
 
         $branches = $this->branchService->branches(with: ['parentBranch'])
@@ -61,7 +63,8 @@ class VatTaxReportController extends Controller
 
     public function printVatTax(Request $request)
     {
-
+        abort_if(!auth()->user()->can('vat_tax_report'), 403);
+        
         $ownOrParentBranch = '';
         if (auth()->user()?->branch) {
 

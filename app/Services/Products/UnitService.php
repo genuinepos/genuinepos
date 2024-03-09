@@ -62,7 +62,7 @@ class UnitService
             ->make(true);
     }
 
-    public function addUnit($request): ?object
+    public function addUnit($request): object
     {
         $addUnit = new Unit();
         $addUnit->name = $request->name;

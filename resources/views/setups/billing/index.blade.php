@@ -90,7 +90,11 @@
 
                             <div class="col-md-4">
                                 <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-danger p-2">{{ __('Upgrade Plan') }}</a>
-                                <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
+
+                                @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
+
+                                    <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
+                                @endif
                             </div>
                         </div>
 
@@ -103,7 +107,9 @@
                                         </div>
 
                                         <div class="col-md-6 text-end">
-                                            <a href="{{ route('software.service.billing.cart.for.renew.branch') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
+                                            @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_renew_branch'))
+                                                <a href="{{ route('software.service.billing.cart.for.renew.branch') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
+                                            @endif
                                         </div>
                                     </div>
 

@@ -25,10 +25,7 @@ class BarcodeController extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('generate_barcode')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('generate_barcode'), 403);
 
         $barcodeSettings = $this->barcodeSettingService->barcodeSettings()
             ->select('id', 'name', 'is_default')

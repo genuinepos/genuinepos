@@ -272,20 +272,22 @@ class GeneralSettingController extends Controller
 
     public function moduleSettings(Request $request)
     {
-        $addSaleModule = isset($request->add_sale) ? 1 : 0;
-        $posSaleModule = isset($request->add_sale) ? 1 : 0;
+        $generalSettings = config('generalSettings');
+        $subscription = $generalSettings['subscription'];
+        $hrm = $subscription->features['hrm'] == 1 ? (isset($request->hrms) ? 1 : 0) : 1;
+        $task_management = $subscription->features['task_management'] == 1 ? (isset($request->manage_task) ? 1 : 0) : 1;
+        $manufacturing = $subscription->features['manufacturing'] == 1 ? (isset($request->manufacturing) ? 1 : 0) : 1;
         $settings = [
             'modules__purchases' => isset($request->purchases) ? 1 : 0,
-            'modules__add_sale' => auth()?->user()?->branch_id ? $addSaleModule : 1,
-            'modules__pos' => auth()?->user()?->branch_id ? $posSaleModule : 1,
+            'modules__add_sale' => isset($request->add_sale) ? 1 : 0,
+            'modules__pos' => isset($request->pos_sale) ? 1 : 0,
             'modules__transfer_stock' => isset($request->transfer_stock) ? 1 : 0,
             'modules__stock_adjustments' => isset($request->stock_adjustments) ? 1 : 0,
             'modules__accounting' => isset($request->accounting) ? 1 : 0,
             'modules__contacts' => isset($request->contacts) ? 1 : 0,
-            'modules__hrms' => isset($request->hrms) ? 1 : 0,
-            'modules__manage_task' => isset($request->manage_task) ? 1 : 0,
-            'modules__manufacturing' => isset($request->manufacturing) ? 1 : 0,
-            'modules__service' => isset($request->service) ? 1 : 0,
+            'modules__hrms' => $hrm,
+            'modules__manage_task' => $task_management,
+            'modules__manufacturing' => $manufacturing,
         ];
 
         $this->generalSettingService->updateAndSync($settings);

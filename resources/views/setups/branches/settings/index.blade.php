@@ -779,17 +779,19 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-lg-3 col-md-6">
-                                                <label class="fw-bold">{{ __('Payroll Voucher Prefix') }}</label>
-                                                <input type="text" name="payroll_voucher_prefix" class="form-control" id="payroll_voucher_prefix" value="{{ $generalSettings['prefix__payroll_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
-                                            </div>
+                                        @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                            <div class="row mt-1">
+                                                <div class="col-lg-3 col-md-6">
+                                                    <label class="fw-bold">{{ __('Payroll Voucher Prefix') }}</label>
+                                                    <input type="text" name="payroll_voucher_prefix" class="form-control" id="payroll_voucher_prefix" value="{{ $generalSettings['prefix__payroll_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                </div>
 
-                                            <div class="col-lg-3 col-md-6">
-                                                <label class="fw-bold">{{ __('Payroll Payment Voucher Prefix') }}</label>
-                                                <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="payroll_payment_voucher_prefix" value="{{ $generalSettings['prefix__payroll_payment_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                <div class="col-lg-3 col-md-6">
+                                                    <label class="fw-bold">{{ __('Payroll Payment Voucher Prefix') }}</label>
+                                                    <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="payroll_payment_voucher_prefix" value="{{ $generalSettings['prefix__payroll_payment_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="form-group row mt-1">
                                             <div class="col-md-4">
@@ -1062,57 +1064,61 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Vch.') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="payroll_voucher_page_size" class="form-control" id="payroll_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__payroll_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Vch.') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="payroll_voucher_page_size" class="form-control" id="payroll_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__payroll_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Payment') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="payroll_payment_voucher_page_size" class="form-control" id="payroll_payment_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Payment') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="payroll_payment_voucher_page_size" class="form-control" id="payroll_payment_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('BOM Voucher') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="bom_voucher_page_size" class="form-control" id="bom_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__bom_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @if ($generalSettings['subscription']->features['manufacturing'] == 1)
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('BOM Voucher') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="bom_voucher_page_size" class="form-control" id="bom_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__bom_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Production Vch.') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="production_voucher_page_size" class="form-control" id="production_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__production_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Production Vch.') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="production_voucher_page_size" class="form-control" id="production_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__production_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -1300,14 +1306,6 @@
                                             <div class="col-md-4">
                                                 <div class="row">
                                                     <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} name="service" autocomplete="off"> &nbsp; <b>{{ __('Service') }}</b>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
                                                         <input type="checkbox" {{ $generalSettings['modules__stock_adjustments'] == '1' ? 'CHECKED' : '' }} name="stock_adjustments" autocomplete="off"> &nbsp; <b>{{ __('Stock Adjustments') }}</b>
                                                     </p>
                                                 </div>
@@ -1342,13 +1340,15 @@
                                         </div>
 
                                         <div class="form-group row mt-2">
-                                            <div class="col-md-4">
-                                                <div class="row">
-                                                    <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
-                                                    </p>
+                                            @if ($generalSettings['subscription']->features['task_management'] == 1)
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <p class="checkbox_input_wrap">
+                                                            <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
 
                                             @if ($generalSettings['subscription']->features['manufacturing'] == 1)
                                                 <div class="col-md-4">

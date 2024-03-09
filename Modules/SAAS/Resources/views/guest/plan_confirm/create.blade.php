@@ -67,6 +67,11 @@
                     <span class="txt">{{ __('Step Three') }}</span>
                     <span class="sl-no">{{ __('03') }}</span>
                 </button>
+
+                {{-- <button class="single-nav stepFourTab" id="single-nav" data-tab="stepFourTab">
+                    <span class="txt">{{ __('Step Four') }}</span>
+                    <span class="sl-no">{{ __('02') }}</span>
+                </button> --}}
             </div>
 
             <div class="tab-contents mt-1">
@@ -145,7 +150,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

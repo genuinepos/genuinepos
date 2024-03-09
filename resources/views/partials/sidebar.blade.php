@@ -2264,19 +2264,6 @@
                         <div class="sub-menu-group">
                             <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>
                             <div class="sub-menu-row">
-                                @if (auth()->user()->can('tax_report'))
-                                    <div class="sub-menu-col">
-                                        <a href="{{ route('reports.taxes.index') }}" class="switch-bar-wrap">
-                                            <div class="switch_bar">
-                                                <div class="bar-link">
-                                                    <span><i class="fas fa-percent"></i></span>
-                                                </div>
-                                            </div>
-                                            <p class="switch_text">@lang('menu.tax_report')</p>
-                                        </a>
-                                    </div>
-                                @endif
-
                                 <div class="sub-menu-col">
                                     <a href="{{ route('reports.user.activities.log.index') }}" class="switch-bar-wrap">
                                         <div class="switch_bar">
@@ -2284,7 +2271,7 @@
                                                 <span><i class="fas fa-clipboard-list"></i></span>
                                             </div>
                                         </div>
-                                        <p class="switch_text">@lang('menu.user_activities_log')</p>
+                                        <p class="switch_text">{{ __("User Activity Log") }}</p>
                                     </a>
                                 </div>
                             </div>

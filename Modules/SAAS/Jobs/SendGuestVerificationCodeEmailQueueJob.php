@@ -17,14 +17,14 @@ class SendGuestVerificationCodeEmailQueueJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    private $to;
-    private $code;
+    private string $to;
+    private string $code;
     public function __construct($to, $code)
     {
         $this->to = $to;
         $this->code = $code;
     }
-    
+
     /**
      * Execute the job.
      */

@@ -582,8 +582,8 @@
             data: request,
             success: function(res) {
 
-                $('#response-message').addClass('d-none');
-                $('#successSection').removeClass('d-none');
+                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">https://demo.pos.test</span></span>');
+                // $('#successSection').removeClass('d-none');
 
                 window.location = res;
             },

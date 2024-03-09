@@ -53,8 +53,8 @@ class PlanConfirmController extends Controller
             $domain = $tenant->domains()->where('domain', $tenantRequest['domain'])->first();
             $returningUrl = UrlGenerator::generateFullUrlFromDomain($domain->domain);
 
-            // return response()->json($returningUrl, 201);
-            return redirect()->intended($returningUrl);
+            return response()->json($returningUrl, 201);
+            // return redirect()->intended($returningUrl);
         }
 
         throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);

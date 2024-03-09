@@ -468,12 +468,6 @@ Route::group(['prefix' => 'accounting'], function () {
 
 Route::group(['prefix' => 'reports'], function () {
 
-    Route::group(['prefix' => 'taxes'], function () {
-
-        Route::get('/', [TaxReportController::class, 'index'])->name('reports.taxes.index');
-        Route::get('get', [TaxReportController::class, 'getTaxReport'])->name('reports.taxes.get');
-    });
-
     Route::group(['prefix' => 'user/activities/log'], function () {
 
         Route::get('/', [UserActivityLogReportController::class, 'index'])->name('reports.user.activities.log.index');

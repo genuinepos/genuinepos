@@ -4,11 +4,12 @@ namespace Modules\SAAS\Services;
 
 use App\Enums\BooleanType;
 use Modules\SAAS\Entities\EmailVerification;
+use Modules\SAAS\Jobs\SendGuestVerificationCodeEmailQueueJob;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
 
 class EmailVerificationService implements EmailVerificationServiceInterface
 {
-    public function storeEmailVerificationCode(string $email): object
+    public function storeEmailVerificationCodeAndSendCode(string $email): void
     {
         $verification = $this->singleEmailVerification(email: $email, isVerified: false);
 
@@ -22,7 +23,7 @@ class EmailVerificationService implements EmailVerificationServiceInterface
             $verification = $addEmailVerification;
         }
 
-        return $verification;
+        dispatch(new SendGuestVerificationCodeEmailQueueJob(to: $email, code: $verification->code));
     }
 
     public function matchAndUpdateEmailVerification(object $request): bool

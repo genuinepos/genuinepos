@@ -76,14 +76,14 @@
         }
     </style>
 @endpush
-@section('title', 'Email Section - ')
+@section('title', 'Sms Section - ')
 @section('content')
 
  <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>@lang('Email Section')</h6>
+                    <h6>@lang('Sms Section')</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button">
                     <i class="fas fa-long-arrow-alt-left text-white"></i> @lang('menu.back')
@@ -216,11 +216,9 @@
             });
         });
 
-
-
         $("#addMoreButton").click(function() {
         var emailField = '<div class="input-group mb-2">' +
-                            '<input required="" type="email" name="mail[]" class="form-control add_input" data-name="To" placeholder="Email">' +
+                            '<input required="" type="text" name="phone[]" class="form-control add_input" data-name="To" placeholder="Phone">' +
                             '<div class="input-group-append">' +
                                 '<button class="btn btn-outline-danger deleteEmail" type="button"><i class="fas fa-trash"></i></button>' +
                             '</div>' +
@@ -232,12 +230,10 @@
         $(this).closest(".input-group").remove();
     });
 
-
-
   </script>
-  @include('communication.email.send.ajax_view.list_js')
-  @include('communication.email.send.ajax_view.create_js')
-  @include('communication.email.send.ajax_view.delete_js')
-  @include('communication.email.send.ajax_view.multiple_delete_js')
-  @include('communication.email.send.ajax_view.restore_js')
+  @include('communication.sms.send.ajax_view.list_js')
+  @include('communication.sms.send.ajax_view.create_js')
+  @include('communication.sms.send.ajax_view.delete_js')
+  @include('communication.sms.send.ajax_view.multiple_delete_js')
+  @include('communication.sms.send.ajax_view.restore_js')
 @endpush

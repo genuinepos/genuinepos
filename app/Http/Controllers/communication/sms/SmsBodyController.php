@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\email;
+namespace App\Http\Controllers\communication\sms;
+
 
 use App\Http\Controllers\Controller;
 
-use App\Services\Email\EmailBodyService;
+use App\Services\Communication\Sms\SmsBodyService;
 
 use Illuminate\Http\Request;
 
-class EmailBodyController extends Controller
+class SmsBodyController extends Controller
 {
 
-    public function __construct(private EmailBodyService $emailBodyService)
+    public function __construct(private SmsBodyService $smsBodyService)
     {
 
     }
@@ -21,7 +22,7 @@ class EmailBodyController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->emailBodyService->index($request);
+        return $this->smsBodyService->index($request);
     }
 
     /**
@@ -29,7 +30,7 @@ class EmailBodyController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->emailBodyService->store($request->all());
+        $response = $this->smsBodyService->store($request->all());
 
         return response()->json($response);
     }
@@ -39,7 +40,7 @@ class EmailBodyController extends Controller
      */
     public function edit($id)
     {
-        $data = $this->emailBodyService->edit($id);
+        $data = $this->smsBodyService->edit($id);
         return response()->json($data);
     }
 
@@ -48,7 +49,7 @@ class EmailBodyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $response = $this->emailBodyService->update($id, $request->all());
+        $response = $this->smsBodyService->update($id, $request->all());
 
         return response()->json($response);
     }
@@ -58,7 +59,7 @@ class EmailBodyController extends Controller
      */
     public function destroy($id)
     {
-        $response = $this->emailBodyService->destroy($id);
+        $response = $this->smsBodyService->destroy($id);
 
         return response()->json($response);
     }

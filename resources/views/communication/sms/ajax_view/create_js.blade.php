@@ -1,24 +1,22 @@
 <script>
-$(document).on('submit', '#mail_send', function(event) {
-    event.preventDefault();
-  var formData = new FormData($(this)[0]);
+$(document).on('submit', '#add_data', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    var formData = $(this).serialize(); // Serialize form data
     $.ajax({
-        url: "{{ route('send.store') }}",
+        url: "{{ route('sms-server.store') }}",
         type: 'POST',
         data: formData,
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
         },
-        contentType: false,
-        cache: false,
-        processData: false,
         success: function(response) {
-            console.log(response);
+            $('.data_tbl').DataTable().ajax.reload(); 
             toastr . success(response . message);
-            $('#VairantChildModal').modal('hide');
+            console.log(response);
+            document.getElementById("add_data").reset(); 
         },
-         error: function(xhr, status, error) {
-            var errorData = JSON.parse(xhr.responseText);
+        error: function(xhr, status, error) {
+            var errorData = JSON.parse(xhr.responseText); 
             var errorMessage = "";
             if (errorData.errors) {
                 Object.keys(errorData.errors).forEach(function(key) {
@@ -30,8 +28,10 @@ $(document).on('submit', '#mail_send', function(event) {
             } else {
                 errorMessage = errorData.message;
             }
-            toastr.error(errorMessage);
+            toastr.error(errorMessage); 
         }
+
     });
 });
 </script>
+

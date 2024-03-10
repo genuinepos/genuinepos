@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models\Communication;
+namespace App\Models\Communication\Sms;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmailServer extends Model
+class SmsServer extends Model
 {
     use HasFactory;
 
-    protected $table = 'email_servers';
+    protected $table = 'sms_servers';
 
     protected $guarded = [];
 }

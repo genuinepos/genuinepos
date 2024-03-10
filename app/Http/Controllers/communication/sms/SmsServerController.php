@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\email;
+namespace App\Http\Controllers\communication\sms;
 
 use App\Http\Controllers\Controller;
-use App\Models\Communication\EmailServer;
+use App\Models\Communication\Sms\SmsServer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class EmailServerController extends Controller
+class SmsServerController extends Controller
 {
 
     public function index(Request $request)
     {
 
-        $data = EmailServer::query()->orderBy('id', 'desc');
+        $data = SmsServer::query()->orderBy('id', 'desc');
 
         if ($request->ajax()) {
             return DataTables::of($data)
@@ -30,7 +30,7 @@ class EmailServerController extends Controller
                 ->make(true);
         }
 
-        return view('communication.email.index', compact('data'));
+        return view('communication.sms.index', compact('data'));
     }
 
     public function store(Request $request)
@@ -39,27 +39,29 @@ class EmailServerController extends Controller
         $validatedData = $request->validate([
             'server_name' => 'required',
             'host' => 'required',
-            'port' => 'required|numeric',
-            'user_name' => 'required',
-            'password' => 'required',
-            'encryption' => 'required',
-            'address' => 'required|email',
-            'name' => 'required',
+            'api_key' => 'required',
+            'sender_id' => 'required',
             'status' => 'required',
         ]);
 
-        $emailServer = EmailServer::create($validatedData);
+        if ($request->status == 1) {
+            SmsServer::where('status', 1)->update([
+                'status' => 0,
+            ]);
+        }
 
-        if ($emailServer) {
-            return response()->json(['status' => 'success', 'message' => 'Email server added successfully']);
+        $SmsServer = SmsServer::create($validatedData);
+
+        if ($SmsServer) {
+            return response()->json(['status' => 'success', 'message' => 'Sms server added successfully']);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'Failed to add email server'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Failed to add Sms server'], 500);
         }
     }
 
     public function edit($id)
     {
-        $data = EmailServer::findOrFail($id);
+        $data = SmsServer::findOrFail($id);
         return response()->json($data);
     }
 
@@ -68,34 +70,36 @@ class EmailServerController extends Controller
         $validatedData = $request->validate([
             'server_name' => 'required',
             'host' => 'required',
-            'port' => 'required|numeric',
-            'user_name' => 'required',
-            'password' => 'required',
-            'encryption' => 'required',
-            'address' => 'required|email',
-            'name' => 'required',
+            'api_key' => 'required',
+            'sender_id' => 'required',
             'status' => 'required',
         ]);
 
-        $emailServer = EmailServer::findOrFail($id);
+        if ($request->status == 1) {
+            SmsServer::where('status', 1)->update([
+                'status' => 0,
+            ]);
+        }
 
-        $emailServer->update($validatedData);
+        $SmsServer = SmsServer::findOrFail($id);
 
-        if ($emailServer) {
-            return response()->json(['status' => 'success', 'message' => 'Email server updated successfully']);
+        $SmsServer->update($validatedData);
+
+        if ($SmsServer) {
+            return response()->json(['status' => 'success', 'message' => 'Sms server updated successfully']);
         } else {
-            return response()->json(['status' => 'error', 'message' => 'Failed to update email server'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Failed to update Sms server'], 500);
         }
     }
 
     public function destroy($id)
     {
-        $emailServer = EmailServer::findOrFail($id);
+        $SmsServer = SmsServer::findOrFail($id);
 
-        $emailServer->delete();
+        $SmsServer->delete();
 
-        if ($emailServer) {
-            return response()->json(['status' => 'success', 'message' => 'Email server deleted successfully']);
+        if ($SmsServer) {
+            return response()->json(['status' => 'success', 'message' => 'Sms server deleted successfully']);
         } else {
             return response()->json(['status' => 'error', 'message' => 'Failed to update deleted server'], 500);
         }

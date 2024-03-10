@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Services\Email;
+namespace App\Services\Communication\Sms;
 
-use App\Models\Communication\EmailBody;
+
+use App\Models\Communication\Sms\SmsBody;
 
 use Yajra\DataTables\Facades\DataTables;
 
-// Import Log facade for debugging
-
-class EmailBodyService
+class SmsBodyService
 {
     public function index($request)
     {
-        $data = EmailBody::query()->orderBy('id', 'desc');
+        $data = SmsBody::query()->orderBy('id', 'desc');
 
         if ($request->ajax()) {
             return DataTables::of($data)
@@ -29,7 +28,7 @@ class EmailBodyService
                 ->make(true);
         }
 
-        return view('communication.email.body.index', compact('data'));
+        return view('communication.Sms.body.index', compact('data'));
 
     }
 
@@ -42,18 +41,18 @@ class EmailBodyService
             'is_important' => 'required',
         ])->validate();
 
-        $emailBody = EmailBody::create($validatedData);
+        $SmsBody = SmsBody::create($validatedData);
 
-        if ($emailBody) {
-            return ['status' => 'success', 'message' => 'Email body added successfully'];
+        if ($SmsBody) {
+            return ['status' => 'success', 'message' => 'Sms body added successfully'];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to add email body'];
+            return ['status' => 'error', 'message' => 'Failed to add Sms body'];
         }
     }
 
     public function edit($id)
     {
-        $data = EmailBody::findOrFail($id);
+        $data = SmsBody::findOrFail($id);
         return $data;
     }
 
@@ -66,27 +65,27 @@ class EmailBodyService
             'is_important' => 'required',
         ])->validate();
 
-        $emailBody = EmailBody::findOrFail($id);
+        $SmsBody = SmsBody::findOrFail($id);
 
-        $updated = $emailBody->update($validatedData);
+        $updated = $SmsBody->update($validatedData);
 
         if ($updated) {
-            return ['status' => 'success', 'message' => 'Email body updated successfully'];
+            return ['status' => 'success', 'message' => 'Sms body updated successfully'];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to update email body'];
+            return ['status' => 'error', 'message' => 'Failed to update Sms body'];
         }
     }
 
     public function destroy($id)
     {
-        $emailBody = EmailBody::findOrFail($id);
+        $SmsBody = SmsBody::findOrFail($id);
 
-        $deleted = $emailBody->delete();
+        $deleted = $SmsBody->delete();
 
         if ($deleted) {
-            return ['status' => 'success', 'message' => 'Email body deleted successfully'];
+            return ['status' => 'success', 'message' => 'Sms body deleted successfully'];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to delete email body'];
+            return ['status' => 'error', 'message' => 'Failed to delete Sms body'];
         }
     }
 

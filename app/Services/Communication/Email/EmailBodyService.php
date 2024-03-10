@@ -1,22 +1,36 @@
 <?php
 
-namespace App\Services\Email;
+namespace App\Services\Communication\Email;
 
-use App\Models\Communication\SendEmail;
 
-class EmailSendService
+use App\Models\Communication\Email\EmailBody;
+
+use Yajra\DataTables\Facades\DataTables;
+
+// Import Log facade for debugging
+
+class EmailBodyService
 {
     public function index($request)
     {
-
-        $data = SendEmail::query()->orderBy('id', 'desc');
+        $data = EmailBody::query()->orderBy('id', 'desc');
 
         if ($request->ajax()) {
-            $data = $data->where('status', $request->status)->get();
-            return response()->json(['data' => $data]);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('is_important', function ($row) {
+                    return $row->is_important == 1 ? "Important" : "UnImportant";
+                })
+                ->addColumn('action', function ($row) {
+                    $editBtn = '<a href="#" class="edit-btn btn btn-success btn-sm text-white" title="Edit" data-id="' . $row->id . '"><span class="fas fa-edit"></span></a>';
+                    $deleteBtn = '<a onclick="return confirm("are you sure")" href="#" class="delete-btn btn btn-danger btn-sm text-white ms-2" title="Delete" data-id="' . $row->id . '"><span class="fas fa-trash"></span></a>';
+                    return $editBtn . $deleteBtn;
+
+                })
+                ->make(true);
         }
 
-        return view('communication.email.send.index', compact('data'));
+        return view('communication.email.body.index', compact('data'));
 
     }
 
@@ -66,14 +80,14 @@ class EmailSendService
 
     public function destroy($id)
     {
-        $emailBody = SendEmail::findOrFail($id);
+        $emailBody = EmailBody::findOrFail($id);
 
         $deleted = $emailBody->delete();
 
         if ($deleted) {
-            return ['status' => 'success', 'message' => 'Email deleted successfully'];
+            return ['status' => 'success', 'message' => 'Email body deleted successfully'];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to delete email'];
+            return ['status' => 'error', 'message' => 'Failed to delete email body'];
         }
     }
 

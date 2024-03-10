@@ -44,7 +44,7 @@ class RolePermissionSeeder extends Seeder
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
 
-            $roleAlreadyExists = Role::where('name', $role['name'])->exists();
+            $roleAlreadyExists = Role::where('id', $role['id'])->exists();
             if (!$roleAlreadyExists) {
 
                 Role::create(['id' => $role['id'], 'name' => $role['name']]);

@@ -17,12 +17,12 @@ class BrandService
         return DataTables::of($brands)
             ->addIndexColumn()
             ->editColumn('photo', function ($row) use ($imgUrl) {
-                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;" src="'.$imgUrl.'/'.$row->photo.'">';
+                return '<img loading="lazy" class="rounded img-thumbnail" style="height:30px; width:30px;" src="' . $imgUrl . '/' . $row->photo . '">';
             })
             ->addColumn('action', function ($row) {
                 $html = '<div class="dropdown table-dropdown">';
-                $html .= '<a href="'.route('brands.edit', [$row->id]).'" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
-                $html .= '<a href="'.route('brands.delete', [$row->id]).'" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
+                $html .= '<a href="' . route('brands.edit', [$row->id]) . '" class="action-btn c-edit" id="edit" title="Edit"><span class="fas fa-edit"></span></a>';
+                $html .= '<a href="' . route('brands.delete', [$row->id]) . '" class="action-btn c-delete" id="delete" title="Delete"><span class="fas fa-trash "></span></a>';
                 $html .= '</div>';
 
                 return $html;
@@ -37,8 +37,8 @@ class BrandService
         if ($request->file('photo')) {
 
             $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid().'.'.$brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/'.$brandPhotoName);
+            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
             $addBrand->photo = $brandPhotoName;
         }
 
@@ -56,15 +56,15 @@ class BrandService
 
             if ($updateBrand->photo !== 'default.png') {
 
-                if (file_exists(public_path('uploads/brand/'.$updateBrand->photo))) {
+                if (file_exists(public_path('uploads/brand/' . $updateBrand->photo))) {
 
-                    unlink(public_path('uploads/brand/'.$updateBrand->photo));
+                    unlink(public_path('uploads/brand/' . $updateBrand->photo));
                 }
             }
 
             $brandPhoto = $request->file('photo');
-            $brandPhotoName = uniqid().'.'.$brandPhoto->getClientOriginalExtension();
-            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/'.$brandPhotoName);
+            $brandPhotoName = uniqid() . '.' . $brandPhoto->getClientOriginalExtension();
+            Image::make($brandPhoto)->resize(250, 250)->save('uploads/brand/' . $brandPhotoName);
             $updateBrand->photo = $brandPhotoName;
         }
 
@@ -73,19 +73,19 @@ class BrandService
         return $updateBrand;
     }
 
-    public function deleteBrand(int $id): ?object
+    public function deleteBrand(int $id): object
     {
         $deleteBrand = $this->singleBrand(id: $id);
 
-        if ($deleteBrand->photo !== 'default.png') {
+        if (isset($deleteBrand)) {
 
-            if (file_exists(public_path('uploads/brand/'.$deleteBrand->photo))) {
+            if ($deleteBrand->photo !== 'default.png') {
 
-                unlink(public_path('uploads/brand/'.$deleteBrand->photo));
+                if (file_exists(public_path('uploads/brand/' . $deleteBrand->photo))) {
+
+                    unlink(public_path('uploads/brand/' . $deleteBrand->photo));
+                }
             }
-        }
-
-        if (! is_null($deleteBrand)) {
 
             $deleteBrand->delete();
         }

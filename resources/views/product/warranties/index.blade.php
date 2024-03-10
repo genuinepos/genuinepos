@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="section-header">
                             <div class="col-md-6">
-                                <h6>{{ __('List Of Warranties/Guaranties') }}</h6>
+                                <h6>{{ __('List of Warranties/Guaranties') }}</h6>
                             </div>
 
                             <div class="col-6 d-flex justify-content-end">
@@ -38,7 +38,7 @@
                             <div class="table-responsive" id="data-list">
                                 <table class="display data_tbl data__table">
                                     <thead>
-                                        <tr class="text-center">
+                                        <tr>
                                             <th>{{ __('S/L') }}</th>
                                             <th>{{ __('Name') }}</th>
                                             <th>{{ __('Duration') }}</th>

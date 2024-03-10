@@ -38,7 +38,7 @@ class TenantService implements TenantServiceInterface
                 } else if ($tenantRequest['price_period'] == 'year') {
 
                     $expireDate = $this->getExpireDate(period: 'year', periodCount: $tenantRequest['period_count']);
-                } else if ($tenantRequest['lifetime'] == 'lifetime') {
+                } else if ($tenantRequest['price_period'] == 'lifetime') {
 
                     $expireDate = $this->getExpireDate(period: 'year', periodCount: $plan->applicable_lifetime_years);
                 }
@@ -187,7 +187,7 @@ class TenantService implements TenantServiceInterface
                 $subscribe->initial_business_subtotal = $tenantRequest['business_subtotal'] ? $tenantRequest['business_subtotal'] : 0;
                 $subscribe->initial_business_start_date = Carbon::now();
 
-                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count']);
+                $expireDate = $this->getExpireDate(period: $tenantRequest['business_price_period'] == 'lifetime' ? 'year' : $tenantRequest['business_price_period'], periodCount: $tenantRequest['business_price_period'] == 'lifetime' ? $plan->applicable_lifetime_years : $tenantRequest['business_period_count']);
 
                 $subscribe->business_expire_date = $expireDate;
             }
@@ -254,6 +254,7 @@ class TenantService implements TenantServiceInterface
 
         $shopHistory = new ShopExpireDateHistory();
         $shopHistory->shop_count = $tenantRequest['shop_count'];
+        $shopHistory->price_period = $tenantRequest['period_count'];
         $shopHistory->start_date = Carbon::now();
         $shopHistory->expire_date = $expireDate;
         $shopHistory->created_count = 0;

@@ -154,27 +154,27 @@
                                                     <div class="input-group">
                                                         <label class="col-4"><b>{{ __('Username') }}</b> <span class="text-danger">*</span> </label>
                                                         <div class="col-8">
-                                                            <input required {{ $user->username ? 'readonly' : '' }} type="text" name="username" id="username" class="form-control" data-next="role_id" value="{{ $user->username }}" placeholder="{{ __('Username') }}" autocomplete="off">
+                                                            <input @required($user->allow_login == 1) @readonly($user->username) type="text" name="username" id="username" class="form-control" data-next="role_id" value="{{ $user->username }}" placeholder="{{ __('Username') }}" autocomplete="off">
                                                             <span class="error error_username"></span>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                @if ($user?->roles?->first()->name != 'superadmin')
+                                                @if ($user?->roles?->first()?->name != 'superadmin')
                                                     <div class="col-md-6">
+                                                        <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"> {{ $user?->roles?->first()?->hasPermissionTo('has_access_to_all_area') ?  __('Selected role has access to all Shop/Place') : '' }}</small>
                                                         <div class="input-group">
-                                                            <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Superadmin And Admin has access to all Shop/Business.') }}" class="fas fa-info-circle tp"></i> </label>
+                                                            <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
-                                                                <select required name="role_id" id="role_id" class="form-control" data-next="password">
+                                                                <select @required($user->allow_login == 1) name="role_id" id="role_id" class="form-control" data-next="password">
                                                                     <option value="">{{ __('Select Role') }}</option>
                                                                     @foreach ($roles as $role)
                                                                         @php
                                                                             $userRole = $user?->roles?->first();
                                                                             $userRoleId = $userRole?->id;
                                                                         @endphp
-
                                                                         @if ($role->name != 'superadmin')
-                                                                            <option {{ $userRoleId == $role->id ? 'SELECTED' : '' }} data-role_name="{{ $role->name }}" value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                            <option @selected($userRoleId == $role->id) data-has_accass_to_all_area="{{ $role->hasPermissionTo('has_access_to_all_area') }}" value="{{ $role->id }}">{{ $role->name }}</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
@@ -187,7 +187,6 @@
                                                             <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span></label>
                                                             <div class="col-8">
                                                                 <input readonly type="text" class="form-control fw-bold" value="{{ __('superadmin') }}">
-                                                                <input type="hidden" name="role_id" value="{{ $userRole = $user?->roles?->first()->id }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -746,10 +745,12 @@
         });
 
         $(document).on('change', '#role_id', function(e) {
-            var roleNeme = $(this).find(':selected').data('role_name');
+            var hasAccassToAllArea = $(this).find(':selected').data('has_accass_to_all_area');
             $('#branch_id').prop('required', true);
-            if (roleName == 'admin') {
+            $('#roleMsg').html('');
+            if (hasAccassToAllArea == 1) {
 
+                $('#roleMsg').html('Selected Role Has Access to All Shop/Place');
                 $('#branch_id').prop('required', false);
             }
         });

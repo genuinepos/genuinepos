@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\UnitService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Products\UnitService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\UnitStoreRequest;
+use App\Http\Requests\Products\UnitUpdateRequest;
 
 class UnitController extends Controller
 {
     public function __construct(
         private UnitService $unitService,
-        private UserActivityLogUtil $userActivityLogUtil,
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_unit_index')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('product_unit_index'), 403);
 
         if ($request->ajax()) {
 
@@ -34,48 +35,21 @@ class UnitController extends Controller
 
     public function create($isAllowedMultipleUnit = 0)
     {
-        if (!auth()->user()->can('product_unit_add')) {
-
-            abort(403, 'Access Forbidden.');
-        }
+        abort_if(!auth()->user()->can('product_unit_add'), 403);
 
         $baseUnits = $this->unitService->units()->where('base_unit_id', null)->get();
 
         return view('product.units.ajax_view.create', compact('baseUnits', 'isAllowedMultipleUnit'));
     }
 
-    public function store(Request $request)
+    public function store(UnitStoreRequest $request)
     {
-        if (!auth()->user()->can('product_unit_add')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'short_name' => 'required',
-        ]);
-
-        if ($request->as_a_multiplier_of_other_unit == 1) {
-
-            $this->validate($request, [
-                'base_unit_multiplier' => 'required|numeric',
-                'base_unit_id' => 'required',
-            ], [
-                'base_unit_multiplier.required' => 'Amount field is required',
-                'base_unit_id.required' => 'Base unit field is required',
-            ]);
-        }
-
         try {
             DB::beginTransaction();
 
             $addUnit = $this->unitService->addUnit($request);
 
-            if ($addUnit) {
-
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 23, data_obj: $addUnit);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $addUnit);
 
             DB::commit();
         } catch (Exception $e) {
@@ -87,10 +61,7 @@ class UnitController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
-
-            return response()->json('Access Denied');
-        }
+        abort_if(!auth()->user()->can('product_unit_edit'), 403);
 
         $unit = $this->unitService->singleUnit(id: $id);
         $baseUnits = $this->unitService->units()->where('base_unit_id', null)->get();
@@ -98,37 +69,16 @@ class UnitController extends Controller
         return view('product.units.ajax_view.edit', compact('baseUnits', 'unit'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UnitUpdateRequest $request, $id)
     {
-        if (!auth()->user()->can('product_unit_edit')) {
-
-            return response()->json('Access Denied');
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'short_name' => 'required',
-        ]);
-
-        if ($request->as_a_multiplier_of_other_unit == 1) {
-            $this->validate($request, [
-                'base_unit_multiplier' => 'required|numeric',
-                'base_unit_id' => 'required',
-            ], [
-                'base_unit_multiplier.required' => 'Amount field is required',
-                'base_unit_id.required' => 'Base unit field is required',
-            ]);
-        }
-
         try {
-
             DB::beginTransaction();
 
             $updateUnit = $this->unitService->updateUnit(id: $id, request: $request);
 
-            if ($updateUnit) {
+            if (isset($updateUnit)) {
 
-                $this->userActivityLogUtil->addLog(action: 2, subject_type: 23, data_obj: $updateUnit);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $updateUnit);
             }
 
             DB::commit();
@@ -141,13 +91,9 @@ class UnitController extends Controller
 
     public function delete(Request $request, $id)
     {
-        if (!auth()->user()->can('product_unit_delete')) {
-
-            return response()->json('Access Denied');
-        }
+        abort_if(!auth()->user()->can('product_unit_delete'), 403);
 
         try {
-
             DB::beginTransaction();
 
             $deleteUnit = $this->unitService->deleteUnit(id: $id);
@@ -159,7 +105,7 @@ class UnitController extends Controller
 
             if ($deleteUnit) {
 
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 23, data_obj: $deleteUnit['data']);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Units->value, dataObj: $deleteUnit);
             }
 
             DB::commit();

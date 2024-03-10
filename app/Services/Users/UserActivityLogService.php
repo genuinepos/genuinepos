@@ -40,6 +40,7 @@ class UserActivityLogService
             23 => 'Units',
             24 => 'Variants',
             25 => 'Warranties',
+            35 => 'Selling Price Groups',
         ];
     }
 
@@ -170,16 +171,20 @@ class UserActivityLogService
                 'texts' => ['Name : ', 'P.Code(SKU) : ', 'Cost.inc Tax : ', 'Price.Exc Tax : '],
             ],
             27 => [ // Receipt Voucher
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no', 'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Received Amount'],
             ],
             28 => [ // Payment
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no',  'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Paid Amount : '],
             ],
             31 => [ // Contra
-                'fields' => ['date', 'voucher_no',   'total_amount'],
+                'fields' => ['date', 'voucher_no', 'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
+            ],
+            35 => [ // Selling Price Group
+                'fields' => ['name', 'description',],
+                'texts' => ['Name : ', 'Description : '],
             ],
         ];
     }
@@ -192,8 +197,8 @@ class UserActivityLogService
 
         $descriptionModel = $this->descriptionModel();
         $addLog = new UserActivityLog();
-        $addLog->branch_id = $branchId ? $branchId : auth()->user()->branch_id;
-        $addLog->user_id = $userId ? $userId : auth()->user()->id;
+        $addLog->branch_id = isset($branchId) ? $branchId : auth()->user()->branch_id;
+        $addLog->user_id = isset($userId) ? $userId : auth()->user()->id;
         $addLog->action = $action;
         $addLog->subject_type = $subjectType;
         $addLog->date = date($__dateFormat);

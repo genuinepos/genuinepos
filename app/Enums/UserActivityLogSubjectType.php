@@ -35,4 +35,5 @@ enum UserActivityLogSubjectType: int
     case Units = 23;
     case Variants = 24;
     case Warranties = 25;
+    case SellingPriceGroups = 35;
 }

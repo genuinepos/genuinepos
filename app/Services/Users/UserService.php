@@ -72,7 +72,7 @@ class UserService
 
                         return $row->branch_name . ' (' . $row->area_name . ')';
                     } else {
-
+                        
                         return $generalSettings['business_or_shop__business_name'];
                     }
                 }
@@ -120,7 +120,12 @@ class UserService
         $addUser->status = BooleanType::True->value;
 
         $branchId = '';
-        if ((auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::Admin->value) || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (
+            auth()->user()->can('has_access_to_all_area') &&
+            auth()->user()->is_belonging_an_area == BooleanType::False->value &&
+            config('generalSettings')['subscription']->has_business == BooleanType::True->value &&
+            $request->branch_count
+        ) {
 
             $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
         } else {
@@ -134,18 +139,12 @@ class UserService
             $addUser->username = $request->username;
             $addUser->password = Hash::make($request->password);
 
-            if ($role->name == 'superadmin') {
+            if ($role?->hasPermissionTo('has_access_to_all_area')) {
 
-                $addUser->role_type = RoleType::SuperAdmin->value;
-                $addUser->is_belonging_an_area = BooleanType::False->value;
-            } elseif ($role->name == 'admin') {
-
-                $addUser->role_type = RoleType::Admin->value;
                 $addUser->is_belonging_an_area = BooleanType::False->value;
             } else {
 
                 $addUser->branch_id = $branchId;
-                $addUser->role_type = RoleType::Other->value;
             }
 
             $addUser->assignRole($role->name);
@@ -203,7 +202,12 @@ class UserService
         $updateUser->email = $request->email;
 
         $branchId = '';
-        if ((auth()->user()->role_type == RoleType::SuperAdmin->value || auth()->user()->role_type == RoleType::Admin->value) || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
+        if (
+            auth()->user()->can('has_access_to_all_area') &&
+            auth()->user()->is_belonging_an_area == BooleanType::False->value &&
+            config('generalSettings')['subscription']->has_business == BooleanType::True &&
+            $request->branch_count
+        ) {
 
             $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
         } else {
@@ -212,7 +216,7 @@ class UserService
         }
 
         $currentRole = $updateUser?->roles?->first();
-        if ($currentRole->name != 'superadmin') {
+        if ($currentRole?->name != 'superadmin') {
 
             if ($request->allow_login == BooleanType::True->value) {
 
@@ -221,20 +225,13 @@ class UserService
                 $updateUser->password = $request->password ? Hash::make($request->password) : $updateUser->password;
                 $roleName = $role->name;
 
-                switch ($roleName) {
+                if ($role?->hasPermissionTo('has_access_to_all_area')) {
 
-                    case 'superadmin':
-                        $updateUser->role_type = RoleType::SuperAdmin->value;
-                        $updateUser->is_belonging_an_area = BooleanType::False->value;
-                        break;
-                    case 'admin':
-                        $updateUser->role_type = RoleType::Admin->value;
-                        $updateUser->is_belonging_an_area = BooleanType::False->value;
-                        break;
-                    default:
-                        $updateUser->role_type = RoleType::Other->value;
-                        $updateUser->branch_id = $branchId;
-                        break;
+                    $updateUser->is_belonging_an_area = BooleanType::False->value;
+                } else {
+
+                    $updateUser->branch_id = $branchId;
+                    $updateUser->is_belonging_an_area = BooleanType::True->value;
                 }
 
                 $updateUser->syncRoles([$roleName]);
@@ -287,7 +284,6 @@ class UserService
             ) {
 
                 try {
-
                     unlink(public_path('uploads/user_photo/' . $updateUser->photo));
                 } catch (Exception $e) {
                 }
@@ -348,32 +344,6 @@ class UserService
         }
 
         return $query;
-    }
-
-    public function addUserValidation(object $request, ?object $role)
-    {
-        $request->validate([
-            'first_name' => 'required',
-            'email' => 'required|unique:users,email',
-            'sales_commission_percent' => 'nullable|integer|min:1',
-            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
-        ]);
-
-        if ($role?->name != 'admin' && $role?->name != 'superadmin' && isset($request->branch_count)) {
-
-            $request->validate([
-                'branch_id' => 'required',
-            ], ['branch_id.required' => __('Shop/Business is required.')]);
-        }
-
-        if ($request->allow_login == BooleanType::True->value) {
-
-            $request->validate([
-                'role_id' => 'required',
-                'username' => 'required|unique:users,username',
-                'password' => 'required|confirmed',
-            ], ['role_id.required' => __('Role is required.')]);
-        }
     }
 
     public function updateUserValidation(object $request, int $id, ?object $role)

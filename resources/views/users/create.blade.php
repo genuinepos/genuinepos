@@ -163,14 +163,15 @@
                                             </div>
 
                                             <div class="col-md-6">
+                                                <small style="font-size: 9px;line-height:1.2;" class="float-end fw-bold" id="roleMsg"></small>
                                                 <div class="input-group">
-                                                    <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Superadmin And Admin has access to all Shop/Business.') }}" class="fas fa-info-circle tp"></i> </label>
+                                                    <label class="col-4"><b>{{ __('Role') }}</b> <span class="text-danger">*</span> <i data-bs-toggle="tooltip" data-bs-placement="top" class="fas fa-info-circle tp"></i> </label>
                                                     <div class="col-8">
                                                         <select required name="role_id" id="role_id" class="form-control" data-next="password">
                                                             <option value="">{{ __('Select Role') }}</option>
                                                             @foreach ($roles as $role)
                                                                 @if ($role->name != 'superadmin')
-                                                                    <option data-role_name="{{ $role->name }}" value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                    <option data-has_accass_to_all_area="{{ $role->hasPermissionTo('has_access_to_all_area') }}" value="{{ $role->id }}">{{ $role->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
@@ -478,7 +479,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('shift')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('shift')? 'addShift': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('shift') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('shift') ? 'addShift' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -500,7 +501,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('department')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('department')? 'addDepartment': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('department') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('department') ? 'addDepartment' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -520,7 +521,7 @@
                                                             </select>
 
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text {{ !auth()->user()->can('designation')? 'disabled_element': '' }} add_button" id="{{ auth()->user()->can('designation')? 'addDesignation': '' }}"><i class="fas fa-plus-square text-dark"></i></span>
+                                                                <span class="input-group-text {{ !auth()->user()->can('designation') ? 'disabled_element' : '' }} add_button" id="{{ auth()->user()->can('designation') ? 'addDesignation' : '' }}"><i class="fas fa-plus-square text-dark"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -743,10 +744,12 @@
         });
 
         $(document).on('change', '#role_id', function(e) {
-            var roleNeme = $(this).find(':selected').data('role_name');
+            var hasAccassToAllArea = $(this).find(':selected').data('has_accass_to_all_area');
             $('#branch_id').prop('required', true);
-            if (roleName == 'admin') {
+            $('#roleMsg').html('');
+            if (hasAccassToAllArea == 1) {
 
+                $('#roleMsg').html('Selected Role Has Access to All Shop/Place');
                 $('#branch_id').prop('required', false);
             }
         })

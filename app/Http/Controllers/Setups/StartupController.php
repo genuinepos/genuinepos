@@ -133,6 +133,7 @@ class StartupController extends Controller
                 }
             }
 
+            Session::forget('chooseBusinessOrShop');
             DB::commit();
         } catch (Exception $e) {
 

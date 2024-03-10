@@ -90,15 +90,18 @@ class SubCategoryService
     {
         $deleteSubcategory = $this->singleSubcategory(id: $id);
 
-        if ($deleteSubcategory->photo !== 'default.png') {
+        if (isset( $deleteSubcategory)) {
 
-            if (file_exists(public_path('uploads/category/'.$deleteSubcategory->photo))) {
+            if ($deleteSubcategory->photo !== 'default.png') {
 
-                unlink(public_path('uploads/category/'.$deleteSubcategory->photo));
+                if (file_exists(public_path('uploads/category/'.$deleteSubcategory->photo))) {
+
+                    unlink(public_path('uploads/category/'.$deleteSubcategory->photo));
+                }
             }
-        }
 
-        $deleteSubcategory->delete();
+            $deleteSubcategory->delete();
+        }
 
         return $deleteSubcategory;
     }

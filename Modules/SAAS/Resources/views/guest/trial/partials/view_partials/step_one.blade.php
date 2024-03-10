@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xl-8 col-lg-7 col-md-6">
+    <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="billing-details business-setup">
             <h3 class="title">{{ __('Business Setup') }}</h3>
             <div class="form-row">

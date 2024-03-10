@@ -23,16 +23,16 @@ class GuestTenantStoreRequest extends FormRequest
             'name' => 'required|string|max:70',
             'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
             'fullname' => 'required|string|max:191',
-            'email' => 'required|email|max:191|unique:users,email',
+            'email' => 'required',
             'phone' => 'required|max:60|unique:users,phone',
             'currency_id' => 'required',
             'password' => 'required|confirmed',
             // 'password' => ['required', Password::default()],
         ];
 
-        if (!config('app.debug')) {
-            $rules['g-recaptcha-response'] = 'required|captcha';
-        }
+        // if (!config('app.debug')) {
+        //     $rules['g-recaptcha-response'] = 'required|captcha';
+        // }
 
         return $rules;
     }
@@ -54,15 +54,15 @@ class GuestTenantStoreRequest extends FormRequest
         ];
     }
 
-    protected function passedValidation()
-    {
-        $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
-        $isTrial = Plan::find($this->plan_id)->price == 0;
+    // protected function passedValidation()
+    // {
+    //     $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
+    //     $isTrial = Plan::find($this->plan_id)->price == 0;
 
-        if ($isIpAddressBlocked && $isTrial) {
-            throw ValidationException::withMessages([
-                'ip_address' => ['Sorry, you already have an business registered.'],
-            ]);
-        }
-    }
+    //     if ($isIpAddressBlocked && $isTrial) {
+    //         throw ValidationException::withMessages([
+    //             'ip_address' => ['Sorry, you already have an business registered.'],
+    //         ]);
+    //     }
+    // }
 }

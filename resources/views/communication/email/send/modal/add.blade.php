@@ -29,9 +29,9 @@
 
                     <div class="row" id="to_area">
                        <div class="col-md-12">
-                            <label><strong>To</strong></label>
+                            <label><strong>To <span class="text-danger">*</span></strong></label>
                             <div id="emailContainer">
-                                <input type="text" name="phone[]" class="form-control add_input" placeholder="Phone">
+                                <input type="text" name="phone[]" class="form-control add_input" placeholder="Phone" required>
                                 <span class="error error_to"></span>
                             </div>
                         </div>
@@ -39,8 +39,8 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <label><strong>Body </strong></label>
-                            <textarea class="form-control" name="message" cols="5" rows="5"></textarea>
+                            <label><strong>Body </strong><span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="message" cols="5" rows="5" required></textarea>
                         </div>
                     </div>
 

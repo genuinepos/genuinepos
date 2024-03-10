@@ -44,7 +44,7 @@ class RolePermissionSeeder extends Seeder
         $roles = $this->getRolesArray();
         foreach ($roles as $role) {
 
-            $roleAlreadyExists = Role::where('name', $role['name'])->exists();
+            $roleAlreadyExists = Role::where('id', $role['id'])->exists();
             if (!$roleAlreadyExists) {
 
                 Role::create(['id' => $role['id'], 'name' => $role['name']]);
@@ -78,14 +78,14 @@ class RolePermissionSeeder extends Seeder
 
                 $hasAccessToAllAreaPermission = $role->hasPermissionTo('has_access_to_all_area');
                 $hasViewOwnSalePermission = $role->hasPermissionTo('view_own_sale');
-                $hasShopIndexPermission = $role->hasPermissionTo('shops_index');
-                $hasShopCreatePermission = $role->hasPermissionTo('shops_create');
-                $hasShopEditPermission = $role->hasPermissionTo('shops_edit');
-                $hasShopDeletePermission = $role->hasPermissionTo('shops_delete');
+                $hasShopIndexPermission = $role->hasPermissionTo('branches_index');
+                $hasShopCreatePermission = $role->hasPermissionTo('branches_create');
+                $hasShopEditPermission = $role->hasPermissionTo('branches_edit');
+                $hasShopDeletePermission = $role->hasPermissionTo('branches_delete');
                 $hasBillingIndexPermission = $role->hasPermissionTo('billing_index');
                 $hasBillingUpgradePlanPermission = $role->hasPermissionTo('billing_upgrade_plan');
-                $hasBillingShopAddPermission = $role->hasPermissionTo('billing_shop_add');
-                $hasBillingRenewShopPermission = $role->hasPermissionTo('billing_renew_shop');
+                $hasBillingShopAddPermission = $role->hasPermissionTo('billing_branch_add');
+                $hasBillingRenewShopPermission = $role->hasPermissionTo('billing_renew_branch');
                 $hasBillingBusinessAddPermission = $role->hasPermissionTo('billing_business_add');
                 $hasBillingPayDuePaymentPermission = $role->hasPermissionTo('billing_pay_due_payment');
 
@@ -98,6 +98,7 @@ class RolePermissionSeeder extends Seeder
                     $role->syncPermissions($permissions);
                     if ($role->id == 1) {
 
+                        $role->revokePermissionTo('user_activities_log_only_own_log');
                         $role->revokePermissionTo('view_own_sale');
                     }
 
@@ -115,22 +116,22 @@ class RolePermissionSeeder extends Seeder
 
                         if (!$hasShopIndexPermission) {
 
-                            $role->revokePermissionTo('shops_index');
+                            $role->revokePermissionTo('branches_index');
                         }
 
                         if (!$hasShopCreatePermission) {
 
-                            $role->revokePermissionTo('shops_create');
+                            $role->revokePermissionTo('branches_create');
                         }
 
                         if (!$hasShopEditPermission) {
 
-                            $role->revokePermissionTo('shops_edit');
+                            $role->revokePermissionTo('branches_edit');
                         }
 
                         if (!$hasShopDeletePermission) {
 
-                            $role->revokePermissionTo('shops_delete');
+                            $role->revokePermissionTo('branches_delete');
                         }
 
                         if (!$hasBillingIndexPermission) {
@@ -145,12 +146,12 @@ class RolePermissionSeeder extends Seeder
 
                         if (!$hasBillingShopAddPermission) {
 
-                            $role->revokePermissionTo('billing_shop_add');
+                            $role->revokePermissionTo('billing_branch_add');
                         }
 
                         if (!$hasBillingRenewShopPermission) {
 
-                            $role->revokePermissionTo('billing_renew_shop');
+                            $role->revokePermissionTo('billing_renew_branch');
                         }
 
                         if (!$hasBillingBusinessAddPermission) {
@@ -168,15 +169,15 @@ class RolePermissionSeeder extends Seeder
                     $role->syncPermissions($permissions);
                     $role->revokePermissionTo('has_access_to_all_area');
                     $role->revokePermissionTo('view_own_sale');
-                    $role->revokePermissionTo('shops_index');
-                    $role->revokePermissionTo('shops_create');
-                    $role->revokePermissionTo('shops_edit');
-                    $role->revokePermissionTo('shops_delete');
+                    $role->revokePermissionTo('branches_index');
+                    $role->revokePermissionTo('branches_create');
+                    $role->revokePermissionTo('branches_edit');
+                    $role->revokePermissionTo('branches_delete');
 
                     $role->revokePermissionTo('billing_index');
                     $role->revokePermissionTo('billing_upgrade_plan');
-                    $role->revokePermissionTo('billing_shop_add');
-                    $role->revokePermissionTo('billing_renew_shop');
+                    $role->revokePermissionTo('billing_branch_add');
+                    $role->revokePermissionTo('billing_renew_branch');
                     $role->revokePermissionTo('billing_business_add');
                     $role->revokePermissionTo('billing_pay_due_payment');
                 }
@@ -273,22 +274,22 @@ class RolePermissionSeeder extends Seeder
             ['id' => '88', 'name' => 'register_view'],
             ['id' => '89', 'name' => 'register_close'],
             ['id' => '90', 'name' => 'another_register_close'],
-            ['id' => '91', 'name' => 'tax_report'],
-            ['id' => '92', 'name' => 'production_report'],
-            ['id' => '93', 'name' => 'tax'],
-            ['id' => '94', 'name' => 'branch'],
-            ['id' => '95', 'name' => 'warehouse'],
+            // ['id' => '91', 'name' => 'tax_report'],
+            // ['id' => '92', 'name' => 'production_report'],
+            // ['id' => '93', 'name' => 'tax'],
+            // ['id' => '94', 'name' => 'branch'],
+            // ['id' => '95', 'name' => 'warehouse'],
             ['id' => '96', 'name' => 'general_settings'],
             ['id' => '97', 'name' => 'payment_settings'],
-            ['id' => '98', 'name' => 'invoice_schema'],
-            ['id' => '99', 'name' => 'invoice_layout'],
+            // ['id' => '98', 'name' => 'invoice_schema'],
+            // ['id' => '99', 'name' => 'invoice_layout'],
             ['id' => '100', 'name' => 'barcode_settings'],
-            ['id' => '101', 'name' => 'cash_counters'],
+            // ['id' => '101', 'name' => 'cash_counters'],
             ['id' => '102', 'name' => 'view_dashboard_data'],
-            ['id' => '117', 'name' => 'assign_todo'],
-            ['id' => '118', 'name' => 'work_space'],
-            ['id' => '119', 'name' => 'memo'],
-            ['id' => '120', 'name' => 'msg'],
+            // ['id' => '117', 'name' => 'assign_todo'],
+            // ['id' => '118', 'name' => 'work_space'],
+            // ['id' => '119', 'name' => 'memo'],
+            // ['id' => '120', 'name' => 'msg'],
             ['id' => '121', 'name' => 'process_view'],
             ['id' => '122', 'name' => 'process_add'],
             ['id' => '123', 'name' => 'process_edit'],
@@ -298,13 +299,13 @@ class RolePermissionSeeder extends Seeder
             ['id' => '127', 'name' => 'production_edit'],
             ['id' => '128', 'name' => 'production_delete'],
             ['id' => '130', 'name' => 'manufacturing_report'],
-            ['id' => '131', 'name' => 'project_view'],
-            ['id' => '132', 'name' => 'project_create'],
-            ['id' => '133', 'name' => 'project_edit'],
-            ['id' => '134', 'name' => 'project_delete'],
+            // ['id' => '131', 'name' => 'project_view'],
+            // ['id' => '132', 'name' => 'project_create'],
+            // ['id' => '133', 'name' => 'project_edit'],
+            // ['id' => '134', 'name' => 'project_delete'],
             ['id' => '152', 'name' => 'today_summery'],
             ['id' => '153', 'name' => 'communication'],
-            ['id' => '154', 'name' => 'receive_payment_index'],
+            // ['id' => '154', 'name' => 'receive_payment_index'],
 
             // TODO:: These permission are required for app, but need to add on Create+Update permissions page
             ['id' => '155', 'name' => 'email_setting_index'],
@@ -535,18 +536,18 @@ class RolePermissionSeeder extends Seeder
 
             ['id' => '364', 'name' => 'billing_index'],
             ['id' => '365', 'name' => 'billing_upgrade_plan'],
-            ['id' => '366', 'name' => 'billing_shop_add'],
-            ['id' => '367', 'name' => 'billing_renew_shop'],
+            ['id' => '366', 'name' => 'billing_branch_add'],
+            ['id' => '367', 'name' => 'billing_renew_branch'],
 
             ['id' => '368', 'name' => 'module_settings'],
             ['id' => '369', 'name' => 'has_access_to_all_area'],
             ['id' => '370', 'name' => 'billing_business_add'],
             ['id' => '371', 'name' => 'billing_pay_due_payment'],
 
-            ['id' => '372', 'name' => 'shops_index'],
-            ['id' => '373', 'name' => 'shops_create'],
-            ['id' => '374', 'name' => 'shops_edit'],
-            ['id' => '375', 'name' => 'shops_delete'],
+            ['id' => '372', 'name' => 'branches_index'],
+            ['id' => '373', 'name' => 'branches_create'],
+            ['id' => '374', 'name' => 'branches_edit'],
+            ['id' => '375', 'name' => 'branches_delete'],
 
             ['id' => '376', 'name' => 'accounts_bank_account_create'],
             ['id' => '377', 'name' => 'supplier_manage'],
@@ -567,6 +568,10 @@ class RolePermissionSeeder extends Seeder
             ['id' => '393', 'name' => 'messages_index'],
             ['id' => '394', 'name' => 'messages_create'],
             ['id' => '396', 'name' => 'messages_delete'],
+
+            ['id' => '397', 'name' => 'user_activities_log_index'],
+            ['id' => '398', 'name' => 'user_activities_log_only_own_log'],
+            ['id' => '399', 'name' => 'vat_tax_report'],
         ];
 
         return $permissions;

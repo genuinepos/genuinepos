@@ -62,7 +62,7 @@ class BulkVariantService
     {
         $deleteBulkVariant = $this->singleBulkVariant(id: $id);
 
-        if (! is_null($deleteBulkVariant)) {
+        if (isset($deleteBulkVariant)) {
 
             $deleteBulkVariant->delete();
         }

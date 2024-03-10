@@ -77,8 +77,8 @@ class BranchSettingService
             // ['id' => '45', 'key' => 'email_config__MAIL_FROM_ADDRESS', 'value' => null, 'branch_id' => null],
             // ['id' => '46', 'key' => 'email_config__MAIL_FROM_NAME', 'value' => null, 'branch_id' => null],
             // ['id' => '47', 'key' => 'email_config__MAIL_ACTIVE', 'value' => null, 'branch_id' => null],
-            ['key' => 'modules__manufacturing', 'value' => null, 'branch_id' => $branchId],
-            ['key' => 'modules__service', 'value' => null, 'branch_id' => $branchId],
+            ['key' => 'modules__manufacturing', 'value' => 1, 'branch_id' => $branchId],
+            ['key' => 'modules__service', 'value' => 1, 'branch_id' => $branchId],
             // ['id' => '53', 'key' => 'sms__SMS_URL', 'value' => null, 'branch_id' => null],
             // ['id' => '54', 'key' => 'sms__API_KEY', 'value' => null, 'branch_id' => null],
             // ['id' => '55', 'key' => 'sms__SENDER_ID', 'value' => null, 'branch_id' => null],
@@ -211,6 +211,13 @@ class BranchSettingService
             foreach ($settings as $key => $value) {
 
                 if (isset($key) && isset($value)) {
+
+                    if (
+                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
+                        config('generalSettings')['subscription']->features['hrm'] == 0
+                    ) {
+                        continue;
+                    }
 
                     $branchSetting = GeneralSetting::where('branch_id', $branchId)->where('key', $key)->first();
                     if ($branchSetting) {

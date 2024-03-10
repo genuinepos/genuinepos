@@ -28,6 +28,7 @@ class CouponController extends Controller
             return DataTables::of($coupons)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
+                    
                     $html = '<div class="dropdown table-dropdown">';
 
                     $html .= '<a href="' . route('saas.coupons.edit', $row->id) . '" class="px-2 edit-btn btn btn-primary btn-sm text-white" title="Edit"><span class="fas fa-edit pe-1"></span>Edit</a>';
@@ -36,8 +37,7 @@ class CouponController extends Controller
                     $html .= '</div>';
 
                     return $html;
-                })
-                ->make(true);
+                })->make(true);
         }
 
         return view('saas::coupons.index', compact('coupons'));
@@ -51,7 +51,6 @@ class CouponController extends Controller
 
     public function create()
     {
-
         //$this->authorize('users_create');
 
         return view('saas::coupons.create');
@@ -65,7 +64,6 @@ class CouponController extends Controller
 
     public function store(CouponStoreRequest $request)
     {
-
         $data = [
             'code' => $request->get('code'),
             'start_date' => date('Y-m-d', strtotime($request->get('start_date'))),

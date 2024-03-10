@@ -20,17 +20,14 @@ class SendEmailController extends Controller
      */
     public function sendVerificationCode(Request $request)
     {
-        $storeEmailVerificationCode = $this->emailVerificationServiceInterface->storeEmailVerificationCode(email: $request->email);
-
-        dispatch(new \Modules\SAAS\Jobs\SendGuestVerificationCodeEmailQueueJob(to: $request->email, code: $storeEmailVerificationCode->code));
-
+        $this->emailVerificationServiceInterface->storeEmailVerificationCodeAndSendCode(email: $request->email);
         return true;
     }
 
     public function emailVerificationCodeMatch(Request $request)
     {
         $matchAndUpdateEmailVerification = $this->emailVerificationServiceInterface->matchAndUpdateEmailVerification(request: $request);
-       
+
         if ($matchAndUpdateEmailVerification) {
 
             return true;

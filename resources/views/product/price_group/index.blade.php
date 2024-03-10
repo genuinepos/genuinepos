@@ -17,7 +17,7 @@
             <div class="form_element rounded m-0">
                 <div class="section-header">
                     <div class="col-6">
-                        <h6>{{ __('All Selling Price Group') }}</h6>
+                        <h6>{{ __('List of Selling Price Groups') }}</h6>
                     </div>
 
                     @if (auth()->user()->can('selling_price_group_index'))
@@ -235,11 +235,16 @@
                 data: request,
                 success: function(data) {
 
+                    if (!$.isEmptyObject(data.errorMsg)) {
+
+                        toastr.error(data.errorMsg);
+                        return;
+                    }
+
                     toastr.error(data);
                     priceGroupsTable.ajax.reload(null, false);
                     $('#deleted_form')[0].reset();
-                },
-                error: function(err) {
+                }, error: function(err) {
 
                     if (err.status == 0) {
 

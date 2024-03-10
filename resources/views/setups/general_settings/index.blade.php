@@ -72,13 +72,13 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('add_sale_settings') && isset(auth()->user()->branch_id))
+                                        @if (auth()->user()->can('add_sale_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="add_sale_settings_form" href="#">{{ __('Add Sale Settings') }}</a>
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('pos_sale_settings') && isset(auth()->user()->branch_id))
+                                        @if (auth()->user()->can('pos_sale_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="pos_settings_form" href="#">{{ __('Pos Sale Settings') }}</a>
                                             </li>
@@ -90,7 +90,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('invoice_layout_settings') && isset(auth()->user()->branch_id))
+                                        @if (auth()->user()->can('invoice_layout_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="invoice_layout_settings_form" href="#">{{ __('Invoice Layout Settings') }}</a>
                                             </li>
@@ -108,7 +108,7 @@
                                             </li>
                                         @endif
 
-                                        @if (auth()->user()->can('reward_point_settings') && isset(auth()->user()->branch_id))
+                                        @if (auth()->user()->can('reward_point_settings'))
                                             <li class="menu_list">
                                                 <a class="menu_btn" data-form="point_settings_form" href="#">{{ __('Reward Point Settings') }}</a>
                                             </li>
@@ -479,7 +479,7 @@
                                     </form>
                                 @endif
 
-                                @if (auth()->user()->can('add_sale_settings') && isset(auth()->user()->branch_id))
+                                @if (auth()->user()->can('add_sale_settings'))
                                     <form id="add_sale_settings_form" class="setting_form hide-all" action="{{ route('settings.add.sale.settings') }}" method="post">
                                         @csrf
                                         <div class="form-group">
@@ -533,7 +533,7 @@
                                     </form>
                                 @endif
 
-                                @if (auth()->user()->can('pos_sale_settings') && isset(auth()->user()->branch_id))
+                                @if (auth()->user()->can('pos_sale_settings'))
                                     <form id="pos_settings_form" class="setting_form hide-all" action="{{ route('settings.pos.settings') }}" method="post">
                                         @csrf
                                         <div class="form-group row">
@@ -644,29 +644,27 @@
                                         </div>
                                         @csrf
 
-                                        @if (auth()->user()->branch_id)
-                                            <div class="form-group row">
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="fw-bold">{{ __('Sales Invoice Prefix') }}</label>
-                                                    <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
-                                                    <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Quotation Prefix') }}" />
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
-                                                    <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
-                                                    <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
-                                                </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-3 col-md-6">
+                                                <label class="fw-bold">{{ __('Sales Invoice Prefix') }}</label>
+                                                <input type="text" name="sales_invoice_prefix" class="form-control" id="sales_invoice_prefix" value="{{ $generalSettings['prefix__sales_invoice_prefix'] }}" placeholder="{{ __('Invoice Prefix') }}" />
                                             </div>
-                                        @endif
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <label class="fw-bold">{{ __('Quotation Prefix') }}</label>
+                                                <input type="text" name="quotation_prefix" class="form-control" id="quotation_prefix" value="{{ $generalSettings['prefix__quotation_prefix'] }}" placeholder="{{ __('Quotation Prefix') }}" />
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <label class="fw-bold">{{ __('Sales Order Prefix') }}</label>
+                                                <input type="text" name="sales_order_prefix" class="form-control" id="sales_order_prefix" value="{{ $generalSettings['prefix__sales_order_prefix'] }}" placeholder="{{ __('Sales Order Prefix') }}" />
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-6">
+                                                <label class="fw-bold">{{ __('Sales Return Prefix') }}</label>
+                                                <input type="text" name="sales_return_prefix" class="form-control" id="sales_return_prefix" value="{{ $generalSettings['prefix__sales_return_prefix'] }}" placeholder="{{ __('Sales Return Prefix') }}" />
+                                            </div>
+                                        </div>
 
                                         <div class="form-group row mt-1">
                                             <div class="col-lg-3 col-md-6">
@@ -712,17 +710,19 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mt-1">
-                                            <div class="col-lg-3 col-md-6">
-                                                <label class="fw-bold">{{ __('Payroll Voucher Prefix') }}</label>
-                                                <input type="text" name="payroll_voucher_prefix" class="form-control" id="payroll_voucher_prefix" value="{{ $generalSettings['prefix__payroll_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
-                                            </div>
+                                        @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                            <div class="row mt-1">
+                                                <div class="col-lg-3 col-md-6">
+                                                    <label class="fw-bold">{{ __('Payroll Voucher Prefix') }}</label>
+                                                    <input type="text" name="payroll_voucher_prefix" class="form-control" id="payroll_voucher_prefix" value="{{ $generalSettings['prefix__payroll_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                </div>
 
-                                            <div class="col-lg-3 col-md-6">
-                                                <label class="fw-bold">{{ __('Payroll Payment Voucher Prefix') }}</label>
-                                                <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="payroll_payment_voucher_prefix" value="{{ $generalSettings['prefix__payroll_payment_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                <div class="col-lg-3 col-md-6">
+                                                    <label class="fw-bold">{{ __('Payroll Payment Voucher Prefix') }}</label>
+                                                    <input type="text" name="payroll_payment_voucher_prefix" class="form-control" id="payroll_payment_voucher_prefix" value="{{ $generalSettings['prefix__payroll_payment_voucher_prefix'] }}" placeholder="{{ __('Payroll Voucher Prefix') }}" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="form-group row mt-1">
                                             <div class="col-md-3">
@@ -956,57 +956,61 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Vch.') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="payroll_voucher_page_size" class="form-control" id="payroll_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__payroll_voucher_page_size'] == $item->value ? 'SELECTED' : '' }}  value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @if ($generalSettings['subscription']->features['hrm'] == 1)
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Vch.') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="payroll_voucher_page_size" class="form-control" id="payroll_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__payroll_voucher_page_size'] == $item->value ? 'SELECTED' : '' }}  value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Payment') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="payroll_payment_voucher_page_size" class="form-control" id="payroll_payment_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Payroll Payment') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="payroll_payment_voucher_page_size" class="form-control" id="payroll_payment_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__payroll_payment_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('BOM Voucher') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="bom_voucher_page_size" class="form-control" id="bom_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__bom_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @if ($generalSettings['subscription']->features['manufacturing'] == 1)
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('BOM Voucher') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="bom_voucher_page_size" class="form-control" id="bom_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__bom_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 mt-1">
-                                                        <div class="input-group">
-                                                            <label class="col-md-3 text-end fw-bold pe-1">{{ __('Production Vch.') }}</label>
-                                                            <div class="col-md-9">
-                                                                <select name="production_voucher_page_size" class="form-control" id="production_voucher_page_size">
-                                                                    @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
-                                                                        <option {{ $generalSettings['print_page_size__production_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                        <div class="col-md-12 mt-1">
+                                                            <div class="input-group">
+                                                                <label class="col-md-3 text-end fw-bold pe-1">{{ __('Production Vch.') }}</label>
+                                                                <div class="col-md-9">
+                                                                    <select name="production_voucher_page_size" class="form-control" id="production_voucher_page_size">
+                                                                        @foreach (array_slice(\App\Enums\PrintPageSize::cases(), 0, 2) as $item)
+                                                                            <option {{ $generalSettings['print_page_size__production_voucher_page_size'] == $item->value ? 'SELECTED' : '' }} value="{{ $item->value }}">{{ App\Services\PrintPageSizeService::pageSizeName($item->value) }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -1105,7 +1109,7 @@
                                     </form>
                                 @endif
 
-                                @if (auth()->user()->can('reward_point_settings') && isset(auth()->user()->branch_id))
+                                @if (auth()->user()->can('reward_point_settings'))
                                     <form id="point_settings_form" class="setting_form hide-all" action="{{ route('settings.reward.point.settings') }}" method="post">
                                         @csrf
                                         <div class="form-group">
@@ -1200,23 +1204,21 @@
                                                 </div>
                                             </div>
 
-                                            @if (auth()->user()->branch_id)
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                            <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __('Add Sale') }}</b>
-                                                        </p>
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox" {{ $generalSettings['modules__add_sale'] == '1' ? 'CHECKED' : '' }} name="add_sale" autocomplete="off"> &nbsp; <b>{{ __('Add Sale') }}</b>
+                                                    </p>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                            <input type="checkbox" {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }} name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
-                                                        </p>
-                                                    </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <p class="checkbox_input_wrap">
+                                                        <input type="checkbox" {{ $generalSettings['modules__pos'] == '1' ? 'CHECKED' : '' }} name="pos" autocomplete="off"> &nbsp; <b>{{ __('POS') }}</b>
+                                                    </p>
                                                 </div>
-                                            @endif
+                                            </div>
                                         </div>
 
                                         <div class="form-group row mt-2">
@@ -1267,13 +1269,15 @@
                                         </div>
 
                                         <div class="form-group row mt-2">
-                                            <div class="col-md-4">
-                                                <div class="row ">
-                                                    <p class="checkbox_input_wrap">
-                                                        <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
-                                                    </p>
+                                            @if ($generalSettings['subscription']->features['task_management'] == 1)
+                                                <div class="col-md-4">
+                                                    <div class="row ">
+                                                        <p class="checkbox_input_wrap">
+                                                            <input type="checkbox" {{ $generalSettings['modules__manage_task'] == '1' ? 'CHECKED' : '' }} name="manage_task" autocomplete="off"> &nbsp; <b>{{ __('Manage Task') }}</b>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
 
                                             @if ($generalSettings['subscription']->features['manufacturing'] == 1)
                                                 <div class="col-md-4">
@@ -1285,17 +1289,6 @@
                                                     </div>
                                                 </div>
                                             @endif
-
-                                            {{-- @if ($generalSettings['subscription']->features['service'] == 1)
-                                                <div class="col-md-4">
-                                                    <div class="row">
-                                                        <p class="checkbox_input_wrap">
-                                                            <input type="checkbox" @if (isset($generalSettings['modules__service'])) {{ $generalSettings['modules__service'] == '1' ? 'CHECKED' : '' }} @endif name="service" autocomplete="off">
-                                                            &nbsp;<b>{{ __('Service') }}</b>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            @endif --}}
                                         </div>
 
                                         <div class="row mt-2">

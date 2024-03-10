@@ -14,6 +14,7 @@ use App\Models\Subscriptions\ShopExpireDateHistory;
 
 class Branch extends BaseModel
 {
+    protected $table = 'branches';
     protected $guarded = [];
 
     protected $hidden = ['created_at', 'updated_at'];

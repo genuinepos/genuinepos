@@ -41,6 +41,7 @@ class UserActivityLogUtil
             23 => 'Units',
             24 => 'Variants',
             25 => 'Warranties',
+            35 => 'Selling Price Groups',
         ];
     }
 
@@ -181,6 +182,10 @@ class UserActivityLogUtil
             31 => [ // Contra
                 'fields' => ['date', 'voucher_no',   'total_amount'],
                 'texts' => ['Date : ', 'VoucherNo : ', 'Total Amount : '],
+            ],
+            35 => [ // Selling Price Group
+                'fields' => ['name', 'description',],
+                'texts' => ['Name : ', 'Description : '],
             ],
         ];
     }

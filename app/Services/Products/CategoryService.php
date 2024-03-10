@@ -146,24 +146,4 @@ class CategoryService
 
         return $query;
     }
-
-    function storeValidation(object $request): ?array
-    {
-        return $request->validate([
-            'name' => ['required', Rule::unique('categories')->where(function ($query) {
-                return $query->where('parent_category_id', null);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
-    }
-
-    function updateValidation(object $request, int $id): ?array
-    {
-        return $request->validate([
-            'name' => ['required', Rule::unique('categories')->where(function ($query) use ($id) {
-                return $query->where('parent_category_id', null)->where('id', '!=', $id);
-            })],
-            'photo' => 'sometimes|image|max:2048',
-        ]);
-    }
 }

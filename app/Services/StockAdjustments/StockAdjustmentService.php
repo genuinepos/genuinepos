@@ -188,29 +188,12 @@ class StockAdjustmentService
             $query->whereBetween('stock_adjustments.date_ts', $date_range); // Final
         }
 
-        // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
-
-        //     $query->where('stock_adjustments.branch_id', auth()->user()->branch_id);
-        // }
-
+         // if (auth()->user()->role_type == 3 || auth()->user()->is_belonging_an_area == 1) {
         if (!auth()->user()->can('has_access_to_all_area') || auth()->user()->is_belonging_an_area == BooleanType::True->value) {
 
             $query->where('stock_adjustments.branch_id', auth()->user()->branch_id);
         }
 
         return $query;
-    }
-
-    public function stockAdjustmentValidation(object $request): ?array
-    {
-        return $request->validate([
-            'date' => 'required',
-            'type' => 'required',
-            'expense_account_id' => 'required',
-            'account_id' => 'required',
-        ], [
-            'expense_account_id.required' => __('Expense Ledger A/c is required.'),
-            'account_id.required' => __('Debit A/c is required.'),
-        ]);
     }
 }

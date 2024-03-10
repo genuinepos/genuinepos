@@ -108,7 +108,7 @@ class BranchController extends Controller
 
     public function edit($id)
     {
-        abort_if(!auth()->user()->can('shops_edit'), 403);
+        abort_if(!auth()->user()->can('branches_edit'), 403);
 
         $currencies = $this->currencyService->currencies();
         $timezones = $this->timezoneService->all();
@@ -132,7 +132,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('shops_edit') && !auth()->user()->can('general_settings'), 403);
+        abort_if(!auth()->user()->can('branches_edit') && !auth()->user()->can('general_settings'), 403);
 
         $this->branchService->branchUpdateValidation(request: $request);
 
@@ -176,7 +176,7 @@ class BranchController extends Controller
 
     public function delete(Request $request, $id)
     {
-        abort_if(!auth()->user()->can('shops_delete'), 403);
+        abort_if(!auth()->user()->can('branches_delete'), 403);
 
         $deleteBranch = $this->branchService->deleteBranch(id: $id);
 

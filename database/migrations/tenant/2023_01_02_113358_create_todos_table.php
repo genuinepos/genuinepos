@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('due_date')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable()->index('todos_branch_id_foreign');
-            $table->unsignedBigInteger('created_by_id')->after('branch_id')->nullable();
+            $table->unsignedBigInteger('created_by_id')->nullable();
             $table->timestamps();
 
             $table->foreign(['branch_id'])->references(['id'])->on('branches')->onDelete('CASCADE');

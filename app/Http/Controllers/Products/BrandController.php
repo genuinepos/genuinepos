@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\BrandService;
-use App\Utils\UserActivityLogUtil;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\Products\BrandService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\BrandStoreRequest;
+use App\Http\Requests\Products\BrandUpdateRequest;
 
 class BrandController extends Controller
 {
     public function __construct(
         private BrandService $brandService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_brand_index')) {
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_brand_index'), 403);
 
         if ($request->ajax()) {
             return $this->brandService->brandsTable();
@@ -33,31 +34,19 @@ class BrandController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->can('product_brand_add')) {
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_brand_add'), 403);
 
         return view('product.brands.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(BrandStoreRequest $request)
     {
-        if (!auth()->user()->can('product_brand_add')) {
-            abort(403, __('Access Forbidden.'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'photo' => 'sometimes|image|max:2048',
-        ]);
-
         try {
             DB::beginTransaction();
 
             $addBrand = $this->brandService->addBrand($request);
-            if ($addBrand) {
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 22, data_obj: $addBrand);
-            }
+
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Brands->value, dataObj: $addBrand);
 
             DB::commit();
         } catch (Exception $e) {
@@ -69,35 +58,21 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        if (!auth()->user()->can('product_brand_edit')) {
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_brand_edit'), 403);
 
         $brand = $this->brandService->singleBrand(id: $id);
 
         return view('product.brands.ajax_view.edit', compact('brand'));
     }
 
-    // Update Brand method
-    public function update($id, Request $request)
+    public function update($id, BrandUpdateRequest $request)
     {
-        if (!auth()->user()->can('product_brand_edit')) {
-            abort(403, __('Access Forbidden.'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'photo' => 'sometimes|image|max:2048',
-        ]);
-
         try {
             DB::beginTransaction();
 
             $updateBrand = $this->brandService->updateBrand(id: $id, request: $request);
 
-            if ($updateBrand) {
-                $this->userActivityLogUtil->addLog(action: 2, subject_type: 22, data_obj: $updateBrand);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Brands->value, dataObj: $updateBrand);
 
             DB::commit();
         } catch (Exception $e) {
@@ -107,20 +82,16 @@ class BrandController extends Controller
         return response()->json(__('Brand Updated successfully.'));
     }
 
-    // Delete Brand method//
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('product_brand_delete')) {
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_brand_delete'), 403);
 
         try {
             DB::beginTransaction();
+
             $deleteBrand = $this->brandService->deleteBrand($id);
 
-            if ($deleteBrand) {
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 22, data_obj: $deleteBrand);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Brands->value, dataObj: $deleteBrand);
 
             DB::commit();
         } catch (Exception $e) {

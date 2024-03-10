@@ -25,13 +25,16 @@ class PlanSubscriptionMiddleware
             ->first();
 
         if (isset($subscription->end_time)) {
+            
             $validPlanSubscription = Carbon::parse($subscription->end_time)->gte(now());
             if ($validPlanSubscription) {
+
                 return $next($request);
             }
         }
 
         if (tenant('plan_id') !== null) {
+
             return redirect(config('app.url'));
 
             return redirect(route('saas.plan.subscribe', tenant('plan_id')));

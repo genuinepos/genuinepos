@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Products;
 
 use App\Enums\BooleanType;
 use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Products\UnitService;
 use App\Services\Setups\BranchService;
 use App\Services\Products\BrandService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Services\Accounts\AccountService;
 use App\Services\Products\ProductService;
 use App\Services\Products\CategoryService;
@@ -17,7 +18,10 @@ use App\Services\Products\WarrantyService;
 use App\Services\Products\PriceGroupService;
 use App\Services\Products\BulkVariantService;
 use App\Services\Products\ProductUnitService;
+use App\Services\Users\UserActivityLogService;
 use App\Services\Products\ProductVariantService;
+use App\Http\Requests\Products\ProductStoreRequest;
+use App\Http\Requests\Products\ProductUpdateRequest;
 use App\Services\Products\ProductAccessBranchService;
 
 class ProductController extends Controller
@@ -35,7 +39,7 @@ class ProductController extends Controller
         private AccountService $accountService,
         private BranchService $branchService,
         private PriceGroupService $priceGroupService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
@@ -67,8 +71,6 @@ class ProductController extends Controller
     {
         $productShowQueries = $this->productService->productShowQueries(id: $id);
         extract($productShowQueries);
-
-        // return $ownBranchAndWarehouseStocks;
 
         $priceGroups = $this->priceGroupService->priceGroups()->get(['id', 'name']);
 
@@ -107,13 +109,8 @@ class ProductController extends Controller
         return view('product.products.create', compact('units', 'categories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
-        abort_if(!auth()->user()->can('product_add'), 403);
-        // return $request->all();
-        // return $request->assigned_unit_ids;
-        $this->productService->productStoreValidation(request: $request);
-
         try {
             DB::beginTransaction();
 
@@ -146,7 +143,7 @@ class ProductController extends Controller
 
             $this->productAccessBranchService->addProductAccessBranches(request: $request, productId: $addProduct->id);
 
-            $this->userActivityLogUtil->addLog(action: 1, subject_type: 26, data_obj: $addProduct);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $addProduct);
 
             DB::commit();
         } catch (Exception $e) {
@@ -157,7 +154,7 @@ class ProductController extends Controller
         return $addProduct;
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         abort_if(!auth()->user()->can('product_edit'), 403);
 
@@ -181,12 +178,8 @@ class ProductController extends Controller
         return view('product.products.edit', compact('units', 'categories', 'subCategories', 'brands', 'warranties', 'taxAccounts', 'branches', 'bulkVariants', 'lastProductSerialCode', 'product'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
-        abort_if(!auth()->user()->can('product_add'), 403);
-
-        $this->productService->productUpdateValidation(request: $request, id: $id);
-
         try {
             DB::beginTransaction();
 
@@ -222,7 +215,7 @@ class ProductController extends Controller
 
             $this->productAccessBranchService->updateProductAccessBranches(request: $request, product: $updateProduct);
 
-            $this->userActivityLogUtil->addLog(action: 2, subject_type: 26, data_obj: $updateProduct);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $updateProduct);
 
             DB::commit();
         } catch (Exception $e) {
@@ -238,7 +231,8 @@ class ProductController extends Controller
         $type = $type;
         $generalSettings = config('generalSettings');
         $taxAccounts = $this->accountService->accounts()
-            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
+            ->leftJoin('account_groups', 'accounts.account_group_id', 'account_groups.id')
+            ->where('account_groups.is_default_tax_calculator', BooleanType::True->value)
             ->get(['accounts.id', 'accounts.name', 'accounts.tax_percent']);
 
         $bulkVariants = $this->bulkVariantService->bulkVariants(with: ['bulkVariantChild:id,bulk_variant_id,name'])->get();
@@ -259,6 +253,8 @@ class ProductController extends Controller
 
     public function delete($id)
     {
+        abort_if(!auth()->user()->can('product_delete'), 403);
+
         try {
             DB::beginTransaction();
 
@@ -268,7 +264,7 @@ class ProductController extends Controller
                 return response()->json(['errorMsg' => $deleteProduct['msg']]);
             }
 
-            $this->userActivityLogUtil->addLog(action: 3, subject_type: 26, data_obj: $deleteProduct);
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Product->value, dataObj: $deleteProduct);
 
             DB::commit();
         } catch (Exception $e) {

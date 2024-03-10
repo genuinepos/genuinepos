@@ -14,11 +14,22 @@ class GeneralSettingService implements GeneralSettingServiceInterface
     public function updateAndSync(array $settings): bool
     {
         if (is_array($settings)) {
+
             foreach ($settings as $key => $value) {
+
                 if (isset($key) && isset($value)) {
-                    GeneralSetting::where('key', $key)->update(['value' => $value]);
+
+                    if (
+                        ($key == 'payroll_voucher_prefix' || $key == 'payroll_payment_voucher_prefix') &&
+                        config('generalSettings')['subscription']->features['hrm'] == 0
+                    ) {
+                        continue;
+                    }
+
+                    GeneralSetting::where('key', $key)->where('branch_id', null)->update(['value' => $value]);
                 }
             }
+
             $this->cacheService->syncGeneralSettings();
 
             return true;
@@ -59,7 +70,7 @@ class GeneralSettingService implements GeneralSettingServiceInterface
             !auth()->user()->can('send_sms_settings')
         ) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }

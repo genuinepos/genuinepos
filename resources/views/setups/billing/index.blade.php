@@ -1,5 +1,6 @@
 @extends('layout.master')
 @push('stylesheets')
+    <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .card-body {
             flex: 1 1 auto;
@@ -7,16 +8,17 @@
         }
     </style>
 @endpush
+@php
+    $dateFormat = $generalSettings['business_or_shop__date_format'];
+@endphp
+
 @section('title', 'Billing - ')
 @section('content')
-    @push('stylesheets')
-        <link href="{{ asset('assets/css/tab.min.css') }}" rel="stylesheet" type="text/css" />
-    @endpush
     <div class="body-woaper">
         <div class="main__content">
             <div class="sec-name">
                 <div class="name-head">
-                    <h6>{{ __('Invoice') }}</h6>
+                    <h6>{{ __('Billing') }}</h6>
                 </div>
                 <a href="{{ url()->previous() }}" class="btn text-white btn-sm btn-secondary float-end back-button"><i class="fas fa-long-arrow-alt-left text-white"></i> {{ __('Back') }}</a>
             </div>
@@ -53,12 +55,32 @@
                                         <table class="display table table-sm">
                                             <tbody>
                                                 <tr>
-                                                    <th>{{ __("Plan Active Date") }}</th>
-                                                    <th>: {{ $generalSettings['subscription']->initial_plan_start_date }}</th>
+                                                    <th>{{ __('Plan Active Date') }}</th>
+                                                    <td>: {{ date($dateFormat, strtotime($generalSettings['subscription']->initial_plan_start_date)) }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>{{ __("Current Status") }}</th>
-                                                    <th>: Active</th>
+                                                    <th>{{ __('Multi Store Management System') }} / {{ __("Company") }}</th>
+                                                    <td>:
+                                                        @if ($generalSettings['subscription']->has_business == 1)
+                                                            <span class="text-success fw-bold ">
+                                                                {{ __('Yes') }}
+                                                            </span>
+                                                        @else
+                                                            <span class="text-danger fw-bold ">
+                                                                {{ __('No') }}
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ __('Shop Limit') }}</th>
+                                                    <td>: <span class="text-danger fw-bold">
+                                                        {{ count($branches) }}</span> / {{ $generalSettings['subscription']->current_shop_count }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ __('Current Status') }}</th>
+                                                    <td>: {{ __("Active") }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -67,99 +89,69 @@
                             </div>
 
                             <div class="col-md-4">
-                                <a href="{{ route('software.service.billing.upgrade.plan') }}" class="btn btn-danger p-2">{{ __("Upgrade Plan") }}</a>
-                                <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __("Add Shop") }}</a>
+                                <a href="{{ route('software.service.billing.upgrade.plan.index') }}" class="btn btn-danger p-2">{{ __('Upgrade Plan') }}</a>
+
+                                @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_branch_add'))
+
+                                    <a href="{{ route('software.service.billing.cart.for.add.branch') }}" class="btn btn-success p-2">{{ __('Add Shop') }}</a>
+                                @endif
                             </div>
                         </div>
 
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <div class="card p-1">
-                                        <div class="row mb-1">
-                                            <div class="col-md-6">
-                                                <h6>{{ __("List Of Shops") }}</h6>
-                                            </div>
-
-                                            <div class="col-md-6 text-end">
-                                                <a href="{{ route('software.service.billing.cart.for.renew.branch') }}" class="btn btn-sm btn-success">{{ __("Renew Shop") }}</a>
-                                            </div>
+                                    <div class="row mb-1">
+                                        <div class="col-md-6">
+                                            <h6>{{ __('List of Shops') }}</h6>
                                         </div>
 
-                                        <div class="table-responsive">
-                                            <table class="display data_tbl data__table common-reloader w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>{{ __('Serial') }}</th>
-                                                        <th>{{ __('Shop Name') }}</th>
-                                                        <th>{{ __('Registered On') }}</th>
-                                                        <th>{{ __('Update On') }}</th>
-                                                        <th>{{ __('Expiers On') }}</th>
-                                                        <th>{{ __('Remaining Days') }}</th>
-                                                        <th>{{ __('Status') }}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($shops as $shop)
-                                                        <tr>
-                                                            <td><input type="checkbox" name="" value="{{ $shop->id }}"></td>
-                                                            <td>{{ $shop->id }}</td>
-                                                            <td>{{ $shop->name }}({{ $shop->area_name }})</td>
-                                                            <td>{{ $shop->created_at->format('d-m-Y') }}</td>
-                                                            <td></td>
-                                                            <td>{{ $shop->expire_date }}</td>
-                                                            <td> Days</td>
-                                                            <td>Active</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                        <div class="col-md-6 text-end">
+                                            @if ($generalSettings['subscription']->is_trial_plan == 0 && auth()->user()->can('billing_renew_branch'))
+                                                <a href="{{ route('software.service.billing.cart.for.renew.branch') }}" class="btn btn-sm btn-success">{{ __('Renew Shop') }}</a>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="tab_contant purchase_history d-hide">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table_area">
                                     <div class="table-responsive">
-                                        <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
+                                        <table class="display data_tbl data__table common-reloader w-100">
                                             <thead>
                                                 <tr>
+                                                    <th></th>
                                                     <th>{{ __('Serial') }}</th>
-                                                    <th>{{ __('Purchase Type') }}</th>
-                                                    <th>{{ __('Payment Date') }}</th>
-                                                    <th>{{ __('Transaction ID') }}</th>
-                                                    <th>{{ __('Amount') }}</th>
-                                                    <th>{{ __('Payment Gateway') }}</th>
-                                                    <th>{{ __('Action') }}</th>
+                                                    <th>{{ __('Shop Name') }}</th>
+                                                    <th>{{ __('Registered On') }}</th>
+                                                    <th>{{ __('Expiers On') }}</th>
+                                                    <th>{{ __('Remaining Days') }}</th>
+                                                    <th>{{ __('Status') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @forelse ($subscriptionHistory as $history)
-                                                <tr>
-                                                    <td>{{ $history->id }}</td>
-                                                    <td>Buy Package</td>
-                                                    <td>{{ $history->payment_date->format('d-m-Y') }}</td>
-                                                    <td>{{ $history->payment_trans_id }}</td>
-                                                    <td>{{ $history->total_payable_amount }}</td>
-                                                    <td>{{ $history->payment_method_name }}</td>
-                                                    <td>
-                                                        <a href="{{ route('software.service.billing.invoice.view', $history->id) }}">
-                                                            <i class="fa-solid fa-eye"></i>
-                                                        </a>
-
-                                                        <a href="{{ route('software.service.billing.invoice.download', $history->id) }}">
-                                                            <i class="fa-solid fa-download"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                @empty
-                                                <td colspan="7" class="text-center">No data found!</td>
-                                                @endforelse
+                                                @foreach ($branches as $branch)
+                                                    <tr>
+                                                        <td><input type="checkbox" name="" value="{{ $branch->id }}"></td>
+                                                        <td>{{ $branch->id }}</td>
+                                                        <td>
+                                                            @if ($branch?->parentBranch)
+                                                                {{ $branch?->parentBranch?->name . '(' . $branch->area_name . ')' . $branch->branch_code }}
+                                                            @else
+                                                                {{ $branch?->name . '(' . $branch->area_name . ')-' . $branch->branch_code }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            {{ $branch?->shopExpireDateHistory ? date($dateFormat, strtotime($branch?->shopExpireDateHistory?->start_date)) : date($dateFormat, strtotime($branch?->created_at)) }}
+                                                        </td>
+                                                        <td>{{ date($dateFormat, strtotime($branch->expire_date)) }}</td>
+                                                        <td>
+                                                            @if (date('Y-m-d') < date('Y-m-d', strtotime($branch->expire_date)))
+                                                                <span class="text-success fw-bold">{{ (new \DateTime(date('Y-m-d')))->diff(new \DateTime($branch->expire_date))->days + 1 }}</span> / Days
+                                                            @else
+                                                                <span class="text-danger fw-bold">0</span> / Days
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ date('Y-m-d') > date('Y-m-d', strtotime($branch->expire_date)) ? __('Expired') : __('Active') }}</td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -168,8 +160,56 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="tab_contant purchase_history d-hide">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table_area">
+                                <div class="table-responsive">
+                                    <table id="sales-table" class="display data_tbl data__table common-reloader w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('Serial') }}</th>
+                                                <th>{{ __('Purchase Type') }}</th>
+                                                <th>{{ __('Payment Date') }}</th>
+                                                <th>{{ __('Transaction ID') }}</th>
+                                                <th>{{ __('Amount') }}</th>
+                                                <th>{{ __('Payment Gateway') }}</th>
+                                                <th>{{ __('Action') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($transactions as $transaction)
+                                                <tr>
+                                                    <td>{{ $transaction->id }}</td>
+                                                    <td>{{ str(\App\Enums\SubscriptionTransactionType::tryFrom($transaction->transaction_type)->name)->headline()}}</td>
+                                                    <td>{{ $transaction->payment_date->format('d-m-Y') }}</td>
+                                                    <td>{{ $transaction->payment_trans_id }}</td>
+                                                    <td>{{ $transaction->total_payable_amount }}</td>
+                                                    <td>{{ $transaction->payment_method_name }}</td>
+                                                    <td>
+                                                        <a href="{{ route('software.service.billing.invoice.view', $transaction->id) }}">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </a>
+
+                                                        <a href="{{ route('software.service.billing.invoice.download', $transaction->id) }}">
+                                                            <i class="fa-solid fa-download"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <td colspan="7" class="text-center">{{ __("No data found!") }}</td>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 
@@ -186,4 +226,3 @@
         });
     </script>
 @endpush
-

@@ -91,7 +91,7 @@
                             </td>
 
                             <td class="text-start">
-                                <input required type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
+                                <input type="number" step="any" name="assigned_unit_quantities[]" class="form-control fw-bold multiple_unit_required_sometimes" id="assigned_unit_quantity" placeholder="{{ __('Quantity') }}">
                                 <input type="hidden" name="base_unit_multiplier" id="base_unit_multiplier">
                             </td>
 
@@ -101,7 +101,7 @@
                                         <p class="fw-bold p-1">{{ __("1") }}</p>
                                     </div>
                                     <div class="col-md-10">
-                                        <select required name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes select2" id="assigned_unit_id" style="min-width: 110px !important;">
+                                        <select name="assigned_unit_ids[]" class="form-control assigned_unit_id multiple_unit_required_sometimes select2" id="assigned_unit_id" style="min-width: 110px !important;">
                                             <option data-assigned_unit_name="" value="">{{ __('Unit') }}</option>
                                             @foreach ($units as $unit)
                                                 <option data-assigned_unit_name="{{ $unit->name }}" value="{{ $unit->id }}">{{ $unit->name }}</option>

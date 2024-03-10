@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\Products;
 
-use App\Http\Controllers\Controller;
-use App\Services\Products\WarrantyService;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
+use App\Services\Products\WarrantyService;
+use App\Services\Users\UserActivityLogService;
+use App\Http\Requests\Products\WarrantyStoreRequest;
+use App\Http\Requests\Products\WarrantyUpdateRequest;
 
 class WarrantyController extends Controller
 {
     public function __construct(
         private WarrantyService $warrantyService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserActivityLogService $userActivityLogService
     ) {
         $this->middleware('subscriptionRestrictions');
     }
 
     public function index(Request $request)
     {
-        if (!auth()->user()->can('product_warranty_index')) {
-
-            abort(403, __('Access Forbidden.'));
-        }
+        abort_if(!auth()->user()->can('product_warranty_index'), 403);
 
         if ($request->ajax()) {
 
@@ -37,28 +38,14 @@ class WarrantyController extends Controller
         return view('product.warranties.ajax_view.create');
     }
 
-    public function store(Request $request)
+    public function store(WarrantyStoreRequest $request)
     {
-        if (!auth()->user()->can('product_warranty_add')) {
-
-            return response()->json(__('Access Denied'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'duration' => 'required',
-        ]);
-
         try {
-
             DB::beginTransaction();
 
             $addWarranty = $this->warrantyService->addWarranty(request: $request);
 
-            if ($addWarranty) {
-
-                $this->userActivityLogUtil->addLog(action: 1, subject_type: 25, data_obj: $addWarranty);
-            }
+            $this->userActivityLogService->addLog(action: UserActivityLogActionType::Added->value, subjectType: UserActivityLogSubjectType::Warranties->value, dataObj: $addWarranty);
 
             DB::commit();
         } catch (Exception $e) {
@@ -71,32 +58,23 @@ class WarrantyController extends Controller
 
     public function edit($id)
     {
+        abort_if(!auth()->user()->can('product_warranty_edit'), 403);
+
         $warranty = $this->warrantyService->singleWarranty(id: $id);
 
         return view('product.warranties.ajax_view.edit', compact('warranty'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, WarrantyUpdateRequest $request)
     {
-        if (!auth()->user()->can('product_warranty_edit')) {
-
-            return response()->json(__('Access Denied'));
-        }
-
-        $this->validate($request, [
-            'name' => 'required',
-            'duration' => 'required',
-        ]);
-
         try {
-
             DB::beginTransaction();
 
             $updateWarranty = $this->warrantyService->updateWarranty(id: $id, request: $request);
 
             if ($updateWarranty) {
 
-                $this->userActivityLogUtil->addLog(action: 2, subject_type: 25, data_obj: $updateWarranty);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Updated->value, subjectType: UserActivityLogSubjectType::Warranties->value, dataObj: $updateWarranty);
             }
 
             DB::commit();
@@ -110,20 +88,16 @@ class WarrantyController extends Controller
 
     public function delete($id, Request $request)
     {
-        if (!auth()->user()->can('product_warranty_delete')) {
-
-            return response()->json(__('Access Denied'));
-        }
+        abort_if(!auth()->user()->can('product_warranty_delete'), 403);
 
         try {
-
             DB::beginTransaction();
 
             $deleteWarranty = $this->warrantyService->deleteWarranty(id: $id);
 
-            if (!is_null($deleteWarranty)) {
+            if (isset($deleteWarranty)) {
 
-                $this->userActivityLogUtil->addLog(action: 3, subject_type: 25, data_obj: $deleteWarranty);
+                $this->userActivityLogService->addLog(action: UserActivityLogActionType::Deleted->value, subjectType: UserActivityLogSubjectType::Warranties->value, dataObj: $deleteWarranty);
             }
 
             DB::commit();

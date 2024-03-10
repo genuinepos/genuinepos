@@ -2,104 +2,57 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Enums\SubscriptionTransactionType;
-use App\Http\Controllers\Controller;
-use App\Models\Setups\Branch;
-use App\Models\Subscriptions\Subscription;
-use App\Models\Subscriptions\SubscriptionTransaction;
 use Exception;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Enums\BooleanType;
+use App\Models\Sales\Sale;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Modules\SAAS\Entities\Plan;
+use App\Models\Setups\Branch;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Modules\SAAS\Entities\Plan;
+use App\Models\Purchases\Purchase;
+use Illuminate\Support\Facades\DB;
+use Stancl\Tenancy\Facades\Tenancy;
+use App\Http\Controllers\Controller;
+use App\Services\Setups\BranchService;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
+use App\Enums\SubscriptionTransactionType;
+use App\Models\Subscriptions\Subscription;
+use App\Models\Subscriptions\ShopExpireDateHistory;
+use App\Models\Subscriptions\SubscriptionTransaction;
+use App\Services\Subscriptions\SubscriptionTransactionService;
 
 class SoftwareServiceBillingController extends Controller
 {
+    public function __construct(
+        private BranchService $branchService,
+        private SubscriptionTransactionService $subscriptionTransactionService,
+    ) {
+    }
+
     public function index()
     {
-        $shops = Branch::all();
-        $subscriptionHistory = SubscriptionTransaction::latest()->get();
+        $branches = $this->branchService->branches(with: ['parentBranch', 'shopExpireDateHistory'])
+            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+        $transactions = $this->subscriptionTransactionService->subscriptionTransactions()->latest()->get();
 
-        return view('setups.billing.index', compact('shops', 'subscriptionHistory'));
+        return view('setups.billing.index', compact('branches', 'transactions'));
     }
 
-    public function upgradePlan()
+    public function cartFoAddBranch()
     {
-        DB::statement('use ' . env('DB_DATABASE'));
-        $plans = Plan::active()->where('is_trial_plan', 0)->get();
-
-        DB::reconnect();
-
-        return view('setups.billing.upgrade_plan', compact('plans'));
-    }
-
-    public function cartFoUpgradePlan($id)
-    {
-        DB::statement('use ' . env('DB_DATABASE'));
-        $plan = Plan::findOrFail($id);
-
-        DB::reconnect();
-
-        $currentSubscription = Subscription::with('plan')->first();
-
-        return view('setups.billing.cart_for_upgrade_plan', compact('plan', 'currentSubscription'));
-    }
-
-    public function processUpgradePlan(Request $request, $id)
-    {
-        DB::statement('use ' . env('DB_DATABASE'));
-        $plan = Plan::findOrFail($id);
-        DB::reconnect();
-
-        DB::beginTransaction();
-
-        try {
-            $subscription = Subscription::first();
-
-            $subscription->trial_start_date = null;
-            $subscription->plan_id = $id;
-            $subscription->initial_subtotal = $plan->price_per_year;
-            $subscription->initial_plan_start_date = now();
-            $subscription->initial_plan_expire_date = null;
-            $subscription->save();
-
-            $transaction = new SubscriptionTransaction();
-            $transaction->subscription_id = $subscription->id;
-            $transaction->plan_id = $plan->id;
-            $transaction->transaction_type = SubscriptionTransactionType::UpgradePlan->value;
-            $transaction->payment_method_provider_name = $request->payment_method_name;
-            $transaction->payment_method_name = $request->payment_method_name;
-            $transaction->subtotal = $plan->price_per_year;
-            $transaction->total_payable_amount = $plan->price_per_year;
-            $transaction->paid = $plan->price_per_year;
-            $transaction->payment_status = 1;
-            $transaction->payment_date = now();
-
-            $transaction->save();
-
-            $user = auth()->user();
-
-            DB::commit();
-
-            dispatch(new \Modules\SAAS\Jobs\SendSubscriptionUpgradeMailQueueJob(to: $user->email, user: $user));
-
-            return response()->json(['success' => true, 'message' => 'Subscription upgrade successfully']);
-
-        } catch (\Exception $e) {
-            DB::rollback();
-        }
-    }
-
-    public function cartFoAddBranch() {
-
         return view('setups.billing.cart_for_add_branch');
     }
 
-    public function cartForRenewBranch() {
+    public function cartForRenewBranch()
+    {
         return view('setups.billing.cart_for_branch_renew');
     }
 
-    public function dueRepayment() {
+    public function dueRepayment()
+    {
         return view('setups.billing.due_repayment');
     }
 
@@ -114,7 +67,7 @@ class SoftwareServiceBillingController extends Controller
     {
         $transaction = $this->invoiceQuery($id);
         // return view('setups.invoices.invoice_download', compact('transaction'));
-        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']); ;
+        $pdf = Pdf::loadView('setups.invoices.invoice_download', compact('transaction'))->setOptions(['defaultFont' => 'sans-serif']);;
         return $pdf->download('invoice.pdf');
     }
 
@@ -124,5 +77,27 @@ class SoftwareServiceBillingController extends Controller
         DB::reconnect();
 
         return $transaction;
+    }
+
+    private function getExpireDate(string $period, int $periodCount)
+    {
+        $today = new \DateTime();
+        $lastDate = '';
+        if ($period == 'day') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' days');
+            $lastDate = $today->modify('+1 days');
+        } elseif ($period == 'month') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' months');
+            $lastDate = $today->modify('+1 days');
+        } elseif ($period == 'year') {
+
+            $lastDate = $today->modify('+' . $periodCount . ' years');
+            $lastDate = $today->modify('+1 days');
+        }
+
+        // Format the date
+        return $lastDate->format('Y-m-d');
     }
 }

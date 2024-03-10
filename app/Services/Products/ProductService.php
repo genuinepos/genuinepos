@@ -475,9 +475,9 @@ class ProductService
         $updateProduct->sub_category_id = $request->sub_category_id;
         $updateProduct->brand_id = $request->brand_id;
         $updateProduct->unit_id = $request->unit_id;
-        $updateProduct->alert_quantity = $request->alert_quantity;
+        $updateProduct->alert_quantity = $request->alert_quantity ? $request->alert_quantity : 0;
         $updateProduct->tax_ac_id = $request->tax_ac_id;
-        $updateProduct->tax_type = $request->tax_type;
+        $updateProduct->tax_type = $request->tax_type ? $request->tax_type : 1;
         $updateProduct->product_condition = $request->product_condition;
         $updateProduct->is_show_in_ecom = $request->is_show_in_ecom;
         $updateProduct->is_for_sale = $request->is_for_sale;
@@ -702,30 +702,6 @@ class ProductService
         }
 
         return isset($firstWithSelect) ? $query->where('id', $id)->first($firstWithSelect) : $query->where('id', $id)->first();
-    }
-
-    public function productStoreValidation(object $request)
-    {
-        $request->validate(
-            [
-                'name' => 'required',
-                'code' => 'sometimes|unique:products,product_code',
-                'unit_id' => 'required',
-                'photo' => 'sometimes|image|max:2048',
-            ],
-            [
-                'unit_id.required' => __('Product unit field is required.'),
-            ]
-        );
-
-        if ($request->is_variant == BooleanType::True->value) {
-
-            $request->validate(
-                [
-                    'variant_image.*' => 'sometimes|image|max:2048',
-                ],
-            );
-        }
     }
 
     public function productUpdateValidation(object $request, int $id)

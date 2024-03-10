@@ -75,10 +75,10 @@
                     <span class="sl-no">{{ __('02') }}</span>
                 </button>
 
-                <button class="single-nav stepThreeTab" id="single-nav" data-tab="stepThreeTab">
+                {{-- <button class="single-nav stepThreeTab" id="single-nav" data-tab="stepThreeTab">
                     <span class="txt">{{ __('Step Two') }}</span>
                     <span class="sl-no">{{ __('02') }}</span>
-                </button>
+                </button> --}}
             </div>
 
             <div class="tab-contents mt-1">

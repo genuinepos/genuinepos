@@ -17,6 +17,7 @@ use Modules\SAAS\Http\Controllers\Guest\SendEmailController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSelectController;
 use Modules\SAAS\Http\Controllers\Auth\VerificationController;
 use Modules\SAAS\Http\Controllers\Guest\GuestTenantController;
+use Modules\SAAS\Http\Controllers\Guest\PlanConfirmController;
 use Modules\SAAS\Http\Controllers\DomainAvailabilityController;
 use Modules\SAAS\Http\Controllers\BusinessVerificationController;
 use Modules\SAAS\Http\Controllers\Guest\PlanSubscriptionController;
@@ -32,25 +33,32 @@ Route::middleware('is_guest')->group(function () {
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });
 
-Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
+// Route::get('/plan-payment', fn () => view('saas::guest.plan-payment'))->name('plan.payment');
 
 Route::get('/business-verification', [BusinessVerificationController::class, 'index'])->name('business-verification.index');
 Route::post('/business-verification/send', [BusinessVerificationController::class, 'send'])->name('business-verification.send');
 Route::get('/business-verification/{hash}/verify', [BusinessVerificationController::class, 'verify'])->name('business-verification.verify');
 
 // All User
-Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
-Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
+// Route::get('plan/all', [PlanSelectController::class, 'index'])->name('plan.all');
+// Route::get('plan/{plan:slug}', [PlanSelectController::class, 'show'])->name('plan.detail');
 Route::post('subscriptions/{plan}', [PlanSubscriptionController::class, 'store'])->name('subscriptions.store');
-Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
-Route::get('plan/{plan:slug}/{pricePeriod?}/confirm', [PlanSelectController::class, 'confirm'])->name('plan.confirm');
-Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
+// Route::get('plan/{plan:slug}/subscribe', [PlanSelectController::class, 'subscribe'])->name('plan.subscribe');
+// Route::get('plan/{plan:slug}/{pricePeriod?}/confirm', [PlanSelectController::class, 'confirm'])->name('plan.confirm');
+// Route::post('guest/tenants/store', [GuestTenantController::class, 'store'])->name('guest.tenants.store');
 Route::get('domain/checkAvailability', [DomainAvailabilityController::class, 'checkAvailability'])->name('domain.checkAvailability');
 
 Route::controller(TrialController::class)->prefix('guest/trial')->group(function () {
 
     Route::get('create', 'create')->name('guest.trial.create');
     Route::post('store', 'store')->name('guest.trial.store');
+});
+
+Route::controller(PlanConfirmController::class)->prefix('guest/plan-confirm')->group(function () {
+
+    Route::get('create/{slug}/{pricePeriod?}', 'create')->name('guest.plan.confirm.create');
+    Route::post('confirm', 'confirm')->name('guest.plan.confirm');
+    Route::post('store', 'store')->name('guest.plan.confirm.tenant.store');
 });
 
 Route::controller(SendEmailController::class)->prefix('guest/email')->group(function () {
@@ -71,9 +79,12 @@ Route::middleware('is_auth')->group(function () {
 Route::middleware(['is_verified'])->group(function () {
 
     Route::prefix('dashboard')->group(function () {
+
         Route::controller(DashboardController::class)->group(function () {
+            
             Route::get('/', 'index')->name('dashboard');
         });
+
         Route::resource('tenants', TenantController::class);
     });
 

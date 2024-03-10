@@ -473,7 +473,7 @@
                     },
                     {
                         data: 'customer',
-                        name: 'accounts.name'
+                        name: 'customers.name'
                     },
                     {
                         data: 'delivery_status',
@@ -504,7 +504,7 @@
                     },
                     {
                         data: 'customer',
-                        name: 'accounts.name'
+                        name: 'customers.name'
                     },
                     {
                         data: 'invoice_id',
@@ -547,7 +547,7 @@
                     },
                     {
                         data: 'supplier',
-                        name: 'accounts.name'
+                        name: 'suppliers.name'
                     },
                     {
                         data: 'branch',

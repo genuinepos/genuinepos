@@ -111,7 +111,7 @@ class GeneralSettingsSeeder extends Seeder
             ['key' => 'modules__hrms', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__manage_task', 'value' => '1', 'branch_id' => null],
             ['key' => 'modules__manufacturing', 'value' => '1', 'branch_id' => null],
-            ['key' => 'modules__service', 'value' => null, 'branch_id' => null],
+            ['key' => 'modules__service', 'value' => 1, 'branch_id' => null],
 
             ['key' => 'reward_point_settings__enable_cus_point', 'value' => 0, 'branch_id' => null],
             ['key' => 'reward_point_settings__point_display_name', 'value' => 'Reward Point', 'branch_id' => null],

@@ -27,7 +27,6 @@ class TenantService implements TenantServiceInterface
     {
         try {
             DB::beginTransaction();
-            Artisan::call('tenants:run optimize:clear');
             $plan = Plan::find($tenantRequest['plan_id']);
 
             $expireDate = '';

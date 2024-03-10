@@ -28,7 +28,8 @@
                             <form id="filter_form">
                                 <div class="form-group row g-3">
                                     {{-- @if (auth()->user()->role_type == 1 || auth()->user()->role_type == 2) --}}
-                                    @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1)
+                                    {{-- @if (auth()->user()->can('has_access_to_all_area') && auth()->user()->is_belonging_an_area == 0 && $generalSettings['subscription']->has_business == 1) --}}
+                                    @if (isset($branches) && count($branches) > 0)
                                         <div class="col-md-2">
                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
@@ -48,15 +49,17 @@
                                         </div>
                                     @endif
 
-                                    <div class="col-md-2">
-                                        <label><strong>{{ __('Action By') }} : </strong></label>
-                                        <select name="user_id" class="form-control" id="user_id" autofocus>
-                                            <option value="">{{ __('All') }}</option>
-                                            @foreach ($users as $user)
-
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    @if (isset($users) && count($users) > 0)
+                                        <div class="col-md-2">
+                                            <label><strong>{{ __('Action By') }} : </strong></label>
+                                            <select name="user_id" class="form-control select2" id="user_id" autofocus>
+                                                <option value="">{{ __('All') }}</option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}">{{ $user->prefix . ' ' . $user->name . ' ' . $user->last_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
 
                                     <div class="col-md-2">
                                         <label><strong>{{ __('Action Name') }} : </strong></label>
@@ -177,39 +180,17 @@
                     d.user_id = $('#user_id').val();
                     d.action = $('#action').val();
                     d.subject_type = $('#subject_type').val();
-                    d.from_date = $('.from_date').val();
-                    d.to_date = $('.to_date').val();
+                    d.from_date = $('#from_date').val();
+                    d.to_date = $('#to_date').val();
                 }
             },
-            columnDefs: [{
-                "targets": [3, 4],
-                "orderable": false,
-                "searchable": false
-            }],
-            columns: [{
-                    data: 'date',
-                    name: 'date'
-                },
-                {
-                    data: 'branch',
-                    name: 'branches.name'
-                },
-                {
-                    data: 'action_by',
-                    name: 'users.name'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
-                {
-                    data: 'subject_type',
-                    name: 'subject_type'
-                },
-                {
-                    data: 'descriptions',
-                    name: 'descriptions'
-                },
+            columns: [
+                { data: 'date', name: 'date' },
+                { data: 'branch', name: 'branches.name' },
+                { data: 'action_by', name: 'users.name' },
+                { data: 'action', name: 'action' },
+                { data: 'subject_type', name: 'subject_type' },
+                { data: 'descriptions', name: 'descriptions' },
             ],
             fnDrawCallback: function() {
 
@@ -256,7 +237,7 @@
     <script type="text/javascript">
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker'),
+            element: document.getElementById('from_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,
@@ -275,7 +256,7 @@
 
         new Litepicker({
             singleMode: true,
-            element: document.getElementById('datepicker2'),
+            element: document.getElementById('to_date'),
             dropdowns: {
                 minYear: new Date().getFullYear() - 50,
                 maxYear: new Date().getFullYear() + 100,

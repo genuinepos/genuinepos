@@ -15,7 +15,7 @@ return new class extends Migration
 
             if (Schema::hasColumn('branches', 'expire_at')) {
 
-                $table->renameColumn('expire_at', 'expire_date');
+                $table->dropColumn('expire_at');
             }
         });
     }
@@ -27,7 +27,7 @@ return new class extends Migration
     {
         Schema::table('branches', function (Blueprint $table) {
 
-            $table->renameColumn('expire_date', 'expire_at');
+            $table->date('expire_date')->after('purchase_permission')->nullable();
         });
     }
 };

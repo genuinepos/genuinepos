@@ -592,7 +592,7 @@
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');
                 toastr.error(err.responseJSON.message);
-                location.reload(true);
+                // location.reload(true);
             }
         });
     });

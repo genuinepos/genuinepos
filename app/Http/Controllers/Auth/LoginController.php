@@ -75,7 +75,7 @@ class LoginController extends Controller
             ->orWhere('email', $request->username_or_email)->first();
 
         if (
-            $subscription->$user?->branch &&
+            $user?->branch &&
             isset($user?->branch?->expire_date) &&
             date('Y-m-d') > $user?->branch?->expire_date
         ) {

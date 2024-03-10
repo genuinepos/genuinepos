@@ -1,9 +1,9 @@
 <script>
 $(document).on('submit', '#add_data', function(event) {
-    event.preventDefault(); // Prevent default form submission
-    var formData = $(this).serialize(); // Serialize form data
+    event.preventDefault(); 
+    var formData = $(this).serialize(); 
     $.ajax({
-        url: "{{ route('servers.store') }}",
+        url: "{{ route('body.store') }}",
         type: 'POST',
         data: formData,
         headers: {
@@ -11,9 +11,11 @@ $(document).on('submit', '#add_data', function(event) {
         },
         success: function(response) {
             $('.data_tbl').DataTable().ajax.reload(); 
-            toastr . success(response . message);
-            console.log(response);
+            toastr.success(response.message); 
             document.getElementById("add_data").reset(); 
+            Object.values(window.editors).forEach(editor => {
+                editor.setData('');
+            });
         },
         error: function(xhr, status, error) {
             var errorData = JSON.parse(xhr.responseText); 

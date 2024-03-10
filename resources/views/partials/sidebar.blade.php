@@ -2164,7 +2164,7 @@
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __('Add Server') }}</p>
+                                            <p class="switch_text">{{ __('Add Provider') }}</p>
                                         </a>
                                     </div>
 
@@ -2180,7 +2180,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="" class="switch-bar-wrap">
+                                        <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
@@ -2191,7 +2191,7 @@
                                     </div>
 
                                     <div class="sub-menu-col">
-                                        <a href="" class="switch-bar-wrap">
+                                        <a href="#" class="switch-bar-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
@@ -2232,14 +2232,70 @@
                                         </a>
                                     </div>
 
-                                    <div class="sub-menu-col">
-                                        <a href="#" class="switch-bar-wrap settings-wrap">
+                                        <div class="sub-menu-col">
+                                        <a href="{{route('sms-send.index')}}" class="switch-bar-wrap settings-wrap">
                                             <div class="switch_bar">
                                                 <div class="bar-link">
                                                     <span><i class="fas fa-sliders-h"></i></span>
                                                 </div>
                                             </div>
-                                            <p class="switch_text">{{ __("Send Sms") }}</p>
+
+                                            <p class="switch_text">{{ __("Send SMS") }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="{{route('sms-server.index')}}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Add Provider') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="{{route('sms-body.index')}}" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Body Format') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Default Provider') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Manual SMS') }}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="sub-menu-col">
+                                        <a href="#" class="switch-bar-wrap">
+                                            <div class="switch_bar">
+                                                <div class="bar-link">
+                                                    <span><i class="fas fa-sliders-h"></i></span>
+                                                </div>
+                                            </div>
+                                            <p class="switch_text">{{ __('Sms Permission') }}</p>
                                         </a>
                                     </div>
                                 </div>

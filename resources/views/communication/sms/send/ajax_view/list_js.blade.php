@@ -9,7 +9,7 @@
             }
             $("#status_id").val(status);
             $.ajax({
-                url: "{{ route('send.index') }}",
+                url: "{{ route('sms-send.index') }}",
                 type: 'GET',
                 data: {
                     status: status,
@@ -17,7 +17,7 @@
                 success: function(response) {
                     
                     var table = '<table class="table">';
-                    table += '<thead class="table table-bordered"><tr><th>Check</th> <th>Email</th> <th>Subject</th> <th>Time</th> <th>Action</th> </tr></thead>';
+                    table += '<thead class="table table-bordered"><tr><th>Check</th> <th>Phone</th> <th>Message</th> <th>Time</th> <th>Action</th> </tr></thead>';
                     table += '<tbody>';
                     $.each(response.data, function(index, item) {
                           var actionBtn = '';
@@ -28,8 +28,8 @@
                             }
                         table += '<tr>';
                         table += '<td><input type="checkbox" class="checkbox-item" data-id="' + item.id + '"></td>';
-                        table += '<td>' + item.mail + '</td>';
-                        table += '<td>' + item.subject + '</td>';
+                        table += '<td>' + item.phone + '</td>';
+                        table += '<td>' + item.message + '</td>';
                         table += '<td>' + formatTime(item.created_at) + '</td>'; 
                         table += '<td>';
                         table += actionBtn;

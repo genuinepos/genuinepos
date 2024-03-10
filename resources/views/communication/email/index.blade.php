@@ -63,14 +63,14 @@
                     <label>Sender Name</label>
                     <input type="text" name="name"  class="form-control" autocomplete="off" placeholder="Ex. Mr.Xyz">
                 </div>
-
+<!-- 
                 <div class="form-group">
                     <label>Access Shop</label>
                     <select class="form-control select2"  multiple>
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label>Status</label>
@@ -89,7 +89,7 @@
       </div>
 
 
-        <div class="col-md-9 card mb-3">
+        <!-- <div class="col-md-9 card mb-3">
                 <div class="form-group">
                     <label>Server</label>
                     <input type="text" class="form-control" autocomplete="off" placeholder="Ex. smtp">
@@ -135,7 +135,7 @@
                     <button style="margin:-1px 10px" type="button"  class="btn btn-sm btn-success float-end">Save</button>
                 </div>
                 <br>
-        </div>
+        </div> -->
 
 
 

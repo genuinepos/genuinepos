@@ -3,7 +3,7 @@ $(document).on('submit', '#mail_send', function(event) {
     event.preventDefault();
   var formData = new FormData($(this)[0]);
     $.ajax({
-        url: "{{ route('send.store') }}",
+        url: "{{ route('sms-send.store') }}",
         type: 'POST',
         data: formData,
         headers: {

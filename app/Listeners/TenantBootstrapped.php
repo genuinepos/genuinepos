@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
-use Exception;
-use App\Models\GeneralSetting;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Schema;
+use App\Models\Communication\Email\EmailServer;
+
+use Illuminate\Support\Facades\Config;
+
 
 class TenantBootstrapped
 {
@@ -23,5 +21,17 @@ class TenantBootstrapped
      */
     public function handle(object $event): void
     {
+        // $configuration = EmailServer::where('status', 1)->first();
+
+        // if ($configuration) {
+        //     Config::set('mail.mailers.smtp.host', $configuration->host);
+        //     Config::set('mail.mailers.smtp.port', $configuration->port);
+        //     Config::set('mail.mailers.smtp.username', $configuration->user_name);
+        //     Config::set('mail.mailers.smtp.password', $configuration->password);
+        //     Config::set('mail.mailers.smtp.encryption', $configuration->encryption);
+        // } else {
+        //     throw new \Exception("No active email server configuration found.");
+        // }
+
     }
 }

@@ -5,7 +5,7 @@
      var status = parseInt($("#status_id").val(), 10);
         e.preventDefault(); 
         var id = $(this).data('id');
-        var url = "{{ route('send.destroy', ':id') }}"; 
+        var url = "{{ route('sms-send.destroy', ':id') }}"; 
         url = url.replace(':id', id); 
         var confirmation = confirm("Are you sure?");
         if(confirmation){

@@ -1,11 +1,9 @@
 <script>
     $(document).ready(function() {
-
     $(document).on('click', '.delete-btn', function(e) {
-     var status = parseInt($("#status_id").val(), 10);
         e.preventDefault(); 
         var id = $(this).data('id');
-        var url = "{{ route('send.destroy', ':id') }}"; 
+        var url = "{{ route('body.destroy', ':id') }}"; 
         url = url.replace(':id', id); 
         var confirmation = confirm("Are you sure?");
         if(confirmation){
@@ -16,7 +14,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
                     },
                     success: function(response) {
-                        getData(status);
+                        $('.data_tbl').DataTable().ajax.reload();
                         toastr . success(response . message);
                     },
                     error: function(xhr, status, error) {
@@ -25,6 +23,7 @@
                     }
                 });
         }
+
     });
 });
 </script>

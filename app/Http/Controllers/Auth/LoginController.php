@@ -74,14 +74,18 @@ class LoginController extends Controller
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
 
-        if ($user?->branch && date('Y-m-d') > $user?->branch->expire_date) {
+        if (
+            $subscription->$user?->branch &&
+            isset($user?->branch?->expire_date) &&
+            date('Y-m-d') > $user?->branch?->expire_date
+        ) {
 
             $msg = __('Login failed. Shop ') . ': ' . $user->branch->name . '/' . $user->branch->branch_code . ' ' . __('is expired. Please Contact your Business/Authority.');
             session()->flash('errorMsg', $msg);
             return redirect()->back();
         }
 
-        if (isset($user) && $user->allow_login == 1) {
+        if (isset($user) && $user->allow_login == BooleanType::True->value) {
 
             if (
                 Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
@@ -95,7 +99,7 @@ class LoginController extends Controller
 
                 $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id, user_id: $user->id);
 
-                if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == 0) {
+                if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == BooleanType::False->value) {
 
                     $user->branch_id = $firstBranch->id;
                     $user->is_belonging_an_area = BooleanType::True->value;

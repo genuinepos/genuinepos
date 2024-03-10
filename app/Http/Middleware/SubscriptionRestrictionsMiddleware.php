@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\BooleanType;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,56 +23,61 @@ class SubscriptionRestrictionsMiddleware
         $subscription = $generalSettings['subscription'];
 
         if (
-            $subscription->has_business == 1 &&
+            $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 0)
+            ($subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::False->value)
         ) {
 
             Session::put('startupType', 'business_and_branch');
             return redirect()->route('setup.startup.form');
         } else if (
-            $subscription->has_business == 0 &&
+            $subscription->has_business == BooleanType::False->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == 0
+            $subscription->is_completed_branch_startup == BooleanType::False->value
         ) {
 
             Session::put('startupType', 'branch');
             return redirect()->route('setup.startup.form');
         } else if (
-            $subscription->has_business == 1 &&
+            $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 1)
+            (
+                $subscription->is_completed_business_startup == BooleanType::False->value &&
+                $subscription->is_completed_branch_startup == BooleanType::True->value
+            )
         ) {
 
             Session::put('startupType', 'business');
             return redirect()->route('setup.startup.form');
         } else if (
-            $subscription->has_business == 1 &&
+            $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 1)
+            ($subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value)
         ) {
 
             Session::put('startupType', 'business');
             return redirect()->route('setup.startup.form');
         } else if (
-            $subscription->has_business == 1 &&
+            $subscription->has_business == BooleanType::True->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            ($subscription->is_completed_business_startup == 0 && $subscription->is_completed_branch_startup == 0)
+            (
+                $subscription->is_completed_business_startup == BooleanType::False->value && $subscription->is_completed_branch_startup == BooleanType::True->value
+            )
         ) {
 
             Session::put('startupType', 'business_and_branch');
             return redirect()->route('setup.startup.form');
         } else if (
-            $subscription->has_business == 0 &&
+            $subscription->has_business == BooleanType::False->value &&
             auth()->user()->can('has_access_to_all_area') &&
-            $subscription->is_completed_branch_startup == 0
+            $subscription->is_completed_branch_startup == BooleanType::False->value
         ) {
 
             Session::put('startupType', 'branch');
             return redirect()->route('setup.startup.form');
         }
 
-        if ($subscription->is_trial_plan == 1) {
+        if ($subscription->is_trial_plan == BooleanType::True->value) {
 
             $trialExpireDate = $this->getTrialExpireDate($subscription->trial_start_date, $subscription->trial_days);
 

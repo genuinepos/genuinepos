@@ -15,6 +15,7 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::delete('delete/{id}', 'delete')->name('users.delete');
     Route::get('show/{id}', 'show')->name('users.show');
     Route::post('change/branch', 'changeBranch')->name('users.change.branch');
+    Route::post('branch/users/{isOnlyAuthenticatedUser}/{branchId?}', 'branchUsers')->name('users.branch.users');
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
 

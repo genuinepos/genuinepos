@@ -34,7 +34,7 @@
                                             <label><strong>{{ __('Shop/Business') }}</strong></label>
                                             <select name="branch_id" class="form-control select2" id="branch_id" autofocus>
                                                 <option value="">{{ __('All') }}</option>
-                                                <option value="NULL">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
+                                                <option value="business">{{ $generalSettings['business_or_shop__business_name'] }}({{ __('Business') }})</option>
                                                 @foreach ($branches as $branch)
                                                     <option value="{{ $branch->id }}">
                                                         @php
@@ -120,7 +120,7 @@
                     </div>
                     <div class="table-responsive" id="data-list">
                         {{-- <table class="display data_tbl data__table table-hover"> --}}
-                        <table class="log_table display data_tbl modal-table table-sm table-striped">
+                        <table class="log_table display data_tbl table-sm ">
                             <thead>
                                 <tr>
                                     <th>{{ __('Date') }}</th>
@@ -148,7 +148,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/litepicker/2.0.11/litepicker.min.js" integrity="sha512-1BVjIvBvQBOjSocKCvjTkv20xVE8qNovZ2RkeiWUUvjcgSaSSzntK8kaT4ZXXlfW5x1vkHjJI/Zd1i2a8uiJYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        var log_table = $('.data_tbl').DataTable({
+        var logTable = $('.data_tbl').DataTable({
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
@@ -202,34 +202,35 @@
         $(document).on('submit', '#filter_form', function(e) {
             e.preventDefault();
             $('.data_preloader').show();
-            log_table.ajax.reload();
+            logTable.ajax.reload();
         });
 
-        // $(document).on('change', '#branch_id', function(e) {
+        $(document).on('change', '#branch_id', function(e) {
 
-        //     var branch_id = $(this).val();
-        //     getBrandAllowLoginUsers(branch_id)
-        // });
+            var branch_id = $(this).val();
+            getBrandAllowLoginUsers(branch_id)
+        });
 
-        // function getBrandAllowLoginUsers(branchId) {
+        function getBrandAllowLoginUsers(branchId) {
 
-        //     var branchId = branchId ? branchId : 'NULL';
-        //     $.ajax({
-        //         url: "{{ url('common/ajax/call/branch/allow/login/users/') }}" + "/" + branchId,
-        //         type: 'get',
-        //         success: function(data) {
+            var branchId = branchId ? branchId : 'null';
 
-        //             $('#user_id').empty();
-        //             $('#user_id').append('<option value="">@lang('menu.all')</option>');
-        //             $.each(data, function(key, val) {
+            $.ajax({
+                url: "{{ url('common/ajax/call/branch/allow/login/users/') }}" + "/" + branchId,
+                type: 'get',
+                success: function(data) {
 
-        //                 var userPrefix = val.prefix != null ? val.prefix : '';
-        //                 var userLastName = val.last_name != null ? val.last_name : '';
-        //                 $('#user_id').append('<option value="' + val.id + '">' + userPrefix + ' ' + val.name + ' ' + userLastName + '</option>');
-        //             });
-        //         }
-        //     })
-        // }
+                    $('#user_id').empty();
+                    $('#user_id').append('<option value="">@lang('menu.all')</option>');
+                    $.each(data, function(key, val) {
+
+                        var userPrefix = val.prefix != null ? val.prefix : '';
+                        var userLastName = val.last_name != null ? val.last_name : '';
+                        $('#user_id').append('<option value="' + val.id + '">' + userPrefix + ' ' + val.name + ' ' + userLastName + '</option>');
+                    });
+                }
+            })
+        }
 
         // getBrandAllowLoginUsers($('#branch_id').val());
     </script>

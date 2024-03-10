@@ -30,9 +30,9 @@ class GuestTenantStoreRequest extends FormRequest
             // 'password' => ['required', Password::default()],
         ];
 
-        if (!config('app.debug')) {
-            $rules['g-recaptcha-response'] = 'required|captcha';
-        }
+        // if (!config('app.debug')) {
+        //     $rules['g-recaptcha-response'] = 'required|captcha';
+        // }
 
         return $rules;
     }

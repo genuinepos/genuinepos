@@ -4,6 +4,7 @@ namespace Modules\SAAS\Http\Controllers\Guest;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;

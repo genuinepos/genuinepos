@@ -54,15 +54,15 @@ class GuestTenantStoreRequest extends FormRequest
         ];
     }
 
-    protected function passedValidation()
-    {
-        $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
-        $isTrial = Plan::find($this->plan_id)->price == 0;
+    // protected function passedValidation()
+    // {
+    //     $isIpAddressBlocked = User::where('ip_address', $this->ip())->exists();
+    //     $isTrial = Plan::find($this->plan_id)->price == 0;
 
-        if ($isIpAddressBlocked && $isTrial) {
-            throw ValidationException::withMessages([
-                'ip_address' => ['Sorry, you already have an business registered.'],
-            ]);
-        }
-    }
+    //     if ($isIpAddressBlocked && $isTrial) {
+    //         throw ValidationException::withMessages([
+    //             'ip_address' => ['Sorry, you already have an business registered.'],
+    //         ]);
+    //     }
+    // }
 }

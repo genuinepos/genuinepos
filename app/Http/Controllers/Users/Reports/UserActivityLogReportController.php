@@ -74,7 +74,7 @@ class UserActivityLogReportController extends Controller
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
                     $dateFormat = $generalSettings['business_or_shop__date_format'];
-                    return date($dateFormat . ' h:i:s a', strtotime($row->report_date));
+                    return date($dateFormat . ' h:i:s A', strtotime($row->report_date));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
                     if ($row->branch_id) {
@@ -154,7 +154,7 @@ class UserActivityLogReportController extends Controller
     {
         if ($request->branch_id) {
 
-            if ($request->branch_id == 'NULL') {
+            if ($request->branch_id == 'business') {
 
                 $query->where('user_activity_logs.branch_id', null);
             } else {

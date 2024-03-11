@@ -358,7 +358,6 @@ class UserService
 
     public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null): array|object
     {
-
         if ($allowAll == 0 && ($branchId == 'null' || $branchId == '')) {
             return [];
         }

@@ -63,14 +63,6 @@
                     <label>Sender Name</label>
                     <input type="text" name="name"  class="form-control" autocomplete="off" placeholder="Ex. Mr.Xyz">
                 </div>
-<!-- 
-                <div class="form-group">
-                    <label>Access Shop</label>
-                    <select class="form-control select2"  multiple>
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div> -->
 
                 <div class="form-group">
                     <label>Status</label>
@@ -81,66 +73,17 @@
                 </div>
 
                 <div class="form-group mt-3">
+                     <button style="margin:-1px 10px" type="submit" id="add" class="btn btn-sm btn-success float-end">Save</button>
                     <button type="reset" style="margin:-1px 10px"  class="btn btn-sm btn-danger float-end mr-2">Reset</button>
-                    <button style="margin:-1px 10px" type="submit" id="add" class="btn btn-sm btn-success float-end">Save</button>
+                   
                 </div>
                 <br>
           </form>
       </div>
 
 
-        <!-- <div class="col-md-9 card mb-3">
-                <div class="form-group">
-                    <label>Server</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. smtp">
-                </div>
-
-                <div class="form-group">
-                    <label>Host</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. smtp.gmail.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Port</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. 587">
-                </div>
-
-                <div class="form-group">
-                    <label>User Name</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. @username">
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" autocomplete="off" placeholder="Ex. ******">
-                </div>
-
-                <div class="form-group">
-                    <label>Encryption</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. Tis/Ssl">
-                </div>
-
-                <div class="form-group">
-                    <label>Sender Mail</label>
-                    <input type="email" class="form-control" autocomplete="off" placeholder="Ex. xyz@email.com">
-                </div>
-
-                <div class="form-group">
-                    <label>Sender Name</label>
-                    <input type="text" class="form-control" autocomplete="off" placeholder="Ex. Mr.Xyz">
-                </div>
-
-                <div class="form-group mt-3">
-                    <button type="reset" style="margin:-1px 10px"  class="btn btn-sm btn-danger float-end mr-2">Reset</button>
-                    <button style="margin:-1px 10px" type="button"  class="btn btn-sm btn-success float-end">Save</button>
-                </div>
-                <br>
-        </div> -->
-
-
-
-      <div class="panel-body card">
-            <div class="row">
+     <div class="col-md-9 card mb-3">
+         <div class="panel-body card">
               <div class="table-responsive" id="data_list">
                  <table class="display table-hover data_tbl data__table">
                     <thead>
@@ -160,10 +103,11 @@
                        <tbody></tbody>
                     </table> 
                 </div>
-            </div>
-        </div>
+           </div>
        </div>
     </div>
+</div> 
+
 @endsection
 
 @push('scripts')

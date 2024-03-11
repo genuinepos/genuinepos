@@ -10,7 +10,7 @@ class EmailServerService
     public function index($request)
     {
 
-        $data = EmailServer::query()->orderBy('id', 'desc');
+        $data = EmailServer::query()->orderBy('host', 'desc');
 
         if ($request->ajax()) {
             return DataTables::of($data)

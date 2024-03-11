@@ -11,7 +11,7 @@
                     <div class="row" data-select2-id="select2-data-5-qlgx">
                         <div class="col-5">
                             <button type="button" class="btn btn-primary btn-sm mb-2 p-1" id="addMoreButton"><i
-                                    class="fas fa-plus"></i> Add More Phone</button>
+                                    class="fas fa-plus"></i> Add More Email</button>
                         </div>
 
                         <div class="col-7" data-select2-id="select2-data-4-t4zu">
@@ -29,9 +29,19 @@
 
                     <div class="row" id="to_area">
                        <div class="col-md-12">
-                            <label><strong>To <span class="text-danger">*</span></strong></label>
+                            <label><strong>Email <span class="text-danger">*</span></strong></label>
                             <div id="emailContainer">
-                                <input type="text" name="phone[]" class="form-control add_input" placeholder="Phone" required>
+                                <input type="text" name="mail[]" class="form-control add_input" placeholder="Email" required>
+                                <span class="error error_to"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="to_area">
+                       <div class="col-md-12">
+                            <label><strong>Subject <span class="text-danger">*</span></strong></label>
+                            <div id="emailContainer">
+                                <input type="text" name="subject" class="form-control add_input" placeholder="Subject" required>
                                 <span class="error error_to"></span>
                             </div>
                         </div>
@@ -41,6 +51,16 @@
                         <div class="col-md-12">
                             <label><strong>Body </strong><span class="text-danger">*</span></label>
                             <textarea class="form-control" name="message" cols="5" rows="5" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" id="to_area">
+                       <div class="col-md-12">
+                            <label><strong>Attachment</strong></label>
+                            <div id="emailContainer">
+                                <input type="file" name="attachment[]" class="form-control add_input" multiple>
+                                <span class="error error_to"></span>
+                            </div>
                         </div>
                     </div>
 

@@ -11,9 +11,7 @@ class EmailSendService
 {
     public function index($request)
     {
-
         $data = SendEmail::query()->orderBy('id', 'desc');
-
         if ($request->ajax()) {
             if ($request->status == 4) {
                 $data = $data->withTrashed()->whereNotNull('deleted_at');
@@ -32,26 +30,22 @@ class EmailSendService
 
     public function store($request)
     {
-
         try {
-            //  return $request;
             $subject = $request->input('subject');
             $message = $request->input('message');
             $formEmails = $request->input('mail');
             $group = $request->input('group_id');
             $emailRecipients = [];
             $emailsSent = false;
-
-// Handle file uploads
             $attachments = [];
-            if ($request->hasFile('attach')) {
-                foreach ($request->attach as $file) {
-                    $path = $file->store('email/attachment');
-                    $attachments[] = [
-                        'path' => storage_path('app/' . $path),
-                        'name' => $file->getClientOriginalName(),
-                        'mime' => $file->getClientMimeType(),
-                    ];
+
+            if ($request->hasFile('attachment')) {
+                foreach ($request->attachment as $images) {
+                    $fileName = uniqid() . '.' . $images->getClientOriginalExtension();
+                    $tenantFolder = 'attachment/' . tenant('id');
+                    $images->move(public_path($tenantFolder), $fileName);
+                    $attachmentUrl = public_path('attachment/patho/'.$fileName);
+                    $attachments[] = $attachmentUrl;
                 }
             }
 
@@ -100,9 +94,8 @@ class EmailSendService
             }
 
         } catch (\Exception $e) {
-            return ['status' => 'error', 'message' => $e->getMessage(), 'On line'=>$e->getLine()];
+            return ['status' => 'error', 'message' => $e->getMessage(), 'On line' => $e->getLine()];
         }
-
     }
 
     public function edit($id)
@@ -139,7 +132,6 @@ class EmailSendService
 
     public function deleteEmailMultiple($request)
     {
-
         $deleted = SendEmail::whereIn('id', $request->ids)->delete();
 
         if ($deleted) {
@@ -151,9 +143,7 @@ class EmailSendService
 
     public function deleteEmailPermanent($request)
     {
-
         $deleted = SendEmail::whereIn('id', $request->ids)->forceDelete();
-
         if ($deleted) {
             return ['status' => 'success', 'message' => 'Email deleted successfully'];
         } else {

@@ -188,8 +188,8 @@
                 { data: 'date', name: 'date' },
                 { data: 'branch', name: 'branches.name' },
                 { data: 'action_by', name: 'users.name' },
-                { data: 'action', name: 'action' },
-                { data: 'subject_type', name: 'subject_type' },
+                { data: 'action', name: 'users.last_name' },
+                { data: 'subject_type', name: 'users.prefix' },
                 { data: 'descriptions', name: 'descriptions' },
             ],
             fnDrawCallback: function() {
@@ -228,7 +228,7 @@
                 success: function(data) {
 
                     $('#user_id').empty();
-                    $('#user_id').append('<option value="">@lang('menu.all')</option>');
+                    $('#user_id').append('<option value="">'+"{{ __('All') }}"+'</option>');
                     $.each(data, function(key, val) {
 
                         var userPrefix = val.prefix != null ? val.prefix : '';
@@ -238,8 +238,6 @@
                 }
             })
         }
-
-        // getBrandAllowLoginUsers($('#branch_id').val());
     </script>
 
     <script type="text/javascript">

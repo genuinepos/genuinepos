@@ -322,11 +322,15 @@ class UserService
         $user->save();
     }
 
-    public function getBranchUsers(bool $isOnlyAuthenticatedUser, int|string $branchId = null) : ?object {
+    public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null) : array|object {
+
+        if ($allowAll == 0 && ($branchId == 'null' || $branchId == '')) {
+            return [];
+        }
 
         $branchId = $branchId == 'business' ? null : $branchId;
         $branchId = $branchId == 'null' ? null : $branchId;
-        $query = $userService->users();
+        $query = $this->users();
 
         if (isset($branchId) && $branchId == 'NULL') {
 

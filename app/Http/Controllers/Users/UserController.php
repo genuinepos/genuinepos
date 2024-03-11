@@ -116,8 +116,8 @@ class UserController extends Controller
         return response()->json(__('Succeed'));
     }
 
-    public function branchUsers($isOnlyAuthenticatedUser = 1, $branchId = null)
+    public function branchUsers($isOnlyAuthenticatedUser, $allowAll, $branchId = null)
     {
-        return $this->userService->getBranchUsers(branchId: $branchId, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
+        return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
     }
 }

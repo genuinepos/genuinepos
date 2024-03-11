@@ -215,8 +215,15 @@
 
             var branchId = branchId ? branchId : 'null';
 
+            var isOnlyAuthenticatedUser = 1;
+            var allowAll = 1;
+            var url = "{{ route('users.branch.users', [':isOnlyAuthenticatedUser', ':allowAll', ':branchId']) }}";
+            var route = url.replace(':isOnlyAuthenticatedUser', isOnlyAuthenticatedUser);
+            route = route.replace(':allowAll', allowAll);
+            route = route.replace(':branchId', branchId);
+
             $.ajax({
-                url: "{{ url('common/ajax/call/branch/allow/login/users/') }}" + "/" + branchId,
+                url: route,
                 type: 'get',
                 success: function(data) {
 

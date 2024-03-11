@@ -316,10 +316,9 @@ class UserService
     {
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
         $__branchId = isset($request->select_type) && $request->select_type == 'business' ? null : $branchId;
-        $user = $this->singleUser(id: auth()->user()->id);
-        $user->branch_id = $__branchId;
-        $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
-        $user->save();
+        auth()->user()->branch_id = $__branchId;
+        auth()->user()->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
+        auth()->user()->save();
     }
 
     public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null) : array|object {
@@ -371,43 +370,5 @@ class UserService
         }
 
         return $query;
-    }
-
-    public function updateUserValidation(object $request, int $id, ?object $role)
-    {
-        $user = $this->singleUser(id: $id);
-
-        $request->validate([
-            'first_name' => 'required',
-            'email' => 'required|unique:users,email,' . $id,
-            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
-        ]);
-
-        if ($role?->name != 'admin' && $role?->name != 'superadmin' && isset($request->branch_count)) {
-
-            $request->validate([
-                'branch_id' => 'required',
-            ], ['branch_id.required' => __('Shop/Business is required.')]);
-        }
-
-        if ($request->allow_login == BooleanType::True->value) {
-
-            $request->validate([
-                'role_id' => 'required',
-                'username' => 'required|unique:users,username,' . $id,
-            ]);
-
-            if (!$user->password) {
-
-                $request->validate([
-                    'password' => 'required|confirmed',
-                ]);
-            } else {
-
-                $request->validate([
-                    'password' => 'sometimes|confirmed',
-                ]);
-            }
-        }
     }
 }

@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use App\Enums\RoleType;
 use App\Enums\BooleanType;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +75,7 @@ class LoginController extends Controller
             ->orWhere('email', $request->username_or_email)->first();
 
         $role = $user->roles()->first();
-        if ($role->hasPermissionTo('has_access_to_all_area')) {
+        if ($role->hasPermissionTo('has_access_to_all_area') && ($subscription->current_shop_count > 1 || $subscription->has_business == BooleanType::True->value)) {
 
             $user->branch_id = null;
             $user->is_belonging_an_area = BooleanType::False->value;
@@ -96,12 +94,11 @@ class LoginController extends Controller
         }
 
         if (isset($user) && $user->allow_login == BooleanType::True->value) {
-            
+
             if (
                 Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
                 Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
             ) {
-
                 if (!Session::has($user->language)) {
 
                     session(['lang' => $user->language]);
@@ -114,7 +111,7 @@ class LoginController extends Controller
                     $user->save();
                 }
 
-                if (!$role->hasPermissionTo('has_access_to_all_area')) {
+                if ($user->branch_id) {
 
                     $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
                 }

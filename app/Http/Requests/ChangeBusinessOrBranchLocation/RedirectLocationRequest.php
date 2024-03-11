@@ -32,7 +32,7 @@ class RedirectLocationRequest extends FormRequest
     public function messages()
     {
         return [
-            'branch_id.required' => 'Please Select a shop.'
+            'branch_id.required' => 'Please select a shop.'
         ];
     }
 }

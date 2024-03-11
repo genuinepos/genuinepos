@@ -115,4 +115,9 @@ class UserController extends Controller
         $this->userService->changeBranch(request: $request);
         return response()->json(__('Succeed'));
     }
+
+    public function branchUsers($isOnlyAuthenticatedUser, $allowAll, $branchId = null)
+    {
+        return $this->userService->getBranchUsers(branchId: $branchId, allowAll: $allowAll, isOnlyAuthenticatedUser: $isOnlyAuthenticatedUser);
+    }
 }

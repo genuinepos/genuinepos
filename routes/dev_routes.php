@@ -231,7 +231,11 @@ Route::get('my-test', function () {
     // $timestamp = Carbon::parse($timestamp)->timezone('America/New_York')->format('Y-m-d H:i:s');
     // return $timestamp = Carbon::parse(date('Y-m-d H:i:s'))->timezone('Asia/Dhaka')->format('Y-m-d H:i:s A');
 
-    dispatch(new \App\Jobs\SendSubscriptionPlanUpgradeMailQueueJob(to: 'xyz@gmail.com', user: App\Models\User::first()));
+    $db = 'drop_db';
+    if(Schema::hasView($db)) {
+
+        DB::statement('DROP DATABASE '.$db);
+    }
 });
 
 

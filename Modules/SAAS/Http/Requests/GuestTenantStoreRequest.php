@@ -21,12 +21,12 @@ class GuestTenantStoreRequest extends FormRequest
             'plan_id' => 'required|numeric',
             'shop_count' => 'required|numeric',
             'name' => 'required|string|max:70',
-            'domain' => ['required', 'string', 'max:60', 'unique:domains,domain'],
+            'domain' => ['required', 'string', 'max:60', 'unique:domains,domain', 'regex:/^[a-zA-Z0-9\-]+$/'],
             'fullname' => 'required|string|max:191',
-            'email' => 'required',
-            'phone' => 'required|max:60|unique:users,phone',
+            'email' => 'required|email',
+            'phone' => 'required|max:60',
             'currency_id' => 'required',
-            'password' => 'required|confirmed',
+            'password' => 'required|string|min:6|confirmed',
             // 'password' => ['required', Password::default()],
         ];
 
@@ -50,7 +50,7 @@ class GuestTenantStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'domain.unique' => 'Selected domain is already taken. Try other domain names.',
+            'domain.regex' => '[. , @ $ ~ ` ^ # @ etc] characters in not valid for store url.',
         ];
     }
 

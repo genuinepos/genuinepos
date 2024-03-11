@@ -14,7 +14,7 @@
                     <div class="domain-field" class="position-relative">
                         <label for="domain">{{ __('Store URL') }} <span class="text-danger">*</span></label>
                         <div class="position-relative">
-                            <input required type="text" name="domain" id="domain" class="form-control" placeholder="my-business" autocomplete="off">
+                            <input required type="text" name="domain" id="domain" class="form-control" placeholder="{{ __("Store URL") }}" autocomplete="off">
                             <span class="txt">{{ __('.gposs.com') }}</span>
                         </div>
                         <p class="mt-2">

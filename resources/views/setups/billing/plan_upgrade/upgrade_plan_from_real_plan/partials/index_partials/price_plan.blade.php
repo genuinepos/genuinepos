@@ -5,24 +5,18 @@
                 <tr>
                     <th>
                         <div class="table-title">
-                            <h4>{{ __('Choose Your Plan') }}</h4>
+                            <h6>{{ __('Choose Your Plan') }}</h6>
                         </div>
                     </th>
                     @foreach ($plans as $plan)
                         <th>
                             <div class="table-top text-center">
                                 <h4>{{ $plan->name }}</h4>
-                                @if ($plantype == 'month')
-                                    <h5 class="price">$<span class="amount">{{ $plan->price_per_month }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
-                                @endif
+                                <h6 class="price">$<span class="amount">{{ $plan->price_per_month }} </span> <span class="type text-muted">/{{ __('Monthly') }}</span>
 
-                                @if ($plantype == 'year')
-                                    <h5 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
-                                @endif
+                                <h6 class="price">$<span class="amount">{{ $plan->price_per_year }} </span> <span class="type text-muted">/{{ __('Yearly') }}</span>
 
-                                @if ($plantype == 'lifetime')
-                                    <h5 class="price">$<span class="amount">{{ $plan->lifetime_price }} </span> <span class="type text-muted">/{{ __('Lifetime') }}</span>
-                                @endif
+                                <h6 class="price">$<span class="amount">{{ $plan->lifetime_price }} </span> <span class="type text-muted">/{{ __('Lifetime') }}</span>
 
                                 <div class="">
                                     <p class="p-0 m-0" style="font-size: 12px;line-height:1.2;">
@@ -31,22 +25,12 @@
                                     </p>
                                 </div>
 
-                                @if ($plantype == 'month')
-                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'month']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
-                                @endif
-
-                                @if ($plantype == 'year')
-                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'year']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
-                                @endif
-
-                                @if ($plantype == 'lifetime')
-                                    <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id, 'lifetime']) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
-                                @endif
+                                <a href="{{ route('software.service.billing.upgrade.plan.cart', [$plan->id]) }}" id="link-plan" class="btn btn-primary">{{ __('Select') }}</a>
                             </div>
                         </th>
                     @endforeach
                     <th>
-                        <div class="table-top">
+                        <div class="table-top  text-center">
                             <h4>ENTERPRISE CUSTOM PACKAGE</h4>
                             <div class="">
                                 <p class="p-0 m-0" style="font-size: 12px;line-height:1.2;">
@@ -69,16 +53,16 @@
                 </tr>
                 <tr>
                     <th>{{ __('Multi store management') }}</th>
-                    <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
-                    <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
-                    <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
+                    @foreach ($plans as $plan)
+                        <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
+                    @endforeach
                     <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                 </tr>
                 <tr>
                     <th>{{ __('Business Location (Shop)') }}</th>
-                    <td class="text-center">1</td>
-                    <td class="text-center">1</td>
-                    <td class="text-center">1</td>
+                    @foreach ($plans as $plan)
+                        <td class="text-center fw-bold">{{ __("1") }}</td>
+                    @endforeach
                     <td class="text-center">
                         {{ __('Customization package for super shop or chain shop') }}
                     </td>
@@ -86,7 +70,9 @@
                 <tr>
                     <th>{{ __('Cash Counter') }}</th>
                     @foreach ($plans as $plan)
-                        <td class="text-center">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}/Shop</td>
+                        <td class="text-center">
+                            <span class="fw-bold">{{ isset($plan->features['cash_counter_count']) ? $plan->features['cash_counter_count'] : 0 }}</span>/{{ __("Per Shop") }}
+                        </td>
                     @endforeach
                     <td class="text-center">{{ __('Everything of business') }}</td>
                 </tr>
@@ -148,7 +134,7 @@
                     @foreach ($plans as $plan)
                         <td class="text-center">
                             @if (isset($plan->features['warehouse_count']) && $plan->features['warehouse_count'] > 0)
-                                {{ $plan->features['warehouse_count'] }}
+                                <span class="fw-bold">{{ $plan->features['warehouse_count'] }}</span>/{{ __("Per Shop") }}
                             @else
                                 <span class="icon check"><i class="far fa-minus text-secondary fa-2x"></i></span>
                             @endif
@@ -296,7 +282,7 @@
                     <td class="text-center"><span class="icon check"><i class="far fa-check-circle text-success fa-2x"></i></span></td>
                 </tr>
                 <tr class="table-secondary">
-                    <th colspan="{{ $plans->count() - 1 }}"><span>Services</span></th>
+                    <th colspan="{{ $plans->count() - 1 }}"><span>{{ __("Services") }}</span></th>
                     <td></td>
                     <td></td>
                     <td></td>

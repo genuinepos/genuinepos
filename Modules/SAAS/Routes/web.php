@@ -52,6 +52,7 @@ Route::controller(TrialController::class)->prefix('guest/trial')->group(function
 
     Route::get('create', 'create')->name('guest.trial.create');
     Route::post('store', 'store')->name('guest.trial.store');
+    Route::post('validation', 'validation')->name('guest.trial.validation');
 });
 
 Route::controller(PlanConfirmController::class)->prefix('guest/plan-confirm')->group(function () {
@@ -59,6 +60,7 @@ Route::controller(PlanConfirmController::class)->prefix('guest/plan-confirm')->g
     Route::get('create/{slug}/{pricePeriod?}', 'create')->name('guest.plan.confirm.create');
     Route::post('confirm', 'confirm')->name('guest.plan.confirm');
     Route::post('store', 'store')->name('guest.plan.confirm.tenant.store');
+    Route::post('validation', 'validation')->name('guest.plan.confirm.validation');
 });
 
 Route::controller(SendEmailController::class)->prefix('guest/email')->group(function () {
@@ -81,7 +83,7 @@ Route::middleware(['is_verified'])->group(function () {
     Route::prefix('dashboard')->group(function () {
 
         Route::controller(DashboardController::class)->group(function () {
-            
+
             Route::get('/', 'index')->name('dashboard');
         });
 

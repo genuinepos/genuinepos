@@ -2,15 +2,16 @@
 
 namespace Modules\SAAS\Http\Controllers\Guest;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Exception;
+use Modules\SAAS\Utils\UrlGenerator;
 use Modules\SAAS\Interfaces\PlanServiceInterface;
 use Modules\SAAS\Services\TenantServiceInterface;
+use Modules\SAAS\Services\DeleteUnusedTenantService;
 use Modules\SAAS\Interfaces\CurrencyServiceInterface;
 use Modules\SAAS\Http\Requests\GuestTenantStoreRequest;
 use Modules\SAAS\Interfaces\EmailVerificationServiceInterface;
-use Modules\SAAS\Utils\UrlGenerator;
 
 class PlanConfirmController extends Controller
 {
@@ -19,6 +20,7 @@ class PlanConfirmController extends Controller
         private PlanServiceInterface $planServiceInterface,
         private EmailVerificationServiceInterface $emailVerificationServiceInterface,
         private TenantServiceInterface $tenantService,
+        private DeleteUnusedTenantService $deleteUnusedTenantService,
     ) {
     }
     /**
@@ -58,6 +60,12 @@ class PlanConfirmController extends Controller
             // return redirect()->intended($returningUrl);
         }
 
+        $this->deleteUnusedTenantService->deleteTenant(domainName: $tenantRequest['domain']);
         throw new Exception('Something went wrong, Business creation failed. Please try again!', 500);
+    }
+
+    public function validation(GuestTenantStoreRequest $request) {
+
+        return true;
     }
 }

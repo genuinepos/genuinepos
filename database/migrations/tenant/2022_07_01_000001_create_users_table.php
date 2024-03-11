@@ -66,7 +66,7 @@ return new class extends Migration
             $table->foreign(['department_id'])->references(['id'])->on('hrm_departments')->onDelete('SET NULL');
             $table->foreign(['designation_id'])->references(['id'])->on('hrm_designations')->onDelete('SET NULL');
             $table->foreign(['shift_id'])->references(['id'])->on('hrm_shifts')->onDelete('SET NULL');
-            // $table->foreign(['currency_id'])->references('id')->on('currencies')->onDelete('set null');
+            $table->foreign(['currency_id'])->references('id')->on('currencies')->onDelete('set null');
         });
     }
 

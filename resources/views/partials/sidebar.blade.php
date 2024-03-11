@@ -178,13 +178,6 @@
                         </li>
                     @endif
                 @endif
-
-                <li data-menu="reports" class="{{ request()->is('reports*') ? 'menu_active' : '' }}">
-                    <a href="#">
-                        <img src="{{ asset('backend/asset/img/icon/business-report.svg') }}">
-                        <p class="title">@lang('menu.reports')</p>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
@@ -371,21 +364,6 @@
                                             </a>
                                         </div>
                                     @endif
-
-                                    {{-- @can('product_settings')
-                                        <div class="sub-menu-col">
-                                            <a href="{{ route('product.settings.index') }}" class="switch-bar-wrap settings-wrap">
-                                                <div class="switch_bar">
-                                                    <div class="bar-link">
-                                                        <span>
-                                                            <i class="fas fa-sliders-h"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <p class="switch_text">{{ __('Product Settings') }}</p>
-                                            </a>
-                                        </div>
-                                    @endcan --}}
                                 </div>
                             </div>
 
@@ -1551,7 +1529,13 @@
             @endif
 
             @if ($generalSettings['subscription']->features['users'] == 1)
-                @if (auth()->user()->can('user_add') || auth()->user()->can('user_view') || auth()->user()->can('role_add') || auth()->user()->can('role_view'))
+                @if (
+                    auth()->user()->can('user_add') ||
+                    auth()->user()->can('user_view') ||
+                    auth()->user()->can('role_add') ||
+                    auth()->user()->can('role_view') ||
+                    auth()->user()->can('user_activities_log_index')
+                )
                     <div class="sub-menu_t" id="users">
                         <div class="sub-menu-width">
                             <div class="model__close bg-secondary-2 mb-3">
@@ -1621,6 +1605,24 @@
                                         @endif
                                     </div>
                                 </div>
+
+                                @if (auth()->user()->can('user_activities_log_index'))
+                                    <div class="sub-menu-group">
+                                        <p class="sub-menu-group-title">{{ __('Log Report') }}</p>
+                                        <div class="sub-menu-row">
+                                            <div class="sub-menu-col">
+                                                <a href="{{ route('reports.user.activities.log.index') }}" class="switch-bar-wrap">
+                                                    <div class="switch_bar">
+                                                        <div class="bar-link">
+                                                            <span><i class="fas fa-clipboard-list"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <p class="switch_text">{{ __('User Activities Log') }}</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -2297,36 +2299,6 @@
                     </div>
                 </div>
             @endif
-
-            <div class="sub-menu_t" id="reports">
-                <div class="sub-menu-width">
-                    <div class="model__close bg-secondary-2 mb-3">
-                        <div class="row align-items-center justify-content-end">
-                            <div class="col-md-4">
-                                <a href="#" class="btn text-white btn-sm btn-secondary close-model float-end"><i class="fas fa-times"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container-fluid">
-                        <div class="sub-menu-group">
-                            <p class="sub-menu-group-title">{{ __('Common Reports') }}</p>
-                            <div class="sub-menu-row">
-                                <div class="sub-menu-col">
-                                    <a href="{{ route('reports.user.activities.log.index') }}" class="switch-bar-wrap">
-                                        <div class="switch_bar">
-                                            <div class="bar-link">
-                                                <span><i class="fas fa-clipboard-list"></i></span>
-                                            </div>
-                                        </div>
-                                        <p class="switch_text">{{ __('User Activity Log') }}</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

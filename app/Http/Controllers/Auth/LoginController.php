@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Enums\RoleType;
 use App\Enums\BooleanType;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Utils\UserActivityLogUtil;
@@ -12,12 +14,16 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use App\Services\Users\UserActivityLogService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    protected $userActivityLogUtil;
+    public function __construct(private UserActivityLogService $userActivityLogService)
+    {
+        $this->middleware('guest')->except('logout');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -44,11 +50,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct(UserActivityLogUtil $userActivityLogUtil)
-    {
-        $this->userActivityLogUtil = $userActivityLogUtil;
-        $this->middleware('guest')->except('logout');
-    }
+
 
     public function showLoginForm()
     {
@@ -70,9 +72,17 @@ class LoginController extends Controller
         $subscription = DB::table('subscriptions')->first();
         $firstBranch = DB::table('branches')->first();
 
-        $user = User::with('branch')
+        $user = User::with('branch', 'roles', 'roles.permissions')
             ->where('username', $request->username_or_email)
             ->orWhere('email', $request->username_or_email)->first();
+
+        $role = $user->roles()->first();
+        if ($role->hasPermissionTo('has_access_to_all_area')) {
+
+            $user->branch_id = null;
+            $user->is_belonging_an_area = BooleanType::False->value;
+            $user->save();
+        }
 
         if (
             $user?->branch &&
@@ -86,7 +96,7 @@ class LoginController extends Controller
         }
 
         if (isset($user) && $user->allow_login == BooleanType::True->value) {
-
+            
             if (
                 Auth::attempt(['username' => $request->username_or_email, 'password' => $request->password]) ||
                 Auth::attempt(['email' => $request->username_or_email, 'password' => $request->password])
@@ -97,13 +107,16 @@ class LoginController extends Controller
                     session(['lang' => $user->language]);
                 }
 
-                $this->userActivityLogUtil->addLog(action: 4, subject_type: 18, data_obj: $user, branch_id: $user->branch_id, user_id: $user->id);
-
                 if (isset($firstBranch) && $subscription->current_shop_count == 1 && $subscription->has_business == BooleanType::False->value) {
 
                     $user->branch_id = $firstBranch->id;
                     $user->is_belonging_an_area = BooleanType::True->value;
                     $user->save();
+                }
+
+                if (!$role->hasPermissionTo('has_access_to_all_area')) {
+
+                    $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogin->value, subjectType: UserActivityLogSubjectType::UserLogin->value, dataObj: $user, branchId: $user->branch_id, userId: $user->id);
                 }
 
                 return redirect()->intended(route('dashboard.index'));
@@ -121,7 +134,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $this->userActivityLogUtil->addLog(action: 5, subject_type: 19, data_obj: auth()->user());
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::UserLogout->value, subjectType: UserActivityLogSubjectType::UserLogout->value, dataObj: auth()->user());
 
         if (auth()->user()->can('has_access_to_all_area')) {
 
@@ -135,6 +148,7 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         if ($response = $this->loggedOut($request)) {
+
             return $response;
         }
 

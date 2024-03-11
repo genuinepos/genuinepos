@@ -11,8 +11,8 @@ class Domain extends Model
 
     protected $fillable = ['domain', 'tenant_id'];
 
-    public function scopeIsAvailable($query, $newDdomain)
+    public function scopeIsAvailable($query, $newDomain)
     {
-        return ! $query->where('domain', $newDdomain)->exists();
+        return ! $query->where('domain', $newDomain)->exists();
     }
 }

@@ -48,7 +48,6 @@ use App\Http\Controllers\Report\CashRegisterReportController;
 use App\Http\Controllers\Report\SaleReturnStatementController;
 use App\Http\Controllers\TransferStockBranchToBranchController;
 use App\Http\Controllers\Report\FinancialReportControllerReport;
-use App\Http\Controllers\Report\UserActivityLogReportController;
 use App\Http\Controllers\ReceiveTransferBranchToBranchController;
 use App\Http\Controllers\Report\SaleRepresentativeReportController;
 
@@ -463,14 +462,6 @@ Route::group(['prefix' => 'accounting'], function () {
             Route::get('filter/amounts', [FinancialReportControllerReport::class, 'filterFinancialAmounts'])->name('reports.financial.filter.amounts');
             Route::get('report/print', [FinancialReportControllerReport::class, 'print'])->name('reports.financial.report.print');
         });
-    });
-});
-
-Route::group(['prefix' => 'reports'], function () {
-
-    Route::group(['prefix' => 'user/activities/log'], function () {
-
-        Route::get('/', [UserActivityLogReportController::class, 'index'])->name('reports.user.activities.log.index');
     });
 });
 

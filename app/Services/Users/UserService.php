@@ -72,7 +72,7 @@ class UserService
 
                         return $row->branch_name . ' (' . $row->area_name . ')';
                     } else {
-                        
+
                         return $generalSettings['business_or_shop__business_name'];
                     }
                 }
@@ -320,6 +320,33 @@ class UserService
         $user->branch_id = $__branchId;
         $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
         $user->save();
+    }
+
+    public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null) : array|object {
+
+        if ($allowAll == 0 && ($branchId == 'null' || $branchId == '')) {
+            return [];
+        }
+
+        $branchId = $branchId == 'business' ? null : $branchId;
+        $branchId = $branchId == 'null' ? null : $branchId;
+        $query = $this->users();
+
+        if (isset($branchId) && $branchId == 'NULL') {
+
+            $query->where('branch_id', null);
+        }else if(isset($branchId)){
+
+            $query->where('branch_id', $branchId);
+        }
+
+        if ($isOnlyAuthenticatedUser == BooleanType::True->value) {
+
+            $query->where('allow_login', BooleanType::True->value);
+        }
+
+        $users = $query->get();
+        return $users;
     }
 
     public function singleUser(?int $id, array $with = null)

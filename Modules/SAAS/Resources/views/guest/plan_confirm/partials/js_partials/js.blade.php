@@ -51,13 +51,17 @@
                 }
 
                 if (res.isAvailable) {
+
                     isAvailable = true;
                     $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                } else {
+
+                    $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                 }
             },
             error: function(err) {
                 isAvailable = false;
-                $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                console.log(err);
             }
         });
     }
@@ -72,7 +76,7 @@
         // var pricePeriod = $('#price_period').val();
         // console.log(pricePeriod);
 
-        var pricePeriod =document.getElementsByName('price_period');
+        var pricePeriod = document.getElementsByName('price_period');
 
         if (tabId == 'stepTwoTab') {
 
@@ -157,6 +161,28 @@
             if ($('#password_confirmation').val() != $('#password').val()) {
 
                 toastr.error("{{ __('Password and comfirm password is mismatch.') }}");
+                return;
+            }
+
+            var pass = false;
+            var request = $('#planConfirmForm').serialize();
+            $.ajax({
+                url: "{{ route('saas.guest.plan.confirm.validation') }}",
+                type: 'POST',
+                data: request,
+                async: false,
+                success: function(res) {
+
+                    pass = true;
+                }, error: function(err) {
+
+                    pass = false;
+                    toastr.error(Object.values(err.responseJSON.errors)[0]);
+                }
+            });
+
+            if (pass == false) {
+
                 return;
             }
 
@@ -456,7 +482,7 @@
 </script>
 
 <script>
-    function sendVerificationEmail() {
+    function sendVerificationEmail(showMessage = 0) {
 
         var email = $('#email').val();
         var url = "{{ route('saas.guest.email.send.verification.code') }}";
@@ -471,6 +497,10 @@
 
                 sendVerificationCode = true;
                 $('#sendVerificationEmailAddress').val(email);
+                if (showMessage == 1) {
+
+                    toastr.success("{{ __('Email verification code has been resend successfully.') }}");
+                }
             },
             error: function(err) {
 
@@ -488,8 +518,8 @@
     }
 
     $(document).on('click', '#resendVerificationEmail', function(e) {
-
-        sendVerificationEmail();
+        var showMessage = 1;
+        sendVerificationEmail(showMessage);
     });
 
     $(document).on('click', '#checkEmailVerificationCode', function(e) {
@@ -582,7 +612,7 @@
             data: request,
             success: function(res) {
 
-                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">https://demo.pos.test</span></span>');
+                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">'+res+'</span></span>');
                 // $('#successSection').removeClass('d-none');
 
                 window.location = res;
@@ -592,7 +622,7 @@
                 $('#response-message').addClass('d-none');
                 toastr.error('Something went wrong');
                 toastr.error(err.responseJSON.message);
-                // location.reload(true);
+                location.reload(true);
             }
         });
     });

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Report;
+namespace App\Http\Controllers\Users\Reports;
 
 use Carbon\Carbon;
 use App\Enums\BooleanType;
 use App\Enums\UserActivityLogActionType;
 use App\Enums\UserActivityLogSubjectType;
 use Illuminate\Http\Request;
-use App\Utils\UserActivityLogUtil;
 use Illuminate\Support\Facades\DB;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
@@ -18,16 +17,14 @@ class UserActivityLogReportController extends Controller
 {
     public function __construct(
         private BranchService $branchService,
-        private UserService $userService,
-        private UserActivityLogUtil $userActivityLogUtil
+        private UserService $userService
     ) {
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $actions = $this->userActivityLogUtil->actions();
-            $subject_types = $this->userActivityLogUtil->subjectTypes();
+
             $logs = '';
             $query = DB::table('user_activity_logs')
                 ->leftJoin('branches', 'user_activity_logs.branch_id', 'branches.id')
@@ -59,15 +56,15 @@ class UserActivityLogReportController extends Controller
             ) {
 
                 $query;
-            }else if(!auth()->user()->can('user_activities_log_only_own_log')) {
+            } else if (!auth()->user()->can('user_activities_log_only_own_log')) {
 
                 $query->where('user_activity_logs.branch_id', auth()->user()->branch_id);
-            }else if(auth()->user()->can('user_activities_log_only_own_log')) {
+            } else if (auth()->user()->can('user_activities_log_only_own_log')) {
 
                 $query->where('user_activity_logs.user_id', auth()->user()->id);
             }
 
-            $this->filteredQuery($request, $query);
+            $this->filteredQuery(request: $request, query: $query);
 
             $logs = $query->orderBy('user_activity_logs.report_date', 'desc');
 
@@ -77,7 +74,6 @@ class UserActivityLogReportController extends Controller
                 ->editColumn('date', function ($row) use ($generalSettings) {
 
                     $dateFormat = $generalSettings['business_or_shop__date_format'];
-
                     return date($dateFormat . ' h:i:s a', strtotime($row->report_date));
                 })
                 ->editColumn('branch', function ($row) use ($generalSettings) {
@@ -97,21 +93,21 @@ class UserActivityLogReportController extends Controller
                 })
                 ->editColumn('action_by', fn ($row) => $row->u_prefix . ' ' . $row->u_name . ' ' . $row->u_last_name)
 
-                ->editColumn('action', function ($row) use ($actions) {
+                ->editColumn('action', function ($row) {
 
-                    if (UserActivityLogActionType::tryFrom($row->action)->name == 'Deleted') {
+                    if ($row->action == UserActivityLogActionType::Deleted->value) {
 
                         return '<strong class="text-danger">' . __('Deleted') . '</strong>';
-                    } elseif (UserActivityLogActionType::tryFrom($row->action)->name == 'Added') {
+                    } elseif ($row->action == UserActivityLogActionType::Added->value) {
 
                         return '<strong class="text-success">' . __('Added') . '</strong>';
-                    } elseif (UserActivityLogActionType::tryFrom($row->action)->name == 'Updated') {
+                    } elseif ($row->action == UserActivityLogActionType::Updated->value) {
 
                         return '<strong class="text_color_updated">' . __('Updated') . '</strong>';
-                    } elseif (UserActivityLogActionType::tryFrom($row->action)->name == 'User Login') {
+                    } elseif ($row->action == UserActivityLogActionType::UserLogin->value) {
 
                         return '<strong class="text-success">' . __('User Login') . '</strong>';
-                    } elseif (UserActivityLogActionType::tryFrom($row->action)->name == 'User Logout') {
+                    } elseif ($row->action == UserActivityLogActionType::UserLogout->value) {
 
                         return '<strong class="text-danger">' . __('User Logout') . '</strong>';
                     }
@@ -141,17 +137,17 @@ class UserActivityLogReportController extends Controller
         ) {
 
             $branches = $this->branchService->branches(with: ['parentBranch'])
-            ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
+                ->orderByRaw('COALESCE(branches.parent_branch_id, branches.id), branches.id')->get();
             $users = $this->userService->users()->select('id', 'prefix', 'name', 'last_name')->get();
-        }else if(!auth()->user()->can('user_activities_log_only_own_log')) {
+        } else if (!auth()->user()->can('user_activities_log_only_own_log')) {
 
             $users = $this->userService->users()->where('branch_id', auth()->user()->branch_id)->select('id', 'prefix', 'name', 'last_name')->get();
         }
 
-        return view('reports.user_activity_log.index', compact('branches', 'users'));
+        return view('users.reports.user_activity_log.index', compact('branches', 'users'));
     }
 
-    private function filteredQuery($request, $query)
+    private function filteredQuery(object $request, object $query)
     {
         if ($request->branch_id) {
 

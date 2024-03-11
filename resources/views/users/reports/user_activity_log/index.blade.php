@@ -152,7 +152,8 @@
             "processing": true,
             "serverSide": true,
             dom: "lBfrtip",
-            buttons: [{
+            buttons: [
+                {
                     extend: 'excel',
                     text: '<i class="fas fa-file-excel"></i> Excel',
                     className: 'btn btn-primary'

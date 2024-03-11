@@ -5,6 +5,7 @@
             <small>{{ __('Send a verification code to') }} <span class="fw-bold" id="showEmail">example@email.com</span> <a class="text-primary" id="resendVerificationEmail" href="#">{{ __('Resend') }}</a></small>
             <div class="form-row">
                 <div class="col-md-12">
+                    <input type="hidden" id="sendVerificationEmailAddress">
                     <input required type="text" name="verification_code" id="verification_code" class="form-control" placeholder="{{ __('Email Verification Code') }}" autocomplete="off">
                 </div>
             </div>

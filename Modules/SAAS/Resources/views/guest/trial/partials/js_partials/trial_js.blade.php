@@ -50,13 +50,18 @@
                 }
 
                 if (res.isAvailable) {
+
                     isAvailable = true;
                     $('#domainPreview').html(`<span class="text-success">✔ Doamin is available<span>`);
+                }else {
+
+                    isAvailable = false;
+                    $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
                 }
-            },
-            error: function(err) {
+            }, error: function(err) {
+
                 isAvailable = false;
-                $('#domainPreview').html(`<span class="text-danger">❌ Doamin is not available<span>`);
+                console.log(err);
             }
         });
     }
@@ -134,7 +139,29 @@
                 return;
             }
 
-            if (sendVerificationCode == false) {
+            var pass = false;
+            var request = $('#tenantStoreForm').serialize();
+            $.ajax({
+                url: "{{ route('saas.guest.trial.validation') }}",
+                type: 'POST',
+                data: request,
+                async: false,
+                success: function(res) {
+
+                    pass = true;
+                }, error: function(err) {
+
+                    pass = false;
+                    toastr.error(Object.values(err.responseJSON.errors)[0]);
+                }
+            });
+
+            if (pass == false) {
+
+                return;
+            }
+
+            if (sendVerificationCode == false || $('#sendVerificationEmailAddress').val() != $('#email').val()) {
 
                 sendVerificationEmail();
             }
@@ -153,7 +180,7 @@
     $('#stepOneTab').addClass('active');
     $('.stepOneTab').addClass('active');
 
-    function sendVerificationEmail() {
+    function sendVerificationEmail(showMessage = 0) {
 
         var email = $('#email').val();
         var url = "{{ route('saas.guest.email.send.verification.code') }}";
@@ -167,6 +194,11 @@
             success: function(data) {
 
                 sendVerificationCode = true;
+                $('#sendVerificationEmailAddress').val(email);
+                if (showMessage == 1) {
+
+                    toastr.success("{{ __('Email verification code has been resend successfully.') }}");
+                }
             }, error: function(err) {
 
                 if (err.status == 0) {
@@ -183,8 +215,8 @@
     }
 
     $(document).on('click', '#resendVerificationEmail', function(e) {
-
-        sendVerificationEmail();
+        var showMessage = 1;
+        sendVerificationEmail(showMessage);
     });
 
     $(document).on('click', '#checkEmailVerificationCode', function(e) {
@@ -207,8 +239,7 @@
             data: {
                 email,
                 code
-            },
-            success: function(data) {
+            }, success: function(data) {
 
                 if (data == 0) {
 
@@ -277,7 +308,7 @@
             data: request,
             success: function(res) {
 
-                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">https://demo.pos.test</span></span>');
+                $('#response-message').html('<span class="text-white"> Redirecting to <span class="fw-bold">'+res+'</span></span>');
                 // $('#successSection').removeClass('d-none');
 
                 window.location = res;

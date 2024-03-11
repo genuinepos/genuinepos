@@ -110,6 +110,9 @@ class UserActivityLogReportController extends Controller
                     } elseif ($row->action == UserActivityLogActionType::UserLogout->value) {
 
                         return '<strong class="text-danger">' . __('User Logout') . '</strong>';
+                    } elseif ($row->action == UserActivityLogActionType::LocationSwitch->value) {
+
+                        return '<strong class="text-primary">' . __('Location Switch') . '</strong>';
                     }
                 })
 

@@ -42,6 +42,7 @@ class UserActivityLogUtil
             24 => 'Variants',
             25 => 'Warranties',
             35 => 'Selling Price Groups',
+            36 => 'Location Switch',
         ];
     }
 
@@ -186,6 +187,10 @@ class UserActivityLogUtil
             35 => [ // Selling Price Group
                 'fields' => ['name', 'description',],
                 'texts' => ['Name : ', 'Description : '],
+            ],
+            36 => [ // Location Switch
+                'fields' => ['location_switch_log_description'],
+                'texts' => [''],
             ],
         ];
     }

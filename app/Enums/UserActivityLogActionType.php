@@ -9,4 +9,5 @@ enum UserActivityLogActionType: int
     case Deleted = 3;
     case UserLogin = 4;
     case UserLogout = 5;
+    case LocationSwitch = 6;
 }

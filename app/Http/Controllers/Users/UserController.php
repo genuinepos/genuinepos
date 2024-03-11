@@ -9,8 +9,11 @@ use App\Services\Users\RoleService;
 use App\Services\Users\UserService;
 use App\Http\Controllers\Controller;
 use App\Services\Setups\BranchService;
+use App\Enums\UserActivityLogActionType;
+use App\Enums\UserActivityLogSubjectType;
 use App\Http\Requests\Users\UserStoreRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
+use App\Services\Users\UserActivityLogService;
 
 class UserController extends Controller
 {
@@ -18,6 +21,7 @@ class UserController extends Controller
         private BranchService $branchService,
         private UserService $userService,
         private RoleService $roleService,
+        private UserActivityLogService $userActivityLogService,
     ) {
         $this->middleware('subscriptionRestrictions');
     }
@@ -113,6 +117,13 @@ class UserController extends Controller
     public function changeBranch(Request $request)
     {
         $this->userService->changeBranch(request: $request);
+
+        $this->userActivityLogService->addLog(action: UserActivityLogActionType::LocationSwitch->value, subjectType: UserActivityLogSubjectType::LocationSwitch->value, dataObj: auth()->user());
+        if (auth()->user()?->location_switch_log_description) {
+
+            unset(auth()->user()->location_switch_log_description);
+        }
+
         return response()->json(__('Succeed'));
     }
 

@@ -44,14 +44,14 @@
 
                 $stockLocationName = $generalSettings['business_or_shop__business_name'];
 
-                if ($purchase->branch) {
+                if ($purchaseProduct?->purchase->branch) {
 
-                    if ($purchase?->branch?->parentBranch) {
+                    if ($purchaseProduct?->purchase?->branch?->parentBranch) {
 
-                        $stockLocationName = $purchase?->branch?->parentBranch->name . '(' . $purchase?->branch?->parentBranch->area_name . ')';
+                        $stockLocationName = $purchaseProduct?->purchase?->branch?->parentBranch->name . '(' . $purchaseProduct?->purchase?->branch?->parentBranch->area_name . ')';
                     } else {
-                        
-                        $stockLocationName = $purchase?->branch?->name . '(' . $purchase?->branch->area_name . ')';
+
+                        $stockLocationName = $purchaseProduct?->purchase?->branch?->name . '(' . $purchaseProduct?->purchase?->branch->area_name . ')';
                     }
                 }
             }

@@ -314,16 +314,50 @@ class UserService
 
     public function changeBranch(object $request): void
     {
+        $currentBranch = null;
+        if (auth()->user()?->branch) {
+
+            if (auth()->user()?->branch?->parentBranch) {
+
+                $currentBranch = auth()->user()->branch->parentBranch->name . '(' . auth()->user()->branch->area_name . ')-' . auth()->user()->branch->branch_code;
+            } else {
+
+                $currentBranch = auth()->user()->branch->name . '(' . auth()->user()->branch->area_name . ')-' . auth()->user()->branch->branch_code;
+            }
+        } else {
+
+            $currentBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+        }
+
         $branchId = $request->branch_id == 'NULL' ? null : $request->branch_id;
         $__branchId = isset($request->select_type) && $request->select_type == 'business' ? null : $branchId;
-        $user = $this->singleUser(id: auth()->user()->id);
-        $user->branch_id = $__branchId;
-        $user->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
-        $user->save();
+        auth()->user()->branch_id = $__branchId;
+        auth()->user()->is_belonging_an_area = isset($__branchId) ? BooleanType::True->value : BooleanType::False->value;
+        auth()->user()->save();
+
+        $user = $this->singleUser(id: auth()->user()->id, with: ['branch', 'branch.parentBranch']);
+
+        $switchedBranch = null;
+        if ($user?->branch) {
+
+            if ($user?->branch?->parentBranch) {
+
+                $switchedBranch = $user->branch->parentBranch->name . '(' . $user->branch->area_name . ')-' . $user->branch->branch_code;
+            } else {
+
+                $switchedBranch = $user->branch->name . '(' . $user->branch->area_name . ')-' . $user->branch->branch_code;
+            }
+        } else {
+
+            $switchedBranch = config('generalSettings')['business_or_shop__business_name'] . '(' . __('Business') . ')';
+        }
+
+        $description = $currentBranch .' '.__('To').' '.$switchedBranch;
+        auth()->user()->location_switch_log_description = $description;
     }
 
-    public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null) : array|object {
-
+    public function getBranchUsers(int $isOnlyAuthenticatedUser, int $allowAll, int|string $branchId = null): array|object
+    {
         if ($allowAll == 0 && ($branchId == 'null' || $branchId == '')) {
             return [];
         }
@@ -335,7 +369,7 @@ class UserService
         if (isset($branchId) && $branchId == 'NULL') {
 
             $query->where('branch_id', null);
-        }else if(isset($branchId)){
+        } else if (isset($branchId)) {
 
             $query->where('branch_id', $branchId);
         }
@@ -371,43 +405,5 @@ class UserService
         }
 
         return $query;
-    }
-
-    public function updateUserValidation(object $request, int $id, ?object $role)
-    {
-        $user = $this->singleUser(id: $id);
-
-        $request->validate([
-            'first_name' => 'required',
-            'email' => 'required|unique:users,email,' . $id,
-            'photo' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp',
-        ]);
-
-        if ($role?->name != 'admin' && $role?->name != 'superadmin' && isset($request->branch_count)) {
-
-            $request->validate([
-                'branch_id' => 'required',
-            ], ['branch_id.required' => __('Shop/Business is required.')]);
-        }
-
-        if ($request->allow_login == BooleanType::True->value) {
-
-            $request->validate([
-                'role_id' => 'required',
-                'username' => 'required|unique:users,username,' . $id,
-            ]);
-
-            if (!$user->password) {
-
-                $request->validate([
-                    'password' => 'required|confirmed',
-                ]);
-            } else {
-
-                $request->validate([
-                    'password' => 'sometimes|confirmed',
-                ]);
-            }
-        }
     }
 }

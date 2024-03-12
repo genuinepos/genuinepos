@@ -11,7 +11,7 @@
                     <div class="row" data-select2-id="select2-data-5-qlgx">
                         <div class="col-5">
                             <button type="button" class="btn btn-primary btn-sm mb-2 p-1" id="addMoreButton"><i
-                                    class="fas fa-plus"></i> Add More Emails</button>
+                                    class="fas fa-plus"></i> Add More Phone</button>
                         </div>
 
                         <div class="col-7" data-select2-id="select2-data-4-t4zu">
@@ -31,26 +31,9 @@
                        <div class="col-md-12">
                             <label><strong>To</strong> <span class="text-danger">*</span></label>
                             <div id="emailContainer">
-                                <input required="" type="email" name="mail[]" class="form-control add_input" placeholder="Email">
+                                <input required="" type="number" name="phone[]" class="form-control add_input" placeholder="Phone">
                                 <span class="error error_to"></span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label><strong>Subject</strong> <span class="text-danger">*</span></label>
-                            <input required="" type="text" name="subject" class="form-control add_input"
-                                placeholder="Subject">
-                            <span class="error error_subject"></span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label><strong>Attachment </strong></label>
-                            <input type="file" name="attach[]" class="form-control add_input"
-                                 placeholder="Attachments" multiple>
                         </div>
                     </div>
 

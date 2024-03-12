@@ -9,7 +9,8 @@
     
     @if (!empty($attachments))
         @foreach($attachments as $attachment)
-            <a href="{{ Storage::url($attachment['path']) }}">{{ $attachment['name'] }}</a>
+            <!-- <a href="{{ Storage::url($attachment['path']) }}">{{ $attachment['name'] }}</a> -->
+            <!-- <img src="{{ $attachment['path'] }}"> -->
         @endforeach
     @else
         <p>No attachments</p>

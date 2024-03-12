@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Purchases;
 use App\Enums\AccountingVoucherType;
 use App\Enums\PurchaseStatus;
 use App\Http\Controllers\Controller;
-use App\Mail\PurchaseCreated;
 use App\Services\Accounts\AccountFilterService;
 use App\Services\Accounts\AccountingVoucherDescriptionReferenceService;
 use App\Services\Accounts\AccountingVoucherDescriptionService;
